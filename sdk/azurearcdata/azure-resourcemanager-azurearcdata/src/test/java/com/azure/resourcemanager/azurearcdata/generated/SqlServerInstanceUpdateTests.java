@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlServerInstanceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerInstanceUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"jta\":\"pabgyeps\",\"kqujidsuyono\":\"qugxywpmueefjzwf\"}}")
+        SqlServerInstanceUpdate model
+            = BinaryData.fromString("{\"tags\":{\"dytdxwitx\":\"twm\",\"qwgxhniskx\":\"rjaw\"}}")
                 .toObject(SqlServerInstanceUpdate.class);
-        Assertions.assertEquals("pabgyeps", model.tags().get("jta"));
+        Assertions.assertEquals("twm", model.tags().get("dytdxwitx"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerInstanceUpdate model =
-            new SqlServerInstanceUpdate().withTags(mapOf("jta", "pabgyeps", "kqujidsuyono", "qugxywpmueefjzwf"));
+        SqlServerInstanceUpdate model
+            = new SqlServerInstanceUpdate().withTags(mapOf("dytdxwitx", "twm", "qwgxhniskx", "rjaw"));
         model = BinaryData.fromObject(model).toObject(SqlServerInstanceUpdate.class);
-        Assertions.assertEquals("pabgyeps", model.tags().get("jta"));
+        Assertions.assertEquals("twm", model.tags().get("dytdxwitx"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

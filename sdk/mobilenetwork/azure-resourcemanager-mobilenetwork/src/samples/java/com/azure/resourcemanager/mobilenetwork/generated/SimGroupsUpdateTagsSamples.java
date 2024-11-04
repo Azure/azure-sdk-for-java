@@ -16,9 +16,7 @@ import java.util.Map;
  */
 public final class SimGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SimGroupPatch.
-     * json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupPatch.json
      */
     /**
      * Sample code: Patch SIM group.
@@ -27,12 +25,14 @@ public final class SimGroupsUpdateTagsSamples {
      */
     public static void patchSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         SimGroup resource = manager.simGroups()
-            .getByResourceGroupWithResponse("rg1", "testSimGroup", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).withIdentity(new ManagedServiceIdentity()
-            .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
-                new UserAssignedIdentity())))
+            .getByResourceGroupWithResponse("rg1", "testSimGroup", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
             .apply();
     }
 

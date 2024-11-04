@@ -24,7 +24,7 @@ public final class ManagedVirtualNetworksCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"wnmzxtaxfa\",\"alias\":\"d\",\"\":{\"ihfom\":\"datat\",\"tnsdwyspvps\":\"datak\",\"ynuhknut\":\"datafsirykzcmwze\",\"yccoyxumnd\":\"datank\"}},\"name\":\"znkuilwkfcll\",\"type\":\"mg\",\"etag\":\"msmhrugllxeq\",\"id\":\"boxrezkqqpyhclf\"}";
+            = "{\"properties\":{\"vNetId\":\"pbln\",\"alias\":\"ugecijrncv\",\"\":{\"bcjvvdafbt\":\"datauwurcxtyfbbomug\"}},\"name\":\"xvkoiebplyyxml\",\"type\":\"seaogqiybfskxu\",\"etag\":\"sddrye\",\"id\":\"lqqcwpgipttpse\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,14 @@ public final class ManagedVirtualNetworksCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedVirtualNetworkResource response = manager.managedVirtualNetworks()
-            .define("owloe")
-            .withExistingFactory("aehanntfs", "vdqwh")
-            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf("vNetId", "lfv", "alias", "xu")))
-            .withIfMatch("kfecspunfqhhcjd")
+            .define("ipwkxf")
+            .withExistingFactory("gxohiwkkht", "eukclay")
+            .withProperties(new ManagedVirtualNetwork()
+                .withAdditionalProperties(mapOf("vNetId", "harsvai", "alias", "medioakprlajt")))
+            .withIfMatch("mxlnt")
             .create();
 
-        Assertions.assertEquals("boxrezkqqpyhclf", response.id());
+        Assertions.assertEquals("lqqcwpgipttpse", response.id());
     }
 
     // Use "Map.of" if available

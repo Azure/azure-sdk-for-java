@@ -5,26 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Sharing status of current gallery.
  */
 @Fluent
-public final class SharingStatus {
+public final class SharingStatus implements JsonSerializable<SharingStatus> {
     /*
-     * The sharing state of the gallery.
-     * 
      * Aggregated sharing state of current gallery.
      */
-    @JsonProperty(value = "aggregatedState", access = JsonProperty.Access.WRITE_ONLY)
     private SharingState aggregatedState;
 
     /*
      * Summary of all regional sharing status.
      */
-    @JsonProperty(value = "summary")
     private List<RegionalSharingStatus> summary;
 
     /**
@@ -34,9 +34,7 @@ public final class SharingStatus {
     }
 
     /**
-     * Get the aggregatedState property: The sharing state of the gallery.
-     * 
-     * Aggregated sharing state of current gallery.
+     * Get the aggregatedState property: Aggregated sharing state of current gallery.
      * 
      * @return the aggregatedState value.
      */
@@ -73,5 +71,45 @@ public final class SharingStatus {
         if (summary() != null) {
             summary().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("summary", this.summary, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharingStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharingStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharingStatus.
+     */
+    public static SharingStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharingStatus deserializedSharingStatus = new SharingStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregatedState".equals(fieldName)) {
+                    deserializedSharingStatus.aggregatedState = SharingState.fromString(reader.getString());
+                } else if ("summary".equals(fieldName)) {
+                    List<RegionalSharingStatus> summary
+                        = reader.readArray(reader1 -> RegionalSharingStatus.fromJson(reader1));
+                    deserializedSharingStatus.summary = summary;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharingStatus;
+        });
     }
 }

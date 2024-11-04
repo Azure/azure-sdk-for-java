@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AlertsState extends ExpandableStringEnum<AlertsState> {
      * @param name a name to look for.
      * @return the corresponding AlertsState.
      */
-    @JsonCreator
     public static AlertsState fromString(String name) {
         return fromString(name, AlertsState.class);
     }

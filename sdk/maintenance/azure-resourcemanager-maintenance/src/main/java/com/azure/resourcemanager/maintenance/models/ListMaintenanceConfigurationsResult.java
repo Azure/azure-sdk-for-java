@@ -9,7 +9,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for MaintenanceConfigurations list. */
+/**
+ * Response for MaintenanceConfigurations list.
+ */
 @Fluent
 public final class ListMaintenanceConfigurationsResult {
     /*
@@ -18,13 +20,15 @@ public final class ListMaintenanceConfigurationsResult {
     @JsonProperty(value = "value")
     private List<MaintenanceConfigurationInner> value;
 
-    /** Creates an instance of ListMaintenanceConfigurationsResult class. */
+    /**
+     * Creates an instance of ListMaintenanceConfigurationsResult class.
+     */
     public ListMaintenanceConfigurationsResult() {
     }
 
     /**
      * Get the value property: The list of maintenance Configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<MaintenanceConfigurationInner> value() {
@@ -33,7 +37,7 @@ public final class ListMaintenanceConfigurationsResult {
 
     /**
      * Set the value property: The list of maintenance Configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListMaintenanceConfigurationsResult object itself.
      */
@@ -44,7 +48,7 @@ public final class ListMaintenanceConfigurationsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

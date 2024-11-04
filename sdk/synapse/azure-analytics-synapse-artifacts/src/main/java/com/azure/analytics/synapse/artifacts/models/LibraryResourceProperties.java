@@ -5,53 +5,50 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Library/package properties.
  */
 @Immutable
-public final class LibraryResourceProperties {
+public final class LibraryResourceProperties implements JsonSerializable<LibraryResourceProperties> {
     /*
      * Name of the library/package.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Location of library/package in storage account.
      */
-    @JsonProperty(value = "path", access = JsonProperty.Access.WRITE_ONLY)
     private String path;
 
     /*
      * Container name of the library/package.
      */
-    @JsonProperty(value = "containerName", access = JsonProperty.Access.WRITE_ONLY)
     private String containerName;
 
     /*
      * The last update time of the library/package.
      */
-    @JsonProperty(value = "uploadedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String uploadedTimestamp;
 
     /*
      * Type of the library/package.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Provisioning status of the library/package.
      */
-    @JsonProperty(value = "provisioningStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningStatus;
 
     /*
      * Creator Id of the library/package.
      */
-    @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
 
     /**
@@ -121,5 +118,52 @@ public final class LibraryResourceProperties {
      */
     public String getCreatorId() {
         return this.creatorId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LibraryResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LibraryResourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LibraryResourceProperties.
+     */
+    public static LibraryResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LibraryResourceProperties deserializedLibraryResourceProperties = new LibraryResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.name = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.path = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.containerName = reader.getString();
+                } else if ("uploadedTimestamp".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.uploadedTimestamp = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.type = reader.getString();
+                } else if ("provisioningStatus".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.provisioningStatus = reader.getString();
+                } else if ("creatorId".equals(fieldName)) {
+                    deserializedLibraryResourceProperties.creatorId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLibraryResourceProperties;
+        });
     }
 }

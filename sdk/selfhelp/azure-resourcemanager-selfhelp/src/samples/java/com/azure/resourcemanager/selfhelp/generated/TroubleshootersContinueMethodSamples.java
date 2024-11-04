@@ -14,7 +14,9 @@ import java.util.Arrays;
  */
 public final class TroubleshootersContinueMethodSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Continue.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Continue.
+     * json
      */
     /**
      * Sample code: Troubleshooter_Continue.

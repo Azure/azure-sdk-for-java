@@ -17,37 +17,40 @@ public final class IntegrationRuntimeDataFlowPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeDataFlowProperties model = BinaryData.fromString(
-            "{\"computeType\":\"General\",\"coreCount\":1079304457,\"timeToLive\":776293565,\"cleanup\":true,\"customProperties\":[{\"name\":\"mzsf\",\"value\":\"yyysqnwnl\"},{\"name\":\"zfjd\",\"value\":\"fthsydphdb\"},{\"name\":\"etfgkzqbvh\",\"value\":\"ulymk\"},{\"name\":\"s\",\"value\":\"h\"}],\"\":{\"biubzg\":\"datahaenpftkgmbmv\",\"rbusnaq\":\"datapsotbame\",\"erlurgipvnbxle\":\"datavruuhyncppmmwh\"}}")
+            "{\"computeType\":\"MemoryOptimized\",\"coreCount\":1868758992,\"timeToLive\":1928305595,\"cleanup\":false,\"customProperties\":[{\"name\":\"lyduyufdmz\",\"value\":\"xvzvwlxd\"},{\"name\":\"stzeurdoxklrzats\",\"value\":\"nymwzldpkihqhnfu\"},{\"name\":\"vwadxcezxe\",\"value\":\"tfebqoqi\"},{\"name\":\"lqakpstifmftwrph\",\"value\":\"iipz\"}],\"\":{\"neaqk\":\"datafuadcj\",\"gaxoyvgj\":\"datattbargeeynqlsn\"}}")
             .toObject(IntegrationRuntimeDataFlowProperties.class);
-        Assertions.assertEquals(DataFlowComputeType.GENERAL, model.computeType());
-        Assertions.assertEquals(1079304457, model.coreCount());
-        Assertions.assertEquals(776293565, model.timeToLive());
-        Assertions.assertEquals(true, model.cleanup());
-        Assertions.assertEquals("mzsf", model.customProperties().get(0).name());
-        Assertions.assertEquals("yyysqnwnl", model.customProperties().get(0).value());
+        Assertions.assertEquals(DataFlowComputeType.MEMORY_OPTIMIZED, model.computeType());
+        Assertions.assertEquals(1868758992, model.coreCount());
+        Assertions.assertEquals(1928305595, model.timeToLive());
+        Assertions.assertEquals(false, model.cleanup());
+        Assertions.assertEquals("lyduyufdmz", model.customProperties().get(0).name());
+        Assertions.assertEquals("xvzvwlxd", model.customProperties().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model = new IntegrationRuntimeDataFlowProperties()
-            .withComputeType(DataFlowComputeType.GENERAL)
-            .withCoreCount(1079304457)
-            .withTimeToLive(776293565)
-            .withCleanup(true)
-            .withCustomProperties(Arrays.asList(
-                new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("mzsf").withValue("yyysqnwnl"),
-                new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("zfjd").withValue("fthsydphdb"),
-                new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("etfgkzqbvh")
-                    .withValue("ulymk"),
-                new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("s").withValue("h")))
-            .withAdditionalProperties(mapOf());
+        IntegrationRuntimeDataFlowProperties model
+            = new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.MEMORY_OPTIMIZED)
+                .withCoreCount(1868758992)
+                .withTimeToLive(1928305595)
+                .withCleanup(false)
+                .withCustomProperties(Arrays.asList(
+                    new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("lyduyufdmz")
+                        .withValue("xvzvwlxd"),
+                    new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("stzeurdoxklrzats")
+                        .withValue("nymwzldpkihqhnfu"),
+                    new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("vwadxcezxe")
+                        .withValue("tfebqoqi"),
+                    new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("lqakpstifmftwrph")
+                        .withValue("iipz")))
+                .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDataFlowProperties.class);
-        Assertions.assertEquals(DataFlowComputeType.GENERAL, model.computeType());
-        Assertions.assertEquals(1079304457, model.coreCount());
-        Assertions.assertEquals(776293565, model.timeToLive());
-        Assertions.assertEquals(true, model.cleanup());
-        Assertions.assertEquals("mzsf", model.customProperties().get(0).name());
-        Assertions.assertEquals("yyysqnwnl", model.customProperties().get(0).value());
+        Assertions.assertEquals(DataFlowComputeType.MEMORY_OPTIMIZED, model.computeType());
+        Assertions.assertEquals(1868758992, model.coreCount());
+        Assertions.assertEquals(1928305595, model.timeToLive());
+        Assertions.assertEquals(false, model.cleanup());
+        Assertions.assertEquals("lyduyufdmz", model.customProperties().get(0).name());
+        Assertions.assertEquals("xvzvwlxd", model.customProperties().get(0).value());
     }
 
     // Use "Map.of" if available

@@ -5,33 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The location of amazon S3 dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonS3Location")
 @Fluent
 public final class AmazonS3Location extends DatasetLocation {
     /*
+     * Type of dataset storage location.
+     */
+    private String type = "AmazonS3Location";
+
+    /*
      * Specify the bucketName of amazon S3. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "bucketName")
     private Object bucketName;
 
     /*
      * Specify the version of amazon S3. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "version")
     private Object version;
 
     /**
      * Creates an instance of AmazonS3Location class.
      */
     public AmazonS3Location() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -92,5 +106,64 @@ public final class AmazonS3Location extends DatasetLocation {
     public AmazonS3Location setFileName(Object fileName) {
         super.setFileName(fileName);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        jsonWriter.writeUntypedField("fileName", getFileName());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("bucketName", this.bucketName);
+        jsonWriter.writeUntypedField("version", this.version);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3Location from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3Location if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonS3Location.
+     */
+    public static AmazonS3Location fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3Location deserializedAmazonS3Location = new AmazonS3Location();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAmazonS3Location.setFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAmazonS3Location.setFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonS3Location.type = reader.getString();
+                } else if ("bucketName".equals(fieldName)) {
+                    deserializedAmazonS3Location.bucketName = reader.readUntyped();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAmazonS3Location.version = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonS3Location.setAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonS3Location;
+        });
     }
 }

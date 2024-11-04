@@ -11,19 +11,18 @@ public final class CommonDataServiceForAppsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonDataServiceForAppsSource model = BinaryData.fromString(
-            "{\"type\":\"bvieqon\",\"query\":\"dataerdqrfassiiilc\",\"additionalColumns\":\"datagahscayyxg\",\"sourceRetryCount\":\"dataukznxdivqopxuno\",\"sourceRetryWait\":\"datatkmknacnfzcytbhd\",\"maxConcurrentConnections\":\"dataagw\",\"disableMetricsCollection\":\"datamwggzf\",\"\":{\"gdfyos\":\"datax\",\"acqjgedxpb\":\"datawigvqgc\"}}")
+            "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"datajstncjwze\",\"additionalColumns\":\"dataezltlundkjphvh\",\"sourceRetryCount\":\"dataivsh\",\"sourceRetryWait\":\"datax\",\"maxConcurrentConnections\":\"datajythxearlpnajjt\",\"disableMetricsCollection\":\"datalyd\",\"\":{\"gucdfxglrcj\":\"dataxbungmpnry\",\"jcwuzanpoyrqjoni\":\"datagoazzy\",\"cloq\":\"datanyhzestt\",\"hfmzeufjzqaqeqc\":\"datagzdbonep\"}}")
             .toObject(CommonDataServiceForAppsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonDataServiceForAppsSource model
-            = new CommonDataServiceForAppsSource().withSourceRetryCount("dataukznxdivqopxuno")
-                .withSourceRetryWait("datatkmknacnfzcytbhd")
-                .withMaxConcurrentConnections("dataagw")
-                .withDisableMetricsCollection("datamwggzf")
-                .withQuery("dataerdqrfassiiilc")
-                .withAdditionalColumns("datagahscayyxg");
+        CommonDataServiceForAppsSource model = new CommonDataServiceForAppsSource().withSourceRetryCount("dataivsh")
+            .withSourceRetryWait("datax")
+            .withMaxConcurrentConnections("datajythxearlpnajjt")
+            .withDisableMetricsCollection("datalyd")
+            .withQuery("datajstncjwze")
+            .withAdditionalColumns("dataezltlundkjphvh");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsSource.class);
     }
 }

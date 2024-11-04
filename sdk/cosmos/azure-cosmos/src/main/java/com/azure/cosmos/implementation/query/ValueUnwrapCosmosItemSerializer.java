@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.implementation.Utils;
@@ -25,6 +26,10 @@ public final class ValueUnwrapCosmosItemSerializer extends CosmosItemSerializer 
 
     private final boolean shouldUnwrapValue;
     private ValueUnwrapCosmosItemSerializer(boolean shouldUnwrapValue) {
+        ImplementationBridgeHelpers
+            .CosmosItemSerializerHelper
+            .getCosmosItemSerializerAccessor()
+            .setShouldWrapSerializationExceptions(this, false);
         this.shouldUnwrapValue = shouldUnwrapValue;
     }
 

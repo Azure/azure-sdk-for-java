@@ -6,29 +6,30 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters that define the representation of topology.
  */
 @Fluent
-public final class TopologyParameters {
+public final class TopologyParameters implements JsonSerializable<TopologyParameters> {
     /*
      * The name of the target resource group to perform topology on.
      */
-    @JsonProperty(value = "targetResourceGroupName")
     private String targetResourceGroupName;
 
     /*
      * The reference to the Virtual Network resource.
      */
-    @JsonProperty(value = "targetVirtualNetwork")
     private SubResource targetVirtualNetwork;
 
     /*
      * The reference to the Subnet resource.
      */
-    @JsonProperty(value = "targetSubnet")
     private SubResource targetSubnet;
 
     /**
@@ -103,5 +104,47 @@ public final class TopologyParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceGroupName", this.targetResourceGroupName);
+        jsonWriter.writeJsonField("targetVirtualNetwork", this.targetVirtualNetwork);
+        jsonWriter.writeJsonField("targetSubnet", this.targetSubnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopologyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopologyParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopologyParameters.
+     */
+    public static TopologyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopologyParameters deserializedTopologyParameters = new TopologyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedTopologyParameters.targetResourceGroupName = reader.getString();
+                } else if ("targetVirtualNetwork".equals(fieldName)) {
+                    deserializedTopologyParameters.targetVirtualNetwork = SubResource.fromJson(reader);
+                } else if ("targetSubnet".equals(fieldName)) {
+                    deserializedTopologyParameters.targetSubnet = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopologyParameters;
+        });
     }
 }

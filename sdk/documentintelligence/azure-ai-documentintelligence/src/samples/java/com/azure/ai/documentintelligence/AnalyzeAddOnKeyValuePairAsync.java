@@ -43,12 +43,13 @@ public class AnalyzeAddOnKeyValuePairAsync {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
                         null,
                         null,
                         null,
                         Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
+                        null,
                         null,
                         null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
@@ -65,7 +66,7 @@ public class AnalyzeAddOnKeyValuePairAsync {
                                         new RuntimeException(
                                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                             }
-                        }).map(AnalyzeResultOperation::getAnalyzeResult);
+                        });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             analyzeLayoutResult.getKeyValuePairs().forEach(
@@ -78,7 +79,8 @@ public class AnalyzeAddOnKeyValuePairAsync {
                             boundingRegions.forEach(boundingRegion -> {
                                 System.out.printf("  Bounding regions page: %s, polygon: %s%n",
                                         boundingRegion.getPageNumber(), boundingRegion.getPolygon());
-                            });                    }
+                            });
+                        }
                         if (value != null) {
                             System.out.println("- Value: " + value.getContent());
                             List<BoundingRegion> boundingRegions = value.getBoundingRegions();

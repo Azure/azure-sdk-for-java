@@ -13,24 +13,24 @@ public final class ImageTemplateWindowsUpdateCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateWindowsUpdateCustomizer model = BinaryData.fromString(
-            "{\"type\":\"WindowsUpdate\",\"searchCriteria\":\"kdvjsll\",\"filters\":[\"vdfwatkpn\",\"ulexxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"updateLimit\":1196709774,\"name\":\"bpxjmfl\"}")
+            "{\"type\":\"WindowsUpdate\",\"searchCriteria\":\"ugidyjrr\",\"filters\":[\"aos\"],\"updateLimit\":499062312,\"name\":\"sonpclhocohs\"}")
             .toObject(ImageTemplateWindowsUpdateCustomizer.class);
-        Assertions.assertEquals("bpxjmfl", model.name());
-        Assertions.assertEquals("kdvjsll", model.searchCriteria());
-        Assertions.assertEquals("vdfwatkpn", model.filters().get(0));
-        Assertions.assertEquals(1196709774, model.updateLimit());
+        Assertions.assertEquals("sonpclhocohs", model.name());
+        Assertions.assertEquals("ugidyjrr", model.searchCriteria());
+        Assertions.assertEquals("aos", model.filters().get(0));
+        Assertions.assertEquals(499062312, model.updateLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateWindowsUpdateCustomizer model
-            = new ImageTemplateWindowsUpdateCustomizer().withName("bpxjmfl").withSearchCriteria("kdvjsll")
-                .withFilters(Arrays.asList("vdfwatkpn", "ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl"))
-                .withUpdateLimit(1196709774);
+        ImageTemplateWindowsUpdateCustomizer model = new ImageTemplateWindowsUpdateCustomizer().withName("sonpclhocohs")
+            .withSearchCriteria("ugidyjrr")
+            .withFilters(Arrays.asList("aos"))
+            .withUpdateLimit(499062312);
         model = BinaryData.fromObject(model).toObject(ImageTemplateWindowsUpdateCustomizer.class);
-        Assertions.assertEquals("bpxjmfl", model.name());
-        Assertions.assertEquals("kdvjsll", model.searchCriteria());
-        Assertions.assertEquals("vdfwatkpn", model.filters().get(0));
-        Assertions.assertEquals(1196709774, model.updateLimit());
+        Assertions.assertEquals("sonpclhocohs", model.name());
+        Assertions.assertEquals("ugidyjrr", model.searchCriteria());
+        Assertions.assertEquals("aos", model.filters().get(0));
+        Assertions.assertEquals(499062312, model.updateLimit());
     }
 }

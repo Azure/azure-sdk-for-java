@@ -6,33 +6,42 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters to provide for the Line channel. */
+/**
+ * The parameters to provide for the Line channel.
+ */
 @Fluent
-public final class LineChannelProperties {
+public final class LineChannelProperties implements JsonSerializable<LineChannelProperties> {
     /*
      * The list of line channel registrations
      */
-    @JsonProperty(value = "lineRegistrations", required = true)
     private List<LineRegistration> lineRegistrations;
 
     /*
      * Callback Url to enter in line registration.
      */
-    @JsonProperty(value = "callbackUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String callbackUrl;
 
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValidated;
 
     /**
+     * Creates an instance of LineChannelProperties class.
+     */
+    public LineChannelProperties() {
+    }
+
+    /**
      * Get the lineRegistrations property: The list of line channel registrations.
-     *
+     * 
      * @return the lineRegistrations value.
      */
     public List<LineRegistration> lineRegistrations() {
@@ -41,7 +50,7 @@ public final class LineChannelProperties {
 
     /**
      * Set the lineRegistrations property: The list of line channel registrations.
-     *
+     * 
      * @param lineRegistrations the lineRegistrations value to set.
      * @return the LineChannelProperties object itself.
      */
@@ -52,7 +61,7 @@ public final class LineChannelProperties {
 
     /**
      * Get the callbackUrl property: Callback Url to enter in line registration.
-     *
+     * 
      * @return the callbackUrl value.
      */
     public String callbackUrl() {
@@ -61,7 +70,7 @@ public final class LineChannelProperties {
 
     /**
      * Get the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @return the isValidated value.
      */
     public Boolean isValidated() {
@@ -70,19 +79,62 @@ public final class LineChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (lineRegistrations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lineRegistrations in model LineChannelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lineRegistrations in model LineChannelProperties"));
         } else {
             lineRegistrations().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LineChannelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("lineRegistrations", this.lineRegistrations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LineChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LineChannelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LineChannelProperties.
+     */
+    public static LineChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LineChannelProperties deserializedLineChannelProperties = new LineChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lineRegistrations".equals(fieldName)) {
+                    List<LineRegistration> lineRegistrations
+                        = reader.readArray(reader1 -> LineRegistration.fromJson(reader1));
+                    deserializedLineChannelProperties.lineRegistrations = lineRegistrations;
+                } else if ("callbackUrl".equals(fieldName)) {
+                    deserializedLineChannelProperties.callbackUrl = reader.getString();
+                } else if ("isValidated".equals(fieldName)) {
+                    deserializedLineChannelProperties.isValidated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLineChannelProperties;
+        });
+    }
 }

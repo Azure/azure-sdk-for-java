@@ -18,13 +18,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
+import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 import com.azure.developer.devcenter.models.DevCenterProject;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
-import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 
 /**
  * Initializes a new instance of the asynchronous DevCenterClient type.
@@ -70,13 +70,15 @@ public final class DevCenterAsyncClient {
      * Lists all projects.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -95,13 +97,15 @@ public final class DevCenterAsyncClient {
      * Gets a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -133,10 +137,10 @@ public final class DevCenterAsyncClient {
         // Generated convenience method for listProjects
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listProjects(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DevCenterProject>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()

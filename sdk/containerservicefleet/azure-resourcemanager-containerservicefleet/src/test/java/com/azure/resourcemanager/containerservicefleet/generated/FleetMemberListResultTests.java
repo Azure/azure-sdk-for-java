@@ -14,24 +14,22 @@ public final class FleetMemberListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetMemberListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clusterResourceId\":\"yfhrtxilnerkujy\",\"group\":\"l\",\"provisioningState\":\"Failed\"},\"eTag\":\"fqawrlyxw\",\"id\":\"cpr\",\"name\":\"nwbxgjvtbvpyssz\",\"type\":\"nruj\"},{\"properties\":{\"clusterResourceId\":\"uhmuouqfprwzwbn\",\"group\":\"itnwuizgazxufi\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"y\",\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"},{\"properties\":{\"clusterResourceId\":\"mwisdkfthwxmnt\",\"group\":\"waopvkmijcmmxd\",\"provisioningState\":\"Leaving\"},\"eTag\":\"fsrpymzidnse\",\"id\":\"xtbzsgfyccsne\",\"name\":\"mdwzjeiachboo\",\"type\":\"flnrosfqpteehzz\"},{\"properties\":{\"clusterResourceId\":\"pyqr\",\"group\":\"z\",\"provisioningState\":\"Failed\"},\"eTag\":\"swjdkirso\",\"id\":\"qxhcrmn\",\"name\":\"hjtckwhd\",\"type\":\"oifiyipjxsqwpgr\"}],\"nextLink\":\"znorcj\"}")
+            "{\"value\":[{\"properties\":{\"clusterResourceId\":\"yc\",\"group\":\"newmdwzjeiachbo\",\"provisioningState\":\"Canceled\"},\"eTag\":\"nrosfqpte\",\"id\":\"zzvypyqrimzinp\",\"name\":\"swjdkirso\",\"type\":\"dqxhcrmnohjtckwh\"},{\"properties\":{\"clusterResourceId\":\"oifiyipjxsqwpgr\",\"group\":\"znorcj\",\"provisioningState\":\"Joining\"},\"eTag\":\"byxqabn\",\"id\":\"cpc\",\"name\":\"shurzafbljjgpbto\",\"type\":\"c\"}],\"nextLink\":\"klj\"}")
             .toObject(FleetMemberListResult.class);
-        Assertions.assertEquals("yfhrtxilnerkujy", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("l", model.value().get(0).group());
-        Assertions.assertEquals("znorcj", model.nextLink());
+        Assertions.assertEquals("yc", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("newmdwzjeiachbo", model.value().get(0).group());
+        Assertions.assertEquals("klj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetMemberListResult model = new FleetMemberListResult()
-            .withValue(Arrays.asList(new FleetMemberInner().withClusterResourceId("yfhrtxilnerkujy").withGroup("l"),
-                new FleetMemberInner().withClusterResourceId("uhmuouqfprwzwbn").withGroup("itnwuizgazxufi"),
-                new FleetMemberInner().withClusterResourceId("mwisdkfthwxmnt").withGroup("waopvkmijcmmxd"),
-                new FleetMemberInner().withClusterResourceId("pyqr").withGroup("z")))
-            .withNextLink("znorcj");
+            .withValue(Arrays.asList(new FleetMemberInner().withClusterResourceId("yc").withGroup("newmdwzjeiachbo"),
+                new FleetMemberInner().withClusterResourceId("oifiyipjxsqwpgr").withGroup("znorcj")))
+            .withNextLink("klj");
         model = BinaryData.fromObject(model).toObject(FleetMemberListResult.class);
-        Assertions.assertEquals("yfhrtxilnerkujy", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("l", model.value().get(0).group());
-        Assertions.assertEquals("znorcj", model.nextLink());
+        Assertions.assertEquals("yc", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("newmdwzjeiachbo", model.value().get(0).group());
+        Assertions.assertEquals("klj", model.nextLink());
     }
 }

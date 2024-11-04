@@ -5,40 +5,20 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of upgrading cluster's hotfix.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "upgradeType")
-@JsonTypeName("HotfixUpgrade")
 @Fluent
-public final class ClusterHotfixUpgradeProperties extends ClusterUpgradeProperties {
+public final class ClusterHotfixUpgradeProperties extends ClusterInPlaceUpgradeProperties {
     /*
-     * Target OSS version of component to be upgraded.
+     * Type of upgrade.
      */
-    @JsonProperty(value = "targetOssVersion")
-    private String targetOssVersion;
-
-    /*
-     * Target cluster version of component to be upgraded.
-     */
-    @JsonProperty(value = "targetClusterVersion")
-    private String targetClusterVersion;
-
-    /*
-     * Target build number of component to be upgraded.
-     */
-    @JsonProperty(value = "targetBuildNumber")
-    private String targetBuildNumber;
-
-    /*
-     * Name of component to be upgraded.
-     */
-    @JsonProperty(value = "componentName")
-    private String componentName;
+    private ClusterUpgradeType upgradeType = ClusterUpgradeType.HOTFIX_UPGRADE;
 
     /**
      * Creates an instance of ClusterHotfixUpgradeProperties class.
@@ -47,82 +27,48 @@ public final class ClusterHotfixUpgradeProperties extends ClusterUpgradeProperti
     }
 
     /**
-     * Get the targetOssVersion property: Target OSS version of component to be upgraded.
+     * Get the upgradeType property: Type of upgrade.
      * 
-     * @return the targetOssVersion value.
+     * @return the upgradeType value.
      */
-    public String targetOssVersion() {
-        return this.targetOssVersion;
+    @Override
+    public ClusterUpgradeType upgradeType() {
+        return this.upgradeType;
     }
 
     /**
-     * Set the targetOssVersion property: Target OSS version of component to be upgraded.
-     * 
-     * @param targetOssVersion the targetOssVersion value to set.
-     * @return the ClusterHotfixUpgradeProperties object itself.
+     * {@inheritDoc}
      */
+    @Override
     public ClusterHotfixUpgradeProperties withTargetOssVersion(String targetOssVersion) {
-        this.targetOssVersion = targetOssVersion;
+        super.withTargetOssVersion(targetOssVersion);
         return this;
     }
 
     /**
-     * Get the targetClusterVersion property: Target cluster version of component to be upgraded.
-     * 
-     * @return the targetClusterVersion value.
+     * {@inheritDoc}
      */
-    public String targetClusterVersion() {
-        return this.targetClusterVersion;
-    }
-
-    /**
-     * Set the targetClusterVersion property: Target cluster version of component to be upgraded.
-     * 
-     * @param targetClusterVersion the targetClusterVersion value to set.
-     * @return the ClusterHotfixUpgradeProperties object itself.
-     */
+    @Override
     public ClusterHotfixUpgradeProperties withTargetClusterVersion(String targetClusterVersion) {
-        this.targetClusterVersion = targetClusterVersion;
+        super.withTargetClusterVersion(targetClusterVersion);
         return this;
     }
 
     /**
-     * Get the targetBuildNumber property: Target build number of component to be upgraded.
-     * 
-     * @return the targetBuildNumber value.
+     * {@inheritDoc}
      */
-    public String targetBuildNumber() {
-        return this.targetBuildNumber;
-    }
-
-    /**
-     * Set the targetBuildNumber property: Target build number of component to be upgraded.
-     * 
-     * @param targetBuildNumber the targetBuildNumber value to set.
-     * @return the ClusterHotfixUpgradeProperties object itself.
-     */
+    @Override
     public ClusterHotfixUpgradeProperties withTargetBuildNumber(String targetBuildNumber) {
-        this.targetBuildNumber = targetBuildNumber;
+        super.withTargetBuildNumber(targetBuildNumber);
         return this;
     }
 
     /**
-     * Get the componentName property: Name of component to be upgraded.
-     * 
-     * @return the componentName value.
+     * {@inheritDoc}
      */
-    public String componentName() {
-        return this.componentName;
-    }
-
-    /**
-     * Set the componentName property: Name of component to be upgraded.
-     * 
-     * @param componentName the componentName value to set.
-     * @return the ClusterHotfixUpgradeProperties object itself.
-     */
+    @Override
     public ClusterHotfixUpgradeProperties withComponentName(String componentName) {
-        this.componentName = componentName;
+        super.withComponentName(componentName);
         return this;
     }
 
@@ -134,5 +80,55 @@ public final class ClusterHotfixUpgradeProperties extends ClusterUpgradeProperti
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetOssVersion", targetOssVersion());
+        jsonWriter.writeStringField("targetClusterVersion", targetClusterVersion());
+        jsonWriter.writeStringField("targetBuildNumber", targetBuildNumber());
+        jsonWriter.writeStringField("componentName", componentName());
+        jsonWriter.writeStringField("upgradeType", this.upgradeType == null ? null : this.upgradeType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterHotfixUpgradeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterHotfixUpgradeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterHotfixUpgradeProperties.
+     */
+    public static ClusterHotfixUpgradeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterHotfixUpgradeProperties deserializedClusterHotfixUpgradeProperties
+                = new ClusterHotfixUpgradeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetOssVersion".equals(fieldName)) {
+                    deserializedClusterHotfixUpgradeProperties.withTargetOssVersion(reader.getString());
+                } else if ("targetClusterVersion".equals(fieldName)) {
+                    deserializedClusterHotfixUpgradeProperties.withTargetClusterVersion(reader.getString());
+                } else if ("targetBuildNumber".equals(fieldName)) {
+                    deserializedClusterHotfixUpgradeProperties.withTargetBuildNumber(reader.getString());
+                } else if ("componentName".equals(fieldName)) {
+                    deserializedClusterHotfixUpgradeProperties.withComponentName(reader.getString());
+                } else if ("upgradeType".equals(fieldName)) {
+                    deserializedClusterHotfixUpgradeProperties.upgradeType
+                        = ClusterUpgradeType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterHotfixUpgradeProperties;
+        });
     }
 }

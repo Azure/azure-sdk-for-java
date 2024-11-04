@@ -10,6 +10,65 @@
 
 ### Other Changes
 
+## 1.15.6 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `reactor-netty-http` from `1.0.45` to `1.0.48`.
+- Upgraded Netty dependencies from `4.1.110.Final` to `4.1.112.Final`.
+
+## 1.15.5 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.15.4 (2024-09-12)
+
+### Bugs Fixed
+
+- Fixed a bug where logging the Netty versions could throw an exception when `SecurityManager` is present. ([#41484](https://github.com/Azure/azure-sdk-for-java/pull/41484))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
+## 1.15.3 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+
+## 1.15.2 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty version logging (#40733)[https://github.com/Azure/azure-sdk-for-java/pull/40733]
+
+## 1.15.1 (2024-06-06)
+
+### Other Changes
+
+- Changed the log message for mismatched Netty versions to not state an expected version, instead just that versions
+  weren't aligned. ([#40134](https://github.com/Azure/azure-sdk-for-java/pull/40134))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded `reactor-netty-http` from `1.0.43` to `1.0.45`.
+- Upgraded Netty dependencies from `4.1.108.Final` to `4.1.110.Final`.
+
 ## 1.15.0 (2024-05-01)
 
 ### Bugs Fixed

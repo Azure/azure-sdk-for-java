@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceTapConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for list tap configurations API service call.
  */
 @Fluent
-public final class NetworkInterfaceTapConfigurationListResult {
+public final class NetworkInterfaceTapConfigurationListResult
+    implements JsonSerializable<NetworkInterfaceTapConfigurationListResult> {
     /*
      * A list of tap configurations.
      */
-    @JsonProperty(value = "value")
     private List<NetworkInterfaceTapConfigurationInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +73,46 @@ public final class NetworkInterfaceTapConfigurationListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceTapConfigurationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceTapConfigurationListResult if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceTapConfigurationListResult.
+     */
+    public static NetworkInterfaceTapConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceTapConfigurationListResult deserializedNetworkInterfaceTapConfigurationListResult
+                = new NetworkInterfaceTapConfigurationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkInterfaceTapConfigurationInner> value
+                        = reader.readArray(reader1 -> NetworkInterfaceTapConfigurationInner.fromJson(reader1));
+                    deserializedNetworkInterfaceTapConfigurationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkInterfaceTapConfigurationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceTapConfigurationListResult;
+        });
     }
 }

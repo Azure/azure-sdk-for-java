@@ -36,7 +36,8 @@ public final class SpeechGenerationOptions implements JsonSerializable<SpeechGen
     private SpeechGenerationResponseFormat responseFormat;
 
     /*
-     * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and higher values corresponding to faster speech.
+     * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and
+     * higher values corresponding to faster speech.
      */
     @Generated
     private Double speed;

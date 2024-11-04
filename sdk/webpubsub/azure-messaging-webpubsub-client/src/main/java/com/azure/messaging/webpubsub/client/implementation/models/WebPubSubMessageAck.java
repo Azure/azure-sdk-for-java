@@ -3,12 +3,9 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
-public abstract class WebPubSubMessageAck extends WebPubSubMessage {
+public class WebPubSubMessageAck extends WebPubSubMessage {
     private Long ackId;
 
-    @JsonGetter
     public Long getAckId() {
         return ackId;
     }

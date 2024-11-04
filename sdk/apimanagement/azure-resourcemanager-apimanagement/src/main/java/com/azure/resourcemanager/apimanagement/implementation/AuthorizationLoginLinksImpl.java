@@ -22,46 +22,30 @@ public final class AuthorizationLoginLinksImpl implements AuthorizationLoginLink
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public AuthorizationLoginLinksImpl(
-        AuthorizationLoginLinksClient innerClient,
+    public AuthorizationLoginLinksImpl(AuthorizationLoginLinksClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AuthorizationLoginResponseContract> postWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters,
+    public Response<AuthorizationLoginResponseContract> postWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters,
         Context context) {
-        AuthorizationLoginLinksPostResponse inner =
-            this
-                .serviceClient()
-                .postWithResponse(
-                    resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters, context);
+        AuthorizationLoginLinksPostResponse inner = this.serviceClient()
+            .postWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AuthorizationLoginResponseContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AuthorizationLoginResponseContract post(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters) {
-        AuthorizationLoginResponseContractInner inner =
-            this
-                .serviceClient()
-                .post(resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters);
+    public AuthorizationLoginResponseContract post(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters) {
+        AuthorizationLoginResponseContractInner inner = this.serviceClient()
+            .post(resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters);
         if (inner != null) {
             return new AuthorizationLoginResponseContractImpl(inner, this.manager());
         } else {

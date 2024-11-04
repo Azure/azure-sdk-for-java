@@ -15,7 +15,9 @@ import java.io.IOException;
  */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create
+     * .json
      */
     /**
      * Sample code: LinkedServices_Create.
@@ -36,7 +38,9 @@ public final class LinkedServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update
+     * .json
      */
     /**
      * Sample code: LinkedServices_Update.

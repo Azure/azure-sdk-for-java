@@ -12,7 +12,8 @@ import java.time.OffsetDateTime;
  */
 public final class ActivityRunsQueryByPipelineRunSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ActivityRuns_QueryByPipelineRun.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ActivityRuns_QueryByPipelineRun.json
      */
     /**
      * Sample code: ActivityRuns_QueryByPipelineRun.

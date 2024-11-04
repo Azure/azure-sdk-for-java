@@ -5,31 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** scheduleChangeRequestActor. */
+/**
+ * scheduleChangeRequestActor.
+ */
 public final class MicrosoftGraphScheduleChangeRequestActor
     extends ExpandableStringEnum<MicrosoftGraphScheduleChangeRequestActor> {
-    /** Static value sender for MicrosoftGraphScheduleChangeRequestActor. */
+    /**
+     * Static value sender for MicrosoftGraphScheduleChangeRequestActor.
+     */
     public static final MicrosoftGraphScheduleChangeRequestActor SENDER = fromString("sender");
 
-    /** Static value recipient for MicrosoftGraphScheduleChangeRequestActor. */
+    /**
+     * Static value recipient for MicrosoftGraphScheduleChangeRequestActor.
+     */
     public static final MicrosoftGraphScheduleChangeRequestActor RECIPIENT = fromString("recipient");
 
-    /** Static value manager for MicrosoftGraphScheduleChangeRequestActor. */
+    /**
+     * Static value manager for MicrosoftGraphScheduleChangeRequestActor.
+     */
     public static final MicrosoftGraphScheduleChangeRequestActor MANAGER = fromString("manager");
 
-    /** Static value system for MicrosoftGraphScheduleChangeRequestActor. */
+    /**
+     * Static value system for MicrosoftGraphScheduleChangeRequestActor.
+     */
     public static final MicrosoftGraphScheduleChangeRequestActor SYSTEM = fromString("system");
 
-    /** Static value unknownFutureValue for MicrosoftGraphScheduleChangeRequestActor. */
-    public static final MicrosoftGraphScheduleChangeRequestActor UNKNOWN_FUTURE_VALUE =
-        fromString("unknownFutureValue");
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphScheduleChangeRequestActor.
+     */
+    public static final MicrosoftGraphScheduleChangeRequestActor UNKNOWN_FUTURE_VALUE
+        = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphScheduleChangeRequestActor value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,18 +49,17 @@ public final class MicrosoftGraphScheduleChangeRequestActor
 
     /**
      * Creates or finds a MicrosoftGraphScheduleChangeRequestActor from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphScheduleChangeRequestActor.
      */
-    @JsonCreator
     public static MicrosoftGraphScheduleChangeRequestActor fromString(String name) {
         return fromString(name, MicrosoftGraphScheduleChangeRequestActor.class);
     }
 
     /**
      * Gets known MicrosoftGraphScheduleChangeRequestActor values.
-     *
+     * 
      * @return known MicrosoftGraphScheduleChangeRequestActor values.
      */
     public static Collection<MicrosoftGraphScheduleChangeRequestActor> values() {

@@ -28,9 +28,13 @@ public final class BackupEngineExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupEngineExtendedInfo model = new BackupEngineExtendedInfo().withDatabaseName("pomgkopkwhojvp")
-            .withProtectedItemsCount(996289807).withProtectedServersCount(1448079009).withDiskCount(1647253865)
-            .withUsedDiskSpace(90.65906932086332D).withAvailableDiskSpace(11.146404494926331D)
-            .withRefreshedAt(OffsetDateTime.parse("2021-01-31T00:19:35Z")).withAzureProtectedInstances(484454898);
+            .withProtectedItemsCount(996289807)
+            .withProtectedServersCount(1448079009)
+            .withDiskCount(1647253865)
+            .withUsedDiskSpace(90.65906932086332D)
+            .withAvailableDiskSpace(11.146404494926331D)
+            .withRefreshedAt(OffsetDateTime.parse("2021-01-31T00:19:35Z"))
+            .withAzureProtectedInstances(484454898);
         model = BinaryData.fromObject(model).toObject(BackupEngineExtendedInfo.class);
         Assertions.assertEquals("pomgkopkwhojvp", model.databaseName());
         Assertions.assertEquals(996289807, model.protectedItemsCount());

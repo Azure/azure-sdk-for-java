@@ -11,9 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
  */
 public final class ResourceGuardProxyOperationPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.
@@ -22,7 +20,9 @@ public final class ResourceGuardProxyOperationPutSamples {
      */
     public static void createResourceGuardProxy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.resourceGuardProxyOperations().define("swaggerExample").withRegion((String) null)
+        manager.resourceGuardProxyOperations()
+            .define("swaggerExample")
+            .withRegion((String) null)
             .withExistingVault("sampleVault", "SampleResourceGroup")
             .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId(
                 "/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew"))

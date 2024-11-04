@@ -10,7 +10,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/OperationsList.json
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/OperationsList
+     * .json
      */
     /**
      * Sample code: OperationsList.

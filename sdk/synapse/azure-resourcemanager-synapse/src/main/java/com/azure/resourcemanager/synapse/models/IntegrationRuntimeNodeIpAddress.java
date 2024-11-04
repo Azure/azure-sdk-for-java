@@ -6,18 +6,20 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeNodeIpAddressInner;
 
-/** An immutable client-side representation of IntegrationRuntimeNodeIpAddress. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeNodeIpAddress.
+ */
 public interface IntegrationRuntimeNodeIpAddress {
     /**
      * Gets the ipAddress property: The IP address of self-hosted integration runtime node.
-     *
+     * 
      * @return the ipAddress value.
      */
     String ipAddress();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeNodeIpAddressInner object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeNodeIpAddressInner innerModel();

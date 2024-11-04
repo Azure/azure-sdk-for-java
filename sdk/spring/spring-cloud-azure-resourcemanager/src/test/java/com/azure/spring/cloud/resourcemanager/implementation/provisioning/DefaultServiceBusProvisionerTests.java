@@ -147,16 +147,19 @@ class DefaultServiceBusProvisionerTests {
             this.subscriptionCrud = new ServiceBusTopicSubscriptionCrud(azureResourceManager, azureResourceMetadata);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public void provisionQueue(String namespace, String queue) {
             this.queueCrud.getOrCreate(Tuples.of(namespace, queue));
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public void provisionTopic(String namespace, String topic) {
             this.topicCrud.getOrCreate(Tuples.of(namespace, topic));
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public void provisionSubscription(String namespace, String topic, String subscription) {
             this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription));

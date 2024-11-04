@@ -23,8 +23,8 @@ public final class AmlFilesystemIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemIdentity model
-            = new AmlFilesystemIdentity().withType(AmlFilesystemIdentityType.NONE).withUserAssignedIdentities(
+        AmlFilesystemIdentity model = new AmlFilesystemIdentity().withType(AmlFilesystemIdentityType.NONE)
+            .withUserAssignedIdentities(
                 mapOf("uf", new UserAssignedIdentitiesValue(), "s", new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemIdentity.class);
         Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.type());

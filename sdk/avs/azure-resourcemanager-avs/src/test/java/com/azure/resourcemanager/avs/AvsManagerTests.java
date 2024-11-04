@@ -9,11 +9,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class AvsManagerTests extends TestBase {
+public class AvsManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
@@ -36,16 +36,14 @@ public class AvsManagerTests extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        avsManager = AvsManager
-            .configure()
+        avsManager = AvsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -56,10 +54,7 @@ public class AvsManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -72,7 +67,7 @@ public class AvsManagerTests extends TestBase {
 
     @Disabled("No quota in our test subscription for avs instances.")
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testPrivateCloud() {
         PrivateCloud privateCloud = null;
         try {

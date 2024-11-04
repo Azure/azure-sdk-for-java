@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
      * @param name a name to look for.
      * @return the corresponding WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
      */
-    @JsonCreator
     public static WindowsVMGuestPatchAutomaticByPlatformRebootSetting fromString(String name) {
         return fromString(name, WindowsVMGuestPatchAutomaticByPlatformRebootSetting.class);
     }

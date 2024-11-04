@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-/** Samples for Vaults PurgeDeleted. */
+/**
+ * Samples for Vaults PurgeDeleted.
+ */
 public final class VaultsPurgeDeletedSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/purgeDeletedVault.json
+     * x-ms-original-file:
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/purgeDeletedVault.json
      */
     /**
      * Sample code: Purge a deleted vault.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void purgeADeletedVault(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .vaults()
+        azure.vaults()
             .manager()
             .serviceClient()
             .getVaults()

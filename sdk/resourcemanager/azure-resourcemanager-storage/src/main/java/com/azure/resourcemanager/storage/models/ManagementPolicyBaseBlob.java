@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Management policy action for base blob. */
+/**
+ * Management policy action for base blob.
+ */
 @Fluent
-public final class ManagementPolicyBaseBlob {
+public final class ManagementPolicyBaseBlob implements JsonSerializable<ManagementPolicyBaseBlob> {
     /*
      * The function to tier blobs to cool storage.
      */
-    @JsonProperty(value = "tierToCool")
     private DateAfterModification tierToCool;
 
     /*
      * The function to tier blobs to archive storage.
      */
-    @JsonProperty(value = "tierToArchive")
     private DateAfterModification tierToArchive;
 
     /*
      * The function to tier blobs to cold storage.
      */
-    @JsonProperty(value = "tierToCold")
     private DateAfterModification tierToCold;
 
     /*
      * The function to tier blobs to hot storage. This action can only be used with Premium Block Blob Storage Accounts
      */
-    @JsonProperty(value = "tierToHot")
     private DateAfterModification tierToHot;
 
     /*
      * The function to delete the blob
      */
-    @JsonProperty(value = "delete")
     private DateAfterModification delete;
 
     /*
      * This property enables auto tiering of a blob from cool to hot on a blob access. This property requires
      * tierToCool.daysAfterLastAccessTimeGreaterThan.
      */
-    @JsonProperty(value = "enableAutoTierToHotFromCool")
     private Boolean enableAutoTierToHotFromCool;
 
-    /** Creates an instance of ManagementPolicyBaseBlob class. */
+    /**
+     * Creates an instance of ManagementPolicyBaseBlob class.
+     */
     public ManagementPolicyBaseBlob() {
     }
 
     /**
      * Get the tierToCool property: The function to tier blobs to cool storage.
-     *
+     * 
      * @return the tierToCool value.
      */
     public DateAfterModification tierToCool() {
@@ -62,7 +64,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Set the tierToCool property: The function to tier blobs to cool storage.
-     *
+     * 
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -73,7 +75,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Get the tierToArchive property: The function to tier blobs to archive storage.
-     *
+     * 
      * @return the tierToArchive value.
      */
     public DateAfterModification tierToArchive() {
@@ -82,7 +84,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Set the tierToArchive property: The function to tier blobs to archive storage.
-     *
+     * 
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -93,7 +95,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Get the tierToCold property: The function to tier blobs to cold storage.
-     *
+     * 
      * @return the tierToCold value.
      */
     public DateAfterModification tierToCold() {
@@ -102,7 +104,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Set the tierToCold property: The function to tier blobs to cold storage.
-     *
+     * 
      * @param tierToCold the tierToCold value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -114,7 +116,7 @@ public final class ManagementPolicyBaseBlob {
     /**
      * Get the tierToHot property: The function to tier blobs to hot storage. This action can only be used with Premium
      * Block Blob Storage Accounts.
-     *
+     * 
      * @return the tierToHot value.
      */
     public DateAfterModification tierToHot() {
@@ -124,7 +126,7 @@ public final class ManagementPolicyBaseBlob {
     /**
      * Set the tierToHot property: The function to tier blobs to hot storage. This action can only be used with Premium
      * Block Blob Storage Accounts.
-     *
+     * 
      * @param tierToHot the tierToHot value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -135,7 +137,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Get the delete property: The function to delete the blob.
-     *
+     * 
      * @return the delete value.
      */
     public DateAfterModification delete() {
@@ -144,7 +146,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Set the delete property: The function to delete the blob.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -156,7 +158,7 @@ public final class ManagementPolicyBaseBlob {
     /**
      * Get the enableAutoTierToHotFromCool property: This property enables auto tiering of a blob from cool to hot on a
      * blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
-     *
+     * 
      * @return the enableAutoTierToHotFromCool value.
      */
     public Boolean enableAutoTierToHotFromCool() {
@@ -166,7 +168,7 @@ public final class ManagementPolicyBaseBlob {
     /**
      * Set the enableAutoTierToHotFromCool property: This property enables auto tiering of a blob from cool to hot on a
      * blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
-     *
+     * 
      * @param enableAutoTierToHotFromCool the enableAutoTierToHotFromCool value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -177,7 +179,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -196,5 +198,57 @@ public final class ManagementPolicyBaseBlob {
         if (delete() != null) {
             delete().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tierToCool", this.tierToCool);
+        jsonWriter.writeJsonField("tierToArchive", this.tierToArchive);
+        jsonWriter.writeJsonField("tierToCold", this.tierToCold);
+        jsonWriter.writeJsonField("tierToHot", this.tierToHot);
+        jsonWriter.writeJsonField("delete", this.delete);
+        jsonWriter.writeBooleanField("enableAutoTierToHotFromCool", this.enableAutoTierToHotFromCool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementPolicyBaseBlob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementPolicyBaseBlob if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementPolicyBaseBlob.
+     */
+    public static ManagementPolicyBaseBlob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementPolicyBaseBlob deserializedManagementPolicyBaseBlob = new ManagementPolicyBaseBlob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tierToCool".equals(fieldName)) {
+                    deserializedManagementPolicyBaseBlob.tierToCool = DateAfterModification.fromJson(reader);
+                } else if ("tierToArchive".equals(fieldName)) {
+                    deserializedManagementPolicyBaseBlob.tierToArchive = DateAfterModification.fromJson(reader);
+                } else if ("tierToCold".equals(fieldName)) {
+                    deserializedManagementPolicyBaseBlob.tierToCold = DateAfterModification.fromJson(reader);
+                } else if ("tierToHot".equals(fieldName)) {
+                    deserializedManagementPolicyBaseBlob.tierToHot = DateAfterModification.fromJson(reader);
+                } else if ("delete".equals(fieldName)) {
+                    deserializedManagementPolicyBaseBlob.delete = DateAfterModification.fromJson(reader);
+                } else if ("enableAutoTierToHotFromCool".equals(fieldName)) {
+                    deserializedManagementPolicyBaseBlob.enableAutoTierToHotFromCool
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementPolicyBaseBlob;
+        });
     }
 }

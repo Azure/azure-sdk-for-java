@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details of the identity used for CMK. */
+/**
+ * The details of the identity used for CMK.
+ */
 @Fluent
 public final class CmkKekIdentity {
     /*
@@ -22,14 +24,16 @@ public final class CmkKekIdentity {
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
-    /** Creates an instance of CmkKekIdentity class. */
+    /**
+     * Creates an instance of CmkKekIdentity class.
+     */
     public CmkKekIdentity() {
     }
 
     /**
      * Get the useSystemAssignedIdentity property: Indicate that system assigned identity should be used. Mutually
      * exclusive with 'userAssignedIdentity' field.
-     *
+     * 
      * @return the useSystemAssignedIdentity value.
      */
     public Boolean useSystemAssignedIdentity() {
@@ -39,7 +43,7 @@ public final class CmkKekIdentity {
     /**
      * Set the useSystemAssignedIdentity property: Indicate that system assigned identity should be used. Mutually
      * exclusive with 'userAssignedIdentity' field.
-     *
+     * 
      * @param useSystemAssignedIdentity the useSystemAssignedIdentity value to set.
      * @return the CmkKekIdentity object itself.
      */
@@ -51,7 +55,7 @@ public final class CmkKekIdentity {
     /**
      * Get the userAssignedIdentity property: The user assigned identity to be used to grant permissions in case the
      * type of identity used is UserAssigned.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -61,7 +65,7 @@ public final class CmkKekIdentity {
     /**
      * Set the userAssignedIdentity property: The user assigned identity to be used to grant permissions in case the
      * type of identity used is UserAssigned.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the CmkKekIdentity object itself.
      */
@@ -72,7 +76,7 @@ public final class CmkKekIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

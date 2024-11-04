@@ -5,47 +5,68 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** deviceEnrollmentType. */
+/**
+ * deviceEnrollmentType.
+ */
 public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEnum<MicrosoftGraphDeviceEnrollmentType> {
-    /** Static value unknown for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value unknown for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType UNKNOWN = fromString("unknown");
 
-    /** Static value userEnrollment for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value userEnrollment for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType USER_ENROLLMENT = fromString("userEnrollment");
 
-    /** Static value deviceEnrollmentManager for MicrosoftGraphDeviceEnrollmentType. */
-    public static final MicrosoftGraphDeviceEnrollmentType DEVICE_ENROLLMENT_MANAGER =
-        fromString("deviceEnrollmentManager");
+    /**
+     * Static value deviceEnrollmentManager for MicrosoftGraphDeviceEnrollmentType.
+     */
+    public static final MicrosoftGraphDeviceEnrollmentType DEVICE_ENROLLMENT_MANAGER
+        = fromString("deviceEnrollmentManager");
 
-    /** Static value appleBulkWithUser for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value appleBulkWithUser for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType APPLE_BULK_WITH_USER = fromString("appleBulkWithUser");
 
-    /** Static value appleBulkWithoutUser for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value appleBulkWithoutUser for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType APPLE_BULK_WITHOUT_USER = fromString("appleBulkWithoutUser");
 
-    /** Static value windowsAzureADJoin for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value windowsAzureADJoin for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_AZURE_ADJOIN = fromString("windowsAzureADJoin");
 
-    /** Static value windowsBulkUserless for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value windowsBulkUserless for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_BULK_USERLESS = fromString("windowsBulkUserless");
 
-    /** Static value windowsAutoEnrollment for MicrosoftGraphDeviceEnrollmentType. */
-    public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_AUTO_ENROLLMENT =
-        fromString("windowsAutoEnrollment");
+    /**
+     * Static value windowsAutoEnrollment for MicrosoftGraphDeviceEnrollmentType.
+     */
+    public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_AUTO_ENROLLMENT
+        = fromString("windowsAutoEnrollment");
 
-    /** Static value windowsBulkAzureDomainJoin for MicrosoftGraphDeviceEnrollmentType. */
-    public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_BULK_AZURE_DOMAIN_JOIN =
-        fromString("windowsBulkAzureDomainJoin");
+    /**
+     * Static value windowsBulkAzureDomainJoin for MicrosoftGraphDeviceEnrollmentType.
+     */
+    public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_BULK_AZURE_DOMAIN_JOIN
+        = fromString("windowsBulkAzureDomainJoin");
 
-    /** Static value windowsCoManagement for MicrosoftGraphDeviceEnrollmentType. */
+    /**
+     * Static value windowsCoManagement for MicrosoftGraphDeviceEnrollmentType.
+     */
     public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_CO_MANAGEMENT = fromString("windowsCoManagement");
 
     /**
      * Creates a new instance of MicrosoftGraphDeviceEnrollmentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,18 +75,17 @@ public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEn
 
     /**
      * Creates or finds a MicrosoftGraphDeviceEnrollmentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphDeviceEnrollmentType.
      */
-    @JsonCreator
     public static MicrosoftGraphDeviceEnrollmentType fromString(String name) {
         return fromString(name, MicrosoftGraphDeviceEnrollmentType.class);
     }
 
     /**
      * Gets known MicrosoftGraphDeviceEnrollmentType values.
-     *
+     * 
      * @return known MicrosoftGraphDeviceEnrollmentType values.
      */
     public static Collection<MicrosoftGraphDeviceEnrollmentType> values() {

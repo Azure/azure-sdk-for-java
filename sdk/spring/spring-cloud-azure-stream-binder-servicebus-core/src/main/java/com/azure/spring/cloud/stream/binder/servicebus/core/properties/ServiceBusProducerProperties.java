@@ -10,9 +10,16 @@ import java.time.Duration;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /**
- *
+ *  Service Bus producer properties.
  */
 public class ServiceBusProducerProperties extends ProducerProperties implements ServiceBusEntityOptionsProvider {
+
+    /**
+     * Create an instance of {@link ServiceBusProducerProperties}.
+     */
+    public ServiceBusProducerProperties() {
+    }
+
     private boolean sync = false;
     private Duration sendTimeout = Duration.ofMillis(10000);
 
@@ -55,6 +62,7 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.sendTimeout = sendTimeout;
     }
 
+    @Override
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -67,6 +75,7 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
+    @Override
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }

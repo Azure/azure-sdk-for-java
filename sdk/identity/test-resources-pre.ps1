@@ -16,9 +16,6 @@ param (
     [string] $TenantId
 )
 
-# Pinning to 2.56.0 until https://github.com/Azure/azure-cli/issues/28358 is resolved
-pip install azure-cli=="2.56.0" | Write-Host
-
 $az_version = az version
 Write-Host "Azure CLI version: $az_version"
 

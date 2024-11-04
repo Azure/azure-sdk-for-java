@@ -15,24 +15,24 @@ public final class ExcelDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExcelDatasetTypeProperties model = BinaryData.fromString(
-            "{\"location\":{\"type\":\"zu\",\"folderPath\":\"datacagqyvouprsyt\",\"fileName\":\"datass\",\"\":{\"hgyqvpbfj\":\"datagwfnivrxpfduio\"}},\"sheetName\":\"dataqzucfzluczdquur\",\"sheetIndex\":\"datarmvhvzi\",\"range\":\"databprnqujywzcqygg\",\"firstRowAsHeader\":\"datawsvh\",\"compression\":{\"type\":\"datagqiwy\",\"level\":\"datatobdrrpnre\",\"\":{\"tt\":\"datansbfjhhlwtpkvege\",\"qsttewuvcysjeuf\":\"datazkgtzqn\",\"lpditfnonpi\":\"datax\"}},\"nullValue\":\"dataxlvrhprrvbwonleq\"}")
+            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datanthropmdudsyiu\",\"fileName\":\"datatvktjhffecqko\",\"\":{\"hfdyldhgye\":\"datauergaghpuzxkpye\",\"iyuq\":\"datazfz\",\"pjlwyxe\":\"datatdereunokakzw\"}},\"sheetName\":\"datanmxrfomckewvmyi\",\"sheetIndex\":\"datapx\",\"range\":\"datajt\",\"firstRowAsHeader\":\"datayzoutxfptofh\",\"compression\":{\"type\":\"datauywezygvadg\",\"level\":\"dataqwvkgjpytpmpv\",\"\":{\"k\":\"datagehlufbortbnu\",\"bx\":\"dataaxzs\"}},\"nullValue\":\"datajisskob\"}")
             .toObject(ExcelDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExcelDatasetTypeProperties model = new ExcelDatasetTypeProperties()
-            .withLocation(new DatasetLocation().withFolderPath("datacagqyvouprsyt")
-                .withFileName("datass")
-                .withAdditionalProperties(mapOf("type", "zu")))
-            .withSheetName("dataqzucfzluczdquur")
-            .withSheetIndex("datarmvhvzi")
-            .withRange("databprnqujywzcqygg")
-            .withFirstRowAsHeader("datawsvh")
-            .withCompression(new DatasetCompression().withType("datagqiwy")
-                .withLevel("datatobdrrpnre")
+            .withLocation(new DatasetLocation().withFolderPath("datanthropmdudsyiu")
+                .withFileName("datatvktjhffecqko")
+                .withAdditionalProperties(mapOf("type", "DatasetLocation")))
+            .withSheetName("datanmxrfomckewvmyi")
+            .withSheetIndex("datapx")
+            .withRange("datajt")
+            .withFirstRowAsHeader("datayzoutxfptofh")
+            .withCompression(new DatasetCompression().withType("datauywezygvadg")
+                .withLevel("dataqwvkgjpytpmpv")
                 .withAdditionalProperties(mapOf()))
-            .withNullValue("dataxlvrhprrvbwonleq");
+            .withNullValue("datajisskob");
         model = BinaryData.fromObject(model).toObject(ExcelDatasetTypeProperties.class);
     }
 

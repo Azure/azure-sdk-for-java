@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
@@ -30,6 +32,7 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
@@ -144,6 +147,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public NetworkFeatures networkFeatures() {
         return this.innerModel().networkFeatures();
+    }
+
+    public NetworkFeatures effectiveNetworkFeatures() {
+        return this.innerModel().effectiveNetworkFeatures();
     }
 
     public String networkSiblingSetId() {
@@ -363,14 +370,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume create() {
-        this.innerObject = serviceManager.serviceClient().getVolumes().createOrUpdate(resourceGroupName, accountName,
-            poolName, volumeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumes()
+            .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Volume create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumes().createOrUpdate(resourceGroupName, accountName,
-            poolName, volumeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumes()
+            .createOrUpdate(resourceGroupName, accountName, poolName, volumeName, this.innerModel(), context);
         return this;
     }
 
@@ -386,14 +395,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume apply() {
-        this.innerObject = serviceManager.serviceClient().getVolumes().update(resourceGroupName, accountName, poolName,
-            volumeName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumes()
+            .update(resourceGroupName, accountName, poolName, volumeName, updateBody, Context.NONE);
         return this;
     }
 
     public Volume apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumes().update(resourceGroupName, accountName, poolName,
-            volumeName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumes()
+            .update(resourceGroupName, accountName, poolName, volumeName, updateBody, context);
         return this;
     }
 
@@ -407,14 +418,18 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume refresh() {
-        this.innerObject = serviceManager.serviceClient().getVolumes()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Volume refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumes()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, context)
+            .getValue();
         return this;
     }
 
@@ -423,8 +438,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume populateAvailabilityZone(Context context) {
-        return serviceManager.volumes().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName,
-            context);
+        return serviceManager.volumes()
+            .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void revert(VolumeRevert body) {
@@ -452,14 +467,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body) {
-        return serviceManager.volumes().listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName,
-            volumeName, body);
+        return serviceManager.volumes()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
     }
 
     public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body,
         Context context) {
-        return serviceManager.volumes().listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName,
-            volumeName, body, context);
+        return serviceManager.volumes()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void breakReplication() {
@@ -475,8 +490,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public void reestablishReplication(ReestablishReplicationRequest body, Context context) {
-        serviceManager.volumes().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body,
-            context);
+        serviceManager.volumes()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public PagedIterable<Replication> listReplications() {
@@ -508,8 +523,8 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public void authorizeReplication(AuthorizeRequest body, Context context) {
-        serviceManager.volumes().authorizeReplication(resourceGroupName, accountName, poolName, volumeName, body,
-            context);
+        serviceManager.volumes()
+            .authorizeReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void reInitializeReplication() {
@@ -518,6 +533,43 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void reInitializeReplication(Context context) {
         serviceManager.volumes().reInitializeReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public ClusterPeerCommandResponse peerExternalCluster(PeerClusterForVolumeMigrationRequest body) {
+        return serviceManager.volumes().peerExternalCluster(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public ClusterPeerCommandResponse peerExternalCluster(PeerClusterForVolumeMigrationRequest body, Context context) {
+        return serviceManager.volumes()
+            .peerExternalCluster(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public SvmPeerCommandResponse authorizeExternalReplication() {
+        return serviceManager.volumes()
+            .authorizeExternalReplication(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public SvmPeerCommandResponse authorizeExternalReplication(Context context) {
+        return serviceManager.volumes()
+            .authorizeExternalReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void finalizeExternalReplication() {
+        serviceManager.volumes().finalizeExternalReplication(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void finalizeExternalReplication(Context context) {
+        serviceManager.volumes()
+            .finalizeExternalReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void performReplicationTransfer() {
+        serviceManager.volumes().performReplicationTransfer(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void performReplicationTransfer(Context context) {
+        serviceManager.volumes()
+            .performReplicationTransfer(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void poolChange(PoolChangeRequest body) {
@@ -608,8 +660,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withProtocolTypes(List<String> protocolTypes) {
-        this.innerModel().withProtocolTypes(protocolTypes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProtocolTypes(protocolTypes);
+            return this;
+        } else {
+            this.updateBody.withProtocolTypes(protocolTypes);
+            return this;
+        }
     }
 
     public VolumeImpl withSnapshotId(String snapshotId) {

@@ -5,41 +5,45 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** preAuthorizedApplication. */
+/**
+ * preAuthorizedApplication.
+ */
 @Fluent
-public final class MicrosoftGraphPreAuthorizedApplication {
+public final class MicrosoftGraphPreAuthorizedApplication
+    implements JsonSerializable<MicrosoftGraphPreAuthorizedApplication> {
     /*
      * The unique identifier for the application.
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
     /*
      * The unique identifier for the oauth2PermissionScopes the application requires.
      */
-    @JsonProperty(value = "delegatedPermissionIds")
     private List<String> delegatedPermissionIds;
 
     /*
      * preAuthorizedApplication
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPreAuthorizedApplication class. */
+    /**
+     * Creates an instance of MicrosoftGraphPreAuthorizedApplication class.
+     */
     public MicrosoftGraphPreAuthorizedApplication() {
     }
 
     /**
      * Get the appId property: The unique identifier for the application.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -48,7 +52,7 @@ public final class MicrosoftGraphPreAuthorizedApplication {
 
     /**
      * Set the appId property: The unique identifier for the application.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the MicrosoftGraphPreAuthorizedApplication object itself.
      */
@@ -60,7 +64,7 @@ public final class MicrosoftGraphPreAuthorizedApplication {
     /**
      * Get the delegatedPermissionIds property: The unique identifier for the oauth2PermissionScopes the application
      * requires.
-     *
+     * 
      * @return the delegatedPermissionIds value.
      */
     public List<String> delegatedPermissionIds() {
@@ -70,7 +74,7 @@ public final class MicrosoftGraphPreAuthorizedApplication {
     /**
      * Set the delegatedPermissionIds property: The unique identifier for the oauth2PermissionScopes the application
      * requires.
-     *
+     * 
      * @param delegatedPermissionIds the delegatedPermissionIds value to set.
      * @return the MicrosoftGraphPreAuthorizedApplication object itself.
      */
@@ -81,17 +85,16 @@ public final class MicrosoftGraphPreAuthorizedApplication {
 
     /**
      * Get the additionalProperties property: preAuthorizedApplication.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: preAuthorizedApplication.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPreAuthorizedApplication object itself.
      */
@@ -100,19 +103,64 @@ public final class MicrosoftGraphPreAuthorizedApplication {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeArrayField("delegatedPermissionIds", this.delegatedPermissionIds,
+            (writer, element) -> writer.writeString(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPreAuthorizedApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPreAuthorizedApplication if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPreAuthorizedApplication.
+     */
+    public static MicrosoftGraphPreAuthorizedApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPreAuthorizedApplication deserializedMicrosoftGraphPreAuthorizedApplication
+                = new MicrosoftGraphPreAuthorizedApplication();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appId".equals(fieldName)) {
+                    deserializedMicrosoftGraphPreAuthorizedApplication.appId = reader.getString();
+                } else if ("delegatedPermissionIds".equals(fieldName)) {
+                    List<String> delegatedPermissionIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphPreAuthorizedApplication.delegatedPermissionIds = delegatedPermissionIds;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPreAuthorizedApplication.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPreAuthorizedApplication;
+        });
     }
 }

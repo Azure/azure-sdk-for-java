@@ -198,7 +198,7 @@ public class WebSocketsConnectionHandlerTest {
         final ConnectionOptions connectionOptions = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
             new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
-            CLIENT_VERSION, customEndpoint, port);
+            CLIENT_VERSION, customEndpoint, port, true);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
             peerDetails, AmqpMetricsProvider.noop())) {
@@ -252,7 +252,7 @@ public class WebSocketsConnectionHandlerTest {
         final ConnectionOptions connectionOptionsWithCustomEndpoint
             = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope",
                 AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
-                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, 200);
+                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, 200, true);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID,
             connectionOptionsWithCustomEndpoint, peerDetails, AmqpMetricsProvider.noop())) {

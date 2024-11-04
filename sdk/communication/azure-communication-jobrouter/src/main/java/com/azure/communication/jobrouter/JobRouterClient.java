@@ -4,21 +4,24 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
+import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
+import com.azure.communication.jobrouter.implementation.converters.OptionBagAdapters;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
-import com.azure.communication.jobrouter.implementation.models.CloseJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobResultInternal;
-import com.azure.communication.jobrouter.implementation.models.CompleteJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobResultInternal;
-import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferResultInternal;
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResultInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
+import com.azure.communication.jobrouter.models.RouterQueueStatistics;
+import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -30,20 +33,14 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
-import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
-import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterQueueStatistics;
-import com.azure.communication.jobrouter.models.RouterWorker;
 
 /**
  * Initializes a new instance of the synchronous JobRouterClient type.
@@ -78,7 +75,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -92,8 +90,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -121,7 +119,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -130,11 +128,13 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -148,8 +148,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -177,7 +177,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -186,7 +186,8 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param resource The resource instance.
@@ -200,7 +201,6 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
@@ -237,7 +237,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -284,12 +285,14 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -336,7 +339,8 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The jobId of the job.
      * @param resource The resource instance.
@@ -386,7 +390,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -433,12 +438,14 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     channelReference: String (Optional)
@@ -485,7 +492,8 @@ public final class JobRouterClient {
      *     matchingMode (Optional): {
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The jobId of the job.
      * @param resource The resource instance.
@@ -556,7 +564,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        RouterJob routerJob = OptionBagAdapters.toRouterJob(createJobOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -592,8 +600,7 @@ public final class JobRouterClient {
     public Response<RouterJob> createJobWithClassificationPolicyWithResponse(
         CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions,
         RequestOptions requestOptions) {
-        RouterJobInternal routerJob = JobAdapter
-            .convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        RouterJob routerJob = OptionBagAdapters.toRouterJob(createJobWithClassificationPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(
             createJobWithClassificationPolicyOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -622,7 +629,8 @@ public final class JobRouterClient {
      * Retrieves an existing job by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -636,8 +644,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -665,7 +673,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -674,7 +682,8 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -713,17 +722,21 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -744,17 +757,21 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -775,20 +792,24 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -809,20 +830,24 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      *     dispositionCode: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -859,7 +884,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -873,8 +899,8 @@ public final class JobRouterClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -902,7 +928,7 @@ public final class JobRouterClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
@@ -911,7 +937,8 @@ public final class JobRouterClient {
      *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -930,7 +957,8 @@ public final class JobRouterClient {
      * Gets a job's position details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     position: int (Required)
@@ -938,7 +966,8 @@ public final class JobRouterClient {
      *     queueLength: int (Required)
      *     estimatedWaitTimeMinutes: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -956,22 +985,34 @@ public final class JobRouterClient {
 
     /**
      * Unassign a job.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobId: String (Required)
      *     unassignmentCount: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -993,13 +1034,15 @@ public final class JobRouterClient {
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assignmentId: String (Required)
      *     jobId: String (Required)
      *     workerId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -1024,19 +1067,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -1059,19 +1106,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     retryOfferAt: OffsetDateTime (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param offerId Id of an offer.
@@ -1091,7 +1142,8 @@ public final class JobRouterClient {
      * Retrieves a queue's statistics.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     queueId: String (Required)
      *     length: int (Required)
@@ -1100,7 +1152,8 @@ public final class JobRouterClient {
      *     }
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1130,7 +1183,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1147,8 +1201,8 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -1173,11 +1227,13 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1194,8 +1250,8 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -1220,7 +1276,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param resource The resource instance.
@@ -1234,7 +1291,6 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertWorkerWithResponse(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions);
     }
 
@@ -1271,7 +1327,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1313,12 +1370,14 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1360,7 +1419,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of the worker.
      * @param resource The resource instance.
@@ -1410,7 +1470,8 @@ public final class JobRouterClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1452,12 +1513,14 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
@@ -1499,7 +1562,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of the worker.
      * @param resource The resource instance.
@@ -1546,7 +1610,7 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions,
         RequestOptions requestOptions) {
-        RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+        RouterWorker routerWorker = OptionBagAdapters.toRouterWorker(createWorkerOptions);
         Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(),
             BinaryData.fromObject(routerWorker), requestOptions);
         return new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -1572,7 +1636,8 @@ public final class JobRouterClient {
      * Retrieves an existing worker by Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1589,8 +1654,8 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -1615,7 +1680,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1668,7 +1734,8 @@ public final class JobRouterClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1685,8 +1752,8 @@ public final class JobRouterClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
@@ -1711,7 +1778,8 @@ public final class JobRouterClient {
      *     availableForOffers: Boolean (Optional)
      *     maxConcurrentOffers: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2073,19 +2141,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2108,19 +2180,23 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2142,21 +2218,25 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dispositionCode: String (Optional)
      *     closeAt: OffsetDateTime (Optional)
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2178,21 +2258,25 @@ public final class JobRouterClient {
      * <strong>Request Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dispositionCode: String (Optional)
      *     closeAt: OffsetDateTime (Optional)
      *     note: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * { }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
@@ -2266,39 +2350,13 @@ public final class JobRouterClient {
      * @return response payload from cancelling a job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CancelJobResultInternal cancelJob(String jobId, CancelJobOptionsInternal options) {
+    CancelJobResultInternal cancelJob(String jobId, CancelJobOptions options) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (options != null) {
             requestOptions.setBody(BinaryData.fromObject(options));
         }
         return cancelJobWithResponse(jobId, requestOptions).getValue().toObject(CancelJobResultInternal.class);
-    }
-
-    /**
-     * Completes an assigned job.
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
-     * @param options Request model for completing job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload from completing a job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CompleteJobResultInternal completeJob(String jobId, String assignmentId, CompleteJobOptionsInternal options) {
-        // Generated convenience method for completeJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (options != null) {
-            requestOptions.setBody(BinaryData.fromObject(options));
-        }
-        return completeJobWithResponse(jobId, assignmentId, requestOptions).getValue()
-            .toObject(CompleteJobResultInternal.class);
     }
 
     /**
@@ -2328,32 +2386,6 @@ public final class JobRouterClient {
      *
      * @param jobId Id of a job.
      * @param assignmentId Id of a job assignment.
-     * @param options Request model for closing job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload from closing a job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CloseJobResultInternal closeJob(String jobId, String assignmentId, CloseJobOptionsInternal options) {
-        // Generated convenience method for closeJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (options != null) {
-            requestOptions.setBody(BinaryData.fromObject(options));
-        }
-        return closeJobWithResponse(jobId, assignmentId, requestOptions).getValue()
-            .toObject(CloseJobResultInternal.class);
-    }
-
-    /**
-     * Closes a completed job.
-     *
-     * @param jobId Id of a job.
-     * @param assignmentId Id of a job assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2372,29 +2404,127 @@ public final class JobRouterClient {
     }
 
     /**
-     * Declines an offer to work on a job.
+     * Creates or updates a worker.
      *
      * @param workerId Id of a worker.
-     * @param offerId Id of an offer.
-     * @param options Request model for declining offer.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response payload from declining a job.
+     * @return an entity for jobs to be routed to.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeclineJobOfferResultInternal declineJobOffer(String workerId, String offerId,
-        DeclineJobOfferOptionsInternal options) {
-        // Generated convenience method for declineJobOfferWithResponse
+    RouterWorker upsertWorker(String workerId, RouterWorker resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (options != null) {
-            requestOptions.setBody(BinaryData.fromObject(options));
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
-        return declineJobOfferWithResponse(workerId, offerId, requestOptions).getValue()
-            .toObject(DeclineJobOfferResultInternal.class);
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterWorkerAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getRouterWorkerAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterWorker.class);
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterWorker upsertWorker(String workerId, RouterWorker resource) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterWorkerAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getRouterWorkerAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterWorker.class);
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterJob upsertJob(String jobId, RouterJob resource, String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterJobAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getRouterJobAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).getValue().toObject(RouterJob.class);
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterJob upsertJob(String jobId, RouterJob resource) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterJobAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getRouterJobAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).getValue().toObject(RouterJob.class);
     }
 }

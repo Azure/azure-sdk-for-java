@@ -11,19 +11,19 @@ public final class MicrosoftAccessSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessSink model = BinaryData.fromString(
-            "{\"type\":\"lgpepxbjjnxdgn\",\"preCopyScript\":\"datavjw\",\"writeBatchSize\":\"datakltlpbb\",\"writeBatchTimeout\":\"datamm\",\"sinkRetryCount\":\"datamvada\",\"sinkRetryWait\":\"datae\",\"maxConcurrentConnections\":\"datawtdzgngnuuz\",\"disableMetricsCollection\":\"datagfojdb\",\"\":{\"vqmxzdi\":\"datamnelqlqn\",\"nrpqsj\":\"datan\",\"reqbwa\":\"datagncyksb\"}}")
+            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datawimmmmgbynvoytd\",\"writeBatchSize\":\"datakfqznvahpxdg\",\"writeBatchTimeout\":\"dataowxcptxvxfwwv\",\"sinkRetryCount\":\"datagcfazt\",\"sinkRetryWait\":\"dataaszjrihca\",\"maxConcurrentConnections\":\"dataj\",\"disableMetricsCollection\":\"datavkttiteb\",\"\":{\"zlzzmygoutqe\":\"datapmoadjooer\",\"wp\":\"datapuoyc\",\"ufdxpwj\":\"dataxqx\",\"cecukzt\":\"dataajvskpbu\"}}")
             .toObject(MicrosoftAccessSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datakltlpbb")
-            .withWriteBatchTimeout("datamm")
-            .withSinkRetryCount("datamvada")
-            .withSinkRetryWait("datae")
-            .withMaxConcurrentConnections("datawtdzgngnuuz")
-            .withDisableMetricsCollection("datagfojdb")
-            .withPreCopyScript("datavjw");
+        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datakfqznvahpxdg")
+            .withWriteBatchTimeout("dataowxcptxvxfwwv")
+            .withSinkRetryCount("datagcfazt")
+            .withSinkRetryWait("dataaszjrihca")
+            .withMaxConcurrentConnections("dataj")
+            .withDisableMetricsCollection("datavkttiteb")
+            .withPreCopyScript("datawimmmmgbynvoytd");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSink.class);
     }
 }

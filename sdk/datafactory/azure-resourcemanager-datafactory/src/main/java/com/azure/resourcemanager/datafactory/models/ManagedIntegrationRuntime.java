@@ -6,46 +6,37 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedIntegrationRuntimeTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ManagedIntegrationRuntime.class,
-    visible = true)
-@JsonTypeName("Managed")
 @Fluent
 public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     /*
      * Type of integration runtime.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private IntegrationRuntimeType type = IntegrationRuntimeType.MANAGED;
 
     /*
      * Integration runtime state, only valid for managed dedicated integration runtime.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
 
     /*
      * Managed integration runtime properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private ManagedIntegrationRuntimeTypeProperties innerTypeProperties = new ManagedIntegrationRuntimeTypeProperties();
 
     /*
      * Managed Virtual Network reference.
      */
-    @JsonProperty(value = "managedVirtualNetwork")
     private ManagedVirtualNetworkReference managedVirtualNetwork;
 
     /**
@@ -204,4 +195,66 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedIntegrationRuntime.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("managedVirtualNetwork", this.managedVirtualNetwork);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntime from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntime if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntime.
+     */
+    public static ManagedIntegrationRuntime fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntime deserializedManagedIntegrationRuntime = new ManagedIntegrationRuntime();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.withDescription(reader.getString());
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.innerTypeProperties
+                        = ManagedIntegrationRuntimeTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.type = IntegrationRuntimeType.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.state
+                        = IntegrationRuntimeState.fromString(reader.getString());
+                } else if ("managedVirtualNetwork".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntime.managedVirtualNetwork
+                        = ManagedVirtualNetworkReference.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedManagedIntegrationRuntime.withAdditionalProperties(additionalProperties);
+
+            return deserializedManagedIntegrationRuntime;
+        });
+    }
 }

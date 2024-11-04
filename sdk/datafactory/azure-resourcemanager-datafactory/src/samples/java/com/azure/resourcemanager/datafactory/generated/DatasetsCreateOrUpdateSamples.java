@@ -21,7 +21,8 @@ import java.util.Map;
  */
 public final class DatasetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
      */
     /**
      * Sample code: Datasets_Create.
@@ -48,7 +49,8 @@ public final class DatasetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
      */
     /**
      * Sample code: Datasets_Update.

@@ -6,22 +6,12 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.OperationInner;
-import com.azure.resourcemanager.appcomplianceautomation.models.OperationDisplay;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"usarhmofc\",\"isDataAction\":false,\"display\":{\"provider\":\"urkdtmlx\",\"resource\":\"kuksjtxukcdm\",\"operation\":\"rcryuanzwuxzdxta\",\"description\":\"lhmwhfpmrqobm\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
-                .toObject(OperationInner.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        OperationInner model = new OperationInner().withDisplay(new OperationDisplay());
-        model = BinaryData.fromObject(model).toObject(OperationInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"jspodmailzyde\",\"isDataAction\":true,\"display\":{\"provider\":\"ahuxinpm\",\"resource\":\"jaqwixjsp\",\"operation\":\"zvcputegjvwmfda\",\"description\":\"cmdv\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 }

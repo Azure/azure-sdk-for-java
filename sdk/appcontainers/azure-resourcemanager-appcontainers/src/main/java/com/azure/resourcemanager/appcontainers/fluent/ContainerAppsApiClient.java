@@ -138,6 +138,27 @@ public interface ContainerAppsApiClient {
     ContainerAppsClient getContainerApps();
 
     /**
+     * Gets the ContainerAppsBuildsByContainerAppsClient object to access its operations.
+     * 
+     * @return the ContainerAppsBuildsByContainerAppsClient object.
+     */
+    ContainerAppsBuildsByContainerAppsClient getContainerAppsBuildsByContainerApps();
+
+    /**
+     * Gets the ContainerAppsBuildsClient object to access its operations.
+     * 
+     * @return the ContainerAppsBuildsClient object.
+     */
+    ContainerAppsBuildsClient getContainerAppsBuilds();
+
+    /**
+     * Gets the ContainerAppsPatchesClient object to access its operations.
+     * 
+     * @return the ContainerAppsPatchesClient object.
+     */
+    ContainerAppsPatchesClient getContainerAppsPatches();
+
+    /**
      * Gets the ContainerAppsRevisionsClient object to access its operations.
      * 
      * @return the ContainerAppsRevisionsClient object.
@@ -180,11 +201,32 @@ public interface ContainerAppsApiClient {
     JobsClient getJobs();
 
     /**
+     * Gets the DotNetComponentsClient object to access its operations.
+     * 
+     * @return the DotNetComponentsClient object.
+     */
+    DotNetComponentsClient getDotNetComponents();
+
+    /**
+     * Gets the FunctionsExtensionsClient object to access its operations.
+     * 
+     * @return the FunctionsExtensionsClient object.
+     */
+    FunctionsExtensionsClient getFunctionsExtensions();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the JavaComponentsClient object to access its operations.
+     * 
+     * @return the JavaComponentsClient object.
+     */
+    JavaComponentsClient getJavaComponents();
 
     /**
      * Gets the JobsExecutionsClient object to access its operations.
@@ -199,6 +241,13 @@ public interface ContainerAppsApiClient {
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the LogicAppsClient object to access its operations.
+     * 
+     * @return the LogicAppsClient object.
+     */
+    LogicAppsClient getLogicApps();
 
     /**
      * Gets the ManagedEnvironmentsClient object to access its operations.
@@ -229,6 +278,20 @@ public interface ContainerAppsApiClient {
     NamespacesClient getNamespaces();
 
     /**
+     * Gets the ManagedEnvironmentPrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateEndpointConnectionsClient object.
+     */
+    ManagedEnvironmentPrivateEndpointConnectionsClient getManagedEnvironmentPrivateEndpointConnections();
+
+    /**
+     * Gets the ManagedEnvironmentPrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the ManagedEnvironmentPrivateLinkResourcesClient object.
+     */
+    ManagedEnvironmentPrivateLinkResourcesClient getManagedEnvironmentPrivateLinkResources();
+
+    /**
      * Gets the DaprComponentResiliencyPoliciesClient object to access its operations.
      * 
      * @return the DaprComponentResiliencyPoliciesClient object.
@@ -257,6 +320,13 @@ public interface ContainerAppsApiClient {
     ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages();
 
     /**
+     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
+     * 
+     * @return the ContainerAppsSessionPoolsClient object.
+     */
+    ContainerAppsSessionPoolsClient getContainerAppsSessionPools();
+
+    /**
      * Gets the ContainerAppsSourceControlsClient object to access its operations.
      * 
      * @return the ContainerAppsSourceControlsClient object.
@@ -276,18 +346,4 @@ public interface ContainerAppsApiClient {
      * @return the ManagedEnvironmentUsagesClient object.
      */
     ManagedEnvironmentUsagesClient getManagedEnvironmentUsages();
-
-    /**
-     * Gets the JavaComponentsClient object to access its operations.
-     * 
-     * @return the JavaComponentsClient object.
-     */
-    JavaComponentsClient getJavaComponents();
-
-    /**
-     * Gets the DotNetComponentsClient object to access its operations.
-     * 
-     * @return the DotNetComponentsClient object.
-     */
-    DotNetComponentsClient getDotNetComponents();
 }

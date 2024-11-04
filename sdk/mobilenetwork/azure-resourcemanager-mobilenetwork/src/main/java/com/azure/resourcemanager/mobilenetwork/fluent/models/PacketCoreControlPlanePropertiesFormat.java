@@ -18,6 +18,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.UserConsentConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -39,8 +40,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private Installation installation;
 
     /*
-     * Site(s) under which this packet core control plane should be deployed. The sites must be in the same location as
-     * the packet core control plane.
+     * Site(s) under which this packet core control plane should be deployed. The sites must be in the same location as the packet core control plane.
      */
     @JsonProperty(value = "sites", required = true)
     private List<SiteResourceId> sites;
@@ -76,16 +76,13 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private String rollbackVersion;
 
     /*
-     * The control plane interface on the access network. For 5G networks, this is the N2 interface. For 4G networks,
-     * this is the S1-MME interface.
+     * The control plane interface on the access network. For 5G networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
      */
     @JsonProperty(value = "controlPlaneAccessInterface", required = true)
     private InterfaceProperties controlPlaneAccessInterface;
 
     /*
-     * The virtual IP address(es) for the control plane on the access network in a High Availability (HA) system. In an
-     * HA deployment the access network router should be configured to anycast traffic for this address to the control
-     * plane access interfaces on the active and standby nodes. In non-HA system this list should be omitted or empty.
+     * The virtual IP address(es) for the control plane on the access network in a High Availability (HA) system. In an HA deployment the access network router should be configured to anycast traffic for this address to the control plane access interfaces on the active and standby nodes. In non-HA system this list should be omitted or empty.
      */
     @JsonProperty(value = "controlPlaneAccessVirtualIpv4Addresses")
     private List<String> controlPlaneAccessVirtualIpv4Addresses;
@@ -97,9 +94,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private BillingSku sku;
 
     /*
-     * The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks.
-     * The MTU set on the user plane access link is calculated to be 60 bytes greater than this value to allow for GTP
-     * encapsulation.
+     * The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this value to allow for GTP encapsulation.
      */
     @JsonProperty(value = "ueMtu")
     private Integer ueMtu;
@@ -139,6 +134,12 @@ public final class PacketCoreControlPlanePropertiesFormat {
      */
     @JsonProperty(value = "homeNetworkPrivateKeysProvisioning", access = JsonProperty.Access.WRITE_ONLY)
     private HomeNetworkPrivateKeysProvisioning homeNetworkPrivateKeysProvisioning;
+
+    /*
+     * The user consent configuration for the packet core.
+     */
+    @JsonProperty(value = "userConsent")
+    private UserConsentConfiguration userConsent;
 
     /**
      * Creates an instance of PacketCoreControlPlanePropertiesFormat class.
@@ -277,8 +278,8 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G
-     * networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
+     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      * 
      * @return the controlPlaneAccessInterface value.
      */
@@ -287,8 +288,8 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G
-     * networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
+     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      * 
      * @param controlPlaneAccessInterface the controlPlaneAccessInterface value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
@@ -479,13 +480,33 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the homeNetworkPrivateKeysProvisioning property: The provisioning state of the secret containing private
-     * keys and keyIds for SUPI concealment.
+     * Get the homeNetworkPrivateKeysProvisioning property: The provisioning state of the secret containing private keys
+     * and keyIds for SUPI concealment.
      * 
      * @return the homeNetworkPrivateKeysProvisioning value.
      */
     public HomeNetworkPrivateKeysProvisioning homeNetworkPrivateKeysProvisioning() {
         return this.homeNetworkPrivateKeysProvisioning;
+    }
+
+    /**
+     * Get the userConsent property: The user consent configuration for the packet core.
+     * 
+     * @return the userConsent value.
+     */
+    public UserConsentConfiguration userConsent() {
+        return this.userConsent;
+    }
+
+    /**
+     * Set the userConsent property: The user consent configuration for the packet core.
+     * 
+     * @param userConsent the userConsent value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withUserConsent(UserConsentConfiguration userConsent) {
+        this.userConsent = userConsent;
+        return this;
     }
 
     /**
@@ -498,30 +519,35 @@ public final class PacketCoreControlPlanePropertiesFormat {
             installation().validate();
         }
         if (sites() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sites in model PacketCoreControlPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sites in model PacketCoreControlPlanePropertiesFormat"));
         } else {
             sites().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property platform in model PacketCoreControlPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property platform in model PacketCoreControlPlanePropertiesFormat"));
         } else {
             platform().validate();
         }
         if (controlPlaneAccessInterface() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property controlPlaneAccessInterface in model PacketCoreControlPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property controlPlaneAccessInterface in model PacketCoreControlPlanePropertiesFormat"));
         } else {
             controlPlaneAccessInterface().validate();
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sku in model PacketCoreControlPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model PacketCoreControlPlanePropertiesFormat"));
         }
         if (localDiagnosticsAccess() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property localDiagnosticsAccess in model PacketCoreControlPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property localDiagnosticsAccess in model PacketCoreControlPlanePropertiesFormat"));
         } else {
             localDiagnosticsAccess().validate();
         }
@@ -536,6 +562,9 @@ public final class PacketCoreControlPlanePropertiesFormat {
         }
         if (homeNetworkPrivateKeysProvisioning() != null) {
             homeNetworkPrivateKeysProvisioning().validate();
+        }
+        if (userConsent() != null) {
+            userConsent().validate();
         }
     }
 

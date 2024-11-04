@@ -5,7 +5,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,48 +17,49 @@ import java.util.List;
  * Based on [FHIR Meta](https://www.hl7.org/fhir/R4/resource.html#Meta).
  */
 @Fluent
-public final class FhirR4Meta {
+public final class FhirR4Meta implements JsonSerializable<FhirR4Meta> {
 
     /*
-     * The version specific identifier, as it appears in the version portion of the URL. This value changes when the resource is created, updated, or deleted.
+     * The version specific identifier, as it appears in the version portion of the URL. This value changes when the
+     * resource is created, updated, or deleted.
      */
     @Generated
-    @JsonProperty(value = "versionId")
     private String versionId;
 
     /*
      * When the resource last changed - e.g. when the version changed.
      */
     @Generated
-    @JsonProperty(value = "lastUpdated")
     private String lastUpdated;
 
     /*
-     * A uri that identifies the source system of the resource. This provides a minimal amount of Provenance information that can be used to track or differentiate the source of information in the resource. The source may identify another FHIR server, document, message, database, etc.
+     * A uri that identifies the source system of the resource. This provides a minimal amount of Provenance information
+     * that can be used to track or differentiate the source of information in the resource. The source may identify
+     * another FHIR server, document, message, database, etc.
      */
     @Generated
-    @JsonProperty(value = "source")
     private String source;
 
     /*
-     * A list of profiles (references to [StructureDefinition](https://www.hl7.org/fhir/structuredefinition.html) resources) that this resource claims to conform to. The URL is a reference to [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
+     * A list of profiles (references to [StructureDefinition](https://www.hl7.org/fhir/structuredefinition.html)
+     * resources) that this resource claims to conform to. The URL is a reference to
+     * [StructureDefinition.url](https://www.hl7.org/fhir/structuredefinition-definitions.html#StructureDefinition.url).
      */
     @Generated
-    @JsonProperty(value = "profile")
     private List<String> profile;
 
     /*
-     * Security labels applied to this resource. These tags connect specific resources to the overall security policy and infrastructure.
+     * Security labels applied to this resource. These tags connect specific resources to the overall security policy
+     * and infrastructure.
      */
     @Generated
-    @JsonProperty(value = "security")
     private List<FhirR4Coding> security;
 
     /*
-     * Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and workflow, and applications are not required to consider the tags when interpreting the meaning of a resource.
+     * Tags applied to this resource. Tags are intended to be used to identify and relate resources to process and
+     * workflow, and applications are not required to consider the tags when interpreting the meaning of a resource.
      */
     @Generated
-    @JsonProperty(value = "tag")
     private List<FhirR4Coding> tag;
 
     /**
@@ -212,5 +217,59 @@ public final class FhirR4Meta {
     public FhirR4Meta setTag(List<FhirR4Coding> tag) {
         this.tag = tag;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("versionId", this.versionId);
+        jsonWriter.writeStringField("lastUpdated", this.lastUpdated);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeArrayField("profile", this.profile, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("security", this.security, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tag", this.tag, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Meta from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Meta if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the FhirR4Meta.
+     */
+    @Generated
+    public static FhirR4Meta fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4Meta deserializedFhirR4Meta = new FhirR4Meta();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("versionId".equals(fieldName)) {
+                    deserializedFhirR4Meta.versionId = reader.getString();
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedFhirR4Meta.lastUpdated = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedFhirR4Meta.source = reader.getString();
+                } else if ("profile".equals(fieldName)) {
+                    List<String> profile = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFhirR4Meta.profile = profile;
+                } else if ("security".equals(fieldName)) {
+                    List<FhirR4Coding> security = reader.readArray(reader1 -> FhirR4Coding.fromJson(reader1));
+                    deserializedFhirR4Meta.security = security;
+                } else if ("tag".equals(fieldName)) {
+                    List<FhirR4Coding> tag = reader.readArray(reader1 -> FhirR4Coding.fromJson(reader1));
+                    deserializedFhirR4Meta.tag = tag;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFhirR4Meta;
+        });
     }
 }

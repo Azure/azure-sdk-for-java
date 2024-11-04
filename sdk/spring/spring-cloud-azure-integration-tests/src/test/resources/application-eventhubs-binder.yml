@@ -7,9 +7,9 @@ spring:
           checkpoint-store:
             account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
             endpoint: ${AZURE_STORAGE_BLOB_ENDPOINT}
+    function:
+      definition: consume;supply
     stream:
-      function:
-        definition: consume;supply
       bindings:
         consume-in-0:
           group: $Default
@@ -58,6 +58,7 @@ spring:
       bindings:
         consume-in-0:
           destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
+          error-handler-definition: consumeError
         supply-out-0:
           destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
       eventhubs:

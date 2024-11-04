@@ -18,19 +18,25 @@ import java.io.IOException;
 public final class LinuxUserConfiguration implements JsonSerializable<LinuxUserConfiguration> {
 
     /*
-     * The user ID of the user Account. The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the uid.
+     * The user ID of the user Account. The uid and gid properties must be specified together or not at all. If not
+     * specified the underlying operating system picks the uid.
      */
     @Generated
     private Integer uid;
 
     /*
-     * The group ID for the user Account. The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the gid.
+     * The group ID for the user Account. The uid and gid properties must be specified together or not at all. If not
+     * specified the underlying operating system picks the gid.
      */
     @Generated
     private Integer gid;
 
     /*
-     * The SSH private key for the user Account. The private key must not be password protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not configured between Compute Nodes (no modification of the user's .ssh directory is done).
+     * The SSH private key for the user Account. The private key must not be password protected. The private key is used
+     * to automatically configure asymmetric-key based authentication for SSH between Compute Nodes in a Linux Pool when
+     * the Pool's enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is
+     * false). It does this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH
+     * is not configured between Compute Nodes (no modification of the user's .ssh directory is done).
      */
     @Generated
     private String sshPrivateKey;

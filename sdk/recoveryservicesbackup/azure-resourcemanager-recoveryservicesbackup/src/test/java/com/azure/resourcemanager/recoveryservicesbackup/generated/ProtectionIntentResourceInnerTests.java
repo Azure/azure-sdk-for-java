@@ -35,7 +35,9 @@ public final class ProtectionIntentResourceInnerTests {
             .withTags(mapOf("fcbjysagithxqha", "cyzkohdbihanuf", "cnpqxuhivyqniwby", "ifpikxwczby", "grtfwvu",
                 "rkxvdum", "h", "xgaudccs"))
             .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                .withSourceResourceId("xhekuksjtxukcdm").withItemId("rcryuanzwuxzdxta").withPolicyId("lhmwhfpmrqobm")
+                .withSourceResourceId("xhekuksjtxukcdm")
+                .withItemId("rcryuanzwuxzdxta")
+                .withPolicyId("lhmwhfpmrqobm")
                 .withProtectionState(ProtectionStatus.PROTECTED))
             .withEtag("nryrtihf");
         model = BinaryData.fromObject(model).toObject(ProtectionIntentResourceInner.class);

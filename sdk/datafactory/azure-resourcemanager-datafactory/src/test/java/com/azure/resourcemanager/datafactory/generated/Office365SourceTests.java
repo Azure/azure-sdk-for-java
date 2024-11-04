@@ -11,22 +11,22 @@ public final class Office365SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Office365Source model = BinaryData.fromString(
-            "{\"type\":\"o\",\"allowedGroups\":\"datafcduqsdurfqaawr\",\"userScopeFilterUri\":\"datatzslfrztpnry\",\"dateFilterColumn\":\"dataxajr\",\"startTime\":\"dataighlhddvno\",\"endTime\":\"datasowbtnfqlwc\",\"outputColumns\":\"datajphtehoucmeuuua\",\"sourceRetryCount\":\"datacxofqjninrsk\",\"sourceRetryWait\":\"datakqtiuve\",\"maxConcurrentConnections\":\"datauciwbiwygwpwqu\",\"disableMetricsCollection\":\"dataqgslspihuxgvvio\",\"\":{\"quxvufrf\":\"dataolkmfizefbbrnd\",\"ysieyeblkgu\":\"dataaehssosowav\"}}")
+            "{\"type\":\"Office365Source\",\"allowedGroups\":\"datavddfmflwfxdkpwd\",\"userScopeFilterUri\":\"datayg\",\"dateFilterColumn\":\"dataugcht\",\"startTime\":\"datai\",\"endTime\":\"datadlrxbsuftpvgmqzi\",\"outputColumns\":\"datauvmlltas\",\"sourceRetryCount\":\"dataqsf\",\"sourceRetryWait\":\"datae\",\"maxConcurrentConnections\":\"dataveg\",\"disableMetricsCollection\":\"databmyvgmbirvv\",\"\":{\"tu\":\"dataqxisav\",\"ridagwuvcdymoq\":\"datawzvlhi\",\"h\":\"datacjkrynziud\"}}")
             .toObject(Office365Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Office365Source model = new Office365Source().withSourceRetryCount("datacxofqjninrsk")
-            .withSourceRetryWait("datakqtiuve")
-            .withMaxConcurrentConnections("datauciwbiwygwpwqu")
-            .withDisableMetricsCollection("dataqgslspihuxgvvio")
-            .withAllowedGroups("datafcduqsdurfqaawr")
-            .withUserScopeFilterUri("datatzslfrztpnry")
-            .withDateFilterColumn("dataxajr")
-            .withStartTime("dataighlhddvno")
-            .withEndTime("datasowbtnfqlwc")
-            .withOutputColumns("datajphtehoucmeuuua");
+        Office365Source model = new Office365Source().withSourceRetryCount("dataqsf")
+            .withSourceRetryWait("datae")
+            .withMaxConcurrentConnections("dataveg")
+            .withDisableMetricsCollection("databmyvgmbirvv")
+            .withAllowedGroups("datavddfmflwfxdkpwd")
+            .withUserScopeFilterUri("datayg")
+            .withDateFilterColumn("dataugcht")
+            .withStartTime("datai")
+            .withEndTime("datadlrxbsuftpvgmqzi")
+            .withOutputColumns("datauvmlltas");
         model = BinaryData.fromObject(model).toObject(Office365Source.class);
     }
 }

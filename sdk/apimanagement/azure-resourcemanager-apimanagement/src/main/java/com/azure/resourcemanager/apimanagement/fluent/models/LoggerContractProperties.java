@@ -166,10 +166,8 @@ public final class LoggerContractProperties {
      */
     public void validate() {
         if (loggerType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property loggerType in model LoggerContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property loggerType in model LoggerContractProperties"));
         }
     }
 

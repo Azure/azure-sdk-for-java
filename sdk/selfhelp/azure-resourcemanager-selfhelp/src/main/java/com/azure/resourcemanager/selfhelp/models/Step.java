@@ -6,84 +6,76 @@ package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Troubleshooter step.
  */
 @Fluent
-public final class Step {
+public final class Step implements JsonSerializable<Step> {
     /*
      * Unique step id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Step title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Step description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Get or sets the Step guidance.
      */
-    @JsonProperty(value = "guidance")
     private String guidance;
 
     /*
      * Status of Troubleshooter Step execution.
      */
-    @JsonProperty(value = "executionStatus")
     private ExecutionStatus executionStatus;
 
     /*
      * This field has more detailed status description of the execution status.
      */
-    @JsonProperty(value = "executionStatusDescription")
     private String executionStatusDescription;
 
     /*
      * Type of Troubleshooting step.
      */
-    @JsonProperty(value = "type")
     private Type type;
 
     /*
      * is this last step of the workflow.
      */
-    @JsonProperty(value = "isLastStep")
     private Boolean isLastStep;
 
     /*
      * The inputs property.
      */
-    @JsonProperty(value = "inputs")
     private List<StepInput> inputs;
 
     /*
      * Only for AutomatedStep type
      */
-    @JsonProperty(value = "automatedCheckResults")
     private AutomatedCheckResult automatedCheckResults;
 
     /*
      * The insights property.
      */
-    @JsonProperty(value = "insights")
     private List<Insight> insights;
 
     /*
      * The error detail.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -349,5 +341,77 @@ public final class Step {
         if (insights() != null) {
             insights().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("guidance", this.guidance);
+        jsonWriter.writeStringField("executionStatus",
+            this.executionStatus == null ? null : this.executionStatus.toString());
+        jsonWriter.writeStringField("executionStatusDescription", this.executionStatusDescription);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeBooleanField("isLastStep", this.isLastStep);
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("automatedCheckResults", this.automatedCheckResults);
+        jsonWriter.writeArrayField("insights", this.insights, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Step from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Step if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Step.
+     */
+    public static Step fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Step deserializedStep = new Step();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStep.id = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedStep.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStep.description = reader.getString();
+                } else if ("guidance".equals(fieldName)) {
+                    deserializedStep.guidance = reader.getString();
+                } else if ("executionStatus".equals(fieldName)) {
+                    deserializedStep.executionStatus = ExecutionStatus.fromString(reader.getString());
+                } else if ("executionStatusDescription".equals(fieldName)) {
+                    deserializedStep.executionStatusDescription = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStep.type = Type.fromString(reader.getString());
+                } else if ("isLastStep".equals(fieldName)) {
+                    deserializedStep.isLastStep = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inputs".equals(fieldName)) {
+                    List<StepInput> inputs = reader.readArray(reader1 -> StepInput.fromJson(reader1));
+                    deserializedStep.inputs = inputs;
+                } else if ("automatedCheckResults".equals(fieldName)) {
+                    deserializedStep.automatedCheckResults = AutomatedCheckResult.fromJson(reader);
+                } else if ("insights".equals(fieldName)) {
+                    List<Insight> insights = reader.readArray(reader1 -> Insight.fromJson(reader1));
+                    deserializedStep.insights = insights;
+                } else if ("error".equals(fieldName)) {
+                    deserializedStep.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStep;
+        });
     }
 }

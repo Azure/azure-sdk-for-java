@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentPlanInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentPlanInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"rjqc\",\"kind\":\"gzpfrla\",\"sku\":{\"name\":\"zrnw\",\"tier\":\"Basic\",\"size\":\"dfpwpjylwbtlhfls\",\"family\":\"dhszfjv\",\"capacity\":1304960075},\"tags\":{\"qmqhldvriii\":\"eljag\",\"vtvsexsowueluq\":\"jnalghf\",\"wws\":\"hahhxvrhmzkwpj\"},\"location\":\"ghftqsxhqxujxuk\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"grjguufzd\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"tfih\",\"current\":{\"tier\":\"otzi\",\"count\":1709728841,\"quota\":{\"quantity\":2353170453764663846,\"unit\":\"o\"},\"startDate\":\"qzudphq\",\"endDate\":\"vdkfwynwcvtbvk\"},\"autoRenew\":false,\"next\":{\"tier\":\"nvyq\",\"count\":686807657,\"quota\":{\"quantity\":1497619530378227200,\"unit\":\"npwzcjaes\"},\"startDate\":\"v\",\"endDate\":\"cyajguqf\"},\"last\":{\"tier\":\"gzlvdnkfxu\",\"count\":2087511541,\"quota\":{\"quantity\":4703323769472107335,\"unit\":\"uh\"},\"startDate\":\"fcqdpsq\",\"endDate\":\"vpsvuoymgcce\"},\"provisioningIssues\":[\"zrypqlmfeokerqw\",\"yhko\"]},\"id\":\"opgxedkowepb\",\"name\":\"pc\",\"type\":\"fkbw\"}")
-                .toObject(CommitmentPlanInner.class);
+        CommitmentPlanInner model = BinaryData.fromString(
+            "{\"etag\":\"rjqc\",\"kind\":\"gzpfrla\",\"sku\":{\"name\":\"zrnw\",\"tier\":\"Basic\",\"size\":\"dfpwpjylwbtlhfls\",\"family\":\"dhszfjv\",\"capacity\":1304960075},\"tags\":{\"qmqhldvriii\":\"eljag\",\"vtvsexsowueluq\":\"jnalghf\",\"wws\":\"hahhxvrhmzkwpj\"},\"location\":\"ghftqsxhqxujxuk\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"grjguufzd\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"tfih\",\"current\":{\"tier\":\"otzi\",\"count\":1709728841,\"quota\":{\"quantity\":2353170453764663846,\"unit\":\"o\"},\"startDate\":\"qzudphq\",\"endDate\":\"vdkfwynwcvtbvk\"},\"autoRenew\":false,\"next\":{\"tier\":\"nvyq\",\"count\":686807657,\"quota\":{\"quantity\":1497619530378227200,\"unit\":\"npwzcjaes\"},\"startDate\":\"v\",\"endDate\":\"cyajguqf\"},\"last\":{\"tier\":\"gzlvdnkfxu\",\"count\":2087511541,\"quota\":{\"quantity\":4703323769472107335,\"unit\":\"uh\"},\"startDate\":\"fcqdpsq\",\"endDate\":\"vpsvuoymgcce\"},\"provisioningIssues\":[\"zrypqlmfeokerqw\",\"yhko\"]},\"id\":\"opgxedkowepb\",\"name\":\"pc\",\"type\":\"fkbw\"}")
+            .toObject(CommitmentPlanInner.class);
         Assertions.assertEquals("gzpfrla", model.kind());
         Assertions.assertEquals("zrnw", model.sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
@@ -43,26 +41,20 @@ public final class CommitmentPlanInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanInner model =
-            new CommitmentPlanInner()
-                .withKind("gzpfrla")
-                .withSku(
-                    new Sku()
-                        .withName("zrnw")
-                        .withTier(SkuTier.BASIC)
-                        .withSize("dfpwpjylwbtlhfls")
-                        .withFamily("dhszfjv")
-                        .withCapacity(1304960075))
-                .withTags(mapOf("qmqhldvriii", "eljag", "vtvsexsowueluq", "jnalghf", "wws", "hahhxvrhmzkwpj"))
-                .withLocation("ghftqsxhqxujxuk")
-                .withProperties(
-                    new CommitmentPlanProperties()
-                        .withCommitmentPlanGuid("grjguufzd")
-                        .withHostingModel(HostingModel.CONNECTED_CONTAINER)
-                        .withPlanType("tfih")
-                        .withCurrent(new CommitmentPeriod().withTier("otzi").withCount(1709728841))
-                        .withAutoRenew(false)
-                        .withNext(new CommitmentPeriod().withTier("nvyq").withCount(686807657)));
+        CommitmentPlanInner model = new CommitmentPlanInner().withKind("gzpfrla")
+            .withSku(new Sku().withName("zrnw")
+                .withTier(SkuTier.BASIC)
+                .withSize("dfpwpjylwbtlhfls")
+                .withFamily("dhszfjv")
+                .withCapacity(1304960075))
+            .withTags(mapOf("qmqhldvriii", "eljag", "vtvsexsowueluq", "jnalghf", "wws", "hahhxvrhmzkwpj"))
+            .withLocation("ghftqsxhqxujxuk")
+            .withProperties(new CommitmentPlanProperties().withCommitmentPlanGuid("grjguufzd")
+                .withHostingModel(HostingModel.CONNECTED_CONTAINER)
+                .withPlanType("tfih")
+                .withCurrent(new CommitmentPeriod().withTier("otzi").withCount(1709728841))
+                .withAutoRenew(false)
+                .withNext(new CommitmentPeriod().withTier("nvyq").withCount(686807657)));
         model = BinaryData.fromObject(model).toObject(CommitmentPlanInner.class);
         Assertions.assertEquals("gzpfrla", model.kind());
         Assertions.assertEquals("zrnw", model.sku().name());
@@ -82,6 +74,7 @@ public final class CommitmentPlanInnerTests {
         Assertions.assertEquals(686807657, model.properties().next().count());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,7 +11,8 @@ public final class ConnectionStatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionStateProperties model = BinaryData
-            .fromString("{\"actionsRequired\":\"klelssxb\",\"description\":\"c\",\"status\":\"zujksrlsmdes\"}")
+            .fromString(
+                "{\"actionsRequired\":\"lejchcsr\",\"description\":\"knmzlanrupdwvnp\",\"status\":\"nzqtpjhmqrhvt\"}")
             .toObject(ConnectionStateProperties.class);
     }
 

@@ -18,7 +18,7 @@ public class DictionaryExamplesTest extends TextTranslationClientBase {
         ArrayList<DictionaryExampleTextItem> content = new ArrayList<>();
         content.add(new DictionaryExampleTextItem("fly", "volar"));
 
-        List<DictionaryExampleItem> response = getTranslationClient().lookupDictionaryExamples("en", "es", content, null);
+        List<DictionaryExampleItem> response = getTranslationClient().lookupDictionaryExamples("en", "es", content);
 
         assertEquals("fly", response.get(0).getNormalizedSource());
         assertEquals("volar", response.get(0).getNormalizedTarget());
@@ -31,7 +31,7 @@ public class DictionaryExamplesTest extends TextTranslationClientBase {
         content.add(new DictionaryExampleTextItem("fly", "volar"));
         content.add(new DictionaryExampleTextItem("beef", "came"));
 
-        List<DictionaryExampleItem> response = getTranslationClient().lookupDictionaryExamples("en", "es", content, null);
+        List<DictionaryExampleItem> response = getTranslationClient().lookupDictionaryExamples("en", "es", content);
         assertEquals(2, response.size());
     }
 }

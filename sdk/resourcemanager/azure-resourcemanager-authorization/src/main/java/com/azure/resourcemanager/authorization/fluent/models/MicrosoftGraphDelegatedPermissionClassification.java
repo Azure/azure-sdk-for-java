@@ -5,48 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** delegatedPermissionClassification. */
+/**
+ * delegatedPermissionClassification.
+ */
 @Fluent
 public final class MicrosoftGraphDelegatedPermissionClassification extends MicrosoftGraphEntity {
     /*
      * permissionClassificationType
      */
-    @JsonProperty(value = "classification")
     private MicrosoftGraphPermissionClassificationType classification;
 
     /*
      * The unique identifier (id) for the delegated permission listed in the oauth2PermissionScopes collection of the
      * servicePrincipal. Required on create. Does not support $filter.
      */
-    @JsonProperty(value = "permissionId")
     private String permissionId;
 
     /*
      * The claim value (value) for the delegated permission listed in the oauth2PermissionScopes collection of the
      * servicePrincipal. Does not support $filter.
      */
-    @JsonProperty(value = "permissionName")
     private String permissionName;
 
     /*
      * delegatedPermissionClassification
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDelegatedPermissionClassification class. */
+    /**
+     * Creates an instance of MicrosoftGraphDelegatedPermissionClassification class.
+     */
     public MicrosoftGraphDelegatedPermissionClassification() {
     }
 
     /**
      * Get the classification property: permissionClassificationType.
-     *
+     * 
      * @return the classification value.
      */
     public MicrosoftGraphPermissionClassificationType classification() {
@@ -55,12 +56,12 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
 
     /**
      * Set the classification property: permissionClassificationType.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the MicrosoftGraphDelegatedPermissionClassification object itself.
      */
-    public MicrosoftGraphDelegatedPermissionClassification withClassification(
-        MicrosoftGraphPermissionClassificationType classification) {
+    public MicrosoftGraphDelegatedPermissionClassification
+        withClassification(MicrosoftGraphPermissionClassificationType classification) {
         this.classification = classification;
         return this;
     }
@@ -68,7 +69,7 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
     /**
      * Get the permissionId property: The unique identifier (id) for the delegated permission listed in the
      * oauth2PermissionScopes collection of the servicePrincipal. Required on create. Does not support $filter.
-     *
+     * 
      * @return the permissionId value.
      */
     public String permissionId() {
@@ -78,7 +79,7 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
     /**
      * Set the permissionId property: The unique identifier (id) for the delegated permission listed in the
      * oauth2PermissionScopes collection of the servicePrincipal. Required on create. Does not support $filter.
-     *
+     * 
      * @param permissionId the permissionId value to set.
      * @return the MicrosoftGraphDelegatedPermissionClassification object itself.
      */
@@ -90,7 +91,7 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
     /**
      * Get the permissionName property: The claim value (value) for the delegated permission listed in the
      * oauth2PermissionScopes collection of the servicePrincipal. Does not support $filter.
-     *
+     * 
      * @return the permissionName value.
      */
     public String permissionName() {
@@ -100,7 +101,7 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
     /**
      * Set the permissionName property: The claim value (value) for the delegated permission listed in the
      * oauth2PermissionScopes collection of the servicePrincipal. Does not support $filter.
-     *
+     * 
      * @param permissionName the permissionName value to set.
      * @return the MicrosoftGraphDelegatedPermissionClassification object itself.
      */
@@ -111,35 +112,28 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
 
     /**
      * Get the additionalProperties property: delegatedPermissionClassification.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: delegatedPermissionClassification.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDelegatedPermissionClassification object itself.
      */
-    public MicrosoftGraphDelegatedPermissionClassification withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphDelegatedPermissionClassification
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDelegatedPermissionClassification withId(String id) {
         super.withId(id);
@@ -148,11 +142,70 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("classification",
+            this.classification == null ? null : this.classification.toString());
+        jsonWriter.writeStringField("permissionId", this.permissionId);
+        jsonWriter.writeStringField("permissionName", this.permissionName);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDelegatedPermissionClassification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDelegatedPermissionClassification if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDelegatedPermissionClassification.
+     */
+    public static MicrosoftGraphDelegatedPermissionClassification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDelegatedPermissionClassification deserializedMicrosoftGraphDelegatedPermissionClassification
+                = new MicrosoftGraphDelegatedPermissionClassification();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDelegatedPermissionClassification.withId(reader.getString());
+                } else if ("classification".equals(fieldName)) {
+                    deserializedMicrosoftGraphDelegatedPermissionClassification.classification
+                        = MicrosoftGraphPermissionClassificationType.fromString(reader.getString());
+                } else if ("permissionId".equals(fieldName)) {
+                    deserializedMicrosoftGraphDelegatedPermissionClassification.permissionId = reader.getString();
+                } else if ("permissionName".equals(fieldName)) {
+                    deserializedMicrosoftGraphDelegatedPermissionClassification.permissionName = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDelegatedPermissionClassification.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDelegatedPermissionClassification;
+        });
     }
 }

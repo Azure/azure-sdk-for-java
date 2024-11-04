@@ -42,8 +42,9 @@ public class AnalyzeLayoutAsync {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
+                null,
                 null,
                 null,
                 null,
@@ -64,7 +65,7 @@ public class AnalyzeLayoutAsync {
                             new RuntimeException(
                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                     }
-                }).map(AnalyzeResultOperation::getAnalyzeResult);
+                });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             // pages

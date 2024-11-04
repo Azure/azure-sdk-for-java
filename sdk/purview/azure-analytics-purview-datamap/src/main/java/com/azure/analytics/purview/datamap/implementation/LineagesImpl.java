@@ -75,7 +75,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/{guid}")
@@ -85,10 +85,10 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/lineage/{guid}/next")
+        @Get("/lineage/{guid}/next/")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -96,10 +96,10 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getNextPage(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/lineage/{guid}/next")
+        @Get("/lineage/{guid}/next/")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -107,7 +107,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getNextPageSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("guid") String guid,
-            @QueryParam("direction") String direction, @HeaderParam("accept") String accept,
+            @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/uniqueAttribute/type/{typeName}")
@@ -118,7 +118,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getByUniqueAttribute(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @QueryParam("direction") String direction,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/lineage/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({ 200 })
@@ -128,7 +128,7 @@ public final class LineagesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getByUniqueAttributeSync(@HostParam("endpoint") String endpoint,
             @PathParam("typeName") String typeName, @QueryParam("direction") String direction,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -142,7 +142,8 @@ public final class LineagesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -223,7 +224,8 @@ public final class LineagesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -255,7 +257,8 @@ public final class LineagesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -336,7 +339,8 @@ public final class LineagesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -366,7 +370,8 @@ public final class LineagesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -447,7 +452,8 @@ public final class LineagesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -479,7 +485,8 @@ public final class LineagesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -560,7 +567,8 @@ public final class LineagesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -608,7 +616,8 @@ public final class LineagesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -689,7 +698,8 @@ public final class LineagesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -738,7 +748,8 @@ public final class LineagesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -819,7 +830,8 @@ public final class LineagesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",

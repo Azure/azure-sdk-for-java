@@ -16,40 +16,33 @@ public final class FleetUpdateStrategyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetUpdateStrategyProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"kdeemaofmxagkvtm\",\"groups\":[{\"name\":\"qkrhahvljua\"},{\"name\":\"aquhcdhm\"},{\"name\":\"ualaexqpvfadmw\"},{\"name\":\"rcrgvx\"}],\"afterStageWaitInSeconds\":886462710},{\"name\":\"omzlfmi\",\"groups\":[{\"name\":\"bnbbeldawkz\"}],\"afterStageWaitInSeconds\":70118233},{\"name\":\"io\",\"groups\":[{\"name\":\"hakauhashsf\"},{\"name\":\"xosow\"},{\"name\":\"xcug\"}],\"afterStageWaitInSeconds\":229570932},{\"name\":\"ooxdjebwpuc\",\"groups\":[{\"name\":\"vo\"},{\"name\":\"bvmeuecivy\"},{\"name\":\"zceuojgjrw\"},{\"name\":\"ueiotwmcdyt\"}],\"afterStageWaitInSeconds\":663876246}]}}")
+            "{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"xw\",\"groups\":[{\"name\":\"whonowk\"},{\"name\":\"shwankixzbinje\"},{\"name\":\"uttmrywnuzoqft\"}],\"afterStageWaitInSeconds\":1348586485},{\"name\":\"zrnkcqvyxlwh\",\"groups\":[{\"name\":\"icohoqqnwvl\"},{\"name\":\"yav\"},{\"name\":\"hheunmmqhgyx\"},{\"name\":\"konocu\"}],\"afterStageWaitInSeconds\":470359400},{\"name\":\"lyaxuc\",\"groups\":[{\"name\":\"qszf\"},{\"name\":\"beypewrmjmw\"}],\"afterStageWaitInSeconds\":341479391}]}}")
             .toObject(FleetUpdateStrategyProperties.class);
-        Assertions.assertEquals("kdeemaofmxagkvtm", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("qkrhahvljua", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(886462710, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("xw", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("whonowk", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1348586485, model.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetUpdateStrategyProperties model
-            = new FleetUpdateStrategyProperties()
-                .withStrategy(
-                    new UpdateRunStrategy()
-                        .withStages(Arrays.asList(
-                            new UpdateStage().withName("kdeemaofmxagkvtm")
-                                .withGroups(Arrays.asList(new UpdateGroup().withName("qkrhahvljua"),
-                                    new UpdateGroup().withName("aquhcdhm"),
-                                    new UpdateGroup().withName("ualaexqpvfadmw"), new UpdateGroup().withName("rcrgvx")))
-                                .withAfterStageWaitInSeconds(886462710),
-                            new UpdateStage().withName("omzlfmi")
-                                .withGroups(Arrays.asList(new UpdateGroup().withName("bnbbeldawkz")))
-                                .withAfterStageWaitInSeconds(70118233),
-                            new UpdateStage().withName("io")
-                                .withGroups(Arrays.asList(new UpdateGroup().withName("hakauhashsf"),
-                                    new UpdateGroup().withName("xosow"), new UpdateGroup().withName("xcug")))
-                                .withAfterStageWaitInSeconds(229570932),
-                            new UpdateStage().withName("ooxdjebwpuc")
-                                .withGroups(Arrays.asList(new UpdateGroup().withName("vo"),
-                                    new UpdateGroup().withName("bvmeuecivy"), new UpdateGroup().withName("zceuojgjrw"),
-                                    new UpdateGroup().withName("ueiotwmcdyt")))
-                                .withAfterStageWaitInSeconds(663876246))));
+            = new FleetUpdateStrategyProperties().withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
+                new UpdateStage().withName("xw")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("whonowk"),
+                        new UpdateGroup().withName("shwankixzbinje"), new UpdateGroup().withName("uttmrywnuzoqft")))
+                    .withAfterStageWaitInSeconds(1348586485),
+                new UpdateStage().withName("zrnkcqvyxlwh")
+                    .withGroups(
+                        Arrays.asList(new UpdateGroup().withName("icohoqqnwvl"), new UpdateGroup().withName("yav"),
+                            new UpdateGroup().withName("hheunmmqhgyx"), new UpdateGroup().withName("konocu")))
+                    .withAfterStageWaitInSeconds(470359400),
+                new UpdateStage().withName("lyaxuc")
+                    .withGroups(
+                        Arrays.asList(new UpdateGroup().withName("qszf"), new UpdateGroup().withName("beypewrmjmw")))
+                    .withAfterStageWaitInSeconds(341479391))));
         model = BinaryData.fromObject(model).toObject(FleetUpdateStrategyProperties.class);
-        Assertions.assertEquals("kdeemaofmxagkvtm", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("qkrhahvljua", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(886462710, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("xw", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("whonowk", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1348586485, model.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

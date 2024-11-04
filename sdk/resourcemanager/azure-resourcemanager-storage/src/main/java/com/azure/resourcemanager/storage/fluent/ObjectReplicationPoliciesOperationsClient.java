@@ -19,11 +19,11 @@ import reactor.core.publisher.Mono;
 public interface ObjectReplicationPoliciesOperationsClient {
     /**
      * List the object replication policies associated with the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -34,11 +34,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * List the object replication policies associated with the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,11 +49,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * List the object replication policies associated with the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,57 +65,57 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object replication policy of the storage account by policy ID along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId);
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID on successful completion of {@link
-     *     Mono}.
+     * @return the object replication policy of the storage account by policy ID on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ObjectReplicationPolicyInner> getAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Mono<ObjectReplicationPolicyInner> getAsync(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId);
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,20 +123,20 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the object replication policy of the storage account by policy ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ObjectReplicationPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
+    Response<ObjectReplicationPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId, Context context);
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,68 +147,62 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties);
+    Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties);
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties);
+    Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId, ObjectReplicationPolicyInner properties);
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,69 +210,62 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the replication policy between two storage accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties,
-        Context context);
+    Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId, ObjectReplicationPolicyInner properties, Context context);
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ObjectReplicationPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties);
+    ObjectReplicationPolicyInner createOrUpdate(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId, ObjectReplicationPolicyInner properties);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String objectReplicationPolicyId);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,15 +276,15 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -305,20 +292,20 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId,
+        Context context);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * on the destination account first. For the source account, provide the value of the policy ID that is returned
+     * when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     * file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -32,7 +32,9 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * OperationsList.json
      */
     /**
      * Sample code: Retrieve operations list.
@@ -55,15 +57,22 @@ import com.azure.resourcemanager.imagebuilder.models.SourceImageTriggerPropertie
  */
 public final class TriggersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CreateSourceImageTrigger.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * CreateSourceImageTrigger.json
      */
     /**
      * Sample code: Create or update a source image type trigger.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void createOrUpdateASourceImageTypeTrigger(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.triggers().define("source").withExistingImageTemplate("myResourceGroup", "myImageTemplate").withProperties(new SourceImageTriggerProperties()).create();
+    public static void
+        createOrUpdateASourceImageTypeTrigger(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        manager.triggers()
+            .define("source")
+            .withExistingImageTemplate("myResourceGroup", "myImageTemplate")
+            .withProperties(new SourceImageTriggerProperties())
+            .create();
     }
 }
 ```
@@ -76,7 +85,9 @@ public final class TriggersCreateOrUpdateSamples {
  */
 public final class TriggersDeleteSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/DeleteTrigger.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * DeleteTrigger.json
      */
     /**
      * Sample code: Delete a trigger resource.
@@ -97,7 +108,9 @@ public final class TriggersDeleteSamples {
  */
 public final class TriggersGetSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetTrigger.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/GetTrigger.
+     * json
      */
     /**
      * Sample code: Get a trigger resource.
@@ -105,7 +118,8 @@ public final class TriggersGetSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void getATriggerResource(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.triggers().getWithResponse("myResourceGroup", "myImageTemplate", "source", com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getWithResponse("myResourceGroup", "myImageTemplate", "source", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -118,7 +132,9 @@ public final class TriggersGetSamples {
  */
 public final class TriggersListByImageTemplateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListTriggers.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * ListTriggers.json
      */
     /**
      * Sample code: List triggers by image template.
@@ -139,15 +155,19 @@ public final class TriggersListByImageTemplateSamples {
  */
 public final class VirtualMachineImageTemplatesCancelSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CancelImageBuild.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * CancelImageBuild.json
      */
     /**
      * Sample code: Cancel the image build based on the imageTemplate.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void cancelTheImageBuildBasedOnTheImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().cancel("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
+    public static void
+        cancelTheImageBuildBasedOnTheImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        manager.virtualMachineImageTemplates()
+            .cancel("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -169,34 +189,114 @@ import com.azure.resourcemanager.imagebuilder.models.VirtualNetworkConfig;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Samples for VirtualMachineImageTemplates CreateOrUpdate.
  */
 public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CreateImageTemplateLinux.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * CreateImageTemplateLinux.json
      */
     /**
      * Sample code: Create an Image Template for Linux.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void createAnImageTemplateForLinux(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().define("myImageTemplate").withRegion("westus").withExistingResourceGroup("myResourceGroup").withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(mapOf("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1", new UserAssignedIdentity()))).withTags(mapOf("imagetemplate_tag1", "IT_T1", "imagetemplate_tag2", "IT_T2")).withSource(new ImageTemplateManagedImageSource().withImageId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/images/source_image")).withCustomize(Arrays.asList(new ImageTemplateShellCustomizer().withName("Shell Customizer Example").withScriptUri("https://example.com/path/to/script.sh"))).withDistribute(Arrays.asList(new ImageTemplateManagedImageDistributor().withRunOutputName("image_it_pir_1").withArtifactTags(mapOf("tagName", "value")).withImageId("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1").withLocation("1_location"))).withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3").withOsDiskSizeGB(64).withVnetConfig(new VirtualNetworkConfig().withSubnetId("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet_name/subnets/subnet_name"))).create();
+    public static void
+        createAnImageTemplateForLinux(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        manager.virtualMachineImageTemplates()
+            .define("myImageTemplate")
+            .withRegion("westus")
+            .withExistingResourceGroup("myResourceGroup")
+            .withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1",
+                    new UserAssignedIdentity())))
+            .withTags(mapOf("imagetemplate_tag1", "IT_T1", "imagetemplate_tag2", "IT_T2"))
+            .withSource(new ImageTemplateManagedImageSource().withImageId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/images/source_image"))
+            .withCustomize(Arrays.asList(new ImageTemplateShellCustomizer().withName("Shell Customizer Example")
+                .withScriptUri("https://example.com/path/to/script.sh")))
+            .withDistribute(Arrays.asList(new ImageTemplateManagedImageDistributor().withRunOutputName("image_it_pir_1")
+                .withArtifactTags(mapOf("tagName", "value"))
+                .withImageId(
+                    "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1")
+                .withLocation("1_location")))
+            .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3")
+                .withOsDiskSizeGB(64)
+                .withVnetConfig(new VirtualNetworkConfig().withSubnetId(
+                    "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet_name/subnets/subnet_name")))
+            .create();
     }
 
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/CreateImageTemplateWindows.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * CreateImageTemplateWindows.json
      */
     /**
      * Sample code: Create an Image Template for Windows.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void createAnImageTemplateForWindows(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().define("myImageTemplate").withRegion("westus").withExistingResourceGroup("myResourceGroup").withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(mapOf("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1", new UserAssignedIdentity()))).withTags(mapOf("imagetemplate_tag1", "IT_T1", "imagetemplate_tag2", "IT_T2")).withSource(new ImageTemplateManagedImageSource().withImageId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/images/source_image")).withCustomize(Arrays.asList(new ImageTemplatePowerShellCustomizer().withName("PowerShell (inline) Customizer Example").withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3")), new ImageTemplatePowerShellCustomizer().withName("PowerShell (inline) Customizer Elevated user Example").withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3")).withRunElevated(true), new ImageTemplatePowerShellCustomizer().withName("PowerShell (inline) Customizer Elevated Local System user Example").withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3")).withRunElevated(true).withRunAsSystem(true), new ImageTemplatePowerShellCustomizer().withName("PowerShell (script) Customizer Example").withScriptUri("https://example.com/path/to/script.ps1").withValidExitCodes(Arrays.asList(0, 1)), new ImageTemplatePowerShellCustomizer().withName("PowerShell (script) Customizer Elevated Local System user Example").withScriptUri("https://example.com/path/to/script.ps1").withRunElevated(true).withValidExitCodes(Arrays.asList(0, 1)), new ImageTemplatePowerShellCustomizer().withName("PowerShell (script) Customizer Elevated Local System user Example").withScriptUri("https://example.com/path/to/script.ps1").withRunElevated(true).withRunAsSystem(true).withValidExitCodes(Arrays.asList(0, 1)), new ImageTemplateRestartCustomizer().withName("Restart Customizer Example").withRestartCommand("shutdown /f /r /t 0 /c \"packer restart\"").withRestartCheckCommand("powershell -command \"& {Write-Output 'restarted.'}\"").withRestartTimeout("10m"), new ImageTemplateWindowsUpdateCustomizer().withName("Windows Update Customizer Example").withSearchCriteria("BrowseOnly=0 and IsInstalled=0").withFilters(Arrays.asList("$_.BrowseOnly")).withUpdateLimit(100))).withDistribute(Arrays.asList(new ImageTemplateManagedImageDistributor().withRunOutputName("image_it_pir_1").withArtifactTags(mapOf("tagName", "value")).withImageId("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1").withLocation("1_location"))).withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3").withOsDiskSizeGB(64).withVnetConfig(new VirtualNetworkConfig().withSubnetId("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet_name/subnets/subnet_name"))).create();
+    public static void
+        createAnImageTemplateForWindows(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        manager.virtualMachineImageTemplates()
+            .define("myImageTemplate")
+            .withRegion("westus")
+            .withExistingResourceGroup("myResourceGroup")
+            .withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1",
+                    new UserAssignedIdentity())))
+            .withTags(mapOf("imagetemplate_tag1", "IT_T1", "imagetemplate_tag2", "IT_T2"))
+            .withSource(new ImageTemplateManagedImageSource().withImageId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/images/source_image"))
+            .withCustomize(Arrays.asList(
+                new ImageTemplatePowerShellCustomizer().withName("PowerShell (inline) Customizer Example")
+                    .withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3")),
+                new ImageTemplatePowerShellCustomizer().withName("PowerShell (inline) Customizer Elevated user Example")
+                    .withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3"))
+                    .withRunElevated(true),
+                new ImageTemplatePowerShellCustomizer()
+                    .withName("PowerShell (inline) Customizer Elevated Local System user Example")
+                    .withInline(Arrays.asList("Powershell command-1", "Powershell command-2", "Powershell command-3"))
+                    .withRunElevated(true)
+                    .withRunAsSystem(true),
+                new ImageTemplatePowerShellCustomizer().withName("PowerShell (script) Customizer Example")
+                    .withScriptUri("https://example.com/path/to/script.ps1")
+                    .withValidExitCodes(Arrays.asList(0, 1)),
+                new ImageTemplatePowerShellCustomizer()
+                    .withName("PowerShell (script) Customizer Elevated Local System user Example")
+                    .withScriptUri("https://example.com/path/to/script.ps1")
+                    .withRunElevated(true)
+                    .withValidExitCodes(Arrays.asList(0, 1)),
+                new ImageTemplatePowerShellCustomizer()
+                    .withName("PowerShell (script) Customizer Elevated Local System user Example")
+                    .withScriptUri("https://example.com/path/to/script.ps1")
+                    .withRunElevated(true)
+                    .withRunAsSystem(true)
+                    .withValidExitCodes(Arrays.asList(0, 1)),
+                new ImageTemplateRestartCustomizer().withName("Restart Customizer Example")
+                    .withRestartCommand("shutdown /f /r /t 0 /c \"packer restart\"")
+                    .withRestartCheckCommand("powershell -command \"& {Write-Output 'restarted.'}\"")
+                    .withRestartTimeout("10m"),
+                new ImageTemplateWindowsUpdateCustomizer().withName("Windows Update Customizer Example")
+                    .withSearchCriteria("BrowseOnly=0 and IsInstalled=0")
+                    .withFilters(Arrays.asList("$_.BrowseOnly"))
+                    .withUpdateLimit(100)))
+            .withDistribute(Arrays.asList(new ImageTemplateManagedImageDistributor().withRunOutputName("image_it_pir_1")
+                .withArtifactTags(mapOf("tagName", "value"))
+                .withImageId(
+                    "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1")
+                .withLocation("1_location")))
+            .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_D2s_v3")
+                .withOsDiskSizeGB(64)
+                .withVnetConfig(new VirtualNetworkConfig().withSubnetId(
+                    "/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet_name/subnets/subnet_name")))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -221,7 +321,9 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
  */
 public final class VirtualMachineImageTemplatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/DeleteImageTemplate.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * DeleteImageTemplate.json
      */
     /**
      * Sample code: Delete an Image Template.
@@ -229,7 +331,8 @@ public final class VirtualMachineImageTemplatesDeleteSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void deleteAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().delete("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
+        manager.virtualMachineImageTemplates()
+            .delete("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -242,7 +345,9 @@ public final class VirtualMachineImageTemplatesDeleteSamples {
  */
 public final class VirtualMachineImageTemplatesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetImageTemplate.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * GetImageTemplate.json
      */
     /**
      * Sample code: Retrieve an Image Template.
@@ -250,7 +355,8 @@ public final class VirtualMachineImageTemplatesGetByResourceGroupSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void retrieveAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
+        manager.virtualMachineImageTemplates()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -263,7 +369,9 @@ public final class VirtualMachineImageTemplatesGetByResourceGroupSamples {
  */
 public final class VirtualMachineImageTemplatesGetRunOutputSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/GetRunOutput.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * GetRunOutput.json
      */
     /**
      * Sample code: Retrieve single runOutput.
@@ -271,7 +379,9 @@ public final class VirtualMachineImageTemplatesGetRunOutputSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void retrieveSingleRunOutput(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().getRunOutputWithResponse("myResourceGroup", "myImageTemplate", "myManagedImageOutput", com.azure.core.util.Context.NONE);
+        manager.virtualMachineImageTemplates()
+            .getRunOutputWithResponse("myResourceGroup", "myImageTemplate", "myManagedImageOutput",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -284,7 +394,9 @@ public final class VirtualMachineImageTemplatesGetRunOutputSamples {
  */
 public final class VirtualMachineImageTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListImageTemplates.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * ListImageTemplates.json
      */
     /**
      * Sample code: List images by subscription.
@@ -305,7 +417,9 @@ public final class VirtualMachineImageTemplatesListSamples {
  */
 public final class VirtualMachineImageTemplatesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListImageTemplatesByRg.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * ListImageTemplatesByRg.json
      */
     /**
      * Sample code: List images by resource group.
@@ -326,15 +440,19 @@ public final class VirtualMachineImageTemplatesListByResourceGroupSamples {
  */
 public final class VirtualMachineImageTemplatesListRunOutputsSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/ListRunOutputs.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * ListRunOutputs.json
      */
     /**
      * Sample code: Retrieve a list of all outputs created by the last run of an Image Template.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void retrieveAListOfAllOutputsCreatedByTheLastRunOfAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().listRunOutputs("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
+    public static void retrieveAListOfAllOutputsCreatedByTheLastRunOfAnImageTemplate(
+        com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        manager.virtualMachineImageTemplates()
+            .listRunOutputs("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -347,15 +465,19 @@ public final class VirtualMachineImageTemplatesListRunOutputsSamples {
  */
 public final class VirtualMachineImageTemplatesRunSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/RunImageTemplate.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * RunImageTemplate.json
      */
     /**
      * Sample code: Create image(s) from existing imageTemplate.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void createImageSFromExistingImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().run("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
+    public static void
+        createImageSFromExistingImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        manager.virtualMachineImageTemplates()
+            .run("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -365,38 +487,75 @@ public final class VirtualMachineImageTemplatesRunSamples {
 ```java
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParametersProperties;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
 import com.azure.resourcemanager.imagebuilder.models.ResourceIdentityType;
+import com.azure.resourcemanager.imagebuilder.models.VirtualNetworkConfig;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Samples for VirtualMachineImageTemplates Update.
  */
 public final class VirtualMachineImageTemplatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/UpdateImageTemplateToRemoveIdentities.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * UpdateImageTemplateToRemoveIdentities.json
      */
     /**
      * Sample code: Remove identities for an Image Template.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void removeIdentitiesForAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        ImageTemplate resource = manager.virtualMachineImageTemplates().getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE).getValue();
+    public static void
+        removeIdentitiesForAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        ImageTemplate resource = manager.virtualMachineImageTemplates()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.NONE)).apply();
     }
 
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/UpdateImageTemplateTags.json
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * UpdateImageTemplateVmProfile.json
+     */
+    /**
+     * Sample code: Update parameters for vm profile.
+     * 
+     * @param manager Entry point to ImageBuilderManager.
+     */
+    public static void
+        updateParametersForVmProfile(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        ImageTemplate resource = manager.virtualMachineImageTemplates()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ImageTemplateUpdateParametersProperties().withVmProfile(new ImageTemplateVmProfile()
+                .withVmSize("{updated_vmsize}")
+                .withOsDiskSizeGB(127)
+                .withVnetConfig(new VirtualNetworkConfig().withSubnetId("{updated_aci_subnet}")
+                    .withContainerInstanceSubnetId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/subnetname"))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
+     * UpdateImageTemplateTags.json
      */
     /**
      * Sample code: Update the tags for an Image Template.
      * 
      * @param manager Entry point to ImageBuilderManager.
      */
-    public static void updateTheTagsForAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        ImageTemplate resource = manager.virtualMachineImageTemplates().getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE).getValue();
+    public static void
+        updateTheTagsForAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
+        ImageTemplate resource = manager.virtualMachineImageTemplates()
+            .getByResourceGroupWithResponse("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("new-tag", "new-value")).apply();
     }
 

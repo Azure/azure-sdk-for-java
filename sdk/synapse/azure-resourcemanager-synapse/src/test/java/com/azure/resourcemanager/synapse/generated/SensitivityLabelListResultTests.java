@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.SensitivityLabelListResult;
 public final class SensitivityLabelListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"schemaName\":\"irels\",\"tableName\":\"aenwabf\",\"columnName\":\"kl\",\"labelName\":\"xbjhwuaanozjosph\",\"labelId\":\"ulpjr\",\"informationType\":\"ag\",\"informationTypeId\":\"vimjwos\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"skfc\",\"id\":\"tq\",\"name\":\"miekkezzikhlyfjh\",\"type\":\"gqggebdunygae\"},{\"properties\":{\"schemaName\":\"bqfatpxllrxcyjmo\",\"tableName\":\"su\",\"columnName\":\"r\",\"labelName\":\"wdmjsjqbjhhyx\",\"labelId\":\"wlycoduhpkxkg\",\"informationType\":\"areqna\",\"informationTypeId\":\"qugjhkycube\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"fwqmzqalkrmn\",\"id\":\"i\",\"name\":\"pxacqqudfn\",\"type\":\"yxbaaabjyvayf\"},{\"properties\":{\"schemaName\":\"rzrtuzqogsex\",\"tableName\":\"vfdnwnwmewzsyyce\",\"columnName\":\"soibjudpfrx\",\"labelName\":\"thzvaytdwkqbrqu\",\"labelId\":\"axhexiilivp\",\"informationType\":\"iirqtd\",\"informationTypeId\":\"axoruzfgsquy\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"eptra\",\"id\":\"xje\",\"name\":\"wlwnwxuqlcv\",\"type\":\"dy\"}],\"nextLink\":\"tdooaoj\"}")
-                .toObject(SensitivityLabelListResult.class);
+        SensitivityLabelListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"schemaName\":\"b\",\"tableName\":\"oefki\",\"columnName\":\"vtpuqujmqlgk\",\"labelName\":\"tndoaongbjc\",\"labelId\":\"ujitcjedftww\",\"informationType\":\"zkoj\",\"informationTypeId\":\"c\",\"isDisabled\":true,\"rank\":\"Low\"},\"managedBy\":\"uicybxarzgszuf\",\"id\":\"x\",\"name\":\"iqopidoamciod\",\"type\":\"khazxkhnzbonlwn\"},{\"properties\":{\"schemaName\":\"gokdwbwhks\",\"tableName\":\"cmrvexzt\",\"columnName\":\"t\",\"labelName\":\"sfraoyzko\",\"labelId\":\"tlmngu\",\"informationType\":\"wqaldsyu\",\"informationTypeId\":\"imerqfobwyznk\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"pfhpagmhrskdsnfd\",\"id\":\"doakgtdlmkkzevdl\",\"name\":\"ewpusdsttwvogvb\",\"type\":\"ejdcngqqmoakuf\"}],\"nextLink\":\"jzrwrdgrtw\"}")
+            .toObject(SensitivityLabelListResult.class);
     }
 
     @org.junit.jupiter.api.Test

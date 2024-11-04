@@ -23,34 +23,28 @@ public final class NotificationRecipientUsersImpl implements NotificationRecipie
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public NotificationRecipientUsersImpl(
-        NotificationRecipientUsersClient innerClient,
+    public NotificationRecipientUsersImpl(NotificationRecipientUsersClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RecipientUserCollection> listByNotificationWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context) {
-        Response<RecipientUserCollectionInner> inner =
-            this
-                .serviceClient()
-                .listByNotificationWithResponse(resourceGroupName, serviceName, notificationName, context);
+    public Response<RecipientUserCollection> listByNotificationWithResponse(String resourceGroupName,
+        String serviceName, NotificationName notificationName, Context context) {
+        Response<RecipientUserCollectionInner> inner = this.serviceClient()
+            .listByNotificationWithResponse(resourceGroupName, serviceName, notificationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecipientUserCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RecipientUserCollection listByNotification(
-        String resourceGroupName, String serviceName, NotificationName notificationName) {
-        RecipientUserCollectionInner inner =
-            this.serviceClient().listByNotification(resourceGroupName, serviceName, notificationName);
+    public RecipientUserCollection listByNotification(String resourceGroupName, String serviceName,
+        NotificationName notificationName) {
+        RecipientUserCollectionInner inner
+            = this.serviceClient().listByNotification(resourceGroupName, serviceName, notificationName);
         if (inner != null) {
             return new RecipientUserCollectionImpl(inner, this.manager());
         } else {
@@ -58,47 +52,33 @@ public final class NotificationRecipientUsersImpl implements NotificationRecipie
         }
     }
 
-    public Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context) {
+        return this.serviceClient()
             .checkEntityExistsWithResponse(resourceGroupName, serviceName, notificationName, userId, context);
     }
 
-    public boolean checkEntityExists(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
+    public boolean checkEntityExists(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String userId) {
         return this.serviceClient().checkEntityExists(resourceGroupName, serviceName, notificationName, userId);
     }
 
-    public Response<RecipientUserContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context) {
-        Response<RecipientUserContractInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, notificationName, userId, context);
+    public Response<RecipientUserContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context) {
+        Response<RecipientUserContractInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, notificationName, userId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecipientUserContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RecipientUserContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
-        RecipientUserContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, notificationName, userId);
+    public RecipientUserContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId) {
+        RecipientUserContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, notificationName, userId);
         if (inner != null) {
             return new RecipientUserContractImpl(inner, this.manager());
         } else {
@@ -106,14 +86,9 @@ public final class NotificationRecipientUsersImpl implements NotificationRecipie
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, notificationName, userId, context);
     }
 

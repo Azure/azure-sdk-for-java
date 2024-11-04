@@ -22,69 +22,67 @@ public final class DatabricksSparkJarActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkJarActivity model = BinaryData.fromString(
-            "{\"type\":\"caxkivry\",\"typeProperties\":{\"mainClassName\":\"datac\",\"parameters\":[\"dataspyd\",\"dataladfcqkzcizu\",\"datagyljwmefpijwrvbu\",\"datahbwaiswbacgrysjg\"],\"libraries\":[{\"eduxyd\":\"datajupdcmpfwfdc\"},{\"nkhgg\":\"datapfdhfp\"}]},\"linkedServiceName\":{\"referenceName\":\"eqmtetnywgmeiiha\",\"parameters\":{\"jkcqednaeefzlwoh\":\"dataargetncfljwjrp\",\"eiqhbrdcgmyjmc\":\"databaaccglvixflcn\",\"rrvb\":\"datankp\",\"rsandmusud\":\"datavinkkteblrn\"}},\"policy\":{\"timeout\":\"datas\",\"retry\":\"datamzotcpffmik\",\"retryIntervalInSeconds\":1324064750,\"secureInput\":true,\"secureOutput\":false,\"\":{\"onejpjzqb\":\"datavi\",\"nlow\":\"dataut\",\"dqobngjbe\":\"dataatfalhnixo\"}},\"name\":\"bcxnnirnfuv\",\"description\":\"mep\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"svnotbe\",\"dependencyConditions\":[\"Succeeded\",\"Failed\"],\"\":{\"dtjcyvmsduodpm\":\"datawbtexigm\",\"ocqaejlebcy\":\"dataisggn\",\"g\":\"datapqwucprpw\",\"w\":\"datazdkcike\"}},{\"activity\":\"qial\",\"dependencyConditions\":[\"Skipped\"],\"\":{\"sfhxhulrekr\":\"dataraocep\",\"dnzrcjokgthy\":\"datay\",\"wlguesoivaory\":\"datayzr\"}},{\"activity\":\"fgwo\",\"dependencyConditions\":[\"Failed\",\"Skipped\",\"Failed\",\"Skipped\"],\"\":{\"tgmfjzqvi\":\"datat\",\"cocsmcqskrjnqaa\":\"datadhixd\",\"eox\":\"datayzjdrkcs\",\"wcqp\":\"datasfztlxqhyyxhzgx\"}},{\"activity\":\"rrmlkrroqsdvxdd\",\"dependencyConditions\":[\"Skipped\",\"Skipped\",\"Succeeded\"],\"\":{\"vswnnsbz\":\"databriykrxaevbur\"}}],\"userProperties\":[{\"name\":\"xbc\",\"value\":\"datakojynkhbtycfjwf\"},{\"name\":\"ia\",\"value\":\"datatsukdoy\"}],\"\":{\"vipxzzcxqdrqsu\":\"datazniekedxvw\",\"ptzqazwybbewjvyr\":\"dataekzqybpoxqwcusl\",\"osmp\":\"dataownbwrnbmcblmzar\",\"abhpdkrjlwrqheh\":\"dataajx\"}}")
+            "{\"type\":\"DatabricksSparkJar\",\"typeProperties\":{\"mainClassName\":\"databtymhh\",\"parameters\":[\"datacmwix\",\"datarvrpujb\"],\"libraries\":[{\"gteihmvxupqfaww\":\"datay\",\"snynvgf\":\"dataxqjhmfyvgmdwv\"}]},\"linkedServiceName\":{\"referenceName\":\"tokipndek\",\"parameters\":{\"rotnvxyeqdin\":\"datadrkddzkki\",\"xlpgrvtzj\":\"dataqsejtqoxeth\"}},\"policy\":{\"timeout\":\"datasrejqwylh\",\"retry\":\"datamho\",\"retryIntervalInSeconds\":1180067892,\"secureInput\":true,\"secureOutput\":false,\"\":{\"xtxhxfsknmrce\":\"dataomxyxnben\",\"woflfniislohftm\":\"datadfbdxwywdyqpkw\",\"rxryaicyvtsg\":\"datam\",\"qopoe\":\"datapmatubtejipqynrl\"}},\"name\":\"qf\",\"description\":\"xthcdzeuck\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"nikoybr\",\"dependencyConditions\":[\"Succeeded\",\"Succeeded\",\"Skipped\"],\"\":{\"ymis\":\"datatzhiku\",\"l\":\"dataoxmzvlofzdnvsr\"}},{\"activity\":\"wzuj\",\"dependencyConditions\":[\"Completed\"],\"\":{\"cxtxgrhaqbst\":\"datavxrqegk\",\"sffeql\":\"datadeuvsbsdcoq\",\"rjrx\":\"datakpvsij\",\"occeyeqsehkq\":\"datacnfyknx\"}},{\"activity\":\"lldeksgejmpkqtj\",\"dependencyConditions\":[\"Completed\",\"Failed\",\"Succeeded\",\"Completed\"],\"\":{\"uoqbclhn\":\"datahpkaamoovrbv\",\"kzhqpkckwaafu\":\"dataqxuxrggx\",\"hpijurqoihxibji\":\"datascjaw\"}},{\"activity\":\"m\",\"dependencyConditions\":[\"Completed\"],\"\":{\"nbluxomzg\":\"datafurdjjzsijmsaa\",\"wuiopgyunf\":\"datajmnvukovxfkxnevc\"}}],\"userProperties\":[{\"name\":\"oycg\",\"value\":\"datakik\"},{\"name\":\"q\",\"value\":\"datadiihmpmfa\"},{\"name\":\"inodekp\",\"value\":\"datacpwcxfnuysrvxaym\"},{\"name\":\"ldorqprjevueyzg\",\"value\":\"datassog\"}],\"\":{\"eoma\":\"datavfvirgbguewtcq\",\"ojmxbyviykwrffxo\":\"datanwsgauwe\",\"cxpzje\":\"datawx\",\"npuquyatvsnkrxh\":\"dataoyqlcvtdyuozmtsj\"}}")
             .toObject(DatabricksSparkJarActivity.class);
-        Assertions.assertEquals("bcxnnirnfuv", model.name());
-        Assertions.assertEquals("mep", model.description());
+        Assertions.assertEquals("qf", model.name());
+        Assertions.assertEquals("xthcdzeuck", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("svnotbe", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("nikoybr", model.dependsOn().get(0).activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("xbc", model.userProperties().get(0).name());
-        Assertions.assertEquals("eqmtetnywgmeiiha", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1324064750, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("oycg", model.userProperties().get(0).name());
+        Assertions.assertEquals("tokipndek", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(1180067892, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(false, model.policy().secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkJarActivity model
-            = new DatabricksSparkJarActivity().withName("bcxnnirnfuv")
-                .withDescription("mep")
-                .withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                .withDependsOn(Arrays.asList(
-                    new ActivityDependency().withActivity("svnotbe")
-                        .withDependencyConditions(
-                            Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.FAILED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("qial")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("fgwo")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED, DependencyCondition.SKIPPED,
-                            DependencyCondition.FAILED, DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("rrmlkrroqsdvxdd")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED,
-                            DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED))
-                        .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("xbc").withValue("datakojynkhbtycfjwf"),
-                    new UserProperty().withName("ia").withValue("datatsukdoy")))
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("eqmtetnywgmeiiha")
-                    .withParameters(mapOf("jkcqednaeefzlwoh", "dataargetncfljwjrp", "eiqhbrdcgmyjmc",
-                        "databaaccglvixflcn", "rrvb", "datankp", "rsandmusud", "datavinkkteblrn")))
-                .withPolicy(new ActivityPolicy().withTimeout("datas")
-                    .withRetry("datamzotcpffmik")
-                    .withRetryIntervalInSeconds(1324064750)
-                    .withSecureInput(true)
-                    .withSecureOutput(false)
-                    .withAdditionalProperties(mapOf()))
-                .withMainClassName("datac")
-                .withParameters(
-                    Arrays.asList("dataspyd", "dataladfcqkzcizu", "datagyljwmefpijwrvbu", "datahbwaiswbacgrysjg"))
-                .withLibraries(Arrays.asList(mapOf("eduxyd", "datajupdcmpfwfdc"), mapOf("nkhgg", "datapfdhfp")));
+        DatabricksSparkJarActivity model = new DatabricksSparkJarActivity().withName("qf")
+            .withDescription("xthcdzeuck")
+            .withState(ActivityState.ACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+            .withDependsOn(Arrays.asList(
+                new ActivityDependency().withActivity("nikoybr")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED,
+                        DependencyCondition.SUCCEEDED, DependencyCondition.SKIPPED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("wzuj")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("lldeksgejmpkqtj")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED,
+                        DependencyCondition.SUCCEEDED, DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("m")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("oycg").withValue("datakik"),
+                new UserProperty().withName("q").withValue("datadiihmpmfa"),
+                new UserProperty().withName("inodekp").withValue("datacpwcxfnuysrvxaym"),
+                new UserProperty().withName("ldorqprjevueyzg").withValue("datassog")))
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tokipndek")
+                .withParameters(mapOf("rotnvxyeqdin", "datadrkddzkki", "xlpgrvtzj", "dataqsejtqoxeth")))
+            .withPolicy(new ActivityPolicy().withTimeout("datasrejqwylh")
+                .withRetry("datamho")
+                .withRetryIntervalInSeconds(1180067892)
+                .withSecureInput(true)
+                .withSecureOutput(false)
+                .withAdditionalProperties(mapOf()))
+            .withMainClassName("databtymhh")
+            .withParameters(Arrays.asList("datacmwix", "datarvrpujb"))
+            .withLibraries(Arrays.asList(mapOf("gteihmvxupqfaww", "datay", "snynvgf", "dataxqjhmfyvgmdwv")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkJarActivity.class);
-        Assertions.assertEquals("bcxnnirnfuv", model.name());
-        Assertions.assertEquals("mep", model.description());
+        Assertions.assertEquals("qf", model.name());
+        Assertions.assertEquals("xthcdzeuck", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("svnotbe", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("nikoybr", model.dependsOn().get(0).activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("xbc", model.userProperties().get(0).name());
-        Assertions.assertEquals("eqmtetnywgmeiiha", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1324064750, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("oycg", model.userProperties().get(0).name());
+        Assertions.assertEquals("tokipndek", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(1180067892, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(false, model.policy().secureOutput());
     }

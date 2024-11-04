@@ -10,7 +10,7 @@ import com.azure.resourcemanager.datafactory.models.SecretBase;
 public final class SecretBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecretBase model = BinaryData.fromString("{\"type\":\"hydwbdbfgrlp\"}").toObject(SecretBase.class);
+        SecretBase model = BinaryData.fromString("{\"type\":\"SecretBase\"}").toObject(SecretBase.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -6,7 +6,11 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,83 +18,70 @@ import java.util.List;
  * Certificate resource specific properties.
  */
 @Fluent
-public final class CertificateProperties {
+public final class CertificateProperties implements JsonSerializable<CertificateProperties> {
     /*
      * Provisioning state of the certificate.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioningState provisioningState;
 
     /*
      * Properties for a certificate stored in a Key Vault.
      */
-    @JsonProperty(value = "certificateKeyVaultProperties")
     private CertificateKeyVaultProperties certificateKeyVaultProperties;
 
     /*
      * Certificate password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Subject name of the certificate.
      */
-    @JsonProperty(value = "subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
 
     /*
      * Subject alternative names the certificate applies to.
      */
-    @JsonProperty(value = "subjectAlternativeNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subjectAlternativeNames;
 
     /*
      * PFX or PEM blob
      */
-    @JsonProperty(value = "value")
     private byte[] value;
 
     /*
      * Certificate issuer.
      */
-    @JsonProperty(value = "issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /*
      * Certificate issue Date.
      */
-    @JsonProperty(value = "issueDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime issueDate;
 
     /*
      * Certificate expiration date.
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
 
     /*
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * Is the certificate valid?.
      */
-    @JsonProperty(value = "valid", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean valid;
 
     /*
      * Public key hash.
      */
-    @JsonProperty(value = "publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKeyHash;
 
     /*
      * The type of the certificate. Allowed values are `ServerSSLCertificate` and `ImagePullTrustedCA`
      */
-    @JsonProperty(value = "certificateType")
     private CertificateType certificateType;
 
     /**
@@ -272,5 +263,74 @@ public final class CertificateProperties {
         if (certificateKeyVaultProperties() != null) {
             certificateKeyVaultProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("certificateKeyVaultProperties", this.certificateKeyVaultProperties);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeBinaryField("value", this.value);
+        jsonWriter.writeStringField("certificateType",
+            this.certificateType == null ? null : this.certificateType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateProperties.
+     */
+    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateProperties deserializedCertificateProperties = new CertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedCertificateProperties.provisioningState
+                        = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("certificateKeyVaultProperties".equals(fieldName)) {
+                    deserializedCertificateProperties.certificateKeyVaultProperties
+                        = CertificateKeyVaultProperties.fromJson(reader);
+                } else if ("password".equals(fieldName)) {
+                    deserializedCertificateProperties.password = reader.getString();
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedCertificateProperties.subjectName = reader.getString();
+                } else if ("subjectAlternativeNames".equals(fieldName)) {
+                    List<String> subjectAlternativeNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCertificateProperties.subjectAlternativeNames = subjectAlternativeNames;
+                } else if ("value".equals(fieldName)) {
+                    deserializedCertificateProperties.value = reader.getBinary();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateProperties.issuer = reader.getString();
+                } else if ("issueDate".equals(fieldName)) {
+                    deserializedCertificateProperties.issueDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCertificateProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateProperties.thumbprint = reader.getString();
+                } else if ("valid".equals(fieldName)) {
+                    deserializedCertificateProperties.valid = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicKeyHash".equals(fieldName)) {
+                    deserializedCertificateProperties.publicKeyHash = reader.getString();
+                } else if ("certificateType".equals(fieldName)) {
+                    deserializedCertificateProperties.certificateType = CertificateType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateProperties;
+        });
     }
 }

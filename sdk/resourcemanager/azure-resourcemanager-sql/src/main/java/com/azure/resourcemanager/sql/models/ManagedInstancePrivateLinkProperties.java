@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a private link resource. */
+/**
+ * Properties of a private link resource.
+ */
 @Immutable
-public final class ManagedInstancePrivateLinkProperties {
+public final class ManagedInstancePrivateLinkProperties
+    implements JsonSerializable<ManagedInstancePrivateLinkProperties> {
     /*
      * The private link resource group id.
      */
-    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
      * The private link resource required member names.
      */
-    @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
 
     /*
      * The private link resource required zone names.
      */
-    @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
 
-    /** Creates an instance of ManagedInstancePrivateLinkProperties class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateLinkProperties class.
+     */
     public ManagedInstancePrivateLinkProperties() {
     }
 
     /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,7 +50,7 @@ public final class ManagedInstancePrivateLinkProperties {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -53,7 +59,7 @@ public final class ManagedInstancePrivateLinkProperties {
 
     /**
      * Get the requiredZoneNames property: The private link resource required zone names.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -62,9 +68,51 @@ public final class ManagedInstancePrivateLinkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstancePrivateLinkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstancePrivateLinkProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstancePrivateLinkProperties.
+     */
+    public static ManagedInstancePrivateLinkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstancePrivateLinkProperties deserializedManagedInstancePrivateLinkProperties
+                = new ManagedInstancePrivateLinkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkProperties.groupId = reader.getString();
+                } else if ("requiredMembers".equals(fieldName)) {
+                    List<String> requiredMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedInstancePrivateLinkProperties.requiredMembers = requiredMembers;
+                } else if ("requiredZoneNames".equals(fieldName)) {
+                    List<String> requiredZoneNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedInstancePrivateLinkProperties.requiredZoneNames = requiredZoneNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstancePrivateLinkProperties;
+        });
     }
 }

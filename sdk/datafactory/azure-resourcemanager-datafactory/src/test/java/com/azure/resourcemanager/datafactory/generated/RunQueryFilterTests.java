@@ -14,22 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RunQueryFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunQueryFilter model = BinaryData.fromString(
-            "{\"operand\":\"TriggerRunTimestamp\",\"operator\":\"NotEquals\",\"values\":[\"qytibyowbblgyavu\",\"pthjoxo\",\"smsks\",\"pi\"]}")
+        RunQueryFilter model = BinaryData
+            .fromString("{\"operand\":\"TriggerRunTimestamp\",\"operator\":\"In\",\"values\":[\"dweyuqdunv\"]}")
             .toObject(RunQueryFilter.class);
         Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_RUN_TIMESTAMP, model.operand());
-        Assertions.assertEquals(RunQueryFilterOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("qytibyowbblgyavu", model.values().get(0));
+        Assertions.assertEquals(RunQueryFilterOperator.IN, model.operator());
+        Assertions.assertEquals("dweyuqdunv", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RunQueryFilter model = new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_RUN_TIMESTAMP)
-            .withOperator(RunQueryFilterOperator.NOT_EQUALS)
-            .withValues(Arrays.asList("qytibyowbblgyavu", "pthjoxo", "smsks", "pi"));
+            .withOperator(RunQueryFilterOperator.IN)
+            .withValues(Arrays.asList("dweyuqdunv"));
         model = BinaryData.fromObject(model).toObject(RunQueryFilter.class);
         Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_RUN_TIMESTAMP, model.operand());
-        Assertions.assertEquals(RunQueryFilterOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("qytibyowbblgyavu", model.values().get(0));
+        Assertions.assertEquals(RunQueryFilterOperator.IN, model.operator());
+        Assertions.assertEquals("dweyuqdunv", model.values().get(0));
     }
 }

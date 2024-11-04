@@ -10,17 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzurePostgreSqlTableD
 public final class AzurePostgreSqlTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzurePostgreSqlTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"dataez\",\"table\":\"datagdpftfcb\",\"schema\":\"datasrdp\"}")
-                .toObject(AzurePostgreSqlTableDatasetTypeProperties.class);
+        AzurePostgreSqlTableDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"datazx\",\"table\":\"datads\",\"schema\":\"databfjilbuazccouhw\"}")
+            .toObject(AzurePostgreSqlTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzurePostgreSqlTableDatasetTypeProperties model
-            = new AzurePostgreSqlTableDatasetTypeProperties().withTableName("dataez")
-                .withTable("datagdpftfcb")
-                .withSchema("datasrdp");
+            = new AzurePostgreSqlTableDatasetTypeProperties().withTableName("datazx")
+                .withTable("datads")
+                .withSchema("databfjilbuazccouhw");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlTableDatasetTypeProperties.class);
     }
 }

@@ -11,7 +11,7 @@ public final class OperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationList model = BinaryData.fromString(
-            "{\"value\":[{\"isDataAction\":false,\"name\":\"gm\",\"display\":{\"provider\":\"leyyvx\",\"resource\":\"jpkcattpng\",\"operation\":\"rcczsqpjhvmd\",\"description\":\"v\"}},{\"isDataAction\":true,\"name\":\"unqecanoae\",\"display\":{\"provider\":\"hy\",\"resource\":\"trpmo\",\"operation\":\"mcmatuokthfuiu\",\"description\":\"dsfcpkvxodpuoz\"}}],\"nextLink\":\"zydagfuaxbezyiuo\"}")
+            "{\"value\":[{\"isDataAction\":false,\"name\":\"dvjsllrmvvdf\",\"display\":{\"provider\":\"kpnpulexxbczwtr\",\"resource\":\"iqzbq\",\"operation\":\"sovmyokacspkwl\",\"description\":\"dobpxjmflbvvn\"}},{\"isDataAction\":true,\"name\":\"cciw\",\"display\":{\"provider\":\"uqkhrsajiwku\",\"resource\":\"oskg\",\"operation\":\"auu\",\"description\":\"jmvxie\"}}],\"nextLink\":\"ugidyjrr\"}")
             .toObject(OperationList.class);
     }
 

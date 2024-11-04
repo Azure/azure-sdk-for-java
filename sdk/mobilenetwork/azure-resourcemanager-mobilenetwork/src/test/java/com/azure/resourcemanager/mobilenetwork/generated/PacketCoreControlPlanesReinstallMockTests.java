@@ -6,57 +6,39 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCoreControlPlanesReinstallMockTests {
     @Test
     public void testReinstall() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"id\":\"vidttgepuslvyjt\",\"name\":\"uwkasiz\",\"status\":\"esfuught\",\"resourceId\":\"fecjxeygtuhx\",\"startTime\":\"2021-01-12T18:06:14Z\",\"endTime\":\"2021-07-12T08:32:17Z\",\"percentComplete\":80.28171521825273,\"properties\":\"datas\"}";
+            = "{\"id\":\"ueq\",\"name\":\"wmgn\",\"status\":\"b\",\"resourceId\":\"bbxi\",\"startTime\":\"2021-03-27T01:36:05Z\",\"endTime\":\"2021-10-09T23:24:03Z\",\"percentComplete\":2.684475263142383,\"properties\":\"datapedbwdpyqy\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AsyncOperationStatus response
-            = manager.packetCoreControlPlanes().reinstall("fnrdtjxtxr", "cq", com.azure.core.util.Context.NONE);
+            = manager.packetCoreControlPlanes().reinstall("jqoyueayfbpcm", "plby", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vidttgepuslvyjt", response.id());
-        Assertions.assertEquals("uwkasiz", response.name());
-        Assertions.assertEquals("esfuught", response.status());
-        Assertions.assertEquals("fecjxeygtuhx", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T18:06:14Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T08:32:17Z"), response.endTime());
-        Assertions.assertEquals(80.28171521825273D, response.percentComplete());
+        Assertions.assertEquals("ueq", response.id());
+        Assertions.assertEquals("wmgn", response.name());
+        Assertions.assertEquals("b", response.status());
+        Assertions.assertEquals("bbxi", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T01:36:05Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T23:24:03Z"), response.endTime());
+        Assertions.assertEquals(2.684475263142383D, response.percentComplete());
     }
 }

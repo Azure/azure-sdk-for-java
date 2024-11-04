@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
      * @param name a name to look for.
      * @return the corresponding RequestStatus.
      */
-    @JsonCreator
     public static RequestStatus fromString(String name) {
         return fromString(name, RequestStatus.class);
     }

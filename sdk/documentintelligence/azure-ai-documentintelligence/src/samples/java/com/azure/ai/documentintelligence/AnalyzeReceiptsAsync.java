@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found receipt fields from a local file input stream.
- * See fields found on a receipt <a href=https://aka.ms/documentintelligence/receiptfields>here</a>
+ * See fields found on a receipt <a href=https://aka.ms/formrecognizer/receiptfields>here</a>
  */
 public class AnalyzeReceiptsAsync {
 
@@ -43,8 +43,9 @@ public class AnalyzeReceiptsAsync {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller;
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller;
         analyzeReceiptPoller = client.beginAnalyzeDocument("prebuilt-receipt",
+            null,
             null,
             null,
             null,
@@ -64,7 +65,7 @@ public class AnalyzeReceiptsAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         receiptResultsMono.subscribe(receiptResults -> {
             for (int i = 0; i < receiptResults.getDocuments().size(); i++) {

@@ -9,188 +9,176 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesEncryption;
+import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vaults Update. */
+/**
+ * Samples for Vaults Update.
+ */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithMonitoringSettings.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Update Vault With Monitoring Setting.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void updateVaultWithMonitoringSetting(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        updateVaultWithMonitoringSetting(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
-                            .withClassicAlertSettings(
-                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .withProperties(new VaultProperties().withMonitoringSettings(new MonitoringSettings()
+                .withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)
+                        .withAlertsForAllReplicationIssues(AlertsState.ENABLED)
+                        .withAlertsForAllFailoverIssues(AlertsState.DISABLED))
+                .withClassicAlertSettings(
+                    new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED)
+                        .withEmailNotificationsForSiteRecovery(AlertsState.ENABLED))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithCustomerManagedKeys(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
-                            .withKekIdentity(
-                                new CmkKekIdentity()
-                                    .withUserAssignedIdentity(
-                                        "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
-                            .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED)))
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                .withKekIdentity(new CmkKekIdentity().withUserAssignedIdentity(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED)))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PatchVault_WithCMK2.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithCustomerManagedKeys2(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKekIdentity(new CmkKekIdentity().withUseSystemAssignedIdentity(true))))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKekIdentity(new CmkKekIdentity().withUseSystemAssignedIdentity(true))))
             .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithCMK3.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithCustomerManagedKeys3(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))))
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("PatchKey", "fakeTokenPlaceholder")).apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithRedundancySettings.json
+     */
+    /**
+     * Sample code: Update Vault With Redundancy Setting.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void
+        updateVaultWithRedundancySetting(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new VaultProperties().withRedundancySettings(new VaultPropertiesRedundancySettings()
+                .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+                .withCrossRegionRestore(CrossRegionRestore.ENABLED)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithUserAssignedIdentity(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .apply();
     }
 

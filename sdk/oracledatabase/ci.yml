@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/oracledatabase/ci.yml
+      - sdk/oracledatabase/azure-resourcemanager-oracledatabase/
+    exclude:
+      - sdk/oracledatabase/pom.xml
+      - sdk/oracledatabase/azure-resourcemanager-oracledatabase/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/oracledatabase/ci.yml
+      - sdk/oracledatabase/azure-resourcemanager-oracledatabase/
+    exclude:
+      - sdk/oracledatabase/pom.xml
+      - sdk/oracledatabase/azure-resourcemanager-oracledatabase/pom.xml
+
+parameters:
+  - name: release_azureresourcemanageroracledatabase
+    displayName: azure-resourcemanager-oracledatabase
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: oracledatabase
+    Artifacts:
+      - name: azure-resourcemanager-oracledatabase
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageroracledatabase
+        releaseInBatch: ${{ parameters.release_azureresourcemanageroracledatabase }}

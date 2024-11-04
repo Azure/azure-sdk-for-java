@@ -5,75 +5,66 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Ftp read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("FtpReadSettings")
 @Fluent
 public final class FtpReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * The read setting type.
      */
-    @JsonProperty(value = "recursive")
+    private String type = "FtpReadSettings";
+
+    /*
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     */
     private Object recursive;
 
     /*
      * Ftp wildcardFolderPath. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
      * Ftp wildcardFileName. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
     private Object enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
-     * string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
-     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
-     * copy. Type: string (or Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
-     * Specify whether to use binary transfer mode for FTP stores. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specify whether to use binary transfer mode for FTP stores. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "useBinaryTransfer")
     private Object useBinaryTransfer;
 
     /*
-     * If true, disable parallel reading within each file. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * If true, disable parallel reading within each file. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "disableChunking")
     private Object disableChunking;
 
     /**
@@ -83,8 +74,18 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @return the recursive value.
      */
@@ -93,8 +94,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @param recursive the recursive value to set.
      * @return the FtpReadSettings object itself.
@@ -105,8 +106,7 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the wildcardFolderPath property: Ftp wildcardFolderPath. Type: string (or Expression with resultType
-     * string).
+     * Get the wildcardFolderPath property: Ftp wildcardFolderPath. Type: string (or Expression with resultType string).
      * 
      * @return the wildcardFolderPath value.
      */
@@ -115,8 +115,7 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the wildcardFolderPath property: Ftp wildcardFolderPath. Type: string (or Expression with resultType
-     * string).
+     * Set the wildcardFolderPath property: Ftp wildcardFolderPath. Type: string (or Expression with resultType string).
      * 
      * @param wildcardFolderPath the wildcardFolderPath value to set.
      * @return the FtpReadSettings object itself.
@@ -169,8 +168,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
-     * (or Expression with resultType string).
+     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the partitionRootPath value.
      */
@@ -179,8 +178,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
-     * (or Expression with resultType string).
+     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
      * 
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the FtpReadSettings object itself.
@@ -213,8 +212,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured
-     * in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
      * 
      * @return the fileListPath value.
      */
@@ -223,8 +222,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured
-     * in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
      * 
      * @param fileListPath the fileListPath value to set.
      * @return the FtpReadSettings object itself.
@@ -235,8 +234,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores. Type: boolean
-     * (or Expression with resultType boolean).
+     * Get the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores. Type: boolean (or
+     * Expression with resultType boolean).
      * 
      * @return the useBinaryTransfer value.
      */
@@ -245,8 +244,8 @@ public final class FtpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores. Type: boolean
-     * (or Expression with resultType boolean).
+     * Set the useBinaryTransfer property: Specify whether to use binary transfer mode for FTP stores. Type: boolean (or
+     * Expression with resultType boolean).
      * 
      * @param useBinaryTransfer the useBinaryTransfer value to set.
      * @return the FtpReadSettings object itself.
@@ -285,5 +284,82 @@ public final class FtpReadSettings extends StoreReadSettings {
     public FtpReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        jsonWriter.writeUntypedField("useBinaryTransfer", this.useBinaryTransfer);
+        jsonWriter.writeUntypedField("disableChunking", this.disableChunking);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FtpReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FtpReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FtpReadSettings.
+     */
+    public static FtpReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FtpReadSettings deserializedFtpReadSettings = new FtpReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedFtpReadSettings.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedFtpReadSettings.type = reader.getString();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedFtpReadSettings.recursive = reader.readUntyped();
+                } else if ("wildcardFolderPath".equals(fieldName)) {
+                    deserializedFtpReadSettings.wildcardFolderPath = reader.readUntyped();
+                } else if ("wildcardFileName".equals(fieldName)) {
+                    deserializedFtpReadSettings.wildcardFileName = reader.readUntyped();
+                } else if ("enablePartitionDiscovery".equals(fieldName)) {
+                    deserializedFtpReadSettings.enablePartitionDiscovery = reader.readUntyped();
+                } else if ("partitionRootPath".equals(fieldName)) {
+                    deserializedFtpReadSettings.partitionRootPath = reader.readUntyped();
+                } else if ("deleteFilesAfterCompletion".equals(fieldName)) {
+                    deserializedFtpReadSettings.deleteFilesAfterCompletion = reader.readUntyped();
+                } else if ("fileListPath".equals(fieldName)) {
+                    deserializedFtpReadSettings.fileListPath = reader.readUntyped();
+                } else if ("useBinaryTransfer".equals(fieldName)) {
+                    deserializedFtpReadSettings.useBinaryTransfer = reader.readUntyped();
+                } else if ("disableChunking".equals(fieldName)) {
+                    deserializedFtpReadSettings.disableChunking = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedFtpReadSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedFtpReadSettings;
+        });
     }
 }

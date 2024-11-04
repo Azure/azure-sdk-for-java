@@ -29,8 +29,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupReso
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * BackupResourceStorageConfigsNonCrrsClient.
+ * An instance of this class provides access to all the operations defined in BackupResourceStorageConfigsNonCrrsClient.
  */
 public final class BackupResourceStorageConfigsNonCrrsClientImpl implements BackupResourceStorageConfigsNonCrrsClient {
     /**
@@ -55,8 +54,8 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientBackupResourceStorageConfigsNonCrrs to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientBackupResourceStorageConfigsNonCrrs to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")

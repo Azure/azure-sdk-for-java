@@ -5,45 +5,50 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the connection properties of a server. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ConnectionInfo.class)
-@JsonTypeName("ConnectionInfo")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "MySqlConnectionInfo", value = MySqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "PostgreSqlConnectionInfo", value = PostgreSqlConnectionInfo.class),
-    @JsonSubTypes.Type(name = "MiSqlConnectionInfo", value = MiSqlConnectionInfo.class)
-})
+/**
+ * Defines the connection properties of a server.
+ */
 @Fluent
-public class ConnectionInfo {
+public class ConnectionInfo implements JsonSerializable<ConnectionInfo> {
+    /*
+     * Type of connection info
+     */
+    private String type = "ConnectionInfo";
+
     /*
      * User name
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Password credential.
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of ConnectionInfo class. */
+    /**
+     * Creates an instance of ConnectionInfo class.
+     */
     public ConnectionInfo() {
     }
 
     /**
+     * Get the type property: Type of connection info.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the username property: User name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -52,7 +57,7 @@ public class ConnectionInfo {
 
     /**
      * Set the username property: User name.
-     *
+     * 
      * @param username the username value to set.
      * @return the ConnectionInfo object itself.
      */
@@ -63,7 +68,7 @@ public class ConnectionInfo {
 
     /**
      * Get the password property: Password credential.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -72,7 +77,7 @@ public class ConnectionInfo {
 
     /**
      * Set the password property: Password credential.
-     *
+     * 
      * @param password the password value to set.
      * @return the ConnectionInfo object itself.
      */
@@ -83,9 +88,82 @@ public class ConnectionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionInfo.
+     */
+    public static ConnectionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SqlConnectionInfo".equals(discriminatorValue)) {
+                    return SqlConnectionInfo.fromJson(readerToUse.reset());
+                } else if ("MySqlConnectionInfo".equals(discriminatorValue)) {
+                    return MySqlConnectionInfo.fromJson(readerToUse.reset());
+                } else if ("PostgreSqlConnectionInfo".equals(discriminatorValue)) {
+                    return PostgreSqlConnectionInfo.fromJson(readerToUse.reset());
+                } else if ("MiSqlConnectionInfo".equals(discriminatorValue)) {
+                    return MiSqlConnectionInfo.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ConnectionInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionInfo deserializedConnectionInfo = new ConnectionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedConnectionInfo.type = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedConnectionInfo.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedConnectionInfo.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionInfo;
+        });
     }
 }

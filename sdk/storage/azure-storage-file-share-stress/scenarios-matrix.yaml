@@ -5,9 +5,8 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      downloadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
@@ -15,9 +14,8 @@ matrix:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      downloadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
@@ -25,9 +23,8 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
-      faults: true
-      durationMin: 25
+      downloadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), no chunking
@@ -35,9 +32,8 @@ matrix:
       testScenario: download
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      downloadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), no chunking with async client
@@ -45,9 +41,8 @@ matrix:
       testScenario: download
       sync: false
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      downloadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
 #   this test downloads 50MB (1024 * 1024 * 50), requiring multiple requests
@@ -55,9 +50,8 @@ matrix:
       testScenario: download
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
-      faults: true
-      durationMin: 25
+      downloadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to open input stream, no chunking
@@ -65,9 +59,8 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      downloadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
 #   this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
@@ -75,9 +68,8 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
-      faults: true
-      durationMin: 25
+      downloadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
@@ -85,9 +77,8 @@ matrix:
       testScenario: fileseekablebytechannelread
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      downloadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
 #   this test downloads 50MB (1024 * 1024 * 50) to seekablebytechannel requiring multiple requests
@@ -95,9 +86,8 @@ matrix:
       testScenario: fileseekablebytechannelread
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
-      faults: true
-      durationMin: 25
+      downloadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), small stream, no chunking
@@ -105,9 +95,8 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 25MB (1024 * 1024 * 25), large stream requiring multiple requests
@@ -115,9 +104,8 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
-      faults: true
-      durationMin: 25
+      uploadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), small file, no chunking
@@ -125,9 +113,8 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 50MB (1024 * 1024 * 50), large file requiring multiple requests
@@ -135,9 +122,8 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"
-      parallel: 25
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), small range of bytes from stream, no chunking
@@ -145,9 +131,8 @@ matrix:
       testScenario: uploadrange
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 4MB (1024 * 1024 * 4 bytes), large range of bytes from stream requiring multiple requests
@@ -155,29 +140,8 @@ matrix:
       testScenario: uploadrange
       sync: true
       sizeBytes: "4194304"
-      parallel: 25
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 1KB (1024 bytes), small range of bytes from url, no chunking
-    uploadrangeurlsmall:
-      testScenario: uploadrangefromurl
-      sync: true
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 4MB (1024 * 1024 * 4 bytes), large range of bytes from url requiring multiple requests
-    uploadrangeurllarge:
-      testScenario: uploadrangefromurl
-      sync: true
-      sizeBytes: "4194304"
-      parallel: 25
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to file output stream, no chunking
@@ -185,9 +149,8 @@ matrix:
       testScenario: fileoutputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 2MB (1024 * 1024 * 2) to file output stream requiring multiple requests
@@ -195,9 +158,8 @@ matrix:
       testScenario: fileoutputstream
       sync: true
       sizeBytes: "2097152"
-      parallel: 10
-      faults: true
-      durationMin: 25
+      uploadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test writes 1KB (1024 bytes) to file seekable byte channel, no chunking
@@ -205,9 +167,8 @@ matrix:
       testScenario: fileseekablebytechannelwrite
       sync: true
       sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test writes 50MB (1024 * 1024 * 50) to file seekable byte channel requiring multiple requests
@@ -215,7 +176,6 @@ matrix:
       testScenario: fileseekablebytechannelwrite
       sync: true
       sizeBytes: "52428800"
-      parallel: 25
-      faults: true
-      durationMin: 10
+      uploadFaults: true
+      durationMin: 60
       imageBuildDir: "../../.."

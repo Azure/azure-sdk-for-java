@@ -70,8 +70,8 @@ public final class ExtendedUeInfoInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property properties in model ExtendedUeInfoInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model ExtendedUeInfoInner"));
         } else {
             properties().validate();
         }

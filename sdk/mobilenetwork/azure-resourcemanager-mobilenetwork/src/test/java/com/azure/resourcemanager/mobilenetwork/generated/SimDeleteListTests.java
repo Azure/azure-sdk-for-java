@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class SimDeleteListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimDeleteList model = BinaryData.fromString("{\"sims\":[\"ouw\",\"lgzrfzeeyeb\",\"zi\",\"ayuhqlbjbsy\"]}")
+        SimDeleteList model = BinaryData.fromString("{\"sims\":[\"dwl\",\"w\",\"youpfgfbkj\",\"bdyhgkfminsgowz\"]}")
             .toObject(SimDeleteList.class);
-        Assertions.assertEquals("ouw", model.sims().get(0));
+        Assertions.assertEquals("dwl", model.sims().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimDeleteList model = new SimDeleteList().withSims(Arrays.asList("ouw", "lgzrfzeeyeb", "zi", "ayuhqlbjbsy"));
+        SimDeleteList model = new SimDeleteList().withSims(Arrays.asList("dwl", "w", "youpfgfbkj", "bdyhgkfminsgowz"));
         model = BinaryData.fromObject(model).toObject(SimDeleteList.class);
-        Assertions.assertEquals("ouw", model.sims().get(0));
+        Assertions.assertEquals("dwl", model.sims().get(0));
     }
 }

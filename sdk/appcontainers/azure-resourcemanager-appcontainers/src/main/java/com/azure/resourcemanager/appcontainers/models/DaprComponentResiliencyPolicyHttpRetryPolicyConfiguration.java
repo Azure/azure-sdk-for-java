@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Dapr Component Resiliency Policy HTTP Retry Policy Configuration.
  */
 @Fluent
-public final class DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration {
+public final class DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration
+    implements JsonSerializable<DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration> {
     /*
      * The optional maximum number of retries
      */
-    @JsonProperty(value = "maxRetries")
     private Integer maxRetries;
 
     /*
      * The optional retry backoff configuration
      */
-    @JsonProperty(value = "retryBackOff")
     private DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration retryBackOff;
 
     /**
@@ -80,5 +83,49 @@ public final class DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration {
         if (retryBackOff() != null) {
             retryBackOff().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxRetries", this.maxRetries);
+        jsonWriter.writeJsonField("retryBackOff", this.retryBackOff);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration.
+     */
+    public static DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration deserializedDaprComponentResiliencyPolicyHttpRetryPolicyConfiguration
+                = new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxRetries".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyHttpRetryPolicyConfiguration.maxRetries
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("retryBackOff".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyHttpRetryPolicyConfiguration.retryBackOff
+                        = DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprComponentResiliencyPolicyHttpRetryPolicyConfiguration;
+        });
     }
 }

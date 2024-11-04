@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-json</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
 
   <name>Microsoft Azure Java JSON Library</name>
   <description>This package provides interfaces for reading and writing JSON.</description>
@@ -64,7 +64,6 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>
@@ -78,19 +77,19 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -101,7 +100,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>test-jar</id>
@@ -117,7 +116,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <plugins>
             <plugin>
@@ -155,12 +154,12 @@
   </build>
 
   <profiles>
-    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.core.implementation.jackson.core -->
+    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.json.implementation.jackson.core -->
     <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
     <!-- -->
     <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
-    <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
-    <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- In the target folder, extract the sources azure-json JAR, the path com/azure/json/implementation/jackson/core will contain the jackson-core source code. -->
+    <!-- Copy this code into the com.azure.json.implementation.jackson.core package in the azure-json project and overwrite the existing files. -->
     <!-- -->
     <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
     <!-- This serves as another way to attribute the shaded code to Jackson Core. -->
@@ -176,7 +175,7 @@
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-core</artifactId>
-          <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+          <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
         </dependency>
       </dependencies>
 
@@ -185,7 +184,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
 
             <executions>
               <execution>
@@ -219,12 +218,12 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
             <configuration>
               <rules>
                 <bannedDependencies>
                   <includes>
-                    <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                    <include>com.fasterxml.jackson.core:jackson-core:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>
@@ -249,7 +248,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.2.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.4.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>add-license-comment</id>

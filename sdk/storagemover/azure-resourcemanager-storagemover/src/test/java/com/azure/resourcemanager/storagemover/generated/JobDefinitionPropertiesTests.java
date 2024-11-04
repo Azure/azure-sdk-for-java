@@ -12,38 +12,34 @@ import org.junit.jupiter.api.Assertions;
 public final class JobDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"pheoflokeyy\",\"copyMode\":\"Mirror\",\"sourceName\":\"nj\",\"sourceResourceId\":\"lwtgrhpdj\",\"sourceSubpath\":\"umasxazjpq\",\"targetName\":\"e\",\"targetResourceId\":\"alhbx\",\"targetSubpath\":\"e\",\"latestJobRunName\":\"zzvdudgwds\",\"latestJobRunResourceId\":\"hotwmcynpwlbjnp\",\"latestJobRunStatus\":\"CancelRequested\",\"agentName\":\"tadehxnltyfsopp\",\"agentResourceId\":\"uesnzwdejbavo\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(JobDefinitionProperties.class);
-        Assertions.assertEquals("pheoflokeyy", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("nj", model.sourceName());
-        Assertions.assertEquals("umasxazjpq", model.sourceSubpath());
-        Assertions.assertEquals("e", model.targetName());
-        Assertions.assertEquals("e", model.targetSubpath());
-        Assertions.assertEquals("tadehxnltyfsopp", model.agentName());
+        JobDefinitionProperties model = BinaryData.fromString(
+            "{\"description\":\"e\",\"copyMode\":\"Additive\",\"sourceName\":\"noae\",\"sourceResourceId\":\"fhyhltrpmopjmcma\",\"sourceSubpath\":\"okth\",\"targetName\":\"uiuaodsfcpkvxodp\",\"targetResourceId\":\"zmyzydagf\",\"targetSubpath\":\"xbezyiuokktwh\",\"latestJobRunName\":\"xw\",\"latestJobRunResourceId\":\"wqsmbsur\",\"latestJobRunStatus\":\"Started\",\"agentName\":\"o\",\"agentResourceId\":\"ocfs\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(JobDefinitionProperties.class);
+        Assertions.assertEquals("e", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("noae", model.sourceName());
+        Assertions.assertEquals("okth", model.sourceSubpath());
+        Assertions.assertEquals("uiuaodsfcpkvxodp", model.targetName());
+        Assertions.assertEquals("xbezyiuokktwh", model.targetSubpath());
+        Assertions.assertEquals("o", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionProperties model =
-            new JobDefinitionProperties()
-                .withDescription("pheoflokeyy")
-                .withCopyMode(CopyMode.MIRROR)
-                .withSourceName("nj")
-                .withSourceSubpath("umasxazjpq")
-                .withTargetName("e")
-                .withTargetSubpath("e")
-                .withAgentName("tadehxnltyfsopp");
+        JobDefinitionProperties model = new JobDefinitionProperties().withDescription("e")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withSourceName("noae")
+            .withSourceSubpath("okth")
+            .withTargetName("uiuaodsfcpkvxodp")
+            .withTargetSubpath("xbezyiuokktwh")
+            .withAgentName("o");
         model = BinaryData.fromObject(model).toObject(JobDefinitionProperties.class);
-        Assertions.assertEquals("pheoflokeyy", model.description());
-        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("nj", model.sourceName());
-        Assertions.assertEquals("umasxazjpq", model.sourceSubpath());
-        Assertions.assertEquals("e", model.targetName());
-        Assertions.assertEquals("e", model.targetSubpath());
-        Assertions.assertEquals("tadehxnltyfsopp", model.agentName());
+        Assertions.assertEquals("e", model.description());
+        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
+        Assertions.assertEquals("noae", model.sourceName());
+        Assertions.assertEquals("okth", model.sourceSubpath());
+        Assertions.assertEquals("uiuaodsfcpkvxodp", model.targetName());
+        Assertions.assertEquals("xbezyiuokktwh", model.targetSubpath());
+        Assertions.assertEquals("o", model.agentName());
     }
 }

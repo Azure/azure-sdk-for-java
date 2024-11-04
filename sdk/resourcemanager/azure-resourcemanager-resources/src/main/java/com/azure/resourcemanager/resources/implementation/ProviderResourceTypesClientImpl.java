@@ -25,23 +25,28 @@ import com.azure.resourcemanager.resources.fluent.ProviderResourceTypesClient;
 import com.azure.resourcemanager.resources.fluent.models.ProviderResourceTypeListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProviderResourceTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProviderResourceTypesClient.
+ */
 public final class ProviderResourceTypesClientImpl implements ProviderResourceTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProviderResourceTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceManagementClientImpl client;
 
     /**
      * Initializes an instance of ProviderResourceTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProviderResourceTypesClientImpl(ResourceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ProviderResourceTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProviderResourceTypesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,119 +57,88 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     public interface ProviderResourceTypesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/resourceTypes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderResourceTypeListResultInner>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ProviderResourceTypeListResultInner>> list(@HostParam("$host") String endpoint,
             @QueryParam("$expand") String expand,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
+     * $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource types of a resource provider along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(
-        String resourceProviderNamespace, String expand) {
+    public Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(String resourceProviderNamespace,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            expand,
-                            resourceProviderNamespace,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), expand, resourceProviderNamespace,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
+     * $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource types of a resource provider along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(
-        String resourceProviderNamespace, String expand, Context context) {
+    private Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(String resourceProviderNamespace,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                expand,
-                resourceProviderNamespace,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), expand, resourceProviderNamespace, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -180,10 +154,10 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
 
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
+     * $expand=resourceTypes/aliases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -191,14 +165,14 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * @return list of resource types of a resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProviderResourceTypeListResultInner> listWithResponse(
-        String resourceProviderNamespace, String expand, Context context) {
+    public Response<ProviderResourceTypeListResultInner> listWithResponse(String resourceProviderNamespace,
+        String expand, Context context) {
         return listWithResponseAsync(resourceProviderNamespace, expand, context).block();
     }
 
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

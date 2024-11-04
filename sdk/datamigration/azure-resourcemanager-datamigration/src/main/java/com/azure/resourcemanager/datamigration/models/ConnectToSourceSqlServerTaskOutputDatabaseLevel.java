@@ -5,56 +5,72 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Database level output for the task that validates connection to SQL Server and also validates source server
  * requirements.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("DatabaseLevelOutput")
 @Immutable
 public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends ConnectToSourceSqlServerTaskOutput {
     /*
+     * Type of result - database level or task level
+     */
+    private String resultType = "DatabaseLevelOutput";
+
+    /*
      * Database name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Size of the file in megabytes
      */
-    @JsonProperty(value = "sizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double sizeMB;
 
     /*
      * The list of database files
      */
-    @JsonProperty(value = "databaseFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseFileInfo> databaseFiles;
 
     /*
      * SQL Server compatibility level of database
      */
-    @JsonProperty(value = "compatibilityLevel", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseCompatLevel compatibilityLevel;
 
     /*
      * State of the database
      */
-    @JsonProperty(value = "databaseState", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseState databaseState;
 
-    /** Creates an instance of ConnectToSourceSqlServerTaskOutputDatabaseLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectToSourceSqlServerTaskOutputDatabaseLevel class.
+     */
     public ConnectToSourceSqlServerTaskOutputDatabaseLevel() {
     }
 
     /**
+     * Get the resultType property: Type of result - database level or task level.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the name property: Database name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +79,7 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
 
     /**
      * Get the sizeMB property: Size of the file in megabytes.
-     *
+     * 
      * @return the sizeMB value.
      */
     public Double sizeMB() {
@@ -72,7 +88,7 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
 
     /**
      * Get the databaseFiles property: The list of database files.
-     *
+     * 
      * @return the databaseFiles value.
      */
     public List<DatabaseFileInfo> databaseFiles() {
@@ -81,7 +97,7 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
 
     /**
      * Get the compatibilityLevel property: SQL Server compatibility level of database.
-     *
+     * 
      * @return the compatibilityLevel value.
      */
     public DatabaseCompatLevel compatibilityLevel() {
@@ -90,7 +106,7 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
 
     /**
      * Get the databaseState property: State of the database.
-     *
+     * 
      * @return the databaseState value.
      */
     public DatabaseState databaseState() {
@@ -98,15 +114,78 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (databaseFiles() != null) {
             databaseFiles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToSourceSqlServerTaskOutputDatabaseLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToSourceSqlServerTaskOutputDatabaseLevel if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToSourceSqlServerTaskOutputDatabaseLevel.
+     */
+    public static ConnectToSourceSqlServerTaskOutputDatabaseLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToSourceSqlServerTaskOutputDatabaseLevel deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel
+                = new ConnectToSourceSqlServerTaskOutputDatabaseLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.resultType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.name = reader.getString();
+                } else if ("sizeMB".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.sizeMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("databaseFiles".equals(fieldName)) {
+                    List<DatabaseFileInfo> databaseFiles
+                        = reader.readArray(reader1 -> DatabaseFileInfo.fromJson(reader1));
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.databaseFiles = databaseFiles;
+                } else if ("compatibilityLevel".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.compatibilityLevel
+                        = DatabaseCompatLevel.fromString(reader.getString());
+                } else if ("databaseState".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.databaseState
+                        = DatabaseState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel;
+        });
     }
 }

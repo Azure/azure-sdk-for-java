@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cluster monitoring extensions. */
+/**
+ * Cluster monitoring extensions.
+ */
 @Fluent
-public final class Extension {
+public final class Extension implements JsonSerializable<Extension> {
     /*
      * The workspace ID for the cluster monitoring extension.
      */
-    @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /*
      * The certificate for the cluster monitoring extensions.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
-    /** Creates an instance of Extension class. */
+    /**
+     * Creates an instance of Extension class.
+     */
     public Extension() {
     }
 
     /**
      * Get the workspaceId property: The workspace ID for the cluster monitoring extension.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -37,7 +43,7 @@ public final class Extension {
 
     /**
      * Set the workspaceId property: The workspace ID for the cluster monitoring extension.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the Extension object itself.
      */
@@ -48,7 +54,7 @@ public final class Extension {
 
     /**
      * Get the primaryKey property: The certificate for the cluster monitoring extensions.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -57,7 +63,7 @@ public final class Extension {
 
     /**
      * Set the primaryKey property: The certificate for the cluster monitoring extensions.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the Extension object itself.
      */
@@ -68,9 +74,48 @@ public final class Extension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceId", this.workspaceId);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Extension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Extension if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Extension.
+     */
+    public static Extension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Extension deserializedExtension = new Extension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedExtension.workspaceId = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedExtension.primaryKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtension;
+        });
     }
 }

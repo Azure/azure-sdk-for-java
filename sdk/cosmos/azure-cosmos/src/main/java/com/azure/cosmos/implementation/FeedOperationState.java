@@ -53,7 +53,8 @@ public abstract class FeedOperationState {
         ConsistencyLevel effectiveConsistencyLevel,
         CosmosDiagnosticsThresholds thresholds,
         CosmosPagedFluxOptions fluxOptions,
-        Integer initialMaxItemCount
+        Integer initialMaxItemCount,
+        OverridableRequestOptions requestOptions
     ) {
         checkNotNull(cosmosAsyncClient, "Argument 'cosmosAsyncClient' must not be null." );
         checkNotNull(thresholds, "Argument 'thresholds' must not be null." );
@@ -90,7 +91,9 @@ public abstract class FeedOperationState {
             null,
             clientAccessor.getConnectionMode(cosmosAsyncClient),
             clientAccessor.getUserAgent(cosmosAsyncClient),
-            this.sequenceNumberGenerator.incrementAndGet());
+            this.sequenceNumberGenerator.incrementAndGet(),
+            fluxOptions != null ? fluxOptions.getQueryText(): null,
+            requestOptions);
         this.ctxHolder = new AtomicReference<>(cosmosCtx);
     }
 
@@ -167,8 +170,10 @@ public abstract class FeedOperationState {
             snapshot.getTrackingId(),
             snapshot.getConnectionMode(),
             snapshot.getUserAgent(),
-            this.sequenceNumberGenerator.incrementAndGet()
-        );
+            this.sequenceNumberGenerator.incrementAndGet(),
+            fluxOptions.getQueryText(),
+            ctxAccessor.getRequestOptions(snapshot)
+    );
         Double samplingRateSnapshot = this.samplingRate.get();
         if (samplingRateSnapshot != null) {
             ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, this.isSampledOut.get());

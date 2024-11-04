@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** plannerPreviewType. */
+/**
+ * plannerPreviewType.
+ */
 public final class MicrosoftGraphPlannerPreviewType extends ExpandableStringEnum<MicrosoftGraphPlannerPreviewType> {
-    /** Static value automatic for MicrosoftGraphPlannerPreviewType. */
+    /**
+     * Static value automatic for MicrosoftGraphPlannerPreviewType.
+     */
     public static final MicrosoftGraphPlannerPreviewType AUTOMATIC = fromString("automatic");
 
-    /** Static value noPreview for MicrosoftGraphPlannerPreviewType. */
+    /**
+     * Static value noPreview for MicrosoftGraphPlannerPreviewType.
+     */
     public static final MicrosoftGraphPlannerPreviewType NO_PREVIEW = fromString("noPreview");
 
-    /** Static value checklist for MicrosoftGraphPlannerPreviewType. */
+    /**
+     * Static value checklist for MicrosoftGraphPlannerPreviewType.
+     */
     public static final MicrosoftGraphPlannerPreviewType CHECKLIST = fromString("checklist");
 
-    /** Static value description for MicrosoftGraphPlannerPreviewType. */
+    /**
+     * Static value description for MicrosoftGraphPlannerPreviewType.
+     */
     public static final MicrosoftGraphPlannerPreviewType DESCRIPTION = fromString("description");
 
-    /** Static value reference for MicrosoftGraphPlannerPreviewType. */
+    /**
+     * Static value reference for MicrosoftGraphPlannerPreviewType.
+     */
     public static final MicrosoftGraphPlannerPreviewType REFERENCE = fromString("reference");
 
     /**
      * Creates a new instance of MicrosoftGraphPlannerPreviewType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class MicrosoftGraphPlannerPreviewType extends ExpandableStringEnum
 
     /**
      * Creates or finds a MicrosoftGraphPlannerPreviewType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphPlannerPreviewType.
      */
-    @JsonCreator
     public static MicrosoftGraphPlannerPreviewType fromString(String name) {
         return fromString(name, MicrosoftGraphPlannerPreviewType.class);
     }
 
     /**
      * Gets known MicrosoftGraphPlannerPreviewType values.
-     *
+     * 
      * @return known MicrosoftGraphPlannerPreviewType values.
      */
     public static Collection<MicrosoftGraphPlannerPreviewType> values() {

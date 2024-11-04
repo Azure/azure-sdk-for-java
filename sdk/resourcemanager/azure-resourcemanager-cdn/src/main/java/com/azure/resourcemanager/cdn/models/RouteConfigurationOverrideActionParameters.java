@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the parameters for the route configuration override action.
  */
 @Fluent
-public final class RouteConfigurationOverrideActionParameters {
+public final class RouteConfigurationOverrideActionParameters
+    implements JsonSerializable<RouteConfigurationOverrideActionParameters> {
     /*
      * The typeName property.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName = "DeliveryRuleRouteConfigurationOverrideActionParameters";
 
     /*
      * A reference to the origin group override configuration. Leave empty to use the default origin group on route.
      */
-    @JsonProperty(value = "originGroupOverride")
     private OriginGroupOverride originGroupOverride;
 
     /*
      * The caching configuration associated with this rule. To disable caching, do not provide a cacheConfiguration
      * object.
      */
-    @JsonProperty(value = "cacheConfiguration")
     private CacheConfiguration cacheConfiguration;
 
     /**
@@ -113,5 +115,49 @@ public final class RouteConfigurationOverrideActionParameters {
         if (cacheConfiguration() != null) {
             cacheConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeJsonField("originGroupOverride", this.originGroupOverride);
+        jsonWriter.writeJsonField("cacheConfiguration", this.cacheConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteConfigurationOverrideActionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteConfigurationOverrideActionParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RouteConfigurationOverrideActionParameters.
+     */
+    public static RouteConfigurationOverrideActionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteConfigurationOverrideActionParameters deserializedRouteConfigurationOverrideActionParameters
+                = new RouteConfigurationOverrideActionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("originGroupOverride".equals(fieldName)) {
+                    deserializedRouteConfigurationOverrideActionParameters.originGroupOverride
+                        = OriginGroupOverride.fromJson(reader);
+                } else if ("cacheConfiguration".equals(fieldName)) {
+                    deserializedRouteConfigurationOverrideActionParameters.cacheConfiguration
+                        = CacheConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteConfigurationOverrideActionParameters;
+        });
     }
 }

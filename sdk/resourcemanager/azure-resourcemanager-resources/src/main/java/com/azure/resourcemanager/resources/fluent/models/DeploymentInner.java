@@ -6,40 +6,43 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Deployment operation parameters. */
+/**
+ * Deployment operation parameters.
+ */
 @Fluent
-public final class DeploymentInner {
+public final class DeploymentInner implements JsonSerializable<DeploymentInner> {
     /*
      * The location to store the deployment data.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The deployment properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
 
     /*
      * Deployment tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of DeploymentInner class. */
+    /**
+     * Creates an instance of DeploymentInner class.
+     */
     public DeploymentInner() {
     }
 
     /**
      * Get the location property: The location to store the deployment data.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -48,7 +51,7 @@ public final class DeploymentInner {
 
     /**
      * Set the location property: The location to store the deployment data.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeploymentInner object itself.
      */
@@ -59,7 +62,7 @@ public final class DeploymentInner {
 
     /**
      * Get the properties property: The deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentProperties properties() {
@@ -68,7 +71,7 @@ public final class DeploymentInner {
 
     /**
      * Set the properties property: The deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentInner object itself.
      */
@@ -79,7 +82,7 @@ public final class DeploymentInner {
 
     /**
      * Get the tags property: Deployment tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -88,7 +91,7 @@ public final class DeploymentInner {
 
     /**
      * Set the tags property: Deployment tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DeploymentInner object itself.
      */
@@ -99,18 +102,61 @@ public final class DeploymentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model DeploymentInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model DeploymentInner"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeploymentInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeploymentInner.
+     */
+    public static DeploymentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentInner deserializedDeploymentInner = new DeploymentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDeploymentInner.properties = DeploymentProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeploymentInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeploymentInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentInner;
+        });
+    }
 }

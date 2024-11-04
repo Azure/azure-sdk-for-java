@@ -3,6 +3,8 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -18,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LiveOnly
 public class CpkTests extends DataLakeTestBase {
+    // LiveOnly because "x-ms-encryption-key-sha256 should not be stored in recordings"
     private CustomerProvidedKey key;
     private DataLakeFileClient cpkFile;
     private DataLakeDirectoryClient cpkDirectory;
@@ -26,10 +30,10 @@ public class CpkTests extends DataLakeTestBase {
     @BeforeEach
     public void setup() {
         key = new CustomerProvidedKey(getRandomKey());
-        DataLakeFileSystemClientBuilder builder = instrument(new DataLakeFileSystemClientBuilder())
-            .endpoint(dataLakeFileSystemClient.getFileSystemUrl())
-            .customerProvidedKey(key)
-            .credential(ENVIRONMENT.getDataLakeAccount().getCredential());
+        DataLakeFileSystemClientBuilder builder
+            = instrument(new DataLakeFileSystemClientBuilder()).endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                .customerProvidedKey(key)
+                .credential(ENVIRONMENT.getDataLakeAccount().getCredential());
 
         DataLakeFileSystemClient cpkFileSystem = builder.buildClient();
         cpkDirectory = cpkFileSystem.getDirectoryClient(generatePathName());
@@ -73,15 +77,16 @@ public class CpkTests extends DataLakeTestBase {
 
         assertEquals(200, response.getStatusCode());
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+        assertEquals(key.getKeySha256(),
+            response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
     }
 
     @Test
     public void fileRead() {
         cpkFile.create();
 
-        assertDoesNotThrow(() ->
-            cpkFile.readWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null));
+        assertDoesNotThrow(
+            () -> cpkFile.readWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null));
     }
 
     @Test
@@ -92,7 +97,8 @@ public class CpkTests extends DataLakeTestBase {
             DATA.getDefaultDataSizeLong(), null, null, null, null);
 
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+        assertEquals(key.getKeySha256(),
+            response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
     }
 
     @Test
@@ -100,8 +106,8 @@ public class CpkTests extends DataLakeTestBase {
         cpkFile.create();
         cpkFile.append(DATA.getDefaultBinaryData(), 0);
 
-        Response<PathInfo> response = cpkFile.flushWithResponse(DATA.getDefaultDataSizeLong(), true, true, null, null,
-            null, null);
+        Response<PathInfo> response
+            = cpkFile.flushWithResponse(DATA.getDefaultDataSizeLong(), true, true, null, null, null, null);
 
         assertTrue(response.getValue().isServerEncrypted());
         assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
@@ -111,12 +117,13 @@ public class CpkTests extends DataLakeTestBase {
     public void directoryCreateSupDir() {
         cpkDirectory.create();
 
-        Response<DataLakeDirectoryClient> response = cpkDirectory.createSubdirectoryWithResponse(generatePathName(),
-            null, null, null, null, null, null, null);
+        Response<DataLakeDirectoryClient> response
+            = cpkDirectory.createSubdirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null);
 
         assertEquals(key.getKeySha256(), response.getValue().getCustomerProvidedKey().getKeySha256());
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-        assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+        assertEquals(key.getKeySha256(),
+            response.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
     }
 
     @Test

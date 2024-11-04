@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * appRoleAssignment
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -29,57 +32,52 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
      * signal that the principal is assigned to the resource app without any specific app roles. Required on create.
      * Does not support $filter.
      */
-    @JsonProperty(value = "appRoleId")
     private UUID appRoleId;
 
     /*
      * The createdDateTime property.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * The display name of the user, group, or service principal that was granted the app role assignment. Read-only.
      * Supports $filter (eq and startswith).
      */
-    @JsonProperty(value = "principalDisplayName")
     private String principalDisplayName;
 
     /*
      * The unique identifier (id) for the user, group or service principal being granted the app role. Required on
      * create. Does not support $filter.
      */
-    @JsonProperty(value = "principalId")
     private UUID principalId;
 
     /*
-     * The type of the assigned principal. This can either be 'User', 'Group' or 'ServicePrincipal'. Read-only. Does
-     * not support $filter.
+     * The type of the assigned principal. This can either be 'User', 'Group' or 'ServicePrincipal'. Read-only. Does not
+     * support $filter.
      */
-    @JsonProperty(value = "principalType")
     private String principalType;
 
     /*
      * The display name of the resource app's service principal to which the assignment is made. Does not support
      * $filter.
      */
-    @JsonProperty(value = "resourceDisplayName")
     private String resourceDisplayName;
 
     /*
      * The unique identifier (id) for the resource service principal for which the assignment is made. Required on
      * create. Supports $filter (eq only).
      */
-    @JsonProperty(value = "resourceId")
     private UUID resourceId;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAppRoleAssignment class. */
+    /**
+     * Creates an instance of MicrosoftGraphAppRoleAssignment class.
+     */
     public MicrosoftGraphAppRoleAssignment() {
     }
 
@@ -89,7 +87,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
      * the resource application has not declared any app roles, a default app role ID of
      * 00000000-0000-0000-0000-000000000000 can be specified to signal that the principal is assigned to the resource
      * app without any specific app roles. Required on create. Does not support $filter.
-     *
+     * 
      * @return the appRoleId value.
      */
     public UUID appRoleId() {
@@ -102,7 +100,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
      * the resource application has not declared any app roles, a default app role ID of
      * 00000000-0000-0000-0000-000000000000 can be specified to signal that the principal is assigned to the resource
      * app without any specific app roles. Required on create. Does not support $filter.
-     *
+     * 
      * @param appRoleId the appRoleId value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -113,7 +111,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
 
     /**
      * Get the createdDateTime property: The createdDateTime property.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -122,7 +120,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
 
     /**
      * Set the createdDateTime property: The createdDateTime property.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -134,7 +132,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Get the principalDisplayName property: The display name of the user, group, or service principal that was granted
      * the app role assignment. Read-only. Supports $filter (eq and startswith).
-     *
+     * 
      * @return the principalDisplayName value.
      */
     public String principalDisplayName() {
@@ -144,7 +142,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Set the principalDisplayName property: The display name of the user, group, or service principal that was granted
      * the app role assignment. Read-only. Supports $filter (eq and startswith).
-     *
+     * 
      * @param principalDisplayName the principalDisplayName value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -156,7 +154,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Get the principalId property: The unique identifier (id) for the user, group or service principal being granted
      * the app role. Required on create. Does not support $filter.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -166,7 +164,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Set the principalId property: The unique identifier (id) for the user, group or service principal being granted
      * the app role. Required on create. Does not support $filter.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -178,7 +176,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Get the principalType property: The type of the assigned principal. This can either be 'User', 'Group' or
      * 'ServicePrincipal'. Read-only. Does not support $filter.
-     *
+     * 
      * @return the principalType value.
      */
     public String principalType() {
@@ -188,7 +186,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Set the principalType property: The type of the assigned principal. This can either be 'User', 'Group' or
      * 'ServicePrincipal'. Read-only. Does not support $filter.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -200,7 +198,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Get the resourceDisplayName property: The display name of the resource app's service principal to which the
      * assignment is made. Does not support $filter.
-     *
+     * 
      * @return the resourceDisplayName value.
      */
     public String resourceDisplayName() {
@@ -210,7 +208,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Set the resourceDisplayName property: The display name of the resource app's service principal to which the
      * assignment is made. Does not support $filter.
-     *
+     * 
      * @param resourceDisplayName the resourceDisplayName value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -222,7 +220,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Get the resourceId property: The unique identifier (id) for the resource service principal for which the
      * assignment is made. Required on create. Supports $filter (eq only).
-     *
+     * 
      * @return the resourceId value.
      */
     public UUID resourceId() {
@@ -232,7 +230,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Set the resourceId property: The unique identifier (id) for the resource service principal for which the
      * assignment is made. Required on create. Supports $filter (eq only).
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -244,10 +242,9 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -255,7 +252,7 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAppRoleAssignment object itself.
      */
@@ -264,22 +261,18 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphAppRoleAssignment withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphAppRoleAssignment withId(String id) {
         super.withId(id);
@@ -288,11 +281,90 @@ public final class MicrosoftGraphAppRoleAssignment extends MicrosoftGraphDirecto
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeStringField("appRoleId", Objects.toString(this.appRoleId, null));
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("principalDisplayName", this.principalDisplayName);
+        jsonWriter.writeStringField("principalId", Objects.toString(this.principalId, null));
+        jsonWriter.writeStringField("principalType", this.principalType);
+        jsonWriter.writeStringField("resourceDisplayName", this.resourceDisplayName);
+        jsonWriter.writeStringField("resourceId", Objects.toString(this.resourceId, null));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAppRoleAssignment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAppRoleAssignment if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAppRoleAssignment.
+     */
+    public static MicrosoftGraphAppRoleAssignment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAppRoleAssignment deserializedMicrosoftGraphAppRoleAssignment
+                = new MicrosoftGraphAppRoleAssignment();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("appRoleId".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.appRoleId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("principalDisplayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.principalDisplayName = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.principalType = reader.getString();
+                } else if ("resourceDisplayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.resourceDisplayName = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphAppRoleAssignment.resourceId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAppRoleAssignment.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAppRoleAssignment;
+        });
     }
 }

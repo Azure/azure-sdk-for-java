@@ -15,22 +15,22 @@ public final class ValidationActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationActivityTypeProperties model = BinaryData.fromString(
-            "{\"timeout\":\"datahhjdfyusiupdmb\",\"sleep\":\"dataumpwgteroaenv\",\"minimumSize\":\"datauzjkjx\",\"childItems\":\"dataaqzrbvogfmpdlm\",\"dataset\":{\"referenceName\":\"ynl\",\"parameters\":{\"r\":\"datalbwyqoypo\",\"jerokbdkwvjond\":\"dataajxmgxsp\"}}}")
+            "{\"timeout\":\"dataf\",\"sleep\":\"datarhoujkcpyerf\",\"minimumSize\":\"datagtrijbolksehty\",\"childItems\":\"datagsurfnktxht\",\"dataset\":{\"referenceName\":\"rzdqqo\",\"parameters\":{\"dkqwffcv\":\"dataaltccttjibognhu\",\"bhkqgbijzo\":\"datahknvnfppw\",\"lscnknkukempa\":\"dataxuti\",\"kstkankzyqizxujl\":\"datavajbgpu\"}}}")
             .toObject(ValidationActivityTypeProperties.class);
-        Assertions.assertEquals("ynl", model.dataset().referenceName());
+        Assertions.assertEquals("rzdqqo", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationActivityTypeProperties model
-            = new ValidationActivityTypeProperties().withTimeout("datahhjdfyusiupdmb")
-                .withSleep("dataumpwgteroaenv")
-                .withMinimumSize("datauzjkjx")
-                .withChildItems("dataaqzrbvogfmpdlm")
-                .withDataset(new DatasetReference().withReferenceName("ynl")
-                    .withParameters(mapOf("r", "datalbwyqoypo", "jerokbdkwvjond", "dataajxmgxsp")));
+        ValidationActivityTypeProperties model = new ValidationActivityTypeProperties().withTimeout("dataf")
+            .withSleep("datarhoujkcpyerf")
+            .withMinimumSize("datagtrijbolksehty")
+            .withChildItems("datagsurfnktxht")
+            .withDataset(new DatasetReference().withReferenceName("rzdqqo")
+                .withParameters(mapOf("dkqwffcv", "dataaltccttjibognhu", "bhkqgbijzo", "datahknvnfppw", "lscnknkukempa",
+                    "dataxuti", "kstkankzyqizxujl", "datavajbgpu")));
         model = BinaryData.fromObject(model).toObject(ValidationActivityTypeProperties.class);
-        Assertions.assertEquals("ynl", model.dataset().referenceName());
+        Assertions.assertEquals("rzdqqo", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

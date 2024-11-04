@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The container settings for a Task.
@@ -18,19 +19,23 @@ import java.io.IOException;
 public final class BatchTaskContainerSettings implements JsonSerializable<BatchTaskContainerSettings> {
 
     /*
-     * Additional options to the container create command. These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
+     * Additional options to the container create command. These additional options are supplied as arguments to the
+     * "docker create" command, in addition to those controlled by the Batch Service.
      */
     @Generated
     private String containerRunOptions;
 
     /*
-     * The Image to use to create the container in which the Task will run. This is the full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a default.
+     * The Image to use to create the container in which the Task will run. This is the full Image reference, as would
+     * be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a
+     * default.
      */
     @Generated
     private final String imageName;
 
     /*
-     * The private registry which contains the container Image. This setting can be omitted if was already provided at Pool creation.
+     * The private registry which contains the container Image. This setting can be omitted if was already provided at
+     * Pool creation.
      */
     @Generated
     private ContainerRegistryReference registry;
@@ -136,6 +141,8 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
         jsonWriter.writeJsonField("registry", this.registry);
         jsonWriter.writeStringField("workingDirectory",
             this.workingDirectory == null ? null : this.workingDirectory.toString());
+        jsonWriter.writeArrayField("containerHostBatchBindMounts", this.containerHostBatchBindMounts,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -155,6 +162,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
             String containerRunOptions = null;
             ContainerRegistryReference registry = null;
             ContainerWorkingDirectory workingDirectory = null;
+            List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -166,6 +174,9 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
                     registry = ContainerRegistryReference.fromJson(reader);
                 } else if ("workingDirectory".equals(fieldName)) {
                     workingDirectory = ContainerWorkingDirectory.fromString(reader.getString());
+                } else if ("containerHostBatchBindMounts".equals(fieldName)) {
+                    containerHostBatchBindMounts
+                        = reader.readArray(reader1 -> ContainerHostBatchBindMountEntry.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -175,6 +186,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
             deserializedBatchTaskContainerSettings.containerRunOptions = containerRunOptions;
             deserializedBatchTaskContainerSettings.registry = registry;
             deserializedBatchTaskContainerSettings.workingDirectory = workingDirectory;
+            deserializedBatchTaskContainerSettings.containerHostBatchBindMounts = containerHostBatchBindMounts;
             return deserializedBatchTaskContainerSettings;
         });
     }
@@ -189,6 +201,41 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
     @Generated
     public BatchTaskContainerSettings setRegistry(ContainerRegistryReference registry) {
         this.registry = registry;
+        return this;
+    }
+
+    /*
+     * The paths you want to mounted to container task. If this array is null or be not present, container task will
+     * mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths
+     * into container if this array is set as empty.
+     */
+    @Generated
+    private List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts;
+
+    /**
+     * Get the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
+     * null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @return the containerHostBatchBindMounts value.
+     */
+    @Generated
+    public List<ContainerHostBatchBindMountEntry> getContainerHostBatchBindMounts() {
+        return this.containerHostBatchBindMounts;
+    }
+
+    /**
+     * Set the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
+     * null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @param containerHostBatchBindMounts the containerHostBatchBindMounts value to set.
+     * @return the BatchTaskContainerSettings object itself.
+     */
+    @Generated
+    public BatchTaskContainerSettings
+        setContainerHostBatchBindMounts(List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts) {
+        this.containerHostBatchBindMounts = containerHostBatchBindMounts;
         return this;
     }
 }

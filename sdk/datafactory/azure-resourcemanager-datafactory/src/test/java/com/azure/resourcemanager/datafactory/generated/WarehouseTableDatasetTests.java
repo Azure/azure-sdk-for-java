@@ -19,34 +19,33 @@ public final class WarehouseTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WarehouseTableDataset model = BinaryData.fromString(
-            "{\"type\":\"cht\",\"typeProperties\":{\"schema\":\"dataveidzwnkbjqpzmod\",\"table\":\"dataqux\"},\"description\":\"apewz\",\"structure\":\"datalbxmynslcvynavwt\",\"schema\":\"datasmczroddcaqimodn\",\"linkedServiceName\":{\"referenceName\":\"jmjxkhbucmz\",\"parameters\":{\"godjfyplavb\":\"datakfjacktavce\",\"bnzot\":\"datasecedsoqwexi\",\"jqdfadgywyla\":\"dataikf\"}},\"parameters\":{\"tdgj\":{\"type\":\"Object\",\"defaultValue\":\"datavohy\"}},\"annotations\":[\"datatkogfggylyzolrv\",\"datas\",\"dataseqjteoa\"],\"folder\":{\"name\":\"mg\"},\"\":{\"tarirdzdgvqofl\":\"datarjybpvsoba\",\"mzqsx\":\"dataukegougxpyp\"}}")
+            "{\"type\":\"WarehouseTable\",\"typeProperties\":{\"schema\":\"datauoqhqrcsksxqfhl\",\"table\":\"datauvdagvyjcdpncv\"},\"description\":\"eqyodii\",\"structure\":\"datasapqhipajsniv\",\"schema\":\"dataevlj\",\"linkedServiceName\":{\"referenceName\":\"cuwrfgpjfv\",\"parameters\":{\"ykzzugctygbb\":\"dataseodvlmdzgv\",\"ljvvcrsmw\":\"datau\",\"jftvltj\":\"datajmxwcvumnrutqnke\",\"pkbzltnowpajf\":\"datapec\"}},\"parameters\":{\"suhsypx\":{\"type\":\"Int\",\"defaultValue\":\"databbzadzglmuuz\"}},\"annotations\":[\"datadhf\",\"dataerkqpyfj\",\"datakbyws\"],\"folder\":{\"name\":\"fmxbdjkm\"},\"\":{\"vghbtycvl\":\"dataggnowxhyvdbrdv\",\"xshmrdisc\":\"datausgiikhrcthype\"}}")
             .toObject(WarehouseTableDataset.class);
-        Assertions.assertEquals("apewz", model.description());
-        Assertions.assertEquals("jmjxkhbucmz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("tdgj").type());
-        Assertions.assertEquals("mg", model.folder().name());
+        Assertions.assertEquals("eqyodii", model.description());
+        Assertions.assertEquals("cuwrfgpjfv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("suhsypx").type());
+        Assertions.assertEquals("fmxbdjkm", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WarehouseTableDataset model
-            = new WarehouseTableDataset().withDescription("apewz")
-                .withStructure("datalbxmynslcvynavwt")
-                .withSchema("datasmczroddcaqimodn")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("jmjxkhbucmz")
-                    .withParameters(mapOf("godjfyplavb", "datakfjacktavce", "bnzot", "datasecedsoqwexi", "jqdfadgywyla",
-                        "dataikf")))
-                .withParameters(mapOf("tdgj",
-                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datavohy")))
-                .withAnnotations(Arrays.asList("datatkogfggylyzolrv", "datas", "dataseqjteoa"))
-                .withFolder(new DatasetFolder().withName("mg"))
-                .withSchemaTypePropertiesSchema("dataveidzwnkbjqpzmod")
-                .withTable("dataqux");
+        WarehouseTableDataset model = new WarehouseTableDataset().withDescription("eqyodii")
+            .withStructure("datasapqhipajsniv")
+            .withSchema("dataevlj")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cuwrfgpjfv")
+                .withParameters(mapOf("ykzzugctygbb", "dataseodvlmdzgv", "ljvvcrsmw", "datau", "jftvltj",
+                    "datajmxwcvumnrutqnke", "pkbzltnowpajf", "datapec")))
+            .withParameters(mapOf("suhsypx",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("databbzadzglmuuz")))
+            .withAnnotations(Arrays.asList("datadhf", "dataerkqpyfj", "datakbyws"))
+            .withFolder(new DatasetFolder().withName("fmxbdjkm"))
+            .withSchemaTypePropertiesSchema("datauoqhqrcsksxqfhl")
+            .withTable("datauvdagvyjcdpncv");
         model = BinaryData.fromObject(model).toObject(WarehouseTableDataset.class);
-        Assertions.assertEquals("apewz", model.description());
-        Assertions.assertEquals("jmjxkhbucmz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("tdgj").type());
-        Assertions.assertEquals("mg", model.folder().name());
+        Assertions.assertEquals("eqyodii", model.description());
+        Assertions.assertEquals("cuwrfgpjfv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("suhsypx").type());
+        Assertions.assertEquals("fmxbdjkm", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -5,50 +5,50 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Class representing Diagnostic Metric information.
  */
 @Fluent
-public final class DiagnosticMetricSet {
+public final class DiagnosticMetricSet implements JsonSerializable<DiagnosticMetricSet> {
     /*
      * Name of the metric
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Metric's unit
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Start time of the period
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the period
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Presented time grain. Supported grains at the moment are PT1M, PT1H, P1D
      */
-    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /*
      * Collection of metric values for the selected period based on the
      * {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}
      */
-    @JsonProperty(value = "values")
     private List<DiagnosticMetricSample> values;
 
     /**
@@ -188,5 +188,62 @@ public final class DiagnosticMetricSet {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeGrain", this.timeGrain);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticMetricSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticMetricSet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticMetricSet.
+     */
+    public static DiagnosticMetricSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticMetricSet deserializedDiagnosticMetricSet = new DiagnosticMetricSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDiagnosticMetricSet.name = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedDiagnosticMetricSet.unit = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDiagnosticMetricSet.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDiagnosticMetricSet.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedDiagnosticMetricSet.timeGrain = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<DiagnosticMetricSample> values
+                        = reader.readArray(reader1 -> DiagnosticMetricSample.fromJson(reader1));
+                    deserializedDiagnosticMetricSet.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticMetricSet;
+        });
     }
 }

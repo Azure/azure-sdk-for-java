@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An array of candidate colors and confidence level in the presence of each.
  */
 @Immutable
-public final class HairColor {
+public final class HairColor implements JsonSerializable<HairColor> {
 
     /*
      * Name of the hair color.
      */
     @Generated
-    @JsonProperty(value = "color")
     private final HairColorType color;
 
     /*
      * Confidence level of the color. Range between [0,1].
      */
     @Generated
-    @JsonProperty(value = "confidence")
     private final double confidence;
 
     /**
@@ -35,9 +36,7 @@ public final class HairColor {
      * @param confidence the confidence value to set.
      */
     @Generated
-    @JsonCreator
-    private HairColor(@JsonProperty(value = "color") HairColorType color,
-        @JsonProperty(value = "confidence") double confidence) {
+    private HairColor(HairColorType color, double confidence) {
         this.color = color;
         this.confidence = confidence;
     }
@@ -60,5 +59,46 @@ public final class HairColor {
     @Generated
     public double getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("color", this.color == null ? null : this.color.toString());
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HairColor from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HairColor if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HairColor.
+     */
+    @Generated
+    public static HairColor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HairColorType color = null;
+            double confidence = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("color".equals(fieldName)) {
+                    color = HairColorType.fromString(reader.getString());
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new HairColor(color, confidence);
+        });
     }
 }

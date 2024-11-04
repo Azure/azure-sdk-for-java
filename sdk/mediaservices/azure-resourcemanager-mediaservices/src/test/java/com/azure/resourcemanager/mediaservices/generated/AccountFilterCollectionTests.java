@@ -7,28 +7,163 @@ package com.azure.resourcemanager.mediaservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 import com.azure.resourcemanager.mediaservices.models.AccountFilterCollection;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCompareOperation;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCondition;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyType;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
+import com.azure.resourcemanager.mediaservices.models.FirstQuality;
+import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class AccountFilterCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountFilterCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"jxpybczmeh\",\"name\":\"tzopbsphrupidgsy\",\"type\":\"bejhphoycmsxa\"},{\"properties\":{\"tracks\":[]},\"id\":\"mtqio\",\"name\":\"jzehtb\",\"type\":\"ufpo\"},{\"properties\":{\"tracks\":[]},\"id\":\"wlrxyb\",\"name\":\"soqijg\",\"type\":\"dmbpazlobcufpdz\"}],\"@odata.nextLink\":\"btcqq\"}")
-                .toObject(AccountFilterCollection.class);
+        AccountFilterCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1510156696946077578,\"endTimestamp\":4193584240156362355,\"presentationWindowDuration\":6508308958074251403,\"liveBackoffDuration\":550039120288444364,\"timescale\":2494243308491426876,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1762123123},\"tracks\":[{\"trackSelections\":[{\"property\":\"Bitrate\",\"value\":\"upi\",\"operation\":\"NotEqual\"}]},{\"trackSelections\":[{\"property\":\"Unknown\",\"value\":\"bb\",\"operation\":\"Equal\"},{\"property\":\"Language\",\"value\":\"ph\",\"operation\":\"Equal\"},{\"property\":\"FourCC\",\"value\":\"msxaobhd\",\"operation\":\"Equal\"}]},{\"trackSelections\":[{\"property\":\"FourCC\",\"value\":\"qioqjzehtbmu\",\"operation\":\"Equal\"},{\"property\":\"Bitrate\",\"value\":\"wnoi\",\"operation\":\"Equal\"}]},{\"trackSelections\":[{\"property\":\"Name\",\"value\":\"rxybqsoq\",\"operation\":\"NotEqual\"},{\"property\":\"Type\",\"value\":\"k\",\"operation\":\"NotEqual\"}]}]},\"id\":\"pazlobcufpdz\",\"name\":\"rbt\",\"type\":\"qqjnqgl\"},{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":2591714891101797228,\"endTimestamp\":1469917439884585301,\"presentationWindowDuration\":3197942674543499860,\"liveBackoffDuration\":8297233091141674615,\"timescale\":8267854897045892024,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":447712917},\"tracks\":[{\"trackSelections\":[{\"property\":\"FourCC\",\"value\":\"zlhjxrifkwmrvkt\",\"operation\":\"NotEqual\"},{\"property\":\"Name\",\"value\":\"nt\",\"operation\":\"Equal\"},{\"property\":\"FourCC\",\"value\":\"pa\",\"operation\":\"Equal\"},{\"property\":\"Name\",\"value\":\"jpsq\",\"operation\":\"NotEqual\"}]},{\"trackSelections\":[{\"property\":\"FourCC\",\"value\":\"o\",\"operation\":\"Equal\"},{\"property\":\"Type\",\"value\":\"kfo\",\"operation\":\"NotEqual\"}]}]},\"id\":\"ygjofjdd\",\"name\":\"qs\",\"type\":\"deupewnwrei\"},{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1845511031587581970,\"endTimestamp\":8248065364431718993,\"presentationWindowDuration\":5506944610710795910,\"liveBackoffDuration\":2638755872646339206,\"timescale\":1345540141198804862,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":2032289729},\"tracks\":[{\"trackSelections\":[{\"property\":\"Bitrate\",\"value\":\"lx\",\"operation\":\"Equal\"},{\"property\":\"Unknown\",\"value\":\"uksjtxukcdmp\",\"operation\":\"NotEqual\"},{\"property\":\"Bitrate\",\"value\":\"ryuanzwuxzdxtay\",\"operation\":\"NotEqual\"},{\"property\":\"Bitrate\",\"value\":\"m\",\"operation\":\"NotEqual\"}]},{\"trackSelections\":[{\"property\":\"Bitrate\",\"value\":\"mrqobmtukknr\",\"operation\":\"NotEqual\"}]},{\"trackSelections\":[{\"property\":\"Language\",\"value\":\"hfx\",\"operation\":\"NotEqual\"},{\"property\":\"Name\",\"value\":\"bpzvgn\",\"operation\":\"NotEqual\"}]},{\"trackSelections\":[{\"property\":\"Name\",\"value\":\"mglzufcy\",\"operation\":\"Equal\"},{\"property\":\"Name\",\"value\":\"hdbihan\",\"operation\":\"Equal\"},{\"property\":\"Type\",\"value\":\"fcbjysagithxqha\",\"operation\":\"NotEqual\"}]}]},\"id\":\"pikxwczbyscnpqxu\",\"name\":\"ivyqniwbybrkxvd\",\"type\":\"mjgr\"}],\"@odata.nextLink\":\"wvukx\"}")
+            .toObject(AccountFilterCollection.class);
+        Assertions.assertEquals(1510156696946077578L, model.value().get(0).presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(4193584240156362355L, model.value().get(0).presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(6508308958074251403L,
+            model.value().get(0).presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(550039120288444364L,
+            model.value().get(0).presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(2494243308491426876L, model.value().get(0).presentationTimeRange().timescale());
+        Assertions.assertEquals(false, model.value().get(0).presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(1762123123, model.value().get(0).firstQuality().bitrate());
+        Assertions.assertEquals(FilterTrackPropertyType.BITRATE,
+            model.value().get(0).tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals("upi", model.value().get(0).tracks().get(0).trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL,
+            model.value().get(0).tracks().get(0).trackSelections().get(0).operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountFilterCollection model =
-            new AccountFilterCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountFilterInner().withTracks(Arrays.asList()),
-                            new AccountFilterInner().withTracks(Arrays.asList()),
-                            new AccountFilterInner().withTracks(Arrays.asList())));
+        AccountFilterCollection model = new AccountFilterCollection().withValue(Arrays.asList(
+            new AccountFilterInner()
+                .withPresentationTimeRange(new PresentationTimeRange().withStartTimestamp(1510156696946077578L)
+                    .withEndTimestamp(4193584240156362355L)
+                    .withPresentationWindowDuration(6508308958074251403L)
+                    .withLiveBackoffDuration(550039120288444364L)
+                    .withTimescale(2494243308491426876L)
+                    .withForceEndTimestamp(false))
+                .withFirstQuality(new FirstQuality().withBitrate(1762123123))
+                .withTracks(Arrays.asList(
+                    new FilterTrackSelection().withTrackSelections(
+                        Arrays.asList(new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                            .withValue("upi")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.UNKNOWN)
+                            .withValue("bb")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.LANGUAGE)
+                            .withValue("ph")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.FOUR_CC)
+                            .withValue("msxaobhd")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.FOUR_CC)
+                            .withValue("qioqjzehtbmu")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                            .withValue("wnoi")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.NAME)
+                            .withValue("rxybqsoq")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                            .withValue("k")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))))),
+            new AccountFilterInner()
+                .withPresentationTimeRange(new PresentationTimeRange().withStartTimestamp(2591714891101797228L)
+                    .withEndTimestamp(1469917439884585301L)
+                    .withPresentationWindowDuration(3197942674543499860L)
+                    .withLiveBackoffDuration(8297233091141674615L)
+                    .withTimescale(8267854897045892024L)
+                    .withForceEndTimestamp(true))
+                .withFirstQuality(new FirstQuality().withBitrate(447712917))
+                .withTracks(Arrays.asList(
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.FOUR_CC)
+                            .withValue("zlhjxrifkwmrvkt")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.NAME)
+                            .withValue("nt")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.FOUR_CC)
+                            .withValue("pa")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.NAME)
+                            .withValue("jpsq")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.FOUR_CC)
+                            .withValue("o")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                            .withValue("kfo")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))))),
+            new AccountFilterInner()
+                .withPresentationTimeRange(new PresentationTimeRange().withStartTimestamp(1845511031587581970L)
+                    .withEndTimestamp(8248065364431718993L)
+                    .withPresentationWindowDuration(5506944610710795910L)
+                    .withLiveBackoffDuration(2638755872646339206L)
+                    .withTimescale(1345540141198804862L)
+                    .withForceEndTimestamp(true))
+                .withFirstQuality(new FirstQuality().withBitrate(2032289729))
+                .withTracks(Arrays.asList(
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                            .withValue("lx")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.UNKNOWN)
+                            .withValue("uksjtxukcdmp")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                            .withValue("ryuanzwuxzdxtay")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                            .withValue("m")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(
+                        Arrays.asList(new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                            .withValue("mrqobmtukknr")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.LANGUAGE)
+                            .withValue("hfx")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.NAME)
+                            .withValue("bpzvgn")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL))),
+                    new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.NAME)
+                            .withValue("mglzufcy")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.NAME)
+                            .withValue("hdbihan")
+                            .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                        new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                            .withValue("fcbjysagithxqha")
+                            .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL)))))));
         model = BinaryData.fromObject(model).toObject(AccountFilterCollection.class);
+        Assertions.assertEquals(1510156696946077578L, model.value().get(0).presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(4193584240156362355L, model.value().get(0).presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(6508308958074251403L,
+            model.value().get(0).presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(550039120288444364L,
+            model.value().get(0).presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(2494243308491426876L, model.value().get(0).presentationTimeRange().timescale());
+        Assertions.assertEquals(false, model.value().get(0).presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(1762123123, model.value().get(0).firstQuality().bitrate());
+        Assertions.assertEquals(FilterTrackPropertyType.BITRATE,
+            model.value().get(0).tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals("upi", model.value().get(0).tracks().get(0).trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL,
+            model.value().get(0).tracks().get(0).trackSelections().get(0).operation());
     }
 }

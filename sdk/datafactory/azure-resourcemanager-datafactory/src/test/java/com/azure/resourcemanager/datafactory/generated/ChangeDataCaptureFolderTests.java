@@ -12,14 +12,14 @@ public final class ChangeDataCaptureFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDataCaptureFolder model
-            = BinaryData.fromString("{\"name\":\"mehllizhceu\"}").toObject(ChangeDataCaptureFolder.class);
-        Assertions.assertEquals("mehllizhceu", model.name());
+            = BinaryData.fromString("{\"name\":\"yovwzdbpqv\"}").toObject(ChangeDataCaptureFolder.class);
+        Assertions.assertEquals("yovwzdbpqv", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeDataCaptureFolder model = new ChangeDataCaptureFolder().withName("mehllizhceu");
+        ChangeDataCaptureFolder model = new ChangeDataCaptureFolder().withName("yovwzdbpqv");
         model = BinaryData.fromObject(model).toObject(ChangeDataCaptureFolder.class);
-        Assertions.assertEquals("mehllizhceu", model.name());
+        Assertions.assertEquals("yovwzdbpqv", model.name());
     }
 }

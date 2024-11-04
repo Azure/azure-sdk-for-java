@@ -7,25 +7,32 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The sorting criteria to use for the results of Extractive Summarization. */
+/**
+ * The sorting criteria to use for the results of Extractive Summarization.
+ */
 public final class ExtractiveSummarySentencesOrder extends ExpandableStringEnum<ExtractiveSummarySentencesOrder> {
-    /** Indicates that results should be sorted in order of appearance in the text. */
+    /**
+     * Indicates that results should be sorted in order of appearance in the text.
+     */
     public static final ExtractiveSummarySentencesOrder OFFSET = fromString("Offset");
 
-    /** Indicates that results should be sorted in order of importance (i.e. rank score) according to the model. */
+    /**
+     * Indicates that results should be sorted in order of importance (i.e. rank score) according to the model.
+     */
     public static final ExtractiveSummarySentencesOrder RANK = fromString("Rank");
 
     /**
      * Creates a new instance of ExtractiveSummarySentencesOrder value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ExtractiveSummarySentencesOrder() {}
+    public ExtractiveSummarySentencesOrder() {
+    }
 
     /**
      * Creates or finds a ExtractiveSummarySentencesOrder from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExtractiveSummarySentencesOrder.
      */
@@ -35,7 +42,7 @@ public final class ExtractiveSummarySentencesOrder extends ExpandableStringEnum<
 
     /**
      * Gets known ExtractiveSummarySentencesOrder values.
-     *
+     * 
      * @return known ExtractiveSummarySentencesOrder values.
      */
     public static Collection<ExtractiveSummarySentencesOrder> values() {

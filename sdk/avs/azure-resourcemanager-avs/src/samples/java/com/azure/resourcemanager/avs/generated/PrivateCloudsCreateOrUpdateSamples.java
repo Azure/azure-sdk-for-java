@@ -13,53 +13,53 @@ import com.azure.resourcemanager.avs.models.Sku;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PrivateClouds CreateOrUpdate. */
+/**
+ * Samples for PrivateClouds CreateOrUpdate.
+ */
 public final class PrivateCloudsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsCreateOrUpdate(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .privateClouds()
+        manager.privateClouds()
             .define("cloud1")
             .withRegion("eastus2")
             .withExistingResourceGroup("group1")
             .withSku(new Sku().withName("AV36"))
             .withTags(mapOf())
             .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withNetworkBlock("192.168.48.0/22")
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
+            .withNetworkBlock("192.168.48.0/22")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_CreateOrUpdate_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/
+     * PrivateClouds_CreateOrUpdate_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_Stretched.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsCreateOrUpdateStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .privateClouds()
+        manager.privateClouds()
             .define("cloud1")
             .withRegion("eastus2")
             .withExistingResourceGroup("group1")
             .withSku(new Sku().withName("AV36"))
             .withTags(mapOf())
-            .withNetworkBlock("192.168.48.0/22")
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
-            .withAvailability(
-                new AvailabilityProperties()
-                    .withStrategy(AvailabilityStrategy.DUAL_ZONE)
-                    .withZone(1)
-                    .withSecondaryZone(2))
+            .withAvailability(new AvailabilityProperties().withStrategy(AvailabilityStrategy.DUAL_ZONE)
+                .withZone(1)
+                .withSecondaryZone(2))
+            .withNetworkBlock("192.168.48.0/22")
             .create();
     }
 

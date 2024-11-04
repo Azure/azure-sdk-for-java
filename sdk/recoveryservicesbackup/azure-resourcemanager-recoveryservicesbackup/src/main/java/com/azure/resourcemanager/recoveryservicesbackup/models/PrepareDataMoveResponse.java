@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * Prepare DataMove Response.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = PrepareDataMoveResponse.class,
+    visible = true)
 @JsonTypeName("PrepareDataMoveResponse")
 @Fluent
 public final class PrepareDataMoveResponse extends VaultStorageConfigOperationResultResponseInner {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "PrepareDataMoveResponse";
+
     /*
      * Co-relationId for move operation
      */
@@ -36,6 +48,17 @@ public final class PrepareDataMoveResponse extends VaultStorageConfigOperationRe
      * Creates an instance of PrepareDataMoveResponse class.
      */
     public PrepareDataMoveResponse() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

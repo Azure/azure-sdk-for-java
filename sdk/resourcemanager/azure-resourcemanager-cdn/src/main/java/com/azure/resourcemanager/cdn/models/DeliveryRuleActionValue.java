@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
      * @param name a name to look for.
      * @return the corresponding DeliveryRuleActionValue.
      */
-    @JsonCreator
     public static DeliveryRuleActionValue fromString(String name) {
         return fromString(name, DeliveryRuleActionValue.class);
     }

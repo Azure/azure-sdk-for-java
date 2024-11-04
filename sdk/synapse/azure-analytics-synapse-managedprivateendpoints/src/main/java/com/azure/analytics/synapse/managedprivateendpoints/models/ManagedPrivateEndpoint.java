@@ -5,41 +5,49 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed private endpoint. */
+/**
+ * Managed private endpoint.
+ */
 @Fluent
-public final class ManagedPrivateEndpoint {
+public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPrivateEndpoint> {
     /*
      * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the resource
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     * Microsoft.Storage/storageAccounts.
+     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Managed private endpoint properties
      */
-    @JsonProperty(value = "properties")
     private ManagedPrivateEndpointProperties properties;
+
+    /**
+     * Creates an instance of ManagedPrivateEndpoint class.
+     */
+    public ManagedPrivateEndpoint() {
+    }
 
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -48,7 +56,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -58,7 +66,7 @@ public final class ManagedPrivateEndpoint {
     /**
      * Get the type property: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
      * Microsoft.Storage/storageAccounts.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -67,7 +75,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the properties property: Managed private endpoint properties.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedPrivateEndpointProperties getProperties() {
@@ -76,12 +84,54 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the properties property: Managed private endpoint properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
     public ManagedPrivateEndpoint setProperties(ManagedPrivateEndpointProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpoint.
+     */
+    public static ManagedPrivateEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpoint deserializedManagedPrivateEndpoint = new ManagedPrivateEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.properties = ManagedPrivateEndpointProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpoint;
+        });
     }
 }

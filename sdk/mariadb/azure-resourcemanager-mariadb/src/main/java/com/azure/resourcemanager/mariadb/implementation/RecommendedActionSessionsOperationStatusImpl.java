@@ -13,8 +13,7 @@ public final class RecommendedActionSessionsOperationStatusImpl implements Recom
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    RecommendedActionSessionsOperationStatusImpl(
-        RecommendedActionSessionsOperationStatusInner innerObject,
+    RecommendedActionSessionsOperationStatusImpl(RecommendedActionSessionsOperationStatusInner innerObject,
         com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

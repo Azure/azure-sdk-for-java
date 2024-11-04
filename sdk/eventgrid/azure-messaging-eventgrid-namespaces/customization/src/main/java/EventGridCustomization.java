@@ -17,13 +17,44 @@ import java.util.Arrays;
 public class EventGridCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
+        removeExtraFiles(customization, logger);
+        removeSendEvents(customization, logger);
         customizeEventGridClientImplImports(customization, logger);
     }
 
+    private void removeSendEvents(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
+        ClassCustomization classCustomization = packageCustomization.getClass("EventGridSenderClient");
+        classCustomization.customizeAst(compilationUnit -> {
+            compilationUnit.getClassByName("EventGridSenderClient").get().getMethods().forEach(method -> {
+                if (method.getNameAsString().equals("sendEvents")) {
+                    method.remove();
+                }
+            });
+        });
+
+        classCustomization = packageCustomization.getClass("EventGridSenderAsyncClient");
+        classCustomization.customizeAst(compilationUnit -> {
+            compilationUnit.getClassByName("EventGridSenderAsyncClient").get().getMethods().forEach(method -> {
+                if (method.getNameAsString().equals("sendEvents")) {
+                    method.remove();
+                }
+            });
+        });
+    }
+
+    public void removeExtraFiles(LibraryCustomization customization, Logger logger) {
+        logger.info("removing PublishResult.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/PublishResult.java");
+        logger.info("removing CloudEvent.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/CloudEvent.java");
+    }
 
     public void customizeEventGridClientImplImports(LibraryCustomization customization, Logger logger) {
 
-        Arrays.asList("com.azure.messaging.eventgrid.namespaces", "com.azure.messaging.eventgrid.namespaces.models").forEach(p -> {
+        Arrays.asList("com.azure.messaging.eventgrid.namespaces",
+            "com.azure.messaging.eventgrid.namespaces.models",
+            "com.azure.messaging.eventgrid.namespaces.implementation.models").forEach(p -> {
             logger.info("Working on " + p);
             PackageCustomization packageCustomization = customization.getPackage(p);
             packageCustomization.listClasses().forEach(c -> {
@@ -32,25 +63,11 @@ public class EventGridCustomization extends Customization {
                         logger.info("Removed CloudEvent import from " + c.getClassName());
                         comp.addImport("com.azure.core.models.CloudEvent");
                     }
+                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.PublishResult"))) {
+                        logger.info("Removed PublishResult import from " + c.getClassName());
+                    }
                 });
             });
-        });
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/PublishResult.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/CloudEvent.java");
-
-        // add preview ServiceVersion
-        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
-        ClassCustomization classCustomization = packageCustomization.getClass("EventGridServiceVersion");
-        classCustomization.customizeAst(compilationUnit -> {
-            EnumDeclaration clazz = compilationUnit.getEnumByName("EventGridServiceVersion").get();
-            clazz.getEntries().add(0, new EnumConstantDeclaration("/**\n" +
-                " * Enum value 2023-10-01-preview.\n" +
-                " */\n" +
-                "V2023_10_01_PREVIEW(\"2023-10-01-preview\")"));
-            clazz.getEntries().add(0, new EnumConstantDeclaration("/**\n" +
-                " * Enum value 2023-06-01-preview.\n" +
-                " */\n" +
-                "V2023_06_01_PREVIEW(\"2023-06-01-preview\")"));
         });
     }
 }

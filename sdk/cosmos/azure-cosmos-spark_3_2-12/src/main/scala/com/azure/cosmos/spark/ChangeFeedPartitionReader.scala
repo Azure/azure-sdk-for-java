@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosItemSerializer, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, ObjectNodeMap, SparkBridgeImplementationInternal, Strings, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
@@ -111,7 +111,7 @@ private case class ChangeFeedPartitionReader
     ChangeFeedSparkRowItem(row, pkValue, cosmosRowConverter.getChangeFeedLsn(objectNode))
   }
 
-  private val changeFeedItemDeserializer: CosmosItemSerializer = new CosmosItemSerializer {
+  private val changeFeedItemDeserializer: CosmosItemSerializer = new CosmosItemSerializerNoExceptionWrapping {
     override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
     override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {
@@ -134,7 +134,7 @@ private case class ChangeFeedPartitionReader
     }
   }
 
-  private val changeFeedItemDeserializerV1: CosmosItemSerializer = new CosmosItemSerializer {
+  private val changeFeedItemDeserializerV1: CosmosItemSerializer = new CosmosItemSerializerNoExceptionWrapping {
     override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
     override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {

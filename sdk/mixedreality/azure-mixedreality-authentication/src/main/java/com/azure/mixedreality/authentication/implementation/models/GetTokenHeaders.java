@@ -5,7 +5,8 @@
 package com.azure.mixedreality.authentication.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
 /** The GetTokenHeaders model. */
 @Fluent
@@ -13,8 +14,19 @@ public final class GetTokenHeaders {
     /*
      * The MS-CV property.
      */
-    @JsonProperty(value = "MS-CV")
     private String msCV;
+
+    private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of GetTokenHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public GetTokenHeaders(HttpHeaders rawHeaders) {
+        this.msCV = rawHeaders.getValue(MS_CV);
+    }
 
     /**
      * Get the msCV property: The MS-CV property.

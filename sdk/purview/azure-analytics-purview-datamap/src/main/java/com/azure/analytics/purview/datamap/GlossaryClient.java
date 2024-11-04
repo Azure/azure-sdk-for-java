@@ -48,12 +48,8 @@ public final class GlossaryClient {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -66,7 +62,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -122,7 +119,8 @@ public final class GlossaryClient {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -141,7 +139,8 @@ public final class GlossaryClient {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -195,11 +194,13 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -253,9 +254,10 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -265,15 +267,16 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(atlasGlossary, requestOptions);
+    public Response<BinaryData> createWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponse(body, requestOptions);
     }
 
     /**
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -333,11 +336,13 @@ public final class GlossaryClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -397,7 +402,8 @@ public final class GlossaryClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -417,7 +423,8 @@ public final class GlossaryClient {
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -475,11 +482,13 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -537,9 +546,10 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -549,16 +559,16 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createCategoryWithResponse(BinaryData atlasGlossaryCategory,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createCategoryWithResponse(atlasGlossaryCategory, requestOptions);
+    public Response<BinaryData> createCategoryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createCategoryWithResponse(body, requestOptions);
     }
 
     /**
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -616,7 +626,8 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -636,7 +647,8 @@ public final class GlossaryClient {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -694,11 +706,13 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -756,10 +770,11 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -769,9 +784,9 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData atlasGlossaryCategory,
+    public Response<BinaryData> updateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateCategoryWithResponse(categoryId, atlasGlossaryCategory, requestOptions);
+        return this.serviceClient.updateCategoryWithResponse(categoryId, body, requestOptions);
     }
 
     /**
@@ -796,15 +811,18 @@ public final class GlossaryClient {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -862,7 +880,8 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -895,7 +914,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -907,7 +927,8 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -936,7 +957,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -948,7 +970,8 @@ public final class GlossaryClient {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -975,7 +998,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1134,11 +1158,13 @@ public final class GlossaryClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1297,9 +1323,10 @@ public final class GlossaryClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1309,15 +1336,16 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTermWithResponse(BinaryData atlasGlossaryTerm, RequestOptions requestOptions) {
-        return this.serviceClient.createTermWithResponse(atlasGlossaryTerm, requestOptions);
+    public Response<BinaryData> createTermWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createTermWithResponse(body, requestOptions);
     }
 
     /**
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1476,7 +1504,8 @@ public final class GlossaryClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1503,7 +1532,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1662,11 +1692,13 @@ public final class GlossaryClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1825,10 +1857,11 @@ public final class GlossaryClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1838,9 +1871,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateTermWithResponse(String termId, BinaryData atlasGlossaryTerm,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateTermWithResponse(termId, atlasGlossaryTerm, requestOptions);
+    public Response<BinaryData> updateTermWithResponse(String termId, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.updateTermWithResponse(termId, body, requestOptions);
     }
 
     /**
@@ -1872,15 +1904,18 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2039,7 +2074,8 @@ public final class GlossaryClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2069,7 +2105,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2230,11 +2267,13 @@ public final class GlossaryClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2395,7 +2434,8 @@ public final class GlossaryClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2425,7 +2465,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2447,7 +2488,8 @@ public final class GlossaryClient {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2472,7 +2514,8 @@ public final class GlossaryClient {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2494,7 +2537,8 @@ public final class GlossaryClient {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -2516,7 +2560,8 @@ public final class GlossaryClient {
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2538,7 +2583,8 @@ public final class GlossaryClient {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -2570,7 +2616,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2584,7 +2631,8 @@ public final class GlossaryClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2604,7 +2652,8 @@ public final class GlossaryClient {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2658,7 +2707,8 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2685,7 +2735,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2739,11 +2790,13 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2797,10 +2850,11 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2810,9 +2864,8 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData atlasGlossary,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(glossaryId, atlasGlossary, requestOptions);
+    public Response<BinaryData> updateWithResponse(String glossaryId, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.updateWithResponse(glossaryId, body, requestOptions);
     }
 
     /**
@@ -2847,7 +2900,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2907,7 +2961,8 @@ public final class GlossaryClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2937,7 +2992,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -2947,7 +3003,8 @@ public final class GlossaryClient {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2974,7 +3031,8 @@ public final class GlossaryClient {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3189,7 +3247,8 @@ public final class GlossaryClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3223,15 +3282,18 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3285,7 +3347,8 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -3318,7 +3381,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -3479,7 +3543,8 @@ public final class GlossaryClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3509,7 +3574,8 @@ public final class GlossaryClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -3521,7 +3587,8 @@ public final class GlossaryClient {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3540,12 +3607,8 @@ public final class GlossaryClient {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * 
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
@@ -3582,12 +3645,8 @@ public final class GlossaryClient {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3607,7 +3666,7 @@ public final class GlossaryClient {
     /**
      * Create a glossary.
      * 
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3618,11 +3677,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary create(AtlasGlossary atlasGlossary) {
+    public AtlasGlossary create(AtlasGlossary body) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(atlasGlossary), requestOptions).getValue()
-            .toObject(AtlasGlossary.class);
+        return createWithResponse(BinaryData.fromObject(body), requestOptions).getValue().toObject(AtlasGlossary.class);
     }
 
     /**
@@ -3649,7 +3707,7 @@ public final class GlossaryClient {
     /**
      * Create a glossary category.
      * 
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3660,10 +3718,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryCategory createCategory(AtlasGlossaryCategory atlasGlossaryCategory) {
+    public AtlasGlossaryCategory createCategory(AtlasGlossaryCategory body) {
         // Generated convenience method for createCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCategoryWithResponse(BinaryData.fromObject(atlasGlossaryCategory), requestOptions).getValue()
+        return createCategoryWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryCategory.class);
     }
 
@@ -3691,7 +3749,7 @@ public final class GlossaryClient {
      * Update the given glossary category by its GUID.
      * 
      * @param categoryId The globally unique identifier of the category.
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3702,11 +3760,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryCategory updateCategory(String categoryId, AtlasGlossaryCategory atlasGlossaryCategory) {
+    public AtlasGlossaryCategory updateCategory(String categoryId, AtlasGlossaryCategory body) {
         // Generated convenience method for updateCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateCategoryWithResponse(categoryId, BinaryData.fromObject(atlasGlossaryCategory), requestOptions)
-            .getValue()
+        return updateCategoryWithResponse(categoryId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryCategory.class);
     }
 
@@ -3868,7 +3925,7 @@ public final class GlossaryClient {
     /**
      * Create a glossary term.
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3880,20 +3937,20 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm atlasGlossaryTerm, Boolean includeTermHierarchy) {
+    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm body, Boolean includeTermHierarchy) {
         // Generated convenience method for createTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return createTermWithResponse(BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
+        return createTermWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
     /**
      * Create a glossary term.
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3904,10 +3961,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm atlasGlossaryTerm) {
+    public AtlasGlossaryTerm createTerm(AtlasGlossaryTerm body) {
         // Generated convenience method for createTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createTermWithResponse(BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
+        return createTermWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
@@ -3935,7 +3992,7 @@ public final class GlossaryClient {
      * Update the given glossary term by its GUID.
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3947,14 +4004,13 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm updateTerm(String termId, AtlasGlossaryTerm atlasGlossaryTerm,
-        Boolean includeTermHierarchy) {
+    public AtlasGlossaryTerm updateTerm(String termId, AtlasGlossaryTerm body, Boolean includeTermHierarchy) {
         // Generated convenience method for updateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return updateTermWithResponse(termId, BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
+        return updateTermWithResponse(termId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
@@ -3962,7 +4018,7 @@ public final class GlossaryClient {
      * Update the given glossary term by its GUID.
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3973,10 +4029,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossaryTerm updateTerm(String termId, AtlasGlossaryTerm atlasGlossaryTerm) {
+    public AtlasGlossaryTerm updateTerm(String termId, AtlasGlossaryTerm body) {
         // Generated convenience method for updateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateTermWithResponse(termId, BinaryData.fromObject(atlasGlossaryTerm), requestOptions).getValue()
+        return updateTermWithResponse(termId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossaryTerm.class);
     }
 
@@ -4280,7 +4336,7 @@ public final class GlossaryClient {
      * Update the given glossary.
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param ignoreTermsAndCategories Whether ignore terms and categories.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4292,13 +4348,13 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary update(String glossaryId, AtlasGlossary atlasGlossary, Boolean ignoreTermsAndCategories) {
+    public AtlasGlossary update(String glossaryId, AtlasGlossary body, Boolean ignoreTermsAndCategories) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (ignoreTermsAndCategories != null) {
             requestOptions.addQueryParam("ignoreTermsAndCategories", String.valueOf(ignoreTermsAndCategories), false);
         }
-        return updateWithResponse(glossaryId, BinaryData.fromObject(atlasGlossary), requestOptions).getValue()
+        return updateWithResponse(glossaryId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossary.class);
     }
 
@@ -4306,7 +4362,7 @@ public final class GlossaryClient {
      * Update the given glossary.
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4317,10 +4373,10 @@ public final class GlossaryClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasGlossary update(String glossaryId, AtlasGlossary atlasGlossary) {
+    public AtlasGlossary update(String glossaryId, AtlasGlossary body) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(glossaryId, BinaryData.fromObject(atlasGlossary), requestOptions).getValue()
+        return updateWithResponse(glossaryId, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasGlossary.class);
     }
 

@@ -7,6 +7,5 @@ module com.azure.analytics.synapse.artifacts {
     exports com.azure.analytics.synapse.artifacts;
     exports com.azure.analytics.synapse.artifacts.models;
 
-    opens com.azure.analytics.synapse.artifacts.models to com.fasterxml.jackson.databind;
-
+    opens com.azure.analytics.synapse.artifacts.models to com.azure.core;
 }

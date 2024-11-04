@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperTableSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperTableSchema model = BinaryData.fromString("{\"name\":\"qqa\",\"dataType\":\"mkxwxdcvjwcyziak\"}")
-            .toObject(MapperTableSchema.class);
-        Assertions.assertEquals("qqa", model.name());
-        Assertions.assertEquals("mkxwxdcvjwcyziak", model.dataType());
+        MapperTableSchema model
+            = BinaryData.fromString("{\"name\":\"makli\",\"dataType\":\"cahyhx\"}").toObject(MapperTableSchema.class);
+        Assertions.assertEquals("makli", model.name());
+        Assertions.assertEquals("cahyhx", model.dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperTableSchema model = new MapperTableSchema().withName("qqa").withDataType("mkxwxdcvjwcyziak");
+        MapperTableSchema model = new MapperTableSchema().withName("makli").withDataType("cahyhx");
         model = BinaryData.fromObject(model).toObject(MapperTableSchema.class);
-        Assertions.assertEquals("qqa", model.name());
-        Assertions.assertEquals("mkxwxdcvjwcyziak", model.dataType());
+        Assertions.assertEquals("makli", model.name());
+        Assertions.assertEquals("cahyhx", model.dataType());
     }
 }

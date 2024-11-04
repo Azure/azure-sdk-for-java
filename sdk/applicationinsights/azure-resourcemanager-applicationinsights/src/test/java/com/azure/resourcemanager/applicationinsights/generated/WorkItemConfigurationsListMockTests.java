@@ -31,37 +31,27 @@ public final class WorkItemConfigurationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"ConnectorId\":\"chp\",\"ConfigDisplayName\":\"bzevwrd\",\"IsDefault\":true,\"Id\":\"kuvsjcswsm\",\"ConfigProperties\":\"tuluq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"ConnectorId\":\"chp\",\"ConfigDisplayName\":\"bzevwrd\",\"IsDefault\":true,\"Id\":\"kuvsjcswsm\",\"ConfigProperties\":\"tuluq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkItemConfiguration> response =
-            manager.workItemConfigurations().list("egfnmntfpmvmemfn", "zdwvvbalxl", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkItemConfiguration> response
+            = manager.workItemConfigurations().list("egfnmntfpmvmemfn", "zdwvvbalxl", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("chp", response.iterator().next().connectorId());
         Assertions.assertEquals("bzevwrd", response.iterator().next().configDisplayName());

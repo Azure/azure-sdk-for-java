@@ -5,45 +5,45 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties of the origin group.
  */
 @Fluent
-public class AfdOriginGroupUpdatePropertiesParameters {
+public class AfdOriginGroupUpdatePropertiesParameters
+    implements JsonSerializable<AfdOriginGroupUpdatePropertiesParameters> {
     /*
      * The name of the profile which holds the origin group.
      */
-    @JsonProperty(value = "profileName", access = JsonProperty.Access.WRITE_ONLY)
     private String profileName;
 
     /*
      * Load balancing settings for a backend pool
      */
-    @JsonProperty(value = "loadBalancingSettings")
     private LoadBalancingSettingsParameters loadBalancingSettings;
 
     /*
      * Health probe settings to the origin that is used to determine the health of the origin.
      */
-    @JsonProperty(value = "healthProbeSettings")
     private HealthProbeParameters healthProbeSettings;
 
     /*
      * Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new
      * endpoint is added. Default is 10 mins. This property is currently not supported.
      */
-    @JsonProperty(value = "trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
     private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
 
     /*
      * Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "sessionAffinityState")
     private EnabledState sessionAffinityState;
 
     /**
@@ -59,6 +59,17 @@ public class AfdOriginGroupUpdatePropertiesParameters {
      */
     public String profileName() {
         return this.profileName;
+    }
+
+    /**
+     * Set the profileName property: The name of the profile which holds the origin group.
+     * 
+     * @param profileName the profileName value to set.
+     * @return the AfdOriginGroupUpdatePropertiesParameters object itself.
+     */
+    AfdOriginGroupUpdatePropertiesParameters withProfileName(String profileName) {
+        this.profileName = profileName;
+        return this;
     }
 
     /**
@@ -83,8 +94,8 @@ public class AfdOriginGroupUpdatePropertiesParameters {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @return the healthProbeSettings value.
      */
@@ -93,8 +104,8 @@ public class AfdOriginGroupUpdatePropertiesParameters {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the AfdOriginGroupUpdatePropertiesParameters object itself.
@@ -165,5 +176,59 @@ public class AfdOriginGroupUpdatePropertiesParameters {
         if (healthProbeSettings() != null) {
             healthProbeSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("loadBalancingSettings", this.loadBalancingSettings);
+        jsonWriter.writeJsonField("healthProbeSettings", this.healthProbeSettings);
+        jsonWriter.writeNumberField("trafficRestorationTimeToHealedOrNewEndpointsInMinutes",
+            this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        jsonWriter.writeStringField("sessionAffinityState",
+            this.sessionAffinityState == null ? null : this.sessionAffinityState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginGroupUpdatePropertiesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginGroupUpdatePropertiesParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginGroupUpdatePropertiesParameters.
+     */
+    public static AfdOriginGroupUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginGroupUpdatePropertiesParameters deserializedAfdOriginGroupUpdatePropertiesParameters
+                = new AfdOriginGroupUpdatePropertiesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileName".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdatePropertiesParameters.profileName = reader.getString();
+                } else if ("loadBalancingSettings".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdatePropertiesParameters.loadBalancingSettings
+                        = LoadBalancingSettingsParameters.fromJson(reader);
+                } else if ("healthProbeSettings".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdatePropertiesParameters.healthProbeSettings
+                        = HealthProbeParameters.fromJson(reader);
+                } else if ("trafficRestorationTimeToHealedOrNewEndpointsInMinutes".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdatePropertiesParameters.trafficRestorationTimeToHealedOrNewEndpointsInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("sessionAffinityState".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdatePropertiesParameters.sessionAffinityState
+                        = EnabledState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginGroupUpdatePropertiesParameters;
+        });
     }
 }

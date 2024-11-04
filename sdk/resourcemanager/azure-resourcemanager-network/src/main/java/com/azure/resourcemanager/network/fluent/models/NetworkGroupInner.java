@@ -6,9 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ChildResource;
+import com.azure.resourcemanager.network.models.GroupMemberType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The network group resource.
@@ -18,14 +22,32 @@ public final class NetworkGroupInner extends ChildResource {
     /*
      * The Network Group properties
      */
-    @JsonProperty(value = "properties")
     private NetworkGroupProperties innerProperties;
 
     /*
      * The system metadata related to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of NetworkGroupInner class.
@@ -52,6 +74,46 @@ public final class NetworkGroupInner extends ChildResource {
     }
 
     /**
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: A description of the network group.
      * 
      * @return the description value.
@@ -71,6 +133,29 @@ public final class NetworkGroupInner extends ChildResource {
             this.innerProperties = new NetworkGroupProperties();
         }
         this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the memberType property: The type of the group member.
+     * 
+     * @return the memberType value.
+     */
+    public GroupMemberType memberType() {
+        return this.innerProperties() == null ? null : this.innerProperties().memberType();
+    }
+
+    /**
+     * Set the memberType property: The type of the group member.
+     * 
+     * @param memberType the memberType value to set.
+     * @return the NetworkGroupInner object itself.
+     */
+    public NetworkGroupInner withMemberType(GroupMemberType memberType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkGroupProperties();
+        }
+        this.innerProperties().withMemberType(memberType);
         return this;
     }
 
@@ -99,9 +184,55 @@ public final class NetworkGroupInner extends ChildResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkGroupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkGroupInner.
+     */
+    public static NetworkGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkGroupInner deserializedNetworkGroupInner = new NetworkGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkGroupInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedNetworkGroupInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkGroupInner.innerProperties = NetworkGroupProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkGroupInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkGroupInner;
+        });
     }
 }

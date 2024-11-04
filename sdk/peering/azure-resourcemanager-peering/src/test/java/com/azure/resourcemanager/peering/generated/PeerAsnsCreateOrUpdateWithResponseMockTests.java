@@ -6,73 +6,49 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
+import com.azure.resourcemanager.peering.models.ContactDetail;
 import com.azure.resourcemanager.peering.models.PeerAsn;
+import com.azure.resourcemanager.peering.models.Role;
 import com.azure.resourcemanager.peering.models.ValidationState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PeerAsnsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"peerAsn\":1109207713,\"peerContactDetail\":[{\"role\":\"Noc\",\"email\":\"hkh\",\"phone\":\"xkhnzbonlwnto\"},{\"role\":\"Escalation\",\"email\":\"dwbwhkszzcmrvexz\",\"phone\":\"bt\"},{\"role\":\"Technical\",\"email\":\"ra\",\"phone\":\"zkoowtlmnguxawqa\"}],\"peerName\":\"syuuximerq\",\"validationState\":\"None\",\"errorMessage\":\"yznkby\"},\"id\":\"utwpfhp\",\"name\":\"gmhrskdsnfdsdoak\",\"type\":\"tdlmkkzevd\"}";
 
-        String responseStr =
-            "{\"properties\":{\"peerAsn\":1347586165,\"peerContactDetail\":[],\"peerName\":\"xbldtlwwrlkdmtn\",\"validationState\":\"None\",\"errorMessage\":\"otllxdyhgsyo\"},\"id\":\"ogjltdtbnnhad\",\"name\":\"ocrkvcikh\",\"type\":\"vpa\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PeerAsn response = manager.peerAsns()
+            .define("aeburuvdmo")
+            .withPeerAsn(1719388893)
+            .withPeerContactDetail(Arrays.asList(
+                new ContactDetail().withRole(Role.TECHNICAL).withEmail("mqoefkifrvtpuqu").withPhone("qlgkfbtn"),
+                new ContactDetail().withRole(Role.ESCALATION).withEmail("n").withPhone("jcntuj")))
+            .withPeerName("c")
+            .withValidationState(ValidationState.NONE)
+            .create();
 
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PeerAsn response =
-            manager
-                .peerAsns()
-                .define("yzrpzbchckqqzq")
-                .withPeerAsn(1257157038)
-                .withPeerContactDetail(Arrays.asList())
-                .withPeerName("iizynkedyatrwyh")
-                .withValidationState(ValidationState.APPROVED)
-                .create();
-
-        Assertions.assertEquals(1347586165, response.peerAsn());
-        Assertions.assertEquals("xbldtlwwrlkdmtn", response.peerName());
+        Assertions.assertEquals(1109207713, response.peerAsn());
+        Assertions.assertEquals(Role.NOC, response.peerContactDetail().get(0).role());
+        Assertions.assertEquals("hkh", response.peerContactDetail().get(0).email());
+        Assertions.assertEquals("xkhnzbonlwnto", response.peerContactDetail().get(0).phone());
+        Assertions.assertEquals("syuuximerq", response.peerName());
         Assertions.assertEquals(ValidationState.NONE, response.validationState());
     }
 }

@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Table Access Policy Properties Object. */
+/**
+ * Table Access Policy Properties Object.
+ */
 @Fluent
-public final class TableAccessPolicy {
+public final class TableAccessPolicy implements JsonSerializable<TableAccessPolicy> {
     /*
      * Start time of the access policy
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Expiry time of the access policy
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * Required. List of abbreviated permissions. Supported permission values include 'r','a','u','d'
      */
-    @JsonProperty(value = "permission", required = true)
     private String permission;
 
-    /** Creates an instance of TableAccessPolicy class. */
+    /**
+     * Creates an instance of TableAccessPolicy class.
+     */
     public TableAccessPolicy() {
     }
 
     /**
      * Get the startTime property: Start time of the access policy.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -45,7 +52,7 @@ public final class TableAccessPolicy {
 
     /**
      * Set the startTime property: Start time of the access policy.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TableAccessPolicy object itself.
      */
@@ -56,7 +63,7 @@ public final class TableAccessPolicy {
 
     /**
      * Get the expiryTime property: Expiry time of the access policy.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -65,7 +72,7 @@ public final class TableAccessPolicy {
 
     /**
      * Set the expiryTime property: Expiry time of the access policy.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the TableAccessPolicy object itself.
      */
@@ -77,7 +84,7 @@ public final class TableAccessPolicy {
     /**
      * Get the permission property: Required. List of abbreviated permissions. Supported permission values include
      * 'r','a','u','d'.
-     *
+     * 
      * @return the permission value.
      */
     public String permission() {
@@ -87,7 +94,7 @@ public final class TableAccessPolicy {
     /**
      * Set the permission property: Required. List of abbreviated permissions. Supported permission values include
      * 'r','a','u','d'.
-     *
+     * 
      * @param permission the permission value to set.
      * @return the TableAccessPolicy object itself.
      */
@@ -98,16 +105,62 @@ public final class TableAccessPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (permission() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property permission in model TableAccessPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property permission in model TableAccessPolicy"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TableAccessPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("permission", this.permission);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableAccessPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableAccessPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TableAccessPolicy.
+     */
+    public static TableAccessPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableAccessPolicy deserializedTableAccessPolicy = new TableAccessPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("permission".equals(fieldName)) {
+                    deserializedTableAccessPolicy.permission = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedTableAccessPolicy.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedTableAccessPolicy.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableAccessPolicy;
+        });
+    }
 }

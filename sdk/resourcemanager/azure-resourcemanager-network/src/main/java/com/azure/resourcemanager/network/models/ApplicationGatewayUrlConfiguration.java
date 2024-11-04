@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Url configuration of the Actions set in Application Gateway.
  */
 @Fluent
-public final class ApplicationGatewayUrlConfiguration {
+public final class ApplicationGatewayUrlConfiguration implements JsonSerializable<ApplicationGatewayUrlConfiguration> {
     /*
      * Url path which user has provided for url rewrite. Null means no path will be updated. Default value is null.
      */
-    @JsonProperty(value = "modifiedPath")
     private String modifiedPath;
 
     /*
      * Query string which user has provided for url rewrite. Null means no query string will be updated. Default value
      * is null.
      */
-    @JsonProperty(value = "modifiedQueryString")
     private String modifiedQueryString;
 
     /*
      * If set as true, it will re-evaluate the url path map provided in path based request routing rules using modified
      * path. Default value is false.
      */
-    @JsonProperty(value = "reroute")
     private Boolean reroute;
 
     /**
@@ -110,5 +111,48 @@ public final class ApplicationGatewayUrlConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modifiedPath", this.modifiedPath);
+        jsonWriter.writeStringField("modifiedQueryString", this.modifiedQueryString);
+        jsonWriter.writeBooleanField("reroute", this.reroute);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayUrlConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayUrlConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayUrlConfiguration.
+     */
+    public static ApplicationGatewayUrlConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayUrlConfiguration deserializedApplicationGatewayUrlConfiguration
+                = new ApplicationGatewayUrlConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modifiedPath".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlConfiguration.modifiedPath = reader.getString();
+                } else if ("modifiedQueryString".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlConfiguration.modifiedQueryString = reader.getString();
+                } else if ("reroute".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlConfiguration.reroute = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayUrlConfiguration;
+        });
     }
 }

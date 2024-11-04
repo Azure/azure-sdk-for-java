@@ -69,6 +69,37 @@ public interface Clusters {
         ClusterUpgrade clusterUpgradeRequest, Context context);
 
     /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster.
+     */
+    Cluster upgradeManualRollback(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgradeRollback clusterRollbackUpgradeRequest);
+
+    /**
+     * Manual rollback upgrade for a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterRollbackUpgradeRequest Manual rollback upgrade for a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster.
+     */
+    Cluster upgradeManualRollback(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgradeRollback clusterRollbackUpgradeRequest, Context context);
+
+    /**
      * Resize an existing Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

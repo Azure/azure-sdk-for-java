@@ -21,15 +21,13 @@ public final class SliceConfiguration {
     private SliceResourceId slice;
 
     /*
-     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must
-     * exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
+     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "defaultDataNetwork", required = true)
     private DataNetworkResourceId defaultDataNetwork;
 
     /*
-     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must
-     * contain at least one item.
+     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must contain at least one item.
      */
     @JsonProperty(value = "dataNetworkConfigurations", required = true)
     private List<DataNetworkConfiguration> dataNetworkConfigurations;
@@ -115,20 +113,22 @@ public final class SliceConfiguration {
      */
     public void validate() {
         if (slice() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property slice in model SliceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property slice in model SliceConfiguration"));
         } else {
             slice().validate();
         }
         if (defaultDataNetwork() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property defaultDataNetwork in model SliceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultDataNetwork in model SliceConfiguration"));
         } else {
             defaultDataNetwork().validate();
         }
         if (dataNetworkConfigurations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataNetworkConfigurations in model SliceConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataNetworkConfigurations in model SliceConfiguration"));
         } else {
             dataNetworkConfigurations().forEach(e -> e.validate());
         }

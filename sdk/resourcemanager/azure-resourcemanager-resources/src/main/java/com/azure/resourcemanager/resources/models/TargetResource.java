@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Target resource. */
+/**
+ * Target resource.
+ */
 @Fluent
-public final class TargetResource {
+public final class TargetResource implements JsonSerializable<TargetResource> {
     /*
      * The ID of the resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
-    /** Creates an instance of TargetResource class. */
+    /**
+     * Creates an instance of TargetResource class.
+     */
     public TargetResource() {
     }
 
     /**
      * Get the id property: The ID of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +48,7 @@ public final class TargetResource {
 
     /**
      * Set the id property: The ID of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the TargetResource object itself.
      */
@@ -54,7 +59,7 @@ public final class TargetResource {
 
     /**
      * Get the resourceName property: The name of the resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -63,7 +68,7 @@ public final class TargetResource {
 
     /**
      * Set the resourceName property: The name of the resource.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the TargetResource object itself.
      */
@@ -74,7 +79,7 @@ public final class TargetResource {
 
     /**
      * Get the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -83,7 +88,7 @@ public final class TargetResource {
 
     /**
      * Set the resourceType property: The type of the resource.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the TargetResource object itself.
      */
@@ -94,9 +99,51 @@ public final class TargetResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetResource.
+     */
+    public static TargetResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetResource deserializedTargetResource = new TargetResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTargetResource.id = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedTargetResource.resourceName = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedTargetResource.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetResource;
+        });
     }
 }

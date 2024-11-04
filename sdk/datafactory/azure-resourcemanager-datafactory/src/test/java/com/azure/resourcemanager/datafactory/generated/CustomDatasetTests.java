@@ -19,34 +19,34 @@ public final class CustomDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDataset model = BinaryData.fromString(
-            "{\"type\":\"owrer\",\"typeProperties\":\"datapulnrfcqufmcihp\",\"description\":\"xptch\",\"structure\":\"datayqqidqimlgbbfjm\",\"schema\":\"datajvxlhmpmh\",\"linkedServiceName\":{\"referenceName\":\"ftyaphq\",\"parameters\":{\"lsn\":\"datay\",\"mcqixuanccqvjf\":\"dataowm\"}},\"parameters\":{\"vmufzgug\":{\"type\":\"Bool\",\"defaultValue\":\"datamquxpjhcfaaradci\"},\"ssnqe\":{\"type\":\"Object\",\"defaultValue\":\"datawala\"},\"xxrwqfmdqecvtamq\":{\"type\":\"String\",\"defaultValue\":\"datatbptgcsma\"}},\"annotations\":[\"datanobfewwpsibx\",\"datavuqoqjrkblndyc\"],\"folder\":{\"name\":\"ycvtqnzjcy\"},\"\":{\"jdleajvmvvlooubs\":\"datahembtbwnalbadpi\",\"upfazusj\":\"dataxipjeopskgocjom\"}}")
+            "{\"type\":\"CustomDataset\",\"typeProperties\":\"dataqmiwxzfvvzucqfg\",\"description\":\"jnbxwbmwdukin\",\"structure\":\"dataxhgdeke\",\"schema\":\"dataouyvew\",\"linkedServiceName\":{\"referenceName\":\"pzrdwc\",\"parameters\":{\"fhhhtestdq\":\"dataohgcand\",\"vfkdxccyijji\":\"datadnnckkpljdsh\",\"duydwnwgru\":\"datahijzrqnjxmvv\",\"dym\":\"datahqld\"}},\"parameters\":{\"jrxgunnq\":{\"type\":\"Float\",\"defaultValue\":\"dataexqwqnghxnimvy\"},\"mg\":{\"type\":\"Array\",\"defaultValue\":\"datauqtnylquevqmvy\"}},\"annotations\":[\"dataebsnz\",\"datawgsqufmjxcyoseqc\",\"datazisvbrqgcyjpgaw\",\"datapkwonrzpghlr\"],\"folder\":{\"name\":\"gblxbu\"},\"\":{\"hvfj\":\"datavjztaflvsmfj\",\"ewfeq\":\"dataqrttjfuqmmf\"}}")
             .toObject(CustomDataset.class);
-        Assertions.assertEquals("xptch", model.description());
-        Assertions.assertEquals("ftyaphq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("vmufzgug").type());
-        Assertions.assertEquals("ycvtqnzjcy", model.folder().name());
+        Assertions.assertEquals("jnbxwbmwdukin", model.description());
+        Assertions.assertEquals("pzrdwc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jrxgunnq").type());
+        Assertions.assertEquals("gblxbu", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDataset model = new CustomDataset().withDescription("xptch")
-            .withStructure("datayqqidqimlgbbfjm")
-            .withSchema("datajvxlhmpmh")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ftyaphq")
-                .withParameters(mapOf("lsn", "datay", "mcqixuanccqvjf", "dataowm")))
-            .withParameters(mapOf("vmufzgug",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datamquxpjhcfaaradci"),
-                "ssnqe", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawala"),
-                "xxrwqfmdqecvtamq",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatbptgcsma")))
-            .withAnnotations(Arrays.asList("datanobfewwpsibx", "datavuqoqjrkblndyc"))
-            .withFolder(new DatasetFolder().withName("ycvtqnzjcy"))
-            .withTypeProperties("datapulnrfcqufmcihp");
+        CustomDataset model = new CustomDataset().withDescription("jnbxwbmwdukin")
+            .withStructure("dataxhgdeke")
+            .withSchema("dataouyvew")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pzrdwc")
+                .withParameters(mapOf("fhhhtestdq", "dataohgcand", "vfkdxccyijji", "datadnnckkpljdsh", "duydwnwgru",
+                    "datahijzrqnjxmvv", "dym", "datahqld")))
+            .withParameters(mapOf("jrxgunnq",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataexqwqnghxnimvy"), "mg",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datauqtnylquevqmvy")))
+            .withAnnotations(
+                Arrays.asList("dataebsnz", "datawgsqufmjxcyoseqc", "datazisvbrqgcyjpgaw", "datapkwonrzpghlr"))
+            .withFolder(new DatasetFolder().withName("gblxbu"))
+            .withTypeProperties("dataqmiwxzfvvzucqfg");
         model = BinaryData.fromObject(model).toObject(CustomDataset.class);
-        Assertions.assertEquals("xptch", model.description());
-        Assertions.assertEquals("ftyaphq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("vmufzgug").type());
-        Assertions.assertEquals("ycvtqnzjcy", model.folder().name());
+        Assertions.assertEquals("jnbxwbmwdukin", model.description());
+        Assertions.assertEquals("pzrdwc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jrxgunnq").type());
+        Assertions.assertEquals("gblxbu", model.folder().name());
     }
 
     // Use "Map.of" if available

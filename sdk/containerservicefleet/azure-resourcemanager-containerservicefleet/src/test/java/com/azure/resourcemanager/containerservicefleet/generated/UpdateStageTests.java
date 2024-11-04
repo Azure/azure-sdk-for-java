@@ -14,21 +14,22 @@ public final class UpdateStageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateStage model = BinaryData.fromString(
-            "{\"name\":\"cfsf\",\"groups\":[{\"name\":\"mddystkiiux\"},{\"name\":\"qyud\"}],\"afterStageWaitInSeconds\":2120884016}")
+            "{\"name\":\"nvowgujju\",\"groups\":[{\"name\":\"kcglhslaz\"},{\"name\":\"dyggdtjixhbku\"}],\"afterStageWaitInSeconds\":621346946}")
             .toObject(UpdateStage.class);
-        Assertions.assertEquals("cfsf", model.name());
-        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
-        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("nvowgujju", model.name());
+        Assertions.assertEquals("kcglhslaz", model.groups().get(0).name());
+        Assertions.assertEquals(621346946, model.afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateStage model = new UpdateStage().withName("cfsf")
-            .withGroups(Arrays.asList(new UpdateGroup().withName("mddystkiiux"), new UpdateGroup().withName("qyud")))
-            .withAfterStageWaitInSeconds(2120884016);
+        UpdateStage model = new UpdateStage().withName("nvowgujju")
+            .withGroups(
+                Arrays.asList(new UpdateGroup().withName("kcglhslaz"), new UpdateGroup().withName("dyggdtjixhbku")))
+            .withAfterStageWaitInSeconds(621346946);
         model = BinaryData.fromObject(model).toObject(UpdateStage.class);
-        Assertions.assertEquals("cfsf", model.name());
-        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
-        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("nvowgujju", model.name());
+        Assertions.assertEquals("kcglhslaz", model.groups().get(0).name());
+        Assertions.assertEquals(621346946, model.afterStageWaitInSeconds());
     }
 }

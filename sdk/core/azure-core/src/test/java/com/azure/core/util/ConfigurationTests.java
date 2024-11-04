@@ -180,7 +180,7 @@ public class ConfigurationTests {
 
     @Test
     public void environmentGetByNameBasicBuilderNotFound() {
-        Configuration configuration = new ConfigurationBuilder().build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, EMPTY_SOURCE).build();
         assertNull(configuration.get("foo"));
         assertFalse(configuration.contains("foo"));
     }
@@ -196,7 +196,7 @@ public class ConfigurationTests {
 
     @Test
     public void environmentGetByNameFallbackToDefault() {
-        Configuration configuration = new ConfigurationBuilder().build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, EMPTY_SOURCE).build();
         assertEquals("0", configuration.get("foo", "0"));
         assertEquals(0, configuration.get("foo", 0));
     }

@@ -19,21 +19,13 @@ public final class VersionGenerator {
     private static final String sdkVersionString;
 
     static {
-        Map<String, String> properties =
-            CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
 
         artifactName = properties.get("name");
         artifactVersion = properties.get("version");
 
-        sdkVersionString =
-            "java"
-                + getJavaVersion()
-                + ":"
-                + "otel"
-                + getOpenTelemetryApiVersion()
-                + ":"
-                + "ext"
-                + artifactVersion;
+        sdkVersionString = "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel" + getOpenTelemetryApiVersion()
+            + ":" + "ext" + artifactVersion;
     }
 
     /**
@@ -68,9 +60,20 @@ public final class VersionGenerator {
         return System.getProperty("java.version");
     }
 
+    private static String getJavaRuntime() {
+        if (isGraalVmNative()) {
+            return "!native";
+        }
+        return "";
+    }
+
+    private static boolean isGraalVmNative() {
+        String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
+        return imageCode != null;
+    }
+
     private static String getOpenTelemetryApiVersion() {
-        Map<String, String> properties =
-            CoreUtils.getProperties("io/opentelemetry/api/version.properties");
+        Map<String, String> properties = CoreUtils.getProperties("io/opentelemetry/api/version.properties");
         if (properties == null) {
             return UNKNOWN_VERSION_VALUE;
         }

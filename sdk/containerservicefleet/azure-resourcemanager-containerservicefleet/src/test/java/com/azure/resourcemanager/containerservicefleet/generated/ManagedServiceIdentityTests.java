@@ -16,7 +16,7 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"bfb58683-04a8-44ca-b9c5-2511c1dbacf3\",\"tenantId\":\"e8344a93-f20d-4a64-8362-4509828df040\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fgibmadgakeq\":{\"principalId\":\"de3cb6bc-f3ec-4ebb-a579-317cd4e727bf\",\"clientId\":\"ebf2f675-039c-44f3-b2ba-7b4b02b916c0\"},\"yb\":{\"principalId\":\"9594b273-0535-44e2-bf3d-ac1c7d7e325b\",\"clientId\":\"33785592-684d-4578-b3f5-cf9112540ea8\"},\"e\":{\"principalId\":\"d51c0252-2648-41d6-9010-b8a76bce3a45\",\"clientId\":\"6194997b-5c7f-4693-aa9e-107270fd19ac\"}}}")
+            "{\"principalId\":\"544f9530-cafd-4d6f-a19f-59ceacb9808f\",\"tenantId\":\"14642c9b-eeaf-4aea-817c-a543cab2d328\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fgibmadgakeq\":{\"principalId\":\"ccff1ea4-6f6a-418d-b6c7-4c15ac1ca666\",\"clientId\":\"1fb07c13-6b00-43fb-adc8-fd17dc2b8ccf\"},\"yb\":{\"principalId\":\"9a92b13d-acd1-4b1b-a23a-d5ac9b352e9b\",\"clientId\":\"0fb785d3-f21d-4dbb-bb19-d190eff3dfa5\"},\"e\":{\"principalId\":\"38c35251-0576-472d-84b5-fa370f63bdf8\",\"clientId\":\"673ec36b-4857-464c-a869-bef0d989a8e7\"}}}")
             .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

@@ -15,21 +15,19 @@ public final class WeeklyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WeeklySchedule model = BinaryData.fromString(
-            "{\"scheduleRunDays\":[\"Monday\",\"Saturday\",\"Tuesday\",\"Tuesday\"],\"scheduleRunTimes\":[\"2021-10-27T06:03:30Z\",\"2021-06-09T09:53:40Z\",\"2021-02-14T02:03:29Z\"]}")
+            "{\"scheduleRunDays\":[\"Thursday\",\"Sunday\",\"Sunday\"],\"scheduleRunTimes\":[\"2020-12-23T16:49:38Z\"]}")
             .toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T06:03:30Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T16:49:38Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklySchedule model = new WeeklySchedule()
-            .withScheduleRunDays(
-                Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SATURDAY, DayOfWeek.TUESDAY, DayOfWeek.TUESDAY))
-            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-10-27T06:03:30Z"),
-                OffsetDateTime.parse("2021-06-09T09:53:40Z"), OffsetDateTime.parse("2021-02-14T02:03:29Z")));
+            .withScheduleRunDays(Arrays.asList(DayOfWeek.THURSDAY, DayOfWeek.SUNDAY, DayOfWeek.SUNDAY))
+            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2020-12-23T16:49:38Z")));
         model = BinaryData.fromObject(model).toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T06:03:30Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.THURSDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T16:49:38Z"), model.scheduleRunTimes().get(0));
     }
 }

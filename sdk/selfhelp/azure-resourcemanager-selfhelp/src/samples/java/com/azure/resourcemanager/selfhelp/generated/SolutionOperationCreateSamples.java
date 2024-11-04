@@ -15,7 +15,8 @@ import java.util.Map;
  */
 public final class SolutionOperationCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Create.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Create.json
      */
     /**
      * Sample code: Solution_Create.

@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -16,9 +17,8 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -29,27 +29,36 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-/** A builder for creating a new instance of the GeolocationClient type. */
-@ServiceClientBuilder(serviceClients = {GeolocationClientImpl.class})
+/**
+ * A builder for creating a new instance of the GeolocationClient type.
+ */
+@ServiceClientBuilder(serviceClients = { GeolocationClientImpl.class })
 public final class GeolocationClientImplBuilder
-        implements HttpTrait<GeolocationClientImplBuilder>, ConfigurationTrait<GeolocationClientImplBuilder> {
-    @Generated private static final String SDK_NAME = "name";
+    implements HttpTrait<GeolocationClientImplBuilder>, ConfigurationTrait<GeolocationClientImplBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    @Generated
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
+    @Generated
+    private static final Map<String, String> PROPERTIES = new HashMap<>();
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the GeolocationClientImplBuilder. */
+    /**
+     * Create an instance of the GeolocationClientImplBuilder.
+     */
     @Generated
     public GeolocationClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -58,12 +67,18 @@ public final class GeolocationClientImplBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -71,9 +86,12 @@ public final class GeolocationClientImplBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder httpClient(HttpClient httpClient) {
@@ -84,9 +102,12 @@ public final class GeolocationClientImplBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -95,12 +116,14 @@ public final class GeolocationClientImplBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -111,9 +134,12 @@ public final class GeolocationClientImplBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -121,21 +147,26 @@ public final class GeolocationClientImplBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public GeolocationClientImplBuilder configuration(Configuration configuration) {
@@ -144,19 +175,17 @@ public final class GeolocationClientImplBuilder
     }
 
     /*
-     * Specifies which account is intended for usage in conjunction with the
-     * Azure AD security model.  It represents a unique ID for the Azure Maps
-     * account and can be retrieved from the Azure Maps management  plane
-     * Account API. To use Azure AD security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model.  It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management  plane Account API. To use Microsoft Entra ID security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      */
-    @Generated private String clientId;
+    @Generated
+    private String clientId;
 
     /**
-     * Sets Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents
-     * a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
-     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
-     *
+     * Sets Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model. It
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Microsoft Entra ID security in Azure Maps see the following
+     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * 
      * @param clientId the clientId value.
      * @return the GeolocationClientImplBuilder.
      */
@@ -169,11 +198,12 @@ public final class GeolocationClientImplBuilder
     /*
      * server parameter
      */
-    @Generated private String host;
+    @Generated
+    private String host;
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param host the host value.
      * @return the GeolocationClientImplBuilder.
      */
@@ -186,11 +216,12 @@ public final class GeolocationClientImplBuilder
     /*
      * Api Version
      */
-    @Generated private String apiVersion;
+    @Generated
+    private String apiVersion;
 
     /**
      * Sets Api Version.
-     *
+     * 
      * @param apiVersion the apiVersion value.
      * @return the GeolocationClientImplBuilder.
      */
@@ -203,11 +234,12 @@ public final class GeolocationClientImplBuilder
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated private SerializerAdapter serializerAdapter;
+    @Generated
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the GeolocationClientImplBuilder.
      */
@@ -218,14 +250,14 @@ public final class GeolocationClientImplBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the GeolocationClientImplBuilder.
      */
@@ -237,70 +269,57 @@ public final class GeolocationClientImplBuilder
 
     /**
      * Builds an instance of GeolocationClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of GeolocationClientImpl.
      */
     @Generated
     public GeolocationClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (host == null) {
-            this.host = "https://atlas.microsoft.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "1.0";
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        GeolocationClientImpl client =
-                new GeolocationClientImpl(pipeline, serializerAdapter, clientId, host, apiVersion);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        String localHost = (host != null) ? host : "https://atlas.microsoft.com";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "1.0";
+        SerializerAdapter localSerializerAdapter
+            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        GeolocationClientImpl client = new GeolocationClientImpl(localPipeline, localSerializerAdapter, this.clientId,
+            localHost, localApiVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(clientOptions)
-                        .build();
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GeolocationClientImplBuilder.class);
 }

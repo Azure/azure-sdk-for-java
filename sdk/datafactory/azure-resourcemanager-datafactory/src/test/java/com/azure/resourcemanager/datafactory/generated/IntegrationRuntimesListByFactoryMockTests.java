@@ -22,7 +22,7 @@ public final class IntegrationRuntimesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"SelfHosted\",\"description\":\"bvqrhzpfdl\",\"\":{\"nhmatfgo\":\"dataucswhmnsd\",\"wzbkgtgvrrzmkte\":\"datarjmhtxipw\",\"xt\":\"datazeu\"}},\"name\":\"hjcwlfzxxpwexc\",\"type\":\"gpcccg\",\"etag\":\"knjjskzuh\",\"id\":\"yavfeyybyduy\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"sumzfvrakpqlltoi\",\"\":{\"bsbhaqsu\":\"dataeoibehrholjjxi\",\"euj\":\"datawdcgdkwwulj\",\"nhmnswlf\":\"datasxrsxbofmvau\"}},\"name\":\"kildl\",\"type\":\"tviwvej\",\"etag\":\"zk\",\"id\":\"dpssklm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class IntegrationRuntimesListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IntegrationRuntimeResource> response
-            = manager.integrationRuntimes().listByFactory("ayjeh", "vowvqpncif", com.azure.core.util.Context.NONE);
+            = manager.integrationRuntimes().listByFactory("yabglsarfmjsch", "xudrom", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yavfeyybyduy", response.iterator().next().id());
-        Assertions.assertEquals("bvqrhzpfdl", response.iterator().next().properties().description());
+        Assertions.assertEquals("dpssklm", response.iterator().next().id());
+        Assertions.assertEquals("sumzfvrakpqlltoi", response.iterator().next().properties().description());
     }
 }

@@ -18,7 +18,10 @@ public final class RuntimeVersionsListRuntimeVersionsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void runtimeVersionsListRuntimeVersions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getRuntimeVersions()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getRuntimeVersions()
             .listRuntimeVersionsWithResponse(com.azure.core.util.Context.NONE);
     }
 }

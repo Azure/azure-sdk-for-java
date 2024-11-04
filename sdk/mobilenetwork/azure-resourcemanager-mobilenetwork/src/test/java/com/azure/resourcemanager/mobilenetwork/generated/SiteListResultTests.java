@@ -16,24 +16,24 @@ public final class SiteListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SiteListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"networkFunctions\":[{\"id\":\"ebjvewzcjzn\"},{\"id\":\"cpmguaadraufact\"},{\"id\":\"hzovaj\"}]},\"location\":\"iuxxpshneekulfg\",\"tags\":{\"rds\":\"ubkwdle\",\"hminyflnorwmduv\":\"tujbazpju\"},\"id\":\"pklvxw\",\"name\":\"ygdxpgpqchis\",\"type\":\"epn\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"ibbdaxconfoza\"},{\"id\":\"rsukokwbqplh\"}]},\"location\":\"nuuepzlrp\",\"tags\":{\"nnrwrbiork\":\"soldweyuqdunv\",\"xmsivfomiloxggdu\":\"alywjhhgdn\"},\"id\":\"iqndieuzaofj\",\"name\":\"hvcyyysfg\",\"type\":\"otcubi\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"qonmacj\"}]},\"location\":\"nizshqvcim\",\"tags\":{\"ccwr\":\"fgmblrrilbywdxsm\",\"dvoqyt\":\"fscjfnynszquji\",\"hjoxo\":\"byowbblgyavutp\"},\"id\":\"smsks\",\"name\":\"pi\",\"type\":\"lqol\"}],\"nextLink\":\"kcgxxlxsffgcvi\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"networkFunctions\":[{\"id\":\"clrcivtsox\"},{\"id\":\"kenx\"}]},\"location\":\"yyefrpmpdnqqs\",\"tags\":{\"vmm\":\"ao\",\"itgvkx\":\"npqfrtqlkzmeg\"},\"id\":\"zyqdrfegcealzx\",\"name\":\"hcans\",\"type\":\"moy\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"networkFunctions\":[{\"id\":\"ivbkbxgomfaj\"},{\"id\":\"asqvd\"},{\"id\":\"y\"}]},\"location\":\"uxakjsqzhzbezk\",\"tags\":{\"vvjskgfmocwahp\":\"sidxasicdd\",\"eaahhvjhhn\":\"gat\",\"jjidjk\":\"kzyb\",\"vblbjednljlageua\":\"yxkyxvx\"},\"id\":\"lxunsmjbnkppxy\",\"name\":\"enlsvxeizzgwkln\",\"type\":\"rmffeyc\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"networkFunctions\":[{\"id\":\"merteeammxqiek\"},{\"id\":\"zddrt\"},{\"id\":\"doj\"},{\"id\":\"xv\"}]},\"location\":\"refdee\",\"tags\":{\"s\":\"cuijpxt\",\"wsawddjibabxvi\":\"wprtu\",\"tfgle\":\"itvtzeexavo\"},\"id\":\"dmdqb\",\"name\":\"pypqtgsfj\",\"type\":\"cbslhhx\"}],\"nextLink\":\"bxv\"}")
             .toObject(SiteListResult.class);
-        Assertions.assertEquals("iuxxpshneekulfg", model.value().get(0).location());
-        Assertions.assertEquals("ubkwdle", model.value().get(0).tags().get("rds"));
+        Assertions.assertEquals("yyefrpmpdnqqs", model.value().get(0).location());
+        Assertions.assertEquals("ao", model.value().get(0).tags().get("vmm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SiteListResult model = new SiteListResult().withValue(Arrays.asList(
-            new SiteInner().withLocation("iuxxpshneekulfg")
-                .withTags(mapOf("rds", "ubkwdle", "hminyflnorwmduv", "tujbazpju")),
-            new SiteInner().withLocation("nuuepzlrp")
-                .withTags(mapOf("nnrwrbiork", "soldweyuqdunv", "xmsivfomiloxggdu", "alywjhhgdn")),
-            new SiteInner().withLocation("nizshqvcim")
-                .withTags(mapOf("ccwr", "fgmblrrilbywdxsm", "dvoqyt", "fscjfnynszquji", "hjoxo", "byowbblgyavutp"))));
+            new SiteInner().withLocation("yyefrpmpdnqqs").withTags(mapOf("vmm", "ao", "itgvkx", "npqfrtqlkzmeg")),
+            new SiteInner().withLocation("uxakjsqzhzbezk")
+                .withTags(mapOf("vvjskgfmocwahp", "sidxasicdd", "eaahhvjhhn", "gat", "jjidjk", "kzyb",
+                    "vblbjednljlageua", "yxkyxvx")),
+            new SiteInner().withLocation("refdee")
+                .withTags(mapOf("s", "cuijpxt", "wsawddjibabxvi", "wprtu", "tfgle", "itvtzeexavo"))));
         model = BinaryData.fromObject(model).toObject(SiteListResult.class);
-        Assertions.assertEquals("iuxxpshneekulfg", model.value().get(0).location());
-        Assertions.assertEquals("ubkwdle", model.value().get(0).tags().get("rds"));
+        Assertions.assertEquals("yyefrpmpdnqqs", model.value().get(0).location());
+        Assertions.assertEquals("ao", model.value().get(0).tags().get("vmm"));
     }
 
     // Use "Map.of" if available

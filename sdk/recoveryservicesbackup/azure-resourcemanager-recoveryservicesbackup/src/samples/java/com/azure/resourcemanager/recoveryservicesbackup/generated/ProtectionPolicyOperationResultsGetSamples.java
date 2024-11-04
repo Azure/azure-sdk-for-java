@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionPolicyOperationResultsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/ProtectionPolicyOperationResults_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
      */
     /**
      * Sample code: Get Protection Policy Operation Results.
@@ -20,7 +18,8 @@ public final class ProtectionPolicyOperationResultsGetSamples {
      */
     public static void getProtectionPolicyOperationResults(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicyOperationResults().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1",
-            "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
+        manager.protectionPolicyOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }

@@ -15,19 +15,19 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.16'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a32d0b2423d19835246bb2ef92941503bfd5e734/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json
+use: '@autorest/java@4.1.39'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/feature/storage/stg96base2/specification/storage/data-plane/Microsoft.BlobStorage/stable/2025-01-05/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
-enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
+enable-sync-stack: true
 context-client-method-parameter: true
 optional-constant-as-enum: true
-default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
+default-http-exception-type: com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode,BlobCopySourceTagsMode
 custom-types-subpackage: models
@@ -35,6 +35,8 @@ customization-class: src/main/java/BlobStorageCustomization.java
 generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
+disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### /{containerName}/{blob}
@@ -402,6 +404,12 @@ directive:
 - rename-model:
     from: BlobPrefix
     to: BlobPrefixInternal
+    
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.BlobServiceStatistics.xml = { "name": "StorageServiceStats" };
+    $.BlobPrefixInternal.xml = { "name": "BlobPrefix" };
 ```
 
 ### BlobAccessPolicy and BlobSignedIdentifier

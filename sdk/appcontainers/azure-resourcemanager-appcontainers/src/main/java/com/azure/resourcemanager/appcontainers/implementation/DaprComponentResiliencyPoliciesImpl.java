@@ -68,8 +68,8 @@ public final class DaprComponentResiliencyPoliciesImpl implements DaprComponentR
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String componentName,
         String name, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, componentName, name,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, environmentName, componentName, name, context);
     }
 
     public void delete(String resourceGroupName, String environmentName, String componentName, String name) {

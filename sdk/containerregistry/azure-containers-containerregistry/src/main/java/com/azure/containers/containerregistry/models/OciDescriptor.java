@@ -41,7 +41,8 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
     private OciAnnotations annotations;
 
     /** Creates an instance of OciDescriptor class. */
-    public OciDescriptor() {}
+    public OciDescriptor() {
+    }
 
     /**
      * Get the mediaType property: Layer media type.
@@ -163,30 +164,29 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
      * @throws IOException If an error occurs while reading the OciDescriptor.
      */
     public static OciDescriptor fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    OciDescriptor deserializedOciDescriptor = new OciDescriptor();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            OciDescriptor deserializedOciDescriptor = new OciDescriptor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("mediaType".equals(fieldName)) {
-                            deserializedOciDescriptor.mediaType = reader.getString();
-                        } else if ("size".equals(fieldName)) {
-                            deserializedOciDescriptor.sizeInBytes = reader.getNullable(JsonReader::getLong);
-                        } else if ("digest".equals(fieldName)) {
-                            deserializedOciDescriptor.digest = reader.getString();
-                        } else if ("urls".equals(fieldName)) {
-                            List<String> urls = reader.readArray(reader1 -> reader1.getString());
-                            deserializedOciDescriptor.urls = urls;
-                        } else if ("annotations".equals(fieldName)) {
-                            deserializedOciDescriptor.annotations = OciAnnotations.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("mediaType".equals(fieldName)) {
+                    deserializedOciDescriptor.mediaType = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedOciDescriptor.sizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("digest".equals(fieldName)) {
+                    deserializedOciDescriptor.digest = reader.getString();
+                } else if ("urls".equals(fieldName)) {
+                    List<String> urls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOciDescriptor.urls = urls;
+                } else if ("annotations".equals(fieldName)) {
+                    deserializedOciDescriptor.annotations = OciAnnotations.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedOciDescriptor;
-                });
+            return deserializedOciDescriptor;
+        });
     }
 }

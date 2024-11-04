@@ -5,65 +5,57 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Spark job definition.
  */
 @Fluent
-public final class SparkJobDefinition {
+public final class SparkJobDefinition implements JsonSerializable<SparkJobDefinition> {
     /*
      * The description of the Spark job definition.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Big data pool reference.
      */
-    @JsonProperty(value = "targetBigDataPool", required = true)
     private BigDataPoolReference targetBigDataPool;
 
     /*
      * The spark configuration of the spark job.
      */
-    @JsonProperty(value = "targetSparkConfiguration")
     private SparkConfigurationReference targetSparkConfiguration;
 
     /*
      * The required Spark version of the application.
      */
-    @JsonProperty(value = "requiredSparkVersion")
     private String requiredSparkVersion;
 
     /*
      * The language of the Spark application.
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * The properties of the Spark job.
      */
-    @JsonProperty(value = "jobProperties", required = true)
     private SparkJobProperties jobProperties;
 
     /*
-     * The folder that this Spark job definition is in. If not specified, this Spark job definition will appear at the
-     * root level.
+     * The folder that this Spark job definition is in. If not specified, this Spark job definition will appear at the root level.
      */
-    @JsonProperty(value = "folder")
     private SparkJobDefinitionFolder folder;
 
     /*
      * Spark job definition.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -219,7 +211,6 @@ public final class SparkJobDefinition {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -235,11 +226,70 @@ public final class SparkJobDefinition {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetBigDataPool", this.targetBigDataPool);
+        jsonWriter.writeJsonField("jobProperties", this.jobProperties);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);
+        jsonWriter.writeStringField("requiredSparkVersion", this.requiredSparkVersion);
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeJsonField("folder", this.folder);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkJobDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkJobDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkJobDefinition.
+     */
+    public static SparkJobDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkJobDefinition deserializedSparkJobDefinition = new SparkJobDefinition();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetBigDataPool".equals(fieldName)) {
+                    deserializedSparkJobDefinition.targetBigDataPool = BigDataPoolReference.fromJson(reader);
+                } else if ("jobProperties".equals(fieldName)) {
+                    deserializedSparkJobDefinition.jobProperties = SparkJobProperties.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSparkJobDefinition.description = reader.getString();
+                } else if ("targetSparkConfiguration".equals(fieldName)) {
+                    deserializedSparkJobDefinition.targetSparkConfiguration
+                        = SparkConfigurationReference.fromJson(reader);
+                } else if ("requiredSparkVersion".equals(fieldName)) {
+                    deserializedSparkJobDefinition.requiredSparkVersion = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    deserializedSparkJobDefinition.language = reader.getString();
+                } else if ("folder".equals(fieldName)) {
+                    deserializedSparkJobDefinition.folder = SparkJobDefinitionFolder.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSparkJobDefinition.additionalProperties = additionalProperties;
+
+            return deserializedSparkJobDefinition;
+        });
     }
 }

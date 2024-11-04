@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoringSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoringSummary model =
-            BinaryData
-                .fromString(
-                    "{\"unHealthyVmCount\":1920402368,\"unHealthyProviderCount\":272665329,\"eventsCount\":1194014342,\"deprecatedProviderCount\":614383228,\"supportedProviderCount\":1039086653,\"unsupportedProviderCount\":590284670}")
-                .toObject(MonitoringSummary.class);
+        MonitoringSummary model = BinaryData.fromString(
+            "{\"unHealthyVmCount\":1920402368,\"unHealthyProviderCount\":272665329,\"eventsCount\":1194014342,\"deprecatedProviderCount\":614383228,\"supportedProviderCount\":1039086653,\"unsupportedProviderCount\":590284670}")
+            .toObject(MonitoringSummary.class);
         Assertions.assertEquals(1920402368, model.unHealthyVmCount());
         Assertions.assertEquals(272665329, model.unHealthyProviderCount());
         Assertions.assertEquals(1194014342, model.eventsCount());
@@ -26,14 +24,12 @@ public final class MonitoringSummaryTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoringSummary model =
-            new MonitoringSummary()
-                .withUnHealthyVmCount(1920402368)
-                .withUnHealthyProviderCount(272665329)
-                .withEventsCount(1194014342)
-                .withDeprecatedProviderCount(614383228)
-                .withSupportedProviderCount(1039086653)
-                .withUnsupportedProviderCount(590284670);
+        MonitoringSummary model = new MonitoringSummary().withUnHealthyVmCount(1920402368)
+            .withUnHealthyProviderCount(272665329)
+            .withEventsCount(1194014342)
+            .withDeprecatedProviderCount(614383228)
+            .withSupportedProviderCount(1039086653)
+            .withUnsupportedProviderCount(590284670);
         model = BinaryData.fromObject(model).toObject(MonitoringSummary.class);
         Assertions.assertEquals(1920402368, model.unHealthyVmCount());
         Assertions.assertEquals(272665329, model.unHealthyProviderCount());

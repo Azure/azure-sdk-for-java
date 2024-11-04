@@ -6,7 +6,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,17 +17,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = VaultStorageConfigOperationResultResponseInner.class)
+    defaultImpl = VaultStorageConfigOperationResultResponseInner.class,
+    visible = true)
 @JsonTypeName("VaultStorageConfigOperationResultResponse")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "PrepareDataMoveResponse", value = PrepareDataMoveResponse.class) })
 @Immutable
 public class VaultStorageConfigOperationResultResponseInner {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType;
+
     /**
      * Creates an instance of VaultStorageConfigOperationResultResponseInner class.
      */
     public VaultStorageConfigOperationResultResponseInner() {
+        this.objectType = "VaultStorageConfigOperationResultResponse";
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

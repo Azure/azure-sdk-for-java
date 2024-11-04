@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -55,7 +54,6 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
      * @param name a name to look for.
      * @return the corresponding UpgradeChannel.
      */
-    @JsonCreator
     public static UpgradeChannel fromString(String name) {
         return fromString(name, UpgradeChannel.class);
     }

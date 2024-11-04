@@ -13,25 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PlacementPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlacementPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"sxiftozq\",\"provisioningState\":\"Canceled\"},\"id\":\"f\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"}")
-                .toObject(PlacementPolicyInner.class);
-        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.properties().state());
-        Assertions.assertEquals("sxiftozq", model.properties().displayName());
+        PlacementPolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"bfqkkr\",\"provisioningState\":\"Succeeded\"},\"id\":\"kgriwflzlfbx\",\"name\":\"puz\",\"type\":\"cispnqzahmgkbr\"}")
+            .toObject(PlacementPolicyInner.class);
+        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.properties().state());
+        Assertions.assertEquals("bfqkkr", model.properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlacementPolicyInner model =
-            new PlacementPolicyInner()
-                .withProperties(
-                    new PlacementPolicyProperties()
-                        .withState(PlacementPolicyState.ENABLED)
-                        .withDisplayName("sxiftozq"));
+        PlacementPolicyInner model = new PlacementPolicyInner().withProperties(
+            new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("bfqkkr"));
         model = BinaryData.fromObject(model).toObject(PlacementPolicyInner.class);
-        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.properties().state());
-        Assertions.assertEquals("sxiftozq", model.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.properties().state());
+        Assertions.assertEquals("bfqkkr", model.properties().displayName());
     }
 }

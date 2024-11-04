@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Rule filter types. */
+/**
+ * Rule filter types.
+ */
 public enum FilterType {
-    /** Enum value SqlFilter. */
+    /**
+     * Enum value SqlFilter.
+     */
     SQL_FILTER("SqlFilter"),
 
-    /** Enum value CorrelationFilter. */
+    /**
+     * Enum value CorrelationFilter.
+     */
     CORRELATION_FILTER("CorrelationFilter");
 
-    /** The actual serialized value for a FilterType instance. */
+    /**
+     * The actual serialized value for a FilterType instance.
+     */
     private final String value;
 
     FilterType(String value) {
@@ -24,11 +29,10 @@ public enum FilterType {
 
     /**
      * Parses a serialized value to a FilterType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FilterType object, or null if unable to parse.
      */
-    @JsonCreator
     public static FilterType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum FilterType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

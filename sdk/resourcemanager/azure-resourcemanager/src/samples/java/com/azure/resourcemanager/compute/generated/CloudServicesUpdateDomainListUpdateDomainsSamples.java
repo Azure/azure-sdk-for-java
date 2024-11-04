@@ -19,7 +19,10 @@ public final class CloudServicesUpdateDomainListUpdateDomainsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listUpdateDomainsInCloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServicesUpdateDomains()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServicesUpdateDomains()
             .listUpdateDomains("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,39 +6,41 @@ package com.azure.resourcemanager.signalr.models;
 
 import com.azure.resourcemanager.signalr.fluent.models.SignalRKeysInner;
 
-/** An immutable client-side representation of SignalRKeys. */
+/**
+ * An immutable client-side representation of SignalRKeys.
+ */
 public interface SignalRKeys {
     /**
      * Gets the primaryKey property: The primary access key.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
      * Gets the secondaryKey property: The secondary access key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
      * Gets the primaryConnectionString property: Connection string constructed via the primaryKey.
-     *
+     * 
      * @return the primaryConnectionString value.
      */
     String primaryConnectionString();
 
     /**
      * Gets the secondaryConnectionString property: Connection string constructed via the secondaryKey.
-     *
+     * 
      * @return the secondaryConnectionString value.
      */
     String secondaryConnectionString();
 
     /**
      * Gets the inner com.azure.resourcemanager.signalr.fluent.models.SignalRKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     SignalRKeysInner innerModel();

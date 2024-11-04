@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.TableTemporalType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Database table properties. */
+/**
+ * Database table properties.
+ */
 @Fluent
-public final class DatabaseTableProperties {
+public final class DatabaseTableProperties implements JsonSerializable<DatabaseTableProperties> {
     /*
      * The table temporal type.
      */
-    @JsonProperty(value = "temporalType")
     private TableTemporalType temporalType;
 
     /*
      * Whether or not the table is memory optimized.
      */
-    @JsonProperty(value = "memoryOptimized")
     private Boolean memoryOptimized;
 
-    /** Creates an instance of DatabaseTableProperties class. */
+    /**
+     * Creates an instance of DatabaseTableProperties class.
+     */
     public DatabaseTableProperties() {
     }
 
     /**
      * Get the temporalType property: The table temporal type.
-     *
+     * 
      * @return the temporalType value.
      */
     public TableTemporalType temporalType() {
@@ -38,7 +44,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Set the temporalType property: The table temporal type.
-     *
+     * 
      * @param temporalType the temporalType value to set.
      * @return the DatabaseTableProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Get the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @return the memoryOptimized value.
      */
     public Boolean memoryOptimized() {
@@ -58,7 +64,7 @@ public final class DatabaseTableProperties {
 
     /**
      * Set the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @param memoryOptimized the memoryOptimized value to set.
      * @return the DatabaseTableProperties object itself.
      */
@@ -69,9 +75,48 @@ public final class DatabaseTableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("temporalType", this.temporalType == null ? null : this.temporalType.toString());
+        jsonWriter.writeBooleanField("memoryOptimized", this.memoryOptimized);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseTableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseTableProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseTableProperties.
+     */
+    public static DatabaseTableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseTableProperties deserializedDatabaseTableProperties = new DatabaseTableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("temporalType".equals(fieldName)) {
+                    deserializedDatabaseTableProperties.temporalType = TableTemporalType.fromString(reader.getString());
+                } else if ("memoryOptimized".equals(fieldName)) {
+                    deserializedDatabaseTableProperties.memoryOptimized = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseTableProperties;
+        });
     }
 }

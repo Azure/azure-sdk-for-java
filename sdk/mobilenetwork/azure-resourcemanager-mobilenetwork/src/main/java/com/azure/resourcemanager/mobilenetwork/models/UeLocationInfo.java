@@ -104,16 +104,16 @@ public final class UeLocationInfo {
      */
     public void validate() {
         if (locationType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property locationType in model UeLocationInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property locationType in model UeLocationInfo"));
         }
         if (tac() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property tac in model UeLocationInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tac in model UeLocationInfo"));
         }
         if (plmn() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property plmn in model UeLocationInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property plmn in model UeLocationInfo"));
         } else {
             plmn().validate();
         }

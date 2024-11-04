@@ -6,43 +6,47 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object that wraps the blob inventory rule. Each rule is uniquely defined by name. */
+/**
+ * An object that wraps the blob inventory rule. Each rule is uniquely defined by name.
+ */
 @Fluent
-public final class BlobInventoryPolicyRule {
+public final class BlobInventoryPolicyRule implements JsonSerializable<BlobInventoryPolicyRule> {
     /*
      * Rule is enabled when set to true.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * A rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be
      * unique within a policy.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Container name where blob inventory files are stored. Must be pre-created.
      */
-    @JsonProperty(value = "destination", required = true)
     private String destination;
 
     /*
      * An object that defines the blob inventory policy rule.
      */
-    @JsonProperty(value = "definition", required = true)
     private BlobInventoryPolicyDefinition definition;
 
-    /** Creates an instance of BlobInventoryPolicyRule class. */
+    /**
+     * Creates an instance of BlobInventoryPolicyRule class.
+     */
     public BlobInventoryPolicyRule() {
     }
 
     /**
      * Get the enabled property: Rule is enabled when set to true.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -51,7 +55,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Set the enabled property: Rule is enabled when set to true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -63,7 +67,7 @@ public final class BlobInventoryPolicyRule {
     /**
      * Get the name property: A rule name can contain any combination of alpha numeric characters. Rule name is
      * case-sensitive. It must be unique within a policy.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,7 +77,7 @@ public final class BlobInventoryPolicyRule {
     /**
      * Set the name property: A rule name can contain any combination of alpha numeric characters. Rule name is
      * case-sensitive. It must be unique within a policy.
-     *
+     * 
      * @param name the name value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -84,7 +88,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Get the destination property: Container name where blob inventory files are stored. Must be pre-created.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -93,7 +97,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Set the destination property: Container name where blob inventory files are stored. Must be pre-created.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -104,7 +108,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Get the definition property: An object that defines the blob inventory policy rule.
-     *
+     * 
      * @return the definition value.
      */
     public BlobInventoryPolicyDefinition definition() {
@@ -113,7 +117,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Set the definition property: An object that defines the blob inventory policy rule.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -124,30 +128,73 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model BlobInventoryPolicyRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model BlobInventoryPolicyRule"));
         }
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model BlobInventoryPolicyRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destination in model BlobInventoryPolicyRule"));
         }
         if (definition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property definition in model BlobInventoryPolicyRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property definition in model BlobInventoryPolicyRule"));
         } else {
             definition().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicyRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("destination", this.destination);
+        jsonWriter.writeJsonField("definition", this.definition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobInventoryPolicyRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobInventoryPolicyRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobInventoryPolicyRule.
+     */
+    public static BlobInventoryPolicyRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobInventoryPolicyRule deserializedBlobInventoryPolicyRule = new BlobInventoryPolicyRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyRule.enabled = reader.getBoolean();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyRule.name = reader.getString();
+                } else if ("destination".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyRule.destination = reader.getString();
+                } else if ("definition".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyRule.definition = BlobInventoryPolicyDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobInventoryPolicyRule;
+        });
+    }
 }

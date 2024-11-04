@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -22,6 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
@@ -155,6 +157,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The AutoUpgradeProfilesClient object to access its operations.
+     */
+    private final AutoUpgradeProfilesClient autoUpgradeProfiles;
+
+    /**
+     * Gets the AutoUpgradeProfilesClient object to access its operations.
+     * 
+     * @return the AutoUpgradeProfilesClient object.
+     */
+    public AutoUpgradeProfilesClient getAutoUpgradeProfiles() {
+        return this.autoUpgradeProfiles;
+    }
+
+    /**
      * The FleetMembersClient object to access its operations.
      */
     private final FleetMembersClient fleetMembers;
@@ -213,9 +229,10 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-02-02-preview";
+        this.apiVersion = "2024-05-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
+        this.autoUpgradeProfiles = new AutoUpgradeProfilesClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
@@ -281,8 +298,8 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -323,7 +340,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

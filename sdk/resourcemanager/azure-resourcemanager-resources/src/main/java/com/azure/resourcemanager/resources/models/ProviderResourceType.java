@@ -5,82 +5,78 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Resource type managed by the resource provider. */
+/**
+ * Resource type managed by the resource provider.
+ */
 @Fluent
-public final class ProviderResourceType {
+public final class ProviderResourceType implements JsonSerializable<ProviderResourceType> {
     /*
      * The resource type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The collection of locations where this resource type can be created.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * The location mappings that are supported by this resource type.
      */
-    @JsonProperty(value = "locationMappings")
     private List<ProviderExtendedLocation> locationMappings;
 
     /*
      * The aliases that are supported by this resource type.
      */
-    @JsonProperty(value = "aliases")
     private List<Alias> aliases;
 
     /*
      * The API version.
      */
-    @JsonProperty(value = "apiVersions")
     private List<String> apiVersions;
 
     /*
      * The default API version.
      */
-    @JsonProperty(value = "defaultApiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultApiVersion;
 
     /*
      * The zoneMappings property.
      */
-    @JsonProperty(value = "zoneMappings")
     private List<ZoneMapping> zoneMappings;
 
     /*
      * The API profiles for the resource provider.
      */
-    @JsonProperty(value = "apiProfiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiProfile> apiProfiles;
 
     /*
      * The additional capabilities offered by this resource type.
      */
-    @JsonProperty(value = "capabilities")
     private String capabilities;
 
     /*
      * The properties.
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of ProviderResourceType class. */
+    /**
+     * Creates an instance of ProviderResourceType class.
+     */
     public ProviderResourceType() {
     }
 
     /**
      * Get the resourceType property: The resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -89,7 +85,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the resourceType property: The resource type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -100,7 +96,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the locations property: The collection of locations where this resource type can be created.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -109,7 +105,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the locations property: The collection of locations where this resource type can be created.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -120,7 +116,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the locationMappings property: The location mappings that are supported by this resource type.
-     *
+     * 
      * @return the locationMappings value.
      */
     public List<ProviderExtendedLocation> locationMappings() {
@@ -129,7 +125,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the locationMappings property: The location mappings that are supported by this resource type.
-     *
+     * 
      * @param locationMappings the locationMappings value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -140,7 +136,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the aliases property: The aliases that are supported by this resource type.
-     *
+     * 
      * @return the aliases value.
      */
     public List<Alias> aliases() {
@@ -149,7 +145,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the aliases property: The aliases that are supported by this resource type.
-     *
+     * 
      * @param aliases the aliases value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -160,7 +156,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the apiVersions property: The API version.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -169,7 +165,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the apiVersions property: The API version.
-     *
+     * 
      * @param apiVersions the apiVersions value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -180,7 +176,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the defaultApiVersion property: The default API version.
-     *
+     * 
      * @return the defaultApiVersion value.
      */
     public String defaultApiVersion() {
@@ -189,7 +185,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the zoneMappings property: The zoneMappings property.
-     *
+     * 
      * @return the zoneMappings value.
      */
     public List<ZoneMapping> zoneMappings() {
@@ -198,7 +194,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the zoneMappings property: The zoneMappings property.
-     *
+     * 
      * @param zoneMappings the zoneMappings value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -209,7 +205,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the apiProfiles property: The API profiles for the resource provider.
-     *
+     * 
      * @return the apiProfiles value.
      */
     public List<ApiProfile> apiProfiles() {
@@ -218,7 +214,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the capabilities property: The additional capabilities offered by this resource type.
-     *
+     * 
      * @return the capabilities value.
      */
     public String capabilities() {
@@ -227,7 +223,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the capabilities property: The additional capabilities offered by this resource type.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -238,7 +234,7 @@ public final class ProviderResourceType {
 
     /**
      * Get the properties property: The properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -247,7 +243,7 @@ public final class ProviderResourceType {
 
     /**
      * Set the properties property: The properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ProviderResourceType object itself.
      */
@@ -258,7 +254,7 @@ public final class ProviderResourceType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -274,5 +270,75 @@ public final class ProviderResourceType {
         if (apiProfiles() != null) {
             apiProfiles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locationMappings", this.locationMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("apiVersions", this.apiVersions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zoneMappings", this.zoneMappings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("capabilities", this.capabilities);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderResourceType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderResourceType if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderResourceType.
+     */
+    public static ProviderResourceType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderResourceType deserializedProviderResourceType = new ProviderResourceType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedProviderResourceType.resourceType = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProviderResourceType.locations = locations;
+                } else if ("locationMappings".equals(fieldName)) {
+                    List<ProviderExtendedLocation> locationMappings
+                        = reader.readArray(reader1 -> ProviderExtendedLocation.fromJson(reader1));
+                    deserializedProviderResourceType.locationMappings = locationMappings;
+                } else if ("aliases".equals(fieldName)) {
+                    List<Alias> aliases = reader.readArray(reader1 -> Alias.fromJson(reader1));
+                    deserializedProviderResourceType.aliases = aliases;
+                } else if ("apiVersions".equals(fieldName)) {
+                    List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProviderResourceType.apiVersions = apiVersions;
+                } else if ("defaultApiVersion".equals(fieldName)) {
+                    deserializedProviderResourceType.defaultApiVersion = reader.getString();
+                } else if ("zoneMappings".equals(fieldName)) {
+                    List<ZoneMapping> zoneMappings = reader.readArray(reader1 -> ZoneMapping.fromJson(reader1));
+                    deserializedProviderResourceType.zoneMappings = zoneMappings;
+                } else if ("apiProfiles".equals(fieldName)) {
+                    List<ApiProfile> apiProfiles = reader.readArray(reader1 -> ApiProfile.fromJson(reader1));
+                    deserializedProviderResourceType.apiProfiles = apiProfiles;
+                } else if ("capabilities".equals(fieldName)) {
+                    deserializedProviderResourceType.capabilities = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProviderResourceType.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderResourceType;
+        });
     }
 }

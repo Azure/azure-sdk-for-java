@@ -20,8 +20,9 @@ public final class HttpRetryPolicyRetryBackOffTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRetryPolicyRetryBackOff model = new HttpRetryPolicyRetryBackOff()
-            .withInitialDelayInMilliseconds(2232295730634911769L).withMaxIntervalInMilliseconds(8368000594620652423L);
+        HttpRetryPolicyRetryBackOff model
+            = new HttpRetryPolicyRetryBackOff().withInitialDelayInMilliseconds(2232295730634911769L)
+                .withMaxIntervalInMilliseconds(8368000594620652423L);
         model = BinaryData.fromObject(model).toObject(HttpRetryPolicyRetryBackOff.class);
         Assertions.assertEquals(2232295730634911769L, model.initialDelayInMilliseconds());
         Assertions.assertEquals(8368000594620652423L, model.maxIntervalInMilliseconds());

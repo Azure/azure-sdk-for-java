@@ -5,20 +5,44 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Request parameters for tiering cost info for vault.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = FetchTieringCostSavingsInfoForVaultRequest.class,
+    visible = true)
 @JsonTypeName("FetchTieringCostSavingsInfoForVaultRequest")
 @Fluent
 public final class FetchTieringCostSavingsInfoForVaultRequest extends FetchTieringCostInfoRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "FetchTieringCostSavingsInfoForVaultRequest";
+
     /**
      * Creates an instance of FetchTieringCostSavingsInfoForVaultRequest class.
      */
     public FetchTieringCostSavingsInfoForVaultRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

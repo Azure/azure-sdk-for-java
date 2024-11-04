@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Class containing feature settings of vault.
  */
 @Fluent
-public final class FeatureSettings {
+public final class FeatureSettings implements JsonSerializable<FeatureSettings> {
     /*
      * CrossSubscriptionRestore Settings
      */
-    @JsonProperty(value = "crossSubscriptionRestoreSettings")
     private CrossSubscriptionRestoreSettings crossSubscriptionRestoreSettings;
 
     /*
      * The crossRegionRestoreSettings property.
      */
-    @JsonProperty(value = "crossRegionRestoreSettings")
     private CrossRegionRestoreSettings crossRegionRestoreSettings;
 
     /**
@@ -83,5 +85,46 @@ public final class FeatureSettings {
         if (crossRegionRestoreSettings() != null) {
             crossRegionRestoreSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("crossSubscriptionRestoreSettings", this.crossSubscriptionRestoreSettings);
+        jsonWriter.writeJsonField("crossRegionRestoreSettings", this.crossRegionRestoreSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeatureSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeatureSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeatureSettings.
+     */
+    public static FeatureSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeatureSettings deserializedFeatureSettings = new FeatureSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("crossSubscriptionRestoreSettings".equals(fieldName)) {
+                    deserializedFeatureSettings.crossSubscriptionRestoreSettings
+                        = CrossSubscriptionRestoreSettings.fromJson(reader);
+                } else if ("crossRegionRestoreSettings".equals(fieldName)) {
+                    deserializedFeatureSettings.crossRegionRestoreSettings
+                        = CrossRegionRestoreSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeatureSettings;
+        });
     }
 }

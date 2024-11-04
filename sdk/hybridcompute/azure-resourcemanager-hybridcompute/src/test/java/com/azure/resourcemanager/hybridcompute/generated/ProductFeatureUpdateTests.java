@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductFeatureUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductFeatureUpdate model = BinaryData.fromString("{\"name\":\"pcesutrg\",\"subscriptionStatus\":\"Enable\"}")
+        ProductFeatureUpdate model = BinaryData.fromString("{\"name\":\"bkyvp\",\"subscriptionStatus\":\"Disable\"}")
             .toObject(ProductFeatureUpdate.class);
-        Assertions.assertEquals("pcesutrg", model.name());
-        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE, model.subscriptionStatus());
+        Assertions.assertEquals("bkyvp", model.name());
+        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.DISABLE, model.subscriptionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductFeatureUpdate model = new ProductFeatureUpdate().withName("pcesutrg")
-            .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.ENABLE);
+        ProductFeatureUpdate model = new ProductFeatureUpdate().withName("bkyvp")
+            .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.DISABLE);
         model = BinaryData.fromObject(model).toObject(ProductFeatureUpdate.class);
-        Assertions.assertEquals("pcesutrg", model.name());
-        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE, model.subscriptionStatus());
+        Assertions.assertEquals("bkyvp", model.name());
+        Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.DISABLE, model.subscriptionStatus());
     }
 }

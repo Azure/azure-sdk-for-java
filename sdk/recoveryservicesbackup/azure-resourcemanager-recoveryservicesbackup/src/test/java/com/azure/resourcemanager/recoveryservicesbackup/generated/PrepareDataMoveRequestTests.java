@@ -26,8 +26,10 @@ public final class PrepareDataMoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrepareDataMoveRequest model = new PrepareDataMoveRequest().withTargetResourceId("ujjugwdkcglh")
-            .withTargetRegion("lazjdyggdtjixhbk").withDataMoveLevel(DataMoveLevel.CONTAINER)
-            .withSourceContainerArmIds(Arrays.asList("wey", "hmenevfyexfwhybc", "bvyvdcsity")).withIgnoreMoved(false);
+            .withTargetRegion("lazjdyggdtjixhbk")
+            .withDataMoveLevel(DataMoveLevel.CONTAINER)
+            .withSourceContainerArmIds(Arrays.asList("wey", "hmenevfyexfwhybc", "bvyvdcsity"))
+            .withIgnoreMoved(false);
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveRequest.class);
         Assertions.assertEquals("ujjugwdkcglh", model.targetResourceId());
         Assertions.assertEquals("lazjdyggdtjixhbk", model.targetRegion());

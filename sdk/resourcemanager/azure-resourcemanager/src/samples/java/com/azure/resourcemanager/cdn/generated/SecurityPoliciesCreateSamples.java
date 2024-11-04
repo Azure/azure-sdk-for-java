@@ -25,16 +25,19 @@ public final class SecurityPoliciesCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void securityPoliciesCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getSecurityPolicies().create("RG", "profile1", "securityPolicy1",
-            new SecurityPolicyInner().withParameters(new SecurityPolicyWebApplicationFirewallParameters()
-                .withWafPolicy(new ResourceReference().withId(
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getSecurityPolicies()
+            .create("RG", "profile1", "securityPolicy1", new SecurityPolicyInner().withParameters(
+                new SecurityPolicyWebApplicationFirewallParameters().withWafPolicy(new ResourceReference().withId(
                     "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoorwebapplicationfirewallpolicies/wafTest"))
-                .withAssociations(Arrays.asList(new SecurityPolicyWebApplicationFirewallAssociation()
-                    .withDomains(Arrays.asList(new ActivatedResourceReference().withId(
-                        "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
-                        new ActivatedResourceReference().withId(
-                            "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2")))
-                    .withPatternsToMatch(Arrays.asList("/*"))))),
-            com.azure.core.util.Context.NONE);
+                    .withAssociations(Arrays.asList(new SecurityPolicyWebApplicationFirewallAssociation()
+                        .withDomains(Arrays.asList(new ActivatedResourceReference().withId(
+                            "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain1"),
+                            new ActivatedResourceReference().withId(
+                                "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2")))
+                        .withPatternsToMatch(Arrays.asList("/*"))))),
+                com.azure.core.util.Context.NONE);
     }
 }

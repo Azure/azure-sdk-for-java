@@ -6,19 +6,21 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.FailoverType;
 
-/** Samples for StorageAccounts Failover. */
+/**
+ * Samples for StorageAccounts Failover.
+ */
 public final class StorageAccountsFailoverSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountFailover.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountFailover.json
      */
     /**
      * Sample code: StorageAccountFailover.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountFailover(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
@@ -26,16 +28,17 @@ public final class StorageAccountsFailoverSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountFailoverPlanned.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountFailoverPlanned
+     * .json
      */
     /**
      * Sample code: StorageAccountFailoverPlanned.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountFailoverPlanned(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()

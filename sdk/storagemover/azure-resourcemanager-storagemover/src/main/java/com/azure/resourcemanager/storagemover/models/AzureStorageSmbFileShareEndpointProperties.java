@@ -7,14 +7,28 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of Azure Storage SMB file share endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+/**
+ * The properties of Azure Storage SMB file share endpoint.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = AzureStorageSmbFileShareEndpointProperties.class,
+    visible = true)
 @JsonTypeName("AzureStorageSmbFileShare")
 @Fluent
 public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBaseProperties {
+    /*
+     * The Endpoint resource type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.AZURE_STORAGE_SMB_FILE_SHARE;
+
     /*
      * The Azure Resource ID of the storage account.
      */
@@ -27,13 +41,25 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
     @JsonProperty(value = "fileShareName", required = true)
     private String fileShareName;
 
-    /** Creates an instance of AzureStorageSmbFileShareEndpointProperties class. */
+    /**
+     * Creates an instance of AzureStorageSmbFileShareEndpointProperties class.
+     */
     public AzureStorageSmbFileShareEndpointProperties() {
     }
 
     /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the storageAccountResourceId property: The Azure Resource ID of the storage account.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -42,7 +68,7 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Set the storageAccountResourceId property: The Azure Resource ID of the storage account.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the AzureStorageSmbFileShareEndpointProperties object itself.
      */
@@ -53,7 +79,7 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Get the fileShareName property: The name of the Azure Storage file share.
-     *
+     * 
      * @return the fileShareName value.
      */
     public String fileShareName() {
@@ -62,7 +88,7 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Set the fileShareName property: The name of the Azure Storage file share.
-     *
+     * 
      * @param fileShareName the fileShareName value to set.
      * @return the AzureStorageSmbFileShareEndpointProperties object itself.
      */
@@ -71,7 +97,9 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageSmbFileShareEndpointProperties withDescription(String description) {
         super.withDescription(description);
@@ -80,24 +108,21 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (storageAccountResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountResourceId in model"
-                            + " AzureStorageSmbFileShareEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountResourceId in model AzureStorageSmbFileShareEndpointProperties"));
         }
         if (fileShareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileShareName in model AzureStorageSmbFileShareEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileShareName in model AzureStorageSmbFileShareEndpointProperties"));
         }
     }
 

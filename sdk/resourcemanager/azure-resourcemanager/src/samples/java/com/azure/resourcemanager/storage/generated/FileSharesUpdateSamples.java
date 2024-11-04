@@ -12,59 +12,51 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for FileShares Update. */
+/**
+ * Samples for FileShares Update.
+ */
 public final class FileSharesUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesPatch.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPatch.json
      */
     /**
      * Sample code: UpdateShares.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateShares(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()
-            .updateWithResponse(
-                "res3376",
-                "sto328",
-                "share6185",
-                new FileShareInner().withMetadata(mapOf("type", "image")),
-                com.azure.core.util.Context.NONE);
+            .updateWithResponse("res3376", "sto328", "share6185",
+                new FileShareInner().withMetadata(mapOf("type", "image")), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileShareAclsPatch.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileShareAclsPatch.json
      */
     /**
      * Sample code: UpdateShareAcls.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateShareAcls(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()
-            .updateWithResponse(
-                "res3376",
-                "sto328",
-                "share6185",
+            .updateWithResponse("res3376", "sto328", "share6185",
                 new FileShareInner()
                     .withSignedIdentifiers(
                         Arrays
-                            .asList(
-                                new SignedIdentifier()
-                                    .withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI")
-                                    .withAccessPolicy(
-                                        new AccessPolicy()
-                                            .withStartTime(OffsetDateTime.parse("2021-04-01T08:49:37.0000000Z"))
-                                            .withExpiryTime(OffsetDateTime.parse("2021-05-01T08:49:37.0000000Z"))
-                                            .withPermission("rwd")))),
+                            .asList(new SignedIdentifier().withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI")
+                                .withAccessPolicy(new AccessPolicy()
+                                    .withStartTime(OffsetDateTime.parse("2021-04-01T08:49:37.0000000Z"))
+                                    .withExpiryTime(OffsetDateTime.parse("2021-05-01T08:49:37.0000000Z"))
+                                    .withPermission("rwd")))),
                 com.azure.core.util.Context.NONE);
     }
 

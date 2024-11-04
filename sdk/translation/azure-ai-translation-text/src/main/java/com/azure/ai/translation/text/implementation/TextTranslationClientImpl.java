@@ -162,8 +162,8 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getLanguages(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+        Mono<Response<BinaryData>> getSupportedLanguages(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/languages")
@@ -172,8 +172,8 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getLanguagesSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+        Response<BinaryData> getSupportedLanguagesSync(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/translate")
@@ -183,9 +183,10 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> translate(@HostParam("Endpoint") String endpoint,
-            @QueryParam(value = "to", multipleQueryParams = true) List<String> to,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @QueryParam(value = "to", multipleQueryParams = true) List<String> targetLanguages,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/translate")
         @ExpectedResponses({ 200 })
@@ -194,9 +195,10 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> translateSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam(value = "to", multipleQueryParams = true) List<String> to,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @QueryParam(value = "to", multipleQueryParams = true) List<String> targetLanguages,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/transliterate")
         @ExpectedResponses({ 200 })
@@ -205,10 +207,10 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> transliterate(@HostParam("Endpoint") String endpoint,
-            @QueryParam("language") String language, @QueryParam("fromScript") String fromScript,
-            @QueryParam("toScript") String toScript, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData requestBody,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("language") String language, @QueryParam("fromScript") String sourceLanguageScript,
+            @QueryParam("toScript") String targetLanguageScript, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/transliterate")
         @ExpectedResponses({ 200 })
@@ -217,10 +219,10 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> transliterateSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("language") String language, @QueryParam("fromScript") String fromScript,
-            @QueryParam("toScript") String toScript, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData requestBody,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("language") String language, @QueryParam("fromScript") String sourceLanguageScript,
+            @QueryParam("toScript") String targetLanguageScript, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/breaksentence")
         @ExpectedResponses({ 200 })
@@ -229,8 +231,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> findSentenceBoundaries(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/breaksentence")
         @ExpectedResponses({ 200 })
@@ -239,8 +242,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> findSentenceBoundariesSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/lookup")
         @ExpectedResponses({ 200 })
@@ -249,8 +253,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> lookupDictionaryEntries(@HostParam("Endpoint") String endpoint,
-            @QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/lookup")
@@ -260,8 +265,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> lookupDictionaryEntriesSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/examples")
@@ -271,8 +277,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> lookupDictionaryExamples(@HostParam("Endpoint") String endpoint,
-            @QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/dictionary/examples")
@@ -282,8 +289,9 @@ public final class TextTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> lookupDictionaryExamplesSync(@HostParam("Endpoint") String endpoint,
-            @QueryParam("from") String from, @QueryParam("to") String to, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            @QueryParam("from") String sourceLanguage, @QueryParam("to") String targetLanguage,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
     }
 
@@ -322,13 +330,14 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
      *             name: String (Required)
      *             nativeName: String (Required)
-     *             dir: String (Required)
+     *             dir: String(ltr/rtl) (Required)
      *         }
      *     }
      *     transliteration (Optional): {
@@ -340,13 +349,13 @@ public final class TextTranslationClientImpl {
      *                     code: String (Required)
      *                     name: String (Required)
      *                     nativeName: String (Required)
-     *                     dir: String (Required)
+     *                     dir: String(ltr/rtl) (Required)
      *                     toScripts (Required): [
      *                          (Required){
      *                             code: String (Required)
      *                             name: String (Required)
      *                             nativeName: String (Required)
-     *                             dir: String (Required)
+     *                             dir: String(ltr/rtl) (Required)
      *                         }
      *                     ]
      *                 }
@@ -357,19 +366,20 @@ public final class TextTranslationClientImpl {
      *         String (Required): {
      *             name: String (Required)
      *             nativeName: String (Required)
-     *             dir: String (Required)
+     *             dir: String(ltr/rtl) (Required)
      *             translations (Required): [
      *                  (Required){
      *                     name: String (Required)
      *                     nativeName: String (Required)
-     *                     dir: String (Required)
+     *                     dir: String(ltr/rtl) (Required)
      *                     code: String (Required)
      *                 }
      *             ]
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -380,9 +390,9 @@ public final class TextTranslationClientImpl {
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLanguagesWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSupportedLanguagesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getLanguages(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSupportedLanguages(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -421,13 +431,14 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
      *             name: String (Required)
      *             nativeName: String (Required)
-     *             dir: String (Required)
+     *             dir: String(ltr/rtl) (Required)
      *         }
      *     }
      *     transliteration (Optional): {
@@ -439,13 +450,13 @@ public final class TextTranslationClientImpl {
      *                     code: String (Required)
      *                     name: String (Required)
      *                     nativeName: String (Required)
-     *                     dir: String (Required)
+     *                     dir: String(ltr/rtl) (Required)
      *                     toScripts (Required): [
      *                          (Required){
      *                             code: String (Required)
      *                             name: String (Required)
      *                             nativeName: String (Required)
-     *                             dir: String (Required)
+     *                             dir: String(ltr/rtl) (Required)
      *                         }
      *                     ]
      *                 }
@@ -456,19 +467,20 @@ public final class TextTranslationClientImpl {
      *         String (Required): {
      *             name: String (Required)
      *             nativeName: String (Required)
-     *             dir: String (Required)
+     *             dir: String(ltr/rtl) (Required)
      *             translations (Required): [
      *                  (Required){
      *                     name: String (Required)
      *                     nativeName: String (Required)
-     *                     dir: String (Required)
+     *                     dir: String(ltr/rtl) (Required)
      *                     code: String (Required)
      *                 }
      *             ]
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -479,9 +491,9 @@ public final class TextTranslationClientImpl {
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLanguagesWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getSupportedLanguagesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getLanguagesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getSupportedLanguagesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -546,17 +558,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -589,14 +604,15 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param to Specifies the language of the output text. The target language must be one of the supported languages
-     * included
+     * @param targetLanguages Specifies the language of the output text. The target language must be one of the
+     * supported languages included
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -605,12 +621,14 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> translateWithResponseAsync(List<String> to, BinaryData requestBody,
+    public Mono<Response<BinaryData>> translateWithResponseAsync(List<String> targetLanguages, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        List<String> toConverted = to.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return FluxUtil.withContext(context -> service.translate(this.getEndpoint(), toConverted,
-            this.getServiceVersion().getVersion(), accept, requestBody, requestOptions, context));
+        List<String> targetLanguagesConverted
+            = targetLanguages.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil.withContext(context -> service.translate(this.getEndpoint(), targetLanguagesConverted,
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -674,17 +692,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -717,14 +738,15 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param to Specifies the language of the output text. The target language must be one of the supported languages
-     * included
+     * @param targetLanguages Specifies the language of the output text. The target language must be one of the
+     * supported languages included
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -733,12 +755,14 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> translateWithResponse(List<String> to, BinaryData requestBody,
+    public Response<BinaryData> translateWithResponse(List<String> targetLanguages, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        List<String> toConverted = to.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.translateSync(this.getEndpoint(), toConverted, this.getServiceVersion().getVersion(), accept,
-            requestBody, requestOptions, Context.NONE);
+        List<String> targetLanguagesConverted
+            = targetLanguages.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.translateSync(this.getEndpoint(), targetLanguagesConverted,
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -753,35 +777,39 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
+     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
-     * output
+     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -790,11 +818,13 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> transliterateWithResponseAsync(String language, String fromScript,
-        String toScript, BinaryData requestBody, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> transliterateWithResponseAsync(String language, String sourceLanguageScript,
+        String targetLanguageScript, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.transliterate(this.getEndpoint(), language, fromScript, toScript,
-            this.getServiceVersion().getVersion(), accept, requestBody, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.transliterate(this.getEndpoint(), language, sourceLanguageScript, targetLanguageScript,
+                this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -809,35 +839,39 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
      * for its supported languages.
-     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
+     * @param sourceLanguageScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
-     * output
+     * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
+     * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -846,11 +880,12 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> transliterateWithResponse(String language, String fromScript, String toScript,
-        BinaryData requestBody, RequestOptions requestOptions) {
+    public Response<BinaryData> transliterateWithResponse(String language, String sourceLanguageScript,
+        String targetLanguageScript, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.transliterateSync(this.getEndpoint(), language, fromScript, toScript,
-            this.getServiceVersion().getVersion(), accept, requestBody, requestOptions, Context.NONE);
+        return service.transliterateSync(this.getEndpoint(), language, sourceLanguageScript, targetLanguageScript,
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -875,17 +910,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -897,9 +935,10 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -908,11 +947,12 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSentenceBoundariesWithResponseAsync(BinaryData requestBody,
+    public Mono<Response<BinaryData>> findSentenceBoundariesWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.findSentenceBoundaries(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestBody, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -937,17 +977,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -959,9 +1002,10 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -970,11 +1014,11 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> findSentenceBoundariesWithResponse(BinaryData requestBody,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> findSentenceBoundariesWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.findSentenceBoundariesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestBody, requestOptions, Context.NONE);
+        return service.findSentenceBoundariesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -989,17 +1033,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1023,13 +1070,14 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param from Specifies the language of the input text.
+     * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
-     * @param to Specifies the language of the output text.
+     * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1038,11 +1086,12 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponseAsync(String from, String to,
-        BinaryData requestBody, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponseAsync(String sourceLanguage,
+        String targetLanguage, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.lookupDictionaryEntries(this.getEndpoint(), from, to,
-            this.getServiceVersion().getVersion(), accept, requestBody, requestOptions, context));
+        return FluxUtil.withContext(context -> service.lookupDictionaryEntries(this.getEndpoint(), sourceLanguage,
+            targetLanguage, this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1057,17 +1106,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1091,13 +1143,14 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param from Specifies the language of the input text.
+     * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
-     * @param to Specifies the language of the output text.
+     * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1106,11 +1159,12 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> lookupDictionaryEntriesWithResponse(String from, String to, BinaryData requestBody,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> lookupDictionaryEntriesWithResponse(String sourceLanguage, String targetLanguage,
+        BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.lookupDictionaryEntriesSync(this.getEndpoint(), from, to, this.getServiceVersion().getVersion(),
-            accept, requestBody, requestOptions, Context.NONE);
+        return service.lookupDictionaryEntriesSync(this.getEndpoint(), sourceLanguage, targetLanguage,
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1125,18 +1179,21 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1153,13 +1210,14 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param from Specifies the language of the input text.
+     * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
-     * @param to Specifies the language of the output text.
+     * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1168,11 +1226,12 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponseAsync(String from, String to,
-        BinaryData requestBody, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponseAsync(String sourceLanguage,
+        String targetLanguage, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.lookupDictionaryExamples(this.getEndpoint(), from, to,
-            this.getServiceVersion().getVersion(), accept, requestBody, requestOptions, context));
+        return FluxUtil.withContext(context -> service.lookupDictionaryExamples(this.getEndpoint(), sourceLanguage,
+            targetLanguage, this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -1187,18 +1246,21 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1215,13 +1277,14 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param from Specifies the language of the input text.
+     * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
-     * @param to Specifies the language of the output text.
+     * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1230,10 +1293,11 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> lookupDictionaryExamplesWithResponse(String from, String to, BinaryData requestBody,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> lookupDictionaryExamplesWithResponse(String sourceLanguage, String targetLanguage,
+        BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.lookupDictionaryExamplesSync(this.getEndpoint(), from, to, this.getServiceVersion().getVersion(),
-            accept, requestBody, requestOptions, Context.NONE);
+        return service.lookupDictionaryExamplesSync(this.getEndpoint(), sourceLanguage, targetLanguage,
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, Context.NONE);
     }
 }

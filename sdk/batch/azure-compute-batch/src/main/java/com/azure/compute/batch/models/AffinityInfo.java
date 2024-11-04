@@ -19,7 +19,10 @@ import java.io.IOException;
 public final class AffinityInfo implements JsonSerializable<AffinityInfo> {
 
     /*
-     * An opaque string representing the location of a Compute Node or a Task that has run previously. You can pass the affinityId of a Node to indicate that this Task needs to run on that Compute Node. Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will be scheduled elsewhere.
+     * An opaque string representing the location of a Compute Node or a Task that has run previously. You can pass the
+     * affinityId of a Node to indicate that this Task needs to run on that Compute Node. Note that this is just a soft
+     * affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will
+     * be scheduled elsewhere.
      */
     @Generated
     private final String affinityId;

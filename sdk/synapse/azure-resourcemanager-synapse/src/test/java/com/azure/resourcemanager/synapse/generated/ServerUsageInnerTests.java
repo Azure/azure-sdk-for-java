@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.ServerUsageInner;
 public final class ServerUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cojocqwogfnzjvus\",\"resourceName\":\"ld\",\"displayName\":\"zuxylfsbtkadpyso\",\"currentValue\":86.65607552642484,\"limit\":7.676130945689518,\"unit\":\"grjqctojcmi\",\"nextResetTime\":\"2021-11-09T20:08:20Z\"}")
-                .toObject(ServerUsageInner.class);
+        ServerUsageInner model = BinaryData.fromString(
+            "{\"name\":\"alhsnvkc\",\"resourceName\":\"xzrpo\",\"displayName\":\"mlnwiaaomylweazu\",\"currentValue\":43.22725195175988,\"limit\":22.13423592070195,\"unit\":\"npjhlfzswpchwahf\",\"nextResetTime\":\"2021-07-25T08:18:30Z\"}")
+            .toObject(ServerUsageInner.class);
     }
 
     @org.junit.jupiter.api.Test

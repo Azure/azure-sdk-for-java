@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about BI whose secondary RecoveryPoints are requested
@@ -13,17 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * BI ARM path.
  */
 @Fluent
-public final class FetchSecondaryRPsRequestParameters {
+public final class FetchSecondaryRPsRequestParameters implements JsonSerializable<FetchSecondaryRPsRequestParameters> {
     /*
      * Source region in which BackupInstance is located
      */
-    @JsonProperty(value = "sourceRegion")
     private String sourceRegion;
 
     /*
      * ARM Path of BackupInstance
      */
-    @JsonProperty(value = "sourceBackupInstanceId")
     private String sourceBackupInstanceId;
 
     /**
@@ -78,5 +80,45 @@ public final class FetchSecondaryRPsRequestParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceRegion", this.sourceRegion);
+        jsonWriter.writeStringField("sourceBackupInstanceId", this.sourceBackupInstanceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FetchSecondaryRPsRequestParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FetchSecondaryRPsRequestParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FetchSecondaryRPsRequestParameters.
+     */
+    public static FetchSecondaryRPsRequestParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FetchSecondaryRPsRequestParameters deserializedFetchSecondaryRPsRequestParameters
+                = new FetchSecondaryRPsRequestParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRegion".equals(fieldName)) {
+                    deserializedFetchSecondaryRPsRequestParameters.sourceRegion = reader.getString();
+                } else if ("sourceBackupInstanceId".equals(fieldName)) {
+                    deserializedFetchSecondaryRPsRequestParameters.sourceBackupInstanceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFetchSecondaryRPsRequestParameters;
+        });
     }
 }

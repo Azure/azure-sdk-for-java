@@ -6,48 +6,50 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.MigrationStatus;
 import com.azure.resourcemanager.storage.models.SkuName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The parameters or status associated with an ongoing or enqueued storage account migration in order to update its
  * current SKU or region.
  */
 @Fluent
-public final class StorageAccountMigrationInner {
+public final class StorageAccountMigrationInner implements JsonSerializable<StorageAccountMigrationInner> {
     /*
      * Migration Resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * current value is 'default' for customer initiated migration
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * SrpAccountMigrationType in ARM contract which is 'accountMigrations'
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The properties of a storage account’s ongoing or enqueued migration.
      */
-    @JsonProperty(value = "properties", required = true)
-    private StorageAccountMigrationProperties innerStorageAccountMigrationDetails =
-        new StorageAccountMigrationProperties();
+    private StorageAccountMigrationProperties innerStorageAccountMigrationDetails
+        = new StorageAccountMigrationProperties();
 
-    /** Creates an instance of StorageAccountMigrationInner class. */
+    /**
+     * Creates an instance of StorageAccountMigrationInner class.
+     */
     public StorageAccountMigrationInner() {
     }
 
     /**
      * Get the id property: Migration Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +58,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the name property: current value is 'default' for customer initiated migration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +67,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Set the name property: current value is 'default' for customer initiated migration.
-     *
+     * 
      * @param name the name value to set.
      * @return the StorageAccountMigrationInner object itself.
      */
@@ -76,7 +78,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the type property: SrpAccountMigrationType in ARM contract which is 'accountMigrations'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -85,7 +87,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Set the type property: SrpAccountMigrationType in ARM contract which is 'accountMigrations'.
-     *
+     * 
      * @param type the type value to set.
      * @return the StorageAccountMigrationInner object itself.
      */
@@ -97,7 +99,7 @@ public final class StorageAccountMigrationInner {
     /**
      * Get the innerStorageAccountMigrationDetails property: The properties of a storage account’s ongoing or enqueued
      * migration.
-     *
+     * 
      * @return the innerStorageAccountMigrationDetails value.
      */
     private StorageAccountMigrationProperties innerStorageAccountMigrationDetails() {
@@ -106,7 +108,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @return the targetSkuName value.
      */
     public SkuName targetSkuName() {
@@ -117,7 +119,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Set the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @param targetSkuName the targetSkuName value to set.
      * @return the StorageAccountMigrationInner object itself.
      */
@@ -131,7 +133,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the migrationStatus property: Current status of migration.
-     *
+     * 
      * @return the migrationStatus value.
      */
     public MigrationStatus migrationStatus() {
@@ -142,7 +144,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the migrationFailedReason property: Error code for migration failure.
-     *
+     * 
      * @return the migrationFailedReason value.
      */
     public String migrationFailedReason() {
@@ -153,7 +155,7 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Get the migrationFailedDetailedReason property: Reason for migration failure.
-     *
+     * 
      * @return the migrationFailedDetailedReason value.
      */
     public String migrationFailedDetailedReason() {
@@ -164,20 +166,64 @@ public final class StorageAccountMigrationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerStorageAccountMigrationDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerStorageAccountMigrationDetails in model"
-                            + " StorageAccountMigrationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerStorageAccountMigrationDetails in model StorageAccountMigrationInner"));
         } else {
             innerStorageAccountMigrationDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountMigrationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerStorageAccountMigrationDetails);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountMigrationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountMigrationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountMigrationInner.
+     */
+    public static StorageAccountMigrationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountMigrationInner deserializedStorageAccountMigrationInner = new StorageAccountMigrationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.innerStorageAccountMigrationDetails
+                        = StorageAccountMigrationProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountMigrationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountMigrationInner;
+        });
+    }
 }

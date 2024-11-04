@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The detail of a user. */
+/**
+ * The detail of a user.
+ */
 @Fluent
-public final class UserSet {
+public final class UserSet implements JsonSerializable<UserSet> {
     /*
      * The type of user.
      */
-    @JsonProperty(value = "userType")
     private UserType userType;
 
     /*
      * The value indicating whether the user is a backup fallback approver
      */
-    @JsonProperty(value = "isBackup")
     private Boolean isBackup;
 
     /*
      * The object id of the user.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The description of the user.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of UserSet class. */
+    /**
+     * Creates an instance of UserSet class.
+     */
     public UserSet() {
     }
 
     /**
      * Get the userType property: The type of user.
-     *
+     * 
      * @return the userType value.
      */
     public UserType userType() {
@@ -49,7 +53,7 @@ public final class UserSet {
 
     /**
      * Set the userType property: The type of user.
-     *
+     * 
      * @param userType the userType value to set.
      * @return the UserSet object itself.
      */
@@ -60,7 +64,7 @@ public final class UserSet {
 
     /**
      * Get the isBackup property: The value indicating whether the user is a backup fallback approver.
-     *
+     * 
      * @return the isBackup value.
      */
     public Boolean isBackup() {
@@ -69,7 +73,7 @@ public final class UserSet {
 
     /**
      * Set the isBackup property: The value indicating whether the user is a backup fallback approver.
-     *
+     * 
      * @param isBackup the isBackup value to set.
      * @return the UserSet object itself.
      */
@@ -80,7 +84,7 @@ public final class UserSet {
 
     /**
      * Get the id property: The object id of the user.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -89,7 +93,7 @@ public final class UserSet {
 
     /**
      * Set the id property: The object id of the user.
-     *
+     * 
      * @param id the id value to set.
      * @return the UserSet object itself.
      */
@@ -100,7 +104,7 @@ public final class UserSet {
 
     /**
      * Get the description property: The description of the user.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class UserSet {
 
     /**
      * Set the description property: The description of the user.
-     *
+     * 
      * @param description the description value to set.
      * @return the UserSet object itself.
      */
@@ -120,9 +124,54 @@ public final class UserSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userType", this.userType == null ? null : this.userType.toString());
+        jsonWriter.writeBooleanField("isBackup", this.isBackup);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserSet if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the UserSet.
+     */
+    public static UserSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserSet deserializedUserSet = new UserSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userType".equals(fieldName)) {
+                    deserializedUserSet.userType = UserType.fromString(reader.getString());
+                } else if ("isBackup".equals(fieldName)) {
+                    deserializedUserSet.isBackup = reader.getNullable(JsonReader::getBoolean);
+                } else if ("id".equals(fieldName)) {
+                    deserializedUserSet.id = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedUserSet.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserSet;
+        });
     }
 }

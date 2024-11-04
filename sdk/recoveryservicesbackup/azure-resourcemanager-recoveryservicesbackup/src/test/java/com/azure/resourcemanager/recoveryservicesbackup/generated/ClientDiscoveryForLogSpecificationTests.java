@@ -22,7 +22,8 @@ public final class ClientDiscoveryForLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientDiscoveryForLogSpecification model = new ClientDiscoveryForLogSpecification().withName("mexgstxgcp")
-            .withDisplayName("gmaajrm").withBlobDuration("jwzrl");
+            .withDisplayName("gmaajrm")
+            .withBlobDuration("jwzrl");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForLogSpecification.class);
         Assertions.assertEquals("mexgstxgcp", model.name());
         Assertions.assertEquals("gmaajrm", model.displayName());

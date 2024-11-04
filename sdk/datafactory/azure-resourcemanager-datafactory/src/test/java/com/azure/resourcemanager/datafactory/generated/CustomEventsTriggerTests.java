@@ -17,40 +17,40 @@ public final class CustomEventsTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomEventsTrigger model = BinaryData.fromString(
-            "{\"type\":\"nyegh\",\"typeProperties\":{\"subjectBeginsWith\":\"rtlhpfuc\",\"subjectEndsWith\":\"waklflwqdj\",\"events\":[\"dataog\",\"databyks\",\"dataqxxy\"],\"scope\":\"rrixkobmrrnkdmn\"},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"lxnbbkbjnnzq\",\"name\":\"a\"},\"parameters\":{\"cllteuk\":\"dataxvl\",\"otgqgevielyho\":\"dataguc\"}},{\"pipelineReference\":{\"referenceName\":\"nzwhypjpypalptjp\",\"name\":\"dchey\"},\"parameters\":{\"bzmcprtanageh\":\"datasqxwqsszdwwk\",\"sjlilpicc\":\"datarhwkaatjssebyd\",\"afxoyddushvyj\":\"dataegtwstqgcjvklnrz\",\"lmxzdwpdwbnouk\":\"datahy\"}}],\"description\":\"m\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datak\",\"datadcs\"],\"\":{\"ldeq\":\"dataedfdzleaz\",\"q\":\"datafzyhikhnwseftlj\",\"ybe\":\"datapfk\"}}")
+            "{\"type\":\"CustomEventsTrigger\",\"typeProperties\":{\"subjectBeginsWith\":\"zcmwqfdhgpmvlfmv\",\"subjectEndsWith\":\"mjmp\",\"events\":[\"datazxbafscdp\",\"datazporjhubzkzjazf\"],\"scope\":\"y\"},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"tcnyhsdgmoxnelhx\",\"name\":\"fyzb\"},\"parameters\":{\"prgpm\":\"datafcsvipwahehuc\",\"fzcsklvtceaoi\":\"datatjvuhcw\",\"bjfhpaywwesa\":\"dataurqlcdh\"}},{\"pipelineReference\":{\"referenceName\":\"uqpskvxbdlrar\",\"name\":\"iat\"},\"parameters\":{\"nyfjwoaom\":\"dataqsbyyleyopgyyg\"}}],\"description\":\"kpcwffo\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datavgjuzgqkxs\",\"dataavbteaegyojy\"],\"\":{\"hbztlvujbhw\":\"datapcdhqjc\",\"cihkjjjbit\":\"dataszrhf\",\"fwmasodsmjn\":\"datauriizyrgzxpr\"}}")
             .toObject(CustomEventsTrigger.class);
-        Assertions.assertEquals("m", model.description());
-        Assertions.assertEquals("lxnbbkbjnnzq", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("a", model.pipelines().get(0).pipelineReference().name());
-        Assertions.assertEquals("rtlhpfuc", model.subjectBeginsWith());
-        Assertions.assertEquals("waklflwqdj", model.subjectEndsWith());
-        Assertions.assertEquals("rrixkobmrrnkdmn", model.scope());
+        Assertions.assertEquals("kpcwffo", model.description());
+        Assertions.assertEquals("tcnyhsdgmoxnelhx", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("fyzb", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("zcmwqfdhgpmvlfmv", model.subjectBeginsWith());
+        Assertions.assertEquals("mjmp", model.subjectEndsWith());
+        Assertions.assertEquals("y", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomEventsTrigger model = new CustomEventsTrigger().withDescription("m")
-            .withAnnotations(Arrays.asList("datak", "datadcs"))
+        CustomEventsTrigger model = new CustomEventsTrigger().withDescription("kpcwffo")
+            .withAnnotations(Arrays.asList("datavgjuzgqkxs", "dataavbteaegyojy"))
             .withPipelines(Arrays.asList(
                 new TriggerPipelineReference()
-                    .withPipelineReference(new PipelineReference().withReferenceName("lxnbbkbjnnzq").withName("a"))
-                    .withParameters(mapOf("cllteuk", "dataxvl", "otgqgevielyho", "dataguc")),
-                new TriggerPipelineReference()
                     .withPipelineReference(
-                        new PipelineReference().withReferenceName("nzwhypjpypalptjp").withName("dchey"))
-                    .withParameters(mapOf("bzmcprtanageh", "datasqxwqsszdwwk", "sjlilpicc", "datarhwkaatjssebyd",
-                        "afxoyddushvyj", "dataegtwstqgcjvklnrz", "lmxzdwpdwbnouk", "datahy"))))
-            .withSubjectBeginsWith("rtlhpfuc")
-            .withSubjectEndsWith("waklflwqdj")
-            .withEvents(Arrays.asList("dataog", "databyks", "dataqxxy"))
-            .withScope("rrixkobmrrnkdmn");
+                        new PipelineReference().withReferenceName("tcnyhsdgmoxnelhx").withName("fyzb"))
+                    .withParameters(mapOf("prgpm", "datafcsvipwahehuc", "fzcsklvtceaoi", "datatjvuhcw", "bjfhpaywwesa",
+                        "dataurqlcdh")),
+                new TriggerPipelineReference()
+                    .withPipelineReference(new PipelineReference().withReferenceName("uqpskvxbdlrar").withName("iat"))
+                    .withParameters(mapOf("nyfjwoaom", "dataqsbyyleyopgyyg"))))
+            .withSubjectBeginsWith("zcmwqfdhgpmvlfmv")
+            .withSubjectEndsWith("mjmp")
+            .withEvents(Arrays.asList("datazxbafscdp", "datazporjhubzkzjazf"))
+            .withScope("y");
         model = BinaryData.fromObject(model).toObject(CustomEventsTrigger.class);
-        Assertions.assertEquals("m", model.description());
-        Assertions.assertEquals("lxnbbkbjnnzq", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("a", model.pipelines().get(0).pipelineReference().name());
-        Assertions.assertEquals("rtlhpfuc", model.subjectBeginsWith());
-        Assertions.assertEquals("waklflwqdj", model.subjectEndsWith());
-        Assertions.assertEquals("rrixkobmrrnkdmn", model.scope());
+        Assertions.assertEquals("kpcwffo", model.description());
+        Assertions.assertEquals("tcnyhsdgmoxnelhx", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("fyzb", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("zcmwqfdhgpmvlfmv", model.subjectBeginsWith());
+        Assertions.assertEquals("mjmp", model.subjectEndsWith());
+        Assertions.assertEquals("y", model.scope());
     }
 
     // Use "Map.of" if available

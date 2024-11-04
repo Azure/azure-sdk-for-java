@@ -21,8 +21,12 @@ public final class ServicesRegenerateTestKeySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesRegenerateTestKey(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices().regenerateTestKeyWithResponse("myResourceGroup",
-            "myservice", new RegenerateTestKeyRequestPayload().withKeyType(TestKeyType.PRIMARY),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .regenerateTestKeyWithResponse("myResourceGroup", "myservice",
+                new RegenerateTestKeyRequestPayload().withKeyType(TestKeyType.PRIMARY),
+                com.azure.core.util.Context.NONE);
     }
 }

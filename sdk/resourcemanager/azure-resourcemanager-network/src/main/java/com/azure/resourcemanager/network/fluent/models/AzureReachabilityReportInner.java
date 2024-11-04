@@ -6,32 +6,33 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure reachability report details.
  */
 @Fluent
-public final class AzureReachabilityReportInner {
+public final class AzureReachabilityReportInner implements JsonSerializable<AzureReachabilityReportInner> {
     /*
      * The aggregation level of Azure reachability report. Can be Country, State or City.
      */
-    @JsonProperty(value = "aggregationLevel", required = true)
     private String aggregationLevel;
 
     /*
      * Parameters that define a geographic location.
      */
-    @JsonProperty(value = "providerLocation", required = true)
     private AzureReachabilityReportLocation providerLocation;
 
     /*
      * List of Azure reachability report items.
      */
-    @JsonProperty(value = "reachabilityReport", required = true)
     private List<AzureReachabilityReportItem> reachabilityReport;
 
     /**
@@ -109,22 +110,72 @@ public final class AzureReachabilityReportInner {
      */
     public void validate() {
         if (aggregationLevel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property aggregationLevel in model AzureReachabilityReportInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aggregationLevel in model AzureReachabilityReportInner"));
         }
         if (providerLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property providerLocation in model AzureReachabilityReportInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerLocation in model AzureReachabilityReportInner"));
         } else {
             providerLocation().validate();
         }
         if (reachabilityReport() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property reachabilityReport in model AzureReachabilityReportInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property reachabilityReport in model AzureReachabilityReportInner"));
         } else {
             reachabilityReport().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureReachabilityReportInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aggregationLevel", this.aggregationLevel);
+        jsonWriter.writeJsonField("providerLocation", this.providerLocation);
+        jsonWriter.writeArrayField("reachabilityReport", this.reachabilityReport,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureReachabilityReportInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureReachabilityReportInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureReachabilityReportInner.
+     */
+    public static AzureReachabilityReportInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureReachabilityReportInner deserializedAzureReachabilityReportInner = new AzureReachabilityReportInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregationLevel".equals(fieldName)) {
+                    deserializedAzureReachabilityReportInner.aggregationLevel = reader.getString();
+                } else if ("providerLocation".equals(fieldName)) {
+                    deserializedAzureReachabilityReportInner.providerLocation
+                        = AzureReachabilityReportLocation.fromJson(reader);
+                } else if ("reachabilityReport".equals(fieldName)) {
+                    List<AzureReachabilityReportItem> reachabilityReport
+                        = reader.readArray(reader1 -> AzureReachabilityReportItem.fromJson(reader1));
+                    deserializedAzureReachabilityReportInner.reachabilityReport = reachabilityReport;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureReachabilityReportInner;
+        });
+    }
 }

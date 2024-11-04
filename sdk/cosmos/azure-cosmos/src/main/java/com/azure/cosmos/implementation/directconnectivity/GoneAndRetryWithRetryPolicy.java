@@ -26,7 +26,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntBinaryOperator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 

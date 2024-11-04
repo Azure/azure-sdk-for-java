@@ -5,54 +5,52 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Runs the specified PowerShell script during the validation phase (Windows). Corresponds to Packer powershell
  * provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("PowerShell")
 @Fluent
 public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMValidator {
     /*
+     * The type of validation you want to use on the Image. For example, "Shell" can be shell validation
+     */
+    private String type = "PowerShell";
+
+    /*
      * URI of the PowerShell script to be run for validation. It can be a github link, Azure Storage URI, etc
      */
-    @JsonProperty(value = "scriptUri")
     private String scriptUri;
 
     /*
      * SHA256 checksum of the power shell script provided in the scriptUri field above
      */
-    @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
 
     /*
      * Array of PowerShell commands to execute
      */
-    @JsonProperty(value = "inline")
     private List<String> inline;
 
     /*
      * If specified, the PowerShell script will be run with elevated privileges
      */
-    @JsonProperty(value = "runElevated")
     private Boolean runElevated;
 
     /*
-     * If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only
-     * be true when the runElevated field above is set to true.
+     * If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be
+     * true when the runElevated field above is set to true.
      */
-    @JsonProperty(value = "runAsSystem")
     private Boolean runAsSystem;
 
     /*
      * Valid exit codes for the PowerShell script. [Default: 0]
      */
-    @JsonProperty(value = "validExitCodes")
     private List<Integer> validExitCodes;
 
     /**
@@ -62,8 +60,19 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
     }
 
     /**
-     * Get the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link,
-     * Azure Storage URI, etc.
+     * Get the type property: The type of validation you want to use on the Image. For example, "Shell" can be shell
+     * validation.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link, Azure
+     * Storage URI, etc.
      * 
      * @return the scriptUri value.
      */
@@ -72,8 +81,8 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
     }
 
     /**
-     * Set the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link,
-     * Azure Storage URI, etc.
+     * Set the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link, Azure
+     * Storage URI, etc.
      * 
      * @param scriptUri the scriptUri value to set.
      * @return the ImageTemplatePowerShellValidator object itself.
@@ -84,8 +93,7 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
     }
 
     /**
-     * Get the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field
-     * above.
+     * Get the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field above.
      * 
      * @return the sha256Checksum value.
      */
@@ -94,8 +102,7 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
     }
 
     /**
-     * Set the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field
-     * above.
+     * Set the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field above.
      * 
      * @param sha256Checksum the sha256Checksum value to set.
      * @return the ImageTemplatePowerShellValidator object itself.
@@ -204,5 +211,68 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("scriptUri", this.scriptUri);
+        jsonWriter.writeStringField("sha256Checksum", this.sha256Checksum);
+        jsonWriter.writeArrayField("inline", this.inline, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("runElevated", this.runElevated);
+        jsonWriter.writeBooleanField("runAsSystem", this.runAsSystem);
+        jsonWriter.writeArrayField("validExitCodes", this.validExitCodes,
+            (writer, element) -> writer.writeInt(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplatePowerShellValidator from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplatePowerShellValidator if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplatePowerShellValidator.
+     */
+    public static ImageTemplatePowerShellValidator fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplatePowerShellValidator deserializedImageTemplatePowerShellValidator
+                = new ImageTemplatePowerShellValidator();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplatePowerShellValidator.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplatePowerShellValidator.type = reader.getString();
+                } else if ("scriptUri".equals(fieldName)) {
+                    deserializedImageTemplatePowerShellValidator.scriptUri = reader.getString();
+                } else if ("sha256Checksum".equals(fieldName)) {
+                    deserializedImageTemplatePowerShellValidator.sha256Checksum = reader.getString();
+                } else if ("inline".equals(fieldName)) {
+                    List<String> inline = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageTemplatePowerShellValidator.inline = inline;
+                } else if ("runElevated".equals(fieldName)) {
+                    deserializedImageTemplatePowerShellValidator.runElevated
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runAsSystem".equals(fieldName)) {
+                    deserializedImageTemplatePowerShellValidator.runAsSystem
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validExitCodes".equals(fieldName)) {
+                    List<Integer> validExitCodes = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedImageTemplatePowerShellValidator.validExitCodes = validExitCodes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplatePowerShellValidator;
+        });
     }
 }

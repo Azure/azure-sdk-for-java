@@ -6,36 +6,36 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of available upgrade versions.
  */
 @Fluent
-public final class ManagedClusterPoolUpgradeProfile {
+public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<ManagedClusterPoolUpgradeProfile> {
     /*
      * The Kubernetes version (major.minor.patch).
      */
-    @JsonProperty(value = "kubernetesVersion", required = true)
     private String kubernetesVersion;
 
     /*
      * The Agent Pool name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
-    @JsonProperty(value = "osType", required = true)
     private OSType osType;
 
     /*
      * List of orchestrator types and versions available for upgrade.
      */
-    @JsonProperty(value = "upgrades")
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
     /**
@@ -131,12 +131,14 @@ public final class ManagedClusterPoolUpgradeProfile {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
         }
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
@@ -144,4 +146,53 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterPoolUpgradeProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterPoolUpgradeProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterPoolUpgradeProfile.
+     */
+    public static ManagedClusterPoolUpgradeProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterPoolUpgradeProfile deserializedManagedClusterPoolUpgradeProfile
+                = new ManagedClusterPoolUpgradeProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedManagedClusterPoolUpgradeProfile.kubernetesVersion = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedManagedClusterPoolUpgradeProfile.osType = OSType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedClusterPoolUpgradeProfile.name = reader.getString();
+                } else if ("upgrades".equals(fieldName)) {
+                    List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades
+                        = reader.readArray(reader1 -> ManagedClusterPoolUpgradeProfileUpgradesItem.fromJson(reader1));
+                    deserializedManagedClusterPoolUpgradeProfile.upgrades = upgrades;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterPoolUpgradeProfile;
+        });
+    }
 }

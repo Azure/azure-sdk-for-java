@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
@@ -627,6 +628,105 @@ public abstract class JsonWriterContractTests {
             .writeEndObject(), "{\"field\":\"hello\"}");
     }
 
+    @ParameterizedTest
+    @MethodSource("arrayMethodsWriteNullValueSupplier")
+    public void arrayMethodsWriteNullValue(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {
+        writeAndValidate(write, expected);
+    }
+
+    private static Stream<Arguments> arrayMethodsWriteNullValueSupplier() {
+        List<String> list = new ArrayList<>();
+        list.add("hello");
+        list.add(null);
+        list.add("world");
+
+        String[] array = new String[] { "hello", null, "world" };
+
+        String expectedJson = "[\"hello\",null,\"world\"]";
+        String expectedFieldJson = "{\"field\":" + expectedJson + "}";
+
+        return Stream.of(Arguments.of(write(writer -> writer.writeArray(list, JsonWriter::writeString)), expectedJson),
+            Arguments.of(write(writer -> writer.writeArray(list, JsonWriter::writeString, false)), expectedJson),
+            Arguments.of(write(writer -> writer.writeArray(array, JsonWriter::writeString)), expectedJson),
+            Arguments.of(write(writer -> writer.writeArray(array, JsonWriter::writeString, false)), expectedJson),
+            Arguments.of(writeField(writer -> writer.writeArrayField("field", list, JsonWriter::writeString)),
+                expectedFieldJson),
+            Arguments.of(writeField(writer -> writer.writeArrayField("field", list, JsonWriter::writeString, false)),
+                expectedFieldJson),
+            Arguments.of(writeField(writer -> writer.writeArrayField("field", array, JsonWriter::writeString)),
+                expectedFieldJson),
+            Arguments.of(writeField(writer -> writer.writeArrayField("field", array, JsonWriter::writeString, false)),
+                expectedFieldJson));
+    }
+
+    @ParameterizedTest
+    @MethodSource("arrayMethodsSkipNullValueSupplier")
+    public void arrayMethodsSkipNullValue(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {
+        writeAndValidate(write, expected);
+    }
+
+    private static Stream<Arguments> arrayMethodsSkipNullValueSupplier() {
+        List<String> list = new ArrayList<>();
+        list.add("hello");
+        list.add(null);
+        list.add("world");
+
+        String[] array = new String[] { "hello", null, "world" };
+
+        String expectedJson = "[\"hello\",\"world\"]";
+        String expectedFieldJson = "{\"field\":" + expectedJson + "}";
+
+        return Stream.of(
+            Arguments.of(write(writer -> writer.writeArray(list, JsonWriter::writeString, true)), expectedJson),
+            Arguments.of(write(writer -> writer.writeArray(array, JsonWriter::writeString, true)), expectedJson),
+            Arguments.of(writeField(writer -> writer.writeArrayField("field", list, JsonWriter::writeString, true)),
+                expectedFieldJson),
+            Arguments.of(writeField(writer -> writer.writeArrayField("field", array, JsonWriter::writeString, true)),
+                expectedFieldJson));
+    }
+
+    @ParameterizedTest
+    @MethodSource("mapMethodsWriteNullValueSupplier")
+    public void mapMethodsWriteNullValue(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {
+        writeAndValidate(write, expected);
+    }
+
+    private static Stream<Arguments> mapMethodsWriteNullValueSupplier() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("hello", "world");
+        map.put("null", null);
+
+        String expectedJson = "{\"hello\":\"world\",\"null\":null}";
+        String expectedFieldJson = "{\"field\":" + expectedJson + "}";
+
+        return Stream.of(Arguments.of(write(writer -> writer.writeMap(map, JsonWriter::writeString)), expectedJson),
+            Arguments.of(write(writer -> writer.writeMap(map, JsonWriter::writeString, false)), expectedJson),
+            Arguments.of(writeField(writer -> writer.writeMapField("field", map, JsonWriter::writeString)),
+                expectedFieldJson),
+            Arguments.of(writeField(writer -> writer.writeMapField("field", map, JsonWriter::writeString, false)),
+                expectedFieldJson));
+    }
+
+    @ParameterizedTest
+    @MethodSource("mapMethodsSkipNullValueSupplier")
+    public void mapMethodsSkipNullValue(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {
+        writeAndValidate(write, expected);
+    }
+
+    private static Stream<Arguments> mapMethodsSkipNullValueSupplier() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("hello", "world");
+        map.put("null", null);
+
+        String expectedJson = "{\"hello\":\"world\"}";
+        String expectedFieldJson = "{\"field\":" + expectedJson + "}";
+
+        return Stream.of(
+            Arguments.of(write(writer -> writer.writeMap(map, JsonWriter::writeString, true)), expectedJson),
+            Arguments.of(writeField(writer -> writer.writeMapField("field", map, JsonWriter::writeString, true)),
+                expectedFieldJson));
+    }
+
     private void writeAndValidate(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {
         try (JsonWriter writer = getJsonWriter()) {
             write.accept(writer);
@@ -650,7 +750,18 @@ public abstract class JsonWriterContractTests {
         };
     }
 
-    private interface IOExceptionConsumer<T> {
+    /**
+     * Interface that aids in testing methods that throw IOExceptions.
+     *
+     * @param <T> The type of the input to the operation.
+     */
+    public interface IOExceptionConsumer<T> {
+        /**
+         * Performs this operation on the given argument.
+         *
+         * @param t The input argument
+         * @throws IOException If an I/O error occurs
+         */
         void accept(T t) throws IOException;
     }
 }

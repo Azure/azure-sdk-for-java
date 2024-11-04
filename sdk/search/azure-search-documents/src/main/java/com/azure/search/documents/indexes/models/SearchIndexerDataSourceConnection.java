@@ -71,9 +71,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * level of encryption-at-rest for your datasource definition when you want full assurance that no one, not even
      * Microsoft, can decrypt your data source definition. Once you have encrypted your data source definition, it will
      * always remain encrypted. The search service will ignore attempts to set this property to null. You can change
-     * this property as needed if you want to rotate your encryption key; Your datasource definition will be
-     * unaffected. Encryption with customer-managed keys is not available for free search services, and is only
-     * available for paid services created on or after January 1, 2019.
+     * this property as needed if you want to rotate your encryption key; Your datasource definition will be unaffected.
+     * Encryption with customer-managed keys is not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
      */
     private SearchResourceEncryptionKey encryptionKey;
 
@@ -273,6 +273,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

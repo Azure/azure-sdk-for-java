@@ -6,25 +6,46 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.CorsRules;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a storage account’s Table service. */
+/**
+ * The properties of a storage account’s Table service.
+ */
 @Fluent
 public final class TableServicePropertiesInner extends ProxyResource {
     /*
      * The properties of a storage account’s Table service.
      */
-    @JsonProperty(value = "properties")
     private TableServicePropertiesProperties innerTableServiceProperties;
 
-    /** Creates an instance of TableServicePropertiesInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of TableServicePropertiesInner class.
+     */
     public TableServicePropertiesInner() {
     }
 
     /**
      * Get the innerTableServiceProperties property: The properties of a storage account’s Table service.
-     *
+     * 
      * @return the innerTableServiceProperties value.
      */
     private TableServicePropertiesProperties innerTableServiceProperties() {
@@ -32,10 +53,40 @@ public final class TableServicePropertiesInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the cors property: Specifies CORS rules for the Table service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Table service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -46,7 +97,7 @@ public final class TableServicePropertiesInner extends ProxyResource {
      * Set the cors property: Specifies CORS rules for the Table service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Table service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the TableServicePropertiesInner object itself.
      */
@@ -60,12 +111,56 @@ public final class TableServicePropertiesInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerTableServiceProperties() != null) {
             innerTableServiceProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerTableServiceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableServicePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableServicePropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TableServicePropertiesInner.
+     */
+    public static TableServicePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableServicePropertiesInner deserializedTableServicePropertiesInner = new TableServicePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTableServicePropertiesInner.innerTableServiceProperties
+                        = TableServicePropertiesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableServicePropertiesInner;
+        });
     }
 }

@@ -5,54 +5,50 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reference to an asset via its path in a datastore. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "referenceType")
-@JsonTypeName("DataPath")
+/**
+ * Reference to an asset via its path in a datastore.
+ */
 @Fluent
 public final class DataPathAssetReference extends AssetReferenceBase {
     /*
-     * ARM resource ID of the datastore where the asset is located.
+     * [Required] Specifies the type of asset reference.
      */
-    @JsonProperty(value = "datastoreId")
-    private String datastoreId;
+    private ReferenceType referenceType = ReferenceType.DATA_PATH;
 
     /*
      * The path of the file/directory in the datastore.
      */
-    @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of DataPathAssetReference class. */
+    /*
+     * ARM resource ID of the datastore where the asset is located.
+     */
+    private String datastoreId;
+
+    /**
+     * Creates an instance of DataPathAssetReference class.
+     */
     public DataPathAssetReference() {
     }
 
     /**
-     * Get the datastoreId property: ARM resource ID of the datastore where the asset is located.
-     *
-     * @return the datastoreId value.
+     * Get the referenceType property: [Required] Specifies the type of asset reference.
+     * 
+     * @return the referenceType value.
      */
-    public String datastoreId() {
-        return this.datastoreId;
-    }
-
-    /**
-     * Set the datastoreId property: ARM resource ID of the datastore where the asset is located.
-     *
-     * @param datastoreId the datastoreId value to set.
-     * @return the DataPathAssetReference object itself.
-     */
-    public DataPathAssetReference withDatastoreId(String datastoreId) {
-        this.datastoreId = datastoreId;
-        return this;
+    @Override
+    public ReferenceType referenceType() {
+        return this.referenceType;
     }
 
     /**
      * Get the path property: The path of the file/directory in the datastore.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -61,7 +57,7 @@ public final class DataPathAssetReference extends AssetReferenceBase {
 
     /**
      * Set the path property: The path of the file/directory in the datastore.
-     *
+     * 
      * @param path the path value to set.
      * @return the DataPathAssetReference object itself.
      */
@@ -71,12 +67,74 @@ public final class DataPathAssetReference extends AssetReferenceBase {
     }
 
     /**
+     * Get the datastoreId property: ARM resource ID of the datastore where the asset is located.
+     * 
+     * @return the datastoreId value.
+     */
+    public String datastoreId() {
+        return this.datastoreId;
+    }
+
+    /**
+     * Set the datastoreId property: ARM resource ID of the datastore where the asset is located.
+     * 
+     * @param datastoreId the datastoreId value to set.
+     * @return the DataPathAssetReference object itself.
+     */
+    public DataPathAssetReference withDatastoreId(String datastoreId) {
+        this.datastoreId = datastoreId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("referenceType", this.referenceType == null ? null : this.referenceType.toString());
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("datastoreId", this.datastoreId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataPathAssetReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataPathAssetReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataPathAssetReference.
+     */
+    public static DataPathAssetReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataPathAssetReference deserializedDataPathAssetReference = new DataPathAssetReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceType".equals(fieldName)) {
+                    deserializedDataPathAssetReference.referenceType = ReferenceType.fromString(reader.getString());
+                } else if ("path".equals(fieldName)) {
+                    deserializedDataPathAssetReference.path = reader.getString();
+                } else if ("datastoreId".equals(fieldName)) {
+                    deserializedDataPathAssetReference.datastoreId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataPathAssetReference;
+        });
     }
 }

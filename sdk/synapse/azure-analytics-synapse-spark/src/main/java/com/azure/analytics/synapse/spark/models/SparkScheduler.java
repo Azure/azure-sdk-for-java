@@ -5,45 +5,54 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The SparkScheduler model. */
+/**
+ * The SparkScheduler model.
+ */
 @Fluent
-public final class SparkScheduler {
+public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
     /*
      * The submittedAt property.
      */
-    @JsonProperty(value = "submittedAt")
     private OffsetDateTime submittedAt;
 
     /*
      * The scheduledAt property.
      */
-    @JsonProperty(value = "scheduledAt")
     private OffsetDateTime scheduledAt;
 
     /*
      * The endedAt property.
      */
-    @JsonProperty(value = "endedAt")
     private OffsetDateTime endedAt;
 
     /*
      * The cancellationRequestedAt property.
      */
-    @JsonProperty(value = "cancellationRequestedAt")
     private OffsetDateTime cancellationRequestedAt;
 
     /*
      * The currentState property.
      */
-    @JsonProperty(value = "currentState")
     private SchedulerCurrentState currentState;
 
     /**
+     * Creates an instance of SparkScheduler class.
+     */
+    public SparkScheduler() {
+    }
+
+    /**
      * Get the submittedAt property: The submittedAt property.
-     *
+     * 
      * @return the submittedAt value.
      */
     public OffsetDateTime getSubmittedAt() {
@@ -52,7 +61,7 @@ public final class SparkScheduler {
 
     /**
      * Set the submittedAt property: The submittedAt property.
-     *
+     * 
      * @param submittedAt the submittedAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -63,7 +72,7 @@ public final class SparkScheduler {
 
     /**
      * Get the scheduledAt property: The scheduledAt property.
-     *
+     * 
      * @return the scheduledAt value.
      */
     public OffsetDateTime getScheduledAt() {
@@ -72,7 +81,7 @@ public final class SparkScheduler {
 
     /**
      * Set the scheduledAt property: The scheduledAt property.
-     *
+     * 
      * @param scheduledAt the scheduledAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -83,7 +92,7 @@ public final class SparkScheduler {
 
     /**
      * Get the endedAt property: The endedAt property.
-     *
+     * 
      * @return the endedAt value.
      */
     public OffsetDateTime getEndedAt() {
@@ -92,7 +101,7 @@ public final class SparkScheduler {
 
     /**
      * Set the endedAt property: The endedAt property.
-     *
+     * 
      * @param endedAt the endedAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -103,7 +112,7 @@ public final class SparkScheduler {
 
     /**
      * Get the cancellationRequestedAt property: The cancellationRequestedAt property.
-     *
+     * 
      * @return the cancellationRequestedAt value.
      */
     public OffsetDateTime getCancellationRequestedAt() {
@@ -112,7 +121,7 @@ public final class SparkScheduler {
 
     /**
      * Set the cancellationRequestedAt property: The cancellationRequestedAt property.
-     *
+     * 
      * @param cancellationRequestedAt the cancellationRequestedAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -123,7 +132,7 @@ public final class SparkScheduler {
 
     /**
      * Get the currentState property: The currentState property.
-     *
+     * 
      * @return the currentState value.
      */
     public SchedulerCurrentState getCurrentState() {
@@ -132,12 +141,70 @@ public final class SparkScheduler {
 
     /**
      * Set the currentState property: The currentState property.
-     *
+     * 
      * @param currentState the currentState value to set.
      * @return the SparkScheduler object itself.
      */
     public SparkScheduler setCurrentState(SchedulerCurrentState currentState) {
         this.currentState = currentState;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("submittedAt",
+            this.submittedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.submittedAt));
+        jsonWriter.writeStringField("scheduledAt",
+            this.scheduledAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledAt));
+        jsonWriter.writeStringField("endedAt",
+            this.endedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endedAt));
+        jsonWriter.writeStringField("cancellationRequestedAt",
+            this.cancellationRequestedAt == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cancellationRequestedAt));
+        jsonWriter.writeStringField("currentState", this.currentState == null ? null : this.currentState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkScheduler from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkScheduler if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkScheduler.
+     */
+    public static SparkScheduler fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkScheduler deserializedSparkScheduler = new SparkScheduler();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("submittedAt".equals(fieldName)) {
+                    deserializedSparkScheduler.submittedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("scheduledAt".equals(fieldName)) {
+                    deserializedSparkScheduler.scheduledAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedAt".equals(fieldName)) {
+                    deserializedSparkScheduler.endedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("cancellationRequestedAt".equals(fieldName)) {
+                    deserializedSparkScheduler.cancellationRequestedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentState".equals(fieldName)) {
+                    deserializedSparkScheduler.currentState = SchedulerCurrentState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkScheduler;
+        });
     }
 }

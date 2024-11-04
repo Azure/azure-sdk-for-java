@@ -8,7 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusQueueProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import reactor.util.function.Tuple2;

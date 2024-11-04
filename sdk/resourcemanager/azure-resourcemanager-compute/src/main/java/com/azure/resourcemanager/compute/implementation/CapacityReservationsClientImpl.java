@@ -181,7 +181,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -234,7 +234,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
@@ -307,8 +307,10 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName,
-            parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName,
+                parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -329,8 +331,10 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName,
+                parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -457,7 +461,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -509,7 +513,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
@@ -601,8 +605,10 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationUpdate parameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -621,7 +627,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     public Mono<CapacityReservationInner> updateAsync(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, CapacityReservationUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -719,7 +726,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -765,7 +772,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
@@ -897,7 +904,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     private Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName,
         String capacityReservationName, Context context) {
         return beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -975,7 +983,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1024,7 +1032,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, capacityReservationGroupName,
@@ -1123,7 +1131,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCapacityReservationGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1165,7 +1173,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1254,9 +1262,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1284,9 +1290,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

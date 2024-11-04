@@ -12,7 +12,7 @@ import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRPsRequestP
 public final class FetchSecondaryRecoveryPointsListSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * CrossRegionRestore/FetchSecondaryRPs.json
      */
     /**
@@ -21,9 +21,10 @@ public final class FetchSecondaryRecoveryPointsListSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void fetchSecondaryRPs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.fetchSecondaryRecoveryPoints().list("000pikumar", "WestUS",
-            new FetchSecondaryRPsRequestParameters().withSourceRegion("EastUS").withSourceBackupInstanceId(
-                "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/HelloTest/providers/Microsoft.DataProtection/backupVaults/HelloTestVault/backupInstances/653213d-c5b3-44f6-a0d9-db3c4f9d8e34"),
-            null, null, com.azure.core.util.Context.NONE);
+        manager.fetchSecondaryRecoveryPoints()
+            .list("000pikumar", "WestUS", new FetchSecondaryRPsRequestParameters().withSourceRegion("EastUS")
+                .withSourceBackupInstanceId(
+                    "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/HelloTest/providers/Microsoft.DataProtection/backupVaults/HelloTestVault/backupInstances/653213d-c5b3-44f6-a0d9-db3c4f9d8e34"),
+                null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -6,68 +6,51 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StorageTargetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"bfhjxakvvjgsl\",\"targetPath\":\"dilmyww\",\"nfsExport\":\"gkxnyedabg\",\"nfsAccessPolicy\":\"udtjuewbc\"},{\"namespacePath\":\"xuuwhcj\",\"targetPath\":\"ccybvp\",\"nfsExport\":\"akkud\",\"nfsAccessPolicy\":\"xgwjplmagstcyoh\"},{\"namespacePath\":\"kyrk\",\"targetPath\":\"dg\",\"nfsExport\":\"gsj\",\"nfsAccessPolicy\":\"nwqjnoba\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Failed\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"cegfnmntfp\",\"usageModel\":\"memfnczdwvvbalxl\",\"verificationTimer\":677641870,\"writeBackTimer\":813434378},\"clfs\":{\"target\":\"bzevwrd\"},\"unknown\":{\"attributes\":{\"stul\":\"kuvsjcswsm\"}},\"blobNfs\":{\"target\":\"pfcvlerchpqbmfp\",\"usageModel\":\"abwidfcxsspuun\",\"verificationTimer\":579379817,\"writeBackTimer\":598687748},\"allocationPercentage\":2142762824},\"location\":\"qddrihpfhoqcaae\",\"id\":\"aomdjvlpjxx\",\"name\":\"zb\",\"type\":\"msgeivsiykzk\"}";
+            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"cc\",\"targetPath\":\"nhxk\",\"nfsExport\":\"v\",\"nfsAccessPolicy\":\"nrzvuljraaer\"},{\"namespacePath\":\"okqgukkjq\",\"targetPath\":\"broyla\",\"nfsExport\":\"ulcdisdosf\",\"nfsAccessPolicy\":\"jsvg\"},{\"namespacePath\":\"whryvycytdcl\",\"targetPath\":\"ccknfnwmbtmvp\",\"nfsExport\":\"jdhttzaefedxi\",\"nfsAccessPolicy\":\"hrphkmcrjdqn\"},{\"namespacePath\":\"fzpbgtgkyl\",\"targetPath\":\"ghrjeuutl\",\"nfsExport\":\"ez\",\"nfsAccessPolicy\":\"hokvbwnh\"}],\"targetType\":\"unknown\",\"provisioningState\":\"Deleting\",\"state\":\"Busy\",\"nfs3\":{\"target\":\"ppipifhpfeoa\",\"usageModel\":\"gcxtxj\",\"verificationTimer\":1930965124,\"writeBackTimer\":1050895909},\"clfs\":{\"target\":\"dltug\"},\"unknown\":{\"attributes\":{\"jhoiftxfkfweg\":\"mks\",\"iqtgdqoh\":\"rhptilluc\"}},\"blobNfs\":{\"target\":\"sldrizetpwbral\",\"usageModel\":\"ibph\",\"verificationTimer\":449888460,\"writeBackTimer\":1515253868},\"allocationPercentage\":739440726},\"location\":\"a\",\"id\":\"nkjpdnjzha\",\"name\":\"oylhjlmuoyxprimr\",\"type\":\"opteecj\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        StorageCacheManager manager = StorageCacheManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StorageCacheManager manager = StorageCacheManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StorageTarget response = manager.storageTargets()
-            .getWithResponse("dmligovibrxk", "mloazuru", "cbgoor", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("kdlpa", "zrcxfailcfxwmdbo", "dfgsftufqobrj", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("bfhjxakvvjgsl", response.junctions().get(0).namespacePath());
-        Assertions.assertEquals("dilmyww", response.junctions().get(0).targetPath());
-        Assertions.assertEquals("gkxnyedabg", response.junctions().get(0).nfsExport());
-        Assertions.assertEquals("udtjuewbc", response.junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.CLFS, response.targetType());
-        Assertions.assertEquals(OperationalStateType.FLUSHING, response.state());
-        Assertions.assertEquals("cegfnmntfp", response.nfs3().target());
-        Assertions.assertEquals("memfnczdwvvbalxl", response.nfs3().usageModel());
-        Assertions.assertEquals(677641870, response.nfs3().verificationTimer());
-        Assertions.assertEquals(813434378, response.nfs3().writeBackTimer());
-        Assertions.assertEquals("bzevwrd", response.clfs().target());
-        Assertions.assertEquals("kuvsjcswsm", response.unknown().attributes().get("stul"));
-        Assertions.assertEquals("pfcvlerchpqbmfp", response.blobNfs().target());
-        Assertions.assertEquals("abwidfcxsspuun", response.blobNfs().usageModel());
-        Assertions.assertEquals(579379817, response.blobNfs().verificationTimer());
-        Assertions.assertEquals(598687748, response.blobNfs().writeBackTimer());
+        Assertions.assertEquals("cc", response.junctions().get(0).namespacePath());
+        Assertions.assertEquals("nhxk", response.junctions().get(0).targetPath());
+        Assertions.assertEquals("v", response.junctions().get(0).nfsExport());
+        Assertions.assertEquals("nrzvuljraaer", response.junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.UNKNOWN, response.targetType());
+        Assertions.assertEquals(OperationalStateType.BUSY, response.state());
+        Assertions.assertEquals("ppipifhpfeoa", response.nfs3().target());
+        Assertions.assertEquals("gcxtxj", response.nfs3().usageModel());
+        Assertions.assertEquals(1930965124, response.nfs3().verificationTimer());
+        Assertions.assertEquals(1050895909, response.nfs3().writeBackTimer());
+        Assertions.assertEquals("dltug", response.clfs().target());
+        Assertions.assertEquals("mks", response.unknown().attributes().get("jhoiftxfkfweg"));
+        Assertions.assertEquals("sldrizetpwbral", response.blobNfs().target());
+        Assertions.assertEquals("ibph", response.blobNfs().usageModel());
+        Assertions.assertEquals(449888460, response.blobNfs().verificationTimer());
+        Assertions.assertEquals(1515253868, response.blobNfs().writeBackTimer());
     }
 }

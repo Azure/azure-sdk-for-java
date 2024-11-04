@@ -58,10 +58,10 @@ final class QuickPulseCoordinator implements Runnable {
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            logger.error("QuickPulseCoordinator was interrupted", e);
         } catch (Throwable t) {
-            if (t instanceof Error) {
-                throw (Error) t;
-            }
+            // Not supposed to happen
+            logger.error("QuickPulseCoordinator failed", t);
         }
     }
 
@@ -108,6 +108,7 @@ final class QuickPulseCoordinator implements Runnable {
                 pingMode = false;
                 dataSender.startSending();
                 return waitBetweenPostsInMillis;
+
             case QP_IS_OFF:
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis

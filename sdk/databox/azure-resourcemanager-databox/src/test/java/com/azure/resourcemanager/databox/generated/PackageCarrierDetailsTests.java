@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PackageCarrierDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PackageCarrierDetails model =
-            BinaryData
-                .fromString(
-                    "{\"carrierAccountNumber\":\"ofd\",\"carrierName\":\"uusdttouwa\",\"trackingId\":\"ekqvkeln\"}")
-                .toObject(PackageCarrierDetails.class);
-        Assertions.assertEquals("ofd", model.carrierAccountNumber());
-        Assertions.assertEquals("uusdttouwa", model.carrierName());
-        Assertions.assertEquals("ekqvkeln", model.trackingId());
+        PackageCarrierDetails model = BinaryData
+            .fromString(
+                "{\"carrierAccountNumber\":\"fikdowwqu\",\"carrierName\":\"xzxcl\",\"trackingId\":\"thhqzonosggbh\"}")
+            .toObject(PackageCarrierDetails.class);
+        Assertions.assertEquals("fikdowwqu", model.carrierAccountNumber());
+        Assertions.assertEquals("xzxcl", model.carrierName());
+        Assertions.assertEquals("thhqzonosggbh", model.trackingId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PackageCarrierDetails model =
-            new PackageCarrierDetails()
-                .withCarrierAccountNumber("ofd")
-                .withCarrierName("uusdttouwa")
-                .withTrackingId("ekqvkeln");
+        PackageCarrierDetails model = new PackageCarrierDetails().withCarrierAccountNumber("fikdowwqu")
+            .withCarrierName("xzxcl")
+            .withTrackingId("thhqzonosggbh");
         model = BinaryData.fromObject(model).toObject(PackageCarrierDetails.class);
-        Assertions.assertEquals("ofd", model.carrierAccountNumber());
-        Assertions.assertEquals("uusdttouwa", model.carrierName());
-        Assertions.assertEquals("ekqvkeln", model.trackingId());
+        Assertions.assertEquals("fikdowwqu", model.carrierAccountNumber());
+        Assertions.assertEquals("xzxcl", model.carrierName());
+        Assertions.assertEquals("thhqzonosggbh", model.trackingId());
     }
 }

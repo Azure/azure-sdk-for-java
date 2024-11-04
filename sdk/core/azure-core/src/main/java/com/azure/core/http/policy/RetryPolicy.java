@@ -175,8 +175,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
                 httpResponse.close();
 
-                return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed)
-                    .delaySubscription(delayDuration);
+                return addBackoffDelay(attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed),
+                    delayDuration);
             } else {
                 if (tryCount >= retryStrategy.getMaxRetries()) {
                     logRetryExhausted(tryCount);
@@ -188,8 +188,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                 suppressedLocal.add(err);
-                return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
-                    .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
+                return addBackoffDelay(attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal),
+                    retryStrategy.calculateRetryDelay(tryCount));
             } else {
                 logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
                 if (suppressed != null) {
@@ -198,6 +198,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 return Mono.error(err);
             }
         });
+    }
+
+    private Mono<HttpResponse> addBackoffDelay(Mono<HttpResponse> retryOperation, Duration delayDuration) {
+        return (!delayDuration.isNegative() && !delayDuration.isZero())
+            ? retryOperation.delaySubscription(delayDuration)
+            : retryOperation;
     }
 
     private HttpResponse attemptSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
@@ -212,11 +218,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
         } catch (RuntimeException err) {
             if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
-                try {
-                    Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
-                } catch (InterruptedException ex) {
-                    err.addSuppressed(ex);
-                    throw LOGGER.logExceptionAsError(err);
+                Duration delayDuration = retryStrategy.calculateRetryDelay(tryCount);
+                if (!delayDuration.isNegative() && !delayDuration.isZero()) {
+                    try {
+                        Thread.sleep(delayDuration.toMillis());
+                    } catch (InterruptedException ex) {
+                        err.addSuppressed(ex);
+                        throw LOGGER.logExceptionAsError(err);
+                    }
                 }
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -239,10 +248,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
             httpResponse.close();
 
-            try {
-                Thread.sleep(delayDuration.toMillis());
-            } catch (InterruptedException ie) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+            if (!delayDuration.isNegative() && !delayDuration.isZero()) {
+                try {
+                    Thread.sleep(delayDuration.toMillis());
+                } catch (InterruptedException ie) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                }
             }
             return attemptSync(context, next, originalHttpRequest, tryCount + 1, suppressed);
         } else {

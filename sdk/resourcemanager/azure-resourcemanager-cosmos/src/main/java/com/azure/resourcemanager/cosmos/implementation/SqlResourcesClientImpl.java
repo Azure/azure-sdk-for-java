@@ -956,8 +956,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName, String accountName, String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateSqlDatabaseParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateSqlDatabaseParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -977,8 +979,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName, String accountName, String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateSqlDatabaseParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateSqlDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1584,8 +1588,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1605,8 +1611,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2124,7 +2132,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, Context context) {
         return beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2643,8 +2652,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
         beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
             String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+                createUpdateSqlContainerParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2666,8 +2677,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
             String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
             Context context) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+                createUpdateSqlContainerParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3320,8 +3333,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -3342,8 +3357,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3606,8 +3623,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName,
             String containerName, Context context) {
-        return this.beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).getSyncPoller();
+        return this
+            .beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -3626,7 +3645,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName,
         String accountName, String databaseName, String containerName) {
         return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3840,8 +3860,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName).getSyncPoller();
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                containerName)
+            .getSyncPoller();
     }
 
     /**
@@ -3861,8 +3883,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName, Context context) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).getSyncPoller();
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                containerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4439,8 +4463,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName,
             String clientEncryptionKeyName,
             ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
-            clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
+                clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -4463,8 +4489,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName,
             String clientEncryptionKeyName,
             ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
-            clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
+                clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5088,8 +5116,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName,
             String containerName, String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName,
-            containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, createUpdateSqlStoredProcedureParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -5112,8 +5142,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName,
             String containerName, String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName,
-            containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, createUpdateSqlStoredProcedureParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5366,8 +5398,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName,
         String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
-            storedProcedureName).getSyncPoller();
+        return this
+            .beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName)
+            .getSyncPoller();
     }
 
     /**
@@ -5387,8 +5421,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName,
         String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
-            storedProcedureName, context).getSyncPoller();
+        return this
+            .beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6013,8 +6049,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName,
             String containerName, String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName,
-            containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -6039,8 +6077,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             String containerName, String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
             Context context) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName,
-            containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
             .getSyncPoller();
     }
 
@@ -6301,8 +6340,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName,
         String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
-            userDefinedFunctionName).getSyncPoller();
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName)
+            .getSyncPoller();
     }
 
     /**
@@ -6323,8 +6364,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName,
         String accountName, String databaseName, String containerName, String userDefinedFunctionName,
         Context context) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
-            userDefinedFunctionName, context).getSyncPoller();
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6924,8 +6967,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
-            triggerName, createUpdateSqlTriggerParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                createUpdateSqlTriggerParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -6947,8 +6992,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
-            triggerName, createUpdateSqlTriggerParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                createUpdateSqlTriggerParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -7218,8 +7265,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName,
         String databaseName, String containerName, String triggerName, Context context) {
-        return this.beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
-            context).getSyncPoller();
+        return this
+            .beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -7239,7 +7288,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public Mono<Void> deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName,
         String containerName, String triggerName) {
         return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7603,8 +7653,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
-            createUpdateSqlRoleDefinitionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
+                createUpdateSqlRoleDefinitionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -7624,8 +7676,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
-            createUpdateSqlRoleDefinitionParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
+                createUpdateSqlRoleDefinitionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -8379,8 +8433,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
-            createUpdateSqlRoleAssignmentParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
+                createUpdateSqlRoleAssignmentParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -8400,8 +8456,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
-            createUpdateSqlRoleAssignmentParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
+                createUpdateSqlRoleAssignmentParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -9025,8 +9083,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String containerName, ContinuousBackupRestoreLocation location) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            containerName, location).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName,
+                location)
+            .getSyncPoller();
     }
 
     /**
@@ -9047,8 +9107,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String containerName, ContinuousBackupRestoreLocation location, Context context) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            containerName, location, context).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName,
+                location, context)
+            .getSyncPoller();
     }
 
     /**

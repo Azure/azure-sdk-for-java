@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Connection draining allows open connections to a backend server to be active for a specified time after the backend
  * server got removed from the configuration.
  */
 @Fluent
-public final class ApplicationGatewayConnectionDraining {
+public final class ApplicationGatewayConnectionDraining
+    implements JsonSerializable<ApplicationGatewayConnectionDraining> {
     /*
      * Whether connection draining is enabled or not.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The number of seconds connection draining is active. Acceptable values are from 1 second to 3600 seconds.
      */
-    @JsonProperty(value = "drainTimeoutInSec", required = true)
     private int drainTimeoutInSec;
 
     /**
@@ -79,5 +82,46 @@ public final class ApplicationGatewayConnectionDraining {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeIntField("drainTimeoutInSec", this.drainTimeoutInSec);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayConnectionDraining from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayConnectionDraining if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayConnectionDraining.
+     */
+    public static ApplicationGatewayConnectionDraining fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayConnectionDraining deserializedApplicationGatewayConnectionDraining
+                = new ApplicationGatewayConnectionDraining();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedApplicationGatewayConnectionDraining.enabled = reader.getBoolean();
+                } else if ("drainTimeoutInSec".equals(fieldName)) {
+                    deserializedApplicationGatewayConnectionDraining.drainTimeoutInSec = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayConnectionDraining;
+        });
     }
 }

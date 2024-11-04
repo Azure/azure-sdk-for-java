@@ -114,8 +114,8 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
 
     private JobDefinitionUpdateParameters updateJobDefinition;
 
-    public JobDefinitionImpl withExistingProject(
-        String resourceGroupName, String storageMoverName, String projectName) {
+    public JobDefinitionImpl withExistingProject(String resourceGroupName, String storageMoverName,
+        String projectName) {
         this.resourceGroupName = resourceGroupName;
         this.storageMoverName = storageMoverName;
         this.projectName = projectName;
@@ -123,29 +123,20 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     }
 
     public JobDefinition create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobDefinitions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    storageMoverName,
-                    projectName,
-                    jobDefinitionName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobDefinitions()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+                this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobDefinition create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobDefinitions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, storageMoverName, projectName, jobDefinitionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobDefinitions()
+            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+                this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -161,83 +152,66 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     }
 
     public JobDefinition apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobDefinitions()
-                .updateWithResponse(
-                    resourceGroupName,
-                    storageMoverName,
-                    projectName,
-                    jobDefinitionName,
-                    updateJobDefinition,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobDefinitions()
+            .updateWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+                updateJobDefinition, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobDefinition apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobDefinitions()
-                .updateWithResponse(
-                    resourceGroupName, storageMoverName, projectName, jobDefinitionName, updateJobDefinition, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobDefinitions()
+            .updateWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName,
+                updateJobDefinition, context)
+            .getValue();
         return this;
     }
 
-    JobDefinitionImpl(
-        JobDefinitionInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
+    JobDefinitionImpl(JobDefinitionInner innerObject,
+        com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = Utils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.projectName = Utils.getValueFromIdByName(innerObject.id(), "projects");
-        this.jobDefinitionName = Utils.getValueFromIdByName(innerObject.id(), "jobDefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.jobDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jobDefinitions");
     }
 
     public JobDefinition refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobDefinitions()
-                .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobDefinitions()
+            .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobDefinition refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobDefinitions()
-                .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobDefinitions()
+            .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context)
+            .getValue();
         return this;
     }
 
     public Response<JobRunResourceId> startJobWithResponse(Context context) {
-        return serviceManager
-            .jobDefinitions()
+        return serviceManager.jobDefinitions()
             .startJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
     }
 
     public JobRunResourceId startJob() {
-        return serviceManager
-            .jobDefinitions()
+        return serviceManager.jobDefinitions()
             .startJob(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
     }
 
     public Response<JobRunResourceId> stopJobWithResponse(Context context) {
-        return serviceManager
-            .jobDefinitions()
+        return serviceManager.jobDefinitions()
             .stopJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
     }
 
     public JobRunResourceId stopJob() {
-        return serviceManager
-            .jobDefinitions()
+        return serviceManager.jobDefinitions()
             .stopJob(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
     }
 

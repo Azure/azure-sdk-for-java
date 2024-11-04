@@ -9,8 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class SitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SiteCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteCreate.json
      */
     /**
      * Sample code: Create mobile network site.
@@ -18,7 +17,10 @@ public final class SitesCreateOrUpdateSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createMobileNetworkSite(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sites().define("testSite").withRegion("testLocation")
-            .withExistingMobileNetwork("rg1", "testMobileNetwork").create();
+        manager.sites()
+            .define("testSite")
+            .withRegion("testLocation")
+            .withExistingMobileNetwork("rg1", "testMobileNetwork")
+            .create();
     }
 }

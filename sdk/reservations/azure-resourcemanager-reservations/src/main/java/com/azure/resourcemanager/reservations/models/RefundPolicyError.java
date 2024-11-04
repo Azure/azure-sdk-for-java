@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** error details. */
+/**
+ * error details.
+ */
 @Fluent
-public final class RefundPolicyError {
+public final class RefundPolicyError implements JsonSerializable<RefundPolicyError> {
     /*
      * Error code describing the reason that service is not able to process the incoming request
      */
-    @JsonProperty(value = "code")
     private ErrorResponseCode code;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of RefundPolicyError class. */
+    /**
+     * Creates an instance of RefundPolicyError class.
+     */
     public RefundPolicyError() {
     }
 
     /**
      * Get the code property: Error code describing the reason that service is not able to process the incoming request.
-     *
+     * 
      * @return the code value.
      */
     public ErrorResponseCode code() {
@@ -37,7 +43,7 @@ public final class RefundPolicyError {
 
     /**
      * Set the code property: Error code describing the reason that service is not able to process the incoming request.
-     *
+     * 
      * @param code the code value to set.
      * @return the RefundPolicyError object itself.
      */
@@ -48,7 +54,7 @@ public final class RefundPolicyError {
 
     /**
      * Get the message property: The message property.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +63,7 @@ public final class RefundPolicyError {
 
     /**
      * Set the message property: The message property.
-     *
+     * 
      * @param message the message value to set.
      * @return the RefundPolicyError object itself.
      */
@@ -68,9 +74,48 @@ public final class RefundPolicyError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RefundPolicyError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RefundPolicyError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RefundPolicyError.
+     */
+    public static RefundPolicyError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RefundPolicyError deserializedRefundPolicyError = new RefundPolicyError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedRefundPolicyError.code = ErrorResponseCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedRefundPolicyError.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRefundPolicyError;
+        });
     }
 }

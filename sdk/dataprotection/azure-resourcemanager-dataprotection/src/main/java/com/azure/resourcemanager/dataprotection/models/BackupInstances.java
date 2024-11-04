@@ -367,12 +367,14 @@ public interface BackupInstances {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        StopProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
@@ -394,12 +396,14 @@ public interface BackupInstances {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName,
+        SuspendBackupRequest parameters, Context context);
 
     /**
      * Sync backup instance again in case of failure

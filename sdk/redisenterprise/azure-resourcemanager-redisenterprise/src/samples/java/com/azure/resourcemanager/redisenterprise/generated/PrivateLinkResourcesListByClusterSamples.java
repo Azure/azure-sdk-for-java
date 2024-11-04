@@ -9,7 +9,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class PrivateLinkResourcesListByClusterSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
      * RedisEnterpriseListPrivateLinkResources.json
      */
     /**

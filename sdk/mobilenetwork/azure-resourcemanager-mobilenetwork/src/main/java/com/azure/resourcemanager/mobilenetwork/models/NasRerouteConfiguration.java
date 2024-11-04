@@ -25,8 +25,8 @@ public final class NasRerouteConfiguration {
     }
 
     /**
-     * Get the macroMmeGroupId property: The macro network's MME group ID. This is where unknown UEs are sent to via
-     * NAS reroute.
+     * Get the macroMmeGroupId property: The macro network's MME group ID. This is where unknown UEs are sent to via NAS
+     * reroute.
      * 
      * @return the macroMmeGroupId value.
      */
@@ -35,8 +35,8 @@ public final class NasRerouteConfiguration {
     }
 
     /**
-     * Set the macroMmeGroupId property: The macro network's MME group ID. This is where unknown UEs are sent to via
-     * NAS reroute.
+     * Set the macroMmeGroupId property: The macro network's MME group ID. This is where unknown UEs are sent to via NAS
+     * reroute.
      * 
      * @param macroMmeGroupId the macroMmeGroupId value to set.
      * @return the NasRerouteConfiguration object itself.

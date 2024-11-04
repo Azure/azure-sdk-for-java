@@ -208,8 +208,7 @@ final class StorageNetworkRulesHelper {
             }
         }
         if (!found) {
-            networkRuleSet
-                .virtualNetworkRules()
+            networkRuleSet.virtualNetworkRules()
                 .add(new VirtualNetworkRule().withVirtualNetworkResourceId(subnetId).withAction(Action.ALLOW));
         }
         return this;
@@ -449,8 +448,8 @@ final class StorageNetworkRulesHelper {
                         && updateParameters.networkRuleSet().ipRules().size() > 0) {
                         anyRulesAddedFirstTime = true;
                     }
-                    final boolean anyExceptionAddedFirstTime =
-                        !hasNoExistingException && updateParameters.networkRuleSet().bypass() != null;
+                    final boolean anyExceptionAddedFirstTime
+                        = !hasNoExistingException && updateParameters.networkRuleSet().bypass() != null;
                     if ((anyRulesAddedFirstTime || anyExceptionAddedFirstTime)
                         && updateParameters.networkRuleSet().defaultAction() == null) {
                         // If there was no existing rules & exceptions and if user specified at least one
@@ -556,18 +555,16 @@ final class StorageNetworkRulesHelper {
                     if (this.inner.networkRuleSet().virtualNetworkRules() != null) {
                         clonedNetworkRuleSet.withVirtualNetworkRules(new ArrayList<VirtualNetworkRule>());
                         for (VirtualNetworkRule rule : this.inner.networkRuleSet().virtualNetworkRules()) {
-                            VirtualNetworkRule clonedRule =
-                                new VirtualNetworkRule()
-                                    .withAction(rule.action())
-                                    .withVirtualNetworkResourceId(rule.virtualNetworkResourceId());
+                            VirtualNetworkRule clonedRule = new VirtualNetworkRule().withAction(rule.action())
+                                .withVirtualNetworkResourceId(rule.virtualNetworkResourceId());
                             clonedNetworkRuleSet.virtualNetworkRules().add(clonedRule);
                         }
                     }
                     if (this.inner.networkRuleSet().ipRules() != null) {
                         clonedNetworkRuleSet.withIpRules(new ArrayList<IpRule>());
                         for (IpRule rule : this.inner.networkRuleSet().ipRules()) {
-                            IpRule clonedRule =
-                                new IpRule().withAction(rule.action()).withIpAddressOrRange(rule.ipAddressOrRange());
+                            IpRule clonedRule
+                                = new IpRule().withAction(rule.action()).withIpAddressOrRange(rule.ipAddressOrRange());
                             clonedNetworkRuleSet.ipRules().add(clonedRule);
                         }
                     }

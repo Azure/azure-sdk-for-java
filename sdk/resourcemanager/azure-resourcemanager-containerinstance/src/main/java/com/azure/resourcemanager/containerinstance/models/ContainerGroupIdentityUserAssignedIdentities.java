@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The list of user identities associated with the container group. The user identity dictionary key references will be
@@ -13,26 +17,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
  */
 @Immutable
-public final class ContainerGroupIdentityUserAssignedIdentities {
+public final class ContainerGroupIdentityUserAssignedIdentities
+    implements JsonSerializable<ContainerGroupIdentityUserAssignedIdentities> {
     /*
      * The principal id of user assigned identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The client id of user assigned identity.
      */
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of ContainerGroupIdentityUserAssignedIdentities class. */
+    /**
+     * Creates an instance of ContainerGroupIdentityUserAssignedIdentities class.
+     */
     public ContainerGroupIdentityUserAssignedIdentities() {
     }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -41,7 +46,7 @@ public final class ContainerGroupIdentityUserAssignedIdentities {
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -50,9 +55,47 @@ public final class ContainerGroupIdentityUserAssignedIdentities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerGroupIdentityUserAssignedIdentities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerGroupIdentityUserAssignedIdentities if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerGroupIdentityUserAssignedIdentities.
+     */
+    public static ContainerGroupIdentityUserAssignedIdentities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerGroupIdentityUserAssignedIdentities deserializedContainerGroupIdentityUserAssignedIdentities
+                = new ContainerGroupIdentityUserAssignedIdentities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedContainerGroupIdentityUserAssignedIdentities.principalId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedContainerGroupIdentityUserAssignedIdentities.clientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerGroupIdentityUserAssignedIdentities;
+        });
     }
 }

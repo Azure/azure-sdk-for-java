@@ -27,13 +27,4 @@ public class JsonEOFException extends JsonParseException {
         _token = token;
     }
 
-    /**
-     * Accessor for possibly available information about token that was being
-     * decoded while encountering end of input.
-     *
-     * @return JsonToken that was being decoded while encountering end-of-input
-     */
-    public JsonToken getTokenBeingDecoded() {
-        return _token;
-    }
 }

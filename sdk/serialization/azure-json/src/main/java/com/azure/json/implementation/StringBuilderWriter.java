@@ -21,7 +21,14 @@ public final class StringBuilderWriter extends Writer {
     private boolean closed = false;
 
     /**
-     * Creates an instance of {@link StringBuilderWriter}.
+     * Creates an instance of {@link StringBuilderWriter} using {@link StringBuilder#StringBuilder()}.
+     */
+    public StringBuilderWriter() {
+        this.builder = new StringBuilder();
+    }
+
+    /**
+     * Creates an instance of {@link StringBuilderWriter} using the passed {@link StringBuilder}.
      *
      * @param builder The {@link StringBuilder} being written to.
      * @throws NullPointerException If {@code builder} is null.
@@ -34,7 +41,7 @@ public final class StringBuilderWriter extends Writer {
     public void write(int c) throws IOException {
         ensureOpen();
 
-        builder.append(c);
+        builder.append((char) c);
     }
 
     @Override

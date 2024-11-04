@@ -244,16 +244,12 @@ public final class LogAnalyticsQueryPackQueryProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model LogAnalyticsQueryPackQueryProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model LogAnalyticsQueryPackQueryProperties"));
         }
         if (body() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property body in model LogAnalyticsQueryPackQueryProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property body in model LogAnalyticsQueryPackQueryProperties"));
         }
         if (related() != null) {
             related().validate();

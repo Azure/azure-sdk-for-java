@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatastoreInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatastoreInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"Datastore\",\"capacityGB\":3249559598033640642,\"freeSpaceGB\":1203918131224408172,\"managedResourceId\":\"qtgdqohmcwsl\",\"moRefId\":\"izetpw\",\"moName\":\"a\",\"provisioningState\":\"Canceled\"}")
-                .toObject(DatastoreInventoryItem.class);
+        DatastoreInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"Datastore\",\"capacityGB\":3249559598033640642,\"freeSpaceGB\":1203918131224408172,\"managedResourceId\":\"qtgdqohmcwsl\",\"moRefId\":\"izetpw\",\"moName\":\"a\",\"provisioningState\":\"Canceled\"}")
+            .toObject(DatastoreInventoryItem.class);
         Assertions.assertEquals("qtgdqohmcwsl", model.managedResourceId());
         Assertions.assertEquals("izetpw", model.moRefId());
         Assertions.assertEquals("a", model.moName());
@@ -25,13 +23,11 @@ public final class DatastoreInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatastoreInventoryItem model =
-            new DatastoreInventoryItem()
-                .withManagedResourceId("qtgdqohmcwsl")
-                .withMoRefId("izetpw")
-                .withMoName("a")
-                .withCapacityGB(3249559598033640642L)
-                .withFreeSpaceGB(1203918131224408172L);
+        DatastoreInventoryItem model = new DatastoreInventoryItem().withManagedResourceId("qtgdqohmcwsl")
+            .withMoRefId("izetpw")
+            .withMoName("a")
+            .withCapacityGB(3249559598033640642L)
+            .withFreeSpaceGB(1203918131224408172L);
         model = BinaryData.fromObject(model).toObject(DatastoreInventoryItem.class);
         Assertions.assertEquals("qtgdqohmcwsl", model.managedResourceId());
         Assertions.assertEquals("izetpw", model.moRefId());

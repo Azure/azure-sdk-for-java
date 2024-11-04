@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ExchangeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExchangeRequest model =
-            BinaryData.fromString("{\"properties\":{\"sessionId\":\"d\"}}").toObject(ExchangeRequest.class);
-        Assertions.assertEquals("d", model.properties().sessionId());
+        ExchangeRequest model
+            = BinaryData.fromString("{\"properties\":{\"sessionId\":\"dkwobdagx\"}}").toObject(ExchangeRequest.class);
+        Assertions.assertEquals("dkwobdagx", model.properties().sessionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExchangeRequest model =
-            new ExchangeRequest().withProperties(new ExchangeRequestProperties().withSessionId("d"));
+        ExchangeRequest model
+            = new ExchangeRequest().withProperties(new ExchangeRequestProperties().withSessionId("dkwobdagx"));
         model = BinaryData.fromObject(model).toObject(ExchangeRequest.class);
-        Assertions.assertEquals("d", model.properties().sessionId());
+        Assertions.assertEquals("dkwobdagx", model.properties().sessionId());
     }
 }

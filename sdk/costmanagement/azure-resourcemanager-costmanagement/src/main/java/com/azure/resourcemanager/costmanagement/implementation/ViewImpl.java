@@ -133,22 +133,18 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     }
 
     public View create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public View create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -163,47 +159,41 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     }
 
     public View apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public View apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateByScopeWithResponse(scope, viewName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     ViewImpl(ViewInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
-        this.viewName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
+        this.viewName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
     }
 
     public View refresh() {
-        this.innerObject =
-            serviceManager.serviceClient().getViews().getByScopeWithResponse(scope, viewName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .getByScopeWithResponse(scope, viewName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public View refresh(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getViews().getByScopeWithResponse(scope, viewName, context).getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getViews().getByScopeWithResponse(scope, viewName, context).getValue();
         return this;
     }
 
@@ -219,6 +209,11 @@ public final class ViewImpl implements View, View.Definition, View.Update {
 
     public ViewImpl withScope(String scope) {
         this.innerModel().withScope(scope);
+        return this;
+    }
+
+    public ViewImpl withDateRange(String dateRange) {
+        this.innerModel().withDateRange(dateRange);
         return this;
     }
 

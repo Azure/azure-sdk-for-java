@@ -49,8 +49,7 @@ import reactor.core.publisher.Mono;
  *
  * <!-- src_embed com.azure.identity.credential.azurepowershellcredential.construct -->
  * <pre>
- * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azurepowershellcredential.construct -->
  *
@@ -64,18 +63,15 @@ public class AzurePowerShellCredential implements TokenCredential {
     private final IdentityClient identityClient;
 
     AzurePowerShellCredential(String tenantId, IdentityClientOptions options) {
-        identityClient = new IdentityClientBuilder()
-            .identityClientOptions(options)
-            .tenantId(tenantId)
-            .build();
+        identityClient = new IdentityClientBuilder().identityClientOptions(options).tenantId(tenantId).build();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzurePowerShell(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error))
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
             .onErrorMap(error -> {
                 if (identityClient.getIdentityClientOptions().isChained()) {
                     return new CredentialUnavailableException(error.getMessage(), error);

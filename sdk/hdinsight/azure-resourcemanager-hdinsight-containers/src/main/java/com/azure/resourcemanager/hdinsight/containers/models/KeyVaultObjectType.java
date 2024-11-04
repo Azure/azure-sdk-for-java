@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class KeyVaultObjectType extends ExpandableStringEnum<KeyVaultObjec
      * @param name a name to look for.
      * @return the corresponding KeyVaultObjectType.
      */
-    @JsonCreator
     public static KeyVaultObjectType fromString(String name) {
         return fromString(name, KeyVaultObjectType.class);
     }

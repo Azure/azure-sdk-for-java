@@ -12,18 +12,18 @@ public final class DataFlowDebugCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowDebugCommandResponseInner model
-            = BinaryData.fromString("{\"status\":\"dsxwefoh\",\"data\":\"bvopwndyqle\"}")
+            = BinaryData.fromString("{\"status\":\"xtxrdcqtjvidt\",\"data\":\"epu\"}")
                 .toObject(DataFlowDebugCommandResponseInner.class);
-        Assertions.assertEquals("dsxwefoh", model.status());
-        Assertions.assertEquals("bvopwndyqle", model.data());
+        Assertions.assertEquals("xtxrdcqtjvidt", model.status());
+        Assertions.assertEquals("epu", model.data());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowDebugCommandResponseInner model
-            = new DataFlowDebugCommandResponseInner().withStatus("dsxwefoh").withData("bvopwndyqle");
+            = new DataFlowDebugCommandResponseInner().withStatus("xtxrdcqtjvidt").withData("epu");
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandResponseInner.class);
-        Assertions.assertEquals("dsxwefoh", model.status());
-        Assertions.assertEquals("bvopwndyqle", model.data());
+        Assertions.assertEquals("xtxrdcqtjvidt", model.status());
+        Assertions.assertEquals("epu", model.data());
     }
 }

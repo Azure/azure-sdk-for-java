@@ -1,0 +1,15 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: standbypool
+    Artifacts:
+      - name: azure-resourcemanager-standbypool
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstandbypool
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*

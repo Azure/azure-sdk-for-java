@@ -5,58 +5,59 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** teamMessagingSettings. */
+/**
+ * teamMessagingSettings.
+ */
 @Fluent
-public final class MicrosoftGraphTeamMessagingSettings {
+public final class MicrosoftGraphTeamMessagingSettings
+    implements JsonSerializable<MicrosoftGraphTeamMessagingSettings> {
     /*
      * If set to true, @channel mentions are allowed.
      */
-    @JsonProperty(value = "allowChannelMentions")
     private Boolean allowChannelMentions;
 
     /*
      * If set to true, owners can delete any message.
      */
-    @JsonProperty(value = "allowOwnerDeleteMessages")
     private Boolean allowOwnerDeleteMessages;
 
     /*
      * If set to true, @team mentions are allowed.
      */
-    @JsonProperty(value = "allowTeamMentions")
     private Boolean allowTeamMentions;
 
     /*
      * If set to true, users can delete their messages.
      */
-    @JsonProperty(value = "allowUserDeleteMessages")
     private Boolean allowUserDeleteMessages;
 
     /*
      * If set to true, users can edit their messages.
      */
-    @JsonProperty(value = "allowUserEditMessages")
     private Boolean allowUserEditMessages;
 
     /*
      * teamMessagingSettings
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamMessagingSettings class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamMessagingSettings class.
+     */
     public MicrosoftGraphTeamMessagingSettings() {
     }
 
     /**
-     * Get the allowChannelMentions property: If set to true, @channel mentions are allowed.
-     *
+     * Get the allowChannelMentions property: If set to true, &#064;channel mentions are allowed.
+     * 
      * @return the allowChannelMentions value.
      */
     public Boolean allowChannelMentions() {
@@ -64,8 +65,8 @@ public final class MicrosoftGraphTeamMessagingSettings {
     }
 
     /**
-     * Set the allowChannelMentions property: If set to true, @channel mentions are allowed.
-     *
+     * Set the allowChannelMentions property: If set to true, &#064;channel mentions are allowed.
+     * 
      * @param allowChannelMentions the allowChannelMentions value to set.
      * @return the MicrosoftGraphTeamMessagingSettings object itself.
      */
@@ -76,7 +77,7 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Get the allowOwnerDeleteMessages property: If set to true, owners can delete any message.
-     *
+     * 
      * @return the allowOwnerDeleteMessages value.
      */
     public Boolean allowOwnerDeleteMessages() {
@@ -85,7 +86,7 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Set the allowOwnerDeleteMessages property: If set to true, owners can delete any message.
-     *
+     * 
      * @param allowOwnerDeleteMessages the allowOwnerDeleteMessages value to set.
      * @return the MicrosoftGraphTeamMessagingSettings object itself.
      */
@@ -95,8 +96,8 @@ public final class MicrosoftGraphTeamMessagingSettings {
     }
 
     /**
-     * Get the allowTeamMentions property: If set to true, @team mentions are allowed.
-     *
+     * Get the allowTeamMentions property: If set to true, &#064;team mentions are allowed.
+     * 
      * @return the allowTeamMentions value.
      */
     public Boolean allowTeamMentions() {
@@ -104,8 +105,8 @@ public final class MicrosoftGraphTeamMessagingSettings {
     }
 
     /**
-     * Set the allowTeamMentions property: If set to true, @team mentions are allowed.
-     *
+     * Set the allowTeamMentions property: If set to true, &#064;team mentions are allowed.
+     * 
      * @param allowTeamMentions the allowTeamMentions value to set.
      * @return the MicrosoftGraphTeamMessagingSettings object itself.
      */
@@ -116,7 +117,7 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Get the allowUserDeleteMessages property: If set to true, users can delete their messages.
-     *
+     * 
      * @return the allowUserDeleteMessages value.
      */
     public Boolean allowUserDeleteMessages() {
@@ -125,7 +126,7 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Set the allowUserDeleteMessages property: If set to true, users can delete their messages.
-     *
+     * 
      * @param allowUserDeleteMessages the allowUserDeleteMessages value to set.
      * @return the MicrosoftGraphTeamMessagingSettings object itself.
      */
@@ -136,7 +137,7 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Get the allowUserEditMessages property: If set to true, users can edit their messages.
-     *
+     * 
      * @return the allowUserEditMessages value.
      */
     public Boolean allowUserEditMessages() {
@@ -145,7 +146,7 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Set the allowUserEditMessages property: If set to true, users can edit their messages.
-     *
+     * 
      * @param allowUserEditMessages the allowUserEditMessages value to set.
      * @return the MicrosoftGraphTeamMessagingSettings object itself.
      */
@@ -156,17 +157,16 @@ public final class MicrosoftGraphTeamMessagingSettings {
 
     /**
      * Get the additionalProperties property: teamMessagingSettings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamMessagingSettings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamMessagingSettings object itself.
      */
@@ -175,19 +175,76 @@ public final class MicrosoftGraphTeamMessagingSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowChannelMentions", this.allowChannelMentions);
+        jsonWriter.writeBooleanField("allowOwnerDeleteMessages", this.allowOwnerDeleteMessages);
+        jsonWriter.writeBooleanField("allowTeamMentions", this.allowTeamMentions);
+        jsonWriter.writeBooleanField("allowUserDeleteMessages", this.allowUserDeleteMessages);
+        jsonWriter.writeBooleanField("allowUserEditMessages", this.allowUserEditMessages);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamMessagingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamMessagingSettings if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamMessagingSettings.
+     */
+    public static MicrosoftGraphTeamMessagingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamMessagingSettings deserializedMicrosoftGraphTeamMessagingSettings
+                = new MicrosoftGraphTeamMessagingSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowChannelMentions".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMessagingSettings.allowChannelMentions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowOwnerDeleteMessages".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMessagingSettings.allowOwnerDeleteMessages
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowTeamMentions".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMessagingSettings.allowTeamMentions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowUserDeleteMessages".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMessagingSettings.allowUserDeleteMessages
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowUserEditMessages".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamMessagingSettings.allowUserEditMessages
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamMessagingSettings.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamMessagingSettings;
+        });
     }
 }

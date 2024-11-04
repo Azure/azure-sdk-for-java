@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplyUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplyUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"RetryLater\",\"resourceId\":\"dcsi\",\"lastUpdateTime\":\"2021-11-05T13:04:28Z\"}")
-                .toObject(ApplyUpdateProperties.class);
-        Assertions.assertEquals(UpdateStatus.RETRY_LATER, model.status());
-        Assertions.assertEquals("dcsi", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T13:04:28Z"), model.lastUpdateTime());
+        ApplyUpdateProperties model = BinaryData
+            .fromString("{\"status\":\"Pending\",\"resourceId\":\"y\",\"lastUpdateTime\":\"2021-05-02T14:53:40Z\"}")
+            .toObject(ApplyUpdateProperties.class);
+        Assertions.assertEquals(UpdateStatus.PENDING, model.status());
+        Assertions.assertEquals("y", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T14:53:40Z"), model.lastUpdateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplyUpdateProperties model =
-            new ApplyUpdateProperties()
-                .withStatus(UpdateStatus.RETRY_LATER)
-                .withResourceId("dcsi")
-                .withLastUpdateTime(OffsetDateTime.parse("2021-11-05T13:04:28Z"));
+        ApplyUpdateProperties model = new ApplyUpdateProperties().withStatus(UpdateStatus.PENDING)
+            .withResourceId("y")
+            .withLastUpdateTime(OffsetDateTime.parse("2021-05-02T14:53:40Z"));
         model = BinaryData.fromObject(model).toObject(ApplyUpdateProperties.class);
-        Assertions.assertEquals(UpdateStatus.RETRY_LATER, model.status());
-        Assertions.assertEquals("dcsi", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T13:04:28Z"), model.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.PENDING, model.status());
+        Assertions.assertEquals("y", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T14:53:40Z"), model.lastUpdateTime());
     }
 }

@@ -5,6 +5,7 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.ClassCustomization;
+import com.github.javaparser.ast.Modifier;
 import org.slf4j.Logger;
 
 public class GeoLocationCustomization extends Customization {
@@ -21,21 +22,15 @@ public class GeoLocationCustomization extends Customization {
 
     // Customizes the CountryRegion class
     private void customizeCountryRegion(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("CountryRegion");
-        classCustomization.addConstructor(
-            "private CountryRegion() {\n" +
-            "}")
-            .getJavadoc()
-            .setDescription("Set default constructor to private");
+        models.getClass("CountryRegion").customizeAst(ast -> ast.getClassByName("CountryRegion").ifPresent(clazz ->
+            clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
+                .setJavadocComment("Set default constructor to private")));
     }
 
     // Customizes the IpAddressToLocationResult class
     private void customizeIpAddressToLocationResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("IpAddressToLocationResult");
-        classCustomization.addConstructor(
-            "private IpAddressToLocationResult() {\n" +
-            "}")
-            .getJavadoc()
-            .setDescription("Set default constructor to private");
+        models.getClass("IpAddressToLocationResult").customizeAst(ast -> ast.getClassByName("IpAddressToLocationResult")
+            .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
+                .setJavadocComment("Set default constructor to private")));
     }
 }

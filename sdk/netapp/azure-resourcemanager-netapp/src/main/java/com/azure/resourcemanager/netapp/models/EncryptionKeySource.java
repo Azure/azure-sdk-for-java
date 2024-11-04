@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKe
      * @param name a name to look for.
      * @return the corresponding EncryptionKeySource.
      */
-    @JsonCreator
     public static EncryptionKeySource fromString(String name) {
         return fromString(name, EncryptionKeySource.class);
     }

@@ -5,52 +5,56 @@
 package com.azure.communication.sms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SmsSendResponseItem model. */
+/**
+ * Response for a single recipient.
+ */
 @Fluent
-public final class SmsSendResponseItem {
+public final class SmsSendResponseItem implements JsonSerializable<SmsSendResponseItem> {
     /*
      * The recipient's phone number in E.164 format.
      */
-    @JsonProperty(value = "to", required = true)
     private String to;
 
     /*
-     * The identifier of the outgoing Sms message. Only present if message
-     * processed.
+     * The identifier of the outgoing Sms message. Only present if message processed.
      */
-    @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
      * HTTP Status code.
      */
-    @JsonProperty(value = "httpStatusCode", required = true)
     private int httpStatusCode;
 
     /*
-     * The result of a repeatable request with one of the case-insensitive
-     * values accepted or rejected.
+     * The result of a repeatable request with one of the case-insensitive values accepted or rejected.
      */
-    @JsonProperty(value = "repeatabilityResult")
     private SmsSendResponseItemRepeatabilityResult repeatabilityResult;
 
     /*
      * Indicates if the message is processed successfully or not.
      */
-    @JsonProperty(value = "successful", required = true)
     private boolean successful;
 
     /*
      * Optional error message in case of 4xx/5xx/repeatable errors.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /**
+     * Creates an instance of SmsSendResponseItem class.
+     */
+    public SmsSendResponseItem() {
+    }
+
+    /**
      * Get the to property: The recipient's phone number in E.164 format.
-     *
+     * 
      * @return the to value.
      */
     public String getTo() {
@@ -59,7 +63,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Set the to property: The recipient's phone number in E.164 format.
-     *
+     * 
      * @param to the to value to set.
      * @return the SmsSendResponseItem object itself.
      */
@@ -70,7 +74,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Get the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -79,7 +83,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Set the messageId property: The identifier of the outgoing Sms message. Only present if message processed.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the SmsSendResponseItem object itself.
      */
@@ -90,7 +94,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Get the httpStatusCode property: HTTP Status code.
-     *
+     * 
      * @return the httpStatusCode value.
      */
     public int getHttpStatusCode() {
@@ -99,7 +103,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Set the httpStatusCode property: HTTP Status code.
-     *
+     * 
      * @param httpStatusCode the httpStatusCode value to set.
      * @return the SmsSendResponseItem object itself.
      */
@@ -111,7 +115,7 @@ public final class SmsSendResponseItem {
     /**
      * Get the repeatabilityResult property: The result of a repeatable request with one of the case-insensitive values
      * accepted or rejected.
-     *
+     * 
      * @return the repeatabilityResult value.
      */
     public SmsSendResponseItemRepeatabilityResult getRepeatabilityResult() {
@@ -121,7 +125,7 @@ public final class SmsSendResponseItem {
     /**
      * Set the repeatabilityResult property: The result of a repeatable request with one of the case-insensitive values
      * accepted or rejected.
-     *
+     * 
      * @param repeatabilityResult the repeatabilityResult value to set.
      * @return the SmsSendResponseItem object itself.
      */
@@ -132,7 +136,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Get the successful property: Indicates if the message is processed successfully or not.
-     *
+     * 
      * @return the successful value.
      */
     public boolean isSuccessful() {
@@ -141,7 +145,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Set the successful property: Indicates if the message is processed successfully or not.
-     *
+     * 
      * @param successful the successful value to set.
      * @return the SmsSendResponseItem object itself.
      */
@@ -152,7 +156,7 @@ public final class SmsSendResponseItem {
 
     /**
      * Get the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -161,12 +165,66 @@ public final class SmsSendResponseItem {
 
     /**
      * Set the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the SmsSendResponseItem object itself.
      */
     public SmsSendResponseItem setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("to", this.to);
+        jsonWriter.writeIntField("httpStatusCode", this.httpStatusCode);
+        jsonWriter.writeBooleanField("successful", this.successful);
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("repeatabilityResult",
+            this.repeatabilityResult == null ? null : this.repeatabilityResult.toString());
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmsSendResponseItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmsSendResponseItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmsSendResponseItem.
+     */
+    public static SmsSendResponseItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmsSendResponseItem deserializedSmsSendResponseItem = new SmsSendResponseItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("to".equals(fieldName)) {
+                    deserializedSmsSendResponseItem.to = reader.getString();
+                } else if ("httpStatusCode".equals(fieldName)) {
+                    deserializedSmsSendResponseItem.httpStatusCode = reader.getInt();
+                } else if ("successful".equals(fieldName)) {
+                    deserializedSmsSendResponseItem.successful = reader.getBoolean();
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedSmsSendResponseItem.messageId = reader.getString();
+                } else if ("repeatabilityResult".equals(fieldName)) {
+                    deserializedSmsSendResponseItem.repeatabilityResult
+                        = SmsSendResponseItemRepeatabilityResult.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedSmsSendResponseItem.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmsSendResponseItem;
+        });
     }
 }

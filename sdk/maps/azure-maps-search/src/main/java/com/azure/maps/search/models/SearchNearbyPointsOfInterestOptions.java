@@ -11,7 +11,8 @@ import com.azure.core.models.GeoPosition;
  * Options for searching nearby points of interest.
  */
 @Fluent
-public final class SearchNearbyPointsOfInterestOptions extends BaseSearchPointOfInterestOptions<SearchNearbyPointsOfInterestOptions> {
+public final class SearchNearbyPointsOfInterestOptions
+    extends BaseSearchPointOfInterestOptions<SearchNearbyPointsOfInterestOptions> {
     private List<SearchIndexes> extendedPostalCodesFor;
 
     /**

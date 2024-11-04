@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Protectable item for Azure Fileshare workloads.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectableItemType",
+    defaultImpl = AzureFileShareProtectableItem.class,
+    visible = true)
 @JsonTypeName("AzureFileShare")
 @Fluent
 public final class AzureFileShareProtectableItem extends WorkloadProtectableItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableItemType", required = true)
+    private String protectableItemType = "AzureFileShare";
+
     /*
      * Full Fabric ID of container to which this protectable item belongs. For example, ARM ID.
      */
@@ -41,8 +53,18 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
     }
 
     /**
-     * Get the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs.
-     * For example, ARM ID.
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
+    }
+
+    /**
+     * Get the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs. For
+     * example, ARM ID.
      * 
      * @return the parentContainerFabricId value.
      */
@@ -51,8 +73,8 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
     }
 
     /**
-     * Set the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs.
-     * For example, ARM ID.
+     * Set the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs. For
+     * example, ARM ID.
      * 
      * @param parentContainerFabricId the parentContainerFabricId value to set.
      * @return the AzureFileShareProtectableItem object itself.

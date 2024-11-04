@@ -13,72 +13,76 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.SchemaGroupInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SchemaRegistriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchemaRegistriesClient.
+ */
 public interface SchemaRegistriesClient {
     /**
      * Gets all the Schema Groups in a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     *     point to use for subsequent calls.
+     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+     * point to use for subsequent calls.
      * @param top May be used to limit the number of results to the most recent N usageDetails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Schema Groups in a Namespace.
+     * @return all the Schema Groups in a Namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SchemaGroupInner> listByNamespaceAsync(
-        String resourceGroupName, String namespaceName, Integer skip, Integer top);
+    PagedFlux<SchemaGroupInner> listByNamespaceAsync(String resourceGroupName, String namespaceName, Integer skip,
+        Integer top);
 
     /**
      * Gets all the Schema Groups in a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Schema Groups in a Namespace.
+     * @return all the Schema Groups in a Namespace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SchemaGroupInner> listByNamespaceAsync(String resourceGroupName, String namespaceName);
 
     /**
      * Gets all the Schema Groups in a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Schema Groups in a Namespace.
+     * @return all the Schema Groups in a Namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SchemaGroupInner> listByNamespace(String resourceGroupName, String namespaceName);
 
     /**
      * Gets all the Schema Groups in a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
-     *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-     *     point to use for subsequent calls.
+     * a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+     * point to use for subsequent calls.
      * @param top May be used to limit the number of results to the most recent N usageDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Schema Groups in a Namespace.
+     * @return all the Schema Groups in a Namespace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SchemaGroupInner> listByNamespace(
-        String resourceGroupName, String namespaceName, Integer skip, Integer top, Context context);
+    PagedIterable<SchemaGroupInner> listByNamespace(String resourceGroupName, String namespaceName, Integer skip,
+        Integer top, Context context);
 
     /**
+     * Creates or Updates an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
@@ -86,13 +90,16 @@ public interface SchemaRegistriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
+     * @return single item in List or Get Schema Group operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SchemaGroupInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, String schemaGroupName, SchemaGroupInner parameters);
+    Mono<Response<SchemaGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String namespaceName,
+        String schemaGroupName, SchemaGroupInner parameters);
 
     /**
+     * Creates or Updates an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
@@ -100,27 +107,15 @@ public interface SchemaRegistriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
+     * @return single item in List or Get Schema Group operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SchemaGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String schemaGroupName, SchemaGroupInner parameters);
+    Mono<SchemaGroupInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String schemaGroupName,
+        SchemaGroupInner parameters);
 
     /**
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param schemaGroupName The Schema Group name.
-     * @param parameters Parameters supplied to create an Event Hub resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SchemaGroupInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String schemaGroupName, SchemaGroupInner parameters);
-
-    /**
+     * Creates or Updates an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
@@ -129,42 +124,76 @@ public interface SchemaRegistriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single item in List or Get Schema Group operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SchemaGroupInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
+        String schemaGroupName, SchemaGroupInner parameters, Context context);
+
+    /**
+     * Creates or Updates an EventHub schema group.
+     * 
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name.
+     * @param schemaGroupName The Schema Group name.
+     * @param parameters Parameters supplied to create an Event Hub resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Schema Group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SchemaGroupInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String schemaGroupName,
-        SchemaGroupInner parameters,
-        Context context);
+    SchemaGroupInner createOrUpdate(String resourceGroupName, String namespaceName, String schemaGroupName,
+        SchemaGroupInner parameters);
 
     /**
+     * Deletes an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String schemaGroupName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        String schemaGroupName);
 
     /**
+     * Deletes an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String schemaGroupName);
 
     /**
+     * Deletes an EventHub schema group.
+     * 
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name.
+     * @param schemaGroupName The Schema Group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName, String schemaGroupName,
+        Context context);
+
+    /**
+     * Deletes an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
@@ -176,57 +205,38 @@ public interface SchemaRegistriesClient {
     void delete(String resourceGroupName, String namespaceName, String schemaGroupName);
 
     /**
+     * Gets the details of an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the details of an EventHub schema group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String schemaGroupName, Context context);
+    Mono<Response<SchemaGroupInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String schemaGroupName);
 
     /**
+     * Gets the details of an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SchemaGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String schemaGroupName);
-
-    /**
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param schemaGroupName The Schema Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
+     * @return the details of an EventHub schema group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SchemaGroupInner> getAsync(String resourceGroupName, String namespaceName, String schemaGroupName);
 
     /**
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param schemaGroupName The Schema Group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SchemaGroupInner get(String resourceGroupName, String namespaceName, String schemaGroupName);
-
-    /**
+     * Gets the details of an EventHub schema group.
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param schemaGroupName The Schema Group name.
@@ -234,9 +244,23 @@ public interface SchemaRegistriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Schema Group operation.
+     * @return the details of an EventHub schema group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SchemaGroupInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String schemaGroupName, Context context);
+    Response<SchemaGroupInner> getWithResponse(String resourceGroupName, String namespaceName, String schemaGroupName,
+        Context context);
+
+    /**
+     * Gets the details of an EventHub schema group.
+     * 
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name.
+     * @param schemaGroupName The Schema Group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of an EventHub schema group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SchemaGroupInner get(String resourceGroupName, String namespaceName, String schemaGroupName);
 }

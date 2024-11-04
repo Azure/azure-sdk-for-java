@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The action to take when an unauthenticated client attempts to access the app.
  */
@@ -46,7 +43,6 @@ public enum UnauthenticatedClientActionV2 {
      * @param value the serialized value to parse.
      * @return the parsed UnauthenticatedClientActionV2 object, or null if unable to parse.
      */
-    @JsonCreator
     public static UnauthenticatedClientActionV2 fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum UnauthenticatedClientActionV2 {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

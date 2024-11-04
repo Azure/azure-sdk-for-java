@@ -11,19 +11,19 @@ public final class XeroSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XeroSource model = BinaryData.fromString(
-            "{\"type\":\"jlzkymcgtbpbfbgf\",\"query\":\"databhydcq\",\"queryTimeout\":\"dataq\",\"additionalColumns\":\"dataozmbapjvbzablmp\",\"sourceRetryCount\":\"dataqwlvsefvkxxd\",\"sourceRetryWait\":\"databnqmhrw\",\"maxConcurrentConnections\":\"dataexwgrflqb\",\"disableMetricsCollection\":\"dataxudsmdg\",\"\":{\"tjd\":\"datak\",\"ficzw\":\"datadasomxwsflylols\"}}")
+            "{\"type\":\"XeroSource\",\"query\":\"dataeycakkon\",\"queryTimeout\":\"datadpd\",\"additionalColumns\":\"datahadzyxaanhwuqewc\",\"sourceRetryCount\":\"datasksfbkxfkeeqo\",\"sourceRetryWait\":\"databek\",\"maxConcurrentConnections\":\"dataerwss\",\"disableMetricsCollection\":\"datamrpdjrylfpdudx\",\"\":{\"tqssngeviyffg\":\"dataeuriehxbanfsqfh\",\"hdapynpvgyaf\":\"datahrhjsps\"}}")
             .toObject(XeroSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XeroSource model = new XeroSource().withSourceRetryCount("dataqwlvsefvkxxd")
-            .withSourceRetryWait("databnqmhrw")
-            .withMaxConcurrentConnections("dataexwgrflqb")
-            .withDisableMetricsCollection("dataxudsmdg")
-            .withQueryTimeout("dataq")
-            .withAdditionalColumns("dataozmbapjvbzablmp")
-            .withQuery("databhydcq");
+        XeroSource model = new XeroSource().withSourceRetryCount("datasksfbkxfkeeqo")
+            .withSourceRetryWait("databek")
+            .withMaxConcurrentConnections("dataerwss")
+            .withDisableMetricsCollection("datamrpdjrylfpdudx")
+            .withQueryTimeout("datadpd")
+            .withAdditionalColumns("datahadzyxaanhwuqewc")
+            .withQuery("dataeycakkon");
         model = BinaryData.fromObject(model).toObject(XeroSource.class);
     }
 }

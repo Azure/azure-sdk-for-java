@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The DocumentResult model. */
+/**
+ * The DocumentResult model.
+ */
 @Fluent
 public class DocumentResult implements JsonSerializable<DocumentResult> {
     /*
@@ -30,12 +32,15 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
      */
     private DocumentStatistics statistics;
 
-    /** Creates an instance of DocumentResult class. */
-    public DocumentResult() {}
+    /**
+     * Creates an instance of DocumentResult class.
+     */
+    public DocumentResult() {
+    }
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -44,7 +49,7 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the DocumentResult object itself.
      */
@@ -55,7 +60,7 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Get the warnings property: Warnings encountered while processing document.
-     *
+     * 
      * @return the warnings value.
      */
     public List<DocumentWarning> getWarnings() {
@@ -64,7 +69,7 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Set the warnings property: Warnings encountered while processing document.
-     *
+     * 
      * @param warnings the warnings value to set.
      * @return the DocumentResult object itself.
      */
@@ -76,7 +81,7 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
     /**
      * Get the statistics property: if showStats=true was specified in the request this field will contain information
      * about the document payload.
-     *
+     * 
      * @return the statistics value.
      */
     public DocumentStatistics getStatistics() {
@@ -86,7 +91,7 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
     /**
      * Set the statistics property: if showStats=true was specified in the request this field will contain information
      * about the document payload.
-     *
+     * 
      * @param statistics the statistics value to set.
      * @return the DocumentResult object itself.
      */
@@ -95,6 +100,9 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,35 +114,33 @@ public class DocumentResult implements JsonSerializable<DocumentResult> {
 
     /**
      * Reads an instance of DocumentResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentResult.
      */
     public static DocumentResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DocumentResult deserializedDocumentResult = new DocumentResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DocumentResult deserializedDocumentResult = new DocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDocumentResult.id = reader.getString();
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedDocumentResult.warnings = warnings;
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedDocumentResult.statistics = DocumentStatistics.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedDocumentResult.id = reader.getString();
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedDocumentResult.warnings = warnings;
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedDocumentResult.statistics = DocumentStatistics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDocumentResult;
-                });
+            return deserializedDocumentResult;
+        });
     }
 }

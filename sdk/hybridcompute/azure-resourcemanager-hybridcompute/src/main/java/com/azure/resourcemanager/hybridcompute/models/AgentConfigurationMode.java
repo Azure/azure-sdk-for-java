@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class AgentConfigurationMode extends ExpandableStringEnum<AgentConf
      * @param name a name to look for.
      * @return the corresponding AgentConfigurationMode.
      */
-    @JsonCreator
     public static AgentConfigurationMode fromString(String name) {
         return fromString(name, AgentConfigurationMode.class);
     }

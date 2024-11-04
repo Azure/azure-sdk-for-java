@@ -40,165 +40,132 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for StorageAccounts Update. */
+/**
+ * Samples for StorageAccounts Update.
+ */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateWithImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountUpdateWithImmutabilityPolicy.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountUpdateWithImmutabilityPolicy(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountUpdateWithImmutabilityPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9407",
-                "sto8596",
+            .updateWithResponse("res9407", "sto8596",
                 new StorageAccountUpdateParameters()
-                    .withImmutableStorageWithVersioning(
-                        new ImmutableStorageAccount()
-                            .withEnabled(true)
-                            .withImmutabilityPolicy(
-                                new AccountImmutabilityPolicyProperties()
-                                    .withImmutabilityPeriodSinceCreationInDays(15)
-                                    .withState(AccountImmutabilityPolicyState.LOCKED)
-                                    .withAllowProtectedAppendWrites(true))),
+                    .withImmutableStorageWithVersioning(new ImmutableStorageAccount().withEnabled(true)
+                        .withImmutabilityPolicy(
+                            new AccountImmutabilityPolicyProperties().withImmutabilityPeriodSinceCreationInDays(15)
+                                .withState(AccountImmutabilityPolicyState.LOCKED)
+                                .withAllowProtectedAppendWrites(true))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res131918",
-                "sto131918",
-                new StorageAccountUpdateParameters()
-                    .withSku(new Sku().withName(SkuName.STANDARD_LRS))
-                    .withIdentity(
-                        new Identity()
-                            .withType(IdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}",
-                                    new UserAssignedIdentity())))
-                    .withKind(Kind.STORAGE)
-                    .withEncryption(
-                        new Encryption()
-                            .withServices(
-                                new EncryptionServices()
-                                    .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                                    .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                            .withKeySource(KeySource.MICROSOFT_KEYVAULT)
-                            .withKeyVaultProperties(
-                                new KeyVaultProperties()
-                                    .withKeyName("fakeTokenPlaceholder")
-                                    .withKeyVersion("fakeTokenPlaceholder")
-                                    .withKeyVaultUri("fakeTokenPlaceholder"))
-                            .withEncryptionIdentity(
-                                new EncryptionIdentity()
-                                    .withEncryptionUserAssignedIdentity(
-                                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}")
-                                    .withEncryptionFederatedIdentityClientId("3109d1c4-a5de-4d84-8832-feabb916a4b6"))),
+            .updateWithResponse("res131918", "sto131918", new StorageAccountUpdateParameters()
+                .withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}",
+                        new UserAssignedIdentity())))
+                .withKind(Kind.STORAGE)
+                .withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_KEYVAULT)
+                    .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                        .withKeyVersion("fakeTokenPlaceholder")
+                        .withKeyVaultUri("fakeTokenPlaceholder"))
+                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity(
+                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}")
+                        .withEncryptionFederatedIdentityClientId("3109d1c4-a5de-4d84-8832-feabb916a4b6"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountEnableAD.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountEnableAD(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9407",
-                "sto8596",
-                new StorageAccountUpdateParameters()
-                    .withAzureFilesIdentityBasedAuthentication(
-                        new AzureFilesIdentityBasedAuthentication()
-                            .withDirectoryServiceOptions(DirectoryServiceOptions.AD)
-                            .withActiveDirectoryProperties(
-                                new ActiveDirectoryProperties()
-                                    .withDomainName("adtest.com")
-                                    .withNetBiosDomainName("adtest.com")
-                                    .withForestName("adtest.com")
-                                    .withDomainGuid("aebfc118-9fa9-4732-a21f-d98e41a77ae1")
-                                    .withDomainSid("S-1-5-21-2400535526-2334094090-2402026252")
-                                    .withAzureStorageSid("S-1-5-21-2400535526-2334094090-2402026252-0012")
-                                    .withSamAccountName("sam12498")
-                                    .withAccountType(ActiveDirectoryPropertiesAccountType.USER))),
+            .updateWithResponse("res9407", "sto8596",
+                new StorageAccountUpdateParameters().withAzureFilesIdentityBasedAuthentication(
+                    new AzureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.AD)
+                        .withActiveDirectoryProperties(new ActiveDirectoryProperties().withDomainName("adtest.com")
+                            .withNetBiosDomainName("adtest.com")
+                            .withForestName("adtest.com")
+                            .withDomainGuid("aebfc118-9fa9-4732-a21f-d98e41a77ae1")
+                            .withDomainSid("S-1-5-21-2400535526-2334094090-2402026252")
+                            .withAzureStorageSid("S-1-5-21-2400535526-2334094090-2402026252-0012")
+                            .withSamAccountName("sam12498")
+                            .withAccountType(ActiveDirectoryPropertiesAccountType.USER))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountUpdateAllowedCopyScopeToAAD.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountUpdateAllowedCopyScopeToAAD(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9407",
-                "sto8596",
+            .updateWithResponse("res9407", "sto8596",
                 new StorageAccountUpdateParameters()
-                    .withEncryption(
-                        new Encryption()
-                            .withServices(
-                                new EncryptionServices()
-                                    .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                                    .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                            .withKeySource(KeySource.MICROSOFT_STORAGE))
-                    .withSasPolicy(
-                        new SasPolicy()
-                            .withSasExpirationPeriod("1.15:59:59")
-                            .withExpirationAction(ExpirationAction.LOG))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE))
+                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG))
                     .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
-                    .withNetworkRuleSet(
-                        new NetworkRuleSet()
-                            .withResourceAccessRules(
-                                Arrays
-                                    .asList(
-                                        new ResourceAccessRule()
-                                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
-                                            .withResourceId(
-                                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
-                            .withDefaultAction(DefaultAction.ALLOW))
-                    .withRoutingPreference(
-                        new RoutingPreference()
-                            .withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
-                            .withPublishMicrosoftEndpoints(true)
-                            .withPublishInternetEndpoints(true))
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withResourceAccessRules(Arrays.asList(new ResourceAccessRule()
+                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                            .withResourceId(
+                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
+                        .withDefaultAction(DefaultAction.ALLOW))
+                    .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                        .withPublishMicrosoftEndpoints(true)
+                        .withPublishInternetEndpoints(true))
                     .withAllowBlobPublicAccess(false)
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
@@ -207,51 +174,39 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateDisablePublicNetworkAccess.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountUpdateDisablePublicNetworkAccess.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountUpdateDisablePublicNetworkAccess(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountUpdateDisablePublicNetworkAccess(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9407",
-                "sto8596",
+            .updateWithResponse("res9407", "sto8596",
                 new StorageAccountUpdateParameters()
-                    .withEncryption(
-                        new Encryption()
-                            .withServices(
-                                new EncryptionServices()
-                                    .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                                    .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                            .withKeySource(KeySource.MICROSOFT_STORAGE))
-                    .withSasPolicy(
-                        new SasPolicy()
-                            .withSasExpirationPeriod("1.15:59:59")
-                            .withExpirationAction(ExpirationAction.LOG))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE))
+                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG))
                     .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
-                    .withNetworkRuleSet(
-                        new NetworkRuleSet()
-                            .withResourceAccessRules(
-                                Arrays
-                                    .asList(
-                                        new ResourceAccessRule()
-                                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
-                                            .withResourceId(
-                                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
-                            .withDefaultAction(DefaultAction.ALLOW))
-                    .withRoutingPreference(
-                        new RoutingPreference()
-                            .withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
-                            .withPublishMicrosoftEndpoints(true)
-                            .withPublishInternetEndpoints(true))
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withResourceAccessRules(Arrays.asList(new ResourceAccessRule()
+                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                            .withResourceId(
+                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
+                        .withDefaultAction(DefaultAction.ALLOW))
+                    .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                        .withPublishMicrosoftEndpoints(true)
+                        .withPublishInternetEndpoints(true))
                     .withAllowBlobPublicAccess(false)
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
@@ -260,85 +215,67 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountEnableCMK.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountEnableCMK(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9407",
-                "sto8596",
-                new StorageAccountUpdateParameters()
-                    .withEncryption(
-                        new Encryption()
-                            .withServices(
-                                new EncryptionServices()
-                                    .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                                    .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                            .withKeySource(KeySource.MICROSOFT_KEYVAULT)
-                            .withKeyVaultProperties(
-                                new KeyVaultProperties()
-                                    .withKeyName("fakeTokenPlaceholder")
-                                    .withKeyVersion("fakeTokenPlaceholder")
-                                    .withKeyVaultUri("fakeTokenPlaceholder"))),
+            .updateWithResponse("res9407", "sto8596",
+                new StorageAccountUpdateParameters().withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_KEYVAULT)
+                    .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                        .withKeyVersion("fakeTokenPlaceholder")
+                        .withKeyVaultUri("fakeTokenPlaceholder"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdate.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9407",
-                "sto8596",
+            .updateWithResponse("res9407", "sto8596",
                 new StorageAccountUpdateParameters()
-                    .withEncryption(
-                        new Encryption()
-                            .withServices(
-                                new EncryptionServices()
-                                    .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                                    .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                            .withKeySource(KeySource.MICROSOFT_STORAGE))
-                    .withSasPolicy(
-                        new SasPolicy()
-                            .withSasExpirationPeriod("1.15:59:59")
-                            .withExpirationAction(ExpirationAction.LOG))
+                    .withEncryption(new Encryption()
+                        .withServices(new EncryptionServices()
+                            .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                            .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                        .withKeySource(KeySource.MICROSOFT_STORAGE))
+                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG))
                     .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
                     .withIsSftpEnabled(true)
                     .withIsLocalUserEnabled(true)
-                    .withNetworkRuleSet(
-                        new NetworkRuleSet()
-                            .withResourceAccessRules(
-                                Arrays
-                                    .asList(
-                                        new ResourceAccessRule()
-                                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
-                                            .withResourceId(
-                                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
-                            .withDefaultAction(DefaultAction.ALLOW))
-                    .withRoutingPreference(
-                        new RoutingPreference()
-                            .withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
-                            .withPublishMicrosoftEndpoints(true)
-                            .withPublishInternetEndpoints(true))
+                    .withEnableExtendedGroups(true)
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withResourceAccessRules(Arrays.asList(new ResourceAccessRule()
+                            .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                            .withResourceId(
+                                "/subscriptions/a7e99807-abbf-4642-bdec-2c809a96a8bc/resourceGroups/res9407/providers/Microsoft.Synapse/workspaces/testworkspace")))
+                        .withDefaultAction(DefaultAction.ALLOW))
+                    .withRoutingPreference(new RoutingPreference().withRoutingChoice(RoutingChoice.MICROSOFT_ROUTING)
+                        .withPublishMicrosoftEndpoints(true)
+                        .withPublishInternetEndpoints(true))
                     .withAllowBlobPublicAccess(false)
                     .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
                     .withAllowSharedKeyAccess(true)
@@ -347,49 +284,37 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountUpdateUserAssignedEncryptionIdentityWithCMK(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .updateWithResponse(
-                "res9101",
-                "sto4445",
-                new StorageAccountUpdateParameters()
-                    .withSku(new Sku().withName(SkuName.STANDARD_LRS))
-                    .withIdentity(
-                        new Identity()
-                            .withType(IdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}",
-                                    new UserAssignedIdentity())))
-                    .withKind(Kind.STORAGE)
-                    .withEncryption(
-                        new Encryption()
-                            .withServices(
-                                new EncryptionServices()
-                                    .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
-                                    .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
-                            .withKeySource(KeySource.MICROSOFT_KEYVAULT)
-                            .withKeyVaultProperties(
-                                new KeyVaultProperties()
-                                    .withKeyName("fakeTokenPlaceholder")
-                                    .withKeyVersion("fakeTokenPlaceholder")
-                                    .withKeyVaultUri("fakeTokenPlaceholder"))
-                            .withEncryptionIdentity(
-                                new EncryptionIdentity()
-                                    .withEncryptionUserAssignedIdentity(
-                                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}"))),
+            .updateWithResponse("res9101", "sto4445", new StorageAccountUpdateParameters()
+                .withSku(new Sku().withName(SkuName.STANDARD_LRS))
+                .withIdentity(new Identity().withType(IdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}",
+                        new UserAssignedIdentity())))
+                .withKind(Kind.STORAGE)
+                .withEncryption(new Encryption()
+                    .withServices(new EncryptionServices()
+                        .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
+                        .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
+                    .withKeySource(KeySource.MICROSOFT_KEYVAULT)
+                    .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                        .withKeyVersion("fakeTokenPlaceholder")
+                        .withKeyVaultUri("fakeTokenPlaceholder"))
+                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity(
+                        "/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{managed-identity-name}"))),
                 com.azure.core.util.Context.NONE);
     }
 

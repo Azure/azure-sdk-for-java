@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public interface ServicePrincipalsServicePrincipalsClient {
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -35,27 +35,21 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
+    PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(String consistencyLevel, Integer top,
+        Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
         List<ServicePrincipalsServicePrincipalExpand> expand);
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
      */
@@ -64,9 +58,9 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from servicePrincipals as paginated response with {@link PagedIterable}.
      */
@@ -75,7 +69,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -88,44 +82,37 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from servicePrincipals as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphServicePrincipalInner> listServicePrincipal(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context);
+    PagedIterable<MicrosoftGraphServicePrincipalInner> listServicePrincipal(String consistencyLevel, Integer top,
+        Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context);
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return servicePrincipal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphServicePrincipalInner>> createServicePrincipalWithResponseAsync(
-        MicrosoftGraphServicePrincipalInner body);
+    Mono<Response<MicrosoftGraphServicePrincipalInner>>
+        createServicePrincipalWithResponseAsync(MicrosoftGraphServicePrincipalInner body);
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return servicePrincipal on successful completion of {@link Mono}.
      */
@@ -134,26 +121,26 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return servicePrincipal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphServicePrincipalInner> createServicePrincipalWithResponse(
-        MicrosoftGraphServicePrincipalInner body, Context context);
+    Response<MicrosoftGraphServicePrincipalInner>
+        createServicePrincipalWithResponse(MicrosoftGraphServicePrincipalInner body, Context context);
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return servicePrincipal.
      */
@@ -162,32 +149,30 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
      * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipalWithResponseAsync(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
+    Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipalWithResponseAsync(String servicePrincipalId,
+        String consistencyLevel, List<ServicePrincipalsServicePrincipalSelect> select,
         List<ServicePrincipalsServicePrincipalExpand> expand);
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from servicePrincipals by key on successful completion of {@link Mono}.
      */
@@ -196,7 +181,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
@@ -204,25 +189,22 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from servicePrincipals by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphServicePrincipalInner> getServicePrincipalWithResponse(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context);
+    Response<MicrosoftGraphServicePrincipalInner> getServicePrincipalWithResponse(String servicePrincipalId,
+        String consistencyLevel, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context);
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from servicePrincipals by key.
      */
@@ -231,27 +213,27 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateServicePrincipalWithResponseAsync(
-        String servicePrincipalId, MicrosoftGraphServicePrincipalInner body);
+    Mono<Response<Void>> updateServicePrincipalWithResponseAsync(String servicePrincipalId,
+        MicrosoftGraphServicePrincipalInner body);
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -260,28 +242,28 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateServicePrincipalWithResponse(
-        String servicePrincipalId, MicrosoftGraphServicePrincipalInner body, Context context);
+    Response<Void> updateServicePrincipalWithResponse(String servicePrincipalId,
+        MicrosoftGraphServicePrincipalInner body, Context context);
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -289,12 +271,12 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -303,11 +285,11 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -316,13 +298,13 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param ifMatch ETag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -331,11 +313,11 @@ public interface ServicePrincipalsServicePrincipalsClient {
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

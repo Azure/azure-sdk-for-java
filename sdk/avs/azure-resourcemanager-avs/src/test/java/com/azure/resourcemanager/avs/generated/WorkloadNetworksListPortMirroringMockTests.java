@@ -6,68 +6,39 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkloadNetworksListPortMirroringMockTests {
     @Test
     public void testListPortMirroring() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"nhg\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"ynfsvkhgbvqtan\",\"destination\":\"fdlpukhpyr\",\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":1916878919574088822},\"id\":\"gkhnmgbrouxddbh\",\"name\":\"hpfpazjzoywjxhp\",\"type\":\"ulontacnpqwteht\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"zelfwyfwl\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"etnpsihcl\",\"destination\":\"zvaylptrsqqw\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":7455956743778499737},\"id\":\"hcxwaxfewzjk\",\"name\":\"exfdeqvhpsylk\",\"type\":\"shk\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<WorkloadNetworkPortMirroring> response = manager.workloadNetworks()
+            .listPortMirroring("fusuckzmkwklsno", "axmqeqal", com.azure.core.util.Context.NONE);
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<WorkloadNetworkPortMirroring> response =
-            manager.workloadNetworks().listPortMirroring("qnyophzfyls", "crpfbcunez", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("zelfwyfwl", response.iterator().next().displayName());
+        Assertions.assertEquals("nhg", response.iterator().next().displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.iterator().next().direction());
-        Assertions.assertEquals("etnpsihcl", response.iterator().next().source());
-        Assertions.assertEquals("zvaylptrsqqw", response.iterator().next().destination());
-        Assertions.assertEquals(7455956743778499737L, response.iterator().next().revision());
+        Assertions.assertEquals("ynfsvkhgbvqtan", response.iterator().next().source());
+        Assertions.assertEquals("fdlpukhpyr", response.iterator().next().destination());
+        Assertions.assertEquals(1916878919574088822L, response.iterator().next().revision());
     }
 }

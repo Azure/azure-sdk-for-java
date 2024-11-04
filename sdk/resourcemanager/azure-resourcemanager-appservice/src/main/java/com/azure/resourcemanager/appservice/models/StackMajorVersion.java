@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,53 +17,45 @@ import java.util.Map;
  * Application stack major version.
  */
 @Fluent
-public final class StackMajorVersion {
+public final class StackMajorVersion implements JsonSerializable<StackMajorVersion> {
     /*
      * Application stack major version (display only).
      */
-    @JsonProperty(value = "displayVersion")
     private String displayVersion;
 
     /*
      * Application stack major version (runtime only).
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /*
      * <code>true</code> if this is the default major version; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * Minor versions associated with the major version.
      */
-    @JsonProperty(value = "minorVersions")
     private List<StackMinorVersion> minorVersions;
 
     /*
      * <code>true</code> if this supports Application Insights; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "applicationInsights")
     private Boolean applicationInsights;
 
     /*
      * <code>true</code> if this stack is in Preview, otherwise <code>false</code>.
      */
-    @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
     /*
      * <code>true</code> if this stack has been deprecated, otherwise <code>false</code>.
      */
-    @JsonProperty(value = "isDeprecated")
     private Boolean isDeprecated;
 
     /*
      * <code>true</code> if this stack should be hidden for new customers on portal, otherwise <code>false</code>.
      */
-    @JsonProperty(value = "isHidden")
     private Boolean isHidden;
 
     /*
@@ -69,8 +64,6 @@ public final class StackMajorVersion {
      * </appSettings>
      * Example: All the function apps need AppSetting: "FUNCTIONS_WORKER_RUNTIME" to be set stack name
      */
-    @JsonProperty(value = "appSettingsDictionary")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> appSettingsDictionary;
 
     /*
@@ -79,8 +72,6 @@ public final class StackMajorVersion {
      * </siteConfigProperties>
      * Example: All Linux Function Apps, need Use32BitWorkerProcess to be set to 0
      */
-    @JsonProperty(value = "siteConfigPropertiesDictionary")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> siteConfigPropertiesDictionary;
 
     /**
@@ -320,5 +311,75 @@ public final class StackMajorVersion {
         if (minorVersions() != null) {
             minorVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayVersion", this.displayVersion);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeArrayField("minorVersions", this.minorVersions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("applicationInsights", this.applicationInsights);
+        jsonWriter.writeBooleanField("isPreview", this.isPreview);
+        jsonWriter.writeBooleanField("isDeprecated", this.isDeprecated);
+        jsonWriter.writeBooleanField("isHidden", this.isHidden);
+        jsonWriter.writeMapField("appSettingsDictionary", this.appSettingsDictionary,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("siteConfigPropertiesDictionary", this.siteConfigPropertiesDictionary,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StackMajorVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StackMajorVersion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StackMajorVersion.
+     */
+    public static StackMajorVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StackMajorVersion deserializedStackMajorVersion = new StackMajorVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayVersion".equals(fieldName)) {
+                    deserializedStackMajorVersion.displayVersion = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedStackMajorVersion.runtimeVersion = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedStackMajorVersion.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minorVersions".equals(fieldName)) {
+                    List<StackMinorVersion> minorVersions
+                        = reader.readArray(reader1 -> StackMinorVersion.fromJson(reader1));
+                    deserializedStackMajorVersion.minorVersions = minorVersions;
+                } else if ("applicationInsights".equals(fieldName)) {
+                    deserializedStackMajorVersion.applicationInsights = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedStackMajorVersion.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDeprecated".equals(fieldName)) {
+                    deserializedStackMajorVersion.isDeprecated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isHidden".equals(fieldName)) {
+                    deserializedStackMajorVersion.isHidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appSettingsDictionary".equals(fieldName)) {
+                    Map<String, Object> appSettingsDictionary = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedStackMajorVersion.appSettingsDictionary = appSettingsDictionary;
+                } else if ("siteConfigPropertiesDictionary".equals(fieldName)) {
+                    Map<String, Object> siteConfigPropertiesDictionary
+                        = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedStackMajorVersion.siteConfigPropertiesDictionary = siteConfigPropertiesDictionary;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStackMajorVersion;
+        });
     }
 }

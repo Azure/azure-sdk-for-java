@@ -22,8 +22,10 @@ public final class OperationDisplayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDisplay model = new OperationDisplay().withProvider("cndvkaozwyiftyhx").withResource("rokft")
-            .withOperation("olniwpwcukjf").withDescription("iawxklry");
+        OperationDisplay model = new OperationDisplay().withProvider("cndvkaozwyiftyhx")
+            .withResource("rokft")
+            .withOperation("olniwpwcukjf")
+            .withDescription("iawxklry");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
         Assertions.assertEquals("cndvkaozwyiftyhx", model.provider());
         Assertions.assertEquals("rokft", model.resource());

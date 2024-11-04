@@ -6,29 +6,30 @@ package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Definition of the client authentication mechanism to the server.
  */
 @Fluent
-public final class UserAuthentication {
+public final class UserAuthentication implements JsonSerializable<UserAuthentication> {
     /*
      * Defines the mode to authenticate the user of the client at the server.
      */
-    @JsonProperty(value = "mode", required = true)
     private UserAuthenticationMode mode;
 
     /*
      * Defines the username and password references when UsernamePassword user authentication mode is selected.
      */
-    @JsonProperty(value = "usernamePasswordCredentials")
     private UsernamePasswordCredentials usernamePasswordCredentials;
 
     /*
      * Defines the certificate reference when Certificate user authentication mode is selected.
      */
-    @JsonProperty(value = "x509Credentials")
     private X509Credentials x509Credentials;
 
     /**
@@ -120,4 +121,48 @@ public final class UserAuthentication {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeJsonField("usernamePasswordCredentials", this.usernamePasswordCredentials);
+        jsonWriter.writeJsonField("x509Credentials", this.x509Credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAuthentication if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAuthentication.
+     */
+    public static UserAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAuthentication deserializedUserAuthentication = new UserAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedUserAuthentication.mode = UserAuthenticationMode.fromString(reader.getString());
+                } else if ("usernamePasswordCredentials".equals(fieldName)) {
+                    deserializedUserAuthentication.usernamePasswordCredentials
+                        = UsernamePasswordCredentials.fromJson(reader);
+                } else if ("x509Credentials".equals(fieldName)) {
+                    deserializedUserAuthentication.x509Credentials = X509Credentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAuthentication;
+        });
+    }
 }

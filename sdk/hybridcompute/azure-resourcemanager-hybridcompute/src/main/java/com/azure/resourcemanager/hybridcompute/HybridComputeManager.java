@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -26,20 +26,24 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.HybridComputeManagementClient;
 import com.azure.resourcemanager.hybridcompute.implementation.ExtensionMetadatasImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.HybridComputeManagementClientBuilder;
+import com.azure.resourcemanager.hybridcompute.implementation.LicenseProfilesImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.LicensesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.MachineExtensionsImpl;
-import com.azure.resourcemanager.hybridcompute.implementation.MachineRunCommandsImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.MachinesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.NetworkProfilesImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.NetworkSecurityPerimeterConfigurationsImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.OperationsImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkScopesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionMetadatas;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfiles;
+import com.azure.resourcemanager.hybridcompute.models.Licenses;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensions;
-import com.azure.resourcemanager.hybridcompute.models.MachineRunCommands;
 import com.azure.resourcemanager.hybridcompute.models.Machines;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfiles;
+import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfigurations;
 import com.azure.resourcemanager.hybridcompute.models.Operations;
 import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResources;
@@ -57,7 +61,11 @@ import java.util.stream.Collectors;
  * The Hybrid Compute Management Client.
  */
 public final class HybridComputeManager {
+    private Licenses licenses;
+
     private Machines machines;
+
+    private LicenseProfiles licenseProfiles;
 
     private MachineExtensions machineExtensions;
 
@@ -69,13 +77,13 @@ public final class HybridComputeManager {
 
     private NetworkProfiles networkProfiles;
 
-    private MachineRunCommands machineRunCommands;
-
     private PrivateLinkScopes privateLinkScopes;
 
     private PrivateLinkResources privateLinkResources;
 
     private PrivateEndpointConnections privateEndpointConnections;
+
+    private NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations;
 
     private final HybridComputeManagementClient clientObject;
 
@@ -241,7 +249,7 @@ public final class HybridComputeManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hybridcompute")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -288,6 +296,18 @@ public final class HybridComputeManager {
     }
 
     /**
+     * Gets the resource collection API of Licenses. It manages License.
+     * 
+     * @return Resource collection API of Licenses.
+     */
+    public Licenses licenses() {
+        if (this.licenses == null) {
+            this.licenses = new LicensesImpl(clientObject.getLicenses(), this);
+        }
+        return licenses;
+    }
+
+    /**
      * Gets the resource collection API of Machines.
      * 
      * @return Resource collection API of Machines.
@@ -297,6 +317,18 @@ public final class HybridComputeManager {
             this.machines = new MachinesImpl(clientObject.getMachines(), this);
         }
         return machines;
+    }
+
+    /**
+     * Gets the resource collection API of LicenseProfiles. It manages LicenseProfile.
+     * 
+     * @return Resource collection API of LicenseProfiles.
+     */
+    public LicenseProfiles licenseProfiles() {
+        if (this.licenseProfiles == null) {
+            this.licenseProfiles = new LicenseProfilesImpl(clientObject.getLicenseProfiles(), this);
+        }
+        return licenseProfiles;
     }
 
     /**
@@ -360,18 +392,6 @@ public final class HybridComputeManager {
     }
 
     /**
-     * Gets the resource collection API of MachineRunCommands. It manages MachineRunCommand.
-     * 
-     * @return Resource collection API of MachineRunCommands.
-     */
-    public MachineRunCommands machineRunCommands() {
-        if (this.machineRunCommands == null) {
-            this.machineRunCommands = new MachineRunCommandsImpl(clientObject.getMachineRunCommands(), this);
-        }
-        return machineRunCommands;
-    }
-
-    /**
      * Gets the resource collection API of PrivateLinkScopes. It manages HybridComputePrivateLinkScope.
      * 
      * @return Resource collection API of PrivateLinkScopes.
@@ -406,6 +426,19 @@ public final class HybridComputeManager {
                 = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkSecurityPerimeterConfigurations.
+     * 
+     * @return Resource collection API of NetworkSecurityPerimeterConfigurations.
+     */
+    public NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations() {
+        if (this.networkSecurityPerimeterConfigurations == null) {
+            this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsImpl(
+                clientObject.getNetworkSecurityPerimeterConfigurations(), this);
+        }
+        return networkSecurityPerimeterConfigurations;
     }
 
     /**

@@ -131,20 +131,21 @@ public class ServiceBusMessage {
         AmqpMessageBody amqpMessageBody;
         switch (bodyType) {
             case DATA:
-                amqpMessageBody = AmqpMessageBody.fromData(receivedMessage.getRawAmqpMessage().getBody()
-                    .getFirstData());
+                amqpMessageBody
+                    = AmqpMessageBody.fromData(receivedMessage.getRawAmqpMessage().getBody().getFirstData());
                 break;
+
             case SEQUENCE:
-                amqpMessageBody = AmqpMessageBody.fromSequence(receivedMessage.getRawAmqpMessage().getBody()
-                    .getSequence());
+                amqpMessageBody
+                    = AmqpMessageBody.fromSequence(receivedMessage.getRawAmqpMessage().getBody().getSequence());
                 break;
+
             case VALUE:
-                amqpMessageBody = AmqpMessageBody.fromValue(receivedMessage.getRawAmqpMessage().getBody()
-                    .getValue());
+                amqpMessageBody = AmqpMessageBody.fromValue(receivedMessage.getRawAmqpMessage().getBody().getValue());
                 break;
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid "
-                    + bodyType));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid " + bodyType));
         }
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
 
@@ -174,17 +175,17 @@ public class ServiceBusMessage {
         newHeader.setFirstAcquirer(receivedHeader.isFirstAcquirer());
 
         // copy message annotations except for broker set ones
-        final Map<String, Object> receivedAnnotations = receivedMessage.getRawAmqpMessage()
-            .getMessageAnnotations();
+        final Map<String, Object> receivedAnnotations = receivedMessage.getRawAmqpMessage().getMessageAnnotations();
         final Map<String, Object> newAnnotations = this.amqpAnnotatedMessage.getMessageAnnotations();
 
         for (Map.Entry<String, Object> entry : receivedAnnotations.entrySet()) {
-            if (AmqpMessageConstant.fromString(entry.getKey()) == LOCKED_UNTIL_KEY_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == SEQUENCE_NUMBER_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_TIME_UTC_ANNOTATION_NAME) {
-
+            AmqpMessageConstant key = AmqpMessageConstant.fromString(entry.getKey());
+            if (key == LOCKED_UNTIL_KEY_ANNOTATION_NAME
+                || key == SEQUENCE_NUMBER_ANNOTATION_NAME
+                || key == DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME
+                || key == ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME
+                || key == ENQUEUED_TIME_UTC_ANNOTATION_NAME
+                || key == SCHEDULED_ENQUEUE_UTC_TIME_NAME) {
                 continue;
             }
             newAnnotations.put(entry.getKey(), entry.getValue());
@@ -207,8 +208,8 @@ public class ServiceBusMessage {
         }
 
         // copy application properties except for broker set ones
-        final Map<String, Object> receivedApplicationProperties = receivedMessage.getRawAmqpMessage()
-            .getApplicationProperties();
+        final Map<String, Object> receivedApplicationProperties
+            = receivedMessage.getRawAmqpMessage().getApplicationProperties();
         final Map<String, Object> newApplicationProperties = this.amqpAnnotatedMessage.getApplicationProperties();
 
         for (Map.Entry<String, Object> entry : receivedApplicationProperties.entrySet()) {
@@ -253,13 +254,14 @@ public class ServiceBusMessage {
         switch (type) {
             case DATA:
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
+
             case SEQUENCE:
             case VALUE:
-                throw LOGGER.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead "
-                    + "it is: " + type));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Message body type is not DATA, instead " + "it is: " + type));
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
-                    + type));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: " + type));
         }
     }
 
@@ -566,9 +568,15 @@ public class ServiceBusMessage {
      */
     public OffsetDateTime getScheduledEnqueueTime() {
         Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue());
-        return value != null
-            ? ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC)
-            : null;
+        if (value instanceof OffsetDateTime) {
+            return ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC);
+        } else if (value != null) {
+            LOGGER.atWarning()
+                .addKeyValue("expectedType", OffsetDateTime.class.getName())
+                .addKeyValue("actualType", value.getClass().getName())
+                .log("Unexpected type for scheduled enqueue time.");
+        }
+        return null;
     }
 
     /**
@@ -583,8 +591,8 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
         if (scheduledEnqueueTime != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue(),
-                scheduledEnqueueTime);
+            amqpAnnotatedMessage.getMessageAnnotations()
+                .put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue(), scheduledEnqueueTime);
         }
         return this;
     }
@@ -698,10 +706,9 @@ public class ServiceBusMessage {
         }
 
         if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
-            final String message = String.format(
-                "sessionId:%s cannot be set to a different value than partitionKey:%s.",
-                proposedSessionId,
-                this.getPartitionKey());
+            final String message
+                = String.format("sessionId:%s cannot be set to a different value than partitionKey:%s.",
+                    proposedSessionId, this.getPartitionKey());
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(message));
         }
     }
@@ -716,10 +723,9 @@ public class ServiceBusMessage {
         }
 
         if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
-            final String message = String.format(
-                "partitionKey:%s cannot be set to a different value than sessionId:%s.",
-                proposedPartitionKey,
-                this.getSessionId());
+            final String message
+                = String.format("partitionKey:%s cannot be set to a different value than sessionId:%s.",
+                    proposedPartitionKey, this.getSessionId());
 
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(message));
         }

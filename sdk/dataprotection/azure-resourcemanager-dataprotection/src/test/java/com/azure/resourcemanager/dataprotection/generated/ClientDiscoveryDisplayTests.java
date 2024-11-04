@@ -11,23 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryDisplay model = BinaryData.fromString(
-            "{\"description\":\"noae\",\"operation\":\"fhyhltrpmopjmcma\",\"provider\":\"okth\",\"resource\":\"iuaod\"}")
+        ClientDiscoveryDisplay model = BinaryData
+            .fromString(
+                "{\"description\":\"izgazxu\",\"operation\":\"zuckyfi\",\"provider\":\"fidfvzw\",\"resource\":\"uht\"}")
             .toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("noae", model.description());
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.operation());
-        Assertions.assertEquals("okth", model.provider());
-        Assertions.assertEquals("iuaod", model.resource());
+        Assertions.assertEquals("izgazxu", model.description());
+        Assertions.assertEquals("zuckyfi", model.operation());
+        Assertions.assertEquals("fidfvzw", model.provider());
+        Assertions.assertEquals("uht", model.resource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryDisplay model = new ClientDiscoveryDisplay().withDescription("noae")
-            .withOperation("fhyhltrpmopjmcma").withProvider("okth").withResource("iuaod");
+        ClientDiscoveryDisplay model = new ClientDiscoveryDisplay().withDescription("izgazxu")
+            .withOperation("zuckyfi")
+            .withProvider("fidfvzw")
+            .withResource("uht");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("noae", model.description());
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.operation());
-        Assertions.assertEquals("okth", model.provider());
-        Assertions.assertEquals("iuaod", model.resource());
+        Assertions.assertEquals("izgazxu", model.description());
+        Assertions.assertEquals("zuckyfi", model.operation());
+        Assertions.assertEquals("fidfvzw", model.provider());
+        Assertions.assertEquals("uht", model.resource());
     }
 }

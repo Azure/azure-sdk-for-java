@@ -6,25 +6,32 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A server dns alias acquisition request. */
+/**
+ * A server dns alias acquisition request.
+ */
 @Fluent
-public final class ServerDnsAliasAcquisition {
+public final class ServerDnsAliasAcquisition implements JsonSerializable<ServerDnsAliasAcquisition> {
     /*
      * The id of the server alias that will be acquired to point to this server instead.
      */
-    @JsonProperty(value = "oldServerDnsAliasId", required = true)
     private String oldServerDnsAliasId;
 
-    /** Creates an instance of ServerDnsAliasAcquisition class. */
+    /**
+     * Creates an instance of ServerDnsAliasAcquisition class.
+     */
     public ServerDnsAliasAcquisition() {
     }
 
     /**
      * Get the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
      * instead.
-     *
+     * 
      * @return the oldServerDnsAliasId value.
      */
     public String oldServerDnsAliasId() {
@@ -34,7 +41,7 @@ public final class ServerDnsAliasAcquisition {
     /**
      * Set the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
      * instead.
-     *
+     * 
      * @param oldServerDnsAliasId the oldServerDnsAliasId value to set.
      * @return the ServerDnsAliasAcquisition object itself.
      */
@@ -45,17 +52,53 @@ public final class ServerDnsAliasAcquisition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (oldServerDnsAliasId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property oldServerDnsAliasId in model ServerDnsAliasAcquisition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property oldServerDnsAliasId in model ServerDnsAliasAcquisition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerDnsAliasAcquisition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("oldServerDnsAliasId", this.oldServerDnsAliasId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerDnsAliasAcquisition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerDnsAliasAcquisition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerDnsAliasAcquisition.
+     */
+    public static ServerDnsAliasAcquisition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerDnsAliasAcquisition deserializedServerDnsAliasAcquisition = new ServerDnsAliasAcquisition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oldServerDnsAliasId".equals(fieldName)) {
+                    deserializedServerDnsAliasAcquisition.oldServerDnsAliasId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerDnsAliasAcquisition;
+        });
+    }
 }

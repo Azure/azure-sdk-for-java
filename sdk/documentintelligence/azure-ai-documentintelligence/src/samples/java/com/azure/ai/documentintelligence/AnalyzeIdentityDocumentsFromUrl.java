@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found ID document fields from a file source URL of an identity document.
- * See fields found on an identity document <a href=https://aka.ms/documentintelligence/iddocumentfields>href</a>
+ * See fields found on an identity document <a href=https://aka.ms/formrecognizer/iddocumentfields>href</a>
  */
 public class AnalyzeIdentityDocumentsFromUrl {
 
@@ -38,8 +38,9 @@ public class AnalyzeIdentityDocumentsFromUrl {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
+            null,
             null,
             null,
             null,
@@ -47,7 +48,7 @@ public class AnalyzeIdentityDocumentsFromUrl {
             null,
             null, new AnalyzeDocumentRequest().setUrlSource(licenseDocumentUrl));
 
-        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 
         for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {
             Document analyzedIDDocument = identityDocumentResults.getDocuments().get(i);

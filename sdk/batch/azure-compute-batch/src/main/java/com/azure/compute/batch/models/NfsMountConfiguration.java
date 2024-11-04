@@ -24,13 +24,15 @@ public final class NfsMountConfiguration implements JsonSerializable<NfsMountCon
     private final String source;
 
     /*
-     * The relative path on the compute node where the file system will be mounted. All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * The relative path on the compute node where the file system will be mounted. All file systems are mounted
+     * relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      */
     @Generated
     private final String relativeMountPath;
 
     /*
-     * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options in Linux.
+     * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount'
+     * options in Linux.
      */
     @Generated
     private String mountOptions;

@@ -20,9 +20,7 @@ public class KeyvaultCertificatesFeature implements GraalVMFeature {
 
     @Override
     public Set<String[]> getDynamicProxies() {
-        return setsOf(
-            interfaces("com.azure.security.keyvault.certificates.implementation.CertificateService"),
-            interfaces("com.microsoft.aad.msal4jextensions.persistence.mac.ISecurityLibrary")
-        );
+        return setsOf(interfaces("com.azure.security.keyvault.certificates.implementation.CertificateService"),
+            interfaces("com.microsoft.aad.msal4jextensions.persistence.mac.ISecurityLibrary"));
     }
 }

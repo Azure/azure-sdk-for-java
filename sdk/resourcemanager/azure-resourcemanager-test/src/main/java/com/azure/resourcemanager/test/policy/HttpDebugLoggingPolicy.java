@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
-public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
+public final class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
 
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
@@ -61,7 +61,7 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<Void> logRequest(final Logger logger, final HttpRequest request,
-                                  final Optional<Object> optionalRetryCount) {
+        final Optional<Object> optionalRetryCount) {
         if (!logger.isInfoEnabled()) {
             return Mono.empty();
         }
@@ -73,9 +73,8 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
             .append(request.getUrl())
             .append(System.lineSeparator());
 
-        optionalRetryCount.ifPresent(o -> requestLogMessage.append("Try count: ")
-            .append(o)
-            .append(System.lineSeparator()));
+        optionalRetryCount
+            .ifPresent(o -> requestLogMessage.append("Try count: ").append(o).append(System.lineSeparator()));
 
         addHeadersToLogMessage(logger, request.getHeaders(), requestLogMessage);
 
@@ -97,22 +96,20 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
             WritableByteChannel bodyContentChannel = Channels.newChannel(outputStream);
 
             // Add non-mutating operators to the data stream.
-            request.setBody(
-                request.getBody()
-                    .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
-                    .doFinally(ignored -> {
-                        requestLogMessage.append(contentLength)
-                            .append("-byte body:")
-                            .append(System.lineSeparator())
-                            .append(prettyPrintIfNeeded(logger, contentType,
-                                convertStreamToString(outputStream, logger)))
-                            .append(System.lineSeparator())
-                            .append("--> END ")
-                            .append(request.getHttpMethod())
-                            .append(System.lineSeparator());
+            request.setBody(request.getBody()
+                .flatMap(byteBuffer -> writeBufferToBodyStream(bodyContentChannel, byteBuffer))
+                .doFinally(ignored -> {
+                    requestLogMessage.append(contentLength)
+                        .append("-byte body:")
+                        .append(System.lineSeparator())
+                        .append(prettyPrintIfNeeded(logger, contentType, convertStreamToString(outputStream, logger)))
+                        .append(System.lineSeparator())
+                        .append("--> END ")
+                        .append(request.getHttpMethod())
+                        .append(System.lineSeparator());
 
-                        logger.info(requestLogMessage.toString());
-                    }));
+                    logger.info(requestLogMessage.toString());
+                }));
 
             return Mono.empty();
         } else {
@@ -173,13 +170,14 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
                 .doFinally(ignored -> {
                     responseLogMessage.append("Response body:")
                         .append(System.lineSeparator())
-                        .append(prettyPrintIfNeeded(logger, contentTypeHeader,
-                            convertStreamToString(outputStream, logger)))
+                        .append(
+                            prettyPrintIfNeeded(logger, contentTypeHeader, convertStreamToString(outputStream, logger)))
                         .append(System.lineSeparator())
                         .append("<-- END HTTP");
 
                     logger.info(responseLogMessage.toString());
-                }).then(Mono.just(bufferedResponse));
+                })
+                .then(Mono.just(bufferedResponse));
         } else {
             responseLogMessage.append("(body content not logged)")
                 .append(System.lineSeparator())
@@ -209,7 +207,8 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
 
     private String prettyPrintIfNeeded(Logger logger, String contentType, String body) {
         String result = body;
-        if (PRETTY_PRINT_BODY && contentType != null
+        if (PRETTY_PRINT_BODY
+            && contentType != null
             && (contentType.startsWith(ContentType.APPLICATION_JSON) || contentType.startsWith("text/json"))) {
             try {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);
@@ -232,16 +231,14 @@ public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.warn("Could not parse the HTTP header content-length: '{}'.",
-                headers.getValue("content-length"), e);
+            logger.warn("Could not parse the HTTP header content-length: '{}'.", headers.getValue("content-length"), e);
         }
 
         return contentLength;
     }
 
     private boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
-        return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
-            && contentLength != 0;
+        return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader) && contentLength != 0;
     }
 
     private static String convertStreamToString(ByteArrayOutputStream stream, Logger logger) {

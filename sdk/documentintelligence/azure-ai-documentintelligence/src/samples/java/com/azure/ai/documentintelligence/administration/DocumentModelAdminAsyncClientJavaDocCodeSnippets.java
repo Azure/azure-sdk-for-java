@@ -10,7 +10,6 @@ import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
@@ -23,7 +22,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -239,10 +237,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminAsyncClient.beginComposeDocumentModel#ComposeDocumentModelRequest
-        String modelId1 = "{model_Id_1}";
-        String modelId2 = "{model_Id_2}";
         documentIntelligenceAdministrationAsyncClient.beginComposeModel(
-            new ComposeDocumentModelRequest("composedModelID", Arrays.asList(new ComponentDocumentModelDetails(modelId1), new ComponentDocumentModelDetails(modelId2))))
+            new ComposeDocumentModelRequest("composedModelID", "classifierId", null)
+                .setDescription("my composed model description"))
             // if polling operation completed, retrieve the final result.
             .flatMap(asyncPollResponse -> asyncPollResponse.getFinalResult())
             .subscribe(documentModel -> {

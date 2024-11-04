@@ -46,13 +46,15 @@ public final class AzureLargeInstancesRestartMockTests {
             return Mono.just(httpResponse);
         }));
 
-        LargeInstanceManager manager = LargeInstanceManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        LargeInstanceManager manager = LargeInstanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response = manager.azureLargeInstances().restart("dbpgnxytxhp", "xbzpfzab",
-            new ForceState().withForceState(AzureLargeInstanceForcePowerState.ACTIVE),
-            com.azure.core.util.Context.NONE);
+        OperationStatusResult response = manager.azureLargeInstances()
+            .restart("dbpgnxytxhp", "xbzpfzab",
+                new ForceState().withForceState(AzureLargeInstanceForcePowerState.ACTIVE),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("hxw", response.id());
         Assertions.assertEquals("lbbovplw", response.name());

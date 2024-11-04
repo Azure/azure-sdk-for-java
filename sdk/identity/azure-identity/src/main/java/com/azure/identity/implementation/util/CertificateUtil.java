@@ -37,8 +37,8 @@ public final class CertificateUtil {
         Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
         Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
         if (!matcher.find()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Certificate file provided is not a valid PEM file."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Certificate file provided is not a valid PEM file."));
         }
         String base64 = matcher.group()
             .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -83,5 +83,10 @@ public final class CertificateUtil {
         return x509CertificateList;
     }
 
-    private CertificateUtil() { }
+    public static boolean isPem(byte[] pem) {
+        return new String(pem, StandardCharsets.UTF_8).contains("-----BEGIN");
+    }
+
+    private CertificateUtil() {
+    }
 }

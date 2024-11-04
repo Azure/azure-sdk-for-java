@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class UpdatableUdfRefreshType extends ExpandableStringEnum<Updatabl
      * @param name a name to look for.
      * @return the corresponding UpdatableUdfRefreshType.
      */
-    @JsonCreator
     public static UpdatableUdfRefreshType fromString(String name) {
         return fromString(name, UpdatableUdfRefreshType.class);
     }

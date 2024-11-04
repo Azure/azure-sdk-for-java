@@ -22,7 +22,6 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
      */
     @Generated
     protected RequiredAction() {
-        this.type = "RequiredAction";
     }
 
     /**
@@ -87,7 +86,7 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "RequiredAction";
 
     /**
      * Get the type property: The object type.

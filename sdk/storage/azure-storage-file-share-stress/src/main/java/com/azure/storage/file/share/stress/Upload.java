@@ -22,6 +22,7 @@ public class Upload extends ShareScenarioBase<StorageStressOptions> {
     private final ShareFileClient syncClient;
     private final ShareFileAsyncClient asyncClient;
     private final ShareFileAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public Upload(StorageStressOptions options) {
         super(options);
@@ -29,14 +30,16 @@ public class Upload extends ShareScenarioBase<StorageStressOptions> {
         this.syncClient = getSyncShareClient().getFileClient(fileName);
         this.asyncClient = getAsyncShareClient().getFileClient(fileName);
         this.asyncNoFaultClient = getAsyncShareClientNoFault().getFileClient(fileName);
+        this.parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxConcurrency(options.getMaxConcurrency())
+            .setBlockSizeLong(4 * 1024 * 1024L);
     }
 
     @Override
     protected void runInternal(Context span) {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
             syncClient.uploadWithResponse(new ShareFileUploadOptions(inputStream)
-                    .setParallelTransferOptions(new ParallelTransferOptions()
-                        .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)), null, span);
+                    .setParallelTransferOptions(parallelTransferOptions), null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
@@ -46,7 +49,7 @@ public class Upload extends ShareScenarioBase<StorageStressOptions> {
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
             .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new ShareFileUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(parallelTransferOptions))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

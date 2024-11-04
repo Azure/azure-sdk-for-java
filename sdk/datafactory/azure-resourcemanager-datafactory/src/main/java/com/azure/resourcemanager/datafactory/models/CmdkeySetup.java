@@ -6,30 +6,25 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.CmdkeySetupTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * The custom setup of running cmdkey commands.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CmdkeySetup.class, visible = true)
-@JsonTypeName("CmdkeySetup")
 @Fluent
 public final class CmdkeySetup extends CustomSetupBase {
     /*
      * The type of custom setup.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "CmdkeySetup";
 
     /*
      * Cmdkey command custom setup type properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private CmdkeySetupTypeProperties innerTypeProperties = new CmdkeySetupTypeProperties();
 
     /**
@@ -144,4 +139,44 @@ public final class CmdkeySetup extends CustomSetupBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CmdkeySetup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CmdkeySetup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CmdkeySetup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CmdkeySetup.
+     */
+    public static CmdkeySetup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CmdkeySetup deserializedCmdkeySetup = new CmdkeySetup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeProperties".equals(fieldName)) {
+                    deserializedCmdkeySetup.innerTypeProperties = CmdkeySetupTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCmdkeySetup.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCmdkeySetup;
+        });
+    }
 }

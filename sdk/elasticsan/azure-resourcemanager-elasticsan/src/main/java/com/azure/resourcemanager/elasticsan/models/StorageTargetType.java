@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
      * @param name a name to look for.
      * @return the corresponding StorageTargetType.
      */
-    @JsonCreator
     public static StorageTargetType fromString(String name) {
         return fromString(name, StorageTargetType.class);
     }

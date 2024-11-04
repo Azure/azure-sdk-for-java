@@ -10,26 +10,28 @@ import com.azure.maps.search.models.SearchAddressResult;
 
 /**
  * The helper class to set the non-public properties of an {@link ReverseSearchAddressBatchItem} instance.
- * @param <T>
  */
 public final class ReverseSearchAddressBatchItemPropertiesHelper {
     private static ReverseSearchAddressBatchItemAccessor accessor;
 
-    private ReverseSearchAddressBatchItemPropertiesHelper() { }
+    private ReverseSearchAddressBatchItemPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ReverseSearchAddressBatchItem} instance.
      */
     public interface ReverseSearchAddressBatchItemAccessor {
         void setStatusCode(ReverseSearchAddressBatchItem item, Integer statusCode);
+
         void setErrorDetail(ReverseSearchAddressBatchItem item, ResponseError detail);
+
         void setReverseSearchAddressResult(ReverseSearchAddressBatchItem item, ReverseSearchAddressResult result);
     }
 
     /**
      * The method called from {@link SearchAddressResult} to set it's accessor.
      *
-     * @param searchAddressResultAccessor The accessor.
+     * @param batchResultAccessor The accessor.
      */
     public static void setAccessor(final ReverseSearchAddressBatchItemAccessor batchResultAccessor) {
         accessor = batchResultAccessor;
@@ -62,7 +64,7 @@ public final class ReverseSearchAddressBatchItemPropertiesHelper {
      * @param result
      */
     public static void setReverseSearchAddressResult(ReverseSearchAddressBatchItem item,
-            ReverseSearchAddressResult result) {
+        ReverseSearchAddressResult result) {
         accessor.setReverseSearchAddressResult(item, result);
     }
 }

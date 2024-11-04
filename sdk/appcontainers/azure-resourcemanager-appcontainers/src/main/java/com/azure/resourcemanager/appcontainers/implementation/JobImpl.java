@@ -18,6 +18,7 @@ import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
 import com.azure.resourcemanager.appcontainers.models.JobPatchProperties;
 import com.azure.resourcemanager.appcontainers.models.JobPatchPropertiesProperties;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.JobRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
@@ -69,6 +70,10 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
 
     public JobProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public JobRunningState runningState() {
+        return this.innerModel().runningState();
     }
 
     public String environmentId() {
@@ -132,14 +137,16 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job create() {
-        this.innerObject = serviceManager.serviceClient().getJobs().createOrUpdate(resourceGroupName, jobName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createOrUpdate(resourceGroupName, jobName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Job create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getJobs().createOrUpdate(resourceGroupName, jobName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createOrUpdate(resourceGroupName, jobName, this.innerModel(), context);
         return this;
     }
 
@@ -155,8 +162,9 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job apply() {
-        this.innerObject = serviceManager.serviceClient().getJobs().update(resourceGroupName, jobName,
-            updateJobEnvelope, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .update(resourceGroupName, jobName, updateJobEnvelope, Context.NONE);
         return this;
     }
 
@@ -174,14 +182,18 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job refresh() {
-        this.innerObject = serviceManager.serviceClient().getJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getByResourceGroupWithResponse(resourceGroupName, jobName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Job refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getJobs()
-            .getByResourceGroupWithResponse(resourceGroupName, jobName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getByResourceGroupWithResponse(resourceGroupName, jobName, context)
+            .getValue();
         return this;
     }
 
@@ -207,6 +219,22 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
 
     public JobSecretsCollection listSecrets() {
         return serviceManager.jobs().listSecrets(resourceGroupName, jobName);
+    }
+
+    public Job resume() {
+        return serviceManager.jobs().resume(resourceGroupName, jobName);
+    }
+
+    public Job resume(Context context) {
+        return serviceManager.jobs().resume(resourceGroupName, jobName, context);
+    }
+
+    public Job suspend() {
+        return serviceManager.jobs().suspend(resourceGroupName, jobName);
+    }
+
+    public Job suspend(Context context) {
+        return serviceManager.jobs().suspend(resourceGroupName, jobName, context);
     }
 
     public JobImpl withRegion(Region location) {

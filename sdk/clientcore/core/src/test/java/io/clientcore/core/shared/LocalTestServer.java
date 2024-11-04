@@ -13,6 +13,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.ExecutorThreadPool;
 
@@ -71,14 +72,14 @@ public class LocalTestServer {
         sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
 
-        SslConnectionFactory sslConnectionFactory =
-            new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
+        SslConnectionFactory sslConnectionFactory
+            = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
         HttpConfiguration httpConfiguration = new HttpConfiguration();
         httpConfiguration.addCustomizer(new SecureRequestCustomizer());
 
-        this.httpsConnector =
-            new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
+        this.httpsConnector
+            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
@@ -112,9 +113,27 @@ public class LocalTestServer {
     public void start() {
         try {
             server.start();
+            while (!hasServerStarted(server)) {
+                Thread.sleep(1000); // Wait until the server has actually started.
+            }
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static boolean hasServerStarted(Server server) {
+        String serverState = server.getState();
+
+        if (serverState.equals(AbstractLifeCycle.FAILED)
+            || serverState.equals(AbstractLifeCycle.STOPPING)
+            || serverState.equals(AbstractLifeCycle.STOPPED)) {
+            throw new RuntimeException(
+                "Server has reached an unexpected state while waiting for it to start: " + serverState);
+        }
+
+        return serverState.equals(AbstractLifeCycle.STARTED) || serverState.equals(AbstractLifeCycle.RUNNING);
     }
 
     /**

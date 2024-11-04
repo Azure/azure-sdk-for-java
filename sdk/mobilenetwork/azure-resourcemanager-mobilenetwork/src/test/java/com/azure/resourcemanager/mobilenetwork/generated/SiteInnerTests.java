@@ -14,18 +14,20 @@ public final class SiteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SiteInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"kkqfqjbvle\"}]},\"location\":\"fmluiqtqzfavyvn\",\"tags\":{\"euayjkqabqgzsles\":\"bar\"},\"id\":\"cbhernntiewdj\",\"name\":\"vbquwr\",\"type\":\"ehwagoh\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"rdve\"}]},\"location\":\"wsdtutnwl\",\"tags\":{\"dxukuqgsjjxundxg\":\"cvuzhyrmewipmve\",\"hhzjhfj\":\"etw\",\"qsxvmhf\":\"hvvmuvgpmun\",\"yue\":\"uzjyihsasbhudypo\"},\"id\":\"slynsqyrpfoo\",\"name\":\"rlttymsjnygqdnfw\",\"type\":\"zdzgtilaxhnfhqly\"}")
             .toObject(SiteInner.class);
-        Assertions.assertEquals("fmluiqtqzfavyvn", model.location());
-        Assertions.assertEquals("bar", model.tags().get("euayjkqabqgzsles"));
+        Assertions.assertEquals("wsdtutnwl", model.location());
+        Assertions.assertEquals("cvuzhyrmewipmve", model.tags().get("dxukuqgsjjxundxg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteInner model = new SiteInner().withLocation("fmluiqtqzfavyvn").withTags(mapOf("euayjkqabqgzsles", "bar"));
+        SiteInner model = new SiteInner().withLocation("wsdtutnwl")
+            .withTags(mapOf("dxukuqgsjjxundxg", "cvuzhyrmewipmve", "hhzjhfj", "etw", "qsxvmhf", "hvvmuvgpmun", "yue",
+                "uzjyihsasbhudypo"));
         model = BinaryData.fromObject(model).toObject(SiteInner.class);
-        Assertions.assertEquals("fmluiqtqzfavyvn", model.location());
-        Assertions.assertEquals("bar", model.tags().get("euayjkqabqgzsles"));
+        Assertions.assertEquals("wsdtutnwl", model.location());
+        Assertions.assertEquals("cvuzhyrmewipmve", model.tags().get("dxukuqgsjjxundxg"));
     }
 
     // Use "Map.of" if available

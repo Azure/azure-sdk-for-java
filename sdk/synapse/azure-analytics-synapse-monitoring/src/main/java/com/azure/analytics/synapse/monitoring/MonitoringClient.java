@@ -7,6 +7,7 @@ package com.azure.analytics.synapse.monitoring;
 import com.azure.analytics.synapse.monitoring.implementation.MonitoringsImpl;
 import com.azure.analytics.synapse.monitoring.models.SparkJobListViewResponse;
 import com.azure.analytics.synapse.monitoring.models.SqlQueryStringDataModel;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -14,30 +15,52 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous MonitoringClient type. */
+/**
+ * Initializes a new instance of the synchronous MonitoringClient type.
+ */
 @ServiceClient(builder = MonitoringClientBuilder.class)
 public final class MonitoringClient {
+    @Generated
     private final MonitoringsImpl serviceClient;
 
     /**
-     * Initializes an instance of Monitorings client.
-     *
+     * Initializes an instance of MonitoringClient class.
+     * 
      * @param serviceClient the service client implementation.
      */
+    @Generated
     MonitoringClient(MonitoringsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of spark applications for the workspace along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkJobListViewResponse> getSparkJobListWithResponse(String xMsClientRequestId, Context context) {
+        return this.serviceClient.getSparkJobListWithResponse(xMsClientRequestId, context);
+    }
+
+    /**
+     * Get list of spark applications for the workspace.
+     * 
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     * support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of spark applications for the workspace.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobListViewResponse getSparkJobList(String xMsClientRequestId) {
         return this.serviceClient.getSparkJobList(xMsClientRequestId);
@@ -45,37 +68,43 @@ public final class MonitoringClient {
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of spark applications for the workspace.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobListViewResponse getSparkJobList() {
         return this.serviceClient.getSparkJobList();
     }
 
     /**
-     * Get list of spark applications for the workspace.
-     *
+     * Get SQL OD/DW Query for the workspace.
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
+     * @param filter The filter parameter.
+     * @param orderby The orderby parameter.
+     * @param skip The skip parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return sQL OD/DW Query for the workspace along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkJobListViewResponse> getSparkJobListWithResponse(String xMsClientRequestId, Context context) {
-        return this.serviceClient.getSparkJobListWithResponse(xMsClientRequestId, context);
+    public Response<SqlQueryStringDataModel> getSqlJobQueryStringWithResponse(String xMsClientRequestId, String filter,
+        String orderby, String skip, Context context) {
+        return this.serviceClient.getSqlJobQueryStringWithResponse(xMsClientRequestId, filter, orderby, skip, context);
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
@@ -84,41 +113,23 @@ public final class MonitoringClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL OD/DW Query for the workspace.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlQueryStringDataModel getSqlJobQueryString(
-            String xMsClientRequestId, String filter, String orderby, String skip) {
+    public SqlQueryStringDataModel getSqlJobQueryString(String xMsClientRequestId, String filter, String orderby,
+        String skip) {
         return this.serviceClient.getSqlJobQueryString(xMsClientRequestId, filter, orderby, skip);
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL OD/DW Query for the workspace.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlQueryStringDataModel getSqlJobQueryString() {
         return this.serviceClient.getSqlJobQueryString();
-    }
-
-    /**
-     * Get SQL OD/DW Query for the workspace.
-     *
-     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
-     * @param filter The filter parameter.
-     * @param orderby The orderby parameter.
-     * @param skip The skip parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlQueryStringDataModel> getSqlJobQueryStringWithResponse(
-            String xMsClientRequestId, String filter, String orderby, String skip, Context context) {
-        return this.serviceClient.getSqlJobQueryStringWithResponse(xMsClientRequestId, filter, orderby, skip, context);
     }
 }

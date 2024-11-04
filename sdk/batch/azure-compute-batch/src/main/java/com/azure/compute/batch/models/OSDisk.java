@@ -55,7 +55,8 @@ public final class OSDisk implements JsonSerializable<OSDisk> {
     }
 
     /*
-     * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None for Standard storage. ReadOnly for Premium storage.
+     * Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The default values are: None
+     * for Standard storage. ReadOnly for Premium storage.
      */
     @Generated
     private CachingType caching;

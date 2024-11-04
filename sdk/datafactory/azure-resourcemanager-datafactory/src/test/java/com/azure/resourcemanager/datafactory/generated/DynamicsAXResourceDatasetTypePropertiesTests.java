@@ -11,13 +11,13 @@ public final class DynamicsAXResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicsAXResourceDatasetTypeProperties model
-            = BinaryData.fromString("{\"path\":\"datahbtyc\"}").toObject(DynamicsAXResourceDatasetTypeProperties.class);
+            = BinaryData.fromString("{\"path\":\"datadrj\"}").toObject(DynamicsAXResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicsAXResourceDatasetTypeProperties model
-            = new DynamicsAXResourceDatasetTypeProperties().withPath("datahbtyc");
+            = new DynamicsAXResourceDatasetTypeProperties().withPath("datadrj");
         model = BinaryData.fromObject(model).toObject(DynamicsAXResourceDatasetTypeProperties.class);
     }
 }

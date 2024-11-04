@@ -28,8 +28,10 @@ public final class ImageTemplateLastRunStatusTests {
     public void testSerialize() throws Exception {
         ImageTemplateLastRunStatus model
             = new ImageTemplateLastRunStatus().withStartTime(OffsetDateTime.parse("2021-11-20T09:27:06Z"))
-                .withEndTime(OffsetDateTime.parse("2021-12-05T12:00:33Z")).withRunState(RunState.PARTIALLY_SUCCEEDED)
-                .withRunSubState(RunSubState.OPTIMIZING).withMessage("gc");
+                .withEndTime(OffsetDateTime.parse("2021-12-05T12:00:33Z"))
+                .withRunState(RunState.PARTIALLY_SUCCEEDED)
+                .withRunSubState(RunSubState.OPTIMIZING)
+                .withMessage("gc");
         model = BinaryData.fromObject(model).toObject(ImageTemplateLastRunStatus.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T09:27:06Z"), model.startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T12:00:33Z"), model.endTime());

@@ -125,14 +125,16 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool create() {
-        this.innerObject = serviceManager.serviceClient().getPools().createOrUpdate(resourceGroupName, accountName,
-            poolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createOrUpdate(resourceGroupName, accountName, poolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CapacityPool create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools().createOrUpdate(resourceGroupName, accountName,
-            poolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createOrUpdate(resourceGroupName, accountName, poolName, this.innerModel(), context);
         return this;
     }
 
@@ -148,14 +150,16 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool apply() {
-        this.innerObject = serviceManager.serviceClient().getPools().update(resourceGroupName, accountName, poolName,
-            updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .update(resourceGroupName, accountName, poolName, updateBody, Context.NONE);
         return this;
     }
 
     public CapacityPool apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools().update(resourceGroupName, accountName, poolName,
-            updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .update(resourceGroupName, accountName, poolName, updateBody, context);
         return this;
     }
 
@@ -169,14 +173,18 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool refresh() {
-        this.innerObject = serviceManager.serviceClient().getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CapacityPool refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, accountName, poolName, context)
+            .getValue();
         return this;
     }
 

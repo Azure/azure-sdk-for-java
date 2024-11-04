@@ -82,7 +82,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected BiConsumer<EventProcessorClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return EventProcessorClientBuilder::retry;
+        return EventProcessorClientBuilder::retryOptions;
     }
 
     @Override

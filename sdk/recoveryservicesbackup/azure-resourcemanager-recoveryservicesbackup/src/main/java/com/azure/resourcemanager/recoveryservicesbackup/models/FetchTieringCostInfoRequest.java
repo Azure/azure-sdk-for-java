@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -17,9 +18,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = FetchTieringCostInfoRequest.class)
+    defaultImpl = FetchTieringCostInfoRequest.class,
+    visible = true)
 @JsonTypeName("FetchTieringCostInfoRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -37,6 +38,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class FetchTieringCostInfoRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType;
+
+    /*
      * Source tier for the request
      */
     @JsonProperty(value = "sourceTierType", required = true)
@@ -52,6 +60,17 @@ public class FetchTieringCostInfoRequest {
      * Creates an instance of FetchTieringCostInfoRequest class.
      */
     public FetchTieringCostInfoRequest() {
+        this.objectType = "FetchTieringCostInfoRequest";
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -101,12 +120,14 @@ public class FetchTieringCostInfoRequest {
      */
     public void validate() {
         if (sourceTierType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceTierType in model FetchTieringCostInfoRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceTierType in model FetchTieringCostInfoRequest"));
         }
         if (targetTierType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetTierType in model FetchTieringCostInfoRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetTierType in model FetchTieringCostInfoRequest"));
         }
     }
 

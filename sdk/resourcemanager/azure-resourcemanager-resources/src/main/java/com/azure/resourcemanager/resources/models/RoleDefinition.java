@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Role definition properties. */
+/**
+ * Role definition properties.
+ */
 @Fluent
-public final class RoleDefinition {
+public final class RoleDefinition implements JsonSerializable<RoleDefinition> {
     /*
      * The role definition ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The role definition name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * If this is a service role.
      */
-    @JsonProperty(value = "isServiceRole")
     private Boolean isServiceRole;
 
     /*
      * Role definition permissions.
      */
-    @JsonProperty(value = "permissions")
     private List<Permission> permissions;
 
     /*
      * Role definition assignable scopes.
      */
-    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
-    /** Creates an instance of RoleDefinition class. */
+    /**
+     * Creates an instance of RoleDefinition class.
+     */
     public RoleDefinition() {
     }
 
     /**
      * Get the id property: The role definition ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +59,7 @@ public final class RoleDefinition {
 
     /**
      * Set the id property: The role definition ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoleDefinition object itself.
      */
@@ -67,7 +70,7 @@ public final class RoleDefinition {
 
     /**
      * Get the name property: The role definition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +79,7 @@ public final class RoleDefinition {
 
     /**
      * Set the name property: The role definition name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoleDefinition object itself.
      */
@@ -87,7 +90,7 @@ public final class RoleDefinition {
 
     /**
      * Get the isServiceRole property: If this is a service role.
-     *
+     * 
      * @return the isServiceRole value.
      */
     public Boolean isServiceRole() {
@@ -96,7 +99,7 @@ public final class RoleDefinition {
 
     /**
      * Set the isServiceRole property: If this is a service role.
-     *
+     * 
      * @param isServiceRole the isServiceRole value to set.
      * @return the RoleDefinition object itself.
      */
@@ -107,7 +110,7 @@ public final class RoleDefinition {
 
     /**
      * Get the permissions property: Role definition permissions.
-     *
+     * 
      * @return the permissions value.
      */
     public List<Permission> permissions() {
@@ -116,7 +119,7 @@ public final class RoleDefinition {
 
     /**
      * Set the permissions property: Role definition permissions.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RoleDefinition object itself.
      */
@@ -127,7 +130,7 @@ public final class RoleDefinition {
 
     /**
      * Get the scopes property: Role definition assignable scopes.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -136,7 +139,7 @@ public final class RoleDefinition {
 
     /**
      * Set the scopes property: Role definition assignable scopes.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the RoleDefinition object itself.
      */
@@ -147,12 +150,62 @@ public final class RoleDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (permissions() != null) {
             permissions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isServiceRole", this.isServiceRole);
+        jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleDefinition.
+     */
+    public static RoleDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleDefinition deserializedRoleDefinition = new RoleDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleDefinition.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleDefinition.name = reader.getString();
+                } else if ("isServiceRole".equals(fieldName)) {
+                    deserializedRoleDefinition.isServiceRole = reader.getNullable(JsonReader::getBoolean);
+                } else if ("permissions".equals(fieldName)) {
+                    List<Permission> permissions = reader.readArray(reader1 -> Permission.fromJson(reader1));
+                    deserializedRoleDefinition.permissions = permissions;
+                } else if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleDefinition.scopes = scopes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleDefinition;
+        });
     }
 }

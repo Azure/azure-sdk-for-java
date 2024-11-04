@@ -6,37 +6,37 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of available versions for an agent pool.
  */
 @Fluent
-public final class AgentPoolAvailableVersionsInner {
+public final class AgentPoolAvailableVersionsInner implements JsonSerializable<AgentPoolAvailableVersionsInner> {
     /*
      * The ID of the agent pool version list.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the agent pool version list.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Type of the agent pool version list.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Properties of agent pool available versions.
      */
-    @JsonProperty(value = "properties", required = true)
     private AgentPoolAvailableVersionsProperties innerProperties = new AgentPoolAvailableVersionsProperties();
 
     /**
@@ -112,12 +112,58 @@ public final class AgentPoolAvailableVersionsInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model AgentPoolAvailableVersionsInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AgentPoolAvailableVersionsInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentPoolAvailableVersionsInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolAvailableVersionsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolAvailableVersionsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AgentPoolAvailableVersionsInner.
+     */
+    public static AgentPoolAvailableVersionsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolAvailableVersionsInner deserializedAgentPoolAvailableVersionsInner
+                = new AgentPoolAvailableVersionsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAgentPoolAvailableVersionsInner.innerProperties
+                        = AgentPoolAvailableVersionsProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedAgentPoolAvailableVersionsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAgentPoolAvailableVersionsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAgentPoolAvailableVersionsInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolAvailableVersionsInner;
+        });
+    }
 }

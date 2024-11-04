@@ -5,62 +5,61 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The Cookie model.
  */
 @Immutable
-public final class Cookie {
+public final class Cookie implements JsonSerializable<Cookie> {
 
     /*
      * The cookieName property.
      */
     @Generated
-    @JsonProperty(value = "cookieName")
     private String cookieName;
 
     /*
      * The cookieDomain property.
      */
     @Generated
-    @JsonProperty(value = "cookieDomain")
     private String cookieDomain;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /*
      * The cookieExpiryDate property.
      */
     @Generated
-    @JsonProperty(value = "cookieExpiryDate")
     private OffsetDateTime cookieExpiryDate;
 
     /**
@@ -138,5 +137,67 @@ public final class Cookie {
     @Generated
     public OffsetDateTime getCookieExpiryDate() {
         return this.cookieExpiryDate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cookieName", this.cookieName);
+        jsonWriter.writeStringField("cookieDomain", this.cookieDomain);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        jsonWriter.writeStringField("cookieExpiryDate",
+            this.cookieExpiryDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cookieExpiryDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Cookie from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Cookie if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Cookie.
+     */
+    @Generated
+    public static Cookie fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Cookie deserializedCookie = new Cookie();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("cookieName".equals(fieldName)) {
+                    deserializedCookie.cookieName = reader.getString();
+                } else if ("cookieDomain".equals(fieldName)) {
+                    deserializedCookie.cookieDomain = reader.getString();
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedCookie.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedCookie.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedCookie.count = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedCookie.recent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cookieExpiryDate".equals(fieldName)) {
+                    deserializedCookie.cookieExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedCookie;
+        });
     }
 }

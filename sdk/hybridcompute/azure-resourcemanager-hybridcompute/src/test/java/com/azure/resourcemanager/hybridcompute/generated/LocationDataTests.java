@@ -11,25 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class LocationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocationData model = BinaryData.fromString(
-            "{\"name\":\"zdatqxhocdg\",\"city\":\"blgphuticn\",\"district\":\"kao\",\"countryOrRegion\":\"yiftyhxhuro\"}")
+        LocationData model = BinaryData
+            .fromString(
+                "{\"name\":\"obnbdxkqpxokaj\",\"city\":\"npime\",\"district\":\"stxgc\",\"countryOrRegion\":\"dg\"}")
             .toObject(LocationData.class);
-        Assertions.assertEquals("zdatqxhocdg", model.name());
-        Assertions.assertEquals("blgphuticn", model.city());
-        Assertions.assertEquals("kao", model.district());
-        Assertions.assertEquals("yiftyhxhuro", model.countryOrRegion());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.name());
+        Assertions.assertEquals("npime", model.city());
+        Assertions.assertEquals("stxgc", model.district());
+        Assertions.assertEquals("dg", model.countryOrRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocationData model = new LocationData().withName("zdatqxhocdg")
-            .withCity("blgphuticn")
-            .withDistrict("kao")
-            .withCountryOrRegion("yiftyhxhuro");
+        LocationData model = new LocationData().withName("obnbdxkqpxokaj")
+            .withCity("npime")
+            .withDistrict("stxgc")
+            .withCountryOrRegion("dg");
         model = BinaryData.fromObject(model).toObject(LocationData.class);
-        Assertions.assertEquals("zdatqxhocdg", model.name());
-        Assertions.assertEquals("blgphuticn", model.city());
-        Assertions.assertEquals("kao", model.district());
-        Assertions.assertEquals("yiftyhxhuro", model.countryOrRegion());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.name());
+        Assertions.assertEquals("npime", model.city());
+        Assertions.assertEquals("stxgc", model.district());
+        Assertions.assertEquals("dg", model.countryOrRegion());
     }
 }

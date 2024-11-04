@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class WebApplicationFirewallPolicyResourceState
      * @param name a name to look for.
      * @return the corresponding WebApplicationFirewallPolicyResourceState.
      */
-    @JsonCreator
     public static WebApplicationFirewallPolicyResourceState fromString(String name) {
         return fromString(name, WebApplicationFirewallPolicyResourceState.class);
     }

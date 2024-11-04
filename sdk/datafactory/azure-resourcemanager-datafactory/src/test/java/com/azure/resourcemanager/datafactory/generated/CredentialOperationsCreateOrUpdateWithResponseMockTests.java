@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
-import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 import com.azure.resourcemanager.datafactory.models.Credential;
 import com.azure.resourcemanager.datafactory.models.CredentialResource;
 import java.nio.charset.StandardCharsets;
@@ -26,7 +25,7 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"burzofigi\",\"description\":\"dywekoxylwysj\",\"annotations\":[\"dataapgqghkr\",\"datacvcxyumtoeuna\"],\"\":{\"xrzzilzedqwd\":\"datatleyztnelvced\",\"dvtittybi\":\"dataylofedxj\"}},\"name\":\"hjerwq\",\"type\":\"dntxxpcxneeyn\",\"etag\":\"rrqsqzkrxcj\",\"id\":\"gwhkqimqw\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"rgwmge\",\"annotations\":[\"datairnfnlyvdryx\",\"datauqwtazuacawxs\",\"datas\"],\"\":{\"xycvoexbxr\":\"databbqqtvp\",\"acgmnelozzfwyegd\":\"datarvxwlfmbb\"}},\"name\":\"fktmdlf\",\"type\":\"jucpt\",\"etag\":\"esdfujfpn\",\"id\":\"zablqmsybvjf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,16 +35,16 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CredentialResource response = manager.credentialOperations()
-            .createOrUpdateWithResponse("hpreattpcm", "ssl", "lctluczrs",
-                new CredentialResourceInner().withId("ppau")
-                    .withProperties(new Credential().withDescription("qlskya")
-                        .withAnnotations(Arrays.asList("dataz", "datar", "datanqrvwznhnpznoehn", "dataoeccjzyk"))
-                        .withAdditionalProperties(mapOf("type", "mnjplazrsmwybo"))),
-                "wjochxon", com.azure.core.util.Context.NONE)
-            .getValue();
+            .define("z")
+            .withExistingFactory("gunnjwmdtb", "qtomcbaiamtdfpkf")
+            .withProperties(new Credential().withDescription("elxd")
+                .withAnnotations(Arrays.asList("datafsteouzoglvtz", "datajlejvlf", "datazrqkgibpeh", "databctz"))
+                .withAdditionalProperties(mapOf("type", "Credential")))
+            .withIfMatch("par")
+            .create();
 
-        Assertions.assertEquals("gwhkqimqw", response.id());
-        Assertions.assertEquals("dywekoxylwysj", response.properties().description());
+        Assertions.assertEquals("zablqmsybvjf", response.id());
+        Assertions.assertEquals("rgwmge", response.properties().description());
     }
 
     // Use "Map.of" if available

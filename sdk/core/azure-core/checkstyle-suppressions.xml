@@ -16,7 +16,8 @@
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.implementation.jackson.(MemberNameConverterImpl|ObjectMapperFactory|XmlMapperFactory).java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.AccessTokenCache.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.(AccessTokenCache|AccessibleByteArrayOutputStream).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.util.logging.LoggingEventBuilder.java"/>
 
   <!-- Exception is logged in an earlier line. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.http.policy.HttpLoggingPolicy.java"/>
@@ -26,7 +27,7 @@
 
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" />
 
-  <!-- Exception is being caught for tracing purposes only and rethrown as is, it is logged before or after tracing policy -->
+  <!-- Exception is being caught for tracing purposes only and re-thrown as is, it is logged before or after tracing policy -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.implementation.http.policy.InstrumentationPolicy"/>
 

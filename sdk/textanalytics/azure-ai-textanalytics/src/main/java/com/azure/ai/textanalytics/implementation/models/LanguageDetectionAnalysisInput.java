@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The LanguageDetectionAnalysisInput model. */
+/**
+ * The LanguageDetectionAnalysisInput model.
+ */
 @Fluent
 public final class LanguageDetectionAnalysisInput implements JsonSerializable<LanguageDetectionAnalysisInput> {
     /*
@@ -20,12 +22,15 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
      */
     private List<LanguageInput> documents;
 
-    /** Creates an instance of LanguageDetectionAnalysisInput class. */
-    public LanguageDetectionAnalysisInput() {}
+    /**
+     * Creates an instance of LanguageDetectionAnalysisInput class.
+     */
+    public LanguageDetectionAnalysisInput() {
+    }
 
     /**
      * Get the documents property: The documents property.
-     *
+     * 
      * @return the documents value.
      */
     public List<LanguageInput> getDocuments() {
@@ -34,7 +39,7 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
 
     /**
      * Set the documents property: The documents property.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the LanguageDetectionAnalysisInput object itself.
      */
@@ -43,6 +48,9 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,31 +60,29 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
 
     /**
      * Reads an instance of LanguageDetectionAnalysisInput from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of LanguageDetectionAnalysisInput if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LanguageDetectionAnalysisInput.
      */
     public static LanguageDetectionAnalysisInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LanguageDetectionAnalysisInput deserializedLanguageDetectionAnalysisInput =
-                            new LanguageDetectionAnalysisInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LanguageDetectionAnalysisInput deserializedLanguageDetectionAnalysisInput
+                = new LanguageDetectionAnalysisInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("documents".equals(fieldName)) {
-                            List<LanguageInput> documents =
-                                    reader.readArray(reader1 -> LanguageInput.fromJson(reader1));
-                            deserializedLanguageDetectionAnalysisInput.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("documents".equals(fieldName)) {
+                    List<LanguageInput> documents = reader.readArray(reader1 -> LanguageInput.fromJson(reader1));
+                    deserializedLanguageDetectionAnalysisInput.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLanguageDetectionAnalysisInput;
-                });
+            return deserializedLanguageDetectionAnalysisInput;
+        });
     }
 }

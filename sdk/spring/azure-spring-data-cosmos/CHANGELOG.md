@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.46.0-beta.1 (Unreleased)
+### 5.18.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -12,6 +12,52 @@
 * Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
 
 #### Other Changes
+
+### 5.17.1 (2024-10-11)
+
+#### Bugs Fixed
+* Fixed issue that some classes do not support Java 17.
+
+### 5.17.0 (2024-10-09)
+
+#### Other Changes
+* regular release
+
+### 5.16.0 (2024-09-09)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.2`.
+
+### 5.15.0 (2024-08-07)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.0`.
+
+### 5.14.0 (2024-07-05)
+
+#### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
+
+### 5.13.0 (2024-06-06)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 40401](https://github.com/Azure/azure-sdk-for-java/pull/40401).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40165](https://github.com/Azure/azure-sdk-for-java/pull/40165).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40204](https://github.com/Azure/azure-sdk-for-java/pull/40204).
+
+### 3.46.0 (2024-06-03)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 39760](https://github.com/Azure/azure-sdk-for-java/pull/39760).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40083](https://github.com/Azure/azure-sdk-for-java/pull/40083).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40167](https://github.com/Azure/azure-sdk-for-java/pull/40167).
 
 ### 5.12.0 (2024-05-09)
 

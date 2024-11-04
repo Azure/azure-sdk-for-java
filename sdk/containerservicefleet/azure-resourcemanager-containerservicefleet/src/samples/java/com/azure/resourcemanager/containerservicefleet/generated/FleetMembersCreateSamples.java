@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 public final class FleetMembersCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/
      * examples/FleetMembers_Create.json
      */
     /**
@@ -20,8 +20,11 @@ public final class FleetMembersCreateSamples {
      */
     public static void createsAFleetMemberResourceWithALongRunningOperation(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().define("member-1").withExistingFleet("rg1", "fleet1").withClusterResourceId(
-            "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster-1")
+        manager.fleetMembers()
+            .define("member-1")
+            .withExistingFleet("rg1", "fleet1")
+            .withClusterResourceId(
+                "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster-1")
             .create();
     }
 }

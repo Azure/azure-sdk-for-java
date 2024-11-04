@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DataProtection
@@ -13,17 +17,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * DataProtection type volumes include an object containing details of the replication.
  */
 @Fluent
-public final class VolumePatchPropertiesDataProtection {
+public final class VolumePatchPropertiesDataProtection
+    implements JsonSerializable<VolumePatchPropertiesDataProtection> {
+    /*
+     * Backup Properties
+     */
+    private VolumeBackupProperties backup;
+
     /*
      * Snapshot properties.
      */
-    @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
 
     /**
      * Creates an instance of VolumePatchPropertiesDataProtection class.
      */
     public VolumePatchPropertiesDataProtection() {
+    }
+
+    /**
+     * Get the backup property: Backup Properties.
+     * 
+     * @return the backup value.
+     */
+    public VolumeBackupProperties backup() {
+        return this.backup;
+    }
+
+    /**
+     * Set the backup property: Backup Properties.
+     * 
+     * @param backup the backup value to set.
+     * @return the VolumePatchPropertiesDataProtection object itself.
+     */
+    public VolumePatchPropertiesDataProtection withBackup(VolumeBackupProperties backup) {
+        this.backup = backup;
+        return this;
     }
 
     /**
@@ -52,8 +81,52 @@ public final class VolumePatchPropertiesDataProtection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (backup() != null) {
+            backup().validate();
+        }
         if (snapshot() != null) {
             snapshot().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("snapshot", this.snapshot);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumePatchPropertiesDataProtection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumePatchPropertiesDataProtection if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumePatchPropertiesDataProtection.
+     */
+    public static VolumePatchPropertiesDataProtection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumePatchPropertiesDataProtection deserializedVolumePatchPropertiesDataProtection
+                = new VolumePatchPropertiesDataProtection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backup".equals(fieldName)) {
+                    deserializedVolumePatchPropertiesDataProtection.backup = VolumeBackupProperties.fromJson(reader);
+                } else if ("snapshot".equals(fieldName)) {
+                    deserializedVolumePatchPropertiesDataProtection.snapshot
+                        = VolumeSnapshotProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumePatchPropertiesDataProtection;
+        });
     }
 }

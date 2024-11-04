@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SkuDescriptionInner;
 public final class SkuDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuDescriptionInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"jvlgfggcvkyyliz\",\"name\":\"bjpsfxsfuztlvtm\",\"size\":\"gbwidqlvh\",\"locations\":[\"veo\",\"i\",\"rvjfnmjmvlw\",\"z\"],\"locationInfo\":[{\"location\":\"lkujrllfojui\",\"zones\":[\"uuyjucejikz\",\"eovvtzej\",\"tjklntikyjuzk\"]},{\"location\":\"bqzolxr\",\"zones\":[\"qjwt\",\"htgv\",\"zpcrrkolawj\"]},{\"location\":\"jsmwrokc\",\"zones\":[\"zzzwy\",\"afitlhguynuchlg\",\"ltxdwhmozu\",\"gzvlnsnn\"]},{\"location\":\"zfpafolpymwamxqz\",\"zones\":[\"p\",\"dphtv\",\"ulajvlejchc\",\"rlzk\"]}],\"restrictions\":[\"datalanrupdwvnp\",\"datacnzqtpjhmqr\",\"datav\",\"datahlaiwd\"]}")
-                .toObject(SkuDescriptionInner.class);
+        SkuDescriptionInner model = BinaryData.fromString(
+            "{\"resourceType\":\"bsojk\",\"name\":\"nhmdptysprqs\",\"size\":\"zxojpslsv\",\"locations\":[\"liufiqwoyxq\"],\"locationInfo\":[{\"location\":\"cohhoucqpqo\",\"zones\":[\"x\",\"rzdcgdzbenribcaw\",\"tzqdd\",\"jwfljhznamtua\"]},{\"location\":\"mzwcjjncqt\",\"zones\":[\"izvg\",\"gat\",\"uuvbx\",\"grebwggahttzlsw\"]},{\"location\":\"ajqfutlx\",\"zones\":[\"zasunwqrjzfrgq\",\"aohcmbuocn\",\"r\",\"hmbpyryxamebly\"]},{\"location\":\"yvk\",\"zones\":[\"rocxnehvs\"]}],\"restrictions\":[\"datadlfp\",\"dataapucygvo\",\"datavyuns\",\"dataxlghieegj\"]}")
+            .toObject(SkuDescriptionInner.class);
     }
 
     @org.junit.jupiter.api.Test

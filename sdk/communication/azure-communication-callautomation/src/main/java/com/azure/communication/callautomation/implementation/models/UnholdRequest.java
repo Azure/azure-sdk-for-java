@@ -5,28 +5,38 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request payload for holding participant from the call. */
+/**
+ * The request payload for holding participant from the call.
+ */
 @Fluent
-public final class UnholdRequest {
+public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     /*
      * Participants to be hold from the call.
      * Only ACS Users are supported.
      */
-    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
-     * Get the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.
-     *
+     * Creates an instance of UnholdRequest class.
+     */
+    public UnholdRequest() {
+    }
+
+    /**
+     * Get the targetParticipant property: Participants to be hold from the call.
+     * Only ACS Users are supported.
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -34,8 +44,9 @@ public final class UnholdRequest {
     }
 
     /**
-     * Set the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.
-     *
+     * Set the targetParticipant property: Participants to be hold from the call.
+     * Only ACS Users are supported.
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the UnholdRequest object itself.
      */
@@ -47,7 +58,7 @@ public final class UnholdRequest {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -57,12 +68,52 @@ public final class UnholdRequest {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the UnholdRequest object itself.
      */
     public UnholdRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnholdRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnholdRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UnholdRequest.
+     */
+    public static UnholdRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnholdRequest deserializedUnholdRequest = new UnholdRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetParticipant".equals(fieldName)) {
+                    deserializedUnholdRequest.targetParticipant = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedUnholdRequest.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnholdRequest;
+        });
     }
 }

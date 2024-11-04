@@ -5,30 +5,45 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The workflow trigger reference. */
+/**
+ * The workflow trigger reference.
+ */
 @Fluent
 public final class WorkflowTriggerReference extends ResourceReference {
     /*
      * The workflow name.
      */
-    @JsonProperty(value = "flowName")
     private String flowName;
 
     /*
      * The workflow trigger name.
      */
-    @JsonProperty(value = "triggerName")
     private String triggerName;
 
-    /** Creates an instance of WorkflowTriggerReference class. */
+    /*
+     * Gets the resource type.
+     */
+    private String type;
+
+    /*
+     * Gets the resource name.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of WorkflowTriggerReference class.
+     */
     public WorkflowTriggerReference() {
     }
 
     /**
      * Get the flowName property: The workflow name.
-     *
+     * 
      * @return the flowName value.
      */
     public String flowName() {
@@ -37,7 +52,7 @@ public final class WorkflowTriggerReference extends ResourceReference {
 
     /**
      * Set the flowName property: The workflow name.
-     *
+     * 
      * @param flowName the flowName value to set.
      * @return the WorkflowTriggerReference object itself.
      */
@@ -48,7 +63,7 @@ public final class WorkflowTriggerReference extends ResourceReference {
 
     /**
      * Get the triggerName property: The workflow trigger name.
-     *
+     * 
      * @return the triggerName value.
      */
     public String triggerName() {
@@ -57,7 +72,7 @@ public final class WorkflowTriggerReference extends ResourceReference {
 
     /**
      * Set the triggerName property: The workflow trigger name.
-     *
+     * 
      * @param triggerName the triggerName value to set.
      * @return the WorkflowTriggerReference object itself.
      */
@@ -66,7 +81,29 @@ public final class WorkflowTriggerReference extends ResourceReference {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: Gets the resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Gets the resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowTriggerReference withId(String id) {
         super.withId(id);
@@ -75,11 +112,56 @@ public final class WorkflowTriggerReference extends ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("flowName", this.flowName);
+        jsonWriter.writeStringField("triggerName", this.triggerName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerReference.
+     */
+    public static WorkflowTriggerReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerReference deserializedWorkflowTriggerReference = new WorkflowTriggerReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowTriggerReference.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowTriggerReference.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowTriggerReference.type = reader.getString();
+                } else if ("flowName".equals(fieldName)) {
+                    deserializedWorkflowTriggerReference.flowName = reader.getString();
+                } else if ("triggerName".equals(fieldName)) {
+                    deserializedWorkflowTriggerReference.triggerName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerReference;
+        });
     }
 }

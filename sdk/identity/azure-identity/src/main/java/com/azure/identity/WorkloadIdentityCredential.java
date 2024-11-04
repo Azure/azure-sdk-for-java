@@ -42,8 +42,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
  *
  * <!-- src_embed com.azure.identity.credential.workloadidentitycredential.construct -->
  * <pre>
- * TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
- *     .clientId&#40;&quot;&lt;clientID&gt;&quot;&#41;
+ * TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;.clientId&#40;&quot;&lt;clientID&gt;&quot;&#41;
  *     .tenantId&#40;&quot;&lt;tenantID&gt;&quot;&#41;
  *     .tokenFilePath&#40;&quot;&lt;token-file-path&gt;&quot;&#41;
  *     .build&#40;&#41;;
@@ -59,7 +58,6 @@ public class WorkloadIdentityCredential implements TokenCredential {
     private final IdentitySyncClient identitySyncClient;
     private final IdentityClientOptions identityClientOptions;
 
-
     /**
      * WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
      *
@@ -68,27 +66,29 @@ public class WorkloadIdentityCredential implements TokenCredential {
      * @param federatedTokenFilePath The path to a file containing a Kubernetes service account token that authenticates the identity.
      * @param identityClientOptions The identity client options to use for authentication.
      */
-    WorkloadIdentityCredential(String tenantId, String clientId, String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
+    WorkloadIdentityCredential(String tenantId, String clientId, String federatedTokenFilePath,
+        IdentityClientOptions identityClientOptions) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
 
         Configuration configuration = identityClientOptions.getConfiguration() == null
-            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+            ? Configuration.getGlobalConfiguration().clone()
+            : identityClientOptions.getConfiguration();
 
-        String tenantIdInput = CoreUtils.isNullOrEmpty(tenantId)
-            ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
+        String tenantIdInput
+            = CoreUtils.isNullOrEmpty(tenantId) ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
 
         String federatedTokenFilePathInput = CoreUtils.isNullOrEmpty(federatedTokenFilePath)
-            ? configuration.get(AZURE_FEDERATED_TOKEN_FILE) : federatedTokenFilePath;
+            ? configuration.get(AZURE_FEDERATED_TOKEN_FILE)
+            : federatedTokenFilePath;
 
-        String clientIdInput = CoreUtils.isNullOrEmpty(clientId)
-            ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
+        String clientIdInput
+            = CoreUtils.isNullOrEmpty(clientId) ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
 
         if (!(CoreUtils.isNullOrEmpty(tenantIdInput)
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)
             || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
-            IdentityClientBuilder builder = new IdentityClientBuilder()
-                .clientAssertionPath(federatedTokenFilePathInput)
+            IdentityClientBuilder builder = new IdentityClientBuilder().clientAssertionPath(federatedTokenFilePathInput)
                 .clientId(clientIdInput)
                 .tenantId(tenantIdInput)
                 .identityClientOptions(identityClientOptions);
@@ -106,9 +106,9 @@ public class WorkloadIdentityCredential implements TokenCredential {
         if (identityClient == null) {
             return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                 new CredentialUnavailableException("WorkloadIdentityCredential"
-                + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
-                + " guide for more information."
-                + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot")));
+                    + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
+                    + " guide for more information."
+                    + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot")));
         }
         return identityClient.authenticateWithWorkloadIdentityConfidentialClient(request);
     }
@@ -118,9 +118,9 @@ public class WorkloadIdentityCredential implements TokenCredential {
         if (identitySyncClient == null) {
             throw LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                 new CredentialUnavailableException("WorkloadIdentityCredential"
-                + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
-                + " guide for more information."
-                + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
+                    + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
+                    + " guide for more information."
+                    + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
         }
         return identitySyncClient.authenticateWithWorkloadIdentityConfidentialClient(request);
     }
@@ -129,4 +129,3 @@ public class WorkloadIdentityCredential implements TokenCredential {
         return this.identityClient.getClientId();
     }
 }
-

@@ -38,7 +38,7 @@ parameters:
     displayName: azure-developer-loadtesting
     type: boolean
     default: true
-    
+
   - name: release_azureresourcemanagerloadtesting
     displayName: azure-resourcemanager-loadtesting
     type: boolean
@@ -48,7 +48,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: loadtesting
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-loadtesting
         groupId: com.azure.resourcemanager

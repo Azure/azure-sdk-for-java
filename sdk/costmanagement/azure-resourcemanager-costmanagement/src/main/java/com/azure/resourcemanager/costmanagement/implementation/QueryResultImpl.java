@@ -16,8 +16,8 @@ public final class QueryResultImpl implements QueryResult {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    QueryResultImpl(
-        QueryResultInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    QueryResultImpl(QueryResultInner innerObject,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

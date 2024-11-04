@@ -21,6 +21,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
@@ -466,6 +467,16 @@ public class ReadmeSamples {
         }
         // END: readme-sample-listSettingsInSnapshot
 
+    }
+
+    public void listLabels() {
+        // BEGIN: readme-sample-listLabels
+        String labelNameFilter = "{labelNamePrefix}*";
+        configurationClient.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
+                .forEach(label -> {
+                    System.out.println("label name = " + label.getName());
+                });
+        // END: readme-sample-listLabels
     }
 
     private void updateConfiguration(ConfigurationSetting setting) {

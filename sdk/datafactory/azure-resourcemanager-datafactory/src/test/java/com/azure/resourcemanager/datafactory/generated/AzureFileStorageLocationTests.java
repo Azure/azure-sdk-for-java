@@ -11,14 +11,14 @@ public final class AzureFileStorageLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageLocation model = BinaryData.fromString(
-            "{\"type\":\"nensmuffi\",\"folderPath\":\"databctvbpzuj\",\"fileName\":\"datatotdxposcslh\",\"\":{\"xidhhxomil\":\"datasiecktybhj\",\"xwjwilm\":\"datadxjxdu\",\"wuj\":\"datarslaatep\",\"gtvh\":\"datazgxqgqwlxr\"}}")
+            "{\"type\":\"AzureFileStorageLocation\",\"folderPath\":\"datadezvjqw\",\"fileName\":\"dataoyiyaxqv\",\"\":{\"tcz\":\"datai\",\"xyglaetscflw\":\"dataddnvovbooqbmdq\",\"tzcqipsd\":\"datajdtlriefooyycux\"}}")
             .toObject(AzureFileStorageLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileStorageLocation model
-            = new AzureFileStorageLocation().withFolderPath("databctvbpzuj").withFileName("datatotdxposcslh");
+            = new AzureFileStorageLocation().withFolderPath("datadezvjqw").withFileName("dataoyiyaxqv");
         model = BinaryData.fromObject(model).toObject(AzureFileStorageLocation.class);
     }
 }

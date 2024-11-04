@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,12 +12,12 @@ import java.util.Collection;
  */
 public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachineState> {
     /**
-     * Static value Running for VirtualMachineState.
+     * The virtual machine is up and running.
      */
     public static final VirtualMachineState RUNNING = fromString("Running");
 
     /**
-     * Static value Deallocated for VirtualMachineState.
+     * The virtual machine has released the lease on the underlying hardware and is powered off.
      */
     public static final VirtualMachineState DEALLOCATED = fromString("Deallocated");
 
@@ -37,7 +36,6 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
      * @param name a name to look for.
      * @return the corresponding VirtualMachineState.
      */
-    @JsonCreator
     public static VirtualMachineState fromString(String name) {
         return fromString(name, VirtualMachineState.class);
     }

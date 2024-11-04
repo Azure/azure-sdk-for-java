@@ -29,9 +29,8 @@ public final class IntegrationRuntimesRemoveLinksWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.integrationRuntimes()
-            .removeLinksWithResponse("fnffjxdccwuzqwv", "kewlyrweups", "bawzafzdzhh",
-                new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("bxcelvaww"),
-                com.azure.core.util.Context.NONE);
+            .removeLinksWithResponse("jssfwojfng", "hzrjsbwdsit", "pashvjrin",
+                new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("ztga"), com.azure.core.util.Context.NONE);
 
     }
 }

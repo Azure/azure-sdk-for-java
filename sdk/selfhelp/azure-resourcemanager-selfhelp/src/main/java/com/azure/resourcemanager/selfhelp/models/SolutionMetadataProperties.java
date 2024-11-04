@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Metadata Properties.
  */
 @Fluent
-public final class SolutionMetadataProperties {
+public final class SolutionMetadataProperties implements JsonSerializable<SolutionMetadataProperties> {
     /*
      * Solution Id.
      */
-    @JsonProperty(value = "solutionId")
     private String solutionId;
 
     /*
      * Solution Type.
      */
-    @JsonProperty(value = "solutionType", access = JsonProperty.Access.WRITE_ONLY)
     private SolutionType solutionType;
 
     /*
      * A detailed description of solution.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Required parameters for invoking this particular solution.
      */
-    @JsonProperty(value = "requiredInputs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredInputs;
 
     /**
@@ -96,5 +96,48 @@ public final class SolutionMetadataProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("solutionId", this.solutionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionMetadataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionMetadataProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SolutionMetadataProperties.
+     */
+    public static SolutionMetadataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionMetadataProperties deserializedSolutionMetadataProperties = new SolutionMetadataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("solutionId".equals(fieldName)) {
+                    deserializedSolutionMetadataProperties.solutionId = reader.getString();
+                } else if ("solutionType".equals(fieldName)) {
+                    deserializedSolutionMetadataProperties.solutionType = SolutionType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSolutionMetadataProperties.description = reader.getString();
+                } else if ("requiredInputs".equals(fieldName)) {
+                    List<String> requiredInputs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSolutionMetadataProperties.requiredInputs = requiredInputs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionMetadataProperties;
+        });
     }
 }

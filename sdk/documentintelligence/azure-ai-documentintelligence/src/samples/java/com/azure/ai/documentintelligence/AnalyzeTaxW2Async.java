@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Async Sample for analyzing commonly found W-2 fields from a local file input stream of a tax W-2 document.
- * See fields found on a US Tax W2 document <a href=https://aka.ms/documentintelligence/taxusw2fieldschema>here</a>
+ * See fields found on a US Tax W2 document <a href=https://aka.ms/formrecognizer/taxusw2fieldschema>here</a>
  */
 public class AnalyzeTaxW2Async {
     /**
@@ -38,8 +38,9 @@ public class AnalyzeTaxW2Async {
         String w2Url =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/w2/Sample-W2.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeW2Poller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
+                null,
                 null,
                 null,
                 null,
@@ -57,7 +58,7 @@ public class AnalyzeTaxW2Async {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         w2Mono.subscribe(analyzeTaxResult -> {
 

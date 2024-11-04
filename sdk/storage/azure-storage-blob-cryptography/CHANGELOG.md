@@ -1,5 +1,84 @@
 # Release History
 
+## 12.28.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.28.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+## 12.27.1 (2024-10-08)
+
+### Bugs Fixed
+- Fixed a bug where downloadToFile and openInputStream was throwing an InvalidRange exception if the target file size was a multiple of the
+  authenticated region length.
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.28.0` to version `12.28.1`.
+
+## 12.27.0 (2024-09-17)
+
+### Features Added
+- Added a new `EncryptionVersion.V2_1` that allows encrypted blobs to be uploaded using a configurable authenticated region length.
+- Added configuration to allow encrypted blobs to be uploaded using a configurable authenticated region length via 
+  `BlobClientSideEncryptionOptions`. The region length can be configured to range between 16 bytes to 1GB. The region 
+  length can be set via `BlobClientSideEncryptionOptions.setAuthenticatedRegionDataLengthInBytes(long authenticatedRegionDataLength)`. 
+  Note: This change only applies to `EncryptionVersion.V2_1`. Also, only applies to upload operations, this does not directly 
+  change the authenticated region length used to download and decrypt blobs.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-blob` from `12.27.0` to version `12.28.0`.
+
+## 12.27.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added support for service version 2024-11-04.
+
+## 12.26.0 (2024-07-18)
+
+### Features Added
+- Added support for service version 2024-08-04.
+
+### Breaking Changes
+- When creating a `EncryptedBlobClient` via EncryptedBlobClientBuilder, the blob name will be stored exactly as passed 
+  in and will not be URL-encoded. For example, if blob name is "test%25test" and is created by calling
+  `EncryptedBlobClientBuilder.blobName("test%25test")` along with other required parameters, 
+  `EncryptedBlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
+  “https://account.blob.core.windows.net/container/test%25%25test”.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-blob` from `12.26.1` to version `12.27.0`.
+
+## 12.26.0-beta.1 (2024-06-11)
+
+### Features Added
+- Added support for service version 2024-08-04.
+
+## 12.25.1 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-storage-blob` from `12.26.0` to version `12.26.1`.
+
 ## 12.25.0 (2024-05-15)
 
 ### Features Added

@@ -12,9 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMBackupReque
  */
 public final class BackupsTriggerSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/TriggerBackup_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/TriggerBackup_Post.json
      */
     /**
      * Sample code: Trigger Backup.
@@ -23,8 +21,10 @@ public final class BackupsTriggerSamples {
      */
     public static void
         triggerBackup(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backups().triggerWithResponse("linuxRsVault", "linuxRsVaultRG", "Azure",
-            "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r", "VM;iaasvmcontainerv2;testrg;v1win2012r",
-            new BackupRequestResource().withProperties(new IaasVMBackupRequest()), com.azure.core.util.Context.NONE);
+        manager.backups()
+            .triggerWithResponse("linuxRsVault", "linuxRsVaultRG", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r", "VM;iaasvmcontainerv2;testrg;v1win2012r",
+                new BackupRequestResource().withProperties(new IaasVMBackupRequest()),
+                com.azure.core.util.Context.NONE);
     }
 }

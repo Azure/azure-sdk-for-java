@@ -32,16 +32,16 @@ public class AttachStatsbeatTest {
     @Test
     public void testVirtualMachineResourceProviderId() throws IOException {
         assertThat(attachStatsbeat.getResourceProviderId()).isEqualTo("unknown");
-        Path path =
-            new File(getClass().getClassLoader().getResource("metadata_instance_linux.json").getPath())
-                .toPath();
+        Path path
+            = new File(getClass().getClassLoader().getResource("metadata_instance_linux.json").getPath()).toPath();
         InputStream in = Files.newInputStream(path);
         BufferedSource source = Okio.buffer(Okio.source(in));
         String result = source.readUtf8();
         source.close();
         CustomDimensions customDimensions = new CustomDimensions();
-        AzureMetadataService azureMetadataService =
-            new AzureMetadataService(attachStatsbeat, customDimensions, (response) -> {});
+        AzureMetadataService azureMetadataService
+            = new AzureMetadataService(attachStatsbeat, customDimensions, (response) -> {
+            });
         azureMetadataService.updateMetadata(result);
         assertThat("2a1216c3-a2a0-4fc5-a941-b1f5acde7051/65b2f83e-7bf1-4be3-bafc-3a4163265a52")
             .isEqualTo(attachStatsbeat.getResourceProviderId());

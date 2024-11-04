@@ -11,19 +11,19 @@ public final class BlobSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobSource model = BinaryData.fromString(
-            "{\"type\":\"bjledjxblobknfpd\",\"treatEmptyAsNull\":\"dataacsfbmb\",\"skipHeaderLineCount\":\"dataefqku\",\"recursive\":\"datayumoamqxwluslxyt\",\"sourceRetryCount\":\"datahzgj\",\"sourceRetryWait\":\"dataomctbgoccypxsrh\",\"maxConcurrentConnections\":\"datalbnuflfzawk\",\"disableMetricsCollection\":\"datae\",\"\":{\"jnhwwy\":\"datapyoqfbjpclboioj\"}}")
+            "{\"type\":\"BlobSource\",\"treatEmptyAsNull\":\"datakiw\",\"skipHeaderLineCount\":\"dataplqnilozf\",\"recursive\":\"datavsf\",\"sourceRetryCount\":\"datacarfdmlie\",\"sourceRetryWait\":\"datawocufcshqfc\",\"maxConcurrentConnections\":\"datanxfof\",\"disableMetricsCollection\":\"datadroqktegi\",\"\":{\"lzvgjme\":\"datazctqbvn\",\"yislepdb\":\"dataqoy\",\"pfnumpyy\":\"dataiklnt\",\"bmjbmtxbi\":\"datab\"}}")
             .toObject(BlobSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobSource model = new BlobSource().withSourceRetryCount("datahzgj")
-            .withSourceRetryWait("dataomctbgoccypxsrh")
-            .withMaxConcurrentConnections("datalbnuflfzawk")
-            .withDisableMetricsCollection("datae")
-            .withTreatEmptyAsNull("dataacsfbmb")
-            .withSkipHeaderLineCount("dataefqku")
-            .withRecursive("datayumoamqxwluslxyt");
+        BlobSource model = new BlobSource().withSourceRetryCount("datacarfdmlie")
+            .withSourceRetryWait("datawocufcshqfc")
+            .withMaxConcurrentConnections("datanxfof")
+            .withDisableMetricsCollection("datadroqktegi")
+            .withTreatEmptyAsNull("datakiw")
+            .withSkipHeaderLineCount("dataplqnilozf")
+            .withRecursive("datavsf");
         model = BinaryData.fromObject(model).toObject(BlobSource.class);
     }
 }

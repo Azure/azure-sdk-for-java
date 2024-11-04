@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.mobilenetwork.models.GNbId;
 import com.azure.resourcemanager.mobilenetwork.models.GlobalRanNodeId;
+import com.azure.resourcemanager.mobilenetwork.models.GNbId;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.RrcEstablishmentCause;
 import com.azure.resourcemanager.mobilenetwork.models.Snssai;
@@ -22,73 +22,83 @@ public final class UeConnectionInfo5GTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UeConnectionInfo5G model = BinaryData.fromString(
-            "{\"locationInfo\":{\"locationType\":\"duy\",\"tac\":\"vuzhyr\",\"plmn\":{\"mcc\":\"ewipm\",\"mnc\":\"ekdxuku\"}},\"globalRanNodeId\":{\"plmnId\":{\"mcc\":\"gsjj\",\"mnc\":\"undxgketw\"},\"gNbId\":{\"bitLength\":84465670,\"gNBValue\":\"hfjmhvv\"},\"ngeNbId\":\"vgpmun\",\"eNbId\":\"sx\",\"n3IwfId\":\"hfbuzjyihsasbhud\",\"wagfId\":\"ohyuemslynsq\",\"tngfId\":\"pfoobr\",\"nid\":\"tyms\"},\"perUeTnla\":\"ygqdnfwqzdz\",\"amfUeNgapId\":6824838811661161914,\"ranUeNgapId\":362294520,\"lastVisitedTai\":\"xhnfhqly\",\"allowedNssai\":[{\"sst\":2137536799,\"sd\":\"wivkxo\"}],\"ueState\":\"Connected\",\"rrcEstablishmentCause\":\"SMS\",\"ueUsageSetting\":\"VoiceCentric\",\"lastActivityTime\":\"2021-01-31T15:44:08Z\"}")
+            "{\"locationInfo\":{\"locationType\":\"vsqltnzoibgsxg\",\"tac\":\"xfyqonmpqoxwdo\",\"plmn\":{\"mcc\":\"dbxiqx\",\"mnc\":\"iiqbi\"}},\"globalRanNodeId\":{\"plmnId\":{\"mcc\":\"htmwwinh\",\"mnc\":\"hfqpofv\"},\"gNbId\":{\"bitLength\":1874825452,\"gNBValue\":\"embnkbw\"},\"ngeNbId\":\"vxkdivqihebwtswb\",\"eNbId\":\"wfmdurage\",\"n3IwfId\":\"zvcjfelisdjubggb\",\"wagfId\":\"gkxkbsazgakg\",\"tngfId\":\"yrcmjdmspofap\",\"nid\":\"hryl\"},\"perUeTnla\":\"ofrzgb\",\"amfUeNgapId\":2813086357064357787,\"ranUeNgapId\":1101688908,\"lastVisitedTai\":\"st\",\"allowedNssai\":[{\"sst\":25820211,\"sd\":\"xbcuiiznkt\"},{\"sst\":140033236,\"sd\":\"nsnvpd\"},{\"sst\":1623072376,\"sd\":\"ikostbzbkiwbuqny\"}],\"ueState\":\"Detached\",\"rrcEstablishmentCause\":\"MobileOriginatedSignaling\",\"ueUsageSetting\":\"VoiceCentric\",\"lastActivityTime\":\"2021-05-02T08:44:02Z\"}")
             .toObject(UeConnectionInfo5G.class);
-        Assertions.assertEquals("duy", model.locationInfo().locationType());
-        Assertions.assertEquals("vuzhyr", model.locationInfo().tac());
-        Assertions.assertEquals("ewipm", model.locationInfo().plmn().mcc());
-        Assertions.assertEquals("ekdxuku", model.locationInfo().plmn().mnc());
-        Assertions.assertEquals("gsjj", model.globalRanNodeId().plmnId().mcc());
-        Assertions.assertEquals("undxgketw", model.globalRanNodeId().plmnId().mnc());
-        Assertions.assertEquals(84465670, model.globalRanNodeId().gNbId().bitLength());
-        Assertions.assertEquals("hfjmhvv", model.globalRanNodeId().gNbId().gNBValue());
-        Assertions.assertEquals("vgpmun", model.globalRanNodeId().ngeNbId());
-        Assertions.assertEquals("sx", model.globalRanNodeId().eNbId());
-        Assertions.assertEquals("hfbuzjyihsasbhud", model.globalRanNodeId().n3IwfId());
-        Assertions.assertEquals("ohyuemslynsq", model.globalRanNodeId().wagfId());
-        Assertions.assertEquals("pfoobr", model.globalRanNodeId().tngfId());
-        Assertions.assertEquals("tyms", model.globalRanNodeId().nid());
-        Assertions.assertEquals("ygqdnfwqzdz", model.perUeTnla());
-        Assertions.assertEquals(6824838811661161914L, model.amfUeNgapId());
-        Assertions.assertEquals(362294520, model.ranUeNgapId());
-        Assertions.assertEquals("xhnfhqly", model.lastVisitedTai());
-        Assertions.assertEquals(2137536799, model.allowedNssai().get(0).sst());
-        Assertions.assertEquals("wivkxo", model.allowedNssai().get(0).sd());
-        Assertions.assertEquals(UeState.CONNECTED, model.ueState());
-        Assertions.assertEquals(RrcEstablishmentCause.SMS, model.rrcEstablishmentCause());
+        Assertions.assertEquals("vsqltnzoibgsxg", model.locationInfo().locationType());
+        Assertions.assertEquals("xfyqonmpqoxwdo", model.locationInfo().tac());
+        Assertions.assertEquals("dbxiqx", model.locationInfo().plmn().mcc());
+        Assertions.assertEquals("iiqbi", model.locationInfo().plmn().mnc());
+        Assertions.assertEquals("htmwwinh", model.globalRanNodeId().plmnId().mcc());
+        Assertions.assertEquals("hfqpofv", model.globalRanNodeId().plmnId().mnc());
+        Assertions.assertEquals(1874825452, model.globalRanNodeId().gNbId().bitLength());
+        Assertions.assertEquals("embnkbw", model.globalRanNodeId().gNbId().gNBValue());
+        Assertions.assertEquals("vxkdivqihebwtswb", model.globalRanNodeId().ngeNbId());
+        Assertions.assertEquals("wfmdurage", model.globalRanNodeId().eNbId());
+        Assertions.assertEquals("zvcjfelisdjubggb", model.globalRanNodeId().n3IwfId());
+        Assertions.assertEquals("gkxkbsazgakg", model.globalRanNodeId().wagfId());
+        Assertions.assertEquals("yrcmjdmspofap", model.globalRanNodeId().tngfId());
+        Assertions.assertEquals("hryl", model.globalRanNodeId().nid());
+        Assertions.assertEquals("ofrzgb", model.perUeTnla());
+        Assertions.assertEquals(2813086357064357787L, model.amfUeNgapId());
+        Assertions.assertEquals(1101688908, model.ranUeNgapId());
+        Assertions.assertEquals("st", model.lastVisitedTai());
+        Assertions.assertEquals(25820211, model.allowedNssai().get(0).sst());
+        Assertions.assertEquals("xbcuiiznkt", model.allowedNssai().get(0).sd());
+        Assertions.assertEquals(UeState.DETACHED, model.ueState());
+        Assertions.assertEquals(RrcEstablishmentCause.MOBILE_ORIGINATED_SIGNALING, model.rrcEstablishmentCause());
         Assertions.assertEquals(UeUsageSetting.VOICE_CENTRIC, model.ueUsageSetting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T15:44:08Z"), model.lastActivityTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T08:44:02Z"), model.lastActivityTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UeConnectionInfo5G model = new UeConnectionInfo5G()
-            .withLocationInfo(new UeLocationInfo().withLocationType("duy").withTac("vuzhyr")
-                .withPlmn(new PlmnId().withMcc("ewipm").withMnc("ekdxuku")))
-            .withGlobalRanNodeId(new GlobalRanNodeId().withPlmnId(new PlmnId().withMcc("gsjj").withMnc("undxgketw"))
-                .withGNbId(new GNbId().withBitLength(84465670).withGNBValue("hfjmhvv")).withNgeNbId("vgpmun")
-                .withENbId("sx").withN3IwfId("hfbuzjyihsasbhud").withWagfId("ohyuemslynsq").withTngfId("pfoobr")
-                .withNid("tyms"))
-            .withPerUeTnla("ygqdnfwqzdz").withAmfUeNgapId(6824838811661161914L).withRanUeNgapId(362294520)
-            .withLastVisitedTai("xhnfhqly")
-            .withAllowedNssai(Arrays.asList(new Snssai().withSst(2137536799).withSd("wivkxo")))
-            .withUeState(UeState.CONNECTED).withRrcEstablishmentCause(RrcEstablishmentCause.SMS)
+            .withLocationInfo(new UeLocationInfo().withLocationType("vsqltnzoibgsxg")
+                .withTac("xfyqonmpqoxwdo")
+                .withPlmn(new PlmnId().withMcc("dbxiqx").withMnc("iiqbi")))
+            .withGlobalRanNodeId(new GlobalRanNodeId().withPlmnId(new PlmnId().withMcc("htmwwinh").withMnc("hfqpofv"))
+                .withGNbId(new GNbId().withBitLength(1874825452).withGNBValue("embnkbw"))
+                .withNgeNbId("vxkdivqihebwtswb")
+                .withENbId("wfmdurage")
+                .withN3IwfId("zvcjfelisdjubggb")
+                .withWagfId("gkxkbsazgakg")
+                .withTngfId("yrcmjdmspofap")
+                .withNid("hryl"))
+            .withPerUeTnla("ofrzgb")
+            .withAmfUeNgapId(2813086357064357787L)
+            .withRanUeNgapId(1101688908)
+            .withLastVisitedTai("st")
+            .withAllowedNssai(Arrays.asList(new Snssai().withSst(25820211).withSd("xbcuiiznkt"),
+                new Snssai().withSst(140033236).withSd("nsnvpd"),
+                new Snssai().withSst(1623072376).withSd("ikostbzbkiwbuqny")))
+            .withUeState(UeState.DETACHED)
+            .withRrcEstablishmentCause(RrcEstablishmentCause.MOBILE_ORIGINATED_SIGNALING)
             .withUeUsageSetting(UeUsageSetting.VOICE_CENTRIC)
-            .withLastActivityTime(OffsetDateTime.parse("2021-01-31T15:44:08Z"));
+            .withLastActivityTime(OffsetDateTime.parse("2021-05-02T08:44:02Z"));
         model = BinaryData.fromObject(model).toObject(UeConnectionInfo5G.class);
-        Assertions.assertEquals("duy", model.locationInfo().locationType());
-        Assertions.assertEquals("vuzhyr", model.locationInfo().tac());
-        Assertions.assertEquals("ewipm", model.locationInfo().plmn().mcc());
-        Assertions.assertEquals("ekdxuku", model.locationInfo().plmn().mnc());
-        Assertions.assertEquals("gsjj", model.globalRanNodeId().plmnId().mcc());
-        Assertions.assertEquals("undxgketw", model.globalRanNodeId().plmnId().mnc());
-        Assertions.assertEquals(84465670, model.globalRanNodeId().gNbId().bitLength());
-        Assertions.assertEquals("hfjmhvv", model.globalRanNodeId().gNbId().gNBValue());
-        Assertions.assertEquals("vgpmun", model.globalRanNodeId().ngeNbId());
-        Assertions.assertEquals("sx", model.globalRanNodeId().eNbId());
-        Assertions.assertEquals("hfbuzjyihsasbhud", model.globalRanNodeId().n3IwfId());
-        Assertions.assertEquals("ohyuemslynsq", model.globalRanNodeId().wagfId());
-        Assertions.assertEquals("pfoobr", model.globalRanNodeId().tngfId());
-        Assertions.assertEquals("tyms", model.globalRanNodeId().nid());
-        Assertions.assertEquals("ygqdnfwqzdz", model.perUeTnla());
-        Assertions.assertEquals(6824838811661161914L, model.amfUeNgapId());
-        Assertions.assertEquals(362294520, model.ranUeNgapId());
-        Assertions.assertEquals("xhnfhqly", model.lastVisitedTai());
-        Assertions.assertEquals(2137536799, model.allowedNssai().get(0).sst());
-        Assertions.assertEquals("wivkxo", model.allowedNssai().get(0).sd());
-        Assertions.assertEquals(UeState.CONNECTED, model.ueState());
-        Assertions.assertEquals(RrcEstablishmentCause.SMS, model.rrcEstablishmentCause());
+        Assertions.assertEquals("vsqltnzoibgsxg", model.locationInfo().locationType());
+        Assertions.assertEquals("xfyqonmpqoxwdo", model.locationInfo().tac());
+        Assertions.assertEquals("dbxiqx", model.locationInfo().plmn().mcc());
+        Assertions.assertEquals("iiqbi", model.locationInfo().plmn().mnc());
+        Assertions.assertEquals("htmwwinh", model.globalRanNodeId().plmnId().mcc());
+        Assertions.assertEquals("hfqpofv", model.globalRanNodeId().plmnId().mnc());
+        Assertions.assertEquals(1874825452, model.globalRanNodeId().gNbId().bitLength());
+        Assertions.assertEquals("embnkbw", model.globalRanNodeId().gNbId().gNBValue());
+        Assertions.assertEquals("vxkdivqihebwtswb", model.globalRanNodeId().ngeNbId());
+        Assertions.assertEquals("wfmdurage", model.globalRanNodeId().eNbId());
+        Assertions.assertEquals("zvcjfelisdjubggb", model.globalRanNodeId().n3IwfId());
+        Assertions.assertEquals("gkxkbsazgakg", model.globalRanNodeId().wagfId());
+        Assertions.assertEquals("yrcmjdmspofap", model.globalRanNodeId().tngfId());
+        Assertions.assertEquals("hryl", model.globalRanNodeId().nid());
+        Assertions.assertEquals("ofrzgb", model.perUeTnla());
+        Assertions.assertEquals(2813086357064357787L, model.amfUeNgapId());
+        Assertions.assertEquals(1101688908, model.ranUeNgapId());
+        Assertions.assertEquals("st", model.lastVisitedTai());
+        Assertions.assertEquals(25820211, model.allowedNssai().get(0).sst());
+        Assertions.assertEquals("xbcuiiznkt", model.allowedNssai().get(0).sd());
+        Assertions.assertEquals(UeState.DETACHED, model.ueState());
+        Assertions.assertEquals(RrcEstablishmentCause.MOBILE_ORIGINATED_SIGNALING, model.rrcEstablishmentCause());
         Assertions.assertEquals(UeUsageSetting.VOICE_CENTRIC, model.ueUsageSetting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T15:44:08Z"), model.lastActivityTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T08:44:02Z"), model.lastActivityTime());
     }
 }

@@ -13,16 +13,18 @@ public final class MetricsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsConfiguration model
-            = BinaryData.fromString("{\"destinations\":[\"fmd\",\"ragegi\",\"vcjfelisdjubggb\"]}")
+            = BinaryData.fromString("{\"includeKeda\":true,\"destinations\":[\"jzfpafolpymwamx\"]}")
                 .toObject(MetricsConfiguration.class);
-        Assertions.assertEquals("fmd", model.destinations().get(0));
+        Assertions.assertEquals(true, model.includeKeda());
+        Assertions.assertEquals("jzfpafolpymwamx", model.destinations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetricsConfiguration model
-            = new MetricsConfiguration().withDestinations(Arrays.asList("fmd", "ragegi", "vcjfelisdjubggb"));
+            = new MetricsConfiguration().withIncludeKeda(true).withDestinations(Arrays.asList("jzfpafolpymwamx"));
         model = BinaryData.fromObject(model).toObject(MetricsConfiguration.class);
-        Assertions.assertEquals("fmd", model.destinations().get(0));
+        Assertions.assertEquals(true, model.includeKeda());
+        Assertions.assertEquals("jzfpafolpymwamx", model.destinations().get(0));
     }
 }

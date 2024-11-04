@@ -102,7 +102,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
     public static <T> Flux<PipelinedQueryExecutionContextBase<T>> createReadManyAsync(
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -110,7 +110,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
             ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
                 sqlQuery,
                 rangeQueryMap,
-                cosmosQueryRequestOptions, resourceId,
+                cosmosQueryRequestOptions, collection,
                 collectionLink, activityId, klass,
                 resourceTypeEnum,
                 isQueryCancelledOnTimeout);
@@ -137,7 +137,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
     }
 
     private static QueryInfo validateQueryInfo(QueryInfo queryInfo) {
-        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy()) {
+        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasNonStreamingOrderBy()) {
             // Any query with order by, aggregates or group by needs to go through the Document query pipeline
             throw new IllegalStateException("This query must not use the simple query pipeline.");
         }

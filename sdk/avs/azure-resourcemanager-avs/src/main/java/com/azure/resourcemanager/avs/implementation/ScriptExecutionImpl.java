@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.avs.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner;
 import com.azure.resourcemanager.avs.models.ScriptExecution;
@@ -31,6 +32,10 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String scriptCmdletId() {
@@ -153,21 +158,16 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
     }
 
     public ScriptExecution create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScriptExecutions()
-                .createOrUpdate(
-                    resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getScriptExecutions()
+            .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ScriptExecution create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScriptExecutions()
-                .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getScriptExecutions()
+            .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), context);
         return this;
     }
 
@@ -182,63 +182,52 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
     }
 
     public ScriptExecution apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScriptExecutions()
-                .createOrUpdate(
-                    resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getScriptExecutions()
+            .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ScriptExecution apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScriptExecutions()
-                .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getScriptExecutions()
+            .createOrUpdate(resourceGroupName, privateCloudName, scriptExecutionName, this.innerModel(), context);
         return this;
     }
 
     ScriptExecutionImpl(ScriptExecutionInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = Utils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.scriptExecutionName = Utils.getValueFromIdByName(innerObject.id(), "scriptExecutions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scriptExecutions");
     }
 
     public ScriptExecution refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScriptExecutions()
-                .getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScriptExecutions()
+            .getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScriptExecution refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScriptExecutions()
-                .getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScriptExecutions()
+            .getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context)
+            .getValue();
         return this;
     }
 
-    public Response<ScriptExecution> getExecutionLogsWithResponse(
-        List<ScriptOutputStreamType> scriptOutputStreamType, Context context) {
-        return serviceManager
-            .scriptExecutions()
-            .getExecutionLogsWithResponse(
-                resourceGroupName, privateCloudName, scriptExecutionName, scriptOutputStreamType, context);
+    public Response<ScriptExecution> getExecutionLogsWithResponse(List<ScriptOutputStreamType> scriptOutputStreamType,
+        Context context) {
+        return serviceManager.scriptExecutions()
+            .getExecutionLogsWithResponse(resourceGroupName, privateCloudName, scriptExecutionName,
+                scriptOutputStreamType, context);
     }
 
     public ScriptExecution getExecutionLogs() {
-        return serviceManager
-            .scriptExecutions()
+        return serviceManager.scriptExecutions()
             .getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
     }
 

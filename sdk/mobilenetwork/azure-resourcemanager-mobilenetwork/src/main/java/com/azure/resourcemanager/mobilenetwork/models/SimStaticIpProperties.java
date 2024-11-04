@@ -13,16 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SimStaticIpProperties {
     /*
-     * The attached data network on which the static IP address will be used. The combination of attached data network
-     * and slice defines the network scope of the IP address. The attached data network must be in the same location as
-     * the SIM.
+     * The attached data network on which the static IP address will be used. The combination of attached data network and slice defines the network scope of the IP address. The attached data network must be in the same location as the SIM.
      */
     @JsonProperty(value = "attachedDataNetwork")
     private AttachedDataNetworkResourceId attachedDataNetwork;
 
     /*
-     * The network slice on which the static IP address will be used. The combination of attached data network and
-     * slice defines the network scope of the IP address. The slice must be in the same location as the SIM.
+     * The network slice on which the static IP address will be used. The combination of attached data network and slice defines the network scope of the IP address. The slice must be in the same location as the SIM.
      */
     @JsonProperty(value = "slice")
     private SliceResourceId slice;

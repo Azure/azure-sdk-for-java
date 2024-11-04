@@ -5,11 +5,14 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import org.apache.qpid.proton.Proton;
@@ -19,6 +22,8 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -36,6 +41,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -46,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
@@ -88,6 +95,7 @@ public class TestUtils {
     static final int USE_CASE_MULTIPLE_SESSIONS1 = 29;
     static final int USE_CASE_MULTIPLE_SESSIONS2 = 30;
     static final int USE_CASE_MULTIPLE_SESSIONS3 = 31;
+    static final int USE_CASE_AUTO_RENEW_RECEIVE = 32;
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.
@@ -120,7 +128,8 @@ public class TestUtils {
             URI endpoint = properties.getEndpoint();
             String entityPath = properties.getEntityPath();
             String resourceUrl = entityPath == null || entityPath.trim().length() == 0
-                ? endpoint.toString() : endpoint.toString() +  properties.getEntityPath();
+                ? endpoint.toString()
+                : endpoint.toString() + properties.getEntityPath();
 
             String utf8Encoding = UTF_8.name();
             OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
@@ -137,10 +146,8 @@ public class TestUtils {
                 byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
                 String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
-                    audienceUri,
-                    URLEncoder.encode(signature, utf8Encoding),
-                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat, audienceUri,
+                    URLEncoder.encode(signature, utf8Encoding), URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
                     URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
 
                 if (entityPath == null) {
@@ -157,10 +164,16 @@ public class TestUtils {
     /**
      * Gets the fully qualified domain name for the service bus resource.
      *
+     * @param useFallbackValue If {@code true}, a redacted dummy name is returned if the fully qualified domain name environment variable is not set.
+     *
      * @return The fully qualified domain name for the service bus resource.
      */
-    public static String getFullyQualifiedDomainName() {
-        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
+    public static String getFullyQualifiedDomainName(boolean useFallbackValue) {
+        if (useFallbackValue) {
+            return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME", "REDACTED.servicebus.windows.net");
+        } else {
+            return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        }
     }
 
     public static String getEndpoint() {
@@ -222,6 +235,54 @@ public class TestUtils {
     }
 
     /**
+     * Obtain a {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
+     * configured with service connections federated identity.
+     *
+     * @return A {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
+     *   configured with service connections federated identity, {@code null} otherwise.
+     */
+    public static AzurePipelinesCredentialBuilder getPipelineCredentialBuilder() {
+        final String serviceConnectionId = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
+        final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
+        final String systemAccessToken = getPropertyValue("SYSTEM_ACCESSTOKEN");
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId);
+    }
+
+    /**
+     * Obtain the Azure Pipelines credential if running in Azure Pipelines configured with service connections federated identity.
+     *
+     * @return the Azure Pipelines credential.
+     * @throws org.opentest4j.TestAbortedException if the test is not running in Azure Pipelines configured with service connections federated identity.
+     */
+    public static TokenCredential getPipelineCredential(AtomicReference<TokenCredential> credentialCached) {
+        return credentialCached.updateAndGet(cached -> {
+            if (cached != null) {
+                return cached;
+            }
+            final AzurePipelinesCredentialBuilder builder = TestUtils.getPipelineCredentialBuilder();
+            if (builder == null) {
+                // Throws org.opentest4j.TestAbortedException exception.
+                assumeTrue(false,
+                    "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+                return null;
+            }
+            final AzurePipelinesCredential pipelinesCredential = builder.build();
+            return request -> Mono.defer(() -> pipelinesCredential.getToken(request))
+                .subscribeOn(Schedulers.boundedElastic());
+        });
+    }
+
+    /**
      * Gets the name of an entity based on its base name.
      *
      * @param baseName Base of the entity.
@@ -249,7 +310,8 @@ public class TestUtils {
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
         message.setBody(new Data(new Binary(contents)));
-        message.getMessageAnnotations().getValue()
+        message.getMessageAnnotations()
+            .getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
         Map<String, Object> applicationProperties = new HashMap<>();
@@ -292,14 +354,12 @@ public class TestUtils {
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId, byte[] content) {
-        return IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> {
-                final ServiceBusMessage message = getServiceBusMessage(content, messageId);
-                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
+        return IntStream.range(0, numberOfEvents).mapToObj(number -> {
+            final ServiceBusMessage message = getServiceBusMessage(content, messageId);
+            message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
-                return message;
-            })
-            .collect(Collectors.toList());
+            return message;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -312,14 +372,12 @@ public class TestUtils {
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId) {
-        return IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> {
-                final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
-                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
+        return IntStream.range(0, numberOfEvents).mapToObj(number -> {
+            final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
+            message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
-                return message;
-            })
-            .collect(Collectors.toList());
+            return message;
+        }).collect(Collectors.toList());
     }
 
     public static ServiceBusMessage getServiceBusMessage(String body, String messageId) {

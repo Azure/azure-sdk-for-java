@@ -20,10 +20,7 @@ public final class NfsAccessRule {
     private NfsAccessRuleScope scope;
 
     /*
-     * Filter applied to the scope for this rule. The filter's format depends on its scope. 'default' scope matches all
-     * clients and has no filter value. 'network' scope takes a filter in CIDR format (for example, 10.99.1.0/24).
-     * 'host' takes an IP address or fully qualified domain name as filter. If a client does not match any filter rule
-     * and there is no default rule, access is denied.
+     * Filter applied to the scope for this rule. The filter's format depends on its scope. 'default' scope matches all clients and has no filter value. 'network' scope takes a filter in CIDR format (for example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does not match any filter rule and there is no default rule, access is denied.
      */
     @JsonProperty(value = "filter")
     private String filter;
@@ -41,8 +38,7 @@ public final class NfsAccessRule {
     private Boolean suid;
 
     /*
-     * For the default policy, allow access to subdirectories under the root export. If this is set to no, clients can
-     * only mount the path '/'. If set to yes, clients can mount a deeper path, like '/a/b'.
+     * For the default policy, allow access to subdirectories under the root export. If this is set to no, clients can only mount the path '/'. If set to yes, clients can mount a deeper path, like '/a/b'.
      */
     @JsonProperty(value = "submountAccess")
     private Boolean submountAccess;
@@ -94,8 +90,8 @@ public final class NfsAccessRule {
     /**
      * Get the filter property: Filter applied to the scope for this rule. The filter's format depends on its scope.
      * 'default' scope matches all clients and has no filter value. 'network' scope takes a filter in CIDR format (for
-     * example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does
-     * not match any filter rule and there is no default rule, access is denied.
+     * example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does not
+     * match any filter rule and there is no default rule, access is denied.
      * 
      * @return the filter value.
      */
@@ -106,8 +102,8 @@ public final class NfsAccessRule {
     /**
      * Set the filter property: Filter applied to the scope for this rule. The filter's format depends on its scope.
      * 'default' scope matches all clients and has no filter value. 'network' scope takes a filter in CIDR format (for
-     * example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does
-     * not match any filter rule and there is no default rule, access is denied.
+     * example, 10.99.1.0/24). 'host' takes an IP address or fully qualified domain name as filter. If a client does not
+     * match any filter rule and there is no default rule, access is denied.
      * 
      * @param filter the filter value to set.
      * @return the NfsAccessRule object itself.
@@ -158,8 +154,8 @@ public final class NfsAccessRule {
     }
 
     /**
-     * Get the submountAccess property: For the default policy, allow access to subdirectories under the root export.
-     * If this is set to no, clients can only mount the path '/'. If set to yes, clients can mount a deeper path, like
+     * Get the submountAccess property: For the default policy, allow access to subdirectories under the root export. If
+     * this is set to no, clients can only mount the path '/'. If set to yes, clients can mount a deeper path, like
      * '/a/b'.
      * 
      * @return the submountAccess value.
@@ -169,8 +165,8 @@ public final class NfsAccessRule {
     }
 
     /**
-     * Set the submountAccess property: For the default policy, allow access to subdirectories under the root export.
-     * If this is set to no, clients can only mount the path '/'. If set to yes, clients can mount a deeper path, like
+     * Set the submountAccess property: For the default policy, allow access to subdirectories under the root export. If
+     * this is set to no, clients can only mount the path '/'. If set to yes, clients can mount a deeper path, like
      * '/a/b'.
      * 
      * @param submountAccess the submountAccess value to set.
@@ -252,12 +248,12 @@ public final class NfsAccessRule {
      */
     public void validate() {
         if (scope() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property scope in model NfsAccessRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property scope in model NfsAccessRule"));
         }
         if (access() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property access in model NfsAccessRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property access in model NfsAccessRule"));
         }
     }
 

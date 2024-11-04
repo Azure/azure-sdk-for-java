@@ -298,8 +298,10 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCoreDataPlaneName, String attachedDataNetworkName) {
-        return this.beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName)
+            .getSyncPoller();
     }
 
     /**
@@ -318,8 +320,10 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCoreDataPlaneName, String attachedDataNetworkName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -733,8 +737,10 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     public SyncPoller<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         String attachedDataNetworkName, AttachedDataNetworkInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -756,8 +762,10 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
     public SyncPoller<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         String attachedDataNetworkName, AttachedDataNetworkInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            attachedDataNetworkName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                attachedDataNetworkName, parameters, context)
+            .getSyncPoller();
     }
 
     /**

@@ -87,14 +87,16 @@ public final class BuildResourceImpl implements BuildResource, BuildResource.Def
     }
 
     public BuildResource create() {
-        this.innerObject = serviceManager.serviceClient().getBuilds().createOrUpdate(resourceGroupName, builderName,
-            buildName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilds()
+            .createOrUpdate(resourceGroupName, builderName, buildName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BuildResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBuilds().createOrUpdate(resourceGroupName, builderName,
-            buildName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilds()
+            .createOrUpdate(resourceGroupName, builderName, buildName, this.innerModel(), context);
         return this;
     }
 
@@ -109,14 +111,16 @@ public final class BuildResourceImpl implements BuildResource, BuildResource.Def
     }
 
     public BuildResource apply() {
-        this.innerObject = serviceManager.serviceClient().getBuilds().createOrUpdate(resourceGroupName, builderName,
-            buildName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilds()
+            .createOrUpdate(resourceGroupName, builderName, buildName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BuildResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBuilds().createOrUpdate(resourceGroupName, builderName,
-            buildName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilds()
+            .createOrUpdate(resourceGroupName, builderName, buildName, this.innerModel(), context);
         return this;
     }
 
@@ -130,14 +134,18 @@ public final class BuildResourceImpl implements BuildResource, BuildResource.Def
     }
 
     public BuildResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getBuilds()
-            .getWithResponse(resourceGroupName, builderName, buildName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilds()
+            .getWithResponse(resourceGroupName, builderName, buildName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BuildResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBuilds()
-            .getWithResponse(resourceGroupName, builderName, buildName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilds()
+            .getWithResponse(resourceGroupName, builderName, buildName, context)
+            .getValue();
         return this;
     }
 

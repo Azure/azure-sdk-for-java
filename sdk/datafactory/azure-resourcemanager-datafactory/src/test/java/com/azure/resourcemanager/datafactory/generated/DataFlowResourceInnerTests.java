@@ -15,22 +15,22 @@ public final class DataFlowResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"dsdaultxijjumf\",\"description\":\"azlnqnmcjngzqdqx\",\"annotations\":[\"datawgnyfusfzsvtui\"],\"folder\":{\"name\":\"ajqglcf\"}},\"name\":\"l\",\"type\":\"ryxynqnzrd\",\"etag\":\"ovw\",\"id\":\"nptgoeiybba\"}")
+            "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"aeranokqgukkjqnv\",\"annotations\":[\"dataylaxxulcdi\",\"datadosfjbjsvgjrw\"],\"folder\":{\"name\":\"vyc\"}},\"name\":\"dclxgc\",\"type\":\"nfnw\",\"etag\":\"tmvpdvjdhtt\",\"id\":\"efedxihchrphkm\"}")
             .toObject(DataFlowResourceInner.class);
-        Assertions.assertEquals("nptgoeiybba", model.id());
-        Assertions.assertEquals("azlnqnmcjngzqdqx", model.properties().description());
-        Assertions.assertEquals("ajqglcf", model.properties().folder().name());
+        Assertions.assertEquals("efedxihchrphkm", model.id());
+        Assertions.assertEquals("aeranokqgukkjqnv", model.properties().description());
+        Assertions.assertEquals("vyc", model.properties().folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowResourceInner model = new DataFlowResourceInner().withId("nptgoeiybba")
-            .withProperties(new DataFlow().withDescription("azlnqnmcjngzqdqx")
-                .withAnnotations(Arrays.asList("datawgnyfusfzsvtui"))
-                .withFolder(new DataFlowFolder().withName("ajqglcf")));
+        DataFlowResourceInner model = new DataFlowResourceInner().withId("efedxihchrphkm")
+            .withProperties(new DataFlow().withDescription("aeranokqgukkjqnv")
+                .withAnnotations(Arrays.asList("dataylaxxulcdi", "datadosfjbjsvgjrw"))
+                .withFolder(new DataFlowFolder().withName("vyc")));
         model = BinaryData.fromObject(model).toObject(DataFlowResourceInner.class);
-        Assertions.assertEquals("nptgoeiybba", model.id());
-        Assertions.assertEquals("azlnqnmcjngzqdqx", model.properties().description());
-        Assertions.assertEquals("ajqglcf", model.properties().folder().name());
+        Assertions.assertEquals("efedxihchrphkm", model.id());
+        Assertions.assertEquals("aeranokqgukkjqnv", model.properties().description());
+        Assertions.assertEquals("vyc", model.properties().folder().name());
     }
 }

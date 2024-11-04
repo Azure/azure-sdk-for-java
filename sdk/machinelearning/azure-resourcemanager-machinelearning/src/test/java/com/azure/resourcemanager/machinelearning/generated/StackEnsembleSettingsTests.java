@@ -12,24 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class StackEnsembleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StackEnsembleSettings model =
-            BinaryData
-                .fromString(
-                    "{\"stackMetaLearnerKWargs\":\"datandlqvtwknvgmmbu\",\"stackMetaLearnerTrainPercentage\":7.642157888085865,\"stackMetaLearnerType\":\"LogisticRegression\"}")
-                .toObject(StackEnsembleSettings.class);
-        Assertions.assertEquals(7.642157888085865D, model.stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION, model.stackMetaLearnerType());
+        StackEnsembleSettings model = BinaryData.fromString(
+            "{\"stackMetaLearnerType\":\"LinearRegression\",\"stackMetaLearnerTrainPercentage\":69.9155023159612,\"stackMetaLearnerKWargs\":\"dataygta\"}")
+            .toObject(StackEnsembleSettings.class);
+        Assertions.assertEquals(StackMetaLearnerType.LINEAR_REGRESSION, model.stackMetaLearnerType());
+        Assertions.assertEquals(69.9155023159612D, model.stackMetaLearnerTrainPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StackEnsembleSettings model =
-            new StackEnsembleSettings()
-                .withStackMetaLearnerKWargs("datandlqvtwknvgmmbu")
-                .withStackMetaLearnerTrainPercentage(7.642157888085865D)
-                .withStackMetaLearnerType(StackMetaLearnerType.LOGISTIC_REGRESSION);
+        StackEnsembleSettings model
+            = new StackEnsembleSettings().withStackMetaLearnerType(StackMetaLearnerType.LINEAR_REGRESSION)
+                .withStackMetaLearnerTrainPercentage(69.9155023159612D)
+                .withStackMetaLearnerKWargs("dataygta");
         model = BinaryData.fromObject(model).toObject(StackEnsembleSettings.class);
-        Assertions.assertEquals(7.642157888085865D, model.stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION, model.stackMetaLearnerType());
+        Assertions.assertEquals(StackMetaLearnerType.LINEAR_REGRESSION, model.stackMetaLearnerType());
+        Assertions.assertEquals(69.9155023159612D, model.stackMetaLearnerTrainPercentage());
     }
 }

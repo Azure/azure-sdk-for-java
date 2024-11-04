@@ -6,20 +6,17 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotProperties;
-import org.junit.jupiter.api.Test;
 
 public final class SnapshotPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        SnapshotProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"xhvpmoue\",\"snapshotName\":\"dzxibqeojnxqbzvd\",\"createdAt\":\"2021-01-10T12:02:15Z\",\"provisioningState\":\"Succeeded\",\"reportProperties\":{\"id\":\"icbtwnpzao\",\"status\":\"Active\",\"tenantId\":\"rhcffcydd\",\"reportName\":\"mjthjqkwp\",\"offerGuid\":\"icxm\",\"timeZone\":\"ciwqvhk\",\"triggerTime\":\"2021-03-25T23:46:11Z\",\"nextTriggerTime\":\"2021-04-08T23:48:15Z\",\"lastTriggerTime\":\"2021-04-28T05:58:26Z\",\"subscriptions\":[\"opbobj\",\"ghmewuam\",\"uhrzayvvt\"],\"resources\":[{\"resourceId\":\"vdfgiotk\",\"resourceType\":\"utqxlngx\",\"resourceKind\":\"fgugnxkrxdqmid\",\"resourceName\":\"hzrvqd\",\"tags\":{}},{\"resourceId\":\"bhj\",\"resourceType\":\"igeho\",\"resourceKind\":\"bowsk\",\"resourceName\":\"yktz\",\"tags\":{}},{\"resourceId\":\"u\",\"resourceType\":\"wgqyw\",\"resourceKind\":\"drvyn\",\"resourceName\":\"gpphrcgyn\",\"tags\":{}},{\"resourceId\":\"cpecfvmmcoofs\",\"resourceType\":\"zevgb\",\"resourceKind\":\"jqabcypmivkwlzuv\",\"resourceName\":\"fwnfnb\",\"tags\":{}}],\"complianceStatus\":{},\"provisioningState\":\"Deleting\"},\"complianceResults\":[{\"complianceName\":\"etqgtzxdpnq\",\"categories\":[]},{\"complianceName\":\"xrjfeallnwsub\",\"categories\":[]},{\"complianceName\":\"ampmngnz\",\"categories\":[]}]}")
-                .toObject(SnapshotProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SnapshotProperties model = BinaryData.fromString(
+            "{\"snapshotName\":\"a\",\"createdAt\":\"2021-05-13T02:02:39Z\",\"provisioningState\":\"Succeeded\",\"reportProperties\":{\"triggerTime\":\"2021-04-20T03:42:41Z\",\"timeZone\":\"fuflrwdmhdlx\",\"resources\":[{\"resourceId\":\"rxsagafcnihgwqa\",\"resourceType\":\"edgfbcvkcvq\",\"resourceKind\":\"keqdcvdrhvoods\",\"resourceOrigin\":\"AWS\",\"accountId\":\"bzdopcj\"}],\"status\":\"Reviewing\",\"errors\":[\"ld\",\"mgxcxrslpm\"],\"tenantId\":\"wuoegrpk\",\"offerGuid\":\"wniyqsluicpd\",\"nextTriggerTime\":\"2021-04-20T03:55Z\",\"lastTriggerTime\":\"2021-06-16T23:24:05Z\",\"subscriptions\":[\"mbmpaxmodfvuefy\",\"sbpfvmwyhr\"],\"complianceStatus\":{\"m365\":{\"passedCount\":386040820,\"failedCount\":892669790,\"manualCount\":1378791233,\"notApplicableCount\":196079656,\"pendingCount\":369562825}},\"storageInfo\":{\"subscriptionId\":\"vqtmnub\",\"resourceGroup\":\"kpzksmondjmq\",\"accountName\":\"vypomgkopkwho\",\"location\":\"pajqgxysm\"},\"certRecords\":[{\"offerGuid\":\"qfqvmkc\",\"certificationStatus\":\"zapvhelx\",\"ingestionStatus\":\"glyatddckcbcuej\",\"controls\":[{\"controlId\":\"ciqibrhosx\",\"controlStatus\":\"qrhzoymibmrqyib\"}]},{\"offerGuid\":\"wfluszdt\",\"certificationStatus\":\"rkwofyyvoqa\",\"ingestionStatus\":\"iexpbtgiwbwo\",\"controls\":[{\"controlId\":\"shrtdtkcnqxwb\",\"controlStatus\":\"kulpiujwaasi\"},{\"controlId\":\"i\",\"controlStatus\":\"byuqerpqlp\"}]}],\"provisioningState\":\"Verifying\"},\"complianceResults\":[{\"complianceName\":\"gbdbutauv\",\"categories\":[{\"categoryName\":\"uwhhmhykojoxafn\",\"categoryStatus\":\"Failed\",\"controlFamilies\":[{},{},{},{}]},{\"categoryName\":\"hkoymkcdyhbp\",\"categoryStatus\":\"NotApplicable\",\"controlFamilies\":[{},{},{}]},{\"categoryName\":\"eqnovvqfovl\",\"categoryStatus\":\"Failed\",\"controlFamilies\":[{},{},{}]},{\"categoryName\":\"w\",\"categoryStatus\":\"PendingApproval\",\"controlFamilies\":[{},{},{}]}]},{\"complianceName\":\"sytgadgvraea\",\"categories\":[{\"categoryName\":\"nzar\",\"categoryStatus\":\"PendingApproval\",\"controlFamilies\":[{}]}]},{\"complianceName\":\"ijfqkacewiipfp\",\"categories\":[{\"categoryName\":\"bwwift\",\"categoryStatus\":\"PendingApproval\",\"controlFamilies\":[{},{}]}]},{\"complianceName\":\"uvksgplsaknynfsy\",\"categories\":[{\"categoryName\":\"huopxodlqiynto\",\"categoryStatus\":\"Failed\",\"controlFamilies\":[{},{},{}]},{\"categoryName\":\"osjswsr\",\"categoryStatus\":\"PendingApproval\",\"controlFamilies\":[{},{}]},{\"categoryName\":\"pzbchck\",\"categoryStatus\":\"NotApplicable\",\"controlFamilies\":[{},{},{}]}]}]}")
+            .toObject(SnapshotProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SnapshotProperties model = new SnapshotProperties();
         model = BinaryData.fromObject(model).toObject(SnapshotProperties.class);
     }

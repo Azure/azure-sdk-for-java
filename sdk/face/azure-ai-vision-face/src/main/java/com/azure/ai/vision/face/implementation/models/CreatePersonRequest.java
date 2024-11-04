@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CreatePersonRequest model.
  */
 @Fluent
-public final class CreatePersonRequest {
+public final class CreatePersonRequest implements JsonSerializable<CreatePersonRequest> {
 
     /*
      * User defined name, maximum length is 128.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * Optional user defined data. Length should not exceed 16K.
      */
     @Generated
-    @JsonProperty(value = "userData")
     private String userData;
 
     /**
@@ -34,8 +35,7 @@ public final class CreatePersonRequest {
      * @param name the name value to set.
      */
     @Generated
-    @JsonCreator
-    public CreatePersonRequest(@JsonProperty(value = "name") String name) {
+    public CreatePersonRequest(String name) {
         this.name = name;
     }
 
@@ -69,5 +69,48 @@ public final class CreatePersonRequest {
     public CreatePersonRequest setUserData(String userData) {
         this.userData = userData;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreatePersonRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreatePersonRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreatePersonRequest.
+     */
+    @Generated
+    public static CreatePersonRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String userData = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    userData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreatePersonRequest deserializedCreatePersonRequest = new CreatePersonRequest(name);
+            deserializedCreatePersonRequest.userData = userData;
+            return deserializedCreatePersonRequest;
+        });
     }
 }

@@ -48,17 +48,18 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch a Microsoft Entra token to be used for authentication.
-// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
         .addScopes("https://redis.azure.com/.default")).block().getToken();
+
+String username = extractUsernameFromToken(token);
 
 // Create Client Configuration
 Config config = new Config();
 config.useSingleServer()
     .setAddress("rediss://<HOST_NAME>:6380") // TODO: Replace Host Name with Azure Cache for Redis Host Name.
     .setKeepAlive(true) // Keep the connection alive.
-    .setUsername("<USERNAME>") // Username is Required
+    .setUsername(username) // Username is Required
     .setPassword(token) // Microsoft Entra access token as password is required.
     .setClientName("Reddison-Client");
 
@@ -73,6 +74,26 @@ String objectValue = bucket.get();
 System.out.println("stored object value: " + objectValue);
 
 redisson.shutdown();
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+}
 ```
 
 ##### Supported Token Credentials for Microsoft Entra Authentication
@@ -98,14 +119,14 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
+String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Redisson Client
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", accessToken);
+RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, accessToken);
 
 int maxTries = 3;
 int i = 0;
@@ -127,8 +148,9 @@ while (i < maxTries) {
         // For Exceptions containing Invalid Username Password / Permissions not granted error messages, look at troubleshooting section at the end of document.
 
         if (redisson.isShutdown()) {
+            AccessToken token = getAccessToken(defaultAzureCredential, trc);
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", getAccessToken(defaultAzureCredential, trc));
+            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, token);
         }
     } catch (Exception e) {
         // Handle Exception as required
@@ -155,6 +177,26 @@ private static RedissonClient createRedissonClient(String address, String userna
 private static AccessToken getAccessToken(TokenCredential tokenCredential, TokenRequestContext trc) {
     return tokenCredential.getToken(trc).block();
 }
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+        base64 += "==";
+        break;
+        case 3:
+        base64 += "=";
+        break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+}
 ```
 
 
@@ -170,17 +212,17 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 
 // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 - 5 minutes before expiry.
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
+String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Redisson Client
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", accessToken);
+RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, accessToken);
 
 int maxTries = 3;
 int i = 0;
@@ -202,8 +244,9 @@ while (i < maxTries) {
         // For Exceptions containing Invalid Username Password / Permissions not granted error messages, look at troubleshooting section at the end of document.
 
         if (redisson.isShutdown()) {
+            AccessToken token = tokenRefreshCache.getAccessToken();
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", "<USERNAME>", tokenRefreshCache.getAccessToken());
+            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, token);
         }
     } catch (Exception e) {
         // Handle Exception as required
@@ -226,6 +269,26 @@ private static RedissonClient createRedissonClient(String address, String userna
         .setClientName("Reddison-Client");
 
     return Redisson.create(config);
+}
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+        base64 += "==";
+        break;
+        case 3:
+        base64 += "=";
+        break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
 }
 
 /**
@@ -296,3 +359,8 @@ To mitigate this error, navigate to your Azure Cache for Redis resource in the A
 * In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
 
+##### Managed Identity not working from Local Development Machine
+Managed identity does not work from a local development machine. To use managed identity, your code must be running
+in an Azure VM (or another type of resource in Azure). To run locally with Entra ID authentication, you'll need to
+use a service principal or user account. This is a common source of confusion, so ensure that when developing locally,
+you configure your application to use a service principal or user credentials for authentication.

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.devhub.models;
 
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthInfoResponseInner;
 
-/** An immutable client-side representation of GitHubOAuthInfoResponse. */
+/**
+ * An immutable client-side representation of GitHubOAuthInfoResponse.
+ */
 public interface GitHubOAuthInfoResponse {
     /**
      * Gets the authUrl property: URL for authorizing the Developer Hub GitHub App.
-     *
+     * 
      * @return the authUrl value.
      */
     String authUrl();
 
     /**
      * Gets the token property: OAuth token used to make calls to GitHub.
-     *
+     * 
      * @return the token value.
      */
     String token();
 
     /**
      * Gets the inner com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthInfoResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     GitHubOAuthInfoResponseInner innerModel();

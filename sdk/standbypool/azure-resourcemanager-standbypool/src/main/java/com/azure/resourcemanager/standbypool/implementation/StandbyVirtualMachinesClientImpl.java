@@ -71,7 +71,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
             @PathParam("standbyVirtualMachineName") String standbyVirtualMachineName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/standbyVirtualMachines")
@@ -82,7 +82,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyVirtualMachinePoolName") String standbyVirtualMachinePoolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -90,7 +90,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyVirtualMachineResourceListResult>> listByStandbyVirtualMachinePoolResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -394,9 +394,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,9 +423,7 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

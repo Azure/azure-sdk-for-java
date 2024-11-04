@@ -169,9 +169,12 @@ public class EncryptedBlobClient extends BlobClient {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.getBlobOutputStream(new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+        return this
+            .getBlobOutputStream(new BlockBlobOutputStreamOptions().setParallelTransferOptions(parallelTransferOptions)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setRequestConditions(requestConditions));
     }
 
     /**
@@ -291,10 +294,13 @@ public class EncryptedBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
-        this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions), timeout,
-            null);
+        this.uploadFromFileWithResponse(
+            new BlobUploadFromFileOptions(filePath).setParallelTransferOptions(parallelTransferOptions)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setRequestConditions(requestConditions),
+            timeout, null);
     }
 
     /**
@@ -337,12 +343,10 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options,
-        Duration timeout, Context context)
-        throws UncheckedIOException {
-        Mono<Response<BlockBlobItem>> upload =
-            this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
-                .contextWrite(FluxUtil.toReactorContext(context));
+    public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options, Duration timeout,
+        Context context) throws UncheckedIOException {
+        Mono<Response<BlockBlobItem>> upload = this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
+            .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
@@ -388,12 +392,14 @@ public class EncryptedBlobClient extends BlobClient {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
+            = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
         return this.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
             .setParallelTransferOptions(finalParallelTransferOptions)
-            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
-            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+            .setDownloadRetryOptions(downloadRetryOptions)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(rangeGetContentMd5)
+            .setOpenOptions(openOptions), timeout, context);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -401,8 +407,8 @@ public class EncryptedBlobClient extends BlobClient {
     public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
         Context context) {
         context = context == null ? Context.NONE : context;
-        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions());
+        options.setRequestConditions(
+            options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions());
         context = populateRequestConditionsAndContext(options.getRequestConditions(), timeout, context);
         return super.downloadToFileWithResponse(options, timeout, context);
     }
@@ -425,8 +431,8 @@ public class EncryptedBlobClient extends BlobClient {
     @Override
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions());
+        options.setRequestConditions(
+            options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions());
         context = populateRequestConditionsAndContext(options.getRequestConditions(), null, context);
         return super.openInputStream(options, context);
     }
@@ -453,11 +459,10 @@ public class EncryptedBlobClient extends BlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Deprecated
     @Override
-    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
-        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        Duration timeout, Context context) {
-        return downloadStreamWithResponse(stream, range,
-            options, requestConditions, getRangeContentMd5, timeout, context);
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5, timeout,
+            context);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -472,33 +477,37 @@ public class EncryptedBlobClient extends BlobClient {
             context = populateRequestConditionsAndContext(requestConditions, timeout, context);
         }
 
-        return super.downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5,
-            timeout, context);
+        return super.downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5, timeout,
+            context);
     }
 
     static boolean isRangeRequest(BlobRange range) {
         return range != null && (range.getOffset() != 0 || range.getCount() != null);
     }
 
-    private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
-        Duration timeout, Context context) {
-        BlobProperties initialProperties =
-            this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
+    private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        BlobProperties initialProperties
+            = this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
         requestConditions.setIfMatch(initialProperties.getETag());
 
         String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
+            EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(encryptionDataKey,
+                encryptedBlobAsyncClient.isEncryptionRequired());
+
+            context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
+                .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
+                    EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, initialProperties.getBlobSize()));
         }
         return context;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
-    public BlobDownloadContentResponse downloadContentWithResponse(
-        DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+    public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         context = populateRequestConditionsAndContext(requestConditions, timeout, context);
@@ -510,8 +519,8 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public AppendBlobClient getAppendBlobClient() {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
-            + " blob client"));
+        throw LOGGER.logExceptionAsError(
+            new UnsupportedOperationException("Cannot get an encrypted client as an append" + " blob client"));
     }
 
     /**
@@ -519,8 +528,8 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public BlockBlobClient getBlockBlobClient() {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
-            + " blob client"));
+        throw LOGGER.logExceptionAsError(
+            new UnsupportedOperationException("Cannot get an encrypted client as a block" + " blob client"));
     }
 
     /**
@@ -528,8 +537,8 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public PageBlobClient getPageBlobClient() {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
-            + " blob client"));
+        throw LOGGER.logExceptionAsError(
+            new UnsupportedOperationException("Cannot get an encrypted client as an page" + " blob client"));
     }
 
     /**
@@ -537,8 +546,8 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public InputStream openQueryInputStream(String expression) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query data encrypted on client side."));
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Cannot query data encrypted on client side."));
     }
 
     /**
@@ -546,8 +555,8 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query data encrypted on client side."));
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Cannot query data encrypted on client side."));
     }
 
     /**
@@ -555,18 +564,20 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public void query(OutputStream stream, String expression) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query data encrypted on client side."));
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Cannot query data encrypted on client side."));
     }
 
     /**
      * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
-    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
-        Duration timeout, Context context) {
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query data encrypted on client side."));
+    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Duration timeout, Context context) {
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Cannot query data encrypted on client side."));
     }
 
+    BlobClientSideEncryptionOptions getClientSideEncryptionOptions() {
+        return encryptedBlobAsyncClient.getClientSideEncryptionOptions();
+    }
 }

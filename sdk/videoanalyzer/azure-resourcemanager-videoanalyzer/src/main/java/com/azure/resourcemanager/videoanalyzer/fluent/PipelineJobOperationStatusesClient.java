@@ -25,8 +25,8 @@ public interface PipelineJobOperationStatusesClient {
      * @return the operation status of a pipeline job with the given operationId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PipelineJobOperationStatusInner get(
-        String resourceGroupName, String accountName, String pipelineJobName, String operationId);
+    PipelineJobOperationStatusInner get(String resourceGroupName, String accountName, String pipelineJobName,
+        String operationId);
 
     /**
      * Get the operation status of a pipeline job with the given operationId.
@@ -42,6 +42,6 @@ public interface PipelineJobOperationStatusesClient {
      * @return the operation status of a pipeline job with the given operationId along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PipelineJobOperationStatusInner> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, String operationId, Context context);
+    Response<PipelineJobOperationStatusInner> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, String operationId, Context context);
 }

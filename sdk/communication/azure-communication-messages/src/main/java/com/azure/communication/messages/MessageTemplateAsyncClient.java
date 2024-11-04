@@ -51,14 +51,16 @@ public final class MessageTemplateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -92,10 +94,10 @@ public final class MessageTemplateAsyncClient {
         // Generated convenience method for listTemplates
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTemplates(channelId, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, MessageTemplateItem>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),

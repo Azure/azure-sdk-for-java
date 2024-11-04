@@ -6,9 +6,7 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.fluent.models.SsisObjectMetadataListResponseInner;
-import com.azure.resourcemanager.datafactory.models.SsisEnvironment;
-import com.azure.resourcemanager.datafactory.models.SsisFolder;
-import com.azure.resourcemanager.datafactory.models.SsisPackage;
+import com.azure.resourcemanager.datafactory.models.SsisObjectMetadata;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,29 +14,27 @@ public final class SsisObjectMetadataListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisObjectMetadataListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"type\":\"Folder\",\"id\":6035205555692229077,\"name\":\"cg\",\"description\":\"wndnhj\"},{\"type\":\"Environment\",\"id\":8777833208183910050,\"name\":\"l\",\"description\":\"btdhxujznbm\"},{\"type\":\"Package\",\"id\":3222705953592047297,\"name\":\"zqlveualupjmkhf\",\"description\":\"bbcswsrtjri\"},{\"type\":\"Environment\",\"id\":7508041016656443291,\"name\":\"wtgh\",\"description\":\"blcg\"}],\"nextLink\":\"zvlvqhjkbegib\"}")
+            "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":1248291372184779781,\"name\":\"zvlvqhjkbegib\",\"description\":\"mxiebw\"},{\"type\":\"SsisObjectMetadata\",\"id\":9167362709610232735,\"name\":\"yqcgwrtzjuzgwy\",\"description\":\"htxongmtsavjc\"},{\"type\":\"SsisObjectMetadata\",\"id\":7752304449285326809,\"name\":\"p\",\"description\":\"knftguvriuh\"}],\"nextLink\":\"wmdyvxqtay\"}")
             .toObject(SsisObjectMetadataListResponseInner.class);
-        Assertions.assertEquals(6035205555692229077L, model.value().get(0).id());
-        Assertions.assertEquals("cg", model.value().get(0).name());
-        Assertions.assertEquals("wndnhj", model.value().get(0).description());
-        Assertions.assertEquals("zvlvqhjkbegib", model.nextLink());
+        Assertions.assertEquals(1248291372184779781L, model.value().get(0).id());
+        Assertions.assertEquals("zvlvqhjkbegib", model.value().get(0).name());
+        Assertions.assertEquals("mxiebw", model.value().get(0).description());
+        Assertions.assertEquals("wmdyvxqtay", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisObjectMetadataListResponseInner model = new SsisObjectMetadataListResponseInner()
-            .withValue(
-                Arrays.asList(new SsisFolder().withId(6035205555692229077L).withName("cg").withDescription("wndnhj"),
-                    new SsisEnvironment().withId(8777833208183910050L).withName("l").withDescription("btdhxujznbm"),
-                    new SsisPackage().withId(3222705953592047297L)
-                        .withName("zqlveualupjmkhf")
-                        .withDescription("bbcswsrtjri"),
-                    new SsisEnvironment().withId(7508041016656443291L).withName("wtgh").withDescription("blcg")))
-            .withNextLink("zvlvqhjkbegib");
+        SsisObjectMetadataListResponseInner model = new SsisObjectMetadataListResponseInner().withValue(Arrays.asList(
+            new SsisObjectMetadata().withId(1248291372184779781L).withName("zvlvqhjkbegib").withDescription("mxiebw"),
+            new SsisObjectMetadata().withId(9167362709610232735L)
+                .withName("yqcgwrtzjuzgwy")
+                .withDescription("htxongmtsavjc"),
+            new SsisObjectMetadata().withId(7752304449285326809L).withName("p").withDescription("knftguvriuh")))
+            .withNextLink("wmdyvxqtay");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadataListResponseInner.class);
-        Assertions.assertEquals(6035205555692229077L, model.value().get(0).id());
-        Assertions.assertEquals("cg", model.value().get(0).name());
-        Assertions.assertEquals("wndnhj", model.value().get(0).description());
-        Assertions.assertEquals("zvlvqhjkbegib", model.nextLink());
+        Assertions.assertEquals(1248291372184779781L, model.value().get(0).id());
+        Assertions.assertEquals("zvlvqhjkbegib", model.value().get(0).name());
+        Assertions.assertEquals("mxiebw", model.value().get(0).description());
+        Assertions.assertEquals("wmdyvxqtay", model.nextLink());
     }
 }

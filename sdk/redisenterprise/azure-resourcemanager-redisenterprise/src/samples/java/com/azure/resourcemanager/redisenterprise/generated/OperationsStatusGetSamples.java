@@ -10,8 +10,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 public final class OperationsStatusGetSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/OperationsStatusGet.
-     * json
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * OperationsStatusGet.json
      */
     /**
      * Sample code: OperationsStatusGet.

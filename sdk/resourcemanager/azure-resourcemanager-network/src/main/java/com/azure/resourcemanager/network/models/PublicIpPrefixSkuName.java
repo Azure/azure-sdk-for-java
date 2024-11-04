@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPr
      * @param name a name to look for.
      * @return the corresponding PublicIpPrefixSkuName.
      */
-    @JsonCreator
     public static PublicIpPrefixSkuName fromString(String name) {
         return fromString(name, PublicIpPrefixSkuName.class);
     }

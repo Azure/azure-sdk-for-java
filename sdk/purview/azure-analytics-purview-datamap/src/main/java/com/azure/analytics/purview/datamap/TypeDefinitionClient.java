@@ -52,7 +52,8 @@ public final class TypeDefinitionClient {
      * Get the businessMetadata definition for the given guid.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -135,7 +136,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid businessMetadata guid.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -155,7 +157,8 @@ public final class TypeDefinitionClient {
      * Get the businessMetadata definition by it's name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -238,7 +241,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name businessMetadata name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -258,7 +262,8 @@ public final class TypeDefinitionClient {
      * Get the classification definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -350,7 +355,8 @@ public final class TypeDefinitionClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -370,7 +376,8 @@ public final class TypeDefinitionClient {
      * Get the classification definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -462,7 +469,8 @@ public final class TypeDefinitionClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -482,7 +490,8 @@ public final class TypeDefinitionClient {
      * Get the Entity definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -594,7 +603,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -614,7 +624,8 @@ public final class TypeDefinitionClient {
      * Get the entity definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -726,7 +737,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -746,7 +758,8 @@ public final class TypeDefinitionClient {
      * Get the enum definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -811,7 +824,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -831,7 +845,8 @@ public final class TypeDefinitionClient {
      * Get the enum definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -896,7 +911,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -916,7 +932,8 @@ public final class TypeDefinitionClient {
      * Get the relationship definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -1010,7 +1027,8 @@ public final class TypeDefinitionClient {
      *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
      *     relationshipLabel: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1030,7 +1048,8 @@ public final class TypeDefinitionClient {
      * Get the relationship definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -1124,7 +1143,8 @@ public final class TypeDefinitionClient {
      *     relationshipCategory: String(ASSOCIATION/AGGREGATION/COMPOSITION) (Optional)
      *     relationshipLabel: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1144,7 +1164,8 @@ public final class TypeDefinitionClient {
      * Get the struct definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -1227,7 +1248,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1247,7 +1269,8 @@ public final class TypeDefinitionClient {
      * Get the struct definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -1330,7 +1353,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1350,7 +1374,8 @@ public final class TypeDefinitionClient {
      * Get the type definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -1484,7 +1509,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1504,7 +1530,8 @@ public final class TypeDefinitionClient {
      * Get the type definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -1638,7 +1665,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1688,7 +1716,8 @@ public final class TypeDefinitionClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     businessMetadataDefs (Optional): [
      *          (Optional){
@@ -1967,7 +1996,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1983,12 +2013,11 @@ public final class TypeDefinitionClient {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     businessMetadataDefs (Optional): [
      *          (Optional){
@@ -2267,11 +2296,13 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     businessMetadataDefs (Optional): [
      *          (Optional){
@@ -2550,9 +2581,10 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2562,8 +2594,8 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchCreateWithResponse(atlasTypesDef, requestOptions);
+    public Response<BinaryData> batchCreateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateWithResponse(body, requestOptions);
     }
 
     /**
@@ -2571,7 +2603,8 @@ public final class TypeDefinitionClient {
      * persisted.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     businessMetadataDefs (Optional): [
      *          (Optional){
@@ -2850,11 +2883,13 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     businessMetadataDefs (Optional): [
      *          (Optional){
@@ -3133,9 +3168,10 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3145,15 +3181,16 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchUpdateWithResponse(atlasTypesDef, requestOptions);
+    public Response<BinaryData> batchUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchUpdateWithResponse(body, requestOptions);
     }
 
     /**
      * Delete API for all types in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     businessMetadataDefs (Optional): [
      *          (Optional){
@@ -3432,9 +3469,10 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3444,8 +3482,8 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchDeleteWithResponse(atlasTypesDef, requestOptions);
+    public Response<Void> batchDeleteWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponse(body, requestOptions);
     }
 
     /**
@@ -3465,7 +3503,8 @@ public final class TypeDefinitionClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
@@ -3473,7 +3512,8 @@ public final class TypeDefinitionClient {
      *         name: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3492,7 +3532,8 @@ public final class TypeDefinitionClient {
      * Get the term template definition for the given GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -3575,7 +3616,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3595,7 +3637,8 @@ public final class TypeDefinitionClient {
      * Get the term template definition by its name (unique).
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE) (Optional)
      *     createTime: Long (Optional)
@@ -3678,7 +3721,8 @@ public final class TypeDefinitionClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param name The unique name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4045,11 +4089,9 @@ public final class TypeDefinitionClient {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4060,10 +4102,10 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef batchCreate(AtlasTypesDef atlasTypesDef) {
+    public AtlasTypesDef batchCreate(AtlasTypesDef body) {
         // Generated convenience method for batchCreateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchCreateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue()
+        return batchCreateWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasTypesDef.class);
     }
 
@@ -4071,7 +4113,7 @@ public final class TypeDefinitionClient {
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4082,17 +4124,17 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AtlasTypesDef batchUpdate(AtlasTypesDef atlasTypesDef) {
+    public AtlasTypesDef batchUpdate(AtlasTypesDef body) {
         // Generated convenience method for batchUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchUpdateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue()
+        return batchUpdateWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(AtlasTypesDef.class);
     }
 
     /**
      * Delete API for all types in bulk.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4102,10 +4144,10 @@ public final class TypeDefinitionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void batchDelete(AtlasTypesDef atlasTypesDef) {
+    public void batchDelete(AtlasTypesDef body) {
         // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        batchDeleteWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).getValue();
+        batchDeleteWithResponse(BinaryData.fromObject(body), requestOptions).getValue();
     }
 
     /**

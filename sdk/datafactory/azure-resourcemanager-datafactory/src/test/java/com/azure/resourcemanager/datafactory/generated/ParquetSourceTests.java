@@ -16,22 +16,22 @@ public final class ParquetSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetSource model = BinaryData.fromString(
-            "{\"type\":\"mnkvpafoe\",\"storeSettings\":{\"type\":\"lrjdkyp\",\"maxConcurrentConnections\":\"datavilgn\",\"disableMetricsCollection\":\"datatjbldgikokjwgej\",\"\":{\"gsyszdtgw\":\"datazezwnqhcpk\",\"prourtmccd\":\"dataqcutk\",\"dcvlbxr\":\"datajtoypluxvjutckfh\",\"mzcxlgmuhxw\":\"datazvujp\"}},\"formatSettings\":{\"type\":\"q\",\"compressionProperties\":{\"type\":\"jczpfoispc\",\"\":{\"hazmcuggtsovozy\":\"datavmvsbgyq\",\"ugubob\":\"datapkrncjrq\",\"qcyhfubz\":\"dataqnwhcmvdow\"}},\"\":{\"fhjefiu\":\"datarawbftznxf\",\"bkdieismdkvfim\":\"databrnrilljucod\"}},\"additionalColumns\":\"datacij\",\"sourceRetryCount\":\"datacsk\",\"sourceRetryWait\":\"datawzmji\",\"maxConcurrentConnections\":\"dataqyllcckgfo\",\"disableMetricsCollection\":\"datarbfyjmenq\",\"\":{\"qtvsfsvq\":\"dataf\",\"hdaczixf\":\"datazgaweixnoblaz\",\"s\":\"datauw\"}}")
+            "{\"type\":\"ParquetSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datackfu\",\"disableMetricsCollection\":\"datachotdzt\",\"\":{\"lnsdazqcem\":\"datahwpuaermaw\",\"thisxzhik\":\"dataotwfu\",\"qojpg\":\"datadfszxbups\"}},\"formatSettings\":{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"zlmwfncwlwov\":\"datahyvtajwkrx\",\"aljwfnc\":\"datazbomjbyssprkbz\"}},\"\":{\"ppqajdm\":\"dataylcpgzmxr\",\"wrziminetb\":\"dataunntqqguhv\",\"kedlclxxq\":\"datafwfuxdtpjcs\"}},\"additionalColumns\":\"dataf\",\"sourceRetryCount\":\"dataqombdsgqxacidu\",\"sourceRetryWait\":\"datazzhdjbyfdfu\",\"maxConcurrentConnections\":\"datanhpyylek\",\"disableMetricsCollection\":\"dataiw\",\"\":{\"qb\":\"datazzny\",\"ttkbzwgj\":\"dataxpwjvfisloq\",\"jqsshu\":\"datapjbdqmnki\",\"uwome\":\"dataxjttnurkmerqza\"}}")
             .toObject(ParquetSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetSource model = new ParquetSource().withSourceRetryCount("datacsk")
-            .withSourceRetryWait("datawzmji")
-            .withMaxConcurrentConnections("dataqyllcckgfo")
-            .withDisableMetricsCollection("datarbfyjmenq")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datavilgn")
-                .withDisableMetricsCollection("datatjbldgikokjwgej")
-                .withAdditionalProperties(mapOf("type", "lrjdkyp")))
+        ParquetSource model = new ParquetSource().withSourceRetryCount("dataqombdsgqxacidu")
+            .withSourceRetryWait("datazzhdjbyfdfu")
+            .withMaxConcurrentConnections("datanhpyylek")
+            .withDisableMetricsCollection("dataiw")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datackfu")
+                .withDisableMetricsCollection("datachotdzt")
+                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
             .withFormatSettings(new ParquetReadSettings().withCompressionProperties(
-                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "jczpfoispc"))))
-            .withAdditionalColumns("datacij");
+                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
+            .withAdditionalColumns("dataf");
         model = BinaryData.fromObject(model).toObject(ParquetSource.class);
     }
 

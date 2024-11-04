@@ -14,8 +14,8 @@ import java.util.List;
 
 public class TempDirs {
 
-    private static final List<String> CANDIDATE_USERNAME_ENVIRONMENT_VARIABLES =
-        Collections.unmodifiableList(Arrays.asList("USER", "LOGNAME", "USERNAME"));
+    private static final List<String> CANDIDATE_USERNAME_ENVIRONMENT_VARIABLES
+        = Collections.unmodifiableList(Arrays.asList("USER", "LOGNAME", "USERNAME"));
 
     @Nullable
     public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
@@ -27,24 +27,21 @@ public class TempDirs {
             logger.info(
                 "Unable to create directory: {}. {}. If this is unexpected, please check"
                     + " that the process has the necessary permissions to create the directory.",
-                tempDir.getAbsolutePath(),
-                message);
+                tempDir.getAbsolutePath(), message);
             return null;
         }
         if (!tempDir.canRead()) {
             logger.info(
                 "Missing read permissions on directory: {}. {}. If this is unexpected, please check"
                     + " that the process has the necessary permissions to read from the directory.",
-                tempDir.getAbsolutePath(),
-                message);
+                tempDir.getAbsolutePath(), message);
             return null;
         }
         if (!tempDir.canWrite()) {
             logger.info(
                 "Missing write permissions on directory: {}. {}. If this is unexpected, please check"
                     + " that the process has the necessary permissions to write to the directory.",
-                tempDir.getAbsolutePath(),
-                message);
+                tempDir.getAbsolutePath(), message);
             return null;
         }
         return tempDir;

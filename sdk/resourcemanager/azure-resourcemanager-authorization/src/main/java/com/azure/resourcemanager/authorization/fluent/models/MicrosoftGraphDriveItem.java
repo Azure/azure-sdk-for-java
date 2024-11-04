@@ -7,17 +7,20 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-/** driveItem. */
+/**
+ * driveItem.
+ */
 @Fluent
 public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -25,200 +28,170 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /*
      * audio
      */
-    @JsonProperty(value = "audio")
     private MicrosoftGraphAudio audio;
 
     /*
      * The content stream, if the item represents a file.
      */
-    @JsonProperty(value = "content")
     private Base64Url content;
 
     /*
-     * An eTag for the content of the item. This eTag is not changed if only the metadata is changed. Note This
-     * property is not returned if the item is a folder. Read-only.
+     * An eTag for the content of the item. This eTag is not changed if only the metadata is changed. Note This property
+     * is not returned if the item is a folder. Read-only.
      */
-    @JsonProperty(value = "cTag")
     private String cTag;
 
     /*
      * deleted
      */
-    @JsonProperty(value = "deleted")
     private MicrosoftGraphDeleted deleted;
 
     /*
      * file
      */
-    @JsonProperty(value = "file")
     private MicrosoftGraphFile file;
 
     /*
      * fileSystemInfo
      */
-    @JsonProperty(value = "fileSystemInfo")
     private MicrosoftGraphFileSystemInfo fileSystemInfo;
 
     /*
      * folder
      */
-    @JsonProperty(value = "folder")
     private MicrosoftGraphFolder folder;
 
     /*
      * image
      */
-    @JsonProperty(value = "image")
     private MicrosoftGraphImage image;
 
     /*
      * geoCoordinates
      */
-    @JsonProperty(value = "location")
     private MicrosoftGraphGeoCoordinates location;
 
     /*
      * package
      */
-    @JsonProperty(value = "package")
     private MicrosoftGraphPackage packageProperty;
 
     /*
      * pendingOperations
      */
-    @JsonProperty(value = "pendingOperations")
     private MicrosoftGraphPendingOperations pendingOperations;
 
     /*
      * photo
      */
-    @JsonProperty(value = "photo")
     private MicrosoftGraphPhoto photo;
 
     /*
      * publicationFacet
      */
-    @JsonProperty(value = "publication")
     private MicrosoftGraphPublicationFacet publication;
 
     /*
      * remoteItem
      */
-    @JsonProperty(value = "remoteItem")
     private MicrosoftGraphRemoteItem remoteItem;
 
     /*
      * root
      */
-    @JsonProperty(value = "root")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*
      * searchResult
      */
-    @JsonProperty(value = "searchResult")
     private MicrosoftGraphSearchResult searchResult;
 
     /*
      * shared
      */
-    @JsonProperty(value = "shared")
     private MicrosoftGraphShared shared;
 
     /*
      * sharepointIds
      */
-    @JsonProperty(value = "sharepointIds")
     private MicrosoftGraphSharepointIds sharepointIds;
 
     /*
      * Size of the item in bytes. Read-only.
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * specialFolder
      */
-    @JsonProperty(value = "specialFolder")
     private MicrosoftGraphSpecialFolder specialFolder;
 
     /*
      * video
      */
-    @JsonProperty(value = "video")
     private MicrosoftGraphVideo video;
 
     /*
      * WebDAV compatible URL for the item.
      */
-    @JsonProperty(value = "webDavUrl")
     private String webDavUrl;
 
     /*
      * workbook
      */
-    @JsonProperty(value = "workbook")
     private MicrosoftGraphWorkbook workbook;
 
     /*
      * itemAnalytics
      */
-    @JsonProperty(value = "analytics")
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
      * Collection containing Item objects for the immediate children of Item. Only items representing folders have
      * children. Read-only. Nullable.
      */
-    @JsonProperty(value = "children")
     private List<MicrosoftGraphDriveItem> children;
 
     /*
      * listItem
      */
-    @JsonProperty(value = "listItem")
     private MicrosoftGraphListItem listItem;
 
     /*
      * The set of permissions for the item. Read-only. Nullable.
      */
-    @JsonProperty(value = "permissions")
     private List<MicrosoftGraphPermission> permissions;
 
     /*
      * The set of subscriptions on the item. Only supported on the root of a drive.
      */
-    @JsonProperty(value = "subscriptions")
     private List<MicrosoftGraphSubscription> subscriptions;
 
     /*
      * Collection containing [ThumbnailSet][] objects associated with the item. For more info, see [getting
      * thumbnails][]. Read-only. Nullable.
      */
-    @JsonProperty(value = "thumbnails")
     private List<MicrosoftGraphThumbnailSet> thumbnails;
 
     /*
-     * The list of previous versions of the item. For more info, see [getting previous versions][]. Read-only.
-     * Nullable.
+     * The list of previous versions of the item. For more info, see [getting previous versions][]. Read-only. Nullable.
      */
-    @JsonProperty(value = "versions")
     private List<MicrosoftGraphDriveItemVersion> versions;
 
     /*
      * driveItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDriveItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphDriveItem class.
+     */
     public MicrosoftGraphDriveItem() {
     }
 
     /**
      * Get the audio property: audio.
-     *
+     * 
      * @return the audio value.
      */
     public MicrosoftGraphAudio audio() {
@@ -227,7 +200,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the audio property: audio.
-     *
+     * 
      * @param audio the audio value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -238,7 +211,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the content property: The content stream, if the item represents a file.
-     *
+     * 
      * @return the content value.
      */
     public byte[] content() {
@@ -250,7 +223,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the content property: The content stream, if the item represents a file.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -266,7 +239,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Get the cTag property: An eTag for the content of the item. This eTag is not changed if only the metadata is
      * changed. Note This property is not returned if the item is a folder. Read-only.
-     *
+     * 
      * @return the cTag value.
      */
     public String cTag() {
@@ -276,7 +249,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Set the cTag property: An eTag for the content of the item. This eTag is not changed if only the metadata is
      * changed. Note This property is not returned if the item is a folder. Read-only.
-     *
+     * 
      * @param cTag the cTag value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -287,7 +260,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the deleted property: deleted.
-     *
+     * 
      * @return the deleted value.
      */
     public MicrosoftGraphDeleted deleted() {
@@ -296,7 +269,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the deleted property: deleted.
-     *
+     * 
      * @param deleted the deleted value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -307,7 +280,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the file property: file.
-     *
+     * 
      * @return the file value.
      */
     public MicrosoftGraphFile file() {
@@ -316,7 +289,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the file property: file.
-     *
+     * 
      * @param file the file value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -327,7 +300,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the fileSystemInfo property: fileSystemInfo.
-     *
+     * 
      * @return the fileSystemInfo value.
      */
     public MicrosoftGraphFileSystemInfo fileSystemInfo() {
@@ -336,7 +309,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the fileSystemInfo property: fileSystemInfo.
-     *
+     * 
      * @param fileSystemInfo the fileSystemInfo value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -347,7 +320,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the folder property: folder.
-     *
+     * 
      * @return the folder value.
      */
     public MicrosoftGraphFolder folder() {
@@ -356,7 +329,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the folder property: folder.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -367,7 +340,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the image property: image.
-     *
+     * 
      * @return the image value.
      */
     public MicrosoftGraphImage image() {
@@ -376,7 +349,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the image property: image.
-     *
+     * 
      * @param image the image value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -387,7 +360,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the location property: geoCoordinates.
-     *
+     * 
      * @return the location value.
      */
     public MicrosoftGraphGeoCoordinates location() {
@@ -396,7 +369,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the location property: geoCoordinates.
-     *
+     * 
      * @param location the location value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -407,7 +380,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the packageProperty property: package.
-     *
+     * 
      * @return the packageProperty value.
      */
     public MicrosoftGraphPackage packageProperty() {
@@ -416,7 +389,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the packageProperty property: package.
-     *
+     * 
      * @param packageProperty the packageProperty value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -427,7 +400,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the pendingOperations property: pendingOperations.
-     *
+     * 
      * @return the pendingOperations value.
      */
     public MicrosoftGraphPendingOperations pendingOperations() {
@@ -436,7 +409,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the pendingOperations property: pendingOperations.
-     *
+     * 
      * @param pendingOperations the pendingOperations value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -447,7 +420,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the photo property: photo.
-     *
+     * 
      * @return the photo value.
      */
     public MicrosoftGraphPhoto photo() {
@@ -456,7 +429,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the photo property: photo.
-     *
+     * 
      * @param photo the photo value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -467,7 +440,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the publication property: publicationFacet.
-     *
+     * 
      * @return the publication value.
      */
     public MicrosoftGraphPublicationFacet publication() {
@@ -476,7 +449,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the publication property: publicationFacet.
-     *
+     * 
      * @param publication the publication value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -487,7 +460,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the remoteItem property: remoteItem.
-     *
+     * 
      * @return the remoteItem value.
      */
     public MicrosoftGraphRemoteItem remoteItem() {
@@ -496,7 +469,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the remoteItem property: remoteItem.
-     *
+     * 
      * @param remoteItem the remoteItem value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -507,7 +480,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the root property: root.
-     *
+     * 
      * @return the root value.
      */
     public Map<String, Object> root() {
@@ -516,7 +489,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the root property: root.
-     *
+     * 
      * @param root the root value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -527,7 +500,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the searchResult property: searchResult.
-     *
+     * 
      * @return the searchResult value.
      */
     public MicrosoftGraphSearchResult searchResult() {
@@ -536,7 +509,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the searchResult property: searchResult.
-     *
+     * 
      * @param searchResult the searchResult value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -547,7 +520,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the shared property: shared.
-     *
+     * 
      * @return the shared value.
      */
     public MicrosoftGraphShared shared() {
@@ -556,7 +529,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the shared property: shared.
-     *
+     * 
      * @param shared the shared value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -567,7 +540,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the sharepointIds property: sharepointIds.
-     *
+     * 
      * @return the sharepointIds value.
      */
     public MicrosoftGraphSharepointIds sharepointIds() {
@@ -576,7 +549,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the sharepointIds property: sharepointIds.
-     *
+     * 
      * @param sharepointIds the sharepointIds value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -587,7 +560,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the size property: Size of the item in bytes. Read-only.
-     *
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -596,7 +569,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the size property: Size of the item in bytes. Read-only.
-     *
+     * 
      * @param size the size value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -607,7 +580,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the specialFolder property: specialFolder.
-     *
+     * 
      * @return the specialFolder value.
      */
     public MicrosoftGraphSpecialFolder specialFolder() {
@@ -616,7 +589,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the specialFolder property: specialFolder.
-     *
+     * 
      * @param specialFolder the specialFolder value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -627,7 +600,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the video property: video.
-     *
+     * 
      * @return the video value.
      */
     public MicrosoftGraphVideo video() {
@@ -636,7 +609,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the video property: video.
-     *
+     * 
      * @param video the video value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -647,7 +620,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the webDavUrl property: WebDAV compatible URL for the item.
-     *
+     * 
      * @return the webDavUrl value.
      */
     public String webDavUrl() {
@@ -656,7 +629,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the webDavUrl property: WebDAV compatible URL for the item.
-     *
+     * 
      * @param webDavUrl the webDavUrl value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -667,7 +640,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the workbook property: workbook.
-     *
+     * 
      * @return the workbook value.
      */
     public MicrosoftGraphWorkbook workbook() {
@@ -676,7 +649,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the workbook property: workbook.
-     *
+     * 
      * @param workbook the workbook value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -687,7 +660,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the analytics property: itemAnalytics.
-     *
+     * 
      * @return the analytics value.
      */
     public MicrosoftGraphItemAnalytics analytics() {
@@ -696,7 +669,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the analytics property: itemAnalytics.
-     *
+     * 
      * @param analytics the analytics value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -708,7 +681,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Get the children property: Collection containing Item objects for the immediate children of Item. Only items
      * representing folders have children. Read-only. Nullable.
-     *
+     * 
      * @return the children value.
      */
     public List<MicrosoftGraphDriveItem> children() {
@@ -718,7 +691,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Set the children property: Collection containing Item objects for the immediate children of Item. Only items
      * representing folders have children. Read-only. Nullable.
-     *
+     * 
      * @param children the children value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -729,7 +702,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the listItem property: listItem.
-     *
+     * 
      * @return the listItem value.
      */
     public MicrosoftGraphListItem listItem() {
@@ -738,7 +711,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the listItem property: listItem.
-     *
+     * 
      * @param listItem the listItem value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -749,7 +722,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the permissions property: The set of permissions for the item. Read-only. Nullable.
-     *
+     * 
      * @return the permissions value.
      */
     public List<MicrosoftGraphPermission> permissions() {
@@ -758,7 +731,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the permissions property: The set of permissions for the item. Read-only. Nullable.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -769,7 +742,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the subscriptions property: The set of subscriptions on the item. Only supported on the root of a drive.
-     *
+     * 
      * @return the subscriptions value.
      */
     public List<MicrosoftGraphSubscription> subscriptions() {
@@ -778,7 +751,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the subscriptions property: The set of subscriptions on the item. Only supported on the root of a drive.
-     *
+     * 
      * @param subscriptions the subscriptions value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -790,7 +763,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Get the thumbnails property: Collection containing [ThumbnailSet][] objects associated with the item. For more
      * info, see [getting thumbnails][]. Read-only. Nullable.
-     *
+     * 
      * @return the thumbnails value.
      */
     public List<MicrosoftGraphThumbnailSet> thumbnails() {
@@ -800,7 +773,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Set the thumbnails property: Collection containing [ThumbnailSet][] objects associated with the item. For more
      * info, see [getting thumbnails][]. Read-only. Nullable.
-     *
+     * 
      * @param thumbnails the thumbnails value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -812,7 +785,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Get the versions property: The list of previous versions of the item. For more info, see [getting previous
      * versions][]. Read-only. Nullable.
-     *
+     * 
      * @return the versions value.
      */
     public List<MicrosoftGraphDriveItemVersion> versions() {
@@ -822,7 +795,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
     /**
      * Set the versions property: The list of previous versions of the item. For more info, see [getting previous
      * versions][]. Read-only. Nullable.
-     *
+     * 
      * @param versions the versions value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -833,17 +806,16 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the additionalProperties property: driveItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: driveItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDriveItem object itself.
      */
@@ -852,92 +824,108 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withCreatedBy(MicrosoftGraphIdentitySet createdBy) {
         super.withCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withParentReference(MicrosoftGraphItemReference parentReference) {
         super.withParentReference(parentReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withWebUrl(String webUrl) {
         super.withWebUrl(webUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withCreatedByUser(MicrosoftGraphUserInner createdByUser) {
         super.withCreatedByUser(createdByUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withLastModifiedByUser(MicrosoftGraphUserInner lastModifiedByUser) {
         super.withLastModifiedByUser(lastModifiedByUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItem withId(String id) {
         super.withId(id);
@@ -946,7 +934,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -1027,5 +1015,196 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
         if (versions() != null) {
             versions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("createdBy", createdBy());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("parentReference", parentReference());
+        jsonWriter.writeStringField("webUrl", webUrl());
+        jsonWriter.writeJsonField("createdByUser", createdByUser());
+        jsonWriter.writeJsonField("lastModifiedByUser", lastModifiedByUser());
+        jsonWriter.writeJsonField("audio", this.audio);
+        jsonWriter.writeStringField("content", Objects.toString(this.content, null));
+        jsonWriter.writeStringField("cTag", this.cTag);
+        jsonWriter.writeJsonField("deleted", this.deleted);
+        jsonWriter.writeJsonField("file", this.file);
+        jsonWriter.writeJsonField("fileSystemInfo", this.fileSystemInfo);
+        jsonWriter.writeJsonField("folder", this.folder);
+        jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeJsonField("package", this.packageProperty);
+        jsonWriter.writeJsonField("pendingOperations", this.pendingOperations);
+        jsonWriter.writeJsonField("photo", this.photo);
+        jsonWriter.writeJsonField("publication", this.publication);
+        jsonWriter.writeJsonField("remoteItem", this.remoteItem);
+        jsonWriter.writeMapField("root", this.root, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("searchResult", this.searchResult);
+        jsonWriter.writeJsonField("shared", this.shared);
+        jsonWriter.writeJsonField("sharepointIds", this.sharepointIds);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeJsonField("specialFolder", this.specialFolder);
+        jsonWriter.writeJsonField("video", this.video);
+        jsonWriter.writeStringField("webDavUrl", this.webDavUrl);
+        jsonWriter.writeJsonField("workbook", this.workbook);
+        jsonWriter.writeJsonField("analytics", this.analytics);
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("listItem", this.listItem);
+        jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("subscriptions", this.subscriptions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("thumbnails", this.thumbnails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDriveItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDriveItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDriveItem.
+     */
+    public static MicrosoftGraphDriveItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDriveItem deserializedMicrosoftGraphDriveItem = new MicrosoftGraphDriveItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withId(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withCreatedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withDescription(reader.getString());
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withEtag(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withName(reader.getString());
+                } else if ("parentReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem
+                        .withParentReference(MicrosoftGraphItemReference.fromJson(reader));
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withWebUrl(reader.getString());
+                } else if ("createdByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.withCreatedByUser(MicrosoftGraphUserInner.fromJson(reader));
+                } else if ("lastModifiedByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem
+                        .withLastModifiedByUser(MicrosoftGraphUserInner.fromJson(reader));
+                } else if ("audio".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.audio = MicrosoftGraphAudio.fromJson(reader);
+                } else if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.content
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("cTag".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.cTag = reader.getString();
+                } else if ("deleted".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.deleted = MicrosoftGraphDeleted.fromJson(reader);
+                } else if ("file".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.file = MicrosoftGraphFile.fromJson(reader);
+                } else if ("fileSystemInfo".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.fileSystemInfo = MicrosoftGraphFileSystemInfo.fromJson(reader);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.folder = MicrosoftGraphFolder.fromJson(reader);
+                } else if ("image".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.image = MicrosoftGraphImage.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.location = MicrosoftGraphGeoCoordinates.fromJson(reader);
+                } else if ("package".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.packageProperty = MicrosoftGraphPackage.fromJson(reader);
+                } else if ("pendingOperations".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.pendingOperations
+                        = MicrosoftGraphPendingOperations.fromJson(reader);
+                } else if ("photo".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.photo = MicrosoftGraphPhoto.fromJson(reader);
+                } else if ("publication".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.publication = MicrosoftGraphPublicationFacet.fromJson(reader);
+                } else if ("remoteItem".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.remoteItem = MicrosoftGraphRemoteItem.fromJson(reader);
+                } else if ("root".equals(fieldName)) {
+                    Map<String, Object> root = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphDriveItem.root = root;
+                } else if ("searchResult".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.searchResult = MicrosoftGraphSearchResult.fromJson(reader);
+                } else if ("shared".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.shared = MicrosoftGraphShared.fromJson(reader);
+                } else if ("sharepointIds".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.sharepointIds = MicrosoftGraphSharepointIds.fromJson(reader);
+                } else if ("size".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.size = reader.getNullable(JsonReader::getLong);
+                } else if ("specialFolder".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.specialFolder = MicrosoftGraphSpecialFolder.fromJson(reader);
+                } else if ("video".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.video = MicrosoftGraphVideo.fromJson(reader);
+                } else if ("webDavUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.webDavUrl = reader.getString();
+                } else if ("workbook".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.workbook = MicrosoftGraphWorkbook.fromJson(reader);
+                } else if ("analytics".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.analytics = MicrosoftGraphItemAnalytics.fromJson(reader);
+                } else if ("children".equals(fieldName)) {
+                    List<MicrosoftGraphDriveItem> children
+                        = reader.readArray(reader1 -> MicrosoftGraphDriveItem.fromJson(reader1));
+                    deserializedMicrosoftGraphDriveItem.children = children;
+                } else if ("listItem".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItem.listItem = MicrosoftGraphListItem.fromJson(reader);
+                } else if ("permissions".equals(fieldName)) {
+                    List<MicrosoftGraphPermission> permissions
+                        = reader.readArray(reader1 -> MicrosoftGraphPermission.fromJson(reader1));
+                    deserializedMicrosoftGraphDriveItem.permissions = permissions;
+                } else if ("subscriptions".equals(fieldName)) {
+                    List<MicrosoftGraphSubscription> subscriptions
+                        = reader.readArray(reader1 -> MicrosoftGraphSubscription.fromJson(reader1));
+                    deserializedMicrosoftGraphDriveItem.subscriptions = subscriptions;
+                } else if ("thumbnails".equals(fieldName)) {
+                    List<MicrosoftGraphThumbnailSet> thumbnails
+                        = reader.readArray(reader1 -> MicrosoftGraphThumbnailSet.fromJson(reader1));
+                    deserializedMicrosoftGraphDriveItem.thumbnails = thumbnails;
+                } else if ("versions".equals(fieldName)) {
+                    List<MicrosoftGraphDriveItemVersion> versions
+                        = reader.readArray(reader1 -> MicrosoftGraphDriveItemVersion.fromJson(reader1));
+                    deserializedMicrosoftGraphDriveItem.versions = versions;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDriveItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDriveItem;
+        });
     }
 }

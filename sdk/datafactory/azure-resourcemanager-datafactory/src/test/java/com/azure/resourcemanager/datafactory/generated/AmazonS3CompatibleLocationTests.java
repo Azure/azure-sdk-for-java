@@ -11,16 +11,16 @@ public final class AmazonS3CompatibleLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonS3CompatibleLocation model = BinaryData.fromString(
-            "{\"type\":\"fnqh\",\"bucketName\":\"datakkt\",\"version\":\"datazejogmkorvvmvm\",\"folderPath\":\"datasnosnqliwkmzojf\",\"fileName\":\"datayalhtgm\",\"\":{\"sttcucrcmm\":\"datazgbjbhrpgi\"}}")
+            "{\"type\":\"AmazonS3CompatibleLocation\",\"bucketName\":\"datagcozzomehxlant\",\"version\":\"dataamlbiju\",\"folderPath\":\"dataqllczipvwdtgckz\",\"fileName\":\"dataiqdlratrkw\",\"\":{\"lhpryjfzihuio\":\"datauwxsuykznhrfgsl\",\"pajtfeyvkbd\":\"dataeo\",\"rhd\":\"datadd\",\"uzy\":\"datacxbeuuqutkzwtjww\"}}")
             .toObject(AmazonS3CompatibleLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonS3CompatibleLocation model = new AmazonS3CompatibleLocation().withFolderPath("datasnosnqliwkmzojf")
-            .withFileName("datayalhtgm")
-            .withBucketName("datakkt")
-            .withVersion("datazejogmkorvvmvm");
+        AmazonS3CompatibleLocation model = new AmazonS3CompatibleLocation().withFolderPath("dataqllczipvwdtgckz")
+            .withFileName("dataiqdlratrkw")
+            .withBucketName("datagcozzomehxlant")
+            .withVersion("dataamlbiju");
         model = BinaryData.fromObject(model).toObject(AmazonS3CompatibleLocation.class);
     }
 }

@@ -13,6 +13,7 @@ import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.RunStepToolCallDetails;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,19 +41,16 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
             AssistantThread assistantThread = client.createThread(assistantThreadCreationOptions);
 
             // Send first user message
-            client.createMessage(
-                assistantThread.getId(),
-                MessageRole.USER,
+            client.createMessage(assistantThread.getId(), new ThreadMessageOptions(MessageRole.USER,
                 "Assuming both my usually preferred vacation spot and favourite airline carrier, how much would it cost "
-                    + "to fly there in September?"
-            );
+                    + "to fly there in September?"));
 
             // Create run thread
             ThreadRun run = client.createRun(assistantThread, assistant);
 
             // Poll the run
             do {
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = client.getRun(assistantThread.getId(), run.getId());
             } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
 
@@ -68,7 +66,8 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
             PageableList<RunStep> runSteps = client.listRunSteps(assistantThread.getId(), run.getId());
             assertFalse(runSteps.getData().isEmpty());
 
-            RunStepToolCallDetails toolCallDetails = (RunStepToolCallDetails) runSteps.getData().get(0).getStepDetails();
+            RunStepToolCallDetails toolCallDetails
+                = (RunStepToolCallDetails) runSteps.getData().get(0).getStepDetails();
             assertFalse(toolCallDetails.getToolCalls().isEmpty());
 
             // cleanup

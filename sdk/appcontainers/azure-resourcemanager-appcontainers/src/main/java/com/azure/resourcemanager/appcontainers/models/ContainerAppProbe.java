@@ -5,51 +5,49 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Probe describes a health check to be performed against a container to determine whether it is alive or ready to
  * receive traffic.
  */
 @Fluent
-public final class ContainerAppProbe {
+public final class ContainerAppProbe implements JsonSerializable<ContainerAppProbe> {
     /*
-     * Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3.
-     * Minimum value is 1. Maximum value is 10.
+     * Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum
+     * value is 1. Maximum value is 10.
      */
-    @JsonProperty(value = "failureThreshold")
     private Integer failureThreshold;
 
     /*
      * HTTPGet specifies the http request to perform.
      */
-    @JsonProperty(value = "httpGet")
     private ContainerAppProbeHttpGet httpGet;
 
     /*
      * Number of seconds after the container has started before liveness probes are initiated. Minimum value is 1.
      * Maximum value is 60.
      */
-    @JsonProperty(value = "initialDelaySeconds")
     private Integer initialDelaySeconds;
 
     /*
      * How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value is 240.
      */
-    @JsonProperty(value = "periodSeconds")
     private Integer periodSeconds;
 
     /*
      * Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must
      * be 1 for liveness and startup. Minimum value is 1. Maximum value is 10.
      */
-    @JsonProperty(value = "successThreshold")
     private Integer successThreshold;
 
     /*
      * TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
      */
-    @JsonProperty(value = "tcpSocket")
     private ContainerAppProbeTcpSocket tcpSocket;
 
     /*
@@ -61,20 +59,17 @@ public final class ContainerAppProbe {
      * immediately via the kill signal (no opportunity to shut down). This is an alpha field and requires enabling
      * ProbeTerminationGracePeriod feature gate. Maximum value is 3600 seconds (1 hour)
      */
-    @JsonProperty(value = "terminationGracePeriodSeconds")
     private Long terminationGracePeriodSeconds;
 
     /*
      * Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is
      * 240.
      */
-    @JsonProperty(value = "timeoutSeconds")
     private Integer timeoutSeconds;
 
     /*
      * The type of probe.
      */
-    @JsonProperty(value = "type")
     private Type type;
 
     /**
@@ -148,8 +143,8 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Get the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum
-     * value is 1. Maximum value is 240.
+     * Get the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value
+     * is 1. Maximum value is 240.
      * 
      * @return the periodSeconds value.
      */
@@ -158,8 +153,8 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Set the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum
-     * value is 1. Maximum value is 240.
+     * Set the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value
+     * is 1. Maximum value is 240.
      * 
      * @param periodSeconds the periodSeconds value to set.
      * @return the ContainerAppProbe object itself.
@@ -213,13 +208,13 @@ public final class ContainerAppProbe {
 
     /**
      * Get the terminationGracePeriodSeconds property: Optional duration in seconds the pod needs to terminate
-     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the
-     * pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set
-     * this value longer than the expected cleanup time for your process. If this value is nil, the pod's
+     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. If this value is nil, the pod's
      * terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec.
-     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no
-     * opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
-     * gate. Maximum value is 3600 seconds (1 hour).
+     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity
+     * to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum
+     * value is 3600 seconds (1 hour).
      * 
      * @return the terminationGracePeriodSeconds value.
      */
@@ -229,13 +224,13 @@ public final class ContainerAppProbe {
 
     /**
      * Set the terminationGracePeriodSeconds property: Optional duration in seconds the pod needs to terminate
-     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the
-     * pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set
-     * this value longer than the expected cleanup time for your process. If this value is nil, the pod's
+     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. If this value is nil, the pod's
      * terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec.
-     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no
-     * opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
-     * gate. Maximum value is 3600 seconds (1 hour).
+     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity
+     * to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum
+     * value is 3600 seconds (1 hour).
      * 
      * @param terminationGracePeriodSeconds the terminationGracePeriodSeconds value to set.
      * @return the ContainerAppProbe object itself.
@@ -246,8 +241,8 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Get the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second.
-     * Minimum value is 1. Maximum value is 240.
+     * Get the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second. Minimum
+     * value is 1. Maximum value is 240.
      * 
      * @return the timeoutSeconds value.
      */
@@ -256,8 +251,8 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Set the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second.
-     * Minimum value is 1. Maximum value is 240.
+     * Set the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second. Minimum
+     * value is 1. Maximum value is 240.
      * 
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the ContainerAppProbe object itself.
@@ -299,5 +294,66 @@ public final class ContainerAppProbe {
         if (tcpSocket() != null) {
             tcpSocket().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("failureThreshold", this.failureThreshold);
+        jsonWriter.writeJsonField("httpGet", this.httpGet);
+        jsonWriter.writeNumberField("initialDelaySeconds", this.initialDelaySeconds);
+        jsonWriter.writeNumberField("periodSeconds", this.periodSeconds);
+        jsonWriter.writeNumberField("successThreshold", this.successThreshold);
+        jsonWriter.writeJsonField("tcpSocket", this.tcpSocket);
+        jsonWriter.writeNumberField("terminationGracePeriodSeconds", this.terminationGracePeriodSeconds);
+        jsonWriter.writeNumberField("timeoutSeconds", this.timeoutSeconds);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppProbe from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppProbe if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerAppProbe.
+     */
+    public static ContainerAppProbe fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppProbe deserializedContainerAppProbe = new ContainerAppProbe();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failureThreshold".equals(fieldName)) {
+                    deserializedContainerAppProbe.failureThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("httpGet".equals(fieldName)) {
+                    deserializedContainerAppProbe.httpGet = ContainerAppProbeHttpGet.fromJson(reader);
+                } else if ("initialDelaySeconds".equals(fieldName)) {
+                    deserializedContainerAppProbe.initialDelaySeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("periodSeconds".equals(fieldName)) {
+                    deserializedContainerAppProbe.periodSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("successThreshold".equals(fieldName)) {
+                    deserializedContainerAppProbe.successThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("tcpSocket".equals(fieldName)) {
+                    deserializedContainerAppProbe.tcpSocket = ContainerAppProbeTcpSocket.fromJson(reader);
+                } else if ("terminationGracePeriodSeconds".equals(fieldName)) {
+                    deserializedContainerAppProbe.terminationGracePeriodSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("timeoutSeconds".equals(fieldName)) {
+                    deserializedContainerAppProbe.timeoutSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("type".equals(fieldName)) {
+                    deserializedContainerAppProbe.type = Type.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppProbe;
+        });
     }
 }

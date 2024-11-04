@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The NFS protocol version. */
+/**
+ * The NFS protocol version.
+ */
 public final class NfsVersion extends ExpandableStringEnum<NfsVersion> {
-    /** Static value NFSauto for NfsVersion. */
+    /**
+     * Static value NFSauto for NfsVersion.
+     */
     public static final NfsVersion NFSAUTO = fromString("NFSauto");
 
-    /** Static value NFSv3 for NfsVersion. */
+    /**
+     * Static value NFSv3 for NfsVersion.
+     */
     public static final NfsVersion NFSV3 = fromString("NFSv3");
 
-    /** Static value NFSv4 for NfsVersion. */
+    /**
+     * Static value NFSv4 for NfsVersion.
+     */
     public static final NfsVersion NFSV4 = fromString("NFSv4");
 
     /**
      * Creates a new instance of NfsVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class NfsVersion extends ExpandableStringEnum<NfsVersion> {
 
     /**
      * Creates or finds a NfsVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NfsVersion.
      */
@@ -41,7 +49,7 @@ public final class NfsVersion extends ExpandableStringEnum<NfsVersion> {
 
     /**
      * Gets known NfsVersion values.
-     *
+     * 
      * @return known NfsVersion values.
      */
     public static Collection<NfsVersion> values() {

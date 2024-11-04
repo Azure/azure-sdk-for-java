@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the partner managed resource.
  */
 @Immutable
-public final class PartnerManagedResourceProperties {
+public final class PartnerManagedResourceProperties implements JsonSerializable<PartnerManagedResourceProperties> {
     /*
      * The partner managed resource id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The partner managed ILB resource id
      */
-    @JsonProperty(value = "internalLoadBalancerId", access = JsonProperty.Access.WRITE_ONLY)
     private String internalLoadBalancerId;
 
     /*
      * The partner managed SLB resource id
      */
-    @JsonProperty(value = "standardLoadBalancerId", access = JsonProperty.Access.WRITE_ONLY)
     private String standardLoadBalancerId;
 
     /**
@@ -69,5 +70,45 @@ public final class PartnerManagedResourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerManagedResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerManagedResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerManagedResourceProperties.
+     */
+    public static PartnerManagedResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerManagedResourceProperties deserializedPartnerManagedResourceProperties
+                = new PartnerManagedResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPartnerManagedResourceProperties.id = reader.getString();
+                } else if ("internalLoadBalancerId".equals(fieldName)) {
+                    deserializedPartnerManagedResourceProperties.internalLoadBalancerId = reader.getString();
+                } else if ("standardLoadBalancerId".equals(fieldName)) {
+                    deserializedPartnerManagedResourceProperties.standardLoadBalancerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerManagedResourceProperties;
+        });
     }
 }

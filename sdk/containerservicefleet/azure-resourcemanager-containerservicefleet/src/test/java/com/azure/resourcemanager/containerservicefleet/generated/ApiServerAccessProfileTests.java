@@ -23,7 +23,8 @@ public final class ApiServerAccessProfileTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiServerAccessProfile model = new ApiServerAccessProfile().withEnablePrivateCluster(false)
-            .withEnableVnetIntegration(false).withSubnetId("yypnddhsgcbacphe");
+            .withEnableVnetIntegration(false)
+            .withSubnetId("yypnddhsgcbacphe");
         model = BinaryData.fromObject(model).toObject(ApiServerAccessProfile.class);
         Assertions.assertEquals(false, model.enablePrivateCluster());
         Assertions.assertEquals(false, model.enableVnetIntegration());

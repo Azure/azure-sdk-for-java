@@ -3,6 +3,8 @@
 
 package com.azure.messaging.webpubsub.client;
 
+import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
@@ -13,7 +15,11 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 
-public class TestBase extends com.azure.core.test.TestBase {
+/**
+ * Required environment variable for LIVE test:
+ * - WEB_PUB_SUB_ENDPOINT: endpoint of the Web PubSub Service
+ */
+public class TestBase extends TestProxyTestBase {
 
     protected static WebPubSubClientBuilder getClientBuilder() {
         return getClientBuilder("user1");
@@ -21,18 +27,16 @@ public class TestBase extends com.azure.core.test.TestBase {
 
     protected static WebPubSubClientBuilder getClientBuilder(String userId) {
         WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
+            .endpoint(Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_ENDPOINT"))
+            .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
             .hub("hub1")
             .buildClient();
 
         // client builder
-        return new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(
-                () -> client.getClientAccessToken(new GetClientAccessTokenOptions()
-                        .setUserId(userId)
-                        .addRole("webpubsub.joinLeaveGroup")
-                        .addRole("webpubsub.sendToGroup"))
-                    .getUrl()));
+        return new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(
+            () -> client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId(userId)
+                .addRole("webpubsub.joinLeaveGroup")
+                .addRole("webpubsub.sendToGroup")).getUrl()));
     }
 
     protected static WebPubSubClient getClient() {

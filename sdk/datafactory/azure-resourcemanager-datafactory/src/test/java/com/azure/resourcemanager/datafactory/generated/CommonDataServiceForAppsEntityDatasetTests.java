@@ -19,40 +19,35 @@ public final class CommonDataServiceForAppsEntityDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonDataServiceForAppsEntityDataset model = BinaryData.fromString(
-            "{\"type\":\"duvtvod\",\"typeProperties\":{\"entityName\":\"dataizme\"},\"description\":\"xpqhmlq\",\"structure\":\"datatbl\",\"schema\":\"datavrj\",\"linkedServiceName\":{\"referenceName\":\"znotd\",\"parameters\":{\"bmitaftazgcxsvq\":\"datavpbqsdqkpsbqs\",\"ow\":\"datacqufylam\"}},\"parameters\":{\"xiknsgofuns\":{\"type\":\"Object\",\"defaultValue\":\"datayutehlkarvtipquk\"},\"xn\":{\"type\":\"Object\",\"defaultValue\":\"datacekggvmfnnb\"},\"cvgifwsunj\":{\"type\":\"SecureString\",\"defaultValue\":\"datakkedeetxtp\"},\"zsnfzyviiwsuanzh\":{\"type\":\"Bool\",\"defaultValue\":\"dataaciwmmpdtqdonb\"}},\"annotations\":[\"datauifkzqqhb\"],\"folder\":{\"name\":\"oilmkfbeoiipjpng\"},\"\":{\"dlpsx\":\"datauoi\",\"wimqnryclocfm\":\"datatug\"}}")
+            "{\"type\":\"CommonDataServiceForAppsEntity\",\"typeProperties\":{\"entityName\":\"datazokn\"},\"description\":\"qddlggbq\",\"structure\":\"datalgzubak\",\"schema\":\"datakvggcmfns\",\"linkedServiceName\":{\"referenceName\":\"f\",\"parameters\":{\"gsmepnqvxgvoh\":\"datakmixwewzls\",\"pfhga\":\"databthhxmoevvude\",\"gayb\":\"datanvwxqhpjhubohxv\"}},\"parameters\":{\"v\":{\"type\":\"Float\",\"defaultValue\":\"datagalgxnwfm\"},\"fcssanybzzghvd\":{\"type\":\"String\",\"defaultValue\":\"datauebpamq\"}},\"annotations\":[\"datamyjsvcdhly\",\"datakh\"],\"folder\":{\"name\":\"junzxezriwg\"},\"\":{\"itibenwsdf\":\"dataapcqksaaapxjh\",\"ireszyaqg\":\"datavdaahlfrcqklpmvz\",\"cjjlwkyeahhhut\":\"datamlbmfggeokfe\",\"inowrerjpxp\":\"dataulnrfcqufmcih\"}}")
             .toObject(CommonDataServiceForAppsEntityDataset.class);
-        Assertions.assertEquals("xpqhmlq", model.description());
-        Assertions.assertEquals("znotd", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("xiknsgofuns").type());
-        Assertions.assertEquals("oilmkfbeoiipjpng", model.folder().name());
+        Assertions.assertEquals("qddlggbq", model.description());
+        Assertions.assertEquals("f", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("v").type());
+        Assertions.assertEquals("junzxezriwg", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonDataServiceForAppsEntityDataset model
-            = new CommonDataServiceForAppsEntityDataset().withDescription("xpqhmlq")
-                .withStructure("datatbl")
-                .withSchema("datavrj")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("znotd")
-                    .withParameters(mapOf("bmitaftazgcxsvq", "datavpbqsdqkpsbqs", "ow", "datacqufylam")))
-                .withParameters(mapOf("xiknsgofuns",
-                    new ParameterSpecification().withType(ParameterType.OBJECT)
-                        .withDefaultValue("datayutehlkarvtipquk"),
-                    "xn",
-                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datacekggvmfnnb"),
-                    "cvgifwsunj",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                        .withDefaultValue("datakkedeetxtp"),
-                    "zsnfzyviiwsuanzh",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataaciwmmpdtqdonb")))
-                .withAnnotations(Arrays.asList("datauifkzqqhb"))
-                .withFolder(new DatasetFolder().withName("oilmkfbeoiipjpng"))
-                .withEntityName("dataizme");
+        CommonDataServiceForAppsEntityDataset model = new CommonDataServiceForAppsEntityDataset()
+            .withDescription("qddlggbq")
+            .withStructure("datalgzubak")
+            .withSchema("datakvggcmfns")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("f")
+                .withParameters(mapOf("gsmepnqvxgvoh", "datakmixwewzls", "pfhga", "databthhxmoevvude", "gayb",
+                    "datanvwxqhpjhubohxv")))
+            .withParameters(
+                mapOf("v", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datagalgxnwfm"),
+                    "fcssanybzzghvd",
+                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datauebpamq")))
+            .withAnnotations(Arrays.asList("datamyjsvcdhly", "datakh"))
+            .withFolder(new DatasetFolder().withName("junzxezriwg"))
+            .withEntityName("datazokn");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsEntityDataset.class);
-        Assertions.assertEquals("xpqhmlq", model.description());
-        Assertions.assertEquals("znotd", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("xiknsgofuns").type());
-        Assertions.assertEquals("oilmkfbeoiipjpng", model.folder().name());
+        Assertions.assertEquals("qddlggbq", model.description());
+        Assertions.assertEquals("f", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("v").type());
+        Assertions.assertEquals("junzxezriwg", model.folder().name());
     }
 
     // Use "Map.of" if available

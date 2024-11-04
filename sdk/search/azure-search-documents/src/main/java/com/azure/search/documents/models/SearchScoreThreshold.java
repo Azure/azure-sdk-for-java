@@ -12,11 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The results of the vector query will filter based on the '@search.score' value. Note this is the @search.score
- * returned as part of the search response. The threshold direction will be chosen for higher @search.score.
+ * The results of the vector query will filter based on the '&#064;search.score' value. Note this is the
+ * &#064;search.score returned as part of the search response. The threshold direction will be chosen for higher
+ * &#064;search.score.
  */
 @Immutable
 public final class SearchScoreThreshold extends VectorThreshold {
+
+    /*
+     * The kind of threshold used to filter vector queries
+     */
+    private VectorThresholdKind kind = VectorThresholdKind.SEARCH_SCORE;
 
     /*
      * The threshold will filter based on the '@search.score' value. Note this is the @search.score returned as part of
@@ -34,6 +40,16 @@ public final class SearchScoreThreshold extends VectorThreshold {
     }
 
     /**
+     * Get the kind property: The kind of threshold used to filter vector queries.
+     *
+     * @return the kind value.
+     */
+    @Override
+    public VectorThresholdKind getKind() {
+        return this.kind;
+    }
+
+    /**
      * /**
      * Get the value property: The threshold will filter based on the '@search.score' value. Note this is the
      *
@@ -47,12 +63,14 @@ public final class SearchScoreThreshold extends VectorThreshold {
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind",
-            VectorThresholdKind.SEARCH_SCORE == null ? null : VectorThresholdKind.SEARCH_SCORE.toString());
         jsonWriter.writeDoubleField("value", this.value);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -62,33 +80,30 @@ public final class SearchScoreThreshold extends VectorThreshold {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchScoreThreshold if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchScoreThreshold.
      */
     public static SearchScoreThreshold fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;
             double value = 0.0;
+            VectorThresholdKind kind = VectorThresholdKind.SEARCH_SCORE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    String kind = reader.getString();
-                    if (!"searchScore".equals(kind)) {
-                        throw new IllegalStateException(
-                            "'kind' was expected to be non-null and equal to 'searchScore'. The found 'kind' was '"
-                                + kind + "'.");
-                    }
-                } else if ("value".equals(fieldName)) {
+                if ("value".equals(fieldName)) {
                     value = reader.getDouble();
                     valueFound = true;
+                } else if ("kind".equals(fieldName)) {
+                    kind = VectorThresholdKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             if (valueFound) {
-                return new SearchScoreThreshold(value);
+                SearchScoreThreshold deserializedSearchScoreThreshold = new SearchScoreThreshold(value);
+                deserializedSearchScoreThreshold.kind = kind;
+                return deserializedSearchScoreThreshold;
             }
             throw new IllegalStateException("Missing required property: value");
         });

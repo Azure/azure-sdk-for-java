@@ -5,15 +5,26 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The reference to the contact profile resource. */
+/**
+ * The reference to the contact profile resource.
+ */
 @Fluent
 public final class ContactParametersContactProfile extends ResourceReference {
-    /** Creates an instance of ContactParametersContactProfile class. */
+    /**
+     * Creates an instance of ContactParametersContactProfile class.
+     */
     public ContactParametersContactProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactParametersContactProfile withId(String id) {
         super.withId(id);
@@ -22,11 +33,55 @@ public final class ContactParametersContactProfile extends ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model ContactParametersContactProfile"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContactParametersContactProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactParametersContactProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactParametersContactProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContactParametersContactProfile.
+     */
+    public static ContactParametersContactProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactParametersContactProfile deserializedContactParametersContactProfile
+                = new ContactParametersContactProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContactParametersContactProfile.withId(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactParametersContactProfile;
+        });
     }
 }

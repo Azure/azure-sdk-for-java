@@ -6,23 +6,25 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * IP rule with specific IP or IP range in CIDR format.
  */
 @Fluent
-public final class IpRule {
+public final class IpRule implements JsonSerializable<IpRule> {
     /*
      * The action of IP ACL rule.
      */
-    @JsonProperty(value = "action")
     private Action action;
 
     /*
      * Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      */
-    @JsonProperty(value = "value", required = true)
     private String ipAddressOrRange;
 
     /**
@@ -78,10 +80,50 @@ public final class IpRule {
      */
     public void validate() {
         if (ipAddressOrRange() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ipAddressOrRange in model IpRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipAddressOrRange in model IpRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.ipAddressOrRange);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpRule if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpRule.
+     */
+    public static IpRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpRule deserializedIpRule = new IpRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedIpRule.ipAddressOrRange = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedIpRule.action = Action.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpRule;
+        });
+    }
 }

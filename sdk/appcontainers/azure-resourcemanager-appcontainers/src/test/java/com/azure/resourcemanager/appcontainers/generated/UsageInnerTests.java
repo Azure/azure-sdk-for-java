@@ -13,22 +13,23 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"currentValue\":41.70743,\"limit\":12.357182,\"name\":{\"value\":\"aswlp\",\"localizedValue\":\"gm\"}}")
+            "{\"currentValue\":89.70679,\"limit\":84.81147,\"name\":{\"value\":\"ycs\",\"localizedValue\":\"zyvoaqa\"}}")
             .toObject(UsageInner.class);
-        Assertions.assertEquals(41.70743f, model.currentValue());
-        Assertions.assertEquals(12.357182f, model.limit());
-        Assertions.assertEquals("aswlp", model.name().value());
-        Assertions.assertEquals("gm", model.name().localizedValue());
+        Assertions.assertEquals(89.70679f, model.currentValue());
+        Assertions.assertEquals(84.81147f, model.limit());
+        Assertions.assertEquals("ycs", model.name().value());
+        Assertions.assertEquals("zyvoaqa", model.name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageInner model = new UsageInner().withCurrentValue(41.70743f).withLimit(12.357182f)
-            .withName(new UsageName().withValue("aswlp").withLocalizedValue("gm"));
+        UsageInner model = new UsageInner().withCurrentValue(89.70679f)
+            .withLimit(84.81147f)
+            .withName(new UsageName().withValue("ycs").withLocalizedValue("zyvoaqa"));
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
-        Assertions.assertEquals(41.70743f, model.currentValue());
-        Assertions.assertEquals(12.357182f, model.limit());
-        Assertions.assertEquals("aswlp", model.name().value());
-        Assertions.assertEquals("gm", model.name().localizedValue());
+        Assertions.assertEquals(89.70679f, model.currentValue());
+        Assertions.assertEquals(84.81147f, model.limit());
+        Assertions.assertEquals("ycs", model.name().value());
+        Assertions.assertEquals("zyvoaqa", model.name().localizedValue());
     }
 }

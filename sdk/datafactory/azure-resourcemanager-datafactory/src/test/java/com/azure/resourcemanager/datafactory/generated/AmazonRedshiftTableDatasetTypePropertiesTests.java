@@ -10,17 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.AmazonRedshiftTableDa
 public final class AmazonRedshiftTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmazonRedshiftTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datarfbg\",\"table\":\"datazfwvzdteqjmy\",\"schema\":\"datauh\"}")
-                .toObject(AmazonRedshiftTableDatasetTypeProperties.class);
+        AmazonRedshiftTableDatasetTypeProperties model = BinaryData.fromString(
+            "{\"tableName\":\"datacjqpzjvnpjr\",\"table\":\"datapgsjbioagwviqehm\",\"schema\":\"datavaolidxdfsfvkjc\"}")
+            .toObject(AmazonRedshiftTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmazonRedshiftTableDatasetTypeProperties model
-            = new AmazonRedshiftTableDatasetTypeProperties().withTableName("datarfbg")
-                .withTable("datazfwvzdteqjmy")
-                .withSchema("datauh");
+            = new AmazonRedshiftTableDatasetTypeProperties().withTableName("datacjqpzjvnpjr")
+                .withTable("datapgsjbioagwviqehm")
+                .withSchema("datavaolidxdfsfvkjc");
         model = BinaryData.fromObject(model).toObject(AmazonRedshiftTableDatasetTypeProperties.class);
     }
 }

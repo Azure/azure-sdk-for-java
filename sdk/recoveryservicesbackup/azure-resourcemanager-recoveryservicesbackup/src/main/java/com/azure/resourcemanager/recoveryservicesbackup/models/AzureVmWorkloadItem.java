@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "workloadItemType",
-    defaultImpl = AzureVmWorkloadItem.class)
+    defaultImpl = AzureVmWorkloadItem.class,
+    visible = true)
 @JsonTypeName("AzureVmWorkloadItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SAPAseDatabase", value = AzureVmWorkloadSapAseDatabaseWorkloadItem.class),
@@ -28,6 +29,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceWorkloadItem.class) })
 @Fluent
 public class AzureVmWorkloadItem extends WorkloadItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "workloadItemType", required = true)
+    private String workloadItemType = "AzureVmWorkloadItem";
+
     /*
      * Name for instance or AG
      */
@@ -62,6 +70,16 @@ public class AzureVmWorkloadItem extends WorkloadItem {
      * Creates an instance of AzureVmWorkloadItem class.
      */
     public AzureVmWorkloadItem() {
+    }
+
+    /**
+     * Get the workloadItemType property: Type of the backup item.
+     * 
+     * @return the workloadItemType value.
+     */
+    @Override
+    public String workloadItemType() {
+        return this.workloadItemType;
     }
 
     /**

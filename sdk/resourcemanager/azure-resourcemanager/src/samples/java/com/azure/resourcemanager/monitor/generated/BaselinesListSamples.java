@@ -20,9 +20,13 @@ public final class BaselinesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getMetricBaselines(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getBaselines().list(
-            "subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1",
-            null, null, "2019-03-12T11:00:00.000Z/2019-03-12T12:00:00.000Z", Duration.parse("PT1H"), "average",
-            "Low,Medium", null, null, com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getBaselines()
+            .list(
+                "subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1",
+                null, null, "2019-03-12T11:00:00.000Z/2019-03-12T12:00:00.000Z", Duration.parse("PT1H"), "average",
+                "Low,Medium", null, null, com.azure.core.util.Context.NONE);
     }
 }

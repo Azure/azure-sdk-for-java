@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -101,24 +102,426 @@ class ManagementChannelTests {
     // Get rules message with a default rule and two customized rules, one is correlation rule, the another one is sql
     // rule.
     private static final byte[] THREE_RULE_MESSAGE = new byte[] {
-        0, 83, 115, -64, 15, 13, 64, 64, 64, 64, 64, 83, 1, 64, 64, 64, 64, 64, 64, 64, 0, 83, 116, -63, 83, 8, -95, 10,
-        115, 116, 97, 116, 117, 115, 67, 111, 100, 101, 113, 0, 0, 0, -56, -95, 14, 101, 114, 114, 111, 114, 67, 111,
-        110, 100, 105, 116, 105, 111, 110, 64, -95, 17, 115, 116, 97, 116, 117, 115, 68, 101, 115, 99, 114, 105, 112,
-        116, 105, 111, 110, 64, -95, 25, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 58, 116, 114, 97,
-        99, 107, 105, 110, 103, 45, 105, 100, 64, 0, 83, 119, -47, 0, 0, 1, 48, 0, 0, 0, 2, -95, 5, 114, 117, 108, 101,
-        115, -48, 0, 0, 1, 32, 0, 0, 0, 3, -63, 73, 2, -95, 16, 114, 117, 108, 101, 45, 100, 101, 115, 99, 114, 105,
-        112, 116, 105, 111, 110, 0, -128, 0, 0, 1, 55, 0, 0, 0, 4, -64, 42, 4, 0, -128, 0, 0, 0, 19, 112, 0, 0, 7, 69,
-        0, -128, 0, 0, 1, 55, 0, 0, 0, 5, 69, -95, 8, 36, 68, 101, 102, 97, 117, 108, 116, -125, 0, 0, 1, -126, -112,
-        -66, -80, 119, -63, 117, 2, -95, 16, 114, 117, 108, 101, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111,
-        110, 0, -128, 0, 0, 1, 55, 0, 0, 0, 4, -64, 86, 4, 0, -128, 0, 0, 0, 19, 112, 0, 0, 9, -64, 29, 9, 64, 64, 64,
-        -95, 3, 102, 111, 111, 64, 64, 64, 64, -63, 14, 2, -95, 3, 98, 97, 114, -95, 6, 114, 97, 110, 100, 111, 109, 0,
-        -128, 0, 0, 1, 55, 0, 0, 0, 5, 69, -95, 22, 110, 101, 119, 45, 99, 111, 114, 114, 101, 108, 97, 116, 105, 111,
-        110, 45, 102, 105, 108, 116, 101, 114, -125, 0, 0, 1, -126, -111, 22, 53, -99, -63, 88, 2, -95, 16, 114, 117,
-        108, 101, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, 0, -128, 0, 0, 1, 55, 0, 0, 0, 4, -64, 57,
-        4, 0, -128, 0, 0, 0, 19, 112, 0, 0, 6, -64, 8, 2, -95, 3, 49, 61, 49, 84, 20, 0, -128, 0, 0, 1, 55, 0, 0, 0, 5,
-        69, -95, 14, 110, 101, 119, 45, 115, 113, 108, 45, 102, 105, 108, 116, 101, 114, -125, 0, 0, 1, -126, -111, 23,
-        29, 49
-    };
+        0,
+        83,
+        115,
+        -64,
+        15,
+        13,
+        64,
+        64,
+        64,
+        64,
+        64,
+        83,
+        1,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        0,
+        83,
+        116,
+        -63,
+        83,
+        8,
+        -95,
+        10,
+        115,
+        116,
+        97,
+        116,
+        117,
+        115,
+        67,
+        111,
+        100,
+        101,
+        113,
+        0,
+        0,
+        0,
+        -56,
+        -95,
+        14,
+        101,
+        114,
+        114,
+        111,
+        114,
+        67,
+        111,
+        110,
+        100,
+        105,
+        116,
+        105,
+        111,
+        110,
+        64,
+        -95,
+        17,
+        115,
+        116,
+        97,
+        116,
+        117,
+        115,
+        68,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        64,
+        -95,
+        25,
+        99,
+        111,
+        109,
+        46,
+        109,
+        105,
+        99,
+        114,
+        111,
+        115,
+        111,
+        102,
+        116,
+        58,
+        116,
+        114,
+        97,
+        99,
+        107,
+        105,
+        110,
+        103,
+        45,
+        105,
+        100,
+        64,
+        0,
+        83,
+        119,
+        -47,
+        0,
+        0,
+        1,
+        48,
+        0,
+        0,
+        0,
+        2,
+        -95,
+        5,
+        114,
+        117,
+        108,
+        101,
+        115,
+        -48,
+        0,
+        0,
+        1,
+        32,
+        0,
+        0,
+        0,
+        3,
+        -63,
+        73,
+        2,
+        -95,
+        16,
+        114,
+        117,
+        108,
+        101,
+        45,
+        100,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        0,
+        -128,
+        0,
+        0,
+        1,
+        55,
+        0,
+        0,
+        0,
+        4,
+        -64,
+        42,
+        4,
+        0,
+        -128,
+        0,
+        0,
+        0,
+        19,
+        112,
+        0,
+        0,
+        7,
+        69,
+        0,
+        -128,
+        0,
+        0,
+        1,
+        55,
+        0,
+        0,
+        0,
+        5,
+        69,
+        -95,
+        8,
+        36,
+        68,
+        101,
+        102,
+        97,
+        117,
+        108,
+        116,
+        -125,
+        0,
+        0,
+        1,
+        -126,
+        -112,
+        -66,
+        -80,
+        119,
+        -63,
+        117,
+        2,
+        -95,
+        16,
+        114,
+        117,
+        108,
+        101,
+        45,
+        100,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        0,
+        -128,
+        0,
+        0,
+        1,
+        55,
+        0,
+        0,
+        0,
+        4,
+        -64,
+        86,
+        4,
+        0,
+        -128,
+        0,
+        0,
+        0,
+        19,
+        112,
+        0,
+        0,
+        9,
+        -64,
+        29,
+        9,
+        64,
+        64,
+        64,
+        -95,
+        3,
+        102,
+        111,
+        111,
+        64,
+        64,
+        64,
+        64,
+        -63,
+        14,
+        2,
+        -95,
+        3,
+        98,
+        97,
+        114,
+        -95,
+        6,
+        114,
+        97,
+        110,
+        100,
+        111,
+        109,
+        0,
+        -128,
+        0,
+        0,
+        1,
+        55,
+        0,
+        0,
+        0,
+        5,
+        69,
+        -95,
+        22,
+        110,
+        101,
+        119,
+        45,
+        99,
+        111,
+        114,
+        114,
+        101,
+        108,
+        97,
+        116,
+        105,
+        111,
+        110,
+        45,
+        102,
+        105,
+        108,
+        116,
+        101,
+        114,
+        -125,
+        0,
+        0,
+        1,
+        -126,
+        -111,
+        22,
+        53,
+        -99,
+        -63,
+        88,
+        2,
+        -95,
+        16,
+        114,
+        117,
+        108,
+        101,
+        45,
+        100,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        0,
+        -128,
+        0,
+        0,
+        1,
+        55,
+        0,
+        0,
+        0,
+        4,
+        -64,
+        57,
+        4,
+        0,
+        -128,
+        0,
+        0,
+        0,
+        19,
+        112,
+        0,
+        0,
+        6,
+        -64,
+        8,
+        2,
+        -95,
+        3,
+        49,
+        61,
+        49,
+        84,
+        20,
+        0,
+        -128,
+        0,
+        0,
+        1,
+        55,
+        0,
+        0,
+        0,
+        5,
+        69,
+        -95,
+        14,
+        110,
+        101,
+        119,
+        45,
+        115,
+        113,
+        108,
+        45,
+        102,
+        105,
+        108,
+        116,
+        101,
+        114,
+        -125,
+        0,
+        0,
+        1,
+        -126,
+        -111,
+        23,
+        29,
+        49 };
 
     @Mock
     private TokenManager tokenManager;
@@ -153,8 +556,9 @@ class ManagementChannelTests {
         when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
         when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
 
-        managementChannel = new ManagementChannel(Mono.just(requestResponseChannel), NAMESPACE, ENTITY_PATH,
-            tokenManager, messageSerializer, TIMEOUT);
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
+        managementChannel
+            = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager, messageSerializer, TIMEOUT);
     }
 
     @AfterEach
@@ -186,7 +590,8 @@ class ManagementChannelTests {
 
         final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
 
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         final Object addedState = hashMap.get(ManagementConstants.SESSION_STATE);
@@ -208,7 +613,7 @@ class ManagementChannelTests {
     @Test
     void setSessionStateNoSessionId() {
         // Arrange
-        final byte[] sessionState = new byte[]{10, 11, 8, 88, 15};
+        final byte[] sessionState = new byte[] { 10, 11, 8, 88, 15 };
 
         // Act & Assert
         StepVerifier.create(managementChannel.setSessionState(null, sessionState, LINK_NAME))
@@ -228,7 +633,7 @@ class ManagementChannelTests {
     @Test
     void getSessionState() {
         // Arrange
-        final byte[] sessionState = new byte[]{10, 11, 8, 88, 15};
+        final byte[] sessionState = new byte[] { 10, 11, 8, 88, 15 };
         final String sessionId = "A session-id";
 
         final Map<String, Object> responseBody = new HashMap<>();
@@ -249,7 +654,8 @@ class ManagementChannelTests {
 
         final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
 
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         // Assert application properties
@@ -287,9 +693,7 @@ class ManagementChannelTests {
         responseMessage.setBody(new AmqpValue(responseBody));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME)).expectComplete().verify(TIMEOUT);
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
@@ -298,7 +702,8 @@ class ManagementChannelTests {
 
         final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
 
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         // Assert application properties
@@ -333,7 +738,8 @@ class ManagementChannelTests {
 
         final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
 
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(sessionId, hashMap.get(ManagementConstants.SESSION_ID));
 
         // Assert application properties
@@ -367,8 +773,7 @@ class ManagementChannelTests {
         // Arrange
         final Map<String, Object> propertiesToModify = new HashMap<>();
         propertiesToModify.put("test-key", "test-value");
-        final DeadLetterOptions options = new DeadLetterOptions()
-            .setDeadLetterErrorDescription("dlq-description")
+        final DeadLetterOptions options = new DeadLetterOptions().setDeadLetterErrorDescription("dlq-description")
             .setDeadLetterReason("dlq-reason")
             .setPropertiesToModify(propertiesToModify);
 
@@ -379,9 +784,7 @@ class ManagementChannelTests {
         // Act & Assert
         StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
             options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            sessionId, associatedLinkName, null))
-            .expectComplete()
-            .verify(TIMEOUT);
+            sessionId, associatedLinkName, null)).expectComplete().verify(TIMEOUT);
 
         // Verify the contents of our request to make sure the correct properties were given.
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
@@ -392,7 +795,8 @@ class ManagementChannelTests {
         assertTrue(sentMessage.getBody() instanceof AmqpValue);
 
         final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
-        @SuppressWarnings("unchecked") final Map<String, Object> body = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) amqpValue.getValue();
 
         assertEquals(DispositionStatus.SUSPENDED.getValue(), body.get(DISPOSITION_STATUS_KEY));
 
@@ -430,8 +834,7 @@ class ManagementChannelTests {
         // Arrange
         final String associatedLinkName = "associatedLinkName";
         final String txnIdString = "Transaction-ID";
-        final DeadLetterOptions options = new DeadLetterOptions()
-            .setDeadLetterErrorDescription("dlq-description")
+        final DeadLetterOptions options = new DeadLetterOptions().setDeadLetterErrorDescription("dlq-description")
             .setDeadLetterReason("dlq-reason");
 
         final UUID lockToken = UUID.randomUUID();
@@ -443,9 +846,7 @@ class ManagementChannelTests {
         // Act & Assert
         StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
             options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            null, associatedLinkName, mockTransaction))
-            .expectComplete()
-            .verify(TIMEOUT);
+            null, associatedLinkName, mockTransaction)).expectComplete().verify(TIMEOUT);
 
         // Verify the contents of our request to make sure the correct properties were given.
         verify(requestResponseChannel).sendWithAck(any(Message.class), amqpDeliveryStateCaptor.capture());
@@ -466,76 +867,77 @@ class ManagementChannelTests {
         authorizationResponseCode = AmqpResponseCode.UNAUTHORIZED;
 
         // Act & Assert
-        StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
+        StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof ServiceBusException);
+            assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+            assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+            assertFalse(((ServiceBusException) error).isTransient());
+        }).verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof ServiceBusException);
+            assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+            assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+            assertFalse(((ServiceBusException) error).isTransient());
+        }).verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof ServiceBusException);
+            assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+            assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+            assertFalse(((ServiceBusException) error).isTransient());
+        }).verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof ServiceBusException);
+            assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+            assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+            assertFalse(((ServiceBusException) error).isTransient());
+        }).verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.setSessionState(sessionId, new byte[0], LINK_NAME))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ServiceBusException);
-                assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                    ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                 assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                 assertFalse(((ServiceBusException) error).isTransient());
             })
             .verify(TIMEOUT);
 
-        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
-                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
-                    assertFalse(((ServiceBusException) error).isTransient());
-                })
-                .verify(TIMEOUT);
-
-        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
-                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
-                    assertFalse(((ServiceBusException) error).isTransient());
-                })
-                .verify(TIMEOUT);
-
-        StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME))
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
-                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
-                    assertFalse(((ServiceBusException) error).isTransient());
-                })
-                .verify(TIMEOUT);
-
-        StepVerifier.create(managementChannel.setSessionState(sessionId, new byte[0], LINK_NAME))
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
-                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
-                    assertFalse(((ServiceBusException) error).isTransient());
-                })
-                .verify(TIMEOUT);
-
         StepVerifier.create(managementChannel.schedule(new ArrayList<>(), OffsetDateTime.now(), 1, LINK_NAME, null))
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
-                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
-                    assertFalse(((ServiceBusException) error).isTransient());
-                })
-                .verify(TIMEOUT);
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof ServiceBusException);
+                assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                    ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                assertFalse(((ServiceBusException) error).isTransient());
+            })
+            .verify(TIMEOUT);
 
-        StepVerifier.create(managementChannel.updateDisposition(UUID.randomUUID().toString(),
-                DispositionStatus.ABANDONED, "", "",
-                null, sessionId, LINK_NAME, null))
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
-                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
-                    assertFalse(((ServiceBusException) error).isTransient());
-                })
-                .verify(TIMEOUT);
+        StepVerifier
+            .create(managementChannel.updateDisposition(UUID.randomUUID().toString(), DispositionStatus.ABANDONED, "",
+                "", null, sessionId, LINK_NAME, null))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof ServiceBusException);
+                assertEquals(ServiceBusErrorSource.MANAGEMENT,
+                    ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                assertFalse(((ServiceBusException) error).isTransient());
+            })
+            .verify(TIMEOUT);
     }
 
     @Test
     void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
+        StepVerifier
+            .create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null,
+                new ArrayList<>()))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -543,7 +945,8 @@ class ManagementChannelTests {
     @Test
     void getDeferredMessagesWithNullThrows() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, null))
+        StepVerifier
+            .create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, null))
             .expectError(NullPointerException.class)
             .verify(TIMEOUT);
     }
@@ -563,9 +966,7 @@ class ManagementChannelTests {
         CreateRuleOptions options = new CreateRuleOptions();
 
         // Act & Assert
-        StepVerifier.create(managementChannel.createRule(ruleName, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(managementChannel.createRule(ruleName, options)).expectComplete().verify(TIMEOUT);
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
@@ -575,42 +976,42 @@ class ManagementChannelTests {
         final AmqpValue amqpValue = (AmqpValue) message.getBody();
 
         // Assert request body value.
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(ruleName, hashMap.get(ManagementConstants.RULE_NAME));
 
-        @SuppressWarnings("unchecked") final Map<String, Object> ruleHashMap = (Map<String, Object>) hashMap.get(ManagementConstants.RULE_DESCRIPTION);
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> ruleHashMap = (Map<String, Object>) hashMap.get(ManagementConstants.RULE_DESCRIPTION);
         assertEquals(ruleName, ruleHashMap.get(ManagementConstants.RULE_NAME));
 
-        @SuppressWarnings("unchecked") final Map<String, Object> ruleFilterMap = (Map<String, Object>) ruleHashMap.get(ManagementConstants.SQL_RULE_FILTER);
-        assertEquals(ruleFilterMap.get(ManagementConstants.EXPRESSION), ((SqlRuleFilter) options.getFilter()).getSqlExpression());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> ruleFilterMap
+            = (Map<String, Object>) ruleHashMap.get(ManagementConstants.SQL_RULE_FILTER);
+        assertEquals(ruleFilterMap.get(ManagementConstants.EXPRESSION),
+            ((SqlRuleFilter) options.getFilter()).getSqlExpression());
     }
 
     @Test
     void getRules() {
         // Arrange, act, assert
-        final  Message message = Proton.message();
+        final Message message = Proton.message();
         message.decode(THREE_RULE_MESSAGE, 0, THREE_RULE_MESSAGE.length);
         responseMessage.setBody(message.getBody());
 
         // Assert response message content.
-        StepVerifier.create(managementChannel.listRules())
-            .assertNext(ruleProperties -> {
-                assertEquals("$Default", ruleProperties.getName());
-                assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());
-            })
-            .assertNext(ruleProperties -> {
-                assertEquals("new-correlation-filter", ruleProperties.getName());
-                assertTrue(ruleProperties.getFilter() instanceof CorrelationRuleFilter);
-                CorrelationRuleFilter filter = (CorrelationRuleFilter) ruleProperties.getFilter();
-                assertEquals(filter.getReplyTo(), "foo");
-                assertEquals(filter.getProperties().get("bar"), "random");
-            })
-            .assertNext(ruleProperties -> {
-                assertEquals("new-sql-filter", ruleProperties.getName());
-                assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(managementChannel.listRules()).assertNext(ruleProperties -> {
+            assertEquals("$Default", ruleProperties.getName());
+            assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());
+        }).assertNext(ruleProperties -> {
+            assertEquals("new-correlation-filter", ruleProperties.getName());
+            assertTrue(ruleProperties.getFilter() instanceof CorrelationRuleFilter);
+            CorrelationRuleFilter filter = (CorrelationRuleFilter) ruleProperties.getFilter();
+            assertEquals(filter.getReplyTo(), "foo");
+            assertEquals(filter.getProperties().get("bar"), "random");
+        }).assertNext(ruleProperties -> {
+            assertEquals("new-sql-filter", ruleProperties.getName());
+            assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());
+        }).expectComplete().verify(TIMEOUT);
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
@@ -620,7 +1021,8 @@ class ManagementChannelTests {
         final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
 
         // Assert request body value.
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(hashMap.get(ManagementConstants.SKIP), 0);
         assertEquals(hashMap.get(ManagementConstants.TOP), Integer.MAX_VALUE);
     }
@@ -631,9 +1033,7 @@ class ManagementChannelTests {
         String ruleName = "exist-rule";
 
         // Act & Assert
-        StepVerifier.create(managementChannel.deleteRule(ruleName))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(managementChannel.deleteRule(ruleName)).expectComplete().verify(TIMEOUT);
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
@@ -643,25 +1043,19 @@ class ManagementChannelTests {
         final AmqpValue amqpValue = (AmqpValue) message.getBody();
 
         // Assert request body value.
-        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
         assertEquals(ruleName, hashMap.get(ManagementConstants.RULE_NAME));
 
     }
 
     private static Stream<Arguments> updateDisposition() {
-        return Stream.of(Arguments.of(
-            "", "test-link-name",
-            "", null,
-            "test-session", "",
-            null, "test-link-name"
-        ));
+        return Stream.of(Arguments.of("", "test-link-name", "", null, "test-session", "", null, "test-link-name"));
     }
 
     private static Stream<Arguments> sessionStates() {
         // Got a warning about this being confusing because it was passed to varargs. So we cast to Object.
-        final Object contents = new byte[]{10, 11, 8, 88};
-        return Stream.of(
-            Arguments.of(contents),
-            Arguments.of((Object) null));
+        final Object contents = new byte[] { 10, 11, 8, 88 };
+        return Stream.of(Arguments.of(contents), Arguments.of((Object) null));
     }
 }

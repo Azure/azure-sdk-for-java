@@ -14,6 +14,8 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
  * Simple value object to capture information of {@link CosmosPersistentProperty}s.
+ *
+ * @param <T> the type that is persisted.
  */
 public class BasicCosmosPersistentEntity<T> extends BasicPersistentEntity<T, CosmosPersistentProperty>
         implements CosmosPersistentEntity<T>, ApplicationContextAware {

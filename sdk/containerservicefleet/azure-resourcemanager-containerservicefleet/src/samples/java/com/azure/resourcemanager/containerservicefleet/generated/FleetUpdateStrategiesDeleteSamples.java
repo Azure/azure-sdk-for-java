@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 public final class FleetUpdateStrategiesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/
      * examples/UpdateStrategies_Delete.json
      */
     /**

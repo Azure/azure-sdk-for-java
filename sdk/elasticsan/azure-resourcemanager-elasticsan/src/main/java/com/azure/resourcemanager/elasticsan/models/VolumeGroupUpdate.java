@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Volume Group request.
  */
 @Fluent
-public final class VolumeGroupUpdate {
+public final class VolumeGroupUpdate implements JsonSerializable<VolumeGroupUpdate> {
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Properties of VolumeGroup.
      */
-    @JsonProperty(value = "properties")
     private VolumeGroupUpdateProperties innerProperties;
 
     /**
@@ -153,6 +155,31 @@ public final class VolumeGroupUpdate {
     }
 
     /**
+     * Get the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @return the enforceDataIntegrityCheckForIscsi value.
+     */
+    public Boolean enforceDataIntegrityCheckForIscsi() {
+        return this.innerProperties() == null ? null : this.innerProperties().enforceDataIntegrityCheckForIscsi();
+    }
+
+    /**
+     * Set the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @param enforceDataIntegrityCheckForIscsi the enforceDataIntegrityCheckForIscsi value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupUpdateProperties();
+        }
+        this.innerProperties().withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,5 +191,44 @@ public final class VolumeGroupUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeGroupUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeGroupUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeGroupUpdate.
+     */
+    public static VolumeGroupUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeGroupUpdate deserializedVolumeGroupUpdate = new VolumeGroupUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedVolumeGroupUpdate.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumeGroupUpdate.innerProperties = VolumeGroupUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeGroupUpdate;
+        });
     }
 }

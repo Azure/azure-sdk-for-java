@@ -108,10 +108,10 @@ public final class PacketCoreDataPlaneInner extends Resource {
     }
 
     /**
-     * Get the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the
-     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
-     * configured to forward traffic for this address to the control plane access interface on the active or standby
-     * node. In non-HA system this list should be omitted or empty.
+     * Get the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the access
+     * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
+     * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
+     * system this list should be omitted or empty.
      * 
      * @return the userPlaneAccessVirtualIpv4Addresses value.
      */
@@ -120,10 +120,10 @@ public final class PacketCoreDataPlaneInner extends Resource {
     }
 
     /**
-     * Set the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the
-     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
-     * configured to forward traffic for this address to the control plane access interface on the active or standby
-     * node. In non-HA system this list should be omitted or empty.
+     * Set the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the access
+     * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
+     * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
+     * system this list should be omitted or empty.
      * 
      * @param userPlaneAccessVirtualIpv4Addresses the userPlaneAccessVirtualIpv4Addresses value to set.
      * @return the PacketCoreDataPlaneInner object itself.
@@ -144,8 +144,9 @@ public final class PacketCoreDataPlaneInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model PacketCoreDataPlaneInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PacketCoreDataPlaneInner"));
         } else {
             innerProperties().validate();
         }

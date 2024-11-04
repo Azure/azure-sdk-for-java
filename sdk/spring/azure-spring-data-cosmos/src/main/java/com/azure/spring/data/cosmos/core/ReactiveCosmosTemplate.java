@@ -18,6 +18,9 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -52,8 +55,16 @@ import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Template class of reactive cosmos
@@ -178,8 +189,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(cosmosDatabaseResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
-                final CosmosContainerProperties cosmosContainerProperties =
-                    new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), information.getPartitionKeyPath());
+                final CosmosContainerProperties cosmosContainerProperties = getCosmosContainerPropertiesWithPartitionKeyPath(information);
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
                 cosmosContainerProperties.setIndexingPolicy(information.getIndexingPolicy());
                 final UniqueKeyPolicy uniqueKeyPolicy = information.getUniqueKeyPolicy();
@@ -441,7 +451,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave, null);
+        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(objectToSave, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        }
+        Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
         return this.getCosmosAsyncClient()
@@ -455,7 +474,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
+                return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
+                    cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
             });
     }
 
@@ -496,15 +516,24 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
-
         String containerName = entityInformation.getContainerName();
         Class<T> domainType = entityInformation.getJavaType();
-
+        Map<String, Map<Field, Object>> mapOfTransientFieldValuesMaps = new HashMap<>();
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity, entityInformation);
+            JsonNode originalItem;
+            if (!transientFields.isEmpty()) {
+                originalItem = mappingCosmosConverter.writeJsonNode(entity, transientFields);
+                Map<Field, Object> transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(entity, transientFields);
+                mapOfTransientFieldValuesMaps.put(originalItem.get("id").asText(), transientFieldValuesMap);
+
+            } else {
+                originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            }
+
+            PartitionKey partitionKey = getPartitionKeyFromValue(entityInformation, entity);
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             return CosmosBulkOperations.getUpsertItemOperation(originalItem, partitionKey, options);
@@ -527,7 +556,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                  CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                      r.getResponse().getCosmosDiagnostics(), null);
                                  JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
-                                 return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
+                                 if (responseItem != null) {
+                                     if (mapOfTransientFieldValuesMaps.containsKey(responseItem.get("id").asText())) {
+                                         Map<Field, Object> transientFieldValuesMap = mapOfTransientFieldValuesMaps.get(responseItem.get("id").asText());
+                                         return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(responseItem, transientFieldValuesMap)));
+                                     } else {
+                                         return Flux.just(toDomainObject(domainType, responseItem));
+                                     }
+                                 } else {
+                                     return Flux.empty();
+                                 }
                              });
     }
 
@@ -619,9 +657,17 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         containerName = getContainerNameOverride(containerName);
         final Class<T> domainType = (Class<T>) object.getClass();
         markAuditedIfConfigured(object);
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
+        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(object, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(object, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(object);
+        }
+        Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-
         applyVersioning(object.getClass(), originalItem, options);
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
@@ -631,8 +677,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType,
-                                        cosmosItemResponse.getItem()));
+                                    return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(
+                                        cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
                                 })
                                 .onErrorResume(throwable ->
                                     CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
@@ -722,7 +768,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         Flux<CosmosItemOperation> cosmosItemOperationFlux = entities.map(entity -> {
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            PartitionKey partitionKey = getPartitionKeyFromValue(entityInformation, entity);
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             return CosmosBulkOperations.getDeleteItemOperation(String.valueOf(entityInformation.getId(entity)),
@@ -787,10 +833,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 String idString = id != null ? id.toString() : "";
                 final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
                 applyBulkVersioning(domainType, item, options);
-                return CosmosBulkOperations.getDeleteItemOperation(
-                    idString,
-                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)),
-                    options,
+                return CosmosBulkOperations.getDeleteItemOperation(idString,
+                    getPartitionKeyFromValue(entityInfo, object), options,
                     object); // setup the original object in the context
             });
 
@@ -1089,6 +1133,41 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T, ?> information, S entity) {
+        Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
+        PartitionKey partitionKey;
+        if (pkFieldValue instanceof Collection<?>) {
+            ArrayList<Object> valueArray = ((ArrayList<Object>) pkFieldValue);
+            Object[] objectArray = new Object[valueArray.size()];
+            for (int i = 0; i < valueArray.size(); i++) {
+                objectArray[i] = valueArray.get(i);
+            }
+            partitionKey = PartitionKey.fromObjectArray(objectArray, false);
+        } else {
+            partitionKey = new PartitionKey(pkFieldValue);
+        }
+        return partitionKey;
+    }
+
+    private <T> CosmosContainerProperties getCosmosContainerPropertiesWithPartitionKeyPath(CosmosEntityInformation<T, ?> information) {
+        String pkPath = information.getPartitionKeyPath();
+        if (pkPath.contains(",")) {
+            PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+            partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+            partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+            ArrayList<String> pkDefPaths = new ArrayList<>();
+            List<String> paths = Arrays.stream(pkPath.split(",")).collect(Collectors.toList());
+            paths.forEach(path -> {
+                pkDefPaths.add(path.trim());
+            });
+            partitionKeyDef.setPaths(pkDefPaths);
+            return new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), partitionKeyDef);
+        } else {
+            return new CosmosContainerProperties(getContainerNameOverride(information.getContainerName()), pkPath);
         }
     }
 

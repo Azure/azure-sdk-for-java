@@ -93,12 +93,8 @@ public interface AccessInformationContract {
          * The stage of the AccessInformationContract definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPrincipalId,
-                DefinitionStages.WithPrimaryKey,
-                DefinitionStages.WithSecondaryKey,
-                DefinitionStages.WithEnabled,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithPrincipalId, DefinitionStages.WithPrimaryKey,
+            DefinitionStages.WithSecondaryKey, DefinitionStages.WithEnabled, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *

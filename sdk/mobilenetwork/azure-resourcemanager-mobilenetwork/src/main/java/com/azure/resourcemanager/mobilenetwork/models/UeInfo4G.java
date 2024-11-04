@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -14,10 +15,17 @@ import java.time.OffsetDateTime;
 /**
  * UE Information for 4G.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ratType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ratType", defaultImpl = UeInfo4G.class, visible = true)
 @JsonTypeName("4G")
 @Fluent
 public final class UeInfo4G extends ExtendedUeInfoProperties {
+    /*
+     * RAT Type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ratType", required = true)
+    private RatType ratType = RatType.FOURG;
+
     /*
      * UE Information properties for 4G.
      */
@@ -28,6 +36,16 @@ public final class UeInfo4G extends ExtendedUeInfoProperties {
      * Creates an instance of UeInfo4G class.
      */
     public UeInfo4G() {
+    }
+
+    /**
+     * Get the ratType property: RAT Type.
+     * 
+     * @return the ratType value.
+     */
+    @Override
+    public RatType ratType() {
+        return this.ratType;
     }
 
     /**
@@ -68,8 +86,8 @@ public final class UeInfo4G extends ExtendedUeInfoProperties {
     public void validate() {
         super.validate();
         if (info() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property info in model UeInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property info in model UeInfo4G"));
         } else {
             info().validate();
         }

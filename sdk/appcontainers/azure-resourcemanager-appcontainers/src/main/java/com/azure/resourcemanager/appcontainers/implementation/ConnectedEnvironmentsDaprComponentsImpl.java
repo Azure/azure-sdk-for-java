@@ -65,8 +65,8 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String componentName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, connectedEnvironmentName, componentName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String componentName) {
@@ -75,8 +75,8 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
 
     public Response<DaprSecretsCollection> listSecretsWithResponse(String resourceGroupName,
         String connectedEnvironmentName, String componentName, Context context) {
-        Response<DaprSecretsCollectionInner> inner = this.serviceClient().listSecretsWithResponse(resourceGroupName,
-            connectedEnvironmentName, componentName, context);
+        Response<DaprSecretsCollectionInner> inner = this.serviceClient()
+            .listSecretsWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DaprSecretsCollectionImpl(inner.getValue(), this.manager()));

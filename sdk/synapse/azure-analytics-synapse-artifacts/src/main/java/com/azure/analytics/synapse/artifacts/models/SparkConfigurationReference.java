@@ -5,23 +5,25 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Spark configuration reference.
  */
 @Fluent
-public final class SparkConfigurationReference {
+public final class SparkConfigurationReference implements JsonSerializable<SparkConfigurationReference> {
     /*
      * Spark configuration reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private SparkConfigurationReferenceType type;
 
     /*
      * Reference spark configuration name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /**
@@ -68,5 +70,46 @@ public final class SparkConfigurationReference {
     public SparkConfigurationReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkConfigurationReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkConfigurationReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkConfigurationReference.
+     */
+    public static SparkConfigurationReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkConfigurationReference deserializedSparkConfigurationReference = new SparkConfigurationReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSparkConfigurationReference.type
+                        = SparkConfigurationReferenceType.fromString(reader.getString());
+                } else if ("referenceName".equals(fieldName)) {
+                    deserializedSparkConfigurationReference.referenceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkConfigurationReference;
+        });
     }
 }

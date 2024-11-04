@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines the list of managed rule sets for the policy.
  */
 @Fluent
-public final class ManagedRuleSetList {
+public final class ManagedRuleSetList implements JsonSerializable<ManagedRuleSetList> {
     /*
      * List of rule sets.
      */
-    @JsonProperty(value = "managedRuleSets")
     private List<ManagedRuleSet> managedRuleSets;
 
     /**
@@ -54,5 +57,44 @@ public final class ManagedRuleSetList {
         if (managedRuleSets() != null) {
             managedRuleSets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("managedRuleSets", this.managedRuleSets,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRuleSetList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRuleSetList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedRuleSetList.
+     */
+    public static ManagedRuleSetList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRuleSetList deserializedManagedRuleSetList = new ManagedRuleSetList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedRuleSets".equals(fieldName)) {
+                    List<ManagedRuleSet> managedRuleSets
+                        = reader.readArray(reader1 -> ManagedRuleSet.fromJson(reader1));
+                    deserializedManagedRuleSetList.managedRuleSets = managedRuleSets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRuleSetList;
+        });
     }
 }

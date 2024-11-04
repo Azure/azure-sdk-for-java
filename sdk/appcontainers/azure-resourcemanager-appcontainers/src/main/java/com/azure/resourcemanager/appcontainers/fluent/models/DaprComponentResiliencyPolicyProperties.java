@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.DaprComponentResiliencyPolicyConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Dapr Component Resiliency Policy resource specific properties.
  */
 @Fluent
-public final class DaprComponentResiliencyPolicyProperties {
+public final class DaprComponentResiliencyPolicyProperties
+    implements JsonSerializable<DaprComponentResiliencyPolicyProperties> {
     /*
      * The optional inbound component resiliency policy configuration
      */
-    @JsonProperty(value = "inboundPolicy")
     private DaprComponentResiliencyPolicyConfiguration inboundPolicy;
 
     /*
      * The optional outbound component resiliency policy configuration
      */
-    @JsonProperty(value = "outboundPolicy")
     private DaprComponentResiliencyPolicyConfiguration outboundPolicy;
 
     /**
@@ -85,5 +88,47 @@ public final class DaprComponentResiliencyPolicyProperties {
         if (outboundPolicy() != null) {
             outboundPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("inboundPolicy", this.inboundPolicy);
+        jsonWriter.writeJsonField("outboundPolicy", this.outboundPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprComponentResiliencyPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprComponentResiliencyPolicyProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DaprComponentResiliencyPolicyProperties.
+     */
+    public static DaprComponentResiliencyPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprComponentResiliencyPolicyProperties deserializedDaprComponentResiliencyPolicyProperties
+                = new DaprComponentResiliencyPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inboundPolicy".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyProperties.inboundPolicy
+                        = DaprComponentResiliencyPolicyConfiguration.fromJson(reader);
+                } else if ("outboundPolicy".equals(fieldName)) {
+                    deserializedDaprComponentResiliencyPolicyProperties.outboundPolicy
+                        = DaprComponentResiliencyPolicyConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprComponentResiliencyPolicyProperties;
+        });
     }
 }

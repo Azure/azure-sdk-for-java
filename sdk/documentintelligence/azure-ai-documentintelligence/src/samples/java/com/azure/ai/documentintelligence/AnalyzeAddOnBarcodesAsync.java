@@ -43,12 +43,13 @@ public class AnalyzeAddOnBarcodesAsync {
         File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/barcodes.jpg");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
                 null,
                 Arrays.asList(DocumentAnalysisFeature.BARCODES),
+                null,
                 null,
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
@@ -65,7 +66,7 @@ public class AnalyzeAddOnBarcodesAsync {
                             new RuntimeException(
                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                     }
-                }).map(AnalyzeResultOperation::getAnalyzeResult);
+                });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             // pages

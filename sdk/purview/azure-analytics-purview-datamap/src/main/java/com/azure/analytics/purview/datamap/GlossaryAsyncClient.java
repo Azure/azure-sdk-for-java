@@ -50,12 +50,8 @@ public final class GlossaryAsyncClient {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -68,7 +64,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -124,7 +121,8 @@ public final class GlossaryAsyncClient {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -143,7 +141,8 @@ public final class GlossaryAsyncClient {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -197,11 +196,13 @@ public final class GlossaryAsyncClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -255,9 +256,10 @@ public final class GlossaryAsyncClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -267,15 +269,16 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(atlasGlossary, requestOptions);
+    public Mono<Response<BinaryData>> createWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -335,11 +338,13 @@ public final class GlossaryAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -399,7 +404,8 @@ public final class GlossaryAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -419,7 +425,8 @@ public final class GlossaryAsyncClient {
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -477,11 +484,13 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -539,9 +548,10 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -551,16 +561,16 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createCategoryWithResponse(BinaryData atlasGlossaryCategory,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createCategoryWithResponseAsync(atlasGlossaryCategory, requestOptions);
+    public Mono<Response<BinaryData>> createCategoryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createCategoryWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -618,7 +628,8 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -639,7 +650,8 @@ public final class GlossaryAsyncClient {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -697,11 +709,13 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -759,10 +773,11 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -772,9 +787,9 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateCategoryWithResponse(String categoryId, BinaryData atlasGlossaryCategory,
+    public Mono<Response<BinaryData>> updateCategoryWithResponse(String categoryId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateCategoryWithResponseAsync(categoryId, atlasGlossaryCategory, requestOptions);
+        return this.serviceClient.updateCategoryWithResponseAsync(categoryId, body, requestOptions);
     }
 
     /**
@@ -799,15 +814,18 @@ public final class GlossaryAsyncClient {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -865,7 +883,8 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -898,7 +917,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -910,7 +930,8 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -941,7 +962,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -953,7 +975,8 @@ public final class GlossaryAsyncClient {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -981,7 +1004,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1140,11 +1164,13 @@ public final class GlossaryAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1303,9 +1329,10 @@ public final class GlossaryAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1315,16 +1342,16 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTermWithResponse(BinaryData atlasGlossaryTerm,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createTermWithResponseAsync(atlasGlossaryTerm, requestOptions);
+    public Mono<Response<BinaryData>> createTermWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createTermWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1483,7 +1510,8 @@ public final class GlossaryAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1511,7 +1539,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1670,11 +1699,13 @@ public final class GlossaryAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1833,10 +1864,11 @@ public final class GlossaryAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1846,9 +1878,9 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateTermWithResponse(String termId, BinaryData atlasGlossaryTerm,
+    public Mono<Response<BinaryData>> updateTermWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateTermWithResponseAsync(termId, atlasGlossaryTerm, requestOptions);
+        return this.serviceClient.updateTermWithResponseAsync(termId, body, requestOptions);
     }
 
     /**
@@ -1880,15 +1912,18 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2047,7 +2082,8 @@ public final class GlossaryAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2077,7 +2113,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2238,11 +2275,13 @@ public final class GlossaryAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2403,7 +2442,8 @@ public final class GlossaryAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2433,7 +2473,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2455,7 +2496,8 @@ public final class GlossaryAsyncClient {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2481,7 +2523,8 @@ public final class GlossaryAsyncClient {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2503,7 +2546,8 @@ public final class GlossaryAsyncClient {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -2525,7 +2569,8 @@ public final class GlossaryAsyncClient {
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2547,7 +2592,8 @@ public final class GlossaryAsyncClient {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -2579,7 +2625,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2593,7 +2640,8 @@ public final class GlossaryAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2614,7 +2662,8 @@ public final class GlossaryAsyncClient {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2668,7 +2717,8 @@ public final class GlossaryAsyncClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2695,7 +2745,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2749,11 +2800,13 @@ public final class GlossaryAsyncClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2807,10 +2860,11 @@ public final class GlossaryAsyncClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2820,9 +2874,9 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponse(String glossaryId, BinaryData atlasGlossary,
+    public Mono<Response<BinaryData>> updateWithResponse(String glossaryId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponseAsync(glossaryId, atlasGlossary, requestOptions);
+        return this.serviceClient.updateWithResponseAsync(glossaryId, body, requestOptions);
     }
 
     /**
@@ -2857,7 +2911,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -2917,7 +2972,8 @@ public final class GlossaryAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2948,7 +3004,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -2958,7 +3015,8 @@ public final class GlossaryAsyncClient {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2987,7 +3045,8 @@ public final class GlossaryAsyncClient {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3202,7 +3261,8 @@ public final class GlossaryAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3237,15 +3297,18 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3299,7 +3362,8 @@ public final class GlossaryAsyncClient {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -3332,7 +3396,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -3493,7 +3558,8 @@ public final class GlossaryAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3524,7 +3590,8 @@ public final class GlossaryAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -3536,7 +3603,8 @@ public final class GlossaryAsyncClient {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3556,12 +3624,8 @@ public final class GlossaryAsyncClient {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * 
      * @param limit The page size - by default there is no paging.
      * @param offset The offset for pagination purpose.
@@ -3600,12 +3664,8 @@ public final class GlossaryAsyncClient {
     /**
      * Get all glossaries. Recommend using limit/offset to get pagination result.
      * Recommend using 'ignoreTermsAndCategories=true' and fetch terms/categories
-     * separately using
-     * 
-     * 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
-     * and
-     * 
-     * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
+     * separately using 'GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms'
+     * and 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3626,7 +3686,7 @@ public final class GlossaryAsyncClient {
     /**
      * Create a glossary.
      * 
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3637,10 +3697,10 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossary> create(AtlasGlossary atlasGlossary) {
+    public Mono<AtlasGlossary> create(AtlasGlossary body) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(atlasGlossary), requestOptions).flatMap(FluxUtil::toMono)
+        return createWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossary.class));
     }
 
@@ -3668,7 +3728,7 @@ public final class GlossaryAsyncClient {
     /**
      * Create a glossary category.
      * 
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3679,11 +3739,10 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossaryCategory> createCategory(AtlasGlossaryCategory atlasGlossaryCategory) {
+    public Mono<AtlasGlossaryCategory> createCategory(AtlasGlossaryCategory body) {
         // Generated convenience method for createCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createCategoryWithResponse(BinaryData.fromObject(atlasGlossaryCategory), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createCategoryWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossaryCategory.class));
     }
 
@@ -3712,7 +3771,7 @@ public final class GlossaryAsyncClient {
      * Update the given glossary category by its GUID.
      * 
      * @param categoryId The globally unique identifier of the category.
-     * @param atlasGlossaryCategory The glossary category.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3723,10 +3782,10 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossaryCategory> updateCategory(String categoryId, AtlasGlossaryCategory atlasGlossaryCategory) {
+    public Mono<AtlasGlossaryCategory> updateCategory(String categoryId, AtlasGlossaryCategory body) {
         // Generated convenience method for updateCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateCategoryWithResponse(categoryId, BinaryData.fromObject(atlasGlossaryCategory), requestOptions)
+        return updateCategoryWithResponse(categoryId, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossaryCategory.class));
     }
@@ -3893,7 +3952,7 @@ public final class GlossaryAsyncClient {
     /**
      * Create a glossary term.
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3905,21 +3964,20 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossaryTerm> createTerm(AtlasGlossaryTerm atlasGlossaryTerm, Boolean includeTermHierarchy) {
+    public Mono<AtlasGlossaryTerm> createTerm(AtlasGlossaryTerm body, Boolean includeTermHierarchy) {
         // Generated convenience method for createTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return createTermWithResponse(BinaryData.fromObject(atlasGlossaryTerm), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createTermWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossaryTerm.class));
     }
 
     /**
      * Create a glossary term.
      * 
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3930,11 +3988,10 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossaryTerm> createTerm(AtlasGlossaryTerm atlasGlossaryTerm) {
+    public Mono<AtlasGlossaryTerm> createTerm(AtlasGlossaryTerm body) {
         // Generated convenience method for createTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createTermWithResponse(BinaryData.fromObject(atlasGlossaryTerm), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createTermWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossaryTerm.class));
     }
 
@@ -3963,7 +4020,7 @@ public final class GlossaryAsyncClient {
      * Update the given glossary term by its GUID.
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @param includeTermHierarchy Whether include term hierarchy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3975,15 +4032,13 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossaryTerm> updateTerm(String termId, AtlasGlossaryTerm atlasGlossaryTerm,
-        Boolean includeTermHierarchy) {
+    public Mono<AtlasGlossaryTerm> updateTerm(String termId, AtlasGlossaryTerm body, Boolean includeTermHierarchy) {
         // Generated convenience method for updateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeTermHierarchy != null) {
             requestOptions.addQueryParam("includeTermHierarchy", String.valueOf(includeTermHierarchy), false);
         }
-        return updateTermWithResponse(termId, BinaryData.fromObject(atlasGlossaryTerm), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateTermWithResponse(termId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossaryTerm.class));
     }
 
@@ -3991,7 +4046,7 @@ public final class GlossaryAsyncClient {
      * Update the given glossary term by its GUID.
      * 
      * @param termId The globally unique identifier for glossary term.
-     * @param atlasGlossaryTerm The glossary term.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4002,11 +4057,10 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossaryTerm> updateTerm(String termId, AtlasGlossaryTerm atlasGlossaryTerm) {
+    public Mono<AtlasGlossaryTerm> updateTerm(String termId, AtlasGlossaryTerm body) {
         // Generated convenience method for updateTermWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateTermWithResponse(termId, BinaryData.fromObject(atlasGlossaryTerm), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateTermWithResponse(termId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossaryTerm.class));
     }
 
@@ -4321,7 +4375,7 @@ public final class GlossaryAsyncClient {
      * Update the given glossary.
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @param ignoreTermsAndCategories Whether ignore terms and categories.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4333,15 +4387,13 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossary> update(String glossaryId, AtlasGlossary atlasGlossary,
-        Boolean ignoreTermsAndCategories) {
+    public Mono<AtlasGlossary> update(String glossaryId, AtlasGlossary body, Boolean ignoreTermsAndCategories) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (ignoreTermsAndCategories != null) {
             requestOptions.addQueryParam("ignoreTermsAndCategories", String.valueOf(ignoreTermsAndCategories), false);
         }
-        return updateWithResponse(glossaryId, BinaryData.fromObject(atlasGlossary), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateWithResponse(glossaryId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossary.class));
     }
 
@@ -4349,7 +4401,7 @@ public final class GlossaryAsyncClient {
      * Update the given glossary.
      * 
      * @param glossaryId The globally unique identifier for glossary.
-     * @param atlasGlossary The glossary object.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4360,11 +4412,10 @@ public final class GlossaryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasGlossary> update(String glossaryId, AtlasGlossary atlasGlossary) {
+    public Mono<AtlasGlossary> update(String glossaryId, AtlasGlossary body) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(glossaryId, BinaryData.fromObject(atlasGlossary), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateWithResponse(glossaryId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasGlossary.class));
     }
 

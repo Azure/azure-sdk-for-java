@@ -19,20 +19,20 @@ public final class UsagesImpl implements Usages {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public UsagesImpl(
-        UsagesClient innerClient, com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
+    public UsagesImpl(UsagesClient innerClient,
+        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Usage> list(String regionId) {
         PagedIterable<UsageInner> inner = this.serviceClient().list(regionId);
-        return Utils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Usage> list(String regionId, String filter, Context context) {
         PagedIterable<UsageInner> inner = this.serviceClient().list(regionId, filter, context);
-        return Utils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {

@@ -27,13 +27,17 @@ public final class DeploymentsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().update("myResourceGroup", "myservice",
-            "myapp", "mydeployment",
-            new DeploymentResourceInner().withProperties(new DeploymentResourceProperties()
-                .withSource(new SourceUploadedUserSourceInfo().withVersion("1.0").withRelativePath(
-                    "resources/a172cedcae47474b615c54d510a5d84a8dea3032e958587430b413538be3f333-2019082605-e3095339-1723-44b7-8b5e-31b1003978bc")
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .update("myResourceGroup", "myservice", "myapp", "mydeployment", new DeploymentResourceInner()
+                .withProperties(new DeploymentResourceProperties().withSource(new SourceUploadedUserSourceInfo()
+                    .withVersion("1.0")
+                    .withRelativePath(
+                        "resources/a172cedcae47474b615c54d510a5d84a8dea3032e958587430b413538be3f333-2019082605-e3095339-1723-44b7-8b5e-31b1003978bc")
                     .withArtifactSelector("sub-module-1"))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -46,17 +50,19 @@ public final class DeploymentsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsUpdateCustomContainer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
             .update("myResourceGroup", "myservice", "myapp", "mydeployment",
                 new DeploymentResourceInner()
-                    .withProperties(
-                        new DeploymentResourceProperties()
-                            .withSource(new CustomContainerUserSourceInfo()
-                                .withCustomContainer(new CustomContainer().withServer("mynewacr.azurecr.io")
-                                    .withContainerImage("myNewContainerImage:v1").withCommand(Arrays.asList("/bin/sh"))
-                                    .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
-                                    .withImageRegistryCredential(new ImageRegistryCredential()
-                                        .withUsername("myNewUsername").withPassword("fakeTokenPlaceholder"))))),
+                    .withProperties(new DeploymentResourceProperties().withSource(new CustomContainerUserSourceInfo()
+                        .withCustomContainer(new CustomContainer().withServer("mynewacr.azurecr.io")
+                            .withContainerImage("myNewContainerImage:v1")
+                            .withCommand(Arrays.asList("/bin/sh"))
+                            .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
+                            .withImageRegistryCredential(new ImageRegistryCredential().withUsername("myNewUsername")
+                                .withPassword("fakeTokenPlaceholder"))))),
                 com.azure.core.util.Context.NONE);
     }
 }

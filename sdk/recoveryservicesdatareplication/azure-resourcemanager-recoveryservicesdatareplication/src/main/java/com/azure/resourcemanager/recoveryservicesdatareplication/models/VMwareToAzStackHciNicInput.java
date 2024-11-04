@@ -167,34 +167,24 @@ public final class VMwareToAzStackHciNicInput {
      */
     public void validate() {
         if (nicId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nicId in model VMwareToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nicId in model VMwareToAzStackHciNicInput"));
         }
         if (label() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property label in model VMwareToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property label in model VMwareToAzStackHciNicInput"));
         }
         if (targetNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetNetworkId in model VMwareToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetNetworkId in model VMwareToAzStackHciNicInput"));
         }
         if (testNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property testNetworkId in model VMwareToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property testNetworkId in model VMwareToAzStackHciNicInput"));
         }
         if (selectionTypeForFailover() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectionTypeForFailover in model VMwareToAzStackHciNicInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property selectionTypeForFailover in model VMwareToAzStackHciNicInput"));
         }
     }
 

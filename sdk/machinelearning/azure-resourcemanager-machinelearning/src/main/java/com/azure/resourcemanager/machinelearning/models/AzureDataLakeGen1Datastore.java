@@ -6,36 +6,87 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Azure Data Lake Gen1 datastore configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datastoreType")
-@JsonTypeName("AzureDataLakeGen1")
+/**
+ * Azure Data Lake Gen1 datastore configuration.
+ */
 @Fluent
 public final class AzureDataLakeGen1Datastore extends DatastoreProperties {
     /*
-     * Indicates which identity to use to authenticate service data access to customer's storage.
+     * [Required] Storage type backing the datastore.
      */
-    @JsonProperty(value = "serviceDataAccessAuthIdentity")
-    private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
+    private DatastoreType datastoreType = DatastoreType.AZURE_DATA_LAKE_GEN1;
 
     /*
      * [Required] Azure Data Lake store name.
      */
-    @JsonProperty(value = "storeName", required = true)
     private String storeName;
 
-    /** Creates an instance of AzureDataLakeGen1Datastore class. */
+    /*
+     * Indicates which identity to use to authenticate service data access to customer's storage.
+     */
+    private ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity;
+
+    /*
+     * Azure Subscription Id
+     */
+    private String subscriptionId;
+
+    /*
+     * Azure Resource Group name
+     */
+    private String resourceGroup;
+
+    /*
+     * Readonly property to indicate if datastore is the workspace default datastore
+     */
+    private Boolean isDefault;
+
+    /**
+     * Creates an instance of AzureDataLakeGen1Datastore class.
+     */
     public AzureDataLakeGen1Datastore() {
+    }
+
+    /**
+     * Get the datastoreType property: [Required] Storage type backing the datastore.
+     * 
+     * @return the datastoreType value.
+     */
+    @Override
+    public DatastoreType datastoreType() {
+        return this.datastoreType;
+    }
+
+    /**
+     * Get the storeName property: [Required] Azure Data Lake store name.
+     * 
+     * @return the storeName value.
+     */
+    public String storeName() {
+        return this.storeName;
+    }
+
+    /**
+     * Set the storeName property: [Required] Azure Data Lake store name.
+     * 
+     * @param storeName the storeName value to set.
+     * @return the AzureDataLakeGen1Datastore object itself.
+     */
+    public AzureDataLakeGen1Datastore withStoreName(String storeName) {
+        this.storeName = storeName;
+        return this;
     }
 
     /**
      * Get the serviceDataAccessAuthIdentity property: Indicates which identity to use to authenticate service data
      * access to customer's storage.
-     *
+     * 
      * @return the serviceDataAccessAuthIdentity value.
      */
     public ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity() {
@@ -45,58 +96,87 @@ public final class AzureDataLakeGen1Datastore extends DatastoreProperties {
     /**
      * Set the serviceDataAccessAuthIdentity property: Indicates which identity to use to authenticate service data
      * access to customer's storage.
-     *
+     * 
      * @param serviceDataAccessAuthIdentity the serviceDataAccessAuthIdentity value to set.
      * @return the AzureDataLakeGen1Datastore object itself.
      */
-    public AzureDataLakeGen1Datastore withServiceDataAccessAuthIdentity(
-        ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity) {
+    public AzureDataLakeGen1Datastore
+        withServiceDataAccessAuthIdentity(ServiceDataAccessAuthIdentity serviceDataAccessAuthIdentity) {
         this.serviceDataAccessAuthIdentity = serviceDataAccessAuthIdentity;
         return this;
     }
 
     /**
-     * Get the storeName property: [Required] Azure Data Lake store name.
-     *
-     * @return the storeName value.
+     * Get the subscriptionId property: Azure Subscription Id.
+     * 
+     * @return the subscriptionId value.
      */
-    public String storeName() {
-        return this.storeName;
+    public String subscriptionId() {
+        return this.subscriptionId;
     }
 
     /**
-     * Set the storeName property: [Required] Azure Data Lake store name.
-     *
-     * @param storeName the storeName value to set.
+     * Set the subscriptionId property: Azure Subscription Id.
+     * 
+     * @param subscriptionId the subscriptionId value to set.
      * @return the AzureDataLakeGen1Datastore object itself.
      */
-    public AzureDataLakeGen1Datastore withStoreName(String storeName) {
-        this.storeName = storeName;
+    public AzureDataLakeGen1Datastore withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the resourceGroup property: Azure Resource Group name.
+     * 
+     * @return the resourceGroup value.
+     */
+    public String resourceGroup() {
+        return this.resourceGroup;
+    }
+
+    /**
+     * Set the resourceGroup property: Azure Resource Group name.
+     * 
+     * @param resourceGroup the resourceGroup value to set.
+     * @return the AzureDataLakeGen1Datastore object itself.
+     */
+    public AzureDataLakeGen1Datastore withResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+        return this;
+    }
+
+    /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     * 
+     * @return the isDefault value.
+     */
+    @Override
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeGen1Datastore withCredentials(DatastoreCredentials credentials) {
         super.withCredentials(credentials);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeGen1Datastore withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AzureDataLakeGen1Datastore withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeGen1Datastore withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -104,20 +184,95 @@ public final class AzureDataLakeGen1Datastore extends DatastoreProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureDataLakeGen1Datastore withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (storeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storeName in model AzureDataLakeGen1Datastore"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storeName in model AzureDataLakeGen1Datastore"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDataLakeGen1Datastore.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("credentials", credentials());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("storeName", this.storeName);
+        jsonWriter.writeStringField("datastoreType", this.datastoreType == null ? null : this.datastoreType.toString());
+        jsonWriter.writeStringField("serviceDataAccessAuthIdentity",
+            this.serviceDataAccessAuthIdentity == null ? null : this.serviceDataAccessAuthIdentity.toString());
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataLakeGen1Datastore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataLakeGen1Datastore if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDataLakeGen1Datastore.
+     */
+    public static AzureDataLakeGen1Datastore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataLakeGen1Datastore deserializedAzureDataLakeGen1Datastore = new AzureDataLakeGen1Datastore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("credentials".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.withCredentials(DatastoreCredentials.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureDataLakeGen1Datastore.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureDataLakeGen1Datastore.withProperties(properties);
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storeName".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.storeName = reader.getString();
+                } else if ("datastoreType".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.datastoreType = DatastoreType.fromString(reader.getString());
+                } else if ("serviceDataAccessAuthIdentity".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.serviceDataAccessAuthIdentity
+                        = ServiceDataAccessAuthIdentity.fromString(reader.getString());
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedAzureDataLakeGen1Datastore.resourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDataLakeGen1Datastore;
+        });
+    }
 }

@@ -42,8 +42,7 @@ public final class CacheProperties {
     private List<String> mountAddresses;
 
     /*
-     * ARM provisioning state, see
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
+     * ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateType provisioningState;
@@ -323,8 +322,7 @@ public final class CacheProperties {
     }
 
     /**
-     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the
-     * cache.
+     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the cache.
      * 
      * @return the spaceAllocation value.
      */

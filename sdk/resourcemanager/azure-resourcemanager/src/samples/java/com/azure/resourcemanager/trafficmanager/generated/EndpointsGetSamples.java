@@ -6,71 +6,64 @@ package com.azure.resourcemanager.trafficmanager.generated;
 
 import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 
-/** Samples for Endpoints Get. */
+/**
+ * Samples for Endpoints Get.
+ */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-WithGeoMapping.json
+     * x-ms-original-file:
+     * specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-
+     * WithGeoMapping.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithGeoMapping.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void endpointGETExternalWithGeoMapping(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .trafficManagerProfiles()
+        azure.trafficManagerProfiles()
             .manager()
             .serviceClient()
             .getEndpoints()
-            .getWithResponse(
-                "azuresdkfornetautoresttrafficmanager2191",
-                "azuresdkfornetautoresttrafficmanager8224",
-                EndpointTypes.EXTERNAL_ENDPOINTS,
-                "My%20external%20endpoint",
-                com.azure.core.util.Context.NONE);
+            .getWithResponse("azuresdkfornetautoresttrafficmanager2191", "azuresdkfornetautoresttrafficmanager8224",
+                EndpointTypes.EXTERNAL_ENDPOINTS, "My%20external%20endpoint", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-WithSubnetMapping.json
+     * x-ms-original-file:
+     * specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-
+     * WithSubnetMapping.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithSubnetMapping.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void endpointGETExternalWithSubnetMapping(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .trafficManagerProfiles()
+        azure.trafficManagerProfiles()
             .manager()
             .serviceClient()
             .getEndpoints()
-            .getWithResponse(
-                "azuresdkfornetautoresttrafficmanager2191",
-                "azuresdkfornetautoresttrafficmanager8224",
-                EndpointTypes.EXTERNAL_ENDPOINTS,
-                "My%20external%20endpoint",
-                com.azure.core.util.Context.NONE);
+            .getWithResponse("azuresdkfornetautoresttrafficmanager2191", "azuresdkfornetautoresttrafficmanager8224",
+                EndpointTypes.EXTERNAL_ENDPOINTS, "My%20external%20endpoint", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-WithLocation.json
+     * x-ms-original-file:
+     * specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Endpoint-GET-External-
+     * WithLocation.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithLocation.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void endpointGETExternalWithLocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .trafficManagerProfiles()
+        azure.trafficManagerProfiles()
             .manager()
             .serviceClient()
             .getEndpoints()
-            .getWithResponse(
-                "azuresdkfornetautoresttrafficmanager1421",
-                "azsmnet6386",
-                EndpointTypes.EXTERNAL_ENDPOINTS,
-                "azsmnet7187",
-                com.azure.core.util.Context.NONE);
+            .getWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
+                EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187", com.azure.core.util.Context.NONE);
     }
 }

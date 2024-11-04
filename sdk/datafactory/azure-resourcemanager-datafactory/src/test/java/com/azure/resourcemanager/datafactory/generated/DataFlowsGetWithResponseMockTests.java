@@ -21,7 +21,7 @@ public final class DataFlowsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"twuw\",\"description\":\"zjbjzxrr\",\"annotations\":[\"datadtphdu\"],\"folder\":{\"name\":\"x\"}},\"name\":\"agovb\",\"type\":\"uchvq\",\"etag\":\"npxdsdevhzktjmi\",\"id\":\"evthdtqthvthi\"}";
+            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"hgrgiu\",\"annotations\":[\"dataykvo\",\"datakjixbrdam\",\"dataneb\",\"dataonflknmzaih\"],\"folder\":{\"name\":\"scseuhh\"}},\"name\":\"hspvbwjmtlavuecm\",\"type\":\"corydjsaki\",\"etag\":\"lmiglnqrmqefdq\",\"id\":\"sfebhvkkpd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class DataFlowsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataFlowResource response = manager.dataFlows()
-            .getWithResponse("drunykntstoen", "ixypyitfcjfgpu", "xvffbzeqsmaqd", "nb", com.azure.core.util.Context.NONE)
+            .getWithResponse("hxjwiggca", "mkoxpay", "zqgsaegaah", "ger", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("evthdtqthvthi", response.id());
-        Assertions.assertEquals("zjbjzxrr", response.properties().description());
-        Assertions.assertEquals("x", response.properties().folder().name());
+        Assertions.assertEquals("sfebhvkkpd", response.id());
+        Assertions.assertEquals("hgrgiu", response.properties().description());
+        Assertions.assertEquals("scseuhh", response.properties().folder().name());
     }
 }

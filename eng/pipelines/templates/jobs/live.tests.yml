@@ -16,12 +16,15 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   BuildParallelization: '2C'
+  BuildOptions: ''
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
   TestParallelization: '1'
   TestVersionSupport: $(TestVersionSupport)
   UseHttpFaultInjector: false
   OSName:
+  UseFederatedAuth: false
+  VersionOverride: $(VersionOverride)
 
 jobs:
   - job:
@@ -96,25 +99,26 @@ jobs:
           parameters:
             SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
             SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
-            EnvVars: ${{ parameters.EnvVars }}
+            ${{ if eq('true', parameters.UseFederatedAuth) }}:
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+            EnvVars:
+              Pool: $(Pool)
+              ${{ insert }}: ${{ parameters.EnvVars }}
 
-        - ${{ if parameters.TestResourceDirectories }}:
-          - ${{ each directory in parameters.TestResourceDirectories }}:
-            - template: /eng/common/TestResources/deploy-test-resources.yml
-              parameters:
-                ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
-                  Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-                ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: $(SubscriptionConfiguration)
-                ArmTemplateParameters: $(ArmTemplateParameters)
-        - ${{ if not(parameters.TestResourceDirectories) }}:
+        - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
                 Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              ServiceDirectory: '${{ directory }}'
               SubscriptionConfiguration: $(SubscriptionConfiguration)
               ArmTemplateParameters: $(ArmTemplateParameters)
+              UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+              EnvVars:
+                Pool: $(Pool)
+                ${{ insert }}: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PreSteps }}
 
@@ -122,6 +126,7 @@ jobs:
         parameters:
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          BuildOptions: ${{ parameters.BuildOptions }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
@@ -132,8 +137,11 @@ jobs:
             AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
+          UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+          ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+          VersionOverride: ${{ parameters.VersionOverride }}
 
-      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
@@ -143,14 +151,12 @@ jobs:
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - ${{ if parameters.TestResourceDirectories }}:
-          - ${{ each directory in parameters.TestResourceDirectories }}:
-            - template: /eng/common/TestResources/remove-test-resources.yml
-              parameters:
-                ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: $(SubscriptionConfiguration)
-        - ${{ if not(parameters.TestResourceDirectories) }}:
+        - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
           - template: /eng/common/TestResources/remove-test-resources.yml
             parameters:
-              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              ServiceDirectory: '${{ directory }}'
               SubscriptionConfiguration: $(SubscriptionConfiguration)
+              UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+

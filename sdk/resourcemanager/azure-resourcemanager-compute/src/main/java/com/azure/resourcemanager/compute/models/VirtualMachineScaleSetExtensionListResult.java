@@ -6,26 +6,29 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List VM scale set extension operation response.
  */
 @Fluent
-public final class VirtualMachineScaleSetExtensionListResult {
+public final class VirtualMachineScaleSetExtensionListResult
+    implements JsonSerializable<VirtualMachineScaleSetExtensionListResult> {
     /*
      * The list of VM scale set extensions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<VirtualMachineScaleSetExtensionInner> value;
 
     /*
-     * The uri to fetch the next page of VM scale set extensions. Call ListNext() with this to fetch the next page of
-     * VM scale set extensions.
+     * The uri to fetch the next page of VM scale set extensions. Call ListNext() with this to fetch the next page of VM
+     * scale set extensions.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,12 +86,56 @@ public final class VirtualMachineScaleSetExtensionListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model VirtualMachineScaleSetExtensionListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineScaleSetExtensionListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetExtensionListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetExtensionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetExtensionListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetExtensionListResult.
+     */
+    public static VirtualMachineScaleSetExtensionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetExtensionListResult deserializedVirtualMachineScaleSetExtensionListResult
+                = new VirtualMachineScaleSetExtensionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineScaleSetExtensionInner> value
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetExtensionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetExtensionListResult;
+        });
+    }
 }

@@ -12,51 +12,47 @@ import com.azure.resourcemanager.avs.models.PrivateCloud;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 
-/** Samples for PrivateClouds Update. */
+/**
+ * Samples for PrivateClouds Update.
+ */
 public final class PrivateCloudsUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Update.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_Update.json
      */
     /**
      * Sample code: PrivateClouds_Update.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsUpdate(com.azure.resourcemanager.avs.AvsManager manager) {
-        PrivateCloud resource =
-            manager
-                .privateClouds()
-                .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        PrivateCloud resource = manager.privateClouds()
+            .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.NONE))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
-            .withEncryption(
-                new Encryption()
-                    .withStatus(EncryptionState.ENABLED)
-                    .withKeyVaultProperties(
-                        new EncryptionKeyVaultProperties()
-                            .withKeyName("fakeTokenPlaceholder")
-                            .withKeyVersion("fakeTokenPlaceholder")
-                            .withKeyVaultUrl("fakeTokenPlaceholder")))
+            .withEncryption(new Encryption().withStatus(EncryptionState.ENABLED)
+                .withKeyVaultProperties(new EncryptionKeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withKeyVaultUrl("fakeTokenPlaceholder")))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Update_Stretched.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_Update_Stretched.
+     * json
      */
     /**
      * Sample code: PrivateClouds_Update_Stretched.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsUpdateStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        PrivateCloud resource =
-            manager
-                .privateClouds()
-                .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateCloud resource = manager.privateClouds()
+            .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withManagementCluster(new ManagementCluster().withClusterSize(4)).apply();
     }
 }

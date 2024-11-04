@@ -54,8 +54,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @param client the instance of the service client containing this operation class.
      */
     PolicyFragmentsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PolicyFragmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PolicyFragmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,104 +66,67 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
     public interface PolicyFragmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyFragmentCollectionInner>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<PolicyFragmentCollectionInner>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PolicyFragmentsGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
+        Mono<PolicyFragmentsGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<PolicyFragmentsGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("format") PolicyFragmentContentFormat format, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PolicyFragmentsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("format") PolicyFragmentContentFormat format,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("id") String id, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PolicyFragmentContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("id") String id,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PolicyFragmentContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("id") String id, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}/listReferences")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("id") String id,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyFragments/{id}/listReferences")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceCollectionInner>> listReferences(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ResourceCollectionInner>> listReferences(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -185,13 +148,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return all policy fragments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyFragmentCollectionInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, String filter, String orderby, Integer top, Integer skip) {
+    private Mono<Response<PolicyFragmentCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+        String serviceName, String filter, String orderby, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,28 +162,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            filter,
-                            orderby,
-                            top,
-                            skip,
-                            accept,
-                            context))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), filter, orderby, top, skip, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -246,19 +193,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return all policy fragments along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyFragmentCollectionInner>> listByServiceWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private Mono<Response<PolicyFragmentCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+        String serviceName, String filter, String orderby, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -268,26 +207,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                filter,
-                orderby,
-                top,
-                skip,
-                accept,
-                context);
+        return service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, orderby, top, skip, accept, context);
     }
 
     /**
@@ -330,14 +256,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return all policy fragments along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyFragmentCollectionInner> listByServiceWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public Response<PolicyFragmentCollectionInner> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, String filter, String orderby, Integer top, Integer skip, Context context) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, filter, orderby, top, skip, context)
             .block();
     }
@@ -374,13 +294,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return the entity state (Etag) version of a policy fragment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentsGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String id) {
+    private Mono<PolicyFragmentsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String id) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -393,25 +311,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            id,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, id,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -428,13 +334,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return the entity state (Etag) version of a policy fragment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentsGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, Context context) {
+    private Mono<PolicyFragmentsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String id, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -447,23 +351,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                id,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, id,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -495,8 +389,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return the entity state (Etag) version of a policy fragment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String id, Context context) {
+    public PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String id, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, id, context).block();
     }
 
@@ -528,13 +422,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return a policy fragment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format) {
+    private Mono<PolicyFragmentsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String id, PolicyFragmentContentFormat format) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -547,26 +439,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            id,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            format,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, id,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), format, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -584,13 +463,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return a policy fragment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format, Context context) {
+    private Mono<PolicyFragmentsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String id, PolicyFragmentContentFormat format, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -603,24 +480,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                id,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                format,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, id, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), format, accept, context);
     }
 
     /**
@@ -655,8 +521,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return a policy fragment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyFragmentsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format, Context context) {
+    public PolicyFragmentsGetResponse getWithResponse(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContentFormat format, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, id, format, context).block();
     }
 
@@ -691,17 +557,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String id, PolicyFragmentContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -714,10 +574,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -726,20 +584,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            id,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                id, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -758,18 +604,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String id, PolicyFragmentContractInner parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -782,10 +621,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -794,18 +631,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                id,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, id, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -823,21 +650,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PolicyFragmentContractInner>, PolicyFragmentContractInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
+        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters,
         String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, id, parameters, ifMatch);
-        return this
-            .client
-            .<PolicyFragmentContractInner, PolicyFragmentContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PolicyFragmentContractInner.class,
-                PolicyFragmentContractInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, id, parameters, ifMatch);
+        return this.client.<PolicyFragmentContractInner, PolicyFragmentContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PolicyFragmentContractInner.class, PolicyFragmentContractInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -856,16 +675,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
     private PollerFlux<PollResult<PolicyFragmentContractInner>, PolicyFragmentContractInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters) {
         final String ifMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, id, parameters, ifMatch);
-        return this
-            .client
-            .<PolicyFragmentContractInner, PolicyFragmentContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PolicyFragmentContractInner.class,
-                PolicyFragmentContractInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, id, parameters, ifMatch);
+        return this.client.<PolicyFragmentContractInner, PolicyFragmentContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PolicyFragmentContractInner.class, PolicyFragmentContractInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -884,23 +698,14 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PolicyFragmentContractInner>, PolicyFragmentContractInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters, String ifMatch,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context);
-        return this
-            .client
-            .<PolicyFragmentContractInner, PolicyFragmentContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PolicyFragmentContractInner.class,
-                PolicyFragmentContractInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context);
+        return this.client.<PolicyFragmentContractInner, PolicyFragmentContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PolicyFragmentContractInner.class, PolicyFragmentContractInner.class,
+            context);
     }
 
     /**
@@ -938,14 +743,9 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyFragmentContractInner>, PolicyFragmentContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters, String ifMatch,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context)
             .getSyncPoller();
     }
 
@@ -963,14 +763,9 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch)
-            .last()
+    private Mono<PolicyFragmentContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String id, PolicyFragmentContractInner parameters, String ifMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -987,11 +782,10 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters) {
+    private Mono<PolicyFragmentContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String id, PolicyFragmentContractInner parameters) {
         final String ifMatch = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1010,15 +804,9 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyFragmentContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context)
-            .last()
+    private Mono<PolicyFragmentContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String id, PolicyFragmentContractInner parameters, String ifMatch, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1035,8 +823,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyFragmentContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters) {
+    public PolicyFragmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch).block();
     }
@@ -1056,13 +844,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return policy fragment contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyFragmentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
-        Context context) {
+    public PolicyFragmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContractInner parameters, String ifMatch, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, id, parameters, ifMatch, context).block();
     }
 
@@ -1080,13 +863,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String id,
+        String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1102,26 +883,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            id,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, id,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1140,13 +908,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String id,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1162,24 +928,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                id,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, id, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1215,8 +970,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String id, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String id, String ifMatch,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, id, ifMatch, context).block();
     }
 
@@ -1251,13 +1006,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return a collection of resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceCollectionInner>> listReferencesWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip) {
+    private Mono<Response<ResourceCollectionInner>> listReferencesWithResponseAsync(String resourceGroupName,
+        String serviceName, String id, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1270,27 +1023,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listReferences(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            id,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            top,
-                            skip,
-                            accept,
-                            context))
+            .withContext(context -> service.listReferences(this.client.getEndpoint(), resourceGroupName, serviceName,
+                id, this.client.getApiVersion(), this.client.getSubscriptionId(), top, skip, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1309,13 +1048,11 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return a collection of resources along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceCollectionInner>> listReferencesWithResponseAsync(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip, Context context) {
+    private Mono<Response<ResourceCollectionInner>> listReferencesWithResponseAsync(String resourceGroupName,
+        String serviceName, String id, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1328,25 +1065,13 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listReferences(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                id,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                top,
-                skip,
-                accept,
-                context);
+        return service.listReferences(this.client.getEndpoint(), resourceGroupName, serviceName, id,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), top, skip, accept, context);
     }
 
     /**
@@ -1383,8 +1108,8 @@ public final class PolicyFragmentsClientImpl implements PolicyFragmentsClient {
      * @return a collection of resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceCollectionInner> listReferencesWithResponse(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip, Context context) {
+    public Response<ResourceCollectionInner> listReferencesWithResponse(String resourceGroupName, String serviceName,
+        String id, Integer top, Integer skip, Context context) {
         return listReferencesWithResponseAsync(resourceGroupName, serviceName, id, top, skip, context).block();
     }
 

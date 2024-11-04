@@ -11,28 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class OptimizedAutoscaleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptimizedAutoscale model =
-            BinaryData
-                .fromString("{\"version\":1324330930,\"isEnabled\":true,\"minimum\":1273890373,\"maximum\":1963006150}")
-                .toObject(OptimizedAutoscale.class);
-        Assertions.assertEquals(1324330930, model.version());
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1273890373, model.minimum());
-        Assertions.assertEquals(1963006150, model.maximum());
+        OptimizedAutoscale model = BinaryData
+            .fromString("{\"version\":1586844397,\"isEnabled\":false,\"minimum\":389477367,\"maximum\":888370469}")
+            .toObject(OptimizedAutoscale.class);
+        Assertions.assertEquals(1586844397, model.version());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(389477367, model.minimum());
+        Assertions.assertEquals(888370469, model.maximum());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptimizedAutoscale model =
-            new OptimizedAutoscale()
-                .withVersion(1324330930)
-                .withIsEnabled(true)
-                .withMinimum(1273890373)
-                .withMaximum(1963006150);
+        OptimizedAutoscale model = new OptimizedAutoscale().withVersion(1586844397)
+            .withIsEnabled(false)
+            .withMinimum(389477367)
+            .withMaximum(888370469);
         model = BinaryData.fromObject(model).toObject(OptimizedAutoscale.class);
-        Assertions.assertEquals(1324330930, model.version());
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1273890373, model.minimum());
-        Assertions.assertEquals(1963006150, model.maximum());
+        Assertions.assertEquals(1586844397, model.version());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(389477367, model.minimum());
+        Assertions.assertEquals(888370469, model.maximum());
     }
 }

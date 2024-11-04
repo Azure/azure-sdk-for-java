@@ -22,8 +22,10 @@ public final class HeaderMatchMatchTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HeaderMatchMatch model = new HeaderMatchMatch().withExactMatch("wjzrnfygxgisp").withPrefixMatch("vtz")
-            .withSuffixMatch("ufubl").withRegexMatch("fxqeof");
+        HeaderMatchMatch model = new HeaderMatchMatch().withExactMatch("wjzrnfygxgisp")
+            .withPrefixMatch("vtz")
+            .withSuffixMatch("ufubl")
+            .withRegexMatch("fxqeof");
         model = BinaryData.fromObject(model).toObject(HeaderMatchMatch.class);
         Assertions.assertEquals("wjzrnfygxgisp", model.exactMatch());
         Assertions.assertEquals("vtz", model.prefixMatch());

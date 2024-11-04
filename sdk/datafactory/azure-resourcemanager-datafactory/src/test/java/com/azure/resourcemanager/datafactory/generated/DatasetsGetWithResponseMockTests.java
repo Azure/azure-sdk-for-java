@@ -22,7 +22,7 @@ public final class DatasetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"h\",\"description\":\"vgow\",\"structure\":\"datapqfsshjlpznxjym\",\"schema\":\"datalj\",\"linkedServiceName\":{\"referenceName\":\"groawlta\",\"parameters\":{\"eltrnogfyaimpk\":\"datamrreajp\",\"lwubkmdusnwok\":\"databgrug\",\"inrgqzlw\":\"datauxcmaukirzlfp\"}},\"parameters\":{\"kr\":{\"type\":\"String\",\"defaultValue\":\"datatxcjnwzvlzwy\"}},\"annotations\":[\"dataqgknpgqzmgivkf\"],\"folder\":{\"name\":\"aklxpwhvuihjl\"},\"\":{\"bq\":\"dataqinrfu\",\"jtrxqd\":\"datatyoaccrlydml\",\"ufe\":\"datapmhgqihuqajh\"}},\"name\":\"vy\",\"type\":\"ont\",\"etag\":\"vquwxxouflncah\",\"id\":\"lgnmyioalnkr\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"dnxwkf\",\"structure\":\"dataursbyfoavozqn\",\"schema\":\"datamxitvmrq\",\"linkedServiceName\":{\"referenceName\":\"kzchcmuvskdvqyf\",\"parameters\":{\"f\":\"dataxca\",\"yohzhu\":\"datavjpfojhvqmdo\",\"k\":\"datad\",\"pgarhf\":\"datadxfvjdfusuwght\"}},\"parameters\":{\"vqpmwqsd\":{\"type\":\"String\",\"defaultValue\":\"dataivadpc\"}},\"annotations\":[\"datae\",\"datakfsgrheakvl\",\"dataukmnu\"],\"folder\":{\"name\":\"bjclihfzrii\"},\"\":{\"nctkqbvtdeou\":\"dataqyptmjqjoamzdsa\",\"juwdvfaulbfrc\":\"dataixgtpykbjevj\"}},\"name\":\"ucobpkphxh\",\"type\":\"fekxbcbumj\",\"etag\":\"ukezqohthsmdua\",\"id\":\"pryuw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class DatasetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatasetResource response = manager.datasets()
-            .getWithResponse("ewyvwwvkicuvphkh", "zes", "sy", "vjkwpkn", com.azure.core.util.Context.NONE)
+            .getWithResponse("uhjxvcjrxle", "yptvrbgcp", "sd", "swozpm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lgnmyioalnkr", response.id());
-        Assertions.assertEquals("vgow", response.properties().description());
-        Assertions.assertEquals("groawlta", response.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, response.properties().parameters().get("kr").type());
-        Assertions.assertEquals("aklxpwhvuihjl", response.properties().folder().name());
+        Assertions.assertEquals("pryuw", response.id());
+        Assertions.assertEquals("dnxwkf", response.properties().description());
+        Assertions.assertEquals("kzchcmuvskdvqyf", response.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, response.properties().parameters().get("vqpmwqsd").type());
+        Assertions.assertEquals("bjclihfzrii", response.properties().folder().name());
     }
 }

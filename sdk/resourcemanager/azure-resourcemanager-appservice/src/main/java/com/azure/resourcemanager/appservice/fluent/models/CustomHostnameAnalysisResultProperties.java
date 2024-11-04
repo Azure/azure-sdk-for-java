@@ -5,80 +5,74 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DnsVerificationTestResult;
 import com.azure.resourcemanager.appservice.models.ErrorEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * CustomHostnameAnalysisResult resource specific properties.
  */
 @Fluent
-public final class CustomHostnameAnalysisResultProperties {
+public final class CustomHostnameAnalysisResultProperties
+    implements JsonSerializable<CustomHostnameAnalysisResultProperties> {
     /*
      * <code>true</code> if hostname is already verified; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isHostnameAlreadyVerified", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHostnameAlreadyVerified;
 
     /*
      * DNS verification test result.
      */
-    @JsonProperty(value = "customDomainVerificationTest", access = JsonProperty.Access.WRITE_ONLY)
     private DnsVerificationTestResult customDomainVerificationTest;
 
     /*
      * Raw failure information if DNS verification fails.
      */
-    @JsonProperty(value = "customDomainVerificationFailureInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorEntity customDomainVerificationFailureInfo;
 
     /*
      * <code>true</code> if there is a conflict on a scale unit; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "hasConflictOnScaleUnit", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasConflictOnScaleUnit;
 
     /*
      * <code>true</code> if there is a conflict across subscriptions; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "hasConflictAcrossSubscription", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasConflictAcrossSubscription;
 
     /*
      * Name of the conflicting app on scale unit if it's within the same subscription.
      */
-    @JsonProperty(value = "conflictingAppResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String conflictingAppResourceId;
 
     /*
      * CName records controller can see for this hostname.
      */
-    @JsonProperty(value = "cNameRecords")
     private List<String> cNameRecords;
 
     /*
      * TXT records controller can see for this hostname.
      */
-    @JsonProperty(value = "txtRecords")
     private List<String> txtRecords;
 
     /*
      * A records controller can see for this hostname.
      */
-    @JsonProperty(value = "aRecords")
     private List<String> aRecords;
 
     /*
      * Alternate CName records controller can see for this hostname.
      */
-    @JsonProperty(value = "alternateCNameRecords")
     private List<String> alternateCNameRecords;
 
     /*
      * Alternate TXT records controller can see for this hostname.
      */
-    @JsonProperty(value = "alternateTxtRecords")
     private List<String> alternateTxtRecords;
 
     /**
@@ -254,5 +248,78 @@ public final class CustomHostnameAnalysisResultProperties {
         if (customDomainVerificationFailureInfo() != null) {
             customDomainVerificationFailureInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("cNameRecords", this.cNameRecords, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("txtRecords", this.txtRecords, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("aRecords", this.aRecords, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("alternateCNameRecords", this.alternateCNameRecords,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("alternateTxtRecords", this.alternateTxtRecords,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomHostnameAnalysisResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomHostnameAnalysisResultProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomHostnameAnalysisResultProperties.
+     */
+    public static CustomHostnameAnalysisResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomHostnameAnalysisResultProperties deserializedCustomHostnameAnalysisResultProperties
+                = new CustomHostnameAnalysisResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isHostnameAlreadyVerified".equals(fieldName)) {
+                    deserializedCustomHostnameAnalysisResultProperties.isHostnameAlreadyVerified
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customDomainVerificationTest".equals(fieldName)) {
+                    deserializedCustomHostnameAnalysisResultProperties.customDomainVerificationTest
+                        = DnsVerificationTestResult.fromString(reader.getString());
+                } else if ("customDomainVerificationFailureInfo".equals(fieldName)) {
+                    deserializedCustomHostnameAnalysisResultProperties.customDomainVerificationFailureInfo
+                        = ErrorEntity.fromJson(reader);
+                } else if ("hasConflictOnScaleUnit".equals(fieldName)) {
+                    deserializedCustomHostnameAnalysisResultProperties.hasConflictOnScaleUnit
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hasConflictAcrossSubscription".equals(fieldName)) {
+                    deserializedCustomHostnameAnalysisResultProperties.hasConflictAcrossSubscription
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("conflictingAppResourceId".equals(fieldName)) {
+                    deserializedCustomHostnameAnalysisResultProperties.conflictingAppResourceId = reader.getString();
+                } else if ("cNameRecords".equals(fieldName)) {
+                    List<String> cNameRecords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomHostnameAnalysisResultProperties.cNameRecords = cNameRecords;
+                } else if ("txtRecords".equals(fieldName)) {
+                    List<String> txtRecords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomHostnameAnalysisResultProperties.txtRecords = txtRecords;
+                } else if ("aRecords".equals(fieldName)) {
+                    List<String> aRecords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomHostnameAnalysisResultProperties.aRecords = aRecords;
+                } else if ("alternateCNameRecords".equals(fieldName)) {
+                    List<String> alternateCNameRecords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomHostnameAnalysisResultProperties.alternateCNameRecords = alternateCNameRecords;
+                } else if ("alternateTxtRecords".equals(fieldName)) {
+                    List<String> alternateTxtRecords = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomHostnameAnalysisResultProperties.alternateTxtRecords = alternateTxtRecords;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomHostnameAnalysisResultProperties;
+        });
     }
 }

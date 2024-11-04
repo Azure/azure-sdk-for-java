@@ -130,18 +130,18 @@ public final class UeSessionInfo4G {
      */
     public void validate() {
         if (apn() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property apn in model UeSessionInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property apn in model UeSessionInfo4G"));
         }
         if (ueIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ueIpAddress in model UeSessionInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ueIpAddress in model UeSessionInfo4G"));
         } else {
             ueIpAddress().validate();
         }
         if (pdnType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pdnType in model UeSessionInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pdnType in model UeSessionInfo4G"));
         }
     }
 

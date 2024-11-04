@@ -39,7 +39,7 @@ public final class MessageImageFileDetails implements JsonSerializable<MessageIm
      * @param fileId the fileId value to set.
      */
     @Generated
-    private MessageImageFileDetails(String fileId) {
+    public MessageImageFileDetails(String fileId) {
         this.fileId = fileId;
     }
 

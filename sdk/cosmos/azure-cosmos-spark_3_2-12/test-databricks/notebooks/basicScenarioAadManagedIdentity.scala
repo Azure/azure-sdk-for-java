@@ -4,6 +4,8 @@
 // val tenantId = "<inserted by environment>"
 // val resourceGroupName = "<inserted by environment>"
 
+println("SCENARIO: basicScenarioAadManagedIdentity")
+
 val authType = "ManagedIdentity"
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val subscriptionId = dbutils.widgets.get("subscriptionId")
@@ -36,22 +38,22 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
 // COMMAND ----------
 
 // create Cosmos Database and Cosmos Container using Catalog APIs
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.type", authType)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.subscriptionId", subscriptionId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.tenantId", tenantId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.resourceGroupName", resourceGroupName)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogMI", "com.azure.cosmos.spark.CosmosCatalog")
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogMI.spark.cosmos.accountEndpoint", cosmosEndpoint)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogMI.spark.cosmos.auth.type", authType)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogMI.spark.cosmos.account.subscriptionId", subscriptionId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogMI.spark.cosmos.account.tenantId", tenantId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogMI.spark.cosmos.account.resourceGroupName", resourceGroupName)
 
 // create a cosmos database
-spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName};")
+spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalogMI.${cosmosDatabaseName};")
 
 // create a cosmos container
-spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
+spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalogMI.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
     s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400')")
 
 // update the throughput
-spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
+spark.sql(s"ALTER TABLE cosmosCatalogMI.${cosmosDatabaseName}.${cosmosContainerName} " +
   s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
 // COMMAND ----------
@@ -93,4 +95,4 @@ df.filter(col("isAlive") === true)
 // COMMAND ----------
 
 // cleanup
-spark.sql(s"DROP TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName};")
+spark.sql(s"DROP TABLE cosmosCatalogMI.${cosmosDatabaseName}.${cosmosContainerName};")

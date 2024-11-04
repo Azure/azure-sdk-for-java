@@ -23,6 +23,11 @@ public final class StorageError implements XmlSerializable<StorageError> {
      */
     private String message;
 
+    /*
+     * The AuthenticationErrorDetail property.
+     */
+    private String authenticationErrorDetail;
+
     /**
      * Creates an instance of StorageError class.
      */
@@ -49,6 +54,26 @@ public final class StorageError implements XmlSerializable<StorageError> {
         return this;
     }
 
+    /**
+     * Get the authenticationErrorDetail property: The AuthenticationErrorDetail property.
+     * 
+     * @return the authenticationErrorDetail value.
+     */
+    public String getAuthenticationErrorDetail() {
+        return this.authenticationErrorDetail;
+    }
+
+    /**
+     * Set the authenticationErrorDetail property: The AuthenticationErrorDetail property.
+     * 
+     * @param authenticationErrorDetail the authenticationErrorDetail value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError setAuthenticationErrorDetail(String authenticationErrorDetail) {
+        this.authenticationErrorDetail = authenticationErrorDetail;
+        return this;
+    }
+
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
@@ -59,6 +84,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageError" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Message", this.message);
+        xmlWriter.writeStringElement("AuthenticationErrorDetail", this.authenticationErrorDetail);
         return xmlWriter.writeEndElement();
     }
 
@@ -93,6 +119,8 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
                 if ("Message".equals(elementName.getLocalPart())) {
                     deserializedStorageError.message = reader.getStringElement();
+                } else if ("AuthenticationErrorDetail".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.authenticationErrorDetail = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }

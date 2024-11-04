@@ -5,43 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Azure ML Batch Execution activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureMLBatchExecution")
-@JsonFlatten
 @Fluent
 public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /*
-     * Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint. Keys must match the names of web
-     * service parameters defined in the published Azure ML web service. Values will be passed in the GlobalParameters
-     * property of the Azure ML batch execution request.
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.globalParameters")
+    private String type = "AzureMLBatchExecution";
+
+    /*
+     * Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint. Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be passed in the GlobalParameters property of the Azure ML batch execution request.
+     */
     private Map<String, Object> globalParameters;
 
     /*
-     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs to AzureMLWebServiceFile objects
-     * specifying the output Blob locations. This information will be passed in the WebServiceOutputs property of the
-     * Azure ML batch execution request.
+     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the WebServiceOutputs property of the Azure ML batch execution request.
      */
-    @JsonProperty(value = "typeProperties.webServiceOutputs")
     private Map<String, AzureMLWebServiceFile> webServiceOutputs;
 
     /*
-     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs to AzureMLWebServiceFile objects
-     * specifying the input Blob locations.. This information will be passed in the WebServiceInputs property of the
-     * Azure ML batch execution request.
+     * Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Inputs to AzureMLWebServiceFile objects specifying the input Blob locations.. This information will be passed in the WebServiceInputs property of the Azure ML batch execution request.
      */
-    @JsonProperty(value = "typeProperties.webServiceInputs")
     private Map<String, AzureMLWebServiceFile> webServiceInputs;
 
     /**
@@ -51,9 +45,19 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service
-     * endpoint. Keys must match the names of web service parameters defined in the published Azure ML web service.
-     * Values will be passed in the GlobalParameters property of the Azure ML batch execution request.
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
+     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
+     * passed in the GlobalParameters property of the Azure ML batch execution request.
      * 
      * @return the globalParameters value.
      */
@@ -62,9 +66,9 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service
-     * endpoint. Keys must match the names of web service parameters defined in the published Azure ML web service.
-     * Values will be passed in the GlobalParameters property of the Azure ML batch execution request.
+     * Set the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
+     * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be
+     * passed in the GlobalParameters property of the Azure ML batch execution request.
      * 
      * @param globalParameters the globalParameters value to set.
      * @return the AzureMLBatchExecutionActivity object itself.
@@ -75,9 +79,9 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Outputs to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed
-     * in the WebServiceOutputs property of the Azure ML batch execution request.
+     * Get the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
+     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
+     * WebServiceOutputs property of the Azure ML batch execution request.
      * 
      * @return the webServiceOutputs value.
      */
@@ -86,9 +90,9 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service
-     * Outputs to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed
-     * in the WebServiceOutputs property of the Azure ML batch execution request.
+     * Set the webServiceOutputs property: Key,Value pairs, mapping the names of Azure ML endpoint's Web Service Outputs
+     * to AzureMLWebServiceFile objects specifying the output Blob locations. This information will be passed in the
+     * WebServiceOutputs property of the Azure ML batch execution request.
      * 
      * @param webServiceOutputs the webServiceOutputs value to set.
      * @return the AzureMLBatchExecutionActivity object itself.
@@ -192,5 +196,115 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     public AzureMLBatchExecutionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (globalParameters != null || webServiceOutputs != null || webServiceInputs != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeMapField("globalParameters", this.globalParameters,
+                (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeMapField("webServiceOutputs", this.webServiceOutputs,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeMapField("webServiceInputs", this.webServiceInputs,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMLBatchExecutionActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMLBatchExecutionActivity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureMLBatchExecutionActivity.
+     */
+    public static AzureMLBatchExecutionActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMLBatchExecutionActivity deserializedAzureMLBatchExecutionActivity
+                = new AzureMLBatchExecutionActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedAzureMLBatchExecutionActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedAzureMLBatchExecutionActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureMLBatchExecutionActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("globalParameters".equals(fieldName)) {
+                            Map<String, Object> globalParameters = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedAzureMLBatchExecutionActivity.globalParameters = globalParameters;
+                        } else if ("webServiceOutputs".equals(fieldName)) {
+                            Map<String, AzureMLWebServiceFile> webServiceOutputs
+                                = reader.readMap(reader1 -> AzureMLWebServiceFile.fromJson(reader1));
+                            deserializedAzureMLBatchExecutionActivity.webServiceOutputs = webServiceOutputs;
+                        } else if ("webServiceInputs".equals(fieldName)) {
+                            Map<String, AzureMLWebServiceFile> webServiceInputs
+                                = reader.readMap(reader1 -> AzureMLWebServiceFile.fromJson(reader1));
+                            deserializedAzureMLBatchExecutionActivity.webServiceInputs = webServiceInputs;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureMLBatchExecutionActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureMLBatchExecutionActivity;
+        });
     }
 }

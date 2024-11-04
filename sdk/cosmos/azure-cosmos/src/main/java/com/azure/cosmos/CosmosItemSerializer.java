@@ -3,6 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
@@ -27,10 +34,17 @@ public abstract class CosmosItemSerializer {
      */
     public final static CosmosItemSerializer DEFAULT_SERIALIZER = new DefaultCosmosItemSerializer();
 
+    private boolean shouldWrapSerializationExceptions;
+
     /**
      * Used to instantiate subclasses
      */
     protected CosmosItemSerializer() {
+        this(true);
+    }
+
+    CosmosItemSerializer(boolean shouldWrapSerializationExceptions) {
+        this.shouldWrapSerializationExceptions = shouldWrapSerializationExceptions;
     }
 
     /**
@@ -41,6 +55,32 @@ public abstract class CosmosItemSerializer {
      */
     public abstract <T> Map<String, Object> serialize(T item);
 
+    <T> Map<String, Object> serializeSafe(T item) {
+        try {
+            return serialize(item);
+        } catch (Throwable throwable) {
+            if (!this.shouldWrapSerializationExceptions) {
+                throw throwable;
+            }
+
+            Exception inner;
+
+            if (throwable instanceof  Exception) {
+                inner = (Exception)throwable;
+            } else {
+                inner = new RuntimeException(throwable);
+            }
+
+            BadRequestException exception = new BadRequestException(
+                "Custom serializer '" + this.getClass().getSimpleName() + "' failed to serialize item.",
+                inner);
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
+
+            throw exception;
+        }
+    }
+
     /**
      * Used to deserialize the json tree stored in the Cosmos DB item as a POJO
      * @param jsonNodeMap the json tree from the Cosmos DB item
@@ -50,9 +90,40 @@ public abstract class CosmosItemSerializer {
      */
     public abstract  <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType);
 
+    <T> T deserializeSafe(Map<String, Object> jsonNodeMap, Class<T> classType) {
+        try {
+            return this.deserialize(jsonNodeMap, classType);
+        } catch (Throwable throwable) {
+
+            if (!this.shouldWrapSerializationExceptions) {
+                throw throwable;
+            }
+
+            Exception inner;
+
+            if (throwable instanceof  Exception) {
+                inner = (Exception)throwable;
+            } else {
+                inner = new RuntimeException(throwable);
+            }
+
+            BadRequestException exception = new BadRequestException(
+                "Custom serializer '" + this.getClass().getSimpleName() + "' failed to deserialize item.",
+                inner);
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
+
+            throw exception;
+        }
+    }
+
+    void setShouldWrapSerializationExceptions(boolean enabled) {
+        this.shouldWrapSerializationExceptions = enabled;
+    }
+
     private static class DefaultCosmosItemSerializer extends CosmosItemSerializer {
         DefaultCosmosItemSerializer() {
-            super();
+            super(false);
         }
 
         /**
@@ -124,4 +195,29 @@ public abstract class CosmosItemSerializer {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.setCosmosItemSerializerAccessor(
+            new ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor() {
+                @Override
+                public <T> Map<String, Object> serializeSafe(CosmosItemSerializer serializer, T item) {
+                    return serializer.serializeSafe(item);
+                }
+
+                @Override
+                public <T> T deserializeSafe(CosmosItemSerializer serializer, Map<String, Object> jsonNodeMap, Class<T> classType) {
+                    return serializer.deserializeSafe(jsonNodeMap, classType);
+                }
+
+                @Override
+                public void setShouldWrapSerializationExceptions(CosmosItemSerializer serializer, boolean shouldWrapSerializationExceptions) {
+                    serializer.setShouldWrapSerializationExceptions(shouldWrapSerializationExceptions);
+                }
+            });
+    }
+
+    static { initialize(); }
 }

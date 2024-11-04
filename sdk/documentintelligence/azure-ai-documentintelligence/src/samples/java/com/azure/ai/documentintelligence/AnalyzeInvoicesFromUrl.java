@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found invoice fields from a file source URL of an invoice document.
- * See fields found on an invoice <a href=https://aka.ms/documentintelligence/invoicefields>here</a>
+ * See fields found on an invoice <a href=https://aka.ms/formrecognizer/invoicefields>here</a>
  */
 public class AnalyzeInvoicesFromUrl {
 
@@ -40,8 +40,9 @@ public class AnalyzeInvoicesFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeInvoicesPoller
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicesPoller
             = client.beginAnalyzeDocument("prebuilt-invoice",
+            null,
             null,
             null,
             null,
@@ -49,7 +50,7 @@ public class AnalyzeInvoicesFromUrl {
             null,
             null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
 
-        AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 
         for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
             Document analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
@@ -128,7 +129,7 @@ public class AnalyzeInvoicesFromUrl {
                         .map(documentField -> documentField.getValueObject())
                         .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                             // See a full list of fields found on an invoice here:
-                            // https://aka.ms/documentintelligence/invoicefields
+                            // https://aka.ms/formrecognizer/invoicefields
                             if ("Description".equals(key)) {
                                 if (DocumentFieldType.STRING == documentField.getType()) {
                                     String name = documentField.getValueString();

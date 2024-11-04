@@ -14,22 +14,24 @@ public final class PersistenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Persistence model = BinaryData
-            .fromString("{\"aofEnabled\":false,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"12h\"}")
+            .fromString("{\"aofEnabled\":false,\"rdbEnabled\":false,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"1h\"}")
             .toObject(Persistence.class);
         Assertions.assertEquals(false, model.aofEnabled());
         Assertions.assertEquals(false, model.rdbEnabled());
         Assertions.assertEquals(AofFrequency.ONES, model.aofFrequency());
-        Assertions.assertEquals(RdbFrequency.ONE_TWOH, model.rdbFrequency());
+        Assertions.assertEquals(RdbFrequency.ONEH, model.rdbFrequency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Persistence model = new Persistence().withAofEnabled(false).withRdbEnabled(false)
-            .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.ONE_TWOH);
+        Persistence model = new Persistence().withAofEnabled(false)
+            .withRdbEnabled(false)
+            .withAofFrequency(AofFrequency.ONES)
+            .withRdbFrequency(RdbFrequency.ONEH);
         model = BinaryData.fromObject(model).toObject(Persistence.class);
         Assertions.assertEquals(false, model.aofEnabled());
         Assertions.assertEquals(false, model.rdbEnabled());
         Assertions.assertEquals(AofFrequency.ONES, model.aofFrequency());
-        Assertions.assertEquals(RdbFrequency.ONE_TWOH, model.rdbFrequency());
+        Assertions.assertEquals(RdbFrequency.ONEH, model.rdbFrequency());
     }
 }

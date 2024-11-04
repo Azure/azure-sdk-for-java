@@ -167,6 +167,22 @@ public interface ImageTemplate {
     String exactStagingResourceGroup();
 
     /**
+     * Gets the autoRun property: Indicates whether or not to automatically run the image template build on template
+     * creation or update.
+     * 
+     * @return the autoRun value.
+     */
+    ImageTemplateAutoRun autoRun();
+
+    /**
+     * Gets the managedResourceTags property: Tags that will be applied to the resource group and/or resources created
+     * by the service.
+     * 
+     * @return the managedResourceTags value.
+     */
+    Map<String, String> managedResourceTags();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -266,7 +282,8 @@ public interface ImageTemplate {
             extends DefinitionStages.WithTags, DefinitionStages.WithSource, DefinitionStages.WithCustomize,
             DefinitionStages.WithOptimize, DefinitionStages.WithValidation, DefinitionStages.WithDistribute,
             DefinitionStages.WithErrorHandling, DefinitionStages.WithBuildTimeoutInMinutes,
-            DefinitionStages.WithVmProfile, DefinitionStages.WithStagingResourceGroup {
+            DefinitionStages.WithVmProfile, DefinitionStages.WithStagingResourceGroup, DefinitionStages.WithAutoRun,
+            DefinitionStages.WithManagedResourceTags {
             /**
              * Executes the create request.
              * 
@@ -432,6 +449,36 @@ public interface ImageTemplate {
              * @return the next definition stage.
              */
             WithCreate withStagingResourceGroup(String stagingResourceGroup);
+        }
+
+        /**
+         * The stage of the ImageTemplate definition allowing to specify autoRun.
+         */
+        interface WithAutoRun {
+            /**
+             * Specifies the autoRun property: Indicates whether or not to automatically run the image template build on
+             * template creation or update..
+             * 
+             * @param autoRun Indicates whether or not to automatically run the image template build on template
+             * creation or update.
+             * @return the next definition stage.
+             */
+            WithCreate withAutoRun(ImageTemplateAutoRun autoRun);
+        }
+
+        /**
+         * The stage of the ImageTemplate definition allowing to specify managedResourceTags.
+         */
+        interface WithManagedResourceTags {
+            /**
+             * Specifies the managedResourceTags property: Tags that will be applied to the resource group and/or
+             * resources created by the service..
+             * 
+             * @param managedResourceTags Tags that will be applied to the resource group and/or resources created by
+             * the service.
+             * @return the next definition stage.
+             */
+            WithCreate withManagedResourceTags(Map<String, String> managedResourceTags);
         }
     }
 

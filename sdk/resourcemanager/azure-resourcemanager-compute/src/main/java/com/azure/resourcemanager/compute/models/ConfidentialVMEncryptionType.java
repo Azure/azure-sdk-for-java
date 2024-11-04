@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class ConfidentialVMEncryptionType extends ExpandableStringEnum<Con
      * @param name a name to look for.
      * @return the corresponding ConfidentialVMEncryptionType.
      */
-    @JsonCreator
     public static ConfidentialVMEncryptionType fromString(String name) {
         return fromString(name, ConfidentialVMEncryptionType.class);
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class DaprLogLevel extends ExpandableStringEnum<DaprLogLevel> {
      * @param name a name to look for.
      * @return the corresponding DaprLogLevel.
      */
-    @JsonCreator
     public static DaprLogLevel fromString(String name) {
         return fromString(name, DaprLogLevel.class);
     }

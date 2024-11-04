@@ -17,54 +17,31 @@ import com.azure.resourcemanager.machinelearningservices.models.ServiceResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MachineLearningServicesImpl implements MachineLearningServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MachineLearningServicesImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MachineLearningServicesImpl.class);
 
     private final MachineLearningServicesClient innerClient;
 
     private final com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager;
 
-    public MachineLearningServicesImpl(
-        MachineLearningServicesClient innerClient,
+    public MachineLearningServicesImpl(MachineLearningServicesClient innerClient,
         com.azure.resourcemanager.machinelearningservices.MachineLearningServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ServiceResource> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<ServiceResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        PagedIterable<ServiceResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         return Utils.mapPage(inner, inner1 -> new ServiceResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ServiceResource> listByWorkspace(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String modelId,
-        String modelName,
-        String tag,
-        String tags,
-        String properties,
-        String runId,
-        Boolean expand,
-        OrderString orderby,
-        Context context) {
-        PagedIterable<ServiceResourceInner> inner =
-            this
-                .serviceClient()
-                .listByWorkspace(
-                    resourceGroupName,
-                    workspaceName,
-                    skip,
-                    modelId,
-                    modelName,
-                    tag,
-                    tags,
-                    properties,
-                    runId,
-                    expand,
-                    orderby,
-                    context);
+    public PagedIterable<ServiceResource> listByWorkspace(String resourceGroupName, String workspaceName, String skip,
+        String modelId, String modelName, String tag, String tags, String properties, String runId, Boolean expand,
+        OrderString orderby, Context context) {
+        PagedIterable<ServiceResourceInner> inner = this.serviceClient()
+            .listByWorkspace(resourceGroupName, workspaceName, skip, modelId, modelName, tag, tags, properties, runId,
+                expand, orderby, context);
         return Utils.mapPage(inner, inner1 -> new ServiceResourceImpl(inner1, this.manager()));
     }
 
@@ -77,15 +54,12 @@ public final class MachineLearningServicesImpl implements MachineLearningService
         }
     }
 
-    public Response<ServiceResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Boolean expand, Context context) {
-        Response<ServiceResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, serviceName, expand, context);
+    public Response<ServiceResource> getWithResponse(String resourceGroupName, String workspaceName, String serviceName,
+        Boolean expand, Context context) {
+        Response<ServiceResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, serviceName, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServiceResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -96,62 +70,47 @@ public final class MachineLearningServicesImpl implements MachineLearningService
         this.serviceClient().delete(resourceGroupName, workspaceName, serviceName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String serviceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String serviceName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, serviceName, context);
     }
 
     public ServiceResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         Boolean localExpand = null;
-        return this
-            .getWithResponse(resourceGroupName, workspaceName, serviceName, localExpand, Context.NONE)
+        return this.getWithResponse(resourceGroupName, workspaceName, serviceName, localExpand, Context.NONE)
             .getValue();
     }
 
     public Response<ServiceResource> getByIdWithResponse(String id, Boolean expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, serviceName, expand, context);
     }
@@ -159,25 +118,18 @@ public final class MachineLearningServicesImpl implements MachineLearningService
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, serviceName, Context.NONE).getValue();
     }
@@ -185,25 +137,18 @@ public final class MachineLearningServicesImpl implements MachineLearningService
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, serviceName, context);
     }

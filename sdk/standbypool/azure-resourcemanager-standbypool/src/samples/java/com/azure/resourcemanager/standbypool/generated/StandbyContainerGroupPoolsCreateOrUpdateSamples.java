@@ -18,6 +18,9 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools CreateOrUpdate.
  */
 public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_CreateOrUpdate.
      * 
@@ -35,10 +38,10 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
                     .withRefillPolicy(RefillPolicy.ALWAYS))
                 .withContainerGroupProperties(new ContainerGroupProperties()
                     .withContainerGroupProfile(new ContainerGroupProfile().withId(
-                        "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
                         .withRevision(1L))
                     .withSubnetIds(Arrays.asList(new Subnet().withId(
-                        "/subscriptions/8cf6c1b6-c80f-437c-87ad-45fbaff54f73/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet")))))
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet")))))
             .create();
     }
 

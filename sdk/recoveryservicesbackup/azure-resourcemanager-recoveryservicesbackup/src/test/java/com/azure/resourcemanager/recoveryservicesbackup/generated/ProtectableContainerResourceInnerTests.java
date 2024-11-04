@@ -32,7 +32,8 @@ public final class ProtectableContainerResourceInnerTests {
         ProtectableContainerResourceInner model = new ProtectableContainerResourceInner().withLocation("rnxxmueed")
             .withTags(mapOf("qtc", "dvstkw", "piohgwxrtfu", "ealmfmtdaaygdvwv", "k", "xepxgyqagvrvmn"))
             .withProperties(new ProtectableContainer().withFriendlyName("queziky")
-                .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD).withHealthStatus("kallatmel")
+                .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD)
+                .withHealthStatus("kallatmel")
                 .withContainerId("ipicc"))
             .withEtag("kzivgvvcnayrh");
         model = BinaryData.fromObject(model).toObject(ProtectableContainerResourceInner.class);

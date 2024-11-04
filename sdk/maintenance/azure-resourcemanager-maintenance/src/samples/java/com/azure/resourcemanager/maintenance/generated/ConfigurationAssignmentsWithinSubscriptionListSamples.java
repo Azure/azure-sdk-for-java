@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for ConfigurationAssignmentsWithinSubscription List. */
+/**
+ * Samples for ConfigurationAssignmentsWithinSubscription List.
+ */
 public final class ConfigurationAssignmentsWithinSubscriptionListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ConfigurationAssignmentsResultWithinSubscription_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignmentsResultWithinSubscription_List.json
      */
     /**
      * Sample code: ConfigurationAssignmentsResultWithinSubscription_List.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void configurationAssignmentsResultWithinSubscriptionList(

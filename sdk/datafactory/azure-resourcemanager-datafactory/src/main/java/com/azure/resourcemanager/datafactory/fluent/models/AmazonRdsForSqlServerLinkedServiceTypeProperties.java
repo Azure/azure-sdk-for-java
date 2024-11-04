@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datafactory.models.AmazonRdsForSqlAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.datafactory.models.SqlServerBaseLinkedServiceTypeProperties;
+import java.io.IOException;
 
 /**
  * Amazon Rds for SQL Server linked service properties.
  */
 @Fluent
-public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
+public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlServerBaseLinkedServiceTypeProperties {
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    private AmazonRdsForSqlAuthenticationType authenticationType;
 
     /*
      * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * The on-premises Windows authentication password.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
-    @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /**
@@ -70,6 +75,27 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
      */
     public AmazonRdsForSqlServerLinkedServiceTypeProperties withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public AmazonRdsForSqlAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
+     */
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties
+        withAuthenticationType(AmazonRdsForSqlAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 
@@ -159,16 +185,185 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withServer(Object server) {
+        super.withServer(server);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withDatabase(Object database) {
+        super.withDatabase(database);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withEncrypt(Object encrypt) {
+        super.withEncrypt(encrypt);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withTrustServerCertificate(Object trustServerCertificate) {
+        super.withTrustServerCertificate(trustServerCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withHostnameInCertificate(Object hostnameInCertificate) {
+        super.withHostnameInCertificate(hostnameInCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withApplicationIntent(Object applicationIntent) {
+        super.withApplicationIntent(applicationIntent);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withConnectTimeout(Object connectTimeout) {
+        super.withConnectTimeout(connectTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withConnectRetryCount(Object connectRetryCount) {
+        super.withConnectRetryCount(connectRetryCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withConnectRetryInterval(Object connectRetryInterval) {
+        super.withConnectRetryInterval(connectRetryInterval);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withLoadBalanceTimeout(Object loadBalanceTimeout) {
+        super.withLoadBalanceTimeout(loadBalanceTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withCommandTimeout(Object commandTimeout) {
+        super.withCommandTimeout(commandTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withIntegratedSecurity(Object integratedSecurity) {
+        super.withIntegratedSecurity(integratedSecurity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withFailoverPartner(Object failoverPartner) {
+        super.withFailoverPartner(failoverPartner);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withMaxPoolSize(Object maxPoolSize) {
+        super.withMaxPoolSize(maxPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withMinPoolSize(Object minPoolSize) {
+        super.withMinPoolSize(minPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties
+        withMultipleActiveResultSets(Object multipleActiveResultSets) {
+        super.withMultipleActiveResultSets(multipleActiveResultSets);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withMultiSubnetFailover(Object multiSubnetFailover) {
+        super.withMultiSubnetFailover(multiSubnetFailover);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withPacketSize(Object packetSize) {
+        super.withPacketSize(packetSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withPooling(Object pooling) {
+        super.withPooling(pooling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (connectionString() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property connectionString in model AmazonRdsForSqlServerLinkedServiceTypeProperties"));
-        }
+        super.validate();
         if (password() != null) {
             password().validate();
         }
@@ -177,5 +372,129 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AmazonRdsForSqlServerLinkedServiceTypeProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", server());
+        jsonWriter.writeUntypedField("database", database());
+        jsonWriter.writeUntypedField("encrypt", encrypt());
+        jsonWriter.writeUntypedField("trustServerCertificate", trustServerCertificate());
+        jsonWriter.writeUntypedField("hostNameInCertificate", hostnameInCertificate());
+        jsonWriter.writeUntypedField("applicationIntent", applicationIntent());
+        jsonWriter.writeUntypedField("connectTimeout", connectTimeout());
+        jsonWriter.writeUntypedField("connectRetryCount", connectRetryCount());
+        jsonWriter.writeUntypedField("connectRetryInterval", connectRetryInterval());
+        jsonWriter.writeUntypedField("loadBalanceTimeout", loadBalanceTimeout());
+        jsonWriter.writeUntypedField("commandTimeout", commandTimeout());
+        jsonWriter.writeUntypedField("integratedSecurity", integratedSecurity());
+        jsonWriter.writeUntypedField("failoverPartner", failoverPartner());
+        jsonWriter.writeUntypedField("maxPoolSize", maxPoolSize());
+        jsonWriter.writeUntypedField("minPoolSize", minPoolSize());
+        jsonWriter.writeUntypedField("multipleActiveResultSets", multipleActiveResultSets());
+        jsonWriter.writeUntypedField("multiSubnetFailover", multiSubnetFailover());
+        jsonWriter.writeUntypedField("packetSize", packetSize());
+        jsonWriter.writeUntypedField("pooling", pooling());
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForSqlServerLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForSqlServerLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRdsForSqlServerLinkedServiceTypeProperties.
+     */
+    public static AmazonRdsForSqlServerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForSqlServerLinkedServiceTypeProperties deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                = new AmazonRdsForSqlServerLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withServer(reader.readUntyped());
+                } else if ("database".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withDatabase(reader.readUntyped());
+                } else if ("encrypt".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withEncrypt(reader.readUntyped());
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withTrustServerCertificate(reader.readUntyped());
+                } else if ("hostNameInCertificate".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withHostnameInCertificate(reader.readUntyped());
+                } else if ("applicationIntent".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withApplicationIntent(reader.readUntyped());
+                } else if ("connectTimeout".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withConnectTimeout(reader.readUntyped());
+                } else if ("connectRetryCount".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withConnectRetryCount(reader.readUntyped());
+                } else if ("connectRetryInterval".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withConnectRetryInterval(reader.readUntyped());
+                } else if ("loadBalanceTimeout".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withLoadBalanceTimeout(reader.readUntyped());
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withCommandTimeout(reader.readUntyped());
+                } else if ("integratedSecurity".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withIntegratedSecurity(reader.readUntyped());
+                } else if ("failoverPartner".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withFailoverPartner(reader.readUntyped());
+                } else if ("maxPoolSize".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withMaxPoolSize(reader.readUntyped());
+                } else if ("minPoolSize".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withMinPoolSize(reader.readUntyped());
+                } else if ("multipleActiveResultSets".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withMultipleActiveResultSets(reader.readUntyped());
+                } else if ("multiSubnetFailover".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties
+                        .withMultiSubnetFailover(reader.readUntyped());
+                } else if ("packetSize".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withPacketSize(reader.readUntyped());
+                } else if ("pooling".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.withPooling(reader.readUntyped());
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.connectionString
+                        = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.authenticationType
+                        = AmazonRdsForSqlAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.encryptedCredential
+                        = reader.getString();
+                } else if ("alwaysEncryptedSettings".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties.alwaysEncryptedSettings
+                        = SqlAlwaysEncryptedProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties;
+        });
+    }
 }

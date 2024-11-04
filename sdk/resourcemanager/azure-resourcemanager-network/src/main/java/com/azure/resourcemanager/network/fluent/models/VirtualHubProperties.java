@@ -6,150 +6,132 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubRoutingPreference;
 import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
 import com.azure.resourcemanager.network.models.VirtualRouterAutoScaleConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for VirtualHub.
  */
 @Fluent
-public final class VirtualHubProperties {
+public final class VirtualHubProperties implements JsonSerializable<VirtualHubProperties> {
     /*
      * The VirtualWAN to which the VirtualHub belongs.
      */
-    @JsonProperty(value = "virtualWan")
     private SubResource virtualWan;
 
     /*
      * The VpnGateway associated with this VirtualHub.
      */
-    @JsonProperty(value = "vpnGateway")
     private SubResource vpnGateway;
 
     /*
      * The P2SVpnGateway associated with this VirtualHub.
      */
-    @JsonProperty(value = "p2SVpnGateway")
     private SubResource p2SVpnGateway;
 
     /*
      * The expressRouteGateway associated with this VirtualHub.
      */
-    @JsonProperty(value = "expressRouteGateway")
     private SubResource expressRouteGateway;
 
     /*
      * The azureFirewall associated with this VirtualHub.
      */
-    @JsonProperty(value = "azureFirewall")
     private SubResource azureFirewall;
 
     /*
      * The securityPartnerProvider associated with this VirtualHub.
      */
-    @JsonProperty(value = "securityPartnerProvider")
     private SubResource securityPartnerProvider;
 
     /*
      * Address-prefix for this VirtualHub.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /*
      * The routeTable associated with this virtual hub.
      */
-    @JsonProperty(value = "routeTable")
     private VirtualHubRouteTable routeTable;
 
     /*
      * The provisioning state of the virtual hub resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The Security Provider name.
      */
-    @JsonProperty(value = "securityProviderName")
     private String securityProviderName;
 
     /*
      * List of all virtual hub route table v2s associated with this VirtualHub.
      */
-    @JsonProperty(value = "virtualHubRouteTableV2s")
     private List<VirtualHubRouteTableV2Inner> virtualHubRouteTableV2S;
 
     /*
      * The sku of this VirtualHub.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * The routing state.
      */
-    @JsonProperty(value = "routingState", access = JsonProperty.Access.WRITE_ONLY)
     private RoutingState routingState;
 
     /*
      * List of references to Bgp Connections.
      */
-    @JsonProperty(value = "bgpConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> bgpConnections;
 
     /*
      * List of references to IpConfigurations.
      */
-    @JsonProperty(value = "ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> ipConfigurations;
 
     /*
      * List of references to RouteMaps.
      */
-    @JsonProperty(value = "routeMaps", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> routeMaps;
 
     /*
      * VirtualRouter ASN.
      */
-    @JsonProperty(value = "virtualRouterAsn")
     private Long virtualRouterAsn;
 
     /*
      * VirtualRouter IPs.
      */
-    @JsonProperty(value = "virtualRouterIps")
     private List<String> virtualRouterIps;
 
     /*
      * Flag to control transit for VirtualRouter hub.
      */
-    @JsonProperty(value = "allowBranchToBranchTraffic")
     private Boolean allowBranchToBranchTraffic;
 
     /*
      * The preferred gateway to route on-prem traffic
      */
-    @JsonProperty(value = "preferredRoutingGateway")
     private PreferredRoutingGateway preferredRoutingGateway;
 
     /*
      * The hubRoutingPreference of this VirtualHub.
      */
-    @JsonProperty(value = "hubRoutingPreference")
     private HubRoutingPreference hubRoutingPreference;
 
     /*
      * The VirtualHub Router autoscale configuration.
      */
-    @JsonProperty(value = "virtualRouterAutoScaleConfiguration")
     private VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration;
 
     /**
@@ -561,5 +543,114 @@ public final class VirtualHubProperties {
         if (virtualRouterAutoScaleConfiguration() != null) {
             virtualRouterAutoScaleConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualWan", this.virtualWan);
+        jsonWriter.writeJsonField("vpnGateway", this.vpnGateway);
+        jsonWriter.writeJsonField("p2SVpnGateway", this.p2SVpnGateway);
+        jsonWriter.writeJsonField("expressRouteGateway", this.expressRouteGateway);
+        jsonWriter.writeJsonField("azureFirewall", this.azureFirewall);
+        jsonWriter.writeJsonField("securityPartnerProvider", this.securityPartnerProvider);
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        jsonWriter.writeJsonField("routeTable", this.routeTable);
+        jsonWriter.writeStringField("securityProviderName", this.securityProviderName);
+        jsonWriter.writeArrayField("virtualHubRouteTableV2s", this.virtualHubRouteTableV2S,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeNumberField("virtualRouterAsn", this.virtualRouterAsn);
+        jsonWriter.writeArrayField("virtualRouterIps", this.virtualRouterIps,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("allowBranchToBranchTraffic", this.allowBranchToBranchTraffic);
+        jsonWriter.writeStringField("preferredRoutingGateway",
+            this.preferredRoutingGateway == null ? null : this.preferredRoutingGateway.toString());
+        jsonWriter.writeStringField("hubRoutingPreference",
+            this.hubRoutingPreference == null ? null : this.hubRoutingPreference.toString());
+        jsonWriter.writeJsonField("virtualRouterAutoScaleConfiguration", this.virtualRouterAutoScaleConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualHubProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualHubProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualHubProperties.
+     */
+    public static VirtualHubProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualHubProperties deserializedVirtualHubProperties = new VirtualHubProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualWan".equals(fieldName)) {
+                    deserializedVirtualHubProperties.virtualWan = SubResource.fromJson(reader);
+                } else if ("vpnGateway".equals(fieldName)) {
+                    deserializedVirtualHubProperties.vpnGateway = SubResource.fromJson(reader);
+                } else if ("p2SVpnGateway".equals(fieldName)) {
+                    deserializedVirtualHubProperties.p2SVpnGateway = SubResource.fromJson(reader);
+                } else if ("expressRouteGateway".equals(fieldName)) {
+                    deserializedVirtualHubProperties.expressRouteGateway = SubResource.fromJson(reader);
+                } else if ("azureFirewall".equals(fieldName)) {
+                    deserializedVirtualHubProperties.azureFirewall = SubResource.fromJson(reader);
+                } else if ("securityPartnerProvider".equals(fieldName)) {
+                    deserializedVirtualHubProperties.securityPartnerProvider = SubResource.fromJson(reader);
+                } else if ("addressPrefix".equals(fieldName)) {
+                    deserializedVirtualHubProperties.addressPrefix = reader.getString();
+                } else if ("routeTable".equals(fieldName)) {
+                    deserializedVirtualHubProperties.routeTable = VirtualHubRouteTable.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualHubProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("securityProviderName".equals(fieldName)) {
+                    deserializedVirtualHubProperties.securityProviderName = reader.getString();
+                } else if ("virtualHubRouteTableV2s".equals(fieldName)) {
+                    List<VirtualHubRouteTableV2Inner> virtualHubRouteTableV2S
+                        = reader.readArray(reader1 -> VirtualHubRouteTableV2Inner.fromJson(reader1));
+                    deserializedVirtualHubProperties.virtualHubRouteTableV2S = virtualHubRouteTableV2S;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualHubProperties.sku = reader.getString();
+                } else if ("routingState".equals(fieldName)) {
+                    deserializedVirtualHubProperties.routingState = RoutingState.fromString(reader.getString());
+                } else if ("bgpConnections".equals(fieldName)) {
+                    List<SubResource> bgpConnections = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualHubProperties.bgpConnections = bgpConnections;
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<SubResource> ipConfigurations = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualHubProperties.ipConfigurations = ipConfigurations;
+                } else if ("routeMaps".equals(fieldName)) {
+                    List<SubResource> routeMaps = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualHubProperties.routeMaps = routeMaps;
+                } else if ("virtualRouterAsn".equals(fieldName)) {
+                    deserializedVirtualHubProperties.virtualRouterAsn = reader.getNullable(JsonReader::getLong);
+                } else if ("virtualRouterIps".equals(fieldName)) {
+                    List<String> virtualRouterIps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubProperties.virtualRouterIps = virtualRouterIps;
+                } else if ("allowBranchToBranchTraffic".equals(fieldName)) {
+                    deserializedVirtualHubProperties.allowBranchToBranchTraffic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("preferredRoutingGateway".equals(fieldName)) {
+                    deserializedVirtualHubProperties.preferredRoutingGateway
+                        = PreferredRoutingGateway.fromString(reader.getString());
+                } else if ("hubRoutingPreference".equals(fieldName)) {
+                    deserializedVirtualHubProperties.hubRoutingPreference
+                        = HubRoutingPreference.fromString(reader.getString());
+                } else if ("virtualRouterAutoScaleConfiguration".equals(fieldName)) {
+                    deserializedVirtualHubProperties.virtualRouterAutoScaleConfiguration
+                        = VirtualRouterAutoScaleConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualHubProperties;
+        });
     }
 }

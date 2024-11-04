@@ -4,12 +4,6 @@
 package com.azure.ai.vision.face.samples.utils;
 
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,18 +14,6 @@ import java.util.function.Supplier;
 
 public final class Utils {
     private static final SimpleDateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
-    private static final ObjectMapper OBJECT_MAPPER = JsonMapper
-        .builder()
-        .addModule(new JavaTimeModule())
-        .build()
-        .setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-    private static final ObjectMapper BEAUTIFY_OBJECT_MAPPER = JsonMapper
-            .builder()
-            .addModule(new JavaTimeModule())
-            .build()
-            .enable(SerializationFeature.INDENT_OUTPUT)
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     private Utils() {}
 
@@ -66,11 +48,7 @@ public final class Utils {
     }
 
     public static String toString(Object object, boolean indentOutput) {
-        try {
-            return (indentOutput ? BEAUTIFY_OBJECT_MAPPER : OBJECT_MAPPER).writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return BinaryData.fromObject(object).toString();
     }
 
     public static BinaryData loadFromFile(String pathString) {

@@ -40,16 +40,17 @@ public class AnalyzeAddOnKeyValuePair {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
                 client.beginAnalyzeDocument("prebuilt-layout", null,
                         null,
                         null,
                         Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
                         null,
                         null,
+                        null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         analyzeLayoutResult.getKeyValuePairs().forEach(
                 keyValuePair -> {
@@ -61,7 +62,8 @@ public class AnalyzeAddOnKeyValuePair {
                         boundingRegions.forEach(boundingRegion -> {
                             System.out.printf("  Bounding regions page: %s, polygon: %s%n",
                                     boundingRegion.getPageNumber(), boundingRegion.getPolygon());
-                        });                    }
+                        });
+                    }
                     if (value != null) {
                         System.out.println("- Value: " + value.getContent());
                         List<BoundingRegion> boundingRegions = value.getBoundingRegions();

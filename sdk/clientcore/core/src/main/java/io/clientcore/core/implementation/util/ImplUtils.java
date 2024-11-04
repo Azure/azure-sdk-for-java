@@ -11,7 +11,7 @@ import io.clientcore.core.util.configuration.Configuration;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -22,9 +22,12 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -52,6 +55,120 @@ public final class ImplUtils {
      * Default sanitizer for a value, where it is simply replaced with "REDACTED".
      */
     public static final Function<String, String> DEFAULT_SANITIZER = value -> "REDACTED";
+
+    private ImplUtils() {
+        // Exists only to defeat instantiation.
+    }
+
+    /**
+     * Checks if the array is null or empty.
+     *
+     * @param array Array being checked for nullness or emptiness.
+     *
+     * @return True if the array is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(Object[] array) {
+        return array == null || array.length == 0;
+    }
+
+    /**
+     * Checks if the collection is null or empty.
+     *
+     * @param collection Collection being checked for nullness or emptiness.
+     *
+     * @return True if the collection is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+    /**
+     * Checks if the map is null or empty.
+     *
+     * @param map Map being checked for nullness or emptiness.
+     *
+     * @return True if the map is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(Map<?, ?> map) {
+        return map == null || map.isEmpty();
+    }
+
+    /**
+     * Checks if the character sequence is null or empty.
+     *
+     * @param charSequence Character sequence being checked for nullness or emptiness.
+     *
+     * @return True if the character sequence is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(CharSequence charSequence) {
+        return charSequence == null || charSequence.length() == 0;
+    }
+
+    /**
+     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small set of
+     * object.
+     *
+     * @param delimiter Delimiter between the values.
+     * @param values The values to join.
+     *
+     * @return The {@code values} joined delimited by the {@code delimiter}.
+     *
+     * @throws NullPointerException If {@code delimiter} or {@code values} is null.
+     */
+    public static String stringJoin(String delimiter, List<String> values) {
+        Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
+        Objects.requireNonNull(values, "'values' cannot be null.");
+
+        int count = values.size();
+
+        switch (count) {
+            case 0:
+                return "";
+
+            case 1:
+                return values.get(0);
+
+            case 2:
+                return values.get(0) + delimiter + values.get(1);
+
+            case 3:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+
+            case 4:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3);
+
+            case 5:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4);
+
+            case 6:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5);
+
+            case 7:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+
+            case 8:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7);
+
+            case 9:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8);
+
+            case 10:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+
+            default:
+                return String.join(delimiter, values);
+        }
+    }
 
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
@@ -88,11 +205,11 @@ public final class ImplUtils {
         return retryDelay;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName, Function<String,
-                                             Duration> delayParser) {
+    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,
+        Function<String, Duration> delayParser) {
         String headerValue = headers.getValue(headerName);
 
-        return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
+        return isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
     }
 
     private static Duration tryGetDelayMillis(String value) {
@@ -177,43 +294,56 @@ public final class ImplUtils {
     }
 
     /**
-     * Utility method for parsing a {@link URL} into a {@link UrlBuilder}.
+     * Utility method for parsing a {@link URI} into a {@link UriBuilder}.
      *
-     * @param url The URL being parsed.
+     * @param uri The URI being parsed.
      * @param includeQuery Whether the query string should be excluded.
-     * @return The UrlBuilder that represents the parsed URL.
+     * @return The UriBuilder that represents the parsed URI.
      */
-    public static UrlBuilder parseUrl(URL url, boolean includeQuery) {
-        final UrlBuilder result = new UrlBuilder();
+    public static UriBuilder parseUri(URI uri, boolean includeQuery) {
+        final UriBuilder result = new UriBuilder();
 
-        if (url != null) {
-            final String protocol = url.getProtocol();
-            if (protocol != null && !protocol.isEmpty()) {
-                result.setScheme(protocol);
+        if (uri != null) {
+            final String scheme = uri.getScheme();
+            if (scheme != null && !scheme.isEmpty()) {
+                result.setScheme(scheme);
             }
 
-            final String host = url.getHost();
+            final String host = uri.getHost();
             if (host != null && !host.isEmpty()) {
                 result.setHost(host);
             }
 
-            final int port = url.getPort();
+            final int port = uri.getPort();
             if (port != -1) {
                 result.setPort(port);
             }
 
-            final String path = url.getPath();
+            final String path = uri.getPath();
             if (path != null && !path.isEmpty()) {
                 result.setPath(path);
             }
 
-            final String query = url.getQuery();
+            final String query = uri.getQuery();
             if (query != null && !query.isEmpty() && includeQuery) {
                 result.setQuery(query);
             }
         }
 
         return result;
+    }
+
+    public static final class QueryParameterIterable implements Iterable<Map.Entry<String, String>> {
+        private final String queryParameters;
+
+        public QueryParameterIterable(String queryParameters) {
+            this.queryParameters = queryParameters;
+        }
+
+        @Override
+        public Iterator<Map.Entry<String, String>> iterator() {
+            return new QueryParameterIterator(queryParameters);
+        }
     }
 
     public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
@@ -227,7 +357,7 @@ public final class ImplUtils {
             this.queryParameters = queryParameters;
             this.queryParametersLength = queryParameters.length();
 
-            // If the URL query begins with '?' the first possible start of a query parameter key is the
+            // If the URI query begins with '?' the first possible start of a query parameter key is the
             // second character in the query.
             position = (queryParameters.startsWith("?")) ? 1 : 0;
         }
@@ -313,11 +443,17 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
-            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
-            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
             return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
@@ -328,7 +464,7 @@ public final class ImplUtils {
              * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
              * present or invalid fallback to 'UTF-8' for the default charset.
              */
-            if (!CoreUtils.isNullOrEmpty(contentType)) {
+            if (!isNullOrEmpty(contentType)) {
                 try {
                     Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
                     if (charsetMatcher.find()) {
@@ -475,10 +611,10 @@ public final class ImplUtils {
     }
 
     /*
-     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
-     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
-     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
-     * until CoreUtils is loaded.
+     * This looks a bit strange but is needed as ImplUtils is used within Configuration code and if this was done in
+     * the static constructor for ImplUtils it would cause a circular dependency, potentially causing a deadlock.
+     * Since this is in a static holder class, it will only be loaded when ImplUtils accesses it, which won't happen
+     * until ImplUtils is loaded.
      */
     private static final class ShutdownHookAccessHelperHolder {
         private static boolean shutdownHookAccessHelper;
@@ -495,8 +631,5 @@ public final class ImplUtils {
 
     static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
         ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
-    }
-
-    private ImplUtils() {
     }
 }

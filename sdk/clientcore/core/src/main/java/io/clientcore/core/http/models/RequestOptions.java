@@ -5,7 +5,7 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.http.annotation.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.implementation.http.rest.UrlEscapers;
+import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -19,10 +19,11 @@ import java.util.function.Consumer;
  * {@link HttpRequest}.
  *
  * <p>An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
- * components of the request like URL, path params etc, further modifying both un-configured, or preconfigured
+ * components of the request like URI, path params etc, further modifying both un-configured, or preconfigured
  * components.</p>
  *
- * <p>To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example. The
+ * <p>To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example.
+ * The
  * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
  * definition.</a></p>
  *
@@ -51,7 +52,7 @@ import java.util.function.Consumer;
  *     "name": "string"
  *   },
  *   "name": "doggie",
- *   "photoUrls": [
+ *   "photoUris": [
  *     "string"
  *   ],
  *   "tags": [
@@ -69,7 +70,7 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed io.clientcore.core.http.rest.requestoptions.createjsonrequest -->
  * <pre>
- * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
+ * JsonArray photoUris = Json.createArrayBuilder&#40;&#41;
  *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
  *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
  *     .build&#40;&#41;;
@@ -90,7 +91,7 @@ import java.util.function.Consumer;
  *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
  *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
  *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
- *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
+ *     .add&#40;&quot;photoUris&quot;, photoUris&#41;
  *     .add&#40;&quot;tags&quot;, tags&#41;
  *     .build&#40;&#41;;
  *
@@ -105,7 +106,7 @@ import java.util.function.Consumer;
  * RequestOptions options = new RequestOptions&#40;&#41;
  *     .addRequestCallback&#40;request -&gt; request
  *         &#47;&#47; may already be set if request is created from a client
- *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
+ *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
  *         .setBody&#40;BinaryData.fromString&#40;requestBodyStr&#41;&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
@@ -113,13 +114,9 @@ import java.util.function.Consumer;
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    /**
-     * Signifies that no options need to be passed to the pipeline.
-     */
-    public static final RequestOptions NONE = new RequestOptions().lock();
-
     // RequestOptions is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
+    private static final RequestOptions NONE = new RequestOptions().lock();
 
     private Consumer<HttpRequest> requestCallback = request -> {
     };
@@ -132,7 +129,7 @@ public final class RequestOptions {
      * Creates a new instance of {@link RequestOptions}.
      */
     public RequestOptions() {
-        this.context = Context.EMPTY;
+        this.context = Context.none();
     }
 
     /**
@@ -183,12 +180,12 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addHeader(HttpHeader header) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot add header."));
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot add header."));
         }
 
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
@@ -206,12 +203,12 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setHeader(HttpHeaderName header, String value) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set header."));
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set header."));
         }
 
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
@@ -220,7 +217,7 @@ public final class RequestOptions {
     }
 
     /**
-     * Adds a query parameter to the request URL. The parameter name and value will be URL encoded. To use an already
+     * Adds a query parameter to the request URI. The parameter name and value will be URI encoded. To use an already
      * encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
      *
      * @param parameterName The name of the query parameter.
@@ -228,14 +225,14 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
     }
 
     /**
-     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded. A value
+     * Adds a query parameter to the request URI, specifying whether the parameter is already encoded. A value
      * {@code true} for this argument indicates that value of {@link QueryParam#value()} is already encoded hence the
      * engine should not encode it. By default, the value will be encoded.
      *
@@ -245,20 +242,20 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot add query param."));
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot add query param."));
         }
 
         this.requestCallback = this.requestCallback.andThen(request -> {
-            String url = request.getUrl().toString();
-            String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
-            String encodedParameterValue = encoded ? value : UrlEscapers.QUERY_ESCAPER.escape(value);
+            String uri = request.getUri().toString();
+            String encodedParameterName = encoded ? parameterName : UriEscapers.QUERY_ESCAPER.escape(parameterName);
+            String encodedParameterValue = encoded ? value : UriEscapers.QUERY_ESCAPER.escape(value);
 
-            request.setUrl(url + (url.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
+            request.setUri(uri + (uri.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
         });
 
         return this;
@@ -273,12 +270,12 @@ public final class RequestOptions {
      * @return The updated {@link RequestOptions} object.
      *
      * @throws NullPointerException If {@code requestCallback} is {@code null}.
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
         if (locked) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot add request callback."));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "This instance of RequestOptions is immutable. Cannot add request callback."));
         }
 
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
@@ -296,12 +293,12 @@ public final class RequestOptions {
      * @return The updated {@link RequestOptions} object.
      *
      * @throws NullPointerException If {@code requestBody} is {@code null}.
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setBody(BinaryData requestBody) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set body."));
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set body."));
         }
 
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
@@ -318,12 +315,12 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setContext(Context context) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set context."));
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set context."));
         }
 
         this.context = context;
@@ -342,12 +339,12 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
         if (locked) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set response body mode."));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "This instance of RequestOptions is immutable. Cannot set response body mode."));
         }
 
         this.responseBodyMode = responseBodyMode;
@@ -362,12 +359,12 @@ public final class RequestOptions {
      *
      * @return The updated {@link RequestOptions} object.
      *
-     * @throws IllegalStateException if this instance is {@link RequestOptions#NONE RequestOptions.NONE}.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setLogger(ClientLogger logger) {
         if (locked) {
             throw LOGGER.logThrowableAsError(
-                new IllegalStateException("RequestOptions.NONE is immutable. Cannot set logger."));
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set logger."));
         }
 
         this.logger = logger;
@@ -384,5 +381,16 @@ public final class RequestOptions {
         locked = true;
 
         return this;
+    }
+
+    /**
+     * An empty {@link RequestOptions} that is immutable, used in situations where there is no request-specific
+     * configuration to pass into the request. Modifications to the {@link RequestOptions} will result in an
+     * {@link IllegalStateException}.
+     *
+     * @return The singleton instance of an empty {@link RequestOptions}.
+     */
+    public static RequestOptions none() {
+        return NONE;
     }
 }

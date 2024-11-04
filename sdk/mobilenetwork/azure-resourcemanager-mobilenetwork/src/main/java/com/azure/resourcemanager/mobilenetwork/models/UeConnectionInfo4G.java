@@ -290,18 +290,20 @@ public final class UeConnectionInfo4G {
             locationInfo().validate();
         }
         if (globalRanNodeId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property globalRanNodeId in model UeConnectionInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property globalRanNodeId in model UeConnectionInfo4G"));
         } else {
             globalRanNodeId().validate();
         }
         if (ueState() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ueState in model UeConnectionInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ueState in model UeConnectionInfo4G"));
         }
         if (rrcEstablishmentCause() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rrcEstablishmentCause in model UeConnectionInfo4G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rrcEstablishmentCause in model UeConnectionInfo4G"));
         }
     }
 

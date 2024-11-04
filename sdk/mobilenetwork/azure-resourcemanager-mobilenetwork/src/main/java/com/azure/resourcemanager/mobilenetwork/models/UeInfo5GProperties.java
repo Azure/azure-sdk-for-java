@@ -157,12 +157,12 @@ public final class UeInfo5GProperties {
      */
     public void validate() {
         if (supi() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property supi in model UeInfo5GProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property supi in model UeInfo5GProperties"));
         }
         if (fivegGuti() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property fivegGuti in model UeInfo5GProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fivegGuti in model UeInfo5GProperties"));
         } else {
             fivegGuti().validate();
         }

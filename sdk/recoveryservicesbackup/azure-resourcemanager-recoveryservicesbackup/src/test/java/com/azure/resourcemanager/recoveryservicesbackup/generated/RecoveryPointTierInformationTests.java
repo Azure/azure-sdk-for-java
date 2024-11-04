@@ -15,24 +15,25 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointTierInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointTierInformation model = BinaryData.fromString(
-            "{\"type\":\"HardenedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"wpijrajci\":\"gg\",\"ghfcfiwrxgkneuvy\":\"m\",\"hoxgsgbpf\":\"nzqodfvpg\",\"aqvlgafcqusr\":\"zdjtxvzflbqv\"}}")
+        RecoveryPointTierInformation model = BinaryData
+            .fromString(
+                "{\"type\":\"ArchivedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"jrajcivm\":\"azkmtgguwp\"}}")
             .toObject(RecoveryPointTierInformation.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
-        Assertions.assertEquals("gg", model.extendedInfo().get("wpijrajci"));
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
+        Assertions.assertEquals("azkmtgguwp", model.extendedInfo().get("jrajcivm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointTierInformation model
-            = new RecoveryPointTierInformation().withType(RecoveryPointTierType.HARDENED_RP)
-                .withStatus(RecoveryPointTierStatus.REHYDRATED).withExtendedInfo(mapOf("wpijrajci", "gg",
-                    "ghfcfiwrxgkneuvy", "m", "hoxgsgbpf", "nzqodfvpg", "aqvlgafcqusr", "zdjtxvzflbqv"));
+            = new RecoveryPointTierInformation().withType(RecoveryPointTierType.ARCHIVED_RP)
+                .withStatus(RecoveryPointTierStatus.DISABLED)
+                .withExtendedInfo(mapOf("jrajcivm", "azkmtgguwp"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformation.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
-        Assertions.assertEquals("gg", model.extendedInfo().get("wpijrajci"));
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
+        Assertions.assertEquals("azkmtgguwp", model.extendedInfo().get("jrajcivm"));
     }
 
     // Use "Map.of" if available

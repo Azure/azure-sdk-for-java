@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageMoverInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageMoverInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"vpjhulsuuv\",\"provisioningState\":\"Succeeded\"},\"location\":\"zkrwfn\",\"tags\":{\"jdpvwryo\":\"djpslw\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
-                .toObject(StorageMoverInner.class);
+        StorageMoverInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"vpjhulsuuv\",\"provisioningState\":\"Failed\"},\"location\":\"zkrwfn\",\"tags\":{\"jdpvwryo\":\"djpslw\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
+            .toObject(StorageMoverInner.class);
         Assertions.assertEquals("zkrwfn", model.location());
         Assertions.assertEquals("djpslw", model.tags().get("jdpvwryo"));
         Assertions.assertEquals("vpjhulsuuv", model.description());
@@ -25,12 +23,9 @@ public final class StorageMoverInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageMoverInner model =
-            new StorageMoverInner()
-                .withLocation("zkrwfn")
-                .withTags(
-                    mapOf("jdpvwryo", "djpslw", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
-                .withDescription("vpjhulsuuv");
+        StorageMoverInner model = new StorageMoverInner().withLocation("zkrwfn")
+            .withTags(mapOf("jdpvwryo", "djpslw", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
+            .withDescription("vpjhulsuuv");
         model = BinaryData.fromObject(model).toObject(StorageMoverInner.class);
         Assertions.assertEquals("zkrwfn", model.location());
         Assertions.assertEquals("djpslw", model.tags().get("jdpvwryo"));

@@ -20,48 +20,44 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"countryOrRegionForHolidays\":\"thuqolyahluq\",\"cvStepSize\":608197313,\"featureLags\":\"Auto\",\"forecastHorizon\":{\"mode\":\"ForecastHorizon\"},\"frequency\":\"rjb\",\"seasonality\":{\"mode\":\"Seasonality\"},\"shortSeriesHandlingConfig\":\"None\",\"targetAggregateFunction\":\"None\",\"targetLags\":{\"mode\":\"TargetLags\"},\"targetRollingWindowSize\":{\"mode\":\"TargetRollingWindowSize\"},\"timeColumnName\":\"zvqqugdrftbcvexr\",\"timeSeriesIdColumnNames\":[\"uowtljvfwhrea\",\"khyxvrqtvbcz\",\"ulmdgglm\",\"pjpfseykgs\"],\"useStl\":\"Season\"}")
-                .toObject(ForecastingSettings.class);
-        Assertions.assertEquals("thuqolyahluq", model.countryOrRegionForHolidays());
-        Assertions.assertEquals(608197313, model.cvStepSize());
-        Assertions.assertEquals(FeatureLags.AUTO, model.featureLags());
-        Assertions.assertEquals("rjb", model.frequency());
-        Assertions.assertEquals(ShortSeriesHandlingConfiguration.NONE, model.shortSeriesHandlingConfig());
-        Assertions.assertEquals(TargetAggregationFunction.NONE, model.targetAggregateFunction());
-        Assertions.assertEquals("zvqqugdrftbcvexr", model.timeColumnName());
-        Assertions.assertEquals("uowtljvfwhrea", model.timeSeriesIdColumnNames().get(0));
-        Assertions.assertEquals(UseStl.SEASON, model.useStl());
+        ForecastingSettings model = BinaryData.fromString(
+            "{\"countryOrRegionForHolidays\":\"tphuykuninttl\",\"timeColumnName\":\"jdszdbuzi\",\"targetLags\":{\"mode\":\"TargetLags\"},\"targetRollingWindowSize\":{\"mode\":\"TargetRollingWindowSize\"},\"forecastHorizon\":{\"mode\":\"ForecastHorizon\"},\"timeSeriesIdColumnNames\":[\"qvgpnewuh\",\"fwjnoxuoxtfn\",\"essfepgckncj\"],\"frequency\":\"vsnvbtqdxfmj\",\"featureLags\":\"None\",\"seasonality\":{\"mode\":\"Seasonality\"},\"shortSeriesHandlingConfig\":\"Pad\",\"useStl\":\"SeasonTrend\",\"targetAggregateFunction\":\"Max\",\"cvStepSize\":1226506395}")
+            .toObject(ForecastingSettings.class);
+        Assertions.assertEquals("tphuykuninttl", model.countryOrRegionForHolidays());
+        Assertions.assertEquals("jdszdbuzi", model.timeColumnName());
+        Assertions.assertEquals("qvgpnewuh", model.timeSeriesIdColumnNames().get(0));
+        Assertions.assertEquals("vsnvbtqdxfmj", model.frequency());
+        Assertions.assertEquals(FeatureLags.NONE, model.featureLags());
+        Assertions.assertEquals(ShortSeriesHandlingConfiguration.PAD, model.shortSeriesHandlingConfig());
+        Assertions.assertEquals(UseStl.SEASON_TREND, model.useStl());
+        Assertions.assertEquals(TargetAggregationFunction.MAX, model.targetAggregateFunction());
+        Assertions.assertEquals(1226506395, model.cvStepSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastingSettings model =
-            new ForecastingSettings()
-                .withCountryOrRegionForHolidays("thuqolyahluq")
-                .withCvStepSize(608197313)
-                .withFeatureLags(FeatureLags.AUTO)
-                .withForecastHorizon(new ForecastHorizon())
-                .withFrequency("rjb")
-                .withSeasonality(new Seasonality())
-                .withShortSeriesHandlingConfig(ShortSeriesHandlingConfiguration.NONE)
-                .withTargetAggregateFunction(TargetAggregationFunction.NONE)
-                .withTargetLags(new TargetLags())
-                .withTargetRollingWindowSize(new TargetRollingWindowSize())
-                .withTimeColumnName("zvqqugdrftbcvexr")
-                .withTimeSeriesIdColumnNames(Arrays.asList("uowtljvfwhrea", "khyxvrqtvbcz", "ulmdgglm", "pjpfseykgs"))
-                .withUseStl(UseStl.SEASON);
+        ForecastingSettings model = new ForecastingSettings().withCountryOrRegionForHolidays("tphuykuninttl")
+            .withTimeColumnName("jdszdbuzi")
+            .withTargetLags(new TargetLags())
+            .withTargetRollingWindowSize(new TargetRollingWindowSize())
+            .withForecastHorizon(new ForecastHorizon())
+            .withTimeSeriesIdColumnNames(Arrays.asList("qvgpnewuh", "fwjnoxuoxtfn", "essfepgckncj"))
+            .withFrequency("vsnvbtqdxfmj")
+            .withFeatureLags(FeatureLags.NONE)
+            .withSeasonality(new Seasonality())
+            .withShortSeriesHandlingConfig(ShortSeriesHandlingConfiguration.PAD)
+            .withUseStl(UseStl.SEASON_TREND)
+            .withTargetAggregateFunction(TargetAggregationFunction.MAX)
+            .withCvStepSize(1226506395);
         model = BinaryData.fromObject(model).toObject(ForecastingSettings.class);
-        Assertions.assertEquals("thuqolyahluq", model.countryOrRegionForHolidays());
-        Assertions.assertEquals(608197313, model.cvStepSize());
-        Assertions.assertEquals(FeatureLags.AUTO, model.featureLags());
-        Assertions.assertEquals("rjb", model.frequency());
-        Assertions.assertEquals(ShortSeriesHandlingConfiguration.NONE, model.shortSeriesHandlingConfig());
-        Assertions.assertEquals(TargetAggregationFunction.NONE, model.targetAggregateFunction());
-        Assertions.assertEquals("zvqqugdrftbcvexr", model.timeColumnName());
-        Assertions.assertEquals("uowtljvfwhrea", model.timeSeriesIdColumnNames().get(0));
-        Assertions.assertEquals(UseStl.SEASON, model.useStl());
+        Assertions.assertEquals("tphuykuninttl", model.countryOrRegionForHolidays());
+        Assertions.assertEquals("jdszdbuzi", model.timeColumnName());
+        Assertions.assertEquals("qvgpnewuh", model.timeSeriesIdColumnNames().get(0));
+        Assertions.assertEquals("vsnvbtqdxfmj", model.frequency());
+        Assertions.assertEquals(FeatureLags.NONE, model.featureLags());
+        Assertions.assertEquals(ShortSeriesHandlingConfiguration.PAD, model.shortSeriesHandlingConfig());
+        Assertions.assertEquals(UseStl.SEASON_TREND, model.useStl());
+        Assertions.assertEquals(TargetAggregationFunction.MAX, model.targetAggregateFunction());
+        Assertions.assertEquals(1226506395, model.cvStepSize());
     }
 }

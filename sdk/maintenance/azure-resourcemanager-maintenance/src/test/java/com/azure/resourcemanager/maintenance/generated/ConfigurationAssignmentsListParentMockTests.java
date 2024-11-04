@@ -6,76 +6,45 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
 import com.azure.resourcemanager.maintenance.models.TagOperators;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationAssignmentsListParentMockTests {
     @Test
     public void testListParent() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"location\":\"tkkgllqwjy\",\"properties\":{\"maintenanceConfigurationId\":\"ayvblmhvkzuhbx\",\"resourceId\":\"yhgsopbyrqufe\",\"filter\":{\"resourceTypes\":[\"wz\"],\"resourceGroups\":[\"hlmctlpdngitvgb\",\"hrixkwmy\",\"jejveg\"],\"osTypes\":[\"pna\",\"xexccbdreaxhcexd\",\"rvqahqkghtpwi\",\"nhyjsv\"],\"locations\":[\"xzb\",\"voowvr\",\"mtg\"],\"tagSettings\":{\"tags\":{\"yhgfipnsx\":[\"ostronz\"],\"pvuzlmv\":[\"cwaekrrjre\",\"fxtsgum\",\"jglikkxwslolb\"],\"noigbrnjwmwk\":[\"lfktgplcrpwjxe\"],\"ou\":[\"bsazejjoqka\",\"fhsxttaugz\",\"nfaazpxdtnkdmkq\",\"jlwuenvrkp\"]},\"filterOperator\":\"All\"}}},\"id\":\"ebqaaysjkixqtnq\",\"name\":\"tezlwff\",\"type\":\"iakp\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"nalghfkvtvsexso\",\"properties\":{\"maintenanceConfigurationId\":\"luqhhahhxv\",\"resourceId\":\"mzkwpjg\",\"filter\":{\"resourceTypes\":[\"ughftqsx\",\"qxujxukndxd\",\"grjguufzd\"],\"resourceGroups\":[\"qtfihwhbotzinga\",\"vppho\"],\"osTypes\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"],\"locations\":[\"atkzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"],\"tagSettings\":{\"tags\":{\"celve\":[\"lvdnkfx\",\"semdwzrmu\",\"apfcqdpsq\",\"qvpsvuoymg\"],\"edkowepbqpcrfk\":[\"ypql\",\"feo\",\"erqwkyhkobopg\"],\"ywkbirryuzhlhkjo\":[\"ccsnjvcdwxlpq\",\"kftnkhtjsyin\",\"wfqatmtd\",\"tmdvypgikdgs\"]},\"filterOperator\":\"Any\"}}},\"id\":\"qaatjinrv\",\"name\":\"oupmfii\",\"type\":\"fggjioolvr\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MaintenanceManager manager = MaintenanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ConfigurationAssignment> response = manager.configurationAssignments()
+            .listParent("birryuzhl", "kj", "qrvqq", "atjinrvgoupmfiib", "ggjioolvr", "x",
+                com.azure.core.util.Context.NONE);
 
-        MaintenanceManager manager =
-            MaintenanceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ConfigurationAssignment> response =
-            manager
-                .configurationAssignments()
-                .listParent(
-                    "fpwpjylwbt", "h", "lsj", "dhszfjv", "bgofeljag", "qmqhldvriii", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("nalghfkvtvsexso", response.iterator().next().location());
-        Assertions.assertEquals("luqhhahhxv", response.iterator().next().maintenanceConfigurationId());
-        Assertions.assertEquals("mzkwpjg", response.iterator().next().resourceId());
-        Assertions.assertEquals("ughftqsx", response.iterator().next().filter().resourceTypes().get(0));
-        Assertions.assertEquals("qtfihwhbotzinga", response.iterator().next().filter().resourceGroups().get(0));
-        Assertions.assertEquals("zudphqamvdkfw", response.iterator().next().filter().osTypes().get(0));
-        Assertions.assertEquals("atkzwpcnpw", response.iterator().next().filter().locations().get(0));
-        Assertions
-            .assertEquals("lvdnkfx", response.iterator().next().filter().tagSettings().tags().get("celve").get(0));
-        Assertions.assertEquals(TagOperators.ANY, response.iterator().next().filter().tagSettings().filterOperator());
+        Assertions.assertEquals("tkkgllqwjy", response.iterator().next().location());
+        Assertions.assertEquals("ayvblmhvkzuhbx", response.iterator().next().maintenanceConfigurationId());
+        Assertions.assertEquals("yhgsopbyrqufe", response.iterator().next().resourceId());
+        Assertions.assertEquals("wz", response.iterator().next().filter().resourceTypes().get(0));
+        Assertions.assertEquals("hlmctlpdngitvgb", response.iterator().next().filter().resourceGroups().get(0));
+        Assertions.assertEquals("pna", response.iterator().next().filter().osTypes().get(0));
+        Assertions.assertEquals("xzb", response.iterator().next().filter().locations().get(0));
+        Assertions.assertEquals("ostronz",
+            response.iterator().next().filter().tagSettings().tags().get("yhgfipnsx").get(0));
+        Assertions.assertEquals(TagOperators.ALL, response.iterator().next().filter().tagSettings().filterOperator());
     }
 }

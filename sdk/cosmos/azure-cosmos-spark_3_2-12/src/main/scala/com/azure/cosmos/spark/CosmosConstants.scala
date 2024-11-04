@@ -25,6 +25,8 @@ private[cosmos] object CosmosConstants {
   val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
   val defaultMetricsIntervalInSeconds = 60
   val defaultSlf4jMetricReporterEnabled = false
+  val readOperationEndToEndTimeoutInSeconds = 65
+  val batchOperationEndToEndTimeoutInSeconds = 65
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** chatMessageType. */
+/**
+ * chatMessageType.
+ */
 public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<MicrosoftGraphChatMessageType> {
-    /** Static value message for MicrosoftGraphChatMessageType. */
+    /**
+     * Static value message for MicrosoftGraphChatMessageType.
+     */
     public static final MicrosoftGraphChatMessageType MESSAGE = fromString("message");
 
-    /** Static value chatEvent for MicrosoftGraphChatMessageType. */
+    /**
+     * Static value chatEvent for MicrosoftGraphChatMessageType.
+     */
     public static final MicrosoftGraphChatMessageType CHAT_EVENT = fromString("chatEvent");
 
-    /** Static value typing for MicrosoftGraphChatMessageType. */
+    /**
+     * Static value typing for MicrosoftGraphChatMessageType.
+     */
     public static final MicrosoftGraphChatMessageType TYPING = fromString("typing");
 
-    /** Static value unknownFutureValue for MicrosoftGraphChatMessageType. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphChatMessageType.
+     */
     public static final MicrosoftGraphChatMessageType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphChatMessageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<Mi
 
     /**
      * Creates or finds a MicrosoftGraphChatMessageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphChatMessageType.
      */
-    @JsonCreator
     public static MicrosoftGraphChatMessageType fromString(String name) {
         return fromString(name, MicrosoftGraphChatMessageType.class);
     }
 
     /**
      * Gets known MicrosoftGraphChatMessageType values.
-     *
+     * 
      * @return known MicrosoftGraphChatMessageType values.
      */
     public static Collection<MicrosoftGraphChatMessageType> values() {

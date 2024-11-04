@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkDhcpServerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkDhcpServer model =
-            BinaryData
-                .fromString(
-                    "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"py\",\"leaseTime\":3485711592453889453,\"displayName\":\"dcnifmz\",\"segments\":[\"ymbrnysuxmpraf\",\"g\"],\"provisioningState\":\"Updating\",\"revision\":8975968727108219865}")
-                .toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("dcnifmz", model.displayName());
-        Assertions.assertEquals(8975968727108219865L, model.revision());
-        Assertions.assertEquals("py", model.serverAddress());
-        Assertions.assertEquals(3485711592453889453L, model.leaseTime());
+        WorkloadNetworkDhcpServer model = BinaryData.fromString(
+            "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"ibbdaxconfoza\",\"leaseTime\":3754579921352518306,\"displayName\":\"kokwbqplhlvnu\",\"segments\":[\"zlrphwzs\",\"l\"],\"provisioningState\":\"Canceled\",\"revision\":6472514649626093953}")
+            .toObject(WorkloadNetworkDhcpServer.class);
+        Assertions.assertEquals("kokwbqplhlvnu", model.displayName());
+        Assertions.assertEquals(6472514649626093953L, model.revision());
+        Assertions.assertEquals("ibbdaxconfoza", model.serverAddress());
+        Assertions.assertEquals(3754579921352518306L, model.leaseTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpServer model =
-            new WorkloadNetworkDhcpServer()
-                .withDisplayName("dcnifmz")
-                .withRevision(8975968727108219865L)
-                .withServerAddress("py")
-                .withLeaseTime(3485711592453889453L);
+        WorkloadNetworkDhcpServer model = new WorkloadNetworkDhcpServer().withDisplayName("kokwbqplhlvnu")
+            .withRevision(6472514649626093953L)
+            .withServerAddress("ibbdaxconfoza")
+            .withLeaseTime(3754579921352518306L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("dcnifmz", model.displayName());
-        Assertions.assertEquals(8975968727108219865L, model.revision());
-        Assertions.assertEquals("py", model.serverAddress());
-        Assertions.assertEquals(3485711592453889453L, model.leaseTime());
+        Assertions.assertEquals("kokwbqplhlvnu", model.displayName());
+        Assertions.assertEquals(6472514649626093953L, model.revision());
+        Assertions.assertEquals("ibbdaxconfoza", model.serverAddress());
+        Assertions.assertEquals(3754579921352518306L, model.leaseTime());
     }
 }

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The VnetConfiguration model. */
 @Fluent
 public class VnetConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VnetConfiguration.class);
 
     /*
      * The name of the virtual network.

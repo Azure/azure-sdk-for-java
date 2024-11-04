@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,18 +13,24 @@ import java.util.Collection;
  * failed.
  */
 public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRestoreProgressStatus> {
-    /** Static value InProgress for BlobRestoreProgressStatus. */
+    /**
+     * Static value InProgress for BlobRestoreProgressStatus.
+     */
     public static final BlobRestoreProgressStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Complete for BlobRestoreProgressStatus. */
+    /**
+     * Static value Complete for BlobRestoreProgressStatus.
+     */
     public static final BlobRestoreProgressStatus COMPLETE = fromString("Complete");
 
-    /** Static value Failed for BlobRestoreProgressStatus. */
+    /**
+     * Static value Failed for BlobRestoreProgressStatus.
+     */
     public static final BlobRestoreProgressStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of BlobRestoreProgressStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +39,17 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
 
     /**
      * Creates or finds a BlobRestoreProgressStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobRestoreProgressStatus.
      */
-    @JsonCreator
     public static BlobRestoreProgressStatus fromString(String name) {
         return fromString(name, BlobRestoreProgressStatus.class);
     }
 
     /**
      * Gets known BlobRestoreProgressStatus values.
-     *
+     * 
      * @return known BlobRestoreProgressStatus values.
      */
     public static Collection<BlobRestoreProgressStatus> values() {

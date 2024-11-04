@@ -6,25 +6,27 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Snapshots operation response.
  */
 @Fluent
-public final class SnapshotList {
+public final class SnapshotList implements JsonSerializable<SnapshotList> {
     /*
      * A list of snapshots.
      */
-    @JsonProperty(value = "value", required = true)
     private List<SnapshotInner> value;
 
     /*
      * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -82,12 +84,53 @@ public final class SnapshotList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SnapshotList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SnapshotList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnapshotList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotList.
+     */
+    public static SnapshotList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotList deserializedSnapshotList = new SnapshotList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SnapshotInner> value = reader.readArray(reader1 -> SnapshotInner.fromJson(reader1));
+                    deserializedSnapshotList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSnapshotList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotList;
+        });
+    }
 }

@@ -31,82 +31,89 @@ public final class SynapseNotebookActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SynapseNotebookActivity model = BinaryData.fromString(
-            "{\"type\":\"uemotgkyfh\",\"typeProperties\":{\"notebook\":{\"type\":\"NotebookReference\",\"referenceName\":\"datallt\"},\"sparkPool\":{\"type\":\"BigDataPoolReference\",\"referenceName\":\"dataxxzhbfib\"},\"parameters\":{\"djrhxjawf\":{\"value\":\"datahzpjdbzhlchv\",\"type\":\"int\"},\"pucybtravel\":{\"value\":\"datavgvrpearooh\",\"type\":\"bool\"},\"ogxexeaexweei\":{\"value\":\"datam\",\"type\":\"float\"},\"ncnf\":{\"value\":\"datagvzmqdn\",\"type\":\"float\"}},\"executorSize\":\"dataggiomgv\",\"conf\":\"datarxlrtm\",\"driverSize\":\"datagnixkp\",\"numExecutors\":\"datajqjwlhqeibucm\",\"configurationType\":\"Artifact\",\"targetSparkConfiguration\":{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datajrs\"},\"sparkConfig\":{\"uzwy\":\"datamaezxldmzh\"}},\"linkedServiceName\":{\"referenceName\":\"omuapyskwi\",\"parameters\":{\"xfyqsfygafhbf\":\"datafqvulesqjdbcypvs\",\"vqlmzpckxlcslm\":\"dataz\"}},\"policy\":{\"timeout\":\"dataojqpjba\",\"retry\":\"datanxdizdfulv\",\"retryIntervalInSeconds\":1834458226,\"secureInput\":false,\"secureOutput\":true,\"\":{\"dht\":\"datasp\",\"hx\":\"dataopzfcexbtwic\",\"gkvmmkwa\":\"datae\"}},\"name\":\"xmwq\",\"description\":\"svzczisi\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"fuhqbatdnufvz\",\"dependencyConditions\":[\"Failed\"],\"\":{\"vdtssa\":\"datat\",\"mfaagpjslrf\":\"databmdoj\"}}],\"userProperties\":[{\"name\":\"ut\",\"value\":\"databhs\"},{\"name\":\"nnf\",\"value\":\"databxtabxdkboyqes\"}],\"\":{\"uikqzdqkxjcqdnzh\":\"datavutarurfjppmi\",\"pjinjikxocf\":\"datalbdlhnkv\",\"r\":\"datakcnjzxezo\"}}")
+            "{\"type\":\"SynapseNotebook\",\"typeProperties\":{\"notebook\":{\"type\":\"NotebookReference\",\"referenceName\":\"datafroynfloam\"},\"sparkPool\":{\"type\":\"BigDataPoolReference\",\"referenceName\":\"datafiivgdsnrknikp\"},\"parameters\":{\"hmfbzkfehrslvofn\":{\"value\":\"dataqnxyloyclrle\",\"type\":\"float\"},\"ahsqo\":{\"value\":\"datawsuroddohng\",\"type\":\"float\"},\"kdmnvaibh\":{\"value\":\"dataandslrndius\",\"type\":\"bool\"},\"ssweznzfdext\":{\"value\":\"datajg\",\"type\":\"string\"}},\"executorSize\":\"datarnhpxzjk\",\"conf\":\"datavzpcecisnhtds\",\"driverSize\":\"datanigohafud\",\"numExecutors\":\"datao\",\"configurationType\":\"Default\",\"targetSparkConfiguration\":{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"dataqgrcnf\"},\"sparkConfig\":{\"vfzl\":\"datagjvl\",\"j\":\"dataugxpugetw\"}},\"linkedServiceName\":{\"referenceName\":\"dddvfnqazvavsp\",\"parameters\":{\"lkyrssyy\":\"dataaytzkdqimumaijcu\",\"rvrx\":\"dataedzhnyl\",\"jsqazecdomjrrolw\":\"datakpl\"}},\"policy\":{\"timeout\":\"datacaqxstykusfqmgj\",\"retry\":\"dataiqejvpdrcnoe\",\"retryIntervalInSeconds\":730397817,\"secureInput\":true,\"secureOutput\":true,\"\":{\"zyycev\":\"datar\",\"y\":\"dataazwewhobxlk\",\"nuxvyalkcuozwow\":\"dataspidcnxjfgx\",\"qlb\":\"datamulqgaeqnlx\"}},\"name\":\"ezcwfscxkrzuze\",\"description\":\"vxmkzg\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"sgebw\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"yahurxtpuyuradf\":\"dataguplzdoamqkdwag\",\"ivkmdfwfzkocdj\":\"datawjounvfqyk\",\"rbphtllkpkcqzbvy\":\"dataj\"}},{\"activity\":\"vfx\",\"dependencyConditions\":[\"Skipped\",\"Succeeded\"],\"\":{\"ypevfrbujltg\":\"dataxrjidxio\",\"as\":\"datahgyl\",\"mhknsknnnpyo\":\"datawhbmo\"}}],\"userProperties\":[{\"name\":\"nyqsdsuewfgrijd\",\"value\":\"datakmcrtmvtfeyopg\"},{\"name\":\"iwebmcizmggvsxv\",\"value\":\"datawrqywaagzaxqh\"},{\"name\":\"erkyimcfmdhwtlli\",\"value\":\"datacyxcluvj\"}],\"\":{\"hshcjgoobltoar\":\"datajpld\",\"fsmabuur\":\"datacntgqyqwmzzcgbg\",\"hf\":\"datauqwvybxmu\"}}")
             .toObject(SynapseNotebookActivity.class);
-        Assertions.assertEquals("xmwq", model.name());
-        Assertions.assertEquals("svzczisi", model.description());
-        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
-        Assertions.assertEquals("fuhqbatdnufvz", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.FAILED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("ut", model.userProperties().get(0).name());
-        Assertions.assertEquals("omuapyskwi", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1834458226, model.policy().retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.policy().secureInput());
+        Assertions.assertEquals("ezcwfscxkrzuze", model.name());
+        Assertions.assertEquals("vxmkzg", model.description());
+        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
+        Assertions.assertEquals("sgebw", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("nyqsdsuewfgrijd", model.userProperties().get(0).name());
+        Assertions.assertEquals("dddvfnqazvavsp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(730397817, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(true, model.policy().secureOutput());
         Assertions.assertEquals(NotebookReferenceType.NOTEBOOK_REFERENCE, model.notebook().type());
         Assertions.assertEquals(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE, model.sparkPool().type());
-        Assertions.assertEquals(NotebookParameterType.INT, model.parameters().get("djrhxjawf").type());
-        Assertions.assertEquals(ConfigurationType.ARTIFACT, model.configurationType());
+        Assertions.assertEquals(NotebookParameterType.FLOAT, model.parameters().get("hmfbzkfehrslvofn").type());
+        Assertions.assertEquals(ConfigurationType.DEFAULT, model.configurationType());
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE,
             model.targetSparkConfiguration().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SynapseNotebookActivity model = new SynapseNotebookActivity().withName("xmwq")
-            .withDescription("svzczisi")
-            .withState(ActivityState.INACTIVE)
-            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
-            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("fuhqbatdnufvz")
-                .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED))
-                .withAdditionalProperties(mapOf())))
-            .withUserProperties(Arrays.asList(new UserProperty().withName("ut").withValue("databhs"),
-                new UserProperty().withName("nnf").withValue("databxtabxdkboyqes")))
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("omuapyskwi")
-                .withParameters(mapOf("xfyqsfygafhbf", "datafqvulesqjdbcypvs", "vqlmzpckxlcslm", "dataz")))
-            .withPolicy(new ActivityPolicy().withTimeout("dataojqpjba")
-                .withRetry("datanxdizdfulv")
-                .withRetryIntervalInSeconds(1834458226)
-                .withSecureInput(false)
+        SynapseNotebookActivity model = new SynapseNotebookActivity().withName("ezcwfscxkrzuze")
+            .withDescription("vxmkzg")
+            .withState(ActivityState.ACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+            .withDependsOn(Arrays.asList(
+                new ActivityDependency().withActivity("sgebw")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("vfx")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED))
+                    .withAdditionalProperties(mapOf())))
+            .withUserProperties(
+                Arrays.asList(new UserProperty().withName("nyqsdsuewfgrijd").withValue("datakmcrtmvtfeyopg"),
+                    new UserProperty().withName("iwebmcizmggvsxv").withValue("datawrqywaagzaxqh"),
+                    new UserProperty().withName("erkyimcfmdhwtlli").withValue("datacyxcluvj")))
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("dddvfnqazvavsp")
+                    .withParameters(mapOf("lkyrssyy", "dataaytzkdqimumaijcu", "rvrx", "dataedzhnyl", "jsqazecdomjrrolw",
+                        "datakpl")))
+            .withPolicy(new ActivityPolicy().withTimeout("datacaqxstykusfqmgj")
+                .withRetry("dataiqejvpdrcnoe")
+                .withRetryIntervalInSeconds(730397817)
+                .withSecureInput(true)
                 .withSecureOutput(true)
                 .withAdditionalProperties(mapOf()))
             .withNotebook(new SynapseNotebookReference().withType(NotebookReferenceType.NOTEBOOK_REFERENCE)
-                .withReferenceName("datallt"))
+                .withReferenceName("datafroynfloam"))
             .withSparkPool(
                 new BigDataPoolParametrizationReference().withType(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE)
-                    .withReferenceName("dataxxzhbfib"))
-            .withParameters(mapOf("djrhxjawf",
-                new NotebookParameter().withValue("datahzpjdbzhlchv").withType(NotebookParameterType.INT),
-                "pucybtravel",
-                new NotebookParameter().withValue("datavgvrpearooh").withType(NotebookParameterType.BOOL),
-                "ogxexeaexweei", new NotebookParameter().withValue("datam").withType(NotebookParameterType.FLOAT),
-                "ncnf", new NotebookParameter().withValue("datagvzmqdn").withType(NotebookParameterType.FLOAT)))
-            .withExecutorSize("dataggiomgv")
-            .withConf("datarxlrtm")
-            .withDriverSize("datagnixkp")
-            .withNumExecutors("datajqjwlhqeibucm")
-            .withConfigurationType(ConfigurationType.ARTIFACT)
+                    .withReferenceName("datafiivgdsnrknikp"))
+            .withParameters(mapOf("hmfbzkfehrslvofn",
+                new NotebookParameter().withValue("dataqnxyloyclrle").withType(NotebookParameterType.FLOAT), "ahsqo",
+                new NotebookParameter().withValue("datawsuroddohng").withType(NotebookParameterType.FLOAT), "kdmnvaibh",
+                new NotebookParameter().withValue("dataandslrndius").withType(NotebookParameterType.BOOL),
+                "ssweznzfdext", new NotebookParameter().withValue("datajg").withType(NotebookParameterType.STRING)))
+            .withExecutorSize("datarnhpxzjk")
+            .withConf("datavzpcecisnhtds")
+            .withDriverSize("datanigohafud")
+            .withNumExecutors("datao")
+            .withConfigurationType(ConfigurationType.DEFAULT)
             .withTargetSparkConfiguration(new SparkConfigurationParametrizationReference()
                 .withType(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE)
-                .withReferenceName("datajrs"))
-            .withSparkConfig(mapOf("uzwy", "datamaezxldmzh"));
+                .withReferenceName("dataqgrcnf"))
+            .withSparkConfig(mapOf("vfzl", "datagjvl", "j", "dataugxpugetw"));
         model = BinaryData.fromObject(model).toObject(SynapseNotebookActivity.class);
-        Assertions.assertEquals("xmwq", model.name());
-        Assertions.assertEquals("svzczisi", model.description());
-        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
-        Assertions.assertEquals("fuhqbatdnufvz", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.FAILED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("ut", model.userProperties().get(0).name());
-        Assertions.assertEquals("omuapyskwi", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1834458226, model.policy().retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.policy().secureInput());
+        Assertions.assertEquals("ezcwfscxkrzuze", model.name());
+        Assertions.assertEquals("vxmkzg", model.description());
+        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
+        Assertions.assertEquals("sgebw", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("nyqsdsuewfgrijd", model.userProperties().get(0).name());
+        Assertions.assertEquals("dddvfnqazvavsp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(730397817, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(true, model.policy().secureOutput());
         Assertions.assertEquals(NotebookReferenceType.NOTEBOOK_REFERENCE, model.notebook().type());
         Assertions.assertEquals(BigDataPoolReferenceType.BIG_DATA_POOL_REFERENCE, model.sparkPool().type());
-        Assertions.assertEquals(NotebookParameterType.INT, model.parameters().get("djrhxjawf").type());
-        Assertions.assertEquals(ConfigurationType.ARTIFACT, model.configurationType());
+        Assertions.assertEquals(NotebookParameterType.FLOAT, model.parameters().get("hmfbzkfehrslvofn").type());
+        Assertions.assertEquals(ConfigurationType.DEFAULT, model.configurationType());
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE,
             model.targetSparkConfiguration().type());
     }

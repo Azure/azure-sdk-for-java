@@ -5,45 +5,47 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Resource group information. */
+/**
+ * Resource group information.
+ */
 @Fluent
-public final class ResourceGroupPatchable {
+public final class ResourceGroupPatchable implements JsonSerializable<ResourceGroupPatchable> {
     /*
      * The name of the resource group.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource group properties.
      */
-    @JsonProperty(value = "properties")
     private ResourceGroupProperties properties;
 
     /*
      * The ID of the resource that manages this resource group.
      */
-    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
      * The tags attached to the resource group.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ResourceGroupPatchable class. */
+    /**
+     * Creates an instance of ResourceGroupPatchable class.
+     */
     public ResourceGroupPatchable() {
     }
 
     /**
      * Get the name property: The name of the resource group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +54,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the name property: The name of the resource group.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -63,7 +65,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the properties property: The resource group properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGroupProperties properties() {
@@ -72,7 +74,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the properties property: The resource group properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -83,7 +85,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -92,7 +94,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -103,7 +105,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the tags property: The tags attached to the resource group.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -112,7 +114,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the tags property: The tags attached to the resource group.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -123,12 +125,58 @@ public final class ResourceGroupPatchable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceGroupPatchable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceGroupPatchable if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceGroupPatchable.
+     */
+    public static ResourceGroupPatchable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceGroupPatchable deserializedResourceGroupPatchable = new ResourceGroupPatchable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceGroupPatchable.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedResourceGroupPatchable.properties = ResourceGroupProperties.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedResourceGroupPatchable.managedBy = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceGroupPatchable.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceGroupPatchable;
+        });
     }
 }

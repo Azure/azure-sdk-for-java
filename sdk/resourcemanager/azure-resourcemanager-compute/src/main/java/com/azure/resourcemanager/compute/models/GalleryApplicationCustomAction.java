@@ -6,36 +6,36 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A custom action that can be performed with a Gallery Application Version.
  */
 @Fluent
-public final class GalleryApplicationCustomAction {
+public final class GalleryApplicationCustomAction implements JsonSerializable<GalleryApplicationCustomAction> {
     /*
      * The name of the custom action. Must be unique within the Gallery Application Version.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The script to run when executing this custom action.
      */
-    @JsonProperty(value = "script", required = true)
     private String script;
 
     /*
      * Description to help the users understand what this custom action does.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The parameters that this custom action uses
      */
-    @JsonProperty(value = "parameters")
     private List<GalleryApplicationCustomActionParameter> parameters;
 
     /**
@@ -131,12 +131,14 @@ public final class GalleryApplicationCustomAction {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model GalleryApplicationCustomAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model GalleryApplicationCustomAction"));
         }
         if (script() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property script in model GalleryApplicationCustomAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property script in model GalleryApplicationCustomAction"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
@@ -144,4 +146,53 @@ public final class GalleryApplicationCustomAction {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationCustomAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("script", this.script);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryApplicationCustomAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryApplicationCustomAction if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryApplicationCustomAction.
+     */
+    public static GalleryApplicationCustomAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryApplicationCustomAction deserializedGalleryApplicationCustomAction
+                = new GalleryApplicationCustomAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedGalleryApplicationCustomAction.name = reader.getString();
+                } else if ("script".equals(fieldName)) {
+                    deserializedGalleryApplicationCustomAction.script = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedGalleryApplicationCustomAction.description = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<GalleryApplicationCustomActionParameter> parameters
+                        = reader.readArray(reader1 -> GalleryApplicationCustomActionParameter.fromJson(reader1));
+                    deserializedGalleryApplicationCustomAction.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryApplicationCustomAction;
+        });
+    }
 }

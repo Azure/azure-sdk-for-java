@@ -28,7 +28,7 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"pmjtfymvlvosbc\",\"connectVia\":{\"referenceName\":\"bbrkuss\",\"parameters\":{\"aspglc\":\"datasbucmth\"}},\"description\":\"raer\",\"parameters\":{\"yox\":{\"type\":\"Float\",\"defaultValue\":\"datayhwdogchdqtlbnkr\"},\"sr\":{\"type\":\"String\",\"defaultValue\":\"datae\"},\"g\":{\"type\":\"Bool\",\"defaultValue\":\"datazs\"}},\"annotations\":[\"datasbp\"],\"\":{\"tbn\":\"datamgwmmwjugaqy\",\"qfiigslbriawkn\":\"datayspbghnnxkouvsmm\",\"gerqtcxk\":\"datacdfcyeyulmxonobo\",\"z\":\"datai\"}},\"name\":\"crucz\",\"type\":\"juxijmawsamdfwex\",\"etag\":\"bdglsll\",\"id\":\"armlbqekvj\"}";
+            = "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"fnlksyqpkskbidmz\",\"connectVia\":{\"referenceName\":\"pbhcgesbteqfen\",\"parameters\":{\"gesflnzibguw\":\"datatcy\"}},\"description\":\"hxa\",\"parameters\":{\"cillfq\":{\"type\":\"Array\",\"defaultValue\":\"datafjpefirjkinofw\"}},\"annotations\":[\"dataifdrbkprblw\",\"databjse\",\"dataqqts\",\"dataupogtrwkuwn\"],\"\":{\"wngtiyzzi\":\"datajeo\",\"nrky\":\"datauovgipqgtsgo\",\"qoiqonnvaybo\":\"datahtcrxcnuyfvrid\",\"pojbifixdgkvlze\":\"databigzlvqmy\"}},\"name\":\"qopwabrzrhdezlhs\",\"type\":\"pdbol\",\"etag\":\"hyqdvxqoajfoscd\",\"id\":\"fatf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,24 +38,27 @@ public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LinkedServiceResource response = manager.linkedServices()
-            .define("g")
-            .withExistingFactory("colf", "ftz")
-            .withProperties(new LinkedService()
-                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("ivt")
-                    .withParameters(mapOf("rqiijkvop", "datauzyyniv", "odmnytdborujflt", "dataamtxvnelw", "n",
-                        "dataxwfwlfqbgugvr", "khdxqaccdzb", "dataeiwk")))
-                .withDescription("ot")
-                .withParameters(mapOf("jzv",
-                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datasxgaojwulatq")))
-                .withAnnotations(Arrays.asList("dataslifcwj", "datayfdjzefkzcajav", "datamokaqnu"))
-                .withAdditionalProperties(mapOf("type", "fnl")))
-            .withIfMatch("pz")
+            .define("qighnunptjm")
+            .withExistingFactory("wgakghvaqbk", "zmwbxautspnyutf")
+            .withProperties(new LinkedService().withVersion("irjnddaovgiowmzt")
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("nncvj")
+                    .withParameters(mapOf("xxmsiblieg", "dataucqx", "yclv", "datajktfsci")))
+                .withDescription("vsag")
+                .withParameters(mapOf("lcqjnwvqif",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                        .withDefaultValue("datarqnwoahfa"),
+                    "qivvpvuy",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafsvrjdpzvhxssn")))
+                .withAnnotations(Arrays.asList("datamdinnisuuakaadb"))
+                .withAdditionalProperties(mapOf("type", "LinkedService")))
+            .withIfMatch("vw")
             .create();
 
-        Assertions.assertEquals("armlbqekvj", response.id());
-        Assertions.assertEquals("bbrkuss", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("raer", response.properties().description());
-        Assertions.assertEquals(ParameterType.FLOAT, response.properties().parameters().get("yox").type());
+        Assertions.assertEquals("fatf", response.id());
+        Assertions.assertEquals("fnlksyqpkskbidmz", response.properties().version());
+        Assertions.assertEquals("pbhcgesbteqfen", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("hxa", response.properties().description());
+        Assertions.assertEquals(ParameterType.ARRAY, response.properties().parameters().get("cillfq").type());
     }
 
     // Use "Map.of" if available

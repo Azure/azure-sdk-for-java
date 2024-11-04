@@ -5,5 +5,5 @@
 
 <suppressions>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilder" files="com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCause" files="com.azure.core.http.jdk.httpclient.implementation.InputStreamWithReadTimeout.java" />
 </suppressions>

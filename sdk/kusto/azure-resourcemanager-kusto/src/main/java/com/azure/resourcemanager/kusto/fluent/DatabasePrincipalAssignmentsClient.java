@@ -31,12 +31,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
@@ -51,10 +47,7 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
@@ -71,12 +64,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return a Kusto cluster database principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabasePrincipalAssignmentInner> getWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context);
+    Response<DatabasePrincipalAssignmentInner> getWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, String principalAssignmentName, Context context);
 
     /**
      * Gets a Kusto cluster database principalAssignment.
@@ -91,8 +80,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return a Kusto cluster database principalAssignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner get(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
+    DatabasePrincipalAssignmentInner get(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName);
 
     /**
      * Creates a Kusto cluster database principalAssignment.
@@ -109,10 +98,7 @@ public interface DatabasePrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
+        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName,
         DatabasePrincipalAssignmentInner parameters);
 
     /**
@@ -131,12 +117,8 @@ public interface DatabasePrincipalAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabasePrincipalAssignmentInner>, DatabasePrincipalAssignmentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters,
-        Context context);
+        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName,
+        DatabasePrincipalAssignmentInner parameters, Context context);
 
     /**
      * Creates a Kusto cluster database principalAssignment.
@@ -152,12 +134,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return class representing a database principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters);
+    DatabasePrincipalAssignmentInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName, DatabasePrincipalAssignmentInner parameters);
 
     /**
      * Creates a Kusto cluster database principalAssignment.
@@ -174,13 +152,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return class representing a database principal assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        DatabasePrincipalAssignmentInner parameters,
-        Context context);
+    DatabasePrincipalAssignmentInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName, DatabasePrincipalAssignmentInner parameters, Context context);
 
     /**
      * Deletes a Kusto principalAssignment.
@@ -195,8 +168,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName);
 
     /**
      * Deletes a Kusto principalAssignment.
@@ -212,12 +185,8 @@ public interface DatabasePrincipalAssignmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String databaseName,
+        String principalAssignmentName, Context context);
 
     /**
      * Deletes a Kusto principalAssignment.
@@ -246,11 +215,7 @@ public interface DatabasePrincipalAssignmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String principalAssignmentName,
+    void delete(String resourceGroupName, String clusterName, String databaseName, String principalAssignmentName,
         Context context);
 
     /**
@@ -266,8 +231,8 @@ public interface DatabasePrincipalAssignmentsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalAssignmentInner> list(
-        String resourceGroupName, String clusterName, String databaseName);
+    PagedIterable<DatabasePrincipalAssignmentInner> list(String resourceGroupName, String clusterName,
+        String databaseName);
 
     /**
      * Lists all Kusto cluster database principalAssignments.
@@ -283,6 +248,6 @@ public interface DatabasePrincipalAssignmentsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalAssignmentInner> list(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    PagedIterable<DatabasePrincipalAssignmentInner> list(String resourceGroupName, String clusterName,
+        String databaseName, Context context);
 }

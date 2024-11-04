@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operating system type required by the containers in the container group. */
+/**
+ * The operating system type required by the containers in the container group.
+ */
 public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSystemTypes> {
-    /** Static value Windows for OperatingSystemTypes. */
+    /**
+     * Static value Windows for OperatingSystemTypes.
+     */
     public static final OperatingSystemTypes WINDOWS = fromString("Windows");
 
-    /** Static value Linux for OperatingSystemTypes. */
+    /**
+     * Static value Linux for OperatingSystemTypes.
+     */
     public static final OperatingSystemTypes LINUX = fromString("Linux");
 
     /**
      * Creates a new instance of OperatingSystemTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
 
     /**
      * Creates or finds a OperatingSystemTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperatingSystemTypes.
      */
-    @JsonCreator
     public static OperatingSystemTypes fromString(String name) {
         return fromString(name, OperatingSystemTypes.class);
     }
 
     /**
      * Gets known OperatingSystemTypes values.
-     *
+     * 
      * @return known OperatingSystemTypes values.
      */
     public static Collection<OperatingSystemTypes> values() {

@@ -5,8 +5,13 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -19,175 +24,150 @@ public final class AsAsset extends InventoryAsset {
      * The asn property.
      */
     @Generated
-    @JsonProperty(value = "asn")
     private Long asn;
 
     /*
      * The asNames property.
      */
     @Generated
-    @JsonProperty(value = "asNames")
     private List<ObservedString> asNames;
 
     /*
      * The orgNames property.
      */
     @Generated
-    @JsonProperty(value = "orgNames")
     private List<ObservedString> orgNames;
 
     /*
      * The orgIds property.
      */
     @Generated
-    @JsonProperty(value = "orgIds")
     private List<ObservedString> orgIds;
 
     /*
      * The countries property.
      */
     @Generated
-    @JsonProperty(value = "countries")
     private List<ObservedString> countries;
 
     /*
      * The registries property.
      */
     @Generated
-    @JsonProperty(value = "registries")
     private List<ObservedString> registries;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The registrarCreatedAt property.
      */
     @Generated
-    @JsonProperty(value = "registrarCreatedAt")
     private List<ObservedLong> registrarCreatedAt;
 
     /*
      * The registrarUpdatedAt property.
      */
     @Generated
-    @JsonProperty(value = "registrarUpdatedAt")
     private List<ObservedLong> registrarUpdatedAt;
 
     /*
      * The registrantContacts property.
      */
     @Generated
-    @JsonProperty(value = "registrantContacts")
     private List<ObservedString> registrantContacts;
 
     /*
      * The adminContacts property.
      */
     @Generated
-    @JsonProperty(value = "adminContacts")
     private List<ObservedString> adminContacts;
 
     /*
      * The technicalContacts property.
      */
     @Generated
-    @JsonProperty(value = "technicalContacts")
     private List<ObservedString> technicalContacts;
 
     /*
      * The registrarNames property.
      */
     @Generated
-    @JsonProperty(value = "registrarNames")
     private List<ObservedString> registrarNames;
 
     /*
      * The registrantNames property.
      */
     @Generated
-    @JsonProperty(value = "registrantNames")
     private List<ObservedString> registrantNames;
 
     /*
      * The adminNames property.
      */
     @Generated
-    @JsonProperty(value = "adminNames")
     private List<ObservedString> adminNames;
 
     /*
      * The technicalNames property.
      */
     @Generated
-    @JsonProperty(value = "technicalNames")
     private List<ObservedString> technicalNames;
 
     /*
      * The adminOrgs property.
      */
     @Generated
-    @JsonProperty(value = "adminOrgs")
     private List<ObservedString> adminOrgs;
 
     /*
      * The technicalOrgs property.
      */
     @Generated
-    @JsonProperty(value = "technicalOrgs")
     private List<ObservedString> technicalOrgs;
 
     /*
      * The registrantPhones property.
      */
     @Generated
-    @JsonProperty(value = "registrantPhones")
     private List<ObservedString> registrantPhones;
 
     /*
      * The adminPhones property.
      */
     @Generated
-    @JsonProperty(value = "adminPhones")
     private List<ObservedString> adminPhones;
 
     /*
      * The technicalPhones property.
      */
     @Generated
-    @JsonProperty(value = "technicalPhones")
     private List<ObservedString> technicalPhones;
 
     /*
      * The detailedFromWhoisAt property.
      */
     @Generated
-    @JsonProperty(value = "detailedFromWhoisAt")
     private OffsetDateTime detailedFromWhoisAt;
 
     /**
@@ -445,5 +425,155 @@ public final class AsAsset extends InventoryAsset {
     @Generated
     public OffsetDateTime getDetailedFromWhoisAt() {
         return this.detailedFromWhoisAt;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("asn", this.asn);
+        jsonWriter.writeArrayField("asNames", this.asNames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("orgNames", this.orgNames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("orgIds", this.orgIds, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("countries", this.countries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registries", this.registries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeArrayField("registrarCreatedAt", this.registrarCreatedAt,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registrarUpdatedAt", this.registrarUpdatedAt,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registrantContacts", this.registrantContacts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("adminContacts", this.adminContacts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("technicalContacts", this.technicalContacts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registrarNames", this.registrarNames,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registrantNames", this.registrantNames,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("adminNames", this.adminNames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("technicalNames", this.technicalNames,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("adminOrgs", this.adminOrgs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("technicalOrgs", this.technicalOrgs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("registrantPhones", this.registrantPhones,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("adminPhones", this.adminPhones, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("technicalPhones", this.technicalPhones,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("detailedFromWhoisAt",
+            this.detailedFromWhoisAt == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.detailedFromWhoisAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsAsset from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsAsset if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the AsAsset.
+     */
+    @Generated
+    public static AsAsset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsAsset deserializedAsAsset = new AsAsset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("asn".equals(fieldName)) {
+                    deserializedAsAsset.asn = reader.getNullable(JsonReader::getLong);
+                } else if ("asNames".equals(fieldName)) {
+                    List<ObservedString> asNames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.asNames = asNames;
+                } else if ("orgNames".equals(fieldName)) {
+                    List<ObservedString> orgNames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.orgNames = orgNames;
+                } else if ("orgIds".equals(fieldName)) {
+                    List<ObservedString> orgIds = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.orgIds = orgIds;
+                } else if ("countries".equals(fieldName)) {
+                    List<ObservedString> countries = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.countries = countries;
+                } else if ("registries".equals(fieldName)) {
+                    List<ObservedString> registries = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.registries = registries;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedAsAsset.sources = sources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedAsAsset.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedAsAsset.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedAsAsset.count = reader.getNullable(JsonReader::getLong);
+                } else if ("registrarCreatedAt".equals(fieldName)) {
+                    List<ObservedLong> registrarCreatedAt = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedAsAsset.registrarCreatedAt = registrarCreatedAt;
+                } else if ("registrarUpdatedAt".equals(fieldName)) {
+                    List<ObservedLong> registrarUpdatedAt = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedAsAsset.registrarUpdatedAt = registrarUpdatedAt;
+                } else if ("registrantContacts".equals(fieldName)) {
+                    List<ObservedString> registrantContacts
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.registrantContacts = registrantContacts;
+                } else if ("adminContacts".equals(fieldName)) {
+                    List<ObservedString> adminContacts = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.adminContacts = adminContacts;
+                } else if ("technicalContacts".equals(fieldName)) {
+                    List<ObservedString> technicalContacts
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.technicalContacts = technicalContacts;
+                } else if ("registrarNames".equals(fieldName)) {
+                    List<ObservedString> registrarNames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.registrarNames = registrarNames;
+                } else if ("registrantNames".equals(fieldName)) {
+                    List<ObservedString> registrantNames
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.registrantNames = registrantNames;
+                } else if ("adminNames".equals(fieldName)) {
+                    List<ObservedString> adminNames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.adminNames = adminNames;
+                } else if ("technicalNames".equals(fieldName)) {
+                    List<ObservedString> technicalNames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.technicalNames = technicalNames;
+                } else if ("adminOrgs".equals(fieldName)) {
+                    List<ObservedString> adminOrgs = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.adminOrgs = adminOrgs;
+                } else if ("technicalOrgs".equals(fieldName)) {
+                    List<ObservedString> technicalOrgs = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.technicalOrgs = technicalOrgs;
+                } else if ("registrantPhones".equals(fieldName)) {
+                    List<ObservedString> registrantPhones
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.registrantPhones = registrantPhones;
+                } else if ("adminPhones".equals(fieldName)) {
+                    List<ObservedString> adminPhones = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.adminPhones = adminPhones;
+                } else if ("technicalPhones".equals(fieldName)) {
+                    List<ObservedString> technicalPhones
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedAsAsset.technicalPhones = technicalPhones;
+                } else if ("detailedFromWhoisAt".equals(fieldName)) {
+                    deserializedAsAsset.detailedFromWhoisAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAsAsset;
+        });
     }
 }

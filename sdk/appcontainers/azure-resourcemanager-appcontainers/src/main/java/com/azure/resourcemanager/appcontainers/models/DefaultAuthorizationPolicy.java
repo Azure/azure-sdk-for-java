@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The configuration settings of the Azure Active Directory default authorization policy.
  */
 @Fluent
-public final class DefaultAuthorizationPolicy {
+public final class DefaultAuthorizationPolicy implements JsonSerializable<DefaultAuthorizationPolicy> {
     /*
      * The configuration settings of the Azure Active Directory allowed principals.
      */
-    @JsonProperty(value = "allowedPrincipals")
     private AllowedPrincipals allowedPrincipals;
 
     /*
      * The configuration settings of the Azure Active Directory allowed applications.
      */
-    @JsonProperty(value = "allowedApplications")
     private List<String> allowedApplications;
 
     /**
@@ -82,5 +84,46 @@ public final class DefaultAuthorizationPolicy {
         if (allowedPrincipals() != null) {
             allowedPrincipals().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("allowedPrincipals", this.allowedPrincipals);
+        jsonWriter.writeArrayField("allowedApplications", this.allowedApplications,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultAuthorizationPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultAuthorizationPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultAuthorizationPolicy.
+     */
+    public static DefaultAuthorizationPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultAuthorizationPolicy deserializedDefaultAuthorizationPolicy = new DefaultAuthorizationPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedPrincipals".equals(fieldName)) {
+                    deserializedDefaultAuthorizationPolicy.allowedPrincipals = AllowedPrincipals.fromJson(reader);
+                } else if ("allowedApplications".equals(fieldName)) {
+                    List<String> allowedApplications = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDefaultAuthorizationPolicy.allowedApplications = allowedApplications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultAuthorizationPolicy;
+        });
     }
 }

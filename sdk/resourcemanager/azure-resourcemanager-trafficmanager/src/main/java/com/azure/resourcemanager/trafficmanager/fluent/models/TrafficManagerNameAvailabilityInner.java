@@ -5,48 +5,52 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class representing a Traffic Manager Name Availability response. */
+/**
+ * Class representing a Traffic Manager Name Availability response.
+ */
 @Fluent
-public final class TrafficManagerNameAvailabilityInner {
+public final class TrafficManagerNameAvailabilityInner
+    implements JsonSerializable<TrafficManagerNameAvailabilityInner> {
     /*
      * The relative name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Traffic Manager profile resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Describes whether the relative name is available or not.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * The reason why the name is not available, when applicable.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Descriptive message that explains why the name is not available, when applicable.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of TrafficManagerNameAvailabilityInner class. */
+    /**
+     * Creates an instance of TrafficManagerNameAvailabilityInner class.
+     */
     public TrafficManagerNameAvailabilityInner() {
     }
 
     /**
      * Get the name property: The relative name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Set the name property: The relative name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TrafficManagerNameAvailabilityInner object itself.
      */
@@ -66,7 +70,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Get the type property: Traffic Manager profile resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -75,7 +79,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Set the type property: Traffic Manager profile resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the TrafficManagerNameAvailabilityInner object itself.
      */
@@ -86,7 +90,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Get the nameAvailable property: Describes whether the relative name is available or not.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -95,7 +99,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Set the nameAvailable property: Describes whether the relative name is available or not.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the TrafficManagerNameAvailabilityInner object itself.
      */
@@ -106,7 +110,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Get the reason property: The reason why the name is not available, when applicable.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -115,7 +119,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Set the reason property: The reason why the name is not available, when applicable.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the TrafficManagerNameAvailabilityInner object itself.
      */
@@ -126,7 +130,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Get the message property: Descriptive message that explains why the name is not available, when applicable.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -135,7 +139,7 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Set the message property: Descriptive message that explains why the name is not available, when applicable.
-     *
+     * 
      * @param message the message value to set.
      * @return the TrafficManagerNameAvailabilityInner object itself.
      */
@@ -146,9 +150,59 @@ public final class TrafficManagerNameAvailabilityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficManagerNameAvailabilityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficManagerNameAvailabilityInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrafficManagerNameAvailabilityInner.
+     */
+    public static TrafficManagerNameAvailabilityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficManagerNameAvailabilityInner deserializedTrafficManagerNameAvailabilityInner
+                = new TrafficManagerNameAvailabilityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTrafficManagerNameAvailabilityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTrafficManagerNameAvailabilityInner.type = reader.getString();
+                } else if ("nameAvailable".equals(fieldName)) {
+                    deserializedTrafficManagerNameAvailabilityInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedTrafficManagerNameAvailabilityInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedTrafficManagerNameAvailabilityInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficManagerNameAvailabilityInner;
+        });
     }
 }

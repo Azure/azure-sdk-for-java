@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -35,6 +35,7 @@ import com.azure.resourcemanager.maintenance.implementation.MaintenanceConfigura
 import com.azure.resourcemanager.maintenance.implementation.MaintenanceManagementClientBuilder;
 import com.azure.resourcemanager.maintenance.implementation.OperationsImpl;
 import com.azure.resourcemanager.maintenance.implementation.PublicMaintenanceConfigurationsImpl;
+import com.azure.resourcemanager.maintenance.implementation.ScheduledEventsImpl;
 import com.azure.resourcemanager.maintenance.implementation.UpdatesImpl;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdateForResourceGroups;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdates;
@@ -46,6 +47,7 @@ import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurations;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurationsForResourceGroups;
 import com.azure.resourcemanager.maintenance.models.Operations;
 import com.azure.resourcemanager.maintenance.models.PublicMaintenanceConfigurations;
+import com.azure.resourcemanager.maintenance.models.ScheduledEvents;
 import com.azure.resourcemanager.maintenance.models.Updates;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -54,8 +56,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to MaintenanceManager. Azure Maintenance Management Client. */
+/**
+ * Entry point to MaintenanceManager.
+ * Azure Maintenance Management Client.
+ */
 public final class MaintenanceManager {
+    private ScheduledEvents scheduledEvents;
+
     private PublicMaintenanceConfigurations publicMaintenanceConfigurations;
 
     private ApplyUpdates applyUpdates;
@@ -83,18 +90,16 @@ public final class MaintenanceManager {
     private MaintenanceManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new MaintenanceManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new MaintenanceManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Maintenance service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Maintenance service API instance.
@@ -107,7 +112,7 @@ public final class MaintenanceManager {
 
     /**
      * Creates an instance of Maintenance service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Maintenance service API instance.
@@ -120,14 +125,16 @@ public final class MaintenanceManager {
 
     /**
      * Gets a Configurable instance that can be used to create MaintenanceManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new MaintenanceManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -199,8 +206,8 @@ public final class MaintenanceManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -217,8 +224,8 @@ public final class MaintenanceManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -238,15 +245,13 @@ public final class MaintenanceManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.maintenance")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -271,51 +276,53 @@ public final class MaintenanceManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new MaintenanceManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
+     * Gets the resource collection API of ScheduledEvents.
+     * 
+     * @return Resource collection API of ScheduledEvents.
+     */
+    public ScheduledEvents scheduledEvents() {
+        if (this.scheduledEvents == null) {
+            this.scheduledEvents = new ScheduledEventsImpl(clientObject.getScheduledEvents(), this);
+        }
+        return scheduledEvents;
+    }
+
+    /**
      * Gets the resource collection API of PublicMaintenanceConfigurations.
-     *
+     * 
      * @return Resource collection API of PublicMaintenanceConfigurations.
      */
     public PublicMaintenanceConfigurations publicMaintenanceConfigurations() {
         if (this.publicMaintenanceConfigurations == null) {
-            this.publicMaintenanceConfigurations =
-                new PublicMaintenanceConfigurationsImpl(clientObject.getPublicMaintenanceConfigurations(), this);
+            this.publicMaintenanceConfigurations
+                = new PublicMaintenanceConfigurationsImpl(clientObject.getPublicMaintenanceConfigurations(), this);
         }
         return publicMaintenanceConfigurations;
     }
 
     /**
      * Gets the resource collection API of ApplyUpdates.
-     *
+     * 
      * @return Resource collection API of ApplyUpdates.
      */
     public ApplyUpdates applyUpdates() {
@@ -327,102 +334,98 @@ public final class MaintenanceManager {
 
     /**
      * Gets the resource collection API of ConfigurationAssignments.
-     *
+     * 
      * @return Resource collection API of ConfigurationAssignments.
      */
     public ConfigurationAssignments configurationAssignments() {
         if (this.configurationAssignments == null) {
-            this.configurationAssignments =
-                new ConfigurationAssignmentsImpl(clientObject.getConfigurationAssignments(), this);
+            this.configurationAssignments
+                = new ConfigurationAssignmentsImpl(clientObject.getConfigurationAssignments(), this);
         }
         return configurationAssignments;
     }
 
     /**
      * Gets the resource collection API of MaintenanceConfigurations. It manages MaintenanceConfiguration.
-     *
+     * 
      * @return Resource collection API of MaintenanceConfigurations.
      */
     public MaintenanceConfigurations maintenanceConfigurations() {
         if (this.maintenanceConfigurations == null) {
-            this.maintenanceConfigurations =
-                new MaintenanceConfigurationsImpl(clientObject.getMaintenanceConfigurations(), this);
+            this.maintenanceConfigurations
+                = new MaintenanceConfigurationsImpl(clientObject.getMaintenanceConfigurations(), this);
         }
         return maintenanceConfigurations;
     }
 
     /**
      * Gets the resource collection API of MaintenanceConfigurationsForResourceGroups.
-     *
+     * 
      * @return Resource collection API of MaintenanceConfigurationsForResourceGroups.
      */
     public MaintenanceConfigurationsForResourceGroups maintenanceConfigurationsForResourceGroups() {
         if (this.maintenanceConfigurationsForResourceGroups == null) {
-            this.maintenanceConfigurationsForResourceGroups =
-                new MaintenanceConfigurationsForResourceGroupsImpl(
-                    clientObject.getMaintenanceConfigurationsForResourceGroups(), this);
+            this.maintenanceConfigurationsForResourceGroups = new MaintenanceConfigurationsForResourceGroupsImpl(
+                clientObject.getMaintenanceConfigurationsForResourceGroups(), this);
         }
         return maintenanceConfigurationsForResourceGroups;
     }
 
     /**
      * Gets the resource collection API of ApplyUpdateForResourceGroups.
-     *
+     * 
      * @return Resource collection API of ApplyUpdateForResourceGroups.
      */
     public ApplyUpdateForResourceGroups applyUpdateForResourceGroups() {
         if (this.applyUpdateForResourceGroups == null) {
-            this.applyUpdateForResourceGroups =
-                new ApplyUpdateForResourceGroupsImpl(clientObject.getApplyUpdateForResourceGroups(), this);
+            this.applyUpdateForResourceGroups
+                = new ApplyUpdateForResourceGroupsImpl(clientObject.getApplyUpdateForResourceGroups(), this);
         }
         return applyUpdateForResourceGroups;
     }
 
     /**
      * Gets the resource collection API of ConfigurationAssignmentsWithinSubscriptions.
-     *
+     * 
      * @return Resource collection API of ConfigurationAssignmentsWithinSubscriptions.
      */
     public ConfigurationAssignmentsWithinSubscriptions configurationAssignmentsWithinSubscriptions() {
         if (this.configurationAssignmentsWithinSubscriptions == null) {
-            this.configurationAssignmentsWithinSubscriptions =
-                new ConfigurationAssignmentsWithinSubscriptionsImpl(
-                    clientObject.getConfigurationAssignmentsWithinSubscriptions(), this);
+            this.configurationAssignmentsWithinSubscriptions = new ConfigurationAssignmentsWithinSubscriptionsImpl(
+                clientObject.getConfigurationAssignmentsWithinSubscriptions(), this);
         }
         return configurationAssignmentsWithinSubscriptions;
     }
 
     /**
      * Gets the resource collection API of ConfigurationAssignmentsForSubscriptions. It manages ConfigurationAssignment.
-     *
+     * 
      * @return Resource collection API of ConfigurationAssignmentsForSubscriptions.
      */
     public ConfigurationAssignmentsForSubscriptions configurationAssignmentsForSubscriptions() {
         if (this.configurationAssignmentsForSubscriptions == null) {
-            this.configurationAssignmentsForSubscriptions =
-                new ConfigurationAssignmentsForSubscriptionsImpl(
-                    clientObject.getConfigurationAssignmentsForSubscriptions(), this);
+            this.configurationAssignmentsForSubscriptions = new ConfigurationAssignmentsForSubscriptionsImpl(
+                clientObject.getConfigurationAssignmentsForSubscriptions(), this);
         }
         return configurationAssignmentsForSubscriptions;
     }
 
     /**
      * Gets the resource collection API of ConfigurationAssignmentsForResourceGroups.
-     *
+     * 
      * @return Resource collection API of ConfigurationAssignmentsForResourceGroups.
      */
     public ConfigurationAssignmentsForResourceGroups configurationAssignmentsForResourceGroups() {
         if (this.configurationAssignmentsForResourceGroups == null) {
-            this.configurationAssignmentsForResourceGroups =
-                new ConfigurationAssignmentsForResourceGroupsImpl(
-                    clientObject.getConfigurationAssignmentsForResourceGroups(), this);
+            this.configurationAssignmentsForResourceGroups = new ConfigurationAssignmentsForResourceGroupsImpl(
+                clientObject.getConfigurationAssignmentsForResourceGroups(), this);
         }
         return configurationAssignmentsForResourceGroups;
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -434,7 +437,7 @@ public final class MaintenanceManager {
 
     /**
      * Gets the resource collection API of Updates.
-     *
+     * 
      * @return Resource collection API of Updates.
      */
     public Updates updates() {
@@ -447,7 +450,7 @@ public final class MaintenanceManager {
     /**
      * Gets wrapped service client MaintenanceManagementClient providing direct access to the underlying auto-generated
      * API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client MaintenanceManagementClient.
      */
     public MaintenanceManagementClient serviceClient() {

@@ -13,19 +13,19 @@ public final class ManagedIdentityCredentialTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentityCredential model = BinaryData.fromString(
-            "{\"type\":\"rthqe\",\"typeProperties\":{\"resourceId\":\"jqafkmkro\"},\"description\":\"pqrtvaoznqni\",\"annotations\":[\"datazeagmceituuge\",\"datahfpjstlzmbls\",\"datajdeolctae\",\"datafsyrledjc\"],\"\":{\"igdx\":\"databvt\"}}")
+            "{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"aaznuwuwbnngcd\"},\"description\":\"xy\",\"annotations\":[\"datab\",\"datadiqpadhrijxu\",\"datatjcyllpasx\",\"dataqsfpctq\"],\"\":{\"squ\":\"databjjde\"}}")
             .toObject(ManagedIdentityCredential.class);
-        Assertions.assertEquals("pqrtvaoznqni", model.description());
-        Assertions.assertEquals("jqafkmkro", model.resourceId());
+        Assertions.assertEquals("xy", model.description());
+        Assertions.assertEquals("aaznuwuwbnngcd", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentityCredential model = new ManagedIdentityCredential().withDescription("pqrtvaoznqni")
-            .withAnnotations(Arrays.asList("datazeagmceituuge", "datahfpjstlzmbls", "datajdeolctae", "datafsyrledjc"))
-            .withResourceId("jqafkmkro");
+        ManagedIdentityCredential model = new ManagedIdentityCredential().withDescription("xy")
+            .withAnnotations(Arrays.asList("datab", "datadiqpadhrijxu", "datatjcyllpasx", "dataqsfpctq"))
+            .withResourceId("aaznuwuwbnngcd");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityCredential.class);
-        Assertions.assertEquals("pqrtvaoznqni", model.description());
-        Assertions.assertEquals("jqafkmkro", model.resourceId());
+        Assertions.assertEquals("xy", model.description());
+        Assertions.assertEquals("aaznuwuwbnngcd", model.resourceId());
     }
 }

@@ -7,6 +7,7 @@ package com.azure.analytics.synapse.accesscontrol;
 import com.azure.analytics.synapse.accesscontrol.implementation.RoleDefinitionsImpl;
 import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRoleDefinition;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -14,46 +15,52 @@ import com.azure.core.http.rest.Response;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AccessControlClient type. */
+/**
+ * Initializes a new instance of the asynchronous AccessControlClient type.
+ */
 @ServiceClient(builder = AccessControlClientBuilder.class, isAsync = true)
 public final class RoleDefinitionsAsyncClient {
+    @Generated
     private final RoleDefinitionsImpl serviceClient;
 
     /**
-     * Initializes an instance of RoleDefinitions client.
-     *
+     * Initializes an instance of RoleDefinitionsAsyncClient class.
+     * 
      * @param serviceClient the service client implementation.
      */
+    @Generated
     RoleDefinitionsAsyncClient(RoleDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * List role definitions.
-     *
+     * 
      * @param isBuiltIn Is a Synapse Built-In Role or not.
      * @param scope Scope of the Synapse Built-in Role.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
+     * @return a list of Synapse roles available along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<SynapseRoleDefinition>>> listRoleDefinitionsWithResponse(
-            Boolean isBuiltIn, String scope) {
+    public Mono<Response<List<SynapseRoleDefinition>>> listRoleDefinitionsWithResponse(Boolean isBuiltIn,
+        String scope) {
         return this.serviceClient.listRoleDefinitionsWithResponseAsync(isBuiltIn, scope);
     }
 
     /**
      * List role definitions.
-     *
+     * 
      * @param isBuiltIn Is a Synapse Built-In Role or not.
      * @param scope Scope of the Synapse Built-in Role.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
+     * @return a list of Synapse roles available on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<SynapseRoleDefinition>> listRoleDefinitions(Boolean isBuiltIn, String scope) {
         return this.serviceClient.listRoleDefinitionsAsync(isBuiltIn, scope);
@@ -61,11 +68,12 @@ public final class RoleDefinitionsAsyncClient {
 
     /**
      * List role definitions.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
+     * @return a list of Synapse roles available on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<SynapseRoleDefinition>> listRoleDefinitions() {
         return this.serviceClient.listRoleDefinitionsAsync();
@@ -73,13 +81,15 @@ public final class RoleDefinitionsAsyncClient {
 
     /**
      * Get role definition by role definition Id.
-     *
+     * 
      * @param roleDefinitionId Synapse Built-In Role Definition Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by role definition Id.
+     * @return role definition by role definition Id along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynapseRoleDefinition>> getRoleDefinitionByIdWithResponse(String roleDefinitionId) {
         return this.serviceClient.getRoleDefinitionByIdWithResponseAsync(roleDefinitionId);
@@ -87,13 +97,14 @@ public final class RoleDefinitionsAsyncClient {
 
     /**
      * Get role definition by role definition Id.
-     *
+     * 
      * @param roleDefinitionId Synapse Built-In Role Definition Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by role definition Id.
+     * @return role definition by role definition Id on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynapseRoleDefinition> getRoleDefinitionById(String roleDefinitionId) {
         return this.serviceClient.getRoleDefinitionByIdAsync(roleDefinitionId);
@@ -101,11 +112,13 @@ public final class RoleDefinitionsAsyncClient {
 
     /**
      * List rbac scopes.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse rbac scopes available.
+     * @return a list of Synapse rbac scopes available along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> listScopesWithResponse() {
         return this.serviceClient.listScopesWithResponseAsync();
@@ -113,11 +126,12 @@ public final class RoleDefinitionsAsyncClient {
 
     /**
      * List rbac scopes.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse rbac scopes available.
+     * @return a list of Synapse rbac scopes available on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listScopes() {
         return this.serviceClient.listScopesAsync();

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the number of virtual machine instances in each upgrade state.
  */
 @Immutable
-public final class RollingUpgradeProgressInfo {
+public final class RollingUpgradeProgressInfo implements JsonSerializable<RollingUpgradeProgressInfo> {
     /*
      * The number of instances that have been successfully upgraded.
      */
-    @JsonProperty(value = "successfulInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer successfulInstanceCount;
 
     /*
      * The number of instances that have failed to be upgraded successfully.
      */
-    @JsonProperty(value = "failedInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedInstanceCount;
 
     /*
      * The number of instances that are currently being upgraded.
      */
-    @JsonProperty(value = "inProgressInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer inProgressInstanceCount;
 
     /*
      * The number of instances that have not yet begun to be upgraded.
      */
-    @JsonProperty(value = "pendingInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingInstanceCount;
 
     /**
@@ -84,5 +84,49 @@ public final class RollingUpgradeProgressInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RollingUpgradeProgressInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RollingUpgradeProgressInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RollingUpgradeProgressInfo.
+     */
+    public static RollingUpgradeProgressInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RollingUpgradeProgressInfo deserializedRollingUpgradeProgressInfo = new RollingUpgradeProgressInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("successfulInstanceCount".equals(fieldName)) {
+                    deserializedRollingUpgradeProgressInfo.successfulInstanceCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedInstanceCount".equals(fieldName)) {
+                    deserializedRollingUpgradeProgressInfo.failedInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("inProgressInstanceCount".equals(fieldName)) {
+                    deserializedRollingUpgradeProgressInfo.inProgressInstanceCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("pendingInstanceCount".equals(fieldName)) {
+                    deserializedRollingUpgradeProgressInfo.pendingInstanceCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRollingUpgradeProgressInfo;
+        });
     }
 }

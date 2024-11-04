@@ -19,36 +19,35 @@ public final class MongoDbV2CollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbV2CollectionDataset model = BinaryData.fromString(
-            "{\"type\":\"pwwvmbjecfw\",\"typeProperties\":{\"collection\":\"datacuex\"},\"description\":\"ghnkfrwxohlydsn\",\"structure\":\"datapchiypbfhmih\",\"schema\":\"datatqozewbrsrjzgkbr\",\"linkedServiceName\":{\"referenceName\":\"uxboufqnnqbjxgj\",\"parameters\":{\"ri\":\"dataerukbuu\",\"ssybzbe\":\"datawkwkjxlaacedikqe\",\"zyjj\":\"datagbnrommkiqhypwt\",\"omzq\":\"datau\"}},\"parameters\":{\"ialezaydpu\":{\"type\":\"Bool\",\"defaultValue\":\"datawiijcfqiywhxpsba\"},\"smhssfnwh\":{\"type\":\"Object\",\"defaultValue\":\"dataegefxlieggot\"},\"ckn\":{\"type\":\"Array\",\"defaultValue\":\"datahh\"},\"vhzfkdnwy\":{\"type\":\"Array\",\"defaultValue\":\"datacufthdgwuzrono\"}},\"annotations\":[\"datacikgxkk\",\"datazfzdjekeb\"],\"folder\":{\"name\":\"xz\"},\"\":{\"ixirgcjfaiw\":\"datay\",\"akrxi\":\"datalpj\"}}")
+            "{\"type\":\"MongoDbV2Collection\",\"typeProperties\":{\"collection\":\"databav\"},\"description\":\"vxwve\",\"structure\":\"datanlrjcsmwevguyfln\",\"schema\":\"datalr\",\"linkedServiceName\":{\"referenceName\":\"kfzcdetowwezhy\",\"parameters\":{\"csfqbirtybce\":\"datailbwqlq\"}},\"parameters\":{\"el\":{\"type\":\"Array\",\"defaultValue\":\"dataodnjyhzfaxskdv\"},\"qxsorchaz\":{\"type\":\"SecureString\",\"defaultValue\":\"datadpe\"},\"hlbeqvhs\":{\"type\":\"String\",\"defaultValue\":\"dataxz\"},\"gf\":{\"type\":\"Array\",\"defaultValue\":\"datapwxslaj\"}},\"annotations\":[\"dataefhawkmibuyd\"],\"folder\":{\"name\":\"rnicupdyttqmi\"},\"\":{\"xynof\":\"dataplosebmhhtuqm\",\"hnkingiqcdol\":\"dataqobfixngxebihe\",\"jlbsmndafbncuyj\":\"datapgup\"}}")
             .toObject(MongoDbV2CollectionDataset.class);
-        Assertions.assertEquals("ghnkfrwxohlydsn", model.description());
-        Assertions.assertEquals("uxboufqnnqbjxgj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("ialezaydpu").type());
-        Assertions.assertEquals("xz", model.folder().name());
+        Assertions.assertEquals("vxwve", model.description());
+        Assertions.assertEquals("kfzcdetowwezhy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("el").type());
+        Assertions.assertEquals("rnicupdyttqmi", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2CollectionDataset model = new MongoDbV2CollectionDataset().withDescription("ghnkfrwxohlydsn")
-            .withStructure("datapchiypbfhmih")
-            .withSchema("datatqozewbrsrjzgkbr")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("uxboufqnnqbjxgj")
-                .withParameters(mapOf("ri", "dataerukbuu", "ssybzbe", "datawkwkjxlaacedikqe", "zyjj",
-                    "datagbnrommkiqhypwt", "omzq", "datau")))
-            .withParameters(mapOf("ialezaydpu",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datawiijcfqiywhxpsba"),
-                "smhssfnwh",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataegefxlieggot"), "ckn",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datahh"), "vhzfkdnwy",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datacufthdgwuzrono")))
-            .withAnnotations(Arrays.asList("datacikgxkk", "datazfzdjekeb"))
-            .withFolder(new DatasetFolder().withName("xz"))
-            .withCollection("datacuex");
+        MongoDbV2CollectionDataset model = new MongoDbV2CollectionDataset().withDescription("vxwve")
+            .withStructure("datanlrjcsmwevguyfln")
+            .withSchema("datalr")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("kfzcdetowwezhy")
+                .withParameters(mapOf("csfqbirtybce", "datailbwqlq")))
+            .withParameters(mapOf("el",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataodnjyhzfaxskdv"),
+                "qxsorchaz",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datadpe"),
+                "hlbeqvhs", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataxz"),
+                "gf", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datapwxslaj")))
+            .withAnnotations(Arrays.asList("dataefhawkmibuyd"))
+            .withFolder(new DatasetFolder().withName("rnicupdyttqmi"))
+            .withCollection("databav");
         model = BinaryData.fromObject(model).toObject(MongoDbV2CollectionDataset.class);
-        Assertions.assertEquals("ghnkfrwxohlydsn", model.description());
-        Assertions.assertEquals("uxboufqnnqbjxgj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("ialezaydpu").type());
-        Assertions.assertEquals("xz", model.folder().name());
+        Assertions.assertEquals("vxwve", model.description());
+        Assertions.assertEquals("kfzcdetowwezhy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("el").type());
+        Assertions.assertEquals("rnicupdyttqmi", model.folder().name());
     }
 
     // Use "Map.of" if available

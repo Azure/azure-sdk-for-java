@@ -20,7 +20,9 @@ import java.util.List;
 public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
 
     /*
-     * The name of the endpoint. The name must be unique within a Batch Pool, can contain letters, numbers, underscores, periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77 characters.  If any invalid values are provided the request fails with HTTP status code 400.
+     * The name of the endpoint. The name must be unique within a Batch Pool, can contain letters, numbers, underscores,
+     * periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore,
+     * and cannot exceed 77 characters. If any invalid values are provided the request fails with HTTP status code 400.
      */
     @Generated
     private final String name;
@@ -32,25 +34,38 @@ public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
     private final InboundEndpointProtocol protocol;
 
     /*
-     * The port number on the Compute Node. This must be unique within a Batch Pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code 400.
+     * The port number on the Compute Node. This must be unique within a Batch Pool. Acceptable values are between 1 and
+     * 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request
+     * fails with HTTP status code 400.
      */
     @Generated
     private final int backendPort;
 
     /*
-     * The first port number in the range of external ports that will be used to provide inbound access to the backendPort on individual Compute Nodes. Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within a Pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
+     * The first port number in the range of external ports that will be used to provide inbound access to the
+     * backendPort on individual Compute Nodes. Acceptable values range between 1 and 65534 except ports from 50000 to
+     * 55000 which are reserved. All ranges within a Pool must be distinct and cannot overlap. Each range must contain
+     * at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code
+     * 400.
      */
     @Generated
     private final int frontendPortRangeStart;
 
     /*
-     * The last port number in the range of external ports that will be used to provide inbound access to the backendPort on individual Compute Nodes. Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a Pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
+     * The last port number in the range of external ports that will be used to provide inbound access to the
+     * backendPort on individual Compute Nodes. Acceptable values range between 1 and 65534 except ports from 50000 to
+     * 55000 which are reserved by the Batch service. All ranges within a Pool must be distinct and cannot overlap. Each
+     * range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with
+     * HTTP status code 400.
      */
     @Generated
     private final int frontendPortRangeEnd;
 
     /*
-     * A list of network security group rules that will be applied to the endpoint. The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If no network security group rules are specified, a default rule will be created to allow inbound access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status code 400.
+     * A list of network security group rules that will be applied to the endpoint. The maximum number of rules that can
+     * be specified across all the endpoints on a Batch Pool is 25. If no network security group rules are specified, a
+     * default rule will be created to allow inbound access to the specified backendPort. If the maximum number of
+     * network security group rules is exceeded the request fails with HTTP status code 400.
      */
     @Generated
     private List<NetworkSecurityGroupRule> networkSecurityGroupRules;

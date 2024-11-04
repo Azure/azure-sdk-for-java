@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -87,7 +86,6 @@ public final class Month extends ExpandableStringEnum<Month> {
      * @param name a name to look for.
      * @return the corresponding Month.
      */
-    @JsonCreator
     public static Month fromString(String name) {
         return fromString(name, Month.class);
     }

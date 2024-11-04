@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Traffic weight assigned to a revision.
  */
 @Fluent
-public final class TrafficWeight {
+public final class TrafficWeight implements JsonSerializable<TrafficWeight> {
     /*
      * Name of a revision
      */
-    @JsonProperty(value = "revisionName")
     private String revisionName;
 
     /*
      * Traffic weight assigned to a revision
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * Indicates that the traffic weight belongs to a latest stable revision
      */
-    @JsonProperty(value = "latestRevision")
     private Boolean latestRevision;
 
     /**
@@ -102,5 +103,47 @@ public final class TrafficWeight {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("revisionName", this.revisionName);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeBooleanField("latestRevision", this.latestRevision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficWeight from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficWeight if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrafficWeight.
+     */
+    public static TrafficWeight fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficWeight deserializedTrafficWeight = new TrafficWeight();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("revisionName".equals(fieldName)) {
+                    deserializedTrafficWeight.revisionName = reader.getString();
+                } else if ("weight".equals(fieldName)) {
+                    deserializedTrafficWeight.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("latestRevision".equals(fieldName)) {
+                    deserializedTrafficWeight.latestRevision = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficWeight;
+        });
     }
 }

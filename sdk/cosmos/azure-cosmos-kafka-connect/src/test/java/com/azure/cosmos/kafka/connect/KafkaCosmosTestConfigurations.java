@@ -33,6 +33,13 @@ public class KafkaCosmosTestConfigurations {
     public static final String DEFAULT_CONNECT_VALUE_CONVERTER = "org.apache.kafka.connect.json.JsonConverter";
     public static final String DEFAULT_CONNECT_PLUGIN_PATH = "/kafka/connect/cosmos-connector";
     public static final String DEFAULT_CONNECT_REST_ADVERTISED_HOST_NAME = "connect";
+    public static final String DEFAULT_ACR_NAME = "confluentinc";
+
+    public final static String ACR_NAME =
+        properties
+            .getProperty(
+                "COSMOS_ACR_NAME",
+                StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COSMOS_ACR_NAME")), DEFAULT_ACR_NAME));
 
     public final static String MASTER_KEY =
         properties

@@ -7,7 +7,7 @@ module com.azure.maps.search {
     exports com.azure.maps.search;
     exports com.azure.maps.search.models;
 
-    opens com.azure.maps.search.implementation to com.fasterxml.jackson.databind;
-    opens com.azure.maps.search.models to com.fasterxml.jackson.databind;
-    opens com.azure.maps.search.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.maps.search.implementation to com.azure.core;
+    opens com.azure.maps.search.models to com.azure.core;
+    opens com.azure.maps.search.implementation.models to com.azure.core;
 }

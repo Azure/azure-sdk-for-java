@@ -5,76 +5,73 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** itemReference. */
+/**
+ * itemReference.
+ */
 @Fluent
-public final class MicrosoftGraphItemReference {
+public final class MicrosoftGraphItemReference implements JsonSerializable<MicrosoftGraphItemReference> {
     /*
      * Unique identifier of the drive instance that contains the item. Read-only.
      */
-    @JsonProperty(value = "driveId")
     private String driveId;
 
     /*
      * Identifies the type of drive. See [drive][] resource for values.
      */
-    @JsonProperty(value = "driveType")
     private String driveType;
 
     /*
      * Unique identifier of the item in the drive. Read-only.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the item being referenced. Read-only.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Path that can be used to navigate to the item. Read-only.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * A unique identifier for a shared resource that can be accessed via the [Shares][] API.
      */
-    @JsonProperty(value = "shareId")
     private String shareId;
 
     /*
      * sharepointIds
      */
-    @JsonProperty(value = "sharepointIds")
     private MicrosoftGraphSharepointIds sharepointIds;
 
     /*
      * The siteId property.
      */
-    @JsonProperty(value = "siteId")
     private String siteId;
 
     /*
      * itemReference
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphItemReference class. */
+    /**
+     * Creates an instance of MicrosoftGraphItemReference class.
+     */
     public MicrosoftGraphItemReference() {
     }
 
     /**
      * Get the driveId property: Unique identifier of the drive instance that contains the item. Read-only.
-     *
+     * 
      * @return the driveId value.
      */
     public String driveId() {
@@ -83,7 +80,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the driveId property: Unique identifier of the drive instance that contains the item. Read-only.
-     *
+     * 
      * @param driveId the driveId value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -94,7 +91,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the driveType property: Identifies the type of drive. See [drive][] resource for values.
-     *
+     * 
      * @return the driveType value.
      */
     public String driveType() {
@@ -103,7 +100,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the driveType property: Identifies the type of drive. See [drive][] resource for values.
-     *
+     * 
      * @param driveType the driveType value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -114,7 +111,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the id property: Unique identifier of the item in the drive. Read-only.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -123,7 +120,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the id property: Unique identifier of the item in the drive. Read-only.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -134,7 +131,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the name property: The name of the item being referenced. Read-only.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -143,7 +140,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the name property: The name of the item being referenced. Read-only.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -154,7 +151,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the path property: Path that can be used to navigate to the item. Read-only.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -163,7 +160,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the path property: Path that can be used to navigate to the item. Read-only.
-     *
+     * 
      * @param path the path value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -174,7 +171,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the shareId property: A unique identifier for a shared resource that can be accessed via the [Shares][] API.
-     *
+     * 
      * @return the shareId value.
      */
     public String shareId() {
@@ -183,7 +180,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the shareId property: A unique identifier for a shared resource that can be accessed via the [Shares][] API.
-     *
+     * 
      * @param shareId the shareId value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -194,7 +191,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the sharepointIds property: sharepointIds.
-     *
+     * 
      * @return the sharepointIds value.
      */
     public MicrosoftGraphSharepointIds sharepointIds() {
@@ -203,7 +200,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the sharepointIds property: sharepointIds.
-     *
+     * 
      * @param sharepointIds the sharepointIds value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -214,7 +211,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the siteId property: The siteId property.
-     *
+     * 
      * @return the siteId value.
      */
     public String siteId() {
@@ -223,7 +220,7 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Set the siteId property: The siteId property.
-     *
+     * 
      * @param siteId the siteId value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -234,17 +231,16 @@ public final class MicrosoftGraphItemReference {
 
     /**
      * Get the additionalProperties property: itemReference.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: itemReference.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphItemReference object itself.
      */
@@ -253,22 +249,83 @@ public final class MicrosoftGraphItemReference {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sharepointIds() != null) {
             sharepointIds().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("driveId", this.driveId);
+        jsonWriter.writeStringField("driveType", this.driveType);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("shareId", this.shareId);
+        jsonWriter.writeJsonField("sharepointIds", this.sharepointIds);
+        jsonWriter.writeStringField("siteId", this.siteId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphItemReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphItemReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphItemReference.
+     */
+    public static MicrosoftGraphItemReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphItemReference deserializedMicrosoftGraphItemReference = new MicrosoftGraphItemReference();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("driveId".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.driveId = reader.getString();
+                } else if ("driveType".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.driveType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.name = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.path = reader.getString();
+                } else if ("shareId".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.shareId = reader.getString();
+                } else if ("sharepointIds".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.sharepointIds
+                        = MicrosoftGraphSharepointIds.fromJson(reader);
+                } else if ("siteId".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemReference.siteId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphItemReference.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphItemReference;
+        });
     }
 }

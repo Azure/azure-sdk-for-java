@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A key property for the reference data set. A reference data set can have multiple key properties. */
+/**
+ * A key property for the reference data set. A reference data set can have multiple key properties.
+ */
 @Fluent
-public final class ReferenceDataSetKeyProperty {
+public final class ReferenceDataSetKeyProperty implements JsonSerializable<ReferenceDataSetKeyProperty> {
     /*
      * The name of the key property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the key property.
      */
-    @JsonProperty(value = "type")
     private ReferenceDataKeyPropertyType type;
 
-    /** Creates an instance of ReferenceDataSetKeyProperty class. */
+    /**
+     * Creates an instance of ReferenceDataSetKeyProperty class.
+     */
     public ReferenceDataSetKeyProperty() {
     }
 
     /**
      * Get the name property: The name of the key property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ReferenceDataSetKeyProperty {
 
     /**
      * Set the name property: The name of the key property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ReferenceDataSetKeyProperty object itself.
      */
@@ -48,7 +54,7 @@ public final class ReferenceDataSetKeyProperty {
 
     /**
      * Get the type property: The type of the key property.
-     *
+     * 
      * @return the type value.
      */
     public ReferenceDataKeyPropertyType type() {
@@ -57,7 +63,7 @@ public final class ReferenceDataSetKeyProperty {
 
     /**
      * Set the type property: The type of the key property.
-     *
+     * 
      * @param type the type value to set.
      * @return the ReferenceDataSetKeyProperty object itself.
      */
@@ -68,9 +74,49 @@ public final class ReferenceDataSetKeyProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReferenceDataSetKeyProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReferenceDataSetKeyProperty if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReferenceDataSetKeyProperty.
+     */
+    public static ReferenceDataSetKeyProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReferenceDataSetKeyProperty deserializedReferenceDataSetKeyProperty = new ReferenceDataSetKeyProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReferenceDataSetKeyProperty.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReferenceDataSetKeyProperty.type
+                        = ReferenceDataKeyPropertyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReferenceDataSetKeyProperty;
+        });
     }
 }

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/documentation/sdkautomation/SwaggerToSdkConfigSchema.json",
+  "initOptions": {
+    "initScript": {
+      "path": "./eng/automation/init.sh",
+      "envs": [
+        "JAVA_HOME_11_X64"
+      ]
+    }
+  },
+  "generateOptions": {
+    "generateScript": {
+      "path": "./eng/automation/generate.py",
+      "logPrefix": "Java-Sdk-Automation",
+      "stdout": {
+        "showInComment": "(.*\\[ERROR\\]\\s*).*"
+      }
+    }
+  },
+  "artifactOptions": {
+    "installInstructionScript": {
+      "path": "./eng/automation/install_instruction.py"
+    }
+  },
+  "advancedOptions": {
+    "generationCallMode": "one-per-config"
+  }
+}

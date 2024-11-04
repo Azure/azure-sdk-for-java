@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Host quota is active for current subscription. */
+/**
+ * quota enabled.
+ */
 public final class QuotaEnabled extends ExpandableStringEnum<QuotaEnabled> {
-    /** Static value Enabled for QuotaEnabled. */
+    /**
+     * Static value Enabled for QuotaEnabled.
+     */
     public static final QuotaEnabled ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for QuotaEnabled. */
+    /**
+     * Static value Disabled for QuotaEnabled.
+     */
     public static final QuotaEnabled DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of QuotaEnabled value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class QuotaEnabled extends ExpandableStringEnum<QuotaEnabled> {
 
     /**
      * Creates or finds a QuotaEnabled from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QuotaEnabled.
      */
-    @JsonCreator
     public static QuotaEnabled fromString(String name) {
         return fromString(name, QuotaEnabled.class);
     }
 
     /**
      * Gets known QuotaEnabled values.
-     *
+     * 
      * @return known QuotaEnabled values.
      */
     public static Collection<QuotaEnabled> values() {

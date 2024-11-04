@@ -19,7 +19,10 @@ public final class CloudServiceRoleInstancesGetRemoteDesktopFileSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceRole(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceRoleInstances()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceRoleInstances()
             .getRemoteDesktopFileWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "rgcloudService", "aaaa",
                 com.azure.core.util.Context.NONE);
     }

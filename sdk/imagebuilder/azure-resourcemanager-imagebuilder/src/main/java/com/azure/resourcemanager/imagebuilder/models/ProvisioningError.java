@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the error happened when create or update an image template.
  */
 @Fluent
-public final class ProvisioningError {
+public final class ProvisioningError implements JsonSerializable<ProvisioningError> {
     /*
      * Error code of the provisioning failure
      */
-    @JsonProperty(value = "provisioningErrorCode")
     private ProvisioningErrorCode provisioningErrorCode;
 
     /*
      * Verbose error message about the provisioning failure
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -76,5 +78,46 @@ public final class ProvisioningError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningErrorCode",
+            this.provisioningErrorCode == null ? null : this.provisioningErrorCode.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisioningError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisioningError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisioningError.
+     */
+    public static ProvisioningError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisioningError deserializedProvisioningError = new ProvisioningError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningErrorCode".equals(fieldName)) {
+                    deserializedProvisioningError.provisioningErrorCode
+                        = ProvisioningErrorCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedProvisioningError.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisioningError;
+        });
     }
 }

@@ -6,84 +6,60 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.AttachedDatabaseConfiguration;
 import com.azure.resourcemanager.synapse.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.synapse.models.TableLevelSharingProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"location\":\"hihqknlvkmnbzko\",\"properties\":{\"provisioningState\":\"Succeeded\",\"databaseName\":\"ldcpudkhquxsyj\",\"clusterResourceId\":\"fpgvedrobujnjgyb\",\"attachedDatabaseNames\":[\"qx\"],\"defaultPrincipalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"llnjg\",\"pskgrhn\",\"tslgsazuqznghx\",\"kyqzjsdkpvnr\"],\"tablesToExclude\":[\"pffxsfyb\",\"tmveho\",\"flyuvbgtz\"],\"externalTablesToInclude\":[\"weuydyb\",\"airvhpqsv\"],\"externalTablesToExclude\":[\"ogeatrcnqnvn\"],\"materializedViewsToInclude\":[\"fcsjvjnk\"],\"materializedViewsToExclude\":[\"nzs\"]}},\"id\":\"ibaaugicovjtm\",\"name\":\"wr\",\"type\":\"jxyvuo\"}";
 
-        String responseStr =
-            "{\"location\":\"frbzakp\",\"properties\":{\"provisioningState\":\"Succeeded\",\"databaseName\":\"raqp\",\"clusterResourceId\":\"jpsucmxi\",\"attachedDatabaseNames\":[\"qxynqj\",\"satkyvscb\",\"ngcrusxhircpgcvs\",\"kkjbjolpy\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[]}},\"id\":\"vhmlieoi\",\"name\":\"owxxbh\",\"type\":\"psyioqemqwtqszzg\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AttachedDatabaseConfiguration response = manager.kustoPoolAttachedDatabaseConfigurations()
+            .define("ybcelfjnxodnjy")
+            .withExistingKustoPool("qlqac", "fqbir", "zfaxskdvu")
+            .withRegion("umo")
+            .withDatabaseName("qxsorchaz")
+            .withKustoPoolResourceId("qoxzyhlbeqvhskb")
+            .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.REPLACE)
+            .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                .withTablesToInclude(Arrays.asList("uydwiurnicu", "dyttq", "iuvjplosebmhhtuq"))
+                .withTablesToExclude(Arrays.asList("ynoflqobfixngxe", "i"))
+                .withExternalTablesToInclude(Arrays.asList("hnkingiqcdol", "pgup", "jlbsmndafbncuyj"))
+                .withExternalTablesToExclude(Arrays.asList("cnhpplzhcfzxjzi", "ucrln", "wnuwkkfzzetl"))
+                .withMaterializedViewsToInclude(Arrays.asList("yxzlv", "ywj", "rlgqp"))
+                .withMaterializedViewsToExclude(Arrays.asList("zpddarcbcdwhs", "xeba", "adknmstb")))
+            .create();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AttachedDatabaseConfiguration response =
-            manager
-                .kustoPoolAttachedDatabaseConfigurations()
-                .define("kpkpkocmacc")
-                .withExistingKustoPool("lhqvbk", "rbpyhssrl", "bxxo")
-                .withRegion("icyvspeslh")
-                .withDatabaseName("gvrccpu")
-                .withKustoPoolResourceId("ddhgajkrdyd")
-                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
-                .withTableLevelSharingProperties(
-                    new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList())
-                        .withTablesToExclude(Arrays.asList())
-                        .withExternalTablesToInclude(Arrays.asList())
-                        .withExternalTablesToExclude(Arrays.asList())
-                        .withMaterializedViewsToInclude(Arrays.asList())
-                        .withMaterializedViewsToExclude(Arrays.asList()))
-                .create();
-
-        Assertions.assertEquals("frbzakp", response.location());
-        Assertions.assertEquals("raqp", response.databaseName());
-        Assertions.assertEquals("jpsucmxi", response.kustoPoolResourceId());
-        Assertions.assertEquals(DefaultPrincipalsModificationKind.UNION, response.defaultPrincipalsModificationKind());
+        Assertions.assertEquals("hihqknlvkmnbzko", response.location());
+        Assertions.assertEquals("ldcpudkhquxsyj", response.databaseName());
+        Assertions.assertEquals("fpgvedrobujnjgyb", response.kustoPoolResourceId());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.REPLACE,
+            response.defaultPrincipalsModificationKind());
+        Assertions.assertEquals("llnjg", response.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("pffxsfyb", response.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("weuydyb", response.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions.assertEquals("ogeatrcnqnvn",
+            response.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("fcsjvjnk", response.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("nzs", response.tableLevelSharingProperties().materializedViewsToExclude().get(0));
     }
 }

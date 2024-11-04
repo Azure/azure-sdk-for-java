@@ -40,8 +40,8 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
 
     public Response<Certificate> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, Context context) {
-        Response<CertificateInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            connectedEnvironmentName, certificateName, context);
+        Response<CertificateInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
@@ -61,8 +61,8 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String certificateName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String certificateName) {

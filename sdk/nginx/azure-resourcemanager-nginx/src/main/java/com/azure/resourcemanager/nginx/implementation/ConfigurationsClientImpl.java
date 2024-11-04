@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -32,7 +33,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.nginx.fluent.ConfigurationsClient;
+import com.azure.resourcemanager.nginx.fluent.models.AnalysisResultInner;
 import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.models.AnalysisCreate;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationListResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -113,6 +116,17 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("deploymentName") String deploymentName,
             @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}/analyze")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AnalysisResultInner>> analysis(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("deploymentName") String deploymentName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AnalysisCreate body, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -939,6 +953,158 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String configurationName, Context context) {
         deleteAsync(resourceGroupName, deploymentName, configurationName, context).block();
+    }
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @param body The NGINX configuration to analyze.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AnalysisResultInner>> analysisWithResponseAsync(String resourceGroupName,
+        String deploymentName, String configurationName, AnalysisCreate body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.analysis(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, configurationName, this.client.getApiVersion(), body, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @param body The NGINX configuration to analyze.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AnalysisResultInner>> analysisWithResponseAsync(String resourceGroupName,
+        String deploymentName, String configurationName, AnalysisCreate body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.analysis(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, configurationName, this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AnalysisResultInner> analysisAsync(String resourceGroupName, String deploymentName,
+        String configurationName) {
+        final AnalysisCreate body = null;
+        return analysisWithResponseAsync(resourceGroupName, deploymentName, configurationName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @param body The NGINX configuration to analyze.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalysisResultInner> analysisWithResponse(String resourceGroupName, String deploymentName,
+        String configurationName, AnalysisCreate body, Context context) {
+        return analysisWithResponseAsync(resourceGroupName, deploymentName, configurationName, body, context).block();
+    }
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalysisResultInner analysis(String resourceGroupName, String deploymentName, String configurationName) {
+        final AnalysisCreate body = null;
+        return analysisWithResponse(resourceGroupName, deploymentName, configurationName, body, Context.NONE)
+            .getValue();
     }
 
     /**

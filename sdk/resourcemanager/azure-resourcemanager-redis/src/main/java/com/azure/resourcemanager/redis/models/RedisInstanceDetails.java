@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of single instance of redis. */
+/**
+ * Details of single instance of redis.
+ */
 @Immutable
-public final class RedisInstanceDetails {
+public final class RedisInstanceDetails implements JsonSerializable<RedisInstanceDetails> {
     /*
      * Redis instance SSL port.
      */
-    @JsonProperty(value = "sslPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer sslPort;
 
     /*
      * If enableNonSslPort is true, provides Redis instance Non-SSL port.
      */
-    @JsonProperty(value = "nonSslPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nonSslPort;
 
     /*
      * If the Cache uses availability zones, specifies availability zone where this instance is located.
      */
-    @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
     private String zone;
 
     /*
      * If clustering is enabled, the Shard ID of Redis Instance
      */
-    @JsonProperty(value = "shardId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer shardId;
 
     /*
      * Specifies whether the instance is a primary node.
      */
-    @JsonProperty(value = "isMaster", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMaster;
 
     /*
      * Specifies whether the instance is a primary node.
      */
-    @JsonProperty(value = "isPrimary", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPrimary;
 
-    /** Creates an instance of RedisInstanceDetails class. */
+    /**
+     * Creates an instance of RedisInstanceDetails class.
+     */
     public RedisInstanceDetails() {
     }
 
     /**
      * Get the sslPort property: Redis instance SSL port.
-     *
+     * 
      * @return the sslPort value.
      */
     public Integer sslPort() {
@@ -61,7 +63,7 @@ public final class RedisInstanceDetails {
 
     /**
      * Get the nonSslPort property: If enableNonSslPort is true, provides Redis instance Non-SSL port.
-     *
+     * 
      * @return the nonSslPort value.
      */
     public Integer nonSslPort() {
@@ -71,7 +73,7 @@ public final class RedisInstanceDetails {
     /**
      * Get the zone property: If the Cache uses availability zones, specifies availability zone where this instance is
      * located.
-     *
+     * 
      * @return the zone value.
      */
     public String zone() {
@@ -80,7 +82,7 @@ public final class RedisInstanceDetails {
 
     /**
      * Get the shardId property: If clustering is enabled, the Shard ID of Redis Instance.
-     *
+     * 
      * @return the shardId value.
      */
     public Integer shardId() {
@@ -89,7 +91,7 @@ public final class RedisInstanceDetails {
 
     /**
      * Get the isMaster property: Specifies whether the instance is a primary node.
-     *
+     * 
      * @return the isMaster value.
      */
     public Boolean isMaster() {
@@ -98,7 +100,7 @@ public final class RedisInstanceDetails {
 
     /**
      * Get the isPrimary property: Specifies whether the instance is a primary node.
-     *
+     * 
      * @return the isPrimary value.
      */
     public Boolean isPrimary() {
@@ -107,9 +109,54 @@ public final class RedisInstanceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisInstanceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisInstanceDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisInstanceDetails.
+     */
+    public static RedisInstanceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisInstanceDetails deserializedRedisInstanceDetails = new RedisInstanceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sslPort".equals(fieldName)) {
+                    deserializedRedisInstanceDetails.sslPort = reader.getNullable(JsonReader::getInt);
+                } else if ("nonSslPort".equals(fieldName)) {
+                    deserializedRedisInstanceDetails.nonSslPort = reader.getNullable(JsonReader::getInt);
+                } else if ("zone".equals(fieldName)) {
+                    deserializedRedisInstanceDetails.zone = reader.getString();
+                } else if ("shardId".equals(fieldName)) {
+                    deserializedRedisInstanceDetails.shardId = reader.getNullable(JsonReader::getInt);
+                } else if ("isMaster".equals(fieldName)) {
+                    deserializedRedisInstanceDetails.isMaster = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPrimary".equals(fieldName)) {
+                    deserializedRedisInstanceDetails.isPrimary = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisInstanceDetails;
+        });
     }
 }

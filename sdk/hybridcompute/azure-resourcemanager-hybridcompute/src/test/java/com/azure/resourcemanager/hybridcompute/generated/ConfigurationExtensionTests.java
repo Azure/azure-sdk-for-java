@@ -10,8 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.ConfigurationExtension;
 public final class ConfigurationExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationExtension model = BinaryData.fromString("{\"publisher\":\"qawrlyxwj\",\"type\":\"prbnwbxgjvtbv\"}")
-            .toObject(ConfigurationExtension.class);
+        ConfigurationExtension model
+            = BinaryData.fromString("{\"publisher\":\"ayvvtpgvdf\",\"type\":\"otkftutqxlngx\"}")
+                .toObject(ConfigurationExtension.class);
     }
 
     @org.junit.jupiter.api.Test

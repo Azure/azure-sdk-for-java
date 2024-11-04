@@ -43,7 +43,8 @@ public final class RelationshipAsyncClient {
      * Create a new relationship between entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -69,11 +70,13 @@ public final class RelationshipAsyncClient {
      *     updatedBy: String (Optional)
      *     version: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -99,9 +102,10 @@ public final class RelationshipAsyncClient {
      *     updatedBy: String (Optional)
      *     version: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -111,15 +115,16 @@ public final class RelationshipAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponseAsync(atlasRelationship, requestOptions);
+    public Mono<Response<BinaryData>> createWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Update an existing relationship between entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -145,11 +150,13 @@ public final class RelationshipAsyncClient {
      *     updatedBy: String (Optional)
      *     version: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -175,9 +182,10 @@ public final class RelationshipAsyncClient {
      *     updatedBy: String (Optional)
      *     version: Long (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -187,8 +195,8 @@ public final class RelationshipAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponseAsync(atlasRelationship, requestOptions);
+    public Mono<Response<BinaryData>> updateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.updateWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -202,7 +210,8 @@ public final class RelationshipAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -284,7 +293,8 @@ public final class RelationshipAsyncClient {
      *         version: Long (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -321,7 +331,7 @@ public final class RelationshipAsyncClient {
     /**
      * Create a new relationship between entities.
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -332,17 +342,17 @@ public final class RelationshipAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasRelationship> create(AtlasRelationship atlasRelationship) {
+    public Mono<AtlasRelationship> create(AtlasRelationship body) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createWithResponse(BinaryData.fromObject(atlasRelationship), requestOptions).flatMap(FluxUtil::toMono)
+        return createWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasRelationship.class));
     }
 
     /**
      * Update an existing relationship between entities.
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -353,10 +363,10 @@ public final class RelationshipAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasRelationship> update(AtlasRelationship atlasRelationship) {
+    public Mono<AtlasRelationship> update(AtlasRelationship body) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateWithResponse(BinaryData.fromObject(atlasRelationship), requestOptions).flatMap(FluxUtil::toMono)
+        return updateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasRelationship.class));
     }
 

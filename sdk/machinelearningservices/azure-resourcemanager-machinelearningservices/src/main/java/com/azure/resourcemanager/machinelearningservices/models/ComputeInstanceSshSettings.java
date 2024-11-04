@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Specifies policy and settings for SSH access. */
 @Fluent
 public final class ComputeInstanceSshSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceSshSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstanceSshSettings.class);
 
     /*
      * State of the public SSH port. Possible values are: Disabled - Indicates

@@ -11,6 +11,9 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  * Samples for Assets Update.
  */
 public final class AssetsUpdateSamples {
+    /*
+     * x-ms-original-file: 2023-11-01-preview/Update_Asset.json
+     */
     /**
      * Sample code: Update_Asset.
      * 

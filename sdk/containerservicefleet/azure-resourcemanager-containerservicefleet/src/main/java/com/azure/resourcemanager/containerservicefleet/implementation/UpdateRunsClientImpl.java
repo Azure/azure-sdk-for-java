@@ -635,8 +635,10 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
         String fleetName, String updateRunName, UpdateRunInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch,
-            ifNoneMatch, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -658,7 +660,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     private Mono<UpdateRunInner> createOrUpdateAsync(String resourceGroupName, String fleetName, String updateRunName,
         UpdateRunInner resource, String ifMatch, String ifNoneMatch) {
         return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -680,7 +683,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1902,9 +1906,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1931,9 +1933,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

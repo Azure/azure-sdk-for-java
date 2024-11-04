@@ -5,29 +5,35 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version:
- * 2023-03-01.
+ * Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01.
  */
 @Fluent
-public final class SecurityPostureReference {
+public final class SecurityPostureReference implements JsonSerializable<SecurityPostureReference> {
     /*
      * The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{
-     * major.*}|latest
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|
+     * latest
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * List of virtual machine extensions to exclude when applying the Security Posture.
+     * The list of virtual machine extension names to exclude when applying the security posture.
      */
-    @JsonProperty(value = "excludeExtensions")
-    private List<VirtualMachineExtensionInner> excludeExtensions;
+    private List<String> excludeExtensions;
+
+    /*
+     * Whether the security posture can be overridden by the user.
+     */
+    private Boolean isOverridable;
 
     /**
      * Creates an instance of SecurityPostureReference class.
@@ -37,7 +43,7 @@ public final class SecurityPostureReference {
 
     /**
      * Get the id property: The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest.
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest.
      * 
      * @return the id value.
      */
@@ -47,7 +53,7 @@ public final class SecurityPostureReference {
 
     /**
      * Set the id property: The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest.
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest.
      * 
      * @param id the id value to set.
      * @return the SecurityPostureReference object itself.
@@ -58,24 +64,44 @@ public final class SecurityPostureReference {
     }
 
     /**
-     * Get the excludeExtensions property: List of virtual machine extensions to exclude when applying the Security
-     * Posture.
+     * Get the excludeExtensions property: The list of virtual machine extension names to exclude when applying the
+     * security posture.
      * 
      * @return the excludeExtensions value.
      */
-    public List<VirtualMachineExtensionInner> excludeExtensions() {
+    public List<String> excludeExtensions() {
         return this.excludeExtensions;
     }
 
     /**
-     * Set the excludeExtensions property: List of virtual machine extensions to exclude when applying the Security
-     * Posture.
+     * Set the excludeExtensions property: The list of virtual machine extension names to exclude when applying the
+     * security posture.
      * 
      * @param excludeExtensions the excludeExtensions value to set.
      * @return the SecurityPostureReference object itself.
      */
-    public SecurityPostureReference withExcludeExtensions(List<VirtualMachineExtensionInner> excludeExtensions) {
+    public SecurityPostureReference withExcludeExtensions(List<String> excludeExtensions) {
         this.excludeExtensions = excludeExtensions;
+        return this;
+    }
+
+    /**
+     * Get the isOverridable property: Whether the security posture can be overridden by the user.
+     * 
+     * @return the isOverridable value.
+     */
+    public Boolean isOverridable() {
+        return this.isOverridable;
+    }
+
+    /**
+     * Set the isOverridable property: Whether the security posture can be overridden by the user.
+     * 
+     * @param isOverridable the isOverridable value to set.
+     * @return the SecurityPostureReference object itself.
+     */
+    public SecurityPostureReference withIsOverridable(Boolean isOverridable) {
+        this.isOverridable = isOverridable;
         return this;
     }
 
@@ -85,8 +111,56 @@ public final class SecurityPostureReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (excludeExtensions() != null) {
-            excludeExtensions().forEach(e -> e.validate());
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SecurityPostureReference"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPostureReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("excludeExtensions", this.excludeExtensions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isOverridable", this.isOverridable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPostureReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPostureReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityPostureReference.
+     */
+    public static SecurityPostureReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPostureReference deserializedSecurityPostureReference = new SecurityPostureReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityPostureReference.id = reader.getString();
+                } else if ("excludeExtensions".equals(fieldName)) {
+                    List<String> excludeExtensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityPostureReference.excludeExtensions = excludeExtensions;
+                } else if ("isOverridable".equals(fieldName)) {
+                    deserializedSecurityPostureReference.isOverridable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPostureReference;
+        });
     }
 }

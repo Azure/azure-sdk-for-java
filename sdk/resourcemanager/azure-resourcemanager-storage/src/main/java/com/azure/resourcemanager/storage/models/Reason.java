@@ -4,21 +4,24 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable
  * is false.
  */
 public enum Reason {
-    /** Enum value AccountNameInvalid. */
+    /**
+     * Enum value AccountNameInvalid.
+     */
     ACCOUNT_NAME_INVALID("AccountNameInvalid"),
 
-    /** Enum value AlreadyExists. */
+    /**
+     * Enum value AlreadyExists.
+     */
     ALREADY_EXISTS("AlreadyExists");
 
-    /** The actual serialized value for a Reason instance. */
+    /**
+     * The actual serialized value for a Reason instance.
+     */
     private final String value;
 
     Reason(String value) {
@@ -27,11 +30,10 @@ public enum Reason {
 
     /**
      * Parses a serialized value to a Reason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Reason object, or null if unable to parse.
      */
-    @JsonCreator
     public static Reason fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +47,9 @@ public enum Reason {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

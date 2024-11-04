@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SAS URIs of the console screenshot and serial log blobs.
  */
 @Immutable
-public final class RetrieveBootDiagnosticsDataResultInner {
+public final class RetrieveBootDiagnosticsDataResultInner
+    implements JsonSerializable<RetrieveBootDiagnosticsDataResultInner> {
     /*
      * The console screenshot blob URI
      */
-    @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /*
      * The serial console log blob URI.
      */
-    @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
     /**
@@ -54,5 +57,43 @@ public final class RetrieveBootDiagnosticsDataResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetrieveBootDiagnosticsDataResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetrieveBootDiagnosticsDataResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RetrieveBootDiagnosticsDataResultInner.
+     */
+    public static RetrieveBootDiagnosticsDataResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetrieveBootDiagnosticsDataResultInner deserializedRetrieveBootDiagnosticsDataResultInner
+                = new RetrieveBootDiagnosticsDataResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("consoleScreenshotBlobUri".equals(fieldName)) {
+                    deserializedRetrieveBootDiagnosticsDataResultInner.consoleScreenshotBlobUri = reader.getString();
+                } else if ("serialConsoleLogBlobUri".equals(fieldName)) {
+                    deserializedRetrieveBootDiagnosticsDataResultInner.serialConsoleLogBlobUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetrieveBootDiagnosticsDataResultInner;
+        });
     }
 }

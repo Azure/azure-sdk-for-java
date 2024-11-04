@@ -9,7 +9,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.VectorQueryKind;
 import java.io.IOException;
 
 /**
@@ -20,6 +19,11 @@ import java.io.IOException;
 public final class VectorizableImageUrlQuery extends VectorQuery {
 
     /*
+     * The kind of vector query being performed.
+     */
+    private VectorQueryKind kind = VectorQueryKind.IMAGE_URL;
+
+    /*
      * The URL of an image to be vectorized to perform a vector search query.
      */
     private String url;
@@ -28,6 +32,16 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      * Creates an instance of VectorizableImageUrlQuery class.
      */
     public VectorizableImageUrlQuery() {
+    }
+
+    /**
+     * Get the kind property: The kind of vector query being performed.
+     *
+     * @return the kind value.
+     */
+    @Override
+    public VectorQueryKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -104,17 +118,29 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VectorizableImageUrlQuery setFilterOverride(String filterOverride) {
+        super.setFilterOverride(filterOverride);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind",
-            VectorQueryKind.IMAGE_URL == null ? null : VectorQueryKind.IMAGE_URL.toString());
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
+        jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("url", this.url);
         return jsonWriter.writeEndObject();
     }
@@ -125,7 +151,6 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorizableImageUrlQuery if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorizableImageUrlQuery.
      */
     public static VectorizableImageUrlQuery fromJson(JsonReader jsonReader) throws IOException {
@@ -134,14 +159,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    String kind = reader.getString();
-                    if (!"imageUrl".equals(kind)) {
-                        throw new IllegalStateException(
-                            "'kind' was expected to be non-null and equal to 'imageUrl'. The found 'kind' was '" + kind
-                                + "'.");
-                    }
-                } else if ("k".equals(fieldName)) {
+                if ("k".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery
                         .setKNearestNeighborsCount(reader.getNullable(JsonReader::getInt));
                 } else if ("fields".equals(fieldName)) {
@@ -154,6 +172,10 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
                     deserializedVectorizableImageUrlQuery.setWeight(reader.getNullable(JsonReader::getFloat));
                 } else if ("threshold".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.setThreshold(VectorThreshold.fromJson(reader));
+                } else if ("filterOverride".equals(fieldName)) {
+                    deserializedVectorizableImageUrlQuery.setFilterOverride(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedVectorizableImageUrlQuery.kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("url".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.url = reader.getString();
                 } else {

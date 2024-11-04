@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found license fields from a local file input stream of a license identity
- * document. See fields found on license <a href=https://aka.ms/documentintelligence/iddocumentfields>here</a>
+ * document. See fields found on license <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocumentsAsync {
 
@@ -43,8 +43,9 @@ public class AnalyzeIdentityDocumentsAsync {
             + "sample-forms/identityDocuments/license.png");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
+            null,
             null,
             null,
             null,
@@ -61,7 +62,7 @@ public class AnalyzeIdentityDocumentsAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         identityDocumentPollerResult.subscribe(idDocumentResults -> {
             for (int i = 0; i < idDocumentResults.getDocuments().size(); i++) {

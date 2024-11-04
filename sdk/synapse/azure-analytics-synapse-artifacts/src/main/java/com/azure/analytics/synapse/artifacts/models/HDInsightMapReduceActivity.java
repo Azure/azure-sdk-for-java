@@ -5,73 +5,78 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * HDInsight MapReduce activity type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HDInsightMapReduce")
-@JsonFlatten
 @Fluent
 public class HDInsightMapReduceActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "HDInsightMapReduce";
+
+    /*
      * Storage linked service references.
      */
-    @JsonProperty(value = "typeProperties.storageLinkedServices")
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
-    @JsonProperty(value = "typeProperties.arguments")
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
-    @JsonProperty(value = "typeProperties.getDebugInfo")
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Class name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.className", required = true)
     private Object className;
 
     /*
      * Jar path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.jarFilePath", required = true)
     private Object jarFilePath;
 
     /*
      * Jar linked service reference.
      */
-    @JsonProperty(value = "typeProperties.jarLinkedService")
     private LinkedServiceReference jarLinkedService;
 
     /*
      * Jar libs.
      */
-    @JsonProperty(value = "typeProperties.jarLibs")
     private List<Object> jarLibs;
 
     /*
      * Allows user to specify defines for the MapReduce job request.
      */
-    @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
 
     /**
      * Creates an instance of HDInsightMapReduceActivity class.
      */
     public HDInsightMapReduceActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -304,5 +309,137 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     public HDInsightMapReduceActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (storageLinkedServices != null
+            || arguments != null
+            || getDebugInfo != null
+            || className != null
+            || jarFilePath != null
+            || jarLinkedService != null
+            || jarLibs != null
+            || defines != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeStringField("getDebugInfo",
+                this.getDebugInfo == null ? null : this.getDebugInfo.toString());
+            jsonWriter.writeUntypedField("className", this.className);
+            jsonWriter.writeUntypedField("jarFilePath", this.jarFilePath);
+            jsonWriter.writeJsonField("jarLinkedService", this.jarLinkedService);
+            jsonWriter.writeArrayField("jarLibs", this.jarLibs, (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightMapReduceActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightMapReduceActivity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightMapReduceActivity.
+     */
+    public static HDInsightMapReduceActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightMapReduceActivity deserializedHDInsightMapReduceActivity = new HDInsightMapReduceActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedHDInsightMapReduceActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedHDInsightMapReduceActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storageLinkedServices".equals(fieldName)) {
+                            List<LinkedServiceReference> storageLinkedServices
+                                = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                            deserializedHDInsightMapReduceActivity.storageLinkedServices = storageLinkedServices;
+                        } else if ("arguments".equals(fieldName)) {
+                            List<Object> arguments = reader.readArray(reader1 -> reader1.readUntyped());
+                            deserializedHDInsightMapReduceActivity.arguments = arguments;
+                        } else if ("getDebugInfo".equals(fieldName)) {
+                            deserializedHDInsightMapReduceActivity.getDebugInfo
+                                = HDInsightActivityDebugInfoOption.fromString(reader.getString());
+                        } else if ("className".equals(fieldName)) {
+                            deserializedHDInsightMapReduceActivity.className = reader.readUntyped();
+                        } else if ("jarFilePath".equals(fieldName)) {
+                            deserializedHDInsightMapReduceActivity.jarFilePath = reader.readUntyped();
+                        } else if ("jarLinkedService".equals(fieldName)) {
+                            deserializedHDInsightMapReduceActivity.jarLinkedService
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("jarLibs".equals(fieldName)) {
+                            List<Object> jarLibs = reader.readArray(reader1 -> reader1.readUntyped());
+                            deserializedHDInsightMapReduceActivity.jarLibs = jarLibs;
+                        } else if ("defines".equals(fieldName)) {
+                            Map<String, Object> defines = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedHDInsightMapReduceActivity.defines = defines;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightMapReduceActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightMapReduceActivity;
+        });
     }
 }

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The location type. */
+/**
+ * The location type.
+ */
 public enum LocationType {
-    /** Enum value Region. */
+    /**
+     * Enum value Region.
+     */
     REGION("Region"),
 
-    /** Enum value EdgeZone. */
+    /**
+     * Enum value EdgeZone.
+     */
     EDGE_ZONE("EdgeZone");
 
-    /** The actual serialized value for a LocationType instance. */
+    /**
+     * The actual serialized value for a LocationType instance.
+     */
     private final String value;
 
     LocationType(String value) {
@@ -24,11 +29,10 @@ public enum LocationType {
 
     /**
      * Parses a serialized value to a LocationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LocationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static LocationType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum LocationType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

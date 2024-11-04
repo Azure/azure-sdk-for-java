@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -77,7 +76,6 @@ public final class RequestBodyOperator extends ExpandableStringEnum<RequestBodyO
      * @param name a name to look for.
      * @return the corresponding RequestBodyOperator.
      */
-    @JsonCreator
     public static RequestBodyOperator fromString(String name) {
         return fromString(name, RequestBodyOperator.class);
     }

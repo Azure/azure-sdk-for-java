@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The account endpoints. */
+/**
+ * The account endpoints.
+ */
 @Immutable
-public class AccountEndpoints {
+public class AccountEndpoints implements JsonSerializable<AccountEndpoints> {
     /*
      * Gets the catalog endpoint.
      */
-    @JsonProperty(value = "catalog", access = JsonProperty.Access.WRITE_ONLY)
     private String catalog;
 
     /*
      * Gets the guardian endpoint.
      */
-    @JsonProperty(value = "guardian", access = JsonProperty.Access.WRITE_ONLY)
     private String guardian;
 
     /*
      * Gets the scan endpoint.
      */
-    @JsonProperty(value = "scan", access = JsonProperty.Access.WRITE_ONLY)
     private String scan;
 
-    /** Creates an instance of AccountEndpoints class. */
+    /**
+     * Creates an instance of AccountEndpoints class.
+     */
     public AccountEndpoints() {
     }
 
     /**
      * Get the catalog property: Gets the catalog endpoint.
-     *
+     * 
      * @return the catalog value.
      */
     public String catalog() {
@@ -42,8 +47,19 @@ public class AccountEndpoints {
     }
 
     /**
+     * Set the catalog property: Gets the catalog endpoint.
+     * 
+     * @param catalog the catalog value to set.
+     * @return the AccountEndpoints object itself.
+     */
+    AccountEndpoints withCatalog(String catalog) {
+        this.catalog = catalog;
+        return this;
+    }
+
+    /**
      * Get the guardian property: Gets the guardian endpoint.
-     *
+     * 
      * @return the guardian value.
      */
     public String guardian() {
@@ -51,8 +67,19 @@ public class AccountEndpoints {
     }
 
     /**
+     * Set the guardian property: Gets the guardian endpoint.
+     * 
+     * @param guardian the guardian value to set.
+     * @return the AccountEndpoints object itself.
+     */
+    AccountEndpoints withGuardian(String guardian) {
+        this.guardian = guardian;
+        return this;
+    }
+
+    /**
      * Get the scan property: Gets the scan endpoint.
-     *
+     * 
      * @return the scan value.
      */
     public String scan() {
@@ -60,10 +87,60 @@ public class AccountEndpoints {
     }
 
     /**
+     * Set the scan property: Gets the scan endpoint.
+     * 
+     * @param scan the scan value to set.
+     * @return the AccountEndpoints object itself.
+     */
+    AccountEndpoints withScan(String scan) {
+        this.scan = scan;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountEndpoints if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountEndpoints.
+     */
+    public static AccountEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountEndpoints deserializedAccountEndpoints = new AccountEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("catalog".equals(fieldName)) {
+                    deserializedAccountEndpoints.catalog = reader.getString();
+                } else if ("guardian".equals(fieldName)) {
+                    deserializedAccountEndpoints.guardian = reader.getString();
+                } else if ("scan".equals(fieldName)) {
+                    deserializedAccountEndpoints.scan = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountEndpoints;
+        });
     }
 }

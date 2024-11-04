@@ -6,46 +6,52 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.resourcemanager.avs.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
-     * Gets the name property: Name of the operation being performed on this object.
-     *
+     * Gets the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
+     * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the display property: Contains the localized display information for this operation.
-     *
-     * @return the display value.
-     */
-    OperationDisplay display();
-
-    /**
-     * Gets the isDataAction property: Gets or sets a value indicating whether the operation is a data action or not.
-     *
+     * Gets the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
-     * Gets the origin property: Origin of the operation.
-     *
-     * @return the origin value.
+     * Gets the display property: Localized display information for this particular operation.
+     * 
+     * @return the display value.
      */
-    String origin();
+    OperationDisplay display();
 
     /**
-     * Gets the properties property: Properties of the operation.
-     *
-     * @return the properties value.
+     * Gets the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     * 
+     * @return the origin value.
      */
-    OperationProperties properties();
+    Origin origin();
+
+    /**
+     * Gets the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     * 
+     * @return the actionType value.
+     */
+    ActionType actionType();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

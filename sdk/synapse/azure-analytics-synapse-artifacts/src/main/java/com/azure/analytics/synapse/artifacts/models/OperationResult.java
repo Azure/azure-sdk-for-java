@@ -5,44 +5,41 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Operation status for the operation.
  */
-@JsonFlatten
 @Fluent
-public class OperationResult {
+public class OperationResult implements JsonSerializable<OperationResult> {
     /*
      * Operation status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Error code.
      */
-    @JsonProperty(value = "error.code")
     private String code;
 
     /*
      * Error message.
      */
-    @JsonProperty(value = "error.message")
     private String message;
 
     /*
      * Property name/path in request associated with error.
      */
-    @JsonProperty(value = "error.target")
     private String target;
 
     /*
      * Array with additional error details.
      */
-    @JsonProperty(value = "error.details")
     private List<CloudError> details;
 
     /**
@@ -138,5 +135,66 @@ public class OperationResult {
     public OperationResult setDetails(List<CloudError> details) {
         this.details = details;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (code != null || message != null || target != null || details != null) {
+            jsonWriter.writeStartObject("error");
+            jsonWriter.writeStringField("code", this.code);
+            jsonWriter.writeStringField("message", this.message);
+            jsonWriter.writeStringField("target", this.target);
+            jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResult.
+     */
+    public static OperationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResult deserializedOperationResult = new OperationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedOperationResult.status = reader.getString();
+                } else if ("error".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("code".equals(fieldName)) {
+                            deserializedOperationResult.code = reader.getString();
+                        } else if ("message".equals(fieldName)) {
+                            deserializedOperationResult.message = reader.getString();
+                        } else if ("target".equals(fieldName)) {
+                            deserializedOperationResult.target = reader.getString();
+                        } else if ("details".equals(fieldName)) {
+                            List<CloudError> details = reader.readArray(reader1 -> CloudError.fromJson(reader1));
+                            deserializedOperationResult.details = details;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResult;
+        });
     }
 }

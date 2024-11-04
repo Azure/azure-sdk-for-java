@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class AttachedDataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * AttachedDataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update attached data network tags.
@@ -24,8 +22,10 @@ public final class AttachedDataNetworksUpdateTagsSamples {
      */
     public static void
         updateAttachedDataNetworkTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        AttachedDataNetwork resource = manager.attachedDataNetworks().getWithResponse("rg1", "TestPacketCoreCP",
-            "TestPacketCoreDP", "TestAttachedDataNetwork", com.azure.core.util.Context.NONE).getValue();
+        AttachedDataNetwork resource = manager.attachedDataNetworks()
+            .getWithResponse("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

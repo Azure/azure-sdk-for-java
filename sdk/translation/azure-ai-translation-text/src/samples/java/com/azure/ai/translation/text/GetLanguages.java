@@ -4,7 +4,7 @@
 package com.azure.ai.translation.text;
 
 import java.util.Map;
-import com.azure.ai.translation.text.models.GetLanguagesResult;
+import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.SourceDictionaryLanguage;
 import com.azure.ai.translation.text.models.TranslationLanguage;
 import com.azure.ai.translation.text.models.TransliterationLanguage;
@@ -24,7 +24,7 @@ public class GetLanguages {
             .buildClient();
 
         // BEGIN: getTextTranslationLanguages
-        GetLanguagesResult languages = client.getLanguages();
+        GetSupportedLanguagesResult languages = client.getSupportedLanguages();
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");

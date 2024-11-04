@@ -21,7 +21,7 @@ public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"nodeName\":\"yyfthsafv\",\"machineName\":\"o\",\"hostServiceUri\":\"inmc\",\"status\":\"NeedRegistration\",\"capabilities\":{\"u\":\"ydy\",\"fprfhpcy\":\"kjzp\",\"uzls\":\"ajjyournxq\",\"ebmuv\":\"mbsghzund\"},\"versionStatus\":\"kdea\",\"version\":\"xdwwraimjkaz\",\"registerTime\":\"2021-03-08T20:15:30Z\",\"lastConnectTime\":\"2021-03-04T00:33:43Z\",\"expiryTime\":\"2021-03-25T09:09:50Z\",\"lastStartTime\":\"2021-03-14T23:09:26Z\",\"lastStopTime\":\"2021-01-08T06:02:34Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-09-14T20:41:14Z\",\"lastEndUpdateTime\":\"2021-08-06T06:53:48Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1313337532,\"maxConcurrentJobs\":1925477381,\"\":{\"nwjowgdw\":\"datah\"}}";
+            = "{\"nodeName\":\"gwbavlgovgthpp\",\"machineName\":\"dn\",\"hostServiceUri\":\"a\",\"status\":\"InitializeFailed\",\"capabilities\":{\"cgap\":\"hvimstbyaklfvcir\",\"imnfvbfj\":\"yof\",\"yjdwdaocwqkxwoq\":\"vspxxbfqlfkwjiui\",\"nhrencxoktsdgnh\":\"ffnojiqtpbfc\"},\"versionStatus\":\"qcc\",\"version\":\"xxytmx\",\"registerTime\":\"2021-08-19T22:14:19Z\",\"lastConnectTime\":\"2021-08-26T08:29:30Z\",\"expiryTime\":\"2021-09-28T16:44:54Z\",\"lastStartTime\":\"2021-08-03T18:43:13Z\",\"lastStopTime\":\"2021-07-04T02:54:39Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-06-02T05:47:08Z\",\"lastEndUpdateTime\":\"2021-05-15T14:01:31Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":252084786,\"maxConcurrentJobs\":1910937514,\"\":{\"urjynezpewjxc\":\"datartnksl\",\"gi\":\"datavwnptmriqea\",\"vwhjf\":\"dataszgstqsrtz\",\"h\":\"dataoipstvcqhzejbro\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .updateWithResponse("wlzvxjxvspubf", "elqzcptsbiruy", "iwsfvanpzabbfd", "issdelyecjmfaf",
-                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1818752360),
+            .updateWithResponse("zrs", "sxncykfq", "bwes", "gqctrvfpg",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(54879885),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

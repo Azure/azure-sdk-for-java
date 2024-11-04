@@ -6,40 +6,57 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.KustoPoolProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Class representing an update to a Kusto kusto pool. */
+/**
+ * Class representing an update to a Kusto kusto pool.
+ */
 @Fluent
 public final class KustoPoolUpdate extends ProxyResource {
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The SKU of the kusto pool.
      */
-    @JsonProperty(value = "sku")
     private AzureSku sku;
 
     /*
      * The kusto pool properties.
      */
-    @JsonProperty(value = "properties")
     private KustoPoolProperties innerProperties;
 
-    /** Creates an instance of KustoPoolUpdate class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of KustoPoolUpdate class.
+     */
     public KustoPoolUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -48,7 +65,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the KustoPoolUpdate object itself.
      */
@@ -59,7 +76,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the sku property: The SKU of the kusto pool.
-     *
+     * 
      * @return the sku value.
      */
     public AzureSku sku() {
@@ -68,7 +85,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Set the sku property: The SKU of the kusto pool.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the KustoPoolUpdate object itself.
      */
@@ -79,7 +96,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the innerProperties property: The kusto pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private KustoPoolProperties innerProperties() {
@@ -87,8 +104,38 @@ public final class KustoPoolUpdate extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the state property: The state of the resource.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -97,7 +144,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -106,7 +153,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the uri property: The Kusto Pool URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -115,7 +162,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the dataIngestionUri property: The Kusto Pool data ingestion URI.
-     *
+     * 
      * @return the dataIngestionUri value.
      */
     public String dataIngestionUri() {
@@ -124,7 +171,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the stateReason property: The reason for the Kusto Pool's current state.
-     *
+     * 
      * @return the stateReason value.
      */
     public String stateReason() {
@@ -133,7 +180,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @return the optimizedAutoscale value.
      */
     public OptimizedAutoscale optimizedAutoscale() {
@@ -142,7 +189,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Set the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @param optimizedAutoscale the optimizedAutoscale value to set.
      * @return the KustoPoolUpdate object itself.
      */
@@ -156,7 +203,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @return the enableStreamingIngest value.
      */
     public Boolean enableStreamingIngest() {
@@ -165,7 +212,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Set the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @param enableStreamingIngest the enableStreamingIngest value to set.
      * @return the KustoPoolUpdate object itself.
      */
@@ -179,7 +226,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @return the enablePurge value.
      */
     public Boolean enablePurge() {
@@ -188,7 +235,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Set the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @param enablePurge the enablePurge value to set.
      * @return the KustoPoolUpdate object itself.
      */
@@ -202,7 +249,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the languageExtensions property: List of the Kusto Pool's language extensions.
-     *
+     * 
      * @return the languageExtensions value.
      */
     public LanguageExtensionsList languageExtensions() {
@@ -211,7 +258,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Get the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @return the workspaceUid value.
      */
     public String workspaceUid() {
@@ -220,7 +267,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Set the workspaceUid property: The workspace unique identifier.
-     *
+     * 
      * @param workspaceUid the workspaceUid value to set.
      * @return the KustoPoolUpdate object itself.
      */
@@ -234,7 +281,7 @@ public final class KustoPoolUpdate extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -244,5 +291,55 @@ public final class KustoPoolUpdate extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KustoPoolUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KustoPoolUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KustoPoolUpdate.
+     */
+    public static KustoPoolUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KustoPoolUpdate deserializedKustoPoolUpdate = new KustoPoolUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKustoPoolUpdate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKustoPoolUpdate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKustoPoolUpdate.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKustoPoolUpdate.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedKustoPoolUpdate.sku = AzureSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedKustoPoolUpdate.innerProperties = KustoPoolProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKustoPoolUpdate;
+        });
     }
 }

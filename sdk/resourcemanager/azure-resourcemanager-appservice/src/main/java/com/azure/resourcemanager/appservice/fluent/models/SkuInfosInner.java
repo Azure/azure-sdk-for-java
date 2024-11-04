@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.GlobalCsmSkuDescription;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of SKU information.
  */
 @Fluent
-public final class SkuInfosInner {
+public final class SkuInfosInner implements JsonSerializable<SkuInfosInner> {
     /*
      * Resource type that this SKU applies to.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * List of SKUs the subscription is able to use.
      */
-    @JsonProperty(value = "skus")
     private List<GlobalCsmSkuDescription> skus;
 
     /**
@@ -81,5 +83,46 @@ public final class SkuInfosInner {
         if (skus() != null) {
             skus().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeArrayField("skus", this.skus, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuInfosInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuInfosInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuInfosInner.
+     */
+    public static SkuInfosInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuInfosInner deserializedSkuInfosInner = new SkuInfosInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedSkuInfosInner.resourceType = reader.getString();
+                } else if ("skus".equals(fieldName)) {
+                    List<GlobalCsmSkuDescription> skus
+                        = reader.readArray(reader1 -> GlobalCsmSkuDescription.fromJson(reader1));
+                    deserializedSkuInfosInner.skus = skus;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuInfosInner;
+        });
     }
 }

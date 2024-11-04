@@ -6,20 +6,17 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.ControlFamily;
-import org.junit.jupiter.api.Test;
 
 public final class ControlFamilyTests {
-    @Test
-    public void testDeserialize() {
-        ControlFamily model =
-            BinaryData
-                .fromString(
-                    "{\"familyName\":\"zzvdudgwds\",\"familyType\":\"Manual\",\"familyStatus\":\"Unhealthy\",\"controls\":[{\"controlId\":\"ynpwlbj\",\"controlShortName\":\"gacftadeh\",\"controlFullName\":\"ltyfsop\",\"controlType\":\"Manual\",\"controlDescription\":\"esnzwde\",\"controlDescriptionHyperLink\":\"avo\",\"controlStatus\":\"Passed\",\"assessments\":[]}]}")
-                .toObject(ControlFamily.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ControlFamily model = BinaryData.fromString(
+            "{\"controlFamilyName\":\"xkqjnsjervt\",\"controlFamilyStatus\":\"Failed\",\"controls\":[{\"controlId\":\"sz\",\"controlName\":\"mpsbzkfzbeyv\",\"controlFullName\":\"qi\",\"controlDescription\":\"invkjjxdxrbuu\",\"controlDescriptionHyperLink\":\"clewyhm\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{\"responsibilityId\":\"zpof\",\"responsibilityTitle\":\"ckw\",\"responsibilityDescription\":\"zqwhxxbuyqaxzfeq\",\"responsibilityType\":\"ScopedManual\",\"responsibilitySeverity\":\"Low\",\"responsibilityStatus\":\"Passed\",\"responsibilityEnvironment\":\"General\",\"failedResourceCount\":621148688,\"totalResourceCount\":1270431726,\"resourceList\":[{},{},{}],\"recommendationList\":[{},{}],\"guidance\":\"ncwsob\",\"justification\":\"csdbnwdcfhuc\",\"evidenceFiles\":[\"fuvglsbjjca\",\"vxb\",\"t\"]}]},{\"controlId\":\"dut\",\"controlName\":\"ormrlxqtvcofudfl\",\"controlFullName\":\"gj\",\"controlDescription\":\"gdknnqv\",\"controlDescriptionHyperLink\":\"znqntoru\",\"controlStatus\":\"PendingApproval\",\"responsibilities\":[{\"responsibilityId\":\"mkycgra\",\"responsibilityTitle\":\"juetaebur\",\"responsibilityDescription\":\"dmovsm\",\"responsibilityType\":\"ScopedManual\",\"responsibilitySeverity\":\"Low\",\"responsibilityStatus\":\"PendingApproval\",\"responsibilityEnvironment\":\"AWS\",\"failedResourceCount\":1154493453,\"totalResourceCount\":1641212216,\"resourceList\":[{}],\"recommendationList\":[{},{}],\"guidance\":\"u\",\"justification\":\"jmqlgkfb\",\"evidenceFiles\":[\"oaongbjc\",\"tujitcjedft\"]}]}]}")
+            .toObject(ControlFamily.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ControlFamily model = new ControlFamily();
         model = BinaryData.fromObject(model).toObject(ControlFamily.class);
     }

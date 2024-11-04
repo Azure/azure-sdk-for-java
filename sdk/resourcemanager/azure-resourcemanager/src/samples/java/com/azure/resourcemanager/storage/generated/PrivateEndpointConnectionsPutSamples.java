@@ -8,32 +8,29 @@ import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnection
 import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 
-/** Samples for PrivateEndpointConnections Put. */
+/**
+ * Samples for PrivateEndpointConnections Put.
+ */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountPutPrivateEndpointConnection.json
      */
     /**
      * Sample code: StorageAccountPutPrivateEndpointConnection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountPutPrivateEndpointConnection(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountPutPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .putWithResponse(
-                "res7687",
-                "sto9699",
-                "{privateEndpointConnectionName}",
-                new PrivateEndpointConnectionInner()
-                    .withPrivateLinkServiceConnectionState(
-                        new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                            .withDescription("Auto-Approved")),
+            .putWithResponse("res7687", "sto9699", "{privateEndpointConnectionName}",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Auto-Approved")),
                 com.azure.core.util.Context.NONE);
     }
 }

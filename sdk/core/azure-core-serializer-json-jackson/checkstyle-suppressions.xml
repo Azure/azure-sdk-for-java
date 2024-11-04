@@ -6,6 +6,9 @@
 <suppressions>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.jackson.JacksonJsonProvider.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.jackson.models.JacksonJsonArray.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.jackson.models.JacksonJsonElementUtils.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.jackson.models.JacksonJsonObject.java" />
 
   <!-- Possible bug with the type checking of the exception, tried Throwable and LinkageError but it still complains. -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrows" files="com.azure.core.serializer.json.jackson.implementation.XmlMapperFactory.java" />
@@ -15,6 +18,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.serializer.json.jackson.implementation.ObjectMapperFactory.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.serializer.json.jackson.implementation.XmlMapperFactory.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCause" files="com.azure.core.serializer.json.jackson.models.JacksonJsonElementUtils.java" />
 
   <suppress checks="Header" files="com.azure.core.serializer.json.jackson.implementation.OptionBeanPropertyWriter.java" />
   <suppress checks="Header" files="com.azure.core.serializer.json.jackson.implementation.OptionModule.java" />

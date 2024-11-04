@@ -44,8 +44,8 @@ public final class StorageAuthenticationSettings {
     public static StorageAuthenticationSettings fromConnectionSettings(final ConnectionSettings settings) {
         final String accountName = settings.getSettingValue(StorageConstants.ConnectionStringConstants.ACCOUNT_NAME);
         final String accountKey = settings.getSettingValue(StorageConstants.ConnectionStringConstants.ACCOUNT_KEY_NAME);
-        final String sasSignature =
-            settings.getSettingValue(StorageConstants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
+        final String sasSignature
+            = settings.getSettingValue(StorageConstants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
 
         if (accountName != null && accountKey != null && sasSignature == null) {
             return new StorageAuthenticationSettings(new Account(accountName, accountKey));
@@ -62,8 +62,7 @@ public final class StorageAuthenticationSettings {
      */
     public static StorageAuthenticationSettings forEmulator() {
         return new StorageAuthenticationSettings(
-            new StorageAuthenticationSettings.Account(
-                StorageConstants.ConnectionStringConstants.EMULATOR_ACCOUNT_NAME,
+            new StorageAuthenticationSettings.Account(StorageConstants.ConnectionStringConstants.EMULATOR_ACCOUNT_NAME,
                 StorageConstants.ConnectionStringConstants.EMULATOR_ACCOUNT_KEY));
     }
 

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FleetMemberUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetMemberUpdate model
-            = BinaryData.fromString("{\"properties\":{\"group\":\"zloc\"}}").toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("zloc", model.group());
+        FleetMemberUpdate model = BinaryData.fromString("{\"properties\":{\"group\":\"ajrmvdjwzrlovmc\"}}")
+            .toObject(FleetMemberUpdate.class);
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.group());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("zloc");
+        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("ajrmvdjwzrlovmc");
         model = BinaryData.fromObject(model).toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("zloc", model.group());
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.group());
     }
 }

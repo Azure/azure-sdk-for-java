@@ -1649,6 +1649,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMSnapshotConsistencyType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemState",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

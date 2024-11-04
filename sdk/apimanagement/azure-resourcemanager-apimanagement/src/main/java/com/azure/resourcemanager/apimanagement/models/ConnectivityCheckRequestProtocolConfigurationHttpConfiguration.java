@@ -68,8 +68,8 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
      * @param validStatusCodes the validStatusCodes value to set.
      * @return the ConnectivityCheckRequestProtocolConfigurationHttpConfiguration object itself.
      */
-    public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration withValidStatusCodes(
-        List<Long> validStatusCodes) {
+    public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration
+        withValidStatusCodes(List<Long> validStatusCodes) {
         this.validStatusCodes = validStatusCodes;
         return this;
     }

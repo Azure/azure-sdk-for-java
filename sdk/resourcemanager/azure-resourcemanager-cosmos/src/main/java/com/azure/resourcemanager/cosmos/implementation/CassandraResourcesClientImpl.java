@@ -689,8 +689,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName,
             CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        return this.beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
-            createUpdateCassandraKeyspaceParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
+                createUpdateCassandraKeyspaceParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -710,8 +712,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName,
             CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, Context context) {
-        return this.beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
-            createUpdateCassandraKeyspaceParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
+                createUpdateCassandraKeyspaceParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1328,8 +1332,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1350,8 +1356,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1637,7 +1645,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     private Mono<ThroughputSettingsGetResultsInner> migrateCassandraKeyspaceToAutoscaleAsync(String resourceGroupName,
         String accountName, String keyspaceName, Context context) {
         return beginMigrateCassandraKeyspaceToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2397,8 +2406,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
         beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        return this.beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            createUpdateCassandraTableParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                createUpdateCassandraTableParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2420,8 +2431,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
             Context context) {
-        return this.beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            createUpdateCassandraTableParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                createUpdateCassandraTableParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3085,8 +3098,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -3108,8 +3123,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3376,8 +3393,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToAutoscale(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, Context context) {
-        return this.beginMigrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            context).getSyncPoller();
+        return this
+            .beginMigrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -3396,7 +3415,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public Mono<ThroughputSettingsGetResultsInner> migrateCassandraTableToAutoscaleAsync(String resourceGroupName,
         String accountName, String keyspaceName, String tableName) {
         return beginMigrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3633,8 +3653,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToManualThroughput(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, Context context) {
-        return this.beginMigrateCassandraTableToManualThroughputAsync(resourceGroupName, accountName, keyspaceName,
-            tableName, context).getSyncPoller();
+        return this
+            .beginMigrateCassandraTableToManualThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                context)
+            .getSyncPoller();
     }
 
     /**

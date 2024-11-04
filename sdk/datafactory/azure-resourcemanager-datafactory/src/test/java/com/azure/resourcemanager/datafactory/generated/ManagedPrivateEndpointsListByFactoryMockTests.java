@@ -22,7 +22,7 @@ public final class ManagedPrivateEndpointsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"connectionState\":{\"actionsRequired\":\"vtdtbcrhpnmgnxa\",\"description\":\"egxnjxgoa\",\"status\":\"sutbnziaqszzcp\"},\"fqdns\":[\"kkffuo\",\"jp\"],\"groupId\":\"a\",\"isReserved\":false,\"privateLinkResourceId\":\"irsgogbz\",\"provisioningState\":\"vpzyovimpb\",\"\":{\"ffd\":\"datas\"}},\"name\":\"jcgyl\",\"type\":\"sxcdk\",\"etag\":\"leuzm\",\"id\":\"s\"}]}";
+            = "{\"value\":[{\"properties\":{\"connectionState\":{\"actionsRequired\":\"zpupkebwsesblsb\",\"description\":\"dfoprdytsgypvi\",\"status\":\"ooqzdoytnpkjp\"},\"fqdns\":[\"gnhzufhw\",\"tjnvrptqxksid\",\"jfh\"],\"groupId\":\"gizzrlx\",\"isReserved\":true,\"privateLinkResourceId\":\"xjqqozxtnowv\",\"provisioningState\":\"fypdxsy\",\"\":{\"mwvdmwaamqfeq\":\"datauueeokvq\",\"tqaomihrtbksd\":\"databjygnckeq\"}},\"name\":\"pxwficzzoxnl\",\"type\":\"xndsiqxzaolzko\",\"etag\":\"iragbbiukmkmthio\",\"id\":\"oh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class ManagedPrivateEndpointsListByFactoryMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ManagedPrivateEndpointResource> response
-            = manager.managedPrivateEndpoints().listByFactory("h", "qogcp", "k", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagedPrivateEndpointResource> response = manager.managedPrivateEndpoints()
+            .listByFactory("twt", "kkhuusr", "utonp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("s", response.iterator().next().id());
-        Assertions.assertEquals("kkffuo", response.iterator().next().properties().fqdns().get(0));
-        Assertions.assertEquals("a", response.iterator().next().properties().groupId());
-        Assertions.assertEquals("irsgogbz", response.iterator().next().properties().privateLinkResourceId());
+        Assertions.assertEquals("oh", response.iterator().next().id());
+        Assertions.assertEquals("gnhzufhw", response.iterator().next().properties().fqdns().get(0));
+        Assertions.assertEquals("gizzrlx", response.iterator().next().properties().groupId());
+        Assertions.assertEquals("xjqqozxtnowv", response.iterator().next().properties().privateLinkResourceId());
     }
 }

@@ -19,34 +19,32 @@ public final class ShopifyObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ShopifyObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"qmbwcacwaaqa\",\"typeProperties\":{\"tableName\":\"dataefqhxy\"},\"description\":\"okyaxxratqlr\",\"structure\":\"databrcmmdtshzu\",\"schema\":\"dataucznbabowrcyrnmj\",\"linkedServiceName\":{\"referenceName\":\"ko\",\"parameters\":{\"mnaphrskmpeajzzy\":\"datazkkagvej\",\"r\":\"dataavamzmzfntte\",\"pjdr\":\"datatxytja\"}},\"parameters\":{\"vqmdmrac\":{\"type\":\"Array\",\"defaultValue\":\"datakvbfaehjjirvjqx\"},\"yzhcvlavy\":{\"type\":\"Float\",\"defaultValue\":\"datafdralihhsscy\"}},\"annotations\":[\"datandxrmyzvtiojtpd\",\"datau\",\"dataxaxoyj\"],\"folder\":{\"name\":\"twedi\"},\"\":{\"tmca\":\"datakteccxfnat\",\"cnbdq\":\"databqpmfhjik\"}}")
+            "{\"type\":\"ShopifyObject\",\"typeProperties\":{\"tableName\":\"dataybfmpotal\"},\"description\":\"figrxxtrco\",\"structure\":\"dataqe\",\"schema\":\"dataldmxxbjh\",\"linkedServiceName\":{\"referenceName\":\"pvamsxrwqlwdf\",\"parameters\":{\"bboffgxtae\":\"datarplzeqzv\",\"fcyatbxdwr\":\"dataxt\",\"fbpeigkflvovriq\":\"datayvtkmxvztshnu\"}},\"parameters\":{\"txur\":{\"type\":\"Float\",\"defaultValue\":\"datakqcgzygtdjhtbar\"}},\"annotations\":[\"datayyumhzpst\",\"datacqacvttyh\",\"databilnszyjbuw\"],\"folder\":{\"name\":\"sydsci\"},\"\":{\"l\":\"dataayioxpqgqs\",\"akqsjymcfv\":\"datalefeombodvdgf\",\"nbpkfnxrlncmlzvv\":\"datazceuyuqktck\",\"cjqzrevfwcba\":\"datamesfhqs\"}}")
             .toObject(ShopifyObjectDataset.class);
-        Assertions.assertEquals("okyaxxratqlr", model.description());
-        Assertions.assertEquals("ko", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vqmdmrac").type());
-        Assertions.assertEquals("twedi", model.folder().name());
+        Assertions.assertEquals("figrxxtrco", model.description());
+        Assertions.assertEquals("pvamsxrwqlwdf", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("txur").type());
+        Assertions.assertEquals("sydsci", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShopifyObjectDataset model = new ShopifyObjectDataset().withDescription("okyaxxratqlr")
-            .withStructure("databrcmmdtshzu")
-            .withSchema("dataucznbabowrcyrnmj")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ko")
-                .withParameters(
-                    mapOf("mnaphrskmpeajzzy", "datazkkagvej", "r", "dataavamzmzfntte", "pjdr", "datatxytja")))
-            .withParameters(mapOf("vqmdmrac",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datakvbfaehjjirvjqx"),
-                "yzhcvlavy",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafdralihhsscy")))
-            .withAnnotations(Arrays.asList("datandxrmyzvtiojtpd", "datau", "dataxaxoyj"))
-            .withFolder(new DatasetFolder().withName("twedi"))
-            .withTableName("dataefqhxy");
+        ShopifyObjectDataset model = new ShopifyObjectDataset().withDescription("figrxxtrco")
+            .withStructure("dataqe")
+            .withSchema("dataldmxxbjh")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pvamsxrwqlwdf")
+                .withParameters(mapOf("bboffgxtae", "datarplzeqzv", "fcyatbxdwr", "dataxt", "fbpeigkflvovriq",
+                    "datayvtkmxvztshnu")))
+            .withParameters(mapOf("txur",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datakqcgzygtdjhtbar")))
+            .withAnnotations(Arrays.asList("datayyumhzpst", "datacqacvttyh", "databilnszyjbuw"))
+            .withFolder(new DatasetFolder().withName("sydsci"))
+            .withTableName("dataybfmpotal");
         model = BinaryData.fromObject(model).toObject(ShopifyObjectDataset.class);
-        Assertions.assertEquals("okyaxxratqlr", model.description());
-        Assertions.assertEquals("ko", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vqmdmrac").type());
-        Assertions.assertEquals("twedi", model.folder().name());
+        Assertions.assertEquals("figrxxtrco", model.description());
+        Assertions.assertEquals("pvamsxrwqlwdf", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("txur").type());
+        Assertions.assertEquals("sydsci", model.folder().name());
     }
 
     // Use "Map.of" if available

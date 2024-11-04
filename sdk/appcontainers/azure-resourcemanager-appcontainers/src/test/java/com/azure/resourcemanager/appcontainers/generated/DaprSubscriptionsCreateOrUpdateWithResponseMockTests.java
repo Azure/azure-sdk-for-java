@@ -6,17 +6,14 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscription;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscriptionBulkSubscribeOptions;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscriptionRouteRule;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscriptionRoutes;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,60 +21,51 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DaprSubscriptionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"pubsubName\":\"jiotif\",\"topic\":\"bcngkegxc\",\"deadLetterTopic\":\"xbbfetwil\",\"routes\":{\"rules\":[{\"match\":\"pdxqlfrolqownkiu\",\"path\":\"ewnahwkxjjmzt\"},{\"match\":\"mso\",\"path\":\"tmvecdhdyswcrptv\"}],\"default\":\"jczxvlgsrg\"},\"scopes\":[\"izrpywlptyuqhrl\",\"cs\",\"ykpfu\",\"fixcnpcfykkpy\"],\"metadata\":{\"wrpcfpcfjfwzlgza\":\"awmpjprd\",\"amnni\":\"kgyepe\",\"z\":\"mdiawpzx\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":335893529,\"maxAwaitDurationMs\":825702294}},\"id\":\"uos\",\"name\":\"wqpsqaz\",\"type\":\"hqodv\"}";
+            = "{\"properties\":{\"pubsubName\":\"dlkhczygpm\",\"topic\":\"jculojhhylx\",\"deadLetterTopic\":\"vfiyymot\",\"routes\":{\"rules\":[{\"match\":\"wjmtftcvelniru\",\"path\":\"qnstpaqpibjg\"},{\"match\":\"swmehfxrttxb\",\"path\":\"ennqfabqca\"},{\"match\":\"lectcxsfmb\",\"path\":\"xmsynbkd\"}],\"default\":\"yufxuzmsvzyq\"},\"scopes\":[\"nxhjtlxfikjk\",\"ara\",\"wwuasnjeglht\",\"xbozpcjcnwjz\"],\"metadata\":{\"i\":\"lxrnwvdsvo\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1110084417,\"maxAwaitDurationMs\":1952109965}},\"id\":\"gfhjxsawoo\",\"name\":\"uffhxf\",\"type\":\"kmwzrdqyoy\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DaprSubscription response = manager.daprSubscriptions()
+            .define("aoy")
+            .withExistingManagedEnvironment("n", "dv")
+            .withPubsubName("vg")
+            .withTopic("zmxynofxlt")
+            .withDeadLetterTopic("oqxt")
+            .withRoutes(new DaprSubscriptionRoutes()
+                .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("sjirkrpskcjhmmof").withPath("ivd"),
+                    new DaprSubscriptionRouteRule().withMatch("kykpaxnls").withPath("nyscaccpt"),
+                    new DaprSubscriptionRouteRule().withMatch("et").withPath("gxxiceecv"),
+                    new DaprSubscriptionRouteRule().withMatch("yuveoxmpz").withPath("ahdr")))
+                .withDefaultProperty("haz"))
+            .withScopes(Arrays.asList("bivzfgxmbry"))
+            .withMetadata(mapOf("iqsykqfdqwdrt", "ibio", "ert", "tfdaglmrcokz"))
+            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
+                .withMaxMessagesCount(1522861626)
+                .withMaxAwaitDurationMs(1174388584))
+            .create();
 
-        DaprSubscription response
-            = manager.daprSubscriptions().define("wennin").withExistingManagedEnvironment("xquddrw", "cljbrhlhpvzad")
-                .withPubsubName("xrzfrmvztiucwvi").withTopic("lukh").withDeadLetterTopic("cqx")
-                .withRoutes(new DaprSubscriptionRoutes()
-                    .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("a").withPath("qcbpokstsinv")))
-                    .withDefaultProperty("ovjyhd"))
-                .withScopes(Arrays.asList("rdvcehqwhit", "nmxgnm"))
-                .withMetadata(mapOf("kjnbkbdhlltqstq", "buwvorba", "vagzkheuba", "qsygxiynec", "pqcckqiawzlz", "lxu",
-                    "r", "laslgacizux"))
-                .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
-                    .withMaxMessagesCount(1749126168).withMaxAwaitDurationMs(1501943232))
-                .create();
-
-        Assertions.assertEquals("jiotif", response.pubsubName());
-        Assertions.assertEquals("bcngkegxc", response.topic());
-        Assertions.assertEquals("xbbfetwil", response.deadLetterTopic());
-        Assertions.assertEquals("pdxqlfrolqownkiu", response.routes().rules().get(0).match());
-        Assertions.assertEquals("ewnahwkxjjmzt", response.routes().rules().get(0).path());
-        Assertions.assertEquals("jczxvlgsrg", response.routes().defaultProperty());
-        Assertions.assertEquals("izrpywlptyuqhrl", response.scopes().get(0));
-        Assertions.assertEquals("awmpjprd", response.metadata().get("wrpcfpcfjfwzlgza"));
+        Assertions.assertEquals("dlkhczygpm", response.pubsubName());
+        Assertions.assertEquals("jculojhhylx", response.topic());
+        Assertions.assertEquals("vfiyymot", response.deadLetterTopic());
+        Assertions.assertEquals("wjmtftcvelniru", response.routes().rules().get(0).match());
+        Assertions.assertEquals("qnstpaqpibjg", response.routes().rules().get(0).path());
+        Assertions.assertEquals("yufxuzmsvzyq", response.routes().defaultProperty());
+        Assertions.assertEquals("nxhjtlxfikjk", response.scopes().get(0));
+        Assertions.assertEquals("lxrnwvdsvo", response.metadata().get("i"));
         Assertions.assertEquals(false, response.bulkSubscribe().enabled());
-        Assertions.assertEquals(335893529, response.bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(825702294, response.bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals(1110084417, response.bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(1952109965, response.bulkSubscribe().maxAwaitDurationMs());
     }
 
     // Use "Map.of" if available

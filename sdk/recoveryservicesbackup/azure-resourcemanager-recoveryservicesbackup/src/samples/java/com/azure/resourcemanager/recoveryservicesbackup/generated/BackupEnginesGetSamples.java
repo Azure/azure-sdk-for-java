@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupEnginesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Dpm/
-     * BackupEngines_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Dpm/BackupEngines_Get.json
      */
     /**
      * Sample code: Get Dpm/AzureBackupServer/Lajolla Backup Engine Details.
@@ -20,7 +18,7 @@ public final class BackupEnginesGetSamples {
      */
     public static void getDpmAzureBackupServerLajollaBackupEngineDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupEngines().getWithResponse("testVault", "testRG", "testServer", null, null,
-            com.azure.core.util.Context.NONE);
+        manager.backupEngines()
+            .getWithResponse("testVault", "testRG", "testServer", null, null, com.azure.core.util.Context.NONE);
     }
 }

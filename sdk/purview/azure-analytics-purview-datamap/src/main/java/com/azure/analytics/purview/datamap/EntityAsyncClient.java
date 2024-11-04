@@ -75,7 +75,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -152,11 +153,13 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -221,10 +224,10 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -235,9 +238,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData atlasEntityWithExtInfo,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(atlasEntityWithExtInfo, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -254,7 +256,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -333,7 +336,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -373,7 +377,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -452,11 +457,13 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -521,10 +528,10 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -535,9 +542,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchCreateOrUpdateWithResponse(BinaryData atlasEntitiesWithExtInfo,
-        RequestOptions requestOptions) {
-        return this.serviceClient.batchCreateOrUpdateWithResponseAsync(atlasEntitiesWithExtInfo, requestOptions);
+    public Mono<Response<BinaryData>> batchCreateOrUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateOrUpdateWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -545,7 +551,8 @@ public final class EntityAsyncClient {
      * attributes.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -610,7 +617,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -631,7 +639,8 @@ public final class EntityAsyncClient {
      * Associate a classification to multiple entities in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
@@ -654,9 +663,10 @@ public final class EntityAsyncClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param classificationAssociateOptions The request payload for classification association.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -666,9 +676,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addClassificationWithResponse(BinaryData classificationAssociateOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationWithResponseAsync(classificationAssociateOptions, requestOptions);
+    public Mono<Response<Void>> addClassificationWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -685,7 +694,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -762,7 +772,8 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -787,13 +798,16 @@ public final class EntityAsyncClient {
      * Null updates are not possible.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * Object
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -858,7 +872,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param name The name of the attribute.
@@ -882,7 +897,8 @@ public final class EntityAsyncClient {
      * Delete an entity identified by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -947,7 +963,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -968,7 +985,8 @@ public final class EntityAsyncClient {
      * Get classification for a given entity represented by a GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -986,7 +1004,8 @@ public final class EntityAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
@@ -1028,7 +1047,8 @@ public final class EntityAsyncClient {
      * List classifications for a given entity represented by a GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     list (Optional): [
      *         Object (Optional)
@@ -1039,7 +1059,8 @@ public final class EntityAsyncClient {
      *     startIndex: Integer (Optional)
      *     totalCount: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1059,7 +1080,8 @@ public final class EntityAsyncClient {
      * Add classifications to an existing entity represented by a GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1079,7 +1101,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body An array of classifications to be added.
@@ -1101,7 +1124,8 @@ public final class EntityAsyncClient {
      * Update classifications to an existing entity represented by a guid.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1121,7 +1145,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body An array of classifications to be updated.
@@ -1169,7 +1194,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -1246,7 +1272,8 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1304,7 +1331,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -1381,11 +1409,13 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -1450,11 +1480,11 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1465,10 +1495,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateByUniqueAttributeWithResponse(String typeName,
-        BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
-        return this.serviceClient.updateByUniqueAttributeWithResponseAsync(typeName, atlasEntityWithExtInfo,
-            requestOptions);
+    public Mono<Response<BinaryData>> updateByUniqueAttributeWithResponse(String typeName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateByUniqueAttributeWithResponseAsync(typeName, body, requestOptions);
     }
 
     /**
@@ -1495,7 +1524,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -1560,7 +1590,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1621,7 +1652,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1641,7 +1673,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param body An array of classification to be added.
@@ -1672,7 +1705,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1692,7 +1726,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param body An array of classification to be updated.
@@ -1715,7 +1750,8 @@ public final class EntityAsyncClient {
      * Set classifications on entities in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidHeaderMap (Optional): {
      *         String (Required): {
@@ -1772,17 +1808,20 @@ public final class EntityAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Required)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param atlasEntityHeaders An instance of an entity header map.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1792,9 +1831,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchSetClassificationsWithResponse(BinaryData atlasEntityHeaders,
+    public Mono<Response<BinaryData>> batchSetClassificationsWithResponse(BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.batchSetClassificationsWithResponseAsync(atlasEntityHeaders, requestOptions);
+        return this.serviceClient.batchSetClassificationsWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -1832,7 +1871,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -1911,7 +1951,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1933,7 +1974,8 @@ public final class EntityAsyncClient {
      * Get entity header given its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -1986,7 +2028,8 @@ public final class EntityAsyncClient {
      *     ]
      *     status: String(ACTIVE/DELETED) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2006,13 +2049,15 @@ public final class EntityAsyncClient {
      * Remove business metadata from an entity.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body Business metadata payload.
@@ -2043,13 +2088,15 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body BusinessMetadata payload.
@@ -2071,11 +2118,13 @@ public final class EntityAsyncClient {
      * Delete business metadata attributes from an entity.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: Object (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
@@ -2099,11 +2148,13 @@ public final class EntityAsyncClient {
      * Add or update business metadata attributes.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: Object (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
@@ -2127,9 +2178,11 @@ public final class EntityAsyncClient {
      * Get the sample Template for uploading/creating bulk BusinessMetaData.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2149,7 +2202,8 @@ public final class EntityAsyncClient {
      * Upload the file for creating Business Metadata in BULK.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedImportInfoList (Optional): [
      *          (Optional){
@@ -2163,9 +2217,10 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param businessMetadataOptions Business metadata to send to the service.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2175,21 +2230,31 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> importBusinessMetadataWithResponse(BinaryData businessMetadataOptions,
-        RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'importBusinessMetadata' is 'multipart/form-data'
-        return this.serviceClient.importBusinessMetadataWithResponseAsync(businessMetadataOptions, requestOptions);
+    Mono<Response<BinaryData>> importBusinessMetadataWithResponse(BinaryData body, RequestOptions requestOptions) {
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'importBusinessMetadata' is 'multipart/form-data'
+        return this.serviceClient.importBusinessMetadataWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Delete given labels to a given entity.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2207,13 +2272,23 @@ public final class EntityAsyncClient {
 
     /**
      * Set labels to a given entity.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2231,13 +2306,23 @@ public final class EntityAsyncClient {
 
     /**
      * Add given labels to a given entity.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2276,13 +2361,23 @@ public final class EntityAsyncClient {
      * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2324,13 +2419,23 @@ public final class EntityAsyncClient {
      * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2371,13 +2476,23 @@ public final class EntityAsyncClient {
      * be changed to other unique attributes)</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2397,17 +2512,20 @@ public final class EntityAsyncClient {
      * Move existing entities to the target collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     entityGuids (Optional): [
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -2472,10 +2590,11 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesOptions MoveEntitiesOptions.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2486,10 +2605,9 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponse(String collectionId,
-        BinaryData moveEntitiesOptions, RequestOptions requestOptions) {
-        return this.serviceClient.moveEntitiesToCollectionWithResponseAsync(collectionId, moveEntitiesOptions,
-            requestOptions);
+    public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponse(String collectionId, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.moveEntitiesToCollectionWithResponseAsync(collectionId, body, requestOptions);
     }
 
     /**
@@ -2501,8 +2619,7 @@ public final class EntityAsyncClient {
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
      * 
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param businessAttributeUpdateBehavior Used to define the update behavior for business attributes when updating
      * entities.
      * @param collectionId The collection where entities will be moved to. Only specify a value if you
@@ -2517,7 +2634,7 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo atlasEntityWithExtInfo,
+    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo body,
         BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior, String collectionId) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2528,8 +2645,7 @@ public final class EntityAsyncClient {
         if (collectionId != null) {
             requestOptions.addQueryParam("collectionId", collectionId, false);
         }
-        return createOrUpdateWithResponse(BinaryData.fromObject(atlasEntityWithExtInfo), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createOrUpdateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2542,8 +2658,7 @@ public final class EntityAsyncClient {
      * int&gt;&gt;.
      * For each contact type, the maximum number of contacts is 20.
      * 
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2554,11 +2669,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo atlasEntityWithExtInfo) {
+    public Mono<EntityMutationResult> createOrUpdate(AtlasEntityWithExtInfo body) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateWithResponse(BinaryData.fromObject(atlasEntityWithExtInfo), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return createOrUpdateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2624,8 +2738,7 @@ public final class EntityAsyncClient {
      * For each contact type, the maximum number of contacts
      * is 20.
      * 
-     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param collectionId The collection where entities will be moved to. Only specify a value if you
      * need to move an entity to another collection.
      * @param businessAttributeUpdateBehavior Used to define the update behavior for business attributes when updating
@@ -2640,8 +2753,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> batchCreateOrUpdate(AtlasEntitiesWithExtInfo atlasEntitiesWithExtInfo,
-        String collectionId, BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior) {
+    public Mono<EntityMutationResult> batchCreateOrUpdate(AtlasEntitiesWithExtInfo body, String collectionId,
+        BusinessAttributeUpdateBehavior businessAttributeUpdateBehavior) {
         // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (collectionId != null) {
@@ -2651,8 +2764,7 @@ public final class EntityAsyncClient {
             requestOptions.addQueryParam("businessAttributeUpdateBehavior", businessAttributeUpdateBehavior.toString(),
                 false);
         }
-        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2666,8 +2778,7 @@ public final class EntityAsyncClient {
      * For each contact type, the maximum number of contacts
      * is 20.
      * 
-     * @param atlasEntitiesWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2678,11 +2789,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> batchCreateOrUpdate(AtlasEntitiesWithExtInfo atlasEntitiesWithExtInfo) {
+    public Mono<EntityMutationResult> batchCreateOrUpdate(AtlasEntitiesWithExtInfo body) {
         // Generated convenience method for batchCreateOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(atlasEntitiesWithExtInfo), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return batchCreateOrUpdateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -2711,7 +2821,7 @@ public final class EntityAsyncClient {
     /**
      * Associate a classification to multiple entities in bulk.
      * 
-     * @param classificationAssociateOptions The request payload for classification association.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2722,11 +2832,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addClassification(ClassificationAssociateOptions classificationAssociateOptions) {
+    public Mono<Void> addClassification(ClassificationAssociateOptions body) {
         // Generated convenience method for addClassificationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return addClassificationWithResponse(BinaryData.fromObject(classificationAssociateOptions), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return addClassificationWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3063,8 +3172,7 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @param attribute The qualified name of the entity. (This is only an example. qualifiedName can
      * be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3077,15 +3185,15 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> updateByUniqueAttribute(String typeName,
-        AtlasEntityWithExtInfo atlasEntityWithExtInfo, String attribute) {
+    public Mono<EntityMutationResult> updateByUniqueAttribute(String typeName, AtlasEntityWithExtInfo body,
+        String attribute) {
         // Generated convenience method for updateByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (attribute != null) {
             requestOptions.addQueryParam("attr:qualifiedName", attribute, false);
         }
-        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
-            requestOptions).flatMap(FluxUtil::toMono)
+        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -3108,8 +3216,7 @@ public final class EntityAsyncClient {
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      * 
      * @param typeName The name of the type.
-     * @param atlasEntityWithExtInfo An instance of an entity along with extended info - like hive_table,
-     * hive_database.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3120,12 +3227,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> updateByUniqueAttribute(String typeName,
-        AtlasEntityWithExtInfo atlasEntityWithExtInfo) {
+    public Mono<EntityMutationResult> updateByUniqueAttribute(String typeName, AtlasEntityWithExtInfo body) {
         // Generated convenience method for updateByUniqueAttributeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(atlasEntityWithExtInfo),
-            requestOptions).flatMap(FluxUtil::toMono)
+        return updateByUniqueAttributeWithResponse(typeName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -3353,7 +3459,7 @@ public final class EntityAsyncClient {
     /**
      * Set classifications on entities in bulk.
      * 
-     * @param atlasEntityHeaders An instance of an entity header map.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3364,10 +3470,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> batchSetClassifications(AtlasEntityHeaders atlasEntityHeaders) {
+    public Mono<List<String>> batchSetClassifications(AtlasEntityHeaders body) {
         // Generated convenience method for batchSetClassificationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchSetClassificationsWithResponse(BinaryData.fromObject(atlasEntityHeaders), requestOptions)
+        return batchSetClassificationsWithResponse(BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STRING));
     }
@@ -3628,7 +3734,7 @@ public final class EntityAsyncClient {
     /**
      * Upload the file for creating Business Metadata in BULK.
      * 
-     * @param businessMetadataOptions Business metadata to send to the service.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3639,15 +3745,14 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BulkImportResult> importBusinessMetadata(BusinessMetadataOptions businessMetadataOptions) {
+    public Mono<BulkImportResult> importBusinessMetadata(BusinessMetadataOptions body) {
         // Generated convenience method for importBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return importBusinessMetadataWithResponse(new MultipartFormDataHelper(requestOptions)
-            .serializeFileField("file", businessMetadataOptions.getFile().getContent(),
-                businessMetadataOptions.getFile().getContentType(), businessMetadataOptions.getFile().getFilename())
-            .end()
-            .getRequestBody(), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BulkImportResult.class));
+        return importBusinessMetadataWithResponse(
+            new MultipartFormDataHelper(requestOptions).serializeFileField("file", body.getFile().getContent(),
+                body.getFile().getContentType(), body.getFile().getFilename()).end().getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BulkImportResult.class));
     }
 
     /**
@@ -4013,7 +4118,7 @@ public final class EntityAsyncClient {
      * Move existing entities to the target collection.
      * 
      * @param collectionId The collection where entities will be moved to.
-     * @param moveEntitiesOptions MoveEntitiesOptions.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4024,12 +4129,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> moveEntitiesToCollection(String collectionId,
-        MoveEntitiesOptions moveEntitiesOptions) {
+    public Mono<EntityMutationResult> moveEntitiesToCollection(String collectionId, MoveEntitiesOptions body) {
         // Generated convenience method for moveEntitiesToCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return moveEntitiesToCollectionWithResponse(collectionId, BinaryData.fromObject(moveEntitiesOptions),
-            requestOptions).flatMap(FluxUtil::toMono)
+        return moveEntitiesToCollectionWithResponse(collectionId, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 

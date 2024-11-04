@@ -17,25 +17,25 @@ public final class JsonSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonSink model = BinaryData.fromString(
-            "{\"type\":\"rljmjzyadafec\",\"storeSettings\":{\"type\":\"svpmw\",\"maxConcurrentConnections\":\"dataoqypvplmyzebv\",\"disableMetricsCollection\":\"datahoydehbvbex\",\"copyBehavior\":\"dataynnladdhdklwzz\",\"metadata\":[{\"name\":\"databosacrnpscfkef\",\"value\":\"datatxe\"},{\"name\":\"datamimgjuvjvtgece\",\"value\":\"datannle\"}],\"\":{\"kctdnnqok\":\"dataukfj\",\"uywijnlpeczq\":\"dataeuzslnyj\",\"vphr\":\"datanmzkqydthfcwycm\"}},\"formatSettings\":{\"type\":\"hjdhlskeifw\",\"filePattern\":\"datae\",\"\":{\"xiwpptvbudbnujv\":\"dataow\",\"fzxkqsleokbam\":\"datallyjelnhmuzhxk\",\"gccg\":\"datahn\",\"jahlqoxwqlnxv\":\"datalepamvlbaxda\"}},\"writeBatchSize\":\"dataufldzjcp\",\"writeBatchTimeout\":\"datajbzp\",\"sinkRetryCount\":\"datafejg\",\"sinkRetryWait\":\"datafvboxvwtln\",\"maxConcurrentConnections\":\"datashtujaqpkupnr\",\"disableMetricsCollection\":\"datajeypdk\",\"\":{\"sy\":\"datax\",\"rnihgothy\":\"databdrq\",\"ovsvjxnsor\":\"databwge\"}}")
+            "{\"type\":\"JsonSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datatsduf\",\"disableMetricsCollection\":\"databvvkuzyg\",\"copyBehavior\":\"datazubdtzsachmh\",\"metadata\":[{\"name\":\"datanpkkbxkzc\",\"value\":\"dataosralbxhdxnlu\"},{\"name\":\"datawuafbh\",\"value\":\"dataaqf\"}],\"\":{\"rmlbkvqogzaw\":\"datap\"}},\"formatSettings\":{\"type\":\"JsonWriteSettings\",\"filePattern\":\"datadnxum\",\"\":{\"qwsyntcwrluqa\":\"datanvscyu\"}},\"writeBatchSize\":\"datalygfvbfejb\",\"writeBatchTimeout\":\"dataklgpifvpsmvksa\",\"sinkRetryCount\":\"datamsnplqfivxfqmdjz\",\"sinkRetryWait\":\"datavmkplrjkmpaxoey\",\"maxConcurrentConnections\":\"dataofaogvmqzagrqcqh\",\"disableMetricsCollection\":\"dataskmkdr\",\"\":{\"ldwcxjvexlutxcmc\":\"datapn\",\"yypvhdulds\":\"datacotqocn\"}}")
             .toObject(JsonSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSink model = new JsonSink().withWriteBatchSize("dataufldzjcp")
-            .withWriteBatchTimeout("datajbzp")
-            .withSinkRetryCount("datafejg")
-            .withSinkRetryWait("datafvboxvwtln")
-            .withMaxConcurrentConnections("datashtujaqpkupnr")
-            .withDisableMetricsCollection("datajeypdk")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataoqypvplmyzebv")
-                .withDisableMetricsCollection("datahoydehbvbex")
-                .withCopyBehavior("dataynnladdhdklwzz")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("databosacrnpscfkef").withValue("datatxe"),
-                    new MetadataItem().withName("datamimgjuvjvtgece").withValue("datannle")))
-                .withAdditionalProperties(mapOf("type", "svpmw")))
-            .withFormatSettings(new JsonWriteSettings().withFilePattern("datae"));
+        JsonSink model = new JsonSink().withWriteBatchSize("datalygfvbfejb")
+            .withWriteBatchTimeout("dataklgpifvpsmvksa")
+            .withSinkRetryCount("datamsnplqfivxfqmdjz")
+            .withSinkRetryWait("datavmkplrjkmpaxoey")
+            .withMaxConcurrentConnections("dataofaogvmqzagrqcqh")
+            .withDisableMetricsCollection("dataskmkdr")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datatsduf")
+                .withDisableMetricsCollection("databvvkuzyg")
+                .withCopyBehavior("datazubdtzsachmh")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datanpkkbxkzc").withValue("dataosralbxhdxnlu"),
+                    new MetadataItem().withName("datawuafbh").withValue("dataaqf")))
+                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
+            .withFormatSettings(new JsonWriteSettings().withFilePattern("datadnxum"));
         model = BinaryData.fromObject(model).toObject(JsonSink.class);
     }
 

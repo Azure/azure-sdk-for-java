@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -38,7 +39,9 @@ public final class BatchPoolUsageMetrics implements JsonSerializable<BatchPoolUs
     private final OffsetDateTime endTime;
 
     /*
-     * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available
+     * sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
+     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private final String vmSize;
@@ -160,9 +163,11 @@ public final class BatchPoolUsageMetrics implements JsonSerializable<BatchPoolUs
                 if ("poolId".equals(fieldName)) {
                     poolId = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("vmSize".equals(fieldName)) {
                     vmSize = reader.getString();
                 } else if ("totalCoreHours".equals(fieldName)) {

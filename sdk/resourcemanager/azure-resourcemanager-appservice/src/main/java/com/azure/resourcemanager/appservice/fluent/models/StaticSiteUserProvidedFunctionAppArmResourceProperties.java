@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * StaticSiteUserProvidedFunctionAppARMResource resource specific properties.
  */
 @Fluent
-public final class StaticSiteUserProvidedFunctionAppArmResourceProperties {
+public final class StaticSiteUserProvidedFunctionAppArmResourceProperties
+    implements JsonSerializable<StaticSiteUserProvidedFunctionAppArmResourceProperties> {
     /*
      * The resource id of the function app registered with the static site
      */
-    @JsonProperty(value = "functionAppResourceId")
     private String functionAppResourceId;
 
     /*
      * The region of the function app registered with the static site
      */
-    @JsonProperty(value = "functionAppRegion")
     private String functionAppRegion;
 
     /*
      * The date and time on which the function app was registered with the static site.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /**
@@ -93,5 +96,51 @@ public final class StaticSiteUserProvidedFunctionAppArmResourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("functionAppResourceId", this.functionAppResourceId);
+        jsonWriter.writeStringField("functionAppRegion", this.functionAppRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteUserProvidedFunctionAppArmResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteUserProvidedFunctionAppArmResourceProperties if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticSiteUserProvidedFunctionAppArmResourceProperties.
+     */
+    public static StaticSiteUserProvidedFunctionAppArmResourceProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteUserProvidedFunctionAppArmResourceProperties deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties
+                = new StaticSiteUserProvidedFunctionAppArmResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("functionAppResourceId".equals(fieldName)) {
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties.functionAppResourceId
+                        = reader.getString();
+                } else if ("functionAppRegion".equals(fieldName)) {
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties.functionAppRegion
+                        = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteUserProvidedFunctionAppArmResourceProperties;
+        });
     }
 }

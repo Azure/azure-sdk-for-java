@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information of the private link resource. */
+/**
+ * Information of the private link resource.
+ */
 @Immutable
 public final class PrivateLinkResourceInner {
     /*
@@ -35,13 +37,15 @@ public final class PrivateLinkResourceInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of PrivateLinkResourceInner class. */
+    /**
+     * Creates an instance of PrivateLinkResourceInner class.
+     */
     public PrivateLinkResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the id property: Fully qualified identifier of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the type property: e.g. Microsoft.RecoveryServices/vaults/privateLinkResources.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -78,7 +82,7 @@ public final class PrivateLinkResourceInner {
     /**
      * Get the groupId property: e.g. f9ad6492-33d4-4690-9999-6bfd52a0d081 (Backup) or
      * f9ad6492-33d4-4690-9999-6bfd52a0d082 (SiteRecovery).
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -87,7 +91,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the requiredMembers property: [backup-ecs1, backup-prot1, backup-prot1b, backup-prot1c, backup-id1].
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -96,7 +100,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -105,7 +109,7 @@ public final class PrivateLinkResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

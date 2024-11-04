@@ -14,19 +14,19 @@ public final class LocalDiagnosticsAccessConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocalDiagnosticsAccessConfiguration model = BinaryData.fromString(
-            "{\"authenticationType\":\"AAD\",\"httpsServerCertificate\":{\"certificateUrl\":\"isgwbnbbeldawkz\",\"provisioning\":{\"state\":\"Failed\",\"reason\":\"urqhaka\"}}}")
+            "{\"authenticationType\":\"Password\",\"httpsServerCertificate\":{\"certificateUrl\":\"meue\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"zceuojgjrw\"}}}")
             .toObject(LocalDiagnosticsAccessConfiguration.class);
-        Assertions.assertEquals(AuthenticationType.AAD, model.authenticationType());
-        Assertions.assertEquals("isgwbnbbeldawkz", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals(AuthenticationType.PASSWORD, model.authenticationType());
+        Assertions.assertEquals("meue", model.httpsServerCertificate().certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LocalDiagnosticsAccessConfiguration model
-            = new LocalDiagnosticsAccessConfiguration().withAuthenticationType(AuthenticationType.AAD)
-                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("isgwbnbbeldawkz"));
+            = new LocalDiagnosticsAccessConfiguration().withAuthenticationType(AuthenticationType.PASSWORD)
+                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("meue"));
         model = BinaryData.fromObject(model).toObject(LocalDiagnosticsAccessConfiguration.class);
-        Assertions.assertEquals(AuthenticationType.AAD, model.authenticationType());
-        Assertions.assertEquals("isgwbnbbeldawkz", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals(AuthenticationType.PASSWORD, model.authenticationType());
+        Assertions.assertEquals("meue", model.httpsServerCertificate().certificateUrl());
     }
 }

@@ -3,9 +3,9 @@
 
 package com.azure.maps.render.models;
 
-import java.time.OffsetDateTime;
-
 import com.azure.core.annotation.Fluent;
+
+import java.time.OffsetDateTime;
 
 /**
  * Map tile options class to organize inputs for get map tile
@@ -20,7 +20,14 @@ public final class MapTileOptions {
     private LocalizedMapView localizedMapView;
 
     /**
+     * Creates an instance of {@link MapTileOptions}.
+     */
+    public MapTileOptions() {
+    }
+
+    /**
      * get tileset id
+     *
      * @return tileset id
      */
     public TilesetId getTilesetId() {
@@ -29,6 +36,7 @@ public final class MapTileOptions {
 
     /**
      * set tileset id
+     *
      * @param tilesetId the tileset id
      * @return the tileset id
      */
@@ -39,6 +47,7 @@ public final class MapTileOptions {
 
     /**
      * get tile index
+     *
      * @return the tile index
      */
     public TileIndex getTileIndex() {
@@ -47,6 +56,7 @@ public final class MapTileOptions {
 
     /**
      * set tile index
+     *
      * @param tileIndex the tile index
      * @return a reference to this {@code MapTileOptions}
      */
@@ -57,6 +67,7 @@ public final class MapTileOptions {
 
     /**
      * get time stamp
+     *
      * @return the time stamp
      */
     public OffsetDateTime getTimestamp() {
@@ -65,6 +76,7 @@ public final class MapTileOptions {
 
     /**
      * set time stamp
+     *
      * @param offsetDateTime the offset date time
      * @return a reference to this {@code MapTileOptions}
      */
@@ -75,6 +87,7 @@ public final class MapTileOptions {
 
     /**
      * get map tile size
+     *
      * @return the map time size
      */
     public MapTileSize getMapTileSize() {
@@ -83,6 +96,7 @@ public final class MapTileOptions {
 
     /**
      * set map tile size
+     *
      * @param mapTileSize the map tile size
      * @return a reference to this {@code MapTileOptions}
      */
@@ -93,6 +107,7 @@ public final class MapTileOptions {
 
     /**
      * get language
+     *
      * @return the language
      */
     public String getLanguage() {
@@ -101,6 +116,7 @@ public final class MapTileOptions {
 
     /**
      * set language
+     *
      * @param language the language
      * @return a reference to this {@code MapTileOptions}
      */
@@ -111,6 +127,7 @@ public final class MapTileOptions {
 
     /**
      * get localized map view
+     *
      * @return the localized map view
      */
     public LocalizedMapView getLocalizedMapView() {
@@ -119,6 +136,7 @@ public final class MapTileOptions {
 
     /**
      * set localized map view
+     *
      * @param localizedMapView the localized map view
      * @return a reference to this {@code MapTileOptions}
      */

@@ -6,128 +6,149 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the AzureBlobStorage type. */
+/**
+ * Initializes a new instance of the AzureBlobStorage type.
+ */
 public final class AzureBlobStorageImpl {
-    /** The URL of the service account, container, or blob that is the target of the desired operation. */
+    /**
+     * The URL of the service account, container, or blob that is the target of the desired operation.
+     */
     private final String url;
 
     /**
      * Gets The URL of the service account, container, or blob that is the target of the desired operation.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
         return this.url;
     }
 
-    /** Specifies the version of the operation to use for this request. */
+    /**
+     * Specifies the version of the operation to use for this request.
+     */
     private final String version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
         return this.version;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The ServicesImpl object to access its operations. */
+    /**
+     * The ServicesImpl object to access its operations.
+     */
     private final ServicesImpl services;
 
     /**
      * Gets the ServicesImpl object to access its operations.
-     *
+     * 
      * @return the ServicesImpl object.
      */
     public ServicesImpl getServices() {
         return this.services;
     }
 
-    /** The ContainersImpl object to access its operations. */
+    /**
+     * The ContainersImpl object to access its operations.
+     */
     private final ContainersImpl containers;
 
     /**
      * Gets the ContainersImpl object to access its operations.
-     *
+     * 
      * @return the ContainersImpl object.
      */
     public ContainersImpl getContainers() {
         return this.containers;
     }
 
-    /** The BlobsImpl object to access its operations. */
+    /**
+     * The BlobsImpl object to access its operations.
+     */
     private final BlobsImpl blobs;
 
     /**
      * Gets the BlobsImpl object to access its operations.
-     *
+     * 
      * @return the BlobsImpl object.
      */
     public BlobsImpl getBlobs() {
         return this.blobs;
     }
 
-    /** The PageBlobsImpl object to access its operations. */
+    /**
+     * The PageBlobsImpl object to access its operations.
+     */
     private final PageBlobsImpl pageBlobs;
 
     /**
      * Gets the PageBlobsImpl object to access its operations.
-     *
+     * 
      * @return the PageBlobsImpl object.
      */
     public PageBlobsImpl getPageBlobs() {
         return this.pageBlobs;
     }
 
-    /** The AppendBlobsImpl object to access its operations. */
+    /**
+     * The AppendBlobsImpl object to access its operations.
+     */
     private final AppendBlobsImpl appendBlobs;
 
     /**
      * Gets the AppendBlobsImpl object to access its operations.
-     *
+     * 
      * @return the AppendBlobsImpl object.
      */
     public AppendBlobsImpl getAppendBlobs() {
         return this.appendBlobs;
     }
 
-    /** The BlockBlobsImpl object to access its operations. */
+    /**
+     * The BlockBlobsImpl object to access its operations.
+     */
     private final BlockBlobsImpl blockBlobs;
 
     /**
      * Gets the BlockBlobsImpl object to access its operations.
-     *
+     * 
      * @return the BlockBlobsImpl object.
      */
     public BlockBlobsImpl getBlockBlobs() {
@@ -136,40 +157,36 @@ public final class AzureBlobStorageImpl {
 
     /**
      * Initializes an instance of AzureBlobStorage client.
-     *
+     * 
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureBlobStorageImpl(String url, String version) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                url,
-                version);
+    public AzureBlobStorageImpl(String url, String version) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
     /**
      * Initializes an instance of AzureBlobStorage client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureBlobStorageImpl(HttpPipeline httpPipeline, String url, String version) {
+    public AzureBlobStorageImpl(HttpPipeline httpPipeline, String url, String version) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
     /**
      * Initializes an instance of AzureBlobStorage client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureBlobStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
+    public AzureBlobStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url,
+        String version) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;

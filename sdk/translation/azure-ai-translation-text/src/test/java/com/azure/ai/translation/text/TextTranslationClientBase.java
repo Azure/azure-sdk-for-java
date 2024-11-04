@@ -7,12 +7,19 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 
 import java.util.Arrays;
 import java.io.BufferedReader;
@@ -42,11 +49,11 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getClient(String endpoint) {
-        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
-            .credential(new AzureKeyCredential(getKey()))
-            .region(getRegion())
-            .endpoint(endpoint)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        TextTranslationClientBuilder textTranslationClientbuilder
+            = new TextTranslationClientBuilder().credential(new AzureKeyCredential(getKey()))
+                .region(getRegion())
+                .endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -99,10 +106,10 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getTranslationClientWithToken() throws IOException {
-        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
-            .credential(getTokenCredential())
-            .endpoint(getEndpoint())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        TextTranslationClientBuilder textTranslationClientbuilder
+            = new TextTranslationClientBuilder().credential(getTokenCredential())
+                .endpoint(getEndpoint())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -113,11 +120,11 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     TextTranslationClient getTranslationClientWithAadAuth() {
-        TextTranslationClientBuilder textTranslationClientbuilder = new TextTranslationClientBuilder()
-            .credential(getAadUserToken())
-            .region(getAadRegion())
-            .resourceId(getResourceId())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        TextTranslationClientBuilder textTranslationClientbuilder
+            = new TextTranslationClientBuilder().credential(getAadUserToken())
+                .region(getAadRegion())
+                .resourceId(getResourceId())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             textTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -149,19 +156,40 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     }
 
     private TokenCredential getAadUserToken() {
-        TokenCredential credential;
+        TokenCredential credential = getIdentityTestCredential(interceptorManager);
+        return credential;
+    }
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            Configuration global = Configuration.getGlobalConfiguration().clone();
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(global.get("AZURE_CLIENT_SECRET"))
-                .clientId(global.get("AZURE_CLIENT_ID"))
-                .tenantId(global.get("AZURE_TENANT_ID"))
-                .build();
-        } else {
-            credential = new MockTokenCredential();
+    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
         }
 
-        return credential;
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder
+            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build());
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        return builder.build();
     }
 }

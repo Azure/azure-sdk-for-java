@@ -6,79 +6,47 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkloadNetworksCreateSegmentsMockTests {
     @Test
     public void testCreateSegments() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"zydmxzjijpvuaurk\",\"connectedGateway\":\"ci\",\"subnet\":{\"dhcpRanges\":[\"fx\",\"dcoxnbk\",\"ja\"],\"gatewayAddress\":\"rnnqb\"},\"portVif\":[{\"portName\":\"izxqltgrd\"},{\"portName\":\"ypxrx\"},{\"portName\":\"fihwu\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":277871752472439784},\"id\":\"xrblmliowxihs\",\"name\":\"nxw\",\"type\":\"agnepzwaklsb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"bowsepd\",\"connectedGateway\":\"kmtdher\",\"subnet\":{\"dhcpRanges\":[\"c\",\"uahokq\",\"obkauxofsh\"],\"gatewayAddress\":\"hwpnulaiywzejywh\"},\"portVif\":[{\"portName\":\"ojpllndnpdwrpqaf\"},{\"portName\":\"ug\"},{\"portName\":\"n\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":5446103695513333706},\"id\":\"pococtfjgt\",\"name\":\"xrjvzuyturmlm\",\"type\":\"owolbaui\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkloadNetworkSegment response = manager.workloadNetworks()
+            .defineSegments("l")
+            .withExistingPrivateCloud("psmgo", "guamlj")
+            .withDisplayName("splzga")
+            .withConnectedGateway("cshhv")
+            .withSubnet(new WorkloadNetworkSegmentSubnet()
+                .withDhcpRanges(Arrays.asList("nxkympqanxrjk", "xtwbta", "ypnyghshxc"))
+                .withGatewayAddress("hkgmnsg"))
+            .withRevision(4535170373281810468L)
+            .create();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkloadNetworkSegment response =
-            manager
-                .workloadNetworks()
-                .defineSegments("xoe")
-                .withExistingPrivateCloud("pzoyhlfbcg", "gcl")
-                .withDisplayName("njipnwjfujql")
-                .withConnectedGateway("cbahhpzpofoiy")
-                .withSubnet(
-                    new WorkloadNetworkSegmentSubnet()
-                        .withDhcpRanges(Arrays.asList("ilkmk", "holvdn", "viauogphua"))
-                        .withGatewayAddress("vtiukyef"))
-                .withRevision(1819806073329112411L)
-                .create();
-
-        Assertions.assertEquals("bowsepd", response.displayName());
-        Assertions.assertEquals("kmtdher", response.connectedGateway());
-        Assertions.assertEquals("c", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("hwpnulaiywzejywh", response.subnet().gatewayAddress());
-        Assertions.assertEquals(5446103695513333706L, response.revision());
+        Assertions.assertEquals("zydmxzjijpvuaurk", response.displayName());
+        Assertions.assertEquals("ci", response.connectedGateway());
+        Assertions.assertEquals("fx", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("rnnqb", response.subnet().gatewayAddress());
+        Assertions.assertEquals(277871752472439784L, response.revision());
     }
 }

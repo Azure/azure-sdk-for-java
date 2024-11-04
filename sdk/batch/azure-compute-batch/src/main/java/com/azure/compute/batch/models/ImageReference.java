@@ -38,19 +38,31 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
     private String sku;
 
     /*
-     * The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the latest version of an Image. If omitted, the default is 'latest'.
+     * The version of the Azure Virtual Machines Marketplace Image. A value of 'latest' can be specified to select the
+     * latest version of an Image. If omitted, the default is 'latest'.
      */
     @Generated
     private String version;
 
     /*
-     * The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using this Image Id. This is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{VersionId} or /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName} for always defaulting to the latest image version. This property is mutually exclusive with other ImageReference properties. The Azure Compute Gallery Image must have replicas in the same region and must be in the same subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * The ARM resource identifier of the Azure Compute Gallery Image. Compute Nodes in the Pool will be created using
+     * this Image Id. This is of the form
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/images/{imageDefinitionName}/versions/{VersionId} or
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/images/{imageDefinitionName} for always defaulting to the latest image version. This property is mutually
+     * exclusive with other ImageReference properties. The Azure Compute Gallery Image must have replicas in the same
+     * region and must be in the same subscription as the Azure Batch account. If the image version is not specified in
+     * the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute
+     * Node agent to communicate with the Batch service see
+     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
     private String virtualMachineImageId;
 
     /*
-     * The specific version of the platform image or marketplace image used to create the node. This read-only field differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
+     * The specific version of the platform image or marketplace image used to create the node. This read-only field
+     * differs from 'version' only if the value specified for 'version' when the pool was created was 'latest'.
      */
     @Generated
     private String exactVersion;
@@ -224,6 +236,8 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
         jsonWriter.writeStringField("sku", this.sku);
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeStringField("virtualMachineImageId", this.virtualMachineImageId);
+        jsonWriter.writeStringField("sharedGalleryImageId", this.sharedGalleryImageId);
+        jsonWriter.writeStringField("communityGalleryImageId", this.communityGalleryImageId);
         return jsonWriter.writeEndObject();
     }
 
@@ -254,11 +268,77 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
                     deserializedImageReference.virtualMachineImageId = reader.getString();
                 } else if ("exactVersion".equals(fieldName)) {
                     deserializedImageReference.exactVersion = reader.getString();
+                } else if ("sharedGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.sharedGalleryImageId = reader.getString();
+                } else if ("communityGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.communityGalleryImageId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedImageReference;
         });
+    }
+
+    /*
+     * The shared gallery image unique identifier. This property is mutually exclusive with other properties and can be
+     * fetched from shared gallery image GET call.
+     */
+    @Generated
+    private String sharedGalleryImageId;
+
+    /*
+     * The community gallery image unique identifier. This property is mutually exclusive with other properties and can
+     * be fetched from community gallery image GET call.
+     */
+    @Generated
+    private String communityGalleryImageId;
+
+    /**
+     * Get the sharedGalleryImageId property: The shared gallery image unique identifier. This property is mutually
+     * exclusive with other properties and can be fetched from shared gallery image GET call.
+     *
+     * @return the sharedGalleryImageId value.
+     */
+    @Generated
+    public String getSharedGalleryImageId() {
+        return this.sharedGalleryImageId;
+    }
+
+    /**
+     * Set the sharedGalleryImageId property: The shared gallery image unique identifier. This property is mutually
+     * exclusive with other properties and can be fetched from shared gallery image GET call.
+     *
+     * @param sharedGalleryImageId the sharedGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    @Generated
+    public ImageReference setSharedGalleryImageId(String sharedGalleryImageId) {
+        this.sharedGalleryImageId = sharedGalleryImageId;
+        return this;
+    }
+
+    /**
+     * Get the communityGalleryImageId property: The community gallery image unique identifier. This property is
+     * mutually exclusive with other properties and can be fetched from community gallery image GET call.
+     *
+     * @return the communityGalleryImageId value.
+     */
+    @Generated
+    public String getCommunityGalleryImageId() {
+        return this.communityGalleryImageId;
+    }
+
+    /**
+     * Set the communityGalleryImageId property: The community gallery image unique identifier. This property is
+     * mutually exclusive with other properties and can be fetched from community gallery image GET call.
+     *
+     * @param communityGalleryImageId the communityGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    @Generated
+    public ImageReference setCommunityGalleryImageId(String communityGalleryImageId) {
+        this.communityGalleryImageId = communityGalleryImageId;
+        return this;
     }
 }

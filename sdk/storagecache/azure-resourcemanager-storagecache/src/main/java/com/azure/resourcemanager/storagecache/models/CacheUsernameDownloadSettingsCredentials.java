@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CacheUsernameDownloadSettingsCredentials {
     /*
-     * The Bind Distinguished Name identity to be used in the secure LDAP connection. This value is stored encrypted
-     * and not returned on response.
+     * The Bind Distinguished Name identity to be used in the secure LDAP connection. This value is stored encrypted and not returned on response.
      */
     @JsonProperty(value = "bindDn")
     private String bindDn;
 
     /*
-     * The Bind password to be used in the secure LDAP connection. This value is stored encrypted and not returned on
-     * response.
+     * The Bind password to be used in the secure LDAP connection. This value is stored encrypted and not returned on response.
      */
     @JsonProperty(value = "bindPassword")
     private String bindPassword;

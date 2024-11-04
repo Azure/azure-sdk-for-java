@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Container App scaling configurations.
  */
 @Fluent
-public final class Scale {
+public final class Scale implements JsonSerializable<Scale> {
     /*
      * Optional. Minimum number of container replicas.
      */
-    @JsonProperty(value = "minReplicas")
     private Integer minReplicas;
 
     /*
      * Optional. Maximum number of container replicas. Defaults to 10 if not set.
      */
-    @JsonProperty(value = "maxReplicas")
     private Integer maxReplicas;
+
+    /*
+     * Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+     */
+    private Integer cooldownPeriod;
+
+    /*
+     * Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+     */
+    private Integer pollingInterval;
 
     /*
      * Scaling rules.
      */
-    @JsonProperty(value = "rules")
     private List<ScaleRule> rules;
 
     /**
@@ -78,6 +89,46 @@ public final class Scale {
     }
 
     /**
+     * Get the cooldownPeriod property: Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+     * 
+     * @return the cooldownPeriod value.
+     */
+    public Integer cooldownPeriod() {
+        return this.cooldownPeriod;
+    }
+
+    /**
+     * Set the cooldownPeriod property: Optional. KEDA Cooldown Period. Defaults to 300 seconds if not set.
+     * 
+     * @param cooldownPeriod the cooldownPeriod value to set.
+     * @return the Scale object itself.
+     */
+    public Scale withCooldownPeriod(Integer cooldownPeriod) {
+        this.cooldownPeriod = cooldownPeriod;
+        return this;
+    }
+
+    /**
+     * Get the pollingInterval property: Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+     * 
+     * @return the pollingInterval value.
+     */
+    public Integer pollingInterval() {
+        return this.pollingInterval;
+    }
+
+    /**
+     * Set the pollingInterval property: Optional. KEDA Polling Interval. Defaults to 30 seconds if not set.
+     * 
+     * @param pollingInterval the pollingInterval value to set.
+     * @return the Scale object itself.
+     */
+    public Scale withPollingInterval(Integer pollingInterval) {
+        this.pollingInterval = pollingInterval;
+        return this;
+    }
+
+    /**
      * Get the rules property: Scaling rules.
      * 
      * @return the rules value.
@@ -106,5 +157,54 @@ public final class Scale {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minReplicas", this.minReplicas);
+        jsonWriter.writeNumberField("maxReplicas", this.maxReplicas);
+        jsonWriter.writeNumberField("cooldownPeriod", this.cooldownPeriod);
+        jsonWriter.writeNumberField("pollingInterval", this.pollingInterval);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Scale from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Scale if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Scale.
+     */
+    public static Scale fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Scale deserializedScale = new Scale();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minReplicas".equals(fieldName)) {
+                    deserializedScale.minReplicas = reader.getNullable(JsonReader::getInt);
+                } else if ("maxReplicas".equals(fieldName)) {
+                    deserializedScale.maxReplicas = reader.getNullable(JsonReader::getInt);
+                } else if ("cooldownPeriod".equals(fieldName)) {
+                    deserializedScale.cooldownPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("pollingInterval".equals(fieldName)) {
+                    deserializedScale.pollingInterval = reader.getNullable(JsonReader::getInt);
+                } else if ("rules".equals(fieldName)) {
+                    List<ScaleRule> rules = reader.readArray(reader1 -> ScaleRule.fromJson(reader1));
+                    deserializedScale.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScale;
+        });
     }
 }

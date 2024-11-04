@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SimStaticIpPropertiesStaticIp {
     /*
-     * The IPv4 address assigned to the SIM at this network scope. This address must be in the
-     * userEquipmentStaticAddressPoolPrefix defined in the attached data network.
+     * The IPv4 address assigned to the SIM at this network scope. This address must be in the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
      */
     @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
@@ -26,8 +25,8 @@ public final class SimStaticIpPropertiesStaticIp {
     }
 
     /**
-     * Get the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be
-     * in the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
+     * Get the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be in
+     * the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
      * 
      * @return the ipv4Address value.
      */
@@ -36,8 +35,8 @@ public final class SimStaticIpPropertiesStaticIp {
     }
 
     /**
-     * Set the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be
-     * in the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
+     * Set the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be in
+     * the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
      * 
      * @param ipv4Address the ipv4Address value to set.
      * @return the SimStaticIpPropertiesStaticIp object itself.

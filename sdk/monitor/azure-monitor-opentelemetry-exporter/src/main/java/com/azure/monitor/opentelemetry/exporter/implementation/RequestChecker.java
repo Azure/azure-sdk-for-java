@@ -26,8 +26,8 @@ public final class RequestChecker {
         return isRequest(span.getKind(), span.getParentSpanContext(), span::getAttribute);
     }
 
-    public static boolean isRequest(
-        SpanKind kind, SpanContext parentSpanContext, Function<AttributeKey<String>, String> attrFn) {
+    public static boolean isRequest(SpanKind kind, SpanContext parentSpanContext,
+        Function<AttributeKey<String>, String> attrFn) {
         if (kind == SpanKind.INTERNAL) {
             // INTERNAL scheduled job spans with no parent are mapped to requests
             return attrFn.apply(JOB_SYSTEM) != null && !parentSpanContext.isValid();

@@ -21,7 +21,7 @@ public final class TriggersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"ef\",\"description\":\"ngsityt\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datarw\"],\"\":{\"ftperw\":\"dataugdwrlqfqxzny\",\"dtbuikrpwyhrqdn\":\"datance\"}},\"name\":\"rfukygryrf\",\"type\":\"kjusue\",\"etag\":\"voiyaqhbbifll\",\"id\":\"g\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"jjrhvdxfs\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datailsrxc\",\"datayk\",\"datavksvflurrfnlhlfv\"],\"\":{\"cblvpwuqq\":\"datahy\",\"rcxamgvi\":\"datamfuuhmftshg\",\"y\":\"datazvvrfplkemvvlge\",\"plhwplyvqofpemc\":\"datash\"}},\"name\":\"xkifjvil\",\"type\":\"opw\",\"etag\":\"bewbxaufo\",\"id\":\"mdpgg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class TriggersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerResource response = manager.triggers()
-            .getWithResponse("sz", "a", "y", "rshlptlyxfnhc", com.azure.core.util.Context.NONE)
+            .getWithResponse("zcvmr", "xebslausvbv", "ctiso", "fefyggbacmn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("g", response.id());
-        Assertions.assertEquals("ngsityt", response.properties().description());
+        Assertions.assertEquals("mdpgg", response.id());
+        Assertions.assertEquals("jjrhvdxfs", response.properties().description());
     }
 }

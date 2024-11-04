@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration Assignment. */
+/**
+ * Configuration Assignment.
+ */
 @Fluent
 public final class ConfigurationAssignmentInner extends ProxyResource {
     /*
@@ -31,13 +33,15 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConfigurationAssignmentInner class. */
+    /**
+     * Creates an instance of ConfigurationAssignmentInner class.
+     */
     public ConfigurationAssignmentInner() {
     }
 
     /**
      * Get the location property: Location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -46,7 +50,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Set the location property: Location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ConfigurationAssignmentInner object itself.
      */
@@ -57,7 +61,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Properties of the configuration assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConfigurationAssignmentProperties innerProperties() {
@@ -66,7 +70,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -75,7 +79,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Get the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -84,7 +88,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Set the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ConfigurationAssignmentInner object itself.
      */
@@ -98,7 +102,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Get the resourceId property: The unique resourceId.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -107,7 +111,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Set the resourceId property: The unique resourceId.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConfigurationAssignmentInner object itself.
      */
@@ -121,7 +125,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Get the filter property: Properties of the configuration assignment.
-     *
+     * 
      * @return the filter value.
      */
     public ConfigurationAssignmentFilterProperties filter() {
@@ -130,7 +134,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Set the filter property: Properties of the configuration assignment.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the ConfigurationAssignmentInner object itself.
      */
@@ -144,7 +148,7 @@ public final class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

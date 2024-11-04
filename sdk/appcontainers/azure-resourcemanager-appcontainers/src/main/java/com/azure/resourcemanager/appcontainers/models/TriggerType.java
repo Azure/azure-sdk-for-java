@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
      * @param name a name to look for.
      * @return the corresponding TriggerType.
      */
-    @JsonCreator
     public static TriggerType fromString(String name) {
         return fromString(name, TriggerType.class);
     }

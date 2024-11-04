@@ -43,24 +43,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ManagedInstanceEncryptionProtectorsClient.
  */
 public final class ManagedInstanceEncryptionProtectorsClientImpl implements ManagedInstanceEncryptionProtectorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedInstanceEncryptionProtectorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedInstanceEncryptionProtectorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedInstanceEncryptionProtectorsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ManagedInstanceEncryptionProtectorsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagedInstanceEncryptionProtectorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,100 +71,77 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     public interface ManagedInstanceEncryptionProtectorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceEncryptionProtectorListResult>> listByInstance(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstanceEncryptionProtectorListResult>> listByInstance(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstanceEncryptionProtectorInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstanceEncryptionProtectorInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedInstanceEncryptionProtectorInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> revalidate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> revalidate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("encryptionProtectorName") EncryptionProtectorName encryptionProtectorName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceEncryptionProtectorListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed instance encryption protectors along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
+    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>>
+        listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,57 +152,38 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByInstance(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByInstance(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<ManagedInstanceEncryptionProtectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed instance encryption protectors along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>>
+        listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,38 +194,23 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstance(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,18 +218,17 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a list of managed instance encryption protectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+    public PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,18 +237,17 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a list of managed instance encryption protectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
+    private PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
+        return new PagedFlux<>(() -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -314,16 +255,16 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a list of managed instance encryption protectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(
-        String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(String resourceGroupName,
+        String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,32 +273,30 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a list of managed instance encryption protectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(String resourceGroupName,
+        String managedInstanceName, Context context) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
     /**
      * Gets a managed instance encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a managed instance encryption protector along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
+    public Mono<Response<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -368,58 +307,40 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (encryptionProtectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            encryptionProtectorName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                encryptionProtectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a managed instance encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a managed instance encryption protector along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
+    private Mono<Response<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -430,35 +351,24 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (encryptionProtectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                encryptionProtectorName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, encryptionProtectorName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a managed instance encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,17 +377,17 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a managed instance encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceEncryptionProtectorInner> getAsync(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
+    public Mono<ManagedInstanceEncryptionProtectorInner> getAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a managed instance encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @param context The context to associate with this operation.
@@ -487,19 +397,16 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a managed instance encryption protector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedInstanceEncryptionProtectorInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
+    public Response<ManagedInstanceEncryptionProtectorInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).block();
     }
 
     /**
      * Gets a managed instance encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,37 +415,33 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return a managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner get(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
+    public ManagedInstanceEncryptionProtectorInner get(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
         return getWithResponse(resourceGroupName, managedInstanceName, encryptionProtectorName, Context.NONE)
             .getValue();
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the managed instance encryption protector along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName,
         ManagedInstanceEncryptionProtectorInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -549,15 +452,12 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (encryptionProtectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -566,27 +466,17 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            encryptionProtectorName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, encryptionProtectorName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -594,21 +484,16 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the managed instance encryption protector along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        ManagedInstanceEncryptionProtectorInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName,
+        ManagedInstanceEncryptionProtectorInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -619,15 +504,12 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (encryptionProtectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -636,24 +518,16 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                encryptionProtectorName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+            encryptionProtectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -664,29 +538,21 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName,
-            ManagedInstanceEncryptionProtectorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, encryptionProtectorName, parameters);
-        return this
-            .client
-            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedInstanceEncryptionProtectorInner.class,
-                ManagedInstanceEncryptionProtectorInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
+            encryptionProtectorName, parameters);
+        return this.client
+            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ManagedInstanceEncryptionProtectorInner.class,
+                ManagedInstanceEncryptionProtectorInner.class, this.client.getContext());
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -698,31 +564,23 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName,
-            ManagedInstanceEncryptionProtectorInner parameters,
+        beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+            EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, encryptionProtectorName, parameters, context);
-        return this
-            .client
-            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedInstanceEncryptionProtectorInner.class,
-                ManagedInstanceEncryptionProtectorInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName,
+            encryptionProtectorName, parameters, context);
+        return this.client
+            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ManagedInstanceEncryptionProtectorInner.class,
+                ManagedInstanceEncryptionProtectorInner.class, context);
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -733,20 +591,18 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName,
-            ManagedInstanceEncryptionProtectorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters)
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
+            EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -758,22 +614,20 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String managedInstanceName,
-            EncryptionProtectorName encryptionProtectorName,
-            ManagedInstanceEncryptionProtectorInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
+            EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, managedInstanceName, encryptionProtectorName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -783,10 +637,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the managed instance encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
+    public Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName,
         ManagedInstanceEncryptionProtectorInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters)
             .last()
@@ -795,9 +647,9 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -808,23 +660,18 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the managed instance encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        ManagedInstanceEncryptionProtectorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, managedInstanceName, encryptionProtectorName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName,
+        ManagedInstanceEncryptionProtectorInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -834,19 +681,16 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        ManagedInstanceEncryptionProtectorInner parameters) {
+    public ManagedInstanceEncryptionProtectorInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters).block();
     }
 
     /**
      * Updates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param parameters The requested encryption protector resource state.
@@ -857,11 +701,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        ManagedInstanceEncryptionProtectorInner parameters,
+    public ManagedInstanceEncryptionProtectorInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, ManagedInstanceEncryptionProtectorInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, parameters, context)
             .block();
@@ -869,9 +710,9 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,13 +721,11 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
+    public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -897,36 +736,25 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (encryptionProtectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .revalidate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            encryptionProtectorName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+                context -> service.revalidate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    encryptionProtectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
@@ -936,16 +764,11 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -956,33 +779,23 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (encryptionProtectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter encryptionProtectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .revalidate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                encryptionProtectorName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.revalidate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+            encryptionProtectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -991,21 +804,19 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
@@ -1015,24 +826,20 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName,
+        String managedInstanceName, EncryptionProtectorName encryptionProtectorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,39 +848,37 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRevalidate(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
-        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).getSyncPoller();
-    }
-
-    /**
-     * Revalidates an existing encryption protector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRevalidate(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
-        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context)
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
+        return this.beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName)
             .getSyncPoller();
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param encryptionProtectorName The name of the encryption protector to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
+        return this.beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Revalidates an existing encryption protector.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,18 +887,17 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revalidateAsync(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
-        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName)
-            .last()
+    public Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
+        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
@@ -1103,21 +907,17 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> revalidateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
-        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context)
-            .last()
+    private Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
+        return beginRevalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1125,16 +925,16 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revalidate(
-        String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName) {
+    public void revalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName) {
         revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName).block();
     }
 
     /**
      * Revalidates an existing encryption protector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
      * @param context The context to associate with this operation.
@@ -1143,88 +943,65 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revalidate(
-        String resourceGroupName,
-        String managedInstanceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
+    public void revalidate(String resourceGroupName, String managedInstanceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
         revalidateAsync(resourceGroupName, managedInstanceName, encryptionProtectorName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed instance encryption protectors along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>>
+        listByInstanceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ManagedInstanceEncryptionProtectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed instance encryption protectors along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>>
+        listByInstanceNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

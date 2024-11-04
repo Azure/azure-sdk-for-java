@@ -5,9 +5,8 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
@@ -15,9 +14,8 @@ matrix:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
@@ -25,9 +23,8 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
       downloadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking
@@ -35,9 +32,8 @@ matrix:
       testScenario: downloadstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
@@ -45,9 +41,8 @@ matrix:
       testScenario: downloadstream
       sync: false
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), requiring multiple requests
@@ -55,9 +50,8 @@ matrix:
       testScenario: downloadstream
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
       downloadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small content, no chunking
@@ -65,20 +59,8 @@ matrix:
       testScenario: downloadcontent
       sync: true
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test downloads 1KB (1024 bytes), small content, no chunking with async client
-    # ignore this scenario for now since async download content does large buffering
-    downloadcontentasync:
-      testScenario: downloadcontent
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      downloadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large content requiring multiple requests
@@ -86,9 +68,8 @@ matrix:
       testScenario: downloadcontent
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
       downloadFaults: true
-      durationMin: 10
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes) to open input stream, no chunking
@@ -96,9 +77,8 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
@@ -106,9 +86,8 @@ matrix:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
       downloadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
@@ -116,7 +95,6 @@ matrix:
       testScenario: openseekablebytechannelread
       sync: true
       sizeBytes: 1024
-      parallel: 50
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -126,9 +104,8 @@ matrix:
       testScenario: openseekablebytechannelread
       sync: true
       sizeBytes: "52428800"
-      parallel: 50
       downloadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to append blob, no chunking
@@ -136,9 +113,8 @@ matrix:
       testScenario: appendblock
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to append blob, no chunking
@@ -146,9 +122,8 @@ matrix:
       testScenario: appendblock
       sync: false
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 25MB (1024 * 1024 * 25) to append blob requiring multiple requests
@@ -156,29 +131,8 @@ matrix:
       testScenario: appendblock
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    # this test uploads 1KB (1024 bytes) to append blob from url, no chunking
-    appendblockfromurlsmall:
-      testScenario: appendblockfromurl
-      sync: true
-      sizeBytes: 1024
-      parallel: 50
-      uploadFaults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 50MB (1024 * 1024 * 50) to append blob from url, no chunking
-    appendblockfromurllarge:
-      testScenario: appendblockfromurl
-      sync: true
-      sizeBytes: "52428800"
-      parallel: 50
-      uploadFaults: true
-      durationMin: 25
+      durationMin: 30
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to append blob output stream, no chunking
@@ -186,9 +140,8 @@ matrix:
       testScenario: appendbloboutputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 10KB (1024 * 10) to append blob output stream, no chunking
@@ -196,9 +149,8 @@ matrix:
       testScenario: appendbloboutputstream
       sync: true
       sizeBytes: "10240"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to block blob upload, no chunking
@@ -206,9 +158,8 @@ matrix:
       testScenario: blockblobupload
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 25MB (1024 * 1024 * 50) to block blob upload, no chunking
@@ -216,29 +167,8 @@ matrix:
       testScenario: blockblobupload
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    # this test uploads 1KB (1024 bytes) to block blob upload from url, no chunking
-    blockuploadfromurlsmall:
-      testScenario: blockblobuploadfromurl
-      sync: true
-      sizeBytes: 1024
-      parallel: 50
-      uploadFaults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 50MB (1024 * 1024 * 50) to block blob upload from url, no chunking
-    blockuploadfromurllarge:
-      testScenario: blockblobuploadfromurl
-      sync: true
-      sizeBytes: "52428800"
-      parallel: 50
-      uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to block blob output stream, no chunking
@@ -246,9 +176,8 @@ matrix:
       testScenario: blockbloboutputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 25MB (1024 * 1024 * 25) to block blob output stream, no chunking
@@ -256,9 +185,8 @@ matrix:
       testScenario: blockbloboutputstream
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to block blob commit block list, no chunking
@@ -266,9 +194,8 @@ matrix:
       testScenario: commitblocklist
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 25MB (1024 * 1024 * 25) to block blob commit block list, no chunking
@@ -276,9 +203,8 @@ matrix:
       testScenario: commitblocklist
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to block blob open seekable byte channel write, no chunking
@@ -286,7 +212,6 @@ matrix:
       testScenario: openseekablebytechannelwrite
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
       durationMin: 10
       imageBuildDir: "../../.."
@@ -296,9 +221,8 @@ matrix:
       testScenario: openseekablebytechannelwrite
       sync: true
       sizeBytes: "52428800"
-      parallel: 50
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to block blob stage block, no chunking
@@ -306,9 +230,8 @@ matrix:
       testScenario: stageblock
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 25MB (1024 * 1024 * 25) to block blob stage block, requiring multiple requests
@@ -316,29 +239,8 @@ matrix:
       testScenario: stageblock
       sync: true
       sizeBytes: "26214400"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    # this test uploads 1KB (1024 bytes) to block blob stage block from url, no chunking
-    stageblockfromurlsmall:
-      testScenario: stageblock
-      sync: true
-      sizeBytes: 1024
-      parallel: 50
-      uploadFaults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 25MB (1024 * 1024 * 25) to block blob stage block from url, requiring multiple requests
-    stageblockfromurllarge:
-      testScenario: stageblock
-      sync: true
-      sizeBytes: "26214400"
-      parallel: 10
-      uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to page blob output stream, no chunking
@@ -346,9 +248,8 @@ matrix:
       testScenario: pagebloboutputstream
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 10KB (1024 * 10) to page blob output stream, requiring multiple requests
@@ -356,9 +257,8 @@ matrix:
       testScenario: pagebloboutputstream
       sync: true
       sizeBytes: "10240"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to page blob upload pages, no chunking
@@ -366,9 +266,8 @@ matrix:
       testScenario: uploadpages
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 4MB (1024 * 1024 * 4) to page blob upload pages, requiring multiple requests
@@ -376,29 +275,8 @@ matrix:
       testScenario: uploadpages
       sync: true
       sizeBytes: "4194304"
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 1KB (1024 bytes) to page blob upload pages from url, no chunking
-    uploadpagesfromurlsmall:
-      testScenario: uploadpagesfromurl
-      sync: true
-      sizeBytes: 1024
-      parallel: 50
-      uploadFaults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test uploads 4MB (1024 * 1024 * 4) to page blob upload pages from url, requiring multiple requests
-    uploadpagesfromurllarge:
-      testScenario: uploadpagesfromurl
-      sync: true
-      sizeBytes: "4194304"
-      parallel: 50
-      uploadFaults: true
-      durationMin: 10
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to blob, no chunking
@@ -406,9 +284,8 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to blob, no chunking
@@ -416,9 +293,8 @@ matrix:
       testScenario: upload
       sync: false
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
-      durationMin: 10
+      durationMin: 25
       imageBuildDir: "../../.."
 
     # this test uploads 4MB (1024 * 1024 * 4) to blob, requiring multiple requests
@@ -426,9 +302,8 @@ matrix:
       testScenario: upload
       sync: true
       sizeBytes: "52428800"
-      parallel: 10
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to blob from file, no chunking
@@ -436,7 +311,6 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: 1024
-      parallel: 50
       uploadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -446,7 +320,6 @@ matrix:
       testScenario: uploadfromfile
       sync: true
       sizeBytes: "52428800"
-      parallel: 50
       uploadFaults: true
-      durationMin: 25
+      durationMin: 60
       imageBuildDir: "../../.."

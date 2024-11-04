@@ -23,45 +23,44 @@ final class StorageServiceConnectionString {
         ConnectionSettingsFilter automaticEndpointsMatchSpec = automaticEndpointsMatchSpec();
         ConnectionSettingsFilter explicitEndpointsMatchSpec = explicitEndpointsMatchSpec();
 
-        boolean matchesAutomaticEndpointsSpec =
-            ConnectionSettingsFilter.matchesSpecification(settings, automaticEndpointsMatchSpec);
-        boolean matchesExplicitEndpointsSpec =
-            ConnectionSettingsFilter.matchesSpecification(settings, explicitEndpointsMatchSpec);
+        boolean matchesAutomaticEndpointsSpec
+            = ConnectionSettingsFilter.matchesSpecification(settings, automaticEndpointsMatchSpec);
+        boolean matchesExplicitEndpointsSpec
+            = ConnectionSettingsFilter.matchesSpecification(settings, explicitEndpointsMatchSpec);
 
         if (matchesAutomaticEndpointsSpec || matchesExplicitEndpointsSpec) {
             if (matchesAutomaticEndpointsSpec
                 && !settings.hasSetting(StorageConstants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME)) {
 
-                settings.setSetting(
-                    StorageConstants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME, "https");
+                settings.setSetting(StorageConstants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME,
+                    "https");
             }
 
             // If the settings BlobEndpoint, FileEndpoint, QueueEndpoint, TableEndpoint presents it will be a well
             // formed Uri, including 'http' or 'https' prefix.
-            String blobEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME);
-            String queueEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.QUEUE_ENDPOINT_NAME);
-            String tableEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.TABLE_ENDPOINT_NAME);
-            String fileEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.FILE_ENDPOINT_NAME);
-            String blobSecondaryEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.BLOB_SECONDARY_ENDPOINT_NAME);
-            String queueSecondaryEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.QUEUE_SECONDARY_ENDPOINT_NAME);
-            String tableSecondaryEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.TABLE_SECONDARY_ENDPOINT_NAME);
-            String fileSecondaryEndpoint =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.FILE_SECONDARY_ENDPOINT_NAME);
+            String blobEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME);
+            String queueEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.QUEUE_ENDPOINT_NAME);
+            String tableEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.TABLE_ENDPOINT_NAME);
+            String fileEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.FILE_ENDPOINT_NAME);
+            String blobSecondaryEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.BLOB_SECONDARY_ENDPOINT_NAME);
+            String queueSecondaryEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.QUEUE_SECONDARY_ENDPOINT_NAME);
+            String tableSecondaryEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.TABLE_SECONDARY_ENDPOINT_NAME);
+            String fileSecondaryEndpoint
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.FILE_SECONDARY_ENDPOINT_NAME);
 
             if (isValidPrimarySecondaryPair(blobEndpoint, blobSecondaryEndpoint)
                 && isValidPrimarySecondaryPair(queueEndpoint, queueSecondaryEndpoint)
                 && isValidPrimarySecondaryPair(tableEndpoint, tableSecondaryEndpoint)
                 && isValidPrimarySecondaryPair(fileEndpoint, fileSecondaryEndpoint)) {
 
-                return new StorageConnectionString(
-                    StorageAuthenticationSettings.fromConnectionSettings(settings),
+                return new StorageConnectionString(StorageAuthenticationSettings.fromConnectionSettings(settings),
                     StorageEndpoint.fromStorageSettings(settings, "blob",
                         StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME,
                         StorageConstants.ConnectionStringConstants.BLOB_SECONDARY_ENDPOINT_NAME,
@@ -86,28 +85,17 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter automaticEndpointsMatchSpec() {
-        return ConnectionSettingsFilter.matchesExactly(
-            ConnectionSettingsFilter.matchesAll(
-                ConnectionSettingsFilter.matchesOne(
-                    ConnectionSettingsFilter.matchesAll(requireAccountKey()),
-                    requireSas()),
-                requireAccountName(),
-                optionalEndpoints(),
-                optionalEndpointProtocolAndSuffix())
-        );
+        return ConnectionSettingsFilter.matchesExactly(ConnectionSettingsFilter.matchesAll(
+            ConnectionSettingsFilter.matchesOne(ConnectionSettingsFilter.matchesAll(requireAccountKey()), requireSas()),
+            requireAccountName(), optionalEndpoints(), optionalEndpointProtocolAndSuffix()));
     }
 
     private static ConnectionSettingsFilter explicitEndpointsMatchSpec() {
-        ConnectionSettingsFilter validCredentials =
-            ConnectionSettingsFilter.matchesOne(
-                requireAccountNameAndKeyNoSas(),
-                requireSasOptionalAccountNameNoAccountKey(),
-                noAccountNameNoAccountKeyNoSas());
+        ConnectionSettingsFilter validCredentials = ConnectionSettingsFilter.matchesOne(requireAccountNameAndKeyNoSas(),
+            requireSasOptionalAccountNameNoAccountKey(), noAccountNameNoAccountKeyNoSas());
 
-        return ConnectionSettingsFilter.matchesExactly(
-            ConnectionSettingsFilter.matchesAll(validCredentials,
-                requireAtLeastOnePrimaryEndpoint(),
-                optionalSecondaryEndpoints()));
+        return ConnectionSettingsFilter.matchesExactly(ConnectionSettingsFilter.matchesAll(validCredentials,
+            requireAtLeastOnePrimaryEndpoint(), optionalSecondaryEndpoints()));
     }
 
     private static ConnectionSettingsFilter requireAccountName() {
@@ -119,8 +107,8 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter requireSas() {
-        return ConnectionSettingsFilter.allRequired(
-            StorageConstants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
+        return ConnectionSettingsFilter
+            .allRequired(StorageConstants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
     }
 
     private static ConnectionSettingsFilter requireAccountNameAndKey() {
@@ -141,21 +129,15 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter requireAccountNameAndKeyNoSas() {
-        return ConnectionSettingsFilter.matchesAll(
-            requireAccountNameAndKey(),
-            noSas());
+        return ConnectionSettingsFilter.matchesAll(requireAccountNameAndKey(), noSas());
     }
 
     private static ConnectionSettingsFilter requireSasOptionalAccountNameNoAccountKey() {
-        return ConnectionSettingsFilter.matchesAll(
-            requireSas(),
-            optionalAccountName(),
-            noAccountKey());
+        return ConnectionSettingsFilter.matchesAll(requireSas(), optionalAccountName(), noAccountKey());
     }
 
     private static ConnectionSettingsFilter noAccountNameNoAccountKeyNoSas() {
-        return ConnectionSettingsFilter.none(
-            StorageConstants.ConnectionStringConstants.ACCOUNT_NAME,
+        return ConnectionSettingsFilter.none(StorageConstants.ConnectionStringConstants.ACCOUNT_NAME,
             StorageConstants.ConnectionStringConstants.ACCOUNT_KEY_NAME,
             StorageConstants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
     }
@@ -167,8 +149,7 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter optionalEndpoints() {
-        return ConnectionSettingsFilter.optional(
-            StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME,
+        return ConnectionSettingsFilter.optional(StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME,
             StorageConstants.ConnectionStringConstants.BLOB_SECONDARY_ENDPOINT_NAME,
             StorageConstants.ConnectionStringConstants.QUEUE_ENDPOINT_NAME,
             StorageConstants.ConnectionStringConstants.QUEUE_SECONDARY_ENDPOINT_NAME,
@@ -179,8 +160,7 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter requireAtLeastOnePrimaryEndpoint() {
-        return ConnectionSettingsFilter.atLeastOne(
-            StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME,
+        return ConnectionSettingsFilter.atLeastOne(StorageConstants.ConnectionStringConstants.BLOB_ENDPOINT_NAME,
             StorageConstants.ConnectionStringConstants.QUEUE_ENDPOINT_NAME,
             StorageConstants.ConnectionStringConstants.TABLE_ENDPOINT_NAME,
             StorageConstants.ConnectionStringConstants.FILE_ENDPOINT_NAME);

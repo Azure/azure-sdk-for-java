@@ -19,43 +19,26 @@ import static java.util.Arrays.asList;
 class MappingsBuilder {
 
     enum MappingType {
-        LOG,
-        SPAN,
-        METRIC
+        LOG, SPAN, METRIC
     }
-    public static final Mappings EMPTY_MAPPINGS = new Mappings(Collections.emptyMap(), Trie.<PrefixMapping>newBuilder().build());
+
+    public static final Mappings EMPTY_MAPPINGS
+        = new Mappings(Collections.emptyMap(), Trie.<PrefixMapping>newBuilder().build());
 
     // TODO need to keep this list in sync as new semantic conventions are defined
-    private static final Set<String> IGNORED_LOG_AND_SPAN_STANDARD_ATTRIBUTE_PREFIXES =
-        new HashSet<>(
-            asList(
-                "server.",
-                "client.",
-                "network.",
-                "url.",
-                "error.",
-                "http.",
-                "db.",
-                "message.",
-                "messaging.",
-                "rpc.",
-                "enduser.",
-                "net.",
-                "peer.",
-                "exception.",
-                "thread.",
-                "faas.",
-                "code.",
-                "job.", // proposed semantic convention which we use for job,
-                "applicationinsights.internal."));
+    private static final Set<String> IGNORED_LOG_AND_SPAN_STANDARD_ATTRIBUTE_PREFIXES
+        = new HashSet<>(asList("server.", "client.", "network.", "url.", "error.", "http.", "db.", "message.",
+            "messaging.", "rpc.", "enduser.", "net.", "peer.", "exception.", "thread.", "faas.", "code.", "job.", // proposed semantic convention which we use for job,
+            "applicationinsights.internal."));
 
-    private static final Set<String> IGNORED_METRIC_INTERNAL_ATTRIBUTE_PREFIXES = Collections.singleton("applicationinsights.internal.");
+    private static final Set<String> IGNORED_METRIC_INTERNAL_ATTRIBUTE_PREFIXES
+        = Collections.singleton("applicationinsights.internal.");
 
     private final Map<String, ExactMapping> exactMappings = new HashMap<>();
     private final Trie.Builder<PrefixMapping> prefixMappings = Trie.newBuilder();
 
     MappingsBuilder(MappingType mappingType) {
-        switch(mappingType) {
+        switch (mappingType) {
             case LOG:
             case SPAN:
                 // ignore all standard attribute prefixes for Logs and Spans
@@ -64,6 +47,7 @@ class MappingsBuilder {
                     });
                 }
                 break;
+
             case METRIC:
                 // ignore all internal attribute prefixes for Metrics
                 for (String prefix : IGNORED_METRIC_INTERNAL_ATTRIBUTE_PREFIXES) {
@@ -97,36 +81,30 @@ class MappingsBuilder {
     }
 
     MappingsBuilder exactString(AttributeKey<String> attributeKey, String propertyName) {
-        exactMappings.put(
-            attributeKey.getKey(),
-            (telemetryBuilder, value) -> {
-                if (value instanceof String) {
-                    telemetryBuilder.addProperty(propertyName, (String) value);
-                }
-            });
+        exactMappings.put(attributeKey.getKey(), (telemetryBuilder, value) -> {
+            if (value instanceof String) {
+                telemetryBuilder.addProperty(propertyName, (String) value);
+            }
+        });
         return this;
     }
 
     MappingsBuilder exactLong(AttributeKey<Long> attributeKey, String propertyName) {
-        exactMappings.put(
-            attributeKey.getKey(),
-            (telemetryBuilder, value) -> {
-                if (value instanceof Long) {
-                    telemetryBuilder.addProperty(propertyName, Long.toString((Long) value));
-                }
-            });
+        exactMappings.put(attributeKey.getKey(), (telemetryBuilder, value) -> {
+            if (value instanceof Long) {
+                telemetryBuilder.addProperty(propertyName, Long.toString((Long) value));
+            }
+        });
         return this;
     }
 
     @SuppressWarnings("unchecked")
     MappingsBuilder exactStringArray(AttributeKey<List<String>> attributeKey, String propertyName) {
-        exactMappings.put(
-            attributeKey.getKey(),
-            (telemetryBuilder, value) -> {
-                if (value instanceof List) {
-                    telemetryBuilder.addProperty(propertyName, String.join(",", (List) value));
-                }
-            });
+        exactMappings.put(attributeKey.getKey(), (telemetryBuilder, value) -> {
+            if (value instanceof List) {
+                telemetryBuilder.addProperty(propertyName, String.join(",", (List) value));
+            }
+        });
         return this;
     }
 

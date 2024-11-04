@@ -11,15 +11,15 @@ public final class HttpServerLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpServerLocation model = BinaryData.fromString(
-            "{\"type\":\"tnaczkfwfatga\",\"relativeUrl\":\"datawkuh\",\"folderPath\":\"datahnskivdwgtqcume\",\"fileName\":\"dataaaqgoqbdiuycs\",\"\":{\"bhz\":\"dataowk\",\"htmqowi\":\"datarb\",\"ruozkgyfp\":\"dataasfgqgucyhfaimqv\"}}")
+            "{\"type\":\"HttpServerLocation\",\"relativeUrl\":\"datazzxljbkhxsdpla\",\"folderPath\":\"datay\",\"fileName\":\"datahweqjfyxydgtok\",\"\":{\"akglhpsesrfga\":\"datavwglgwzpv\",\"vxcgdhyhgoqgs\":\"dataqiy\",\"glqjoxtdahneaoov\":\"datayqyxyjrcbqpbis\"}}")
             .toObject(HttpServerLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpServerLocation model = new HttpServerLocation().withFolderPath("datahnskivdwgtqcume")
-            .withFileName("dataaaqgoqbdiuycs")
-            .withRelativeUrl("datawkuh");
+        HttpServerLocation model = new HttpServerLocation().withFolderPath("datay")
+            .withFileName("datahweqjfyxydgtok")
+            .withRelativeUrl("datazzxljbkhxsdpla");
         model = BinaryData.fromObject(model).toObject(HttpServerLocation.class);
     }
 }

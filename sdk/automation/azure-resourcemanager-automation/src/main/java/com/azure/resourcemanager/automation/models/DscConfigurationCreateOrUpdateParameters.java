@@ -6,42 +6,49 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.DscConfigurationCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create or update configuration operation. */
+/**
+ * The parameters supplied to the create or update configuration operation.
+ */
 @Fluent
-public final class DscConfigurationCreateOrUpdateParameters {
+public final class DscConfigurationCreateOrUpdateParameters
+    implements JsonSerializable<DscConfigurationCreateOrUpdateParameters> {
     /*
      * Gets or sets configuration create or update properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DscConfigurationCreateOrUpdateProperties innerProperties = new DscConfigurationCreateOrUpdateProperties();
 
     /*
      * Gets or sets name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Gets or sets the tags attached to the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of DscConfigurationCreateOrUpdateParameters class.
+     */
+    public DscConfigurationCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets configuration create or update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DscConfigurationCreateOrUpdateProperties innerProperties() {
@@ -50,7 +57,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the name property: Gets or sets name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +66,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -70,7 +77,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -79,7 +86,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -90,7 +97,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -99,7 +106,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the tags property: Gets or sets the tags attached to the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -110,7 +117,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -119,7 +126,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -133,7 +140,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -142,7 +149,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -156,7 +163,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the source property: Gets or sets the source.
-     *
+     * 
      * @return the source value.
      */
     public ContentSource source() {
@@ -165,7 +172,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the source property: Gets or sets the source.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -179,7 +186,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, DscConfigurationParameter> parameters() {
@@ -188,7 +195,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -202,7 +209,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -211,7 +218,7 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the configuration.
-     *
+     * 
      * @param description the description value to set.
      * @return the DscConfigurationCreateOrUpdateParameters object itself.
      */
@@ -225,19 +232,67 @@ public final class DscConfigurationCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DscConfigurationCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model DscConfigurationCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DscConfigurationCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscConfigurationCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscConfigurationCreateOrUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscConfigurationCreateOrUpdateParameters.
+     */
+    public static DscConfigurationCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscConfigurationCreateOrUpdateParameters deserializedDscConfigurationCreateOrUpdateParameters
+                = new DscConfigurationCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateParameters.innerProperties
+                        = DscConfigurationCreateOrUpdateProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateParameters.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDscConfigurationCreateOrUpdateParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDscConfigurationCreateOrUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscConfigurationCreateOrUpdateParameters;
+        });
+    }
 }

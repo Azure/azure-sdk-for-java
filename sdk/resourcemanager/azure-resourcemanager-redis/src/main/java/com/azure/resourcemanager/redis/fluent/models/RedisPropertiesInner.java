@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RedisConfiguration;
@@ -13,68 +17,64 @@ import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of the redis cache. */
+/**
+ * Properties of the redis cache.
+ */
 @Fluent
 public final class RedisPropertiesInner extends RedisCreateProperties {
     /*
      * Redis instance provisioning status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Redis host name.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * Redis non-SSL port.
      */
-    @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Integer port;
 
     /*
      * Redis SSL port.
      */
-    @JsonProperty(value = "sslPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer sslPort;
 
     /*
      * The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
      */
-    @JsonProperty(value = "accessKeys", access = JsonProperty.Access.WRITE_ONLY)
     private RedisAccessKeysInner accessKeys;
 
     /*
      * List of the linked servers associated with the cache
      */
-    @JsonProperty(value = "linkedServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<RedisLinkedServer> linkedServers;
 
     /*
      * List of the Redis instances associated with the cache
      */
-    @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<RedisInstanceDetails> instances;
 
     /*
      * List of private endpoint connection associated with the specified redis cache
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of RedisPropertiesInner class. */
+    /**
+     * Creates an instance of RedisPropertiesInner class.
+     */
     public RedisPropertiesInner() {
     }
 
     /**
      * Get the provisioningState property: Redis instance provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -83,7 +83,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the hostname property: Redis host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -92,7 +92,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the port property: Redis non-SSL port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -101,7 +101,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the sslPort property: Redis SSL port.
-     *
+     * 
      * @return the sslPort value.
      */
     public Integer sslPort() {
@@ -111,7 +111,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     /**
      * Get the accessKeys property: The keys of the Redis cache - not set if this object is not the response to Create
      * or Update redis cache.
-     *
+     * 
      * @return the accessKeys value.
      */
     public RedisAccessKeysInner accessKeys() {
@@ -120,7 +120,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the linkedServers property: List of the linked servers associated with the cache.
-     *
+     * 
      * @return the linkedServers value.
      */
     public List<RedisLinkedServer> linkedServers() {
@@ -129,7 +129,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /**
      * Get the instances property: List of the Redis instances associated with the cache.
-     *
+     * 
      * @return the instances value.
      */
     public List<RedisInstanceDetails> instances() {
@@ -139,98 +139,124 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * redis cache.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withSubnetId(String subnetId) {
         super.withSubnetId(subnetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withStaticIp(String staticIp) {
         super.withStaticIp(staticIp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withRedisVersion(String redisVersion) {
         super.withRedisVersion(redisVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withEnableNonSslPort(Boolean enableNonSslPort) {
         super.withEnableNonSslPort(enableNonSslPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withReplicasPerMaster(Integer replicasPerMaster) {
         super.withReplicasPerMaster(replicasPerMaster);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withReplicasPerPrimary(Integer replicasPerPrimary) {
         super.withReplicasPerPrimary(replicasPerPrimary);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withTenantSettings(Map<String, String> tenantSettings) {
         super.withTenantSettings(tenantSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withShardCount(Integer shardCount) {
         super.withShardCount(shardCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         super.withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisPropertiesInner withUpdateChannel(UpdateChannel updateChannel) {
         super.withUpdateChannel(updateChannel);
@@ -238,13 +264,20 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     }
 
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
+    public RedisPropertiesInner withDisableAccessKeyAuthentication(Boolean disableAccessKeyAuthentication) {
+        super.withDisableAccessKeyAuthentication(disableAccessKeyAuthentication);
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
     public void validate() {
-        super.validate();
         if (accessKeys() != null) {
             accessKeys().validate();
         }
@@ -257,5 +290,120 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (redisConfiguration() != null) {
+            redisConfiguration().validate();
+        }
+        if (sku() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model RedisPropertiesInner"));
+        } else {
+            sku().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisPropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeJsonField("redisConfiguration", redisConfiguration());
+        jsonWriter.writeStringField("redisVersion", redisVersion());
+        jsonWriter.writeBooleanField("enableNonSslPort", enableNonSslPort());
+        jsonWriter.writeNumberField("replicasPerMaster", replicasPerMaster());
+        jsonWriter.writeNumberField("replicasPerPrimary", replicasPerPrimary());
+        jsonWriter.writeMapField("tenantSettings", tenantSettings(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("shardCount", shardCount());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            minimumTlsVersion() == null ? null : minimumTlsVersion().toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        jsonWriter.writeStringField("updateChannel", updateChannel() == null ? null : updateChannel().toString());
+        jsonWriter.writeBooleanField("disableAccessKeyAuthentication", disableAccessKeyAuthentication());
+        jsonWriter.writeStringField("subnetId", subnetId());
+        jsonWriter.writeStringField("staticIP", staticIp());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisPropertiesInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisPropertiesInner.
+     */
+    public static RedisPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisPropertiesInner deserializedRedisPropertiesInner = new RedisPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withSku(Sku.fromJson(reader));
+                } else if ("redisConfiguration".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withRedisConfiguration(RedisConfiguration.fromJson(reader));
+                } else if ("redisVersion".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withRedisVersion(reader.getString());
+                } else if ("enableNonSslPort".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withEnableNonSslPort(reader.getNullable(JsonReader::getBoolean));
+                } else if ("replicasPerMaster".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withReplicasPerMaster(reader.getNullable(JsonReader::getInt));
+                } else if ("replicasPerPrimary".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withReplicasPerPrimary(reader.getNullable(JsonReader::getInt));
+                } else if ("tenantSettings".equals(fieldName)) {
+                    Map<String, String> tenantSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisPropertiesInner.withTenantSettings(tenantSettings);
+                } else if ("shardCount".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withShardCount(reader.getNullable(JsonReader::getInt));
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withMinimumTlsVersion(TlsVersion.fromString(reader.getString()));
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedRedisPropertiesInner
+                        .withPublicNetworkAccess(PublicNetworkAccess.fromString(reader.getString()));
+                } else if ("updateChannel".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withUpdateChannel(UpdateChannel.fromString(reader.getString()));
+                } else if ("disableAccessKeyAuthentication".equals(fieldName)) {
+                    deserializedRedisPropertiesInner
+                        .withDisableAccessKeyAuthentication(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withSubnetId(reader.getString());
+                } else if ("staticIP".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.withStaticIp(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.hostname = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.port = reader.getNullable(JsonReader::getInt);
+                } else if ("sslPort".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.sslPort = reader.getNullable(JsonReader::getInt);
+                } else if ("accessKeys".equals(fieldName)) {
+                    deserializedRedisPropertiesInner.accessKeys = RedisAccessKeysInner.fromJson(reader);
+                } else if ("linkedServers".equals(fieldName)) {
+                    List<RedisLinkedServer> linkedServers
+                        = reader.readArray(reader1 -> RedisLinkedServer.fromJson(reader1));
+                    deserializedRedisPropertiesInner.linkedServers = linkedServers;
+                } else if ("instances".equals(fieldName)) {
+                    List<RedisInstanceDetails> instances
+                        = reader.readArray(reader1 -> RedisInstanceDetails.fromJson(reader1));
+                    deserializedRedisPropertiesInner.instances = instances;
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedRedisPropertiesInner.privateEndpointConnections = privateEndpointConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisPropertiesInner;
+        });
     }
 }

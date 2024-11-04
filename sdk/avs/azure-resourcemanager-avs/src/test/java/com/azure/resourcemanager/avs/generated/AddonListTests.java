@@ -5,21 +5,29 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.avs.fluent.models.AddonInner;
 import com.azure.resourcemanager.avs.models.AddonList;
+import com.azure.resourcemanager.avs.models.AddonProperties;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class AddonListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddonList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"gumhjglikkxws\",\"name\":\"olbq\",\"type\":\"vuzlm\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"},\"id\":\"fktgplc\",\"name\":\"pwjxezn\",\"type\":\"igbrnjw\"}],\"nextLink\":\"kpnb\"}")
-                .toObject(AddonList.class);
+        AddonList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Failed\"},\"id\":\"j\",\"name\":\"oejctbzaqsqsy\",\"type\":\"bkbfkgukdkex\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"mxaxc\",\"name\":\"jpgd\",\"type\":\"toc\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Building\"},\"id\":\"pmouexhdz\",\"name\":\"i\",\"type\":\"qeojnxqbzvddntw\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"btwnpzaoqvuhrhcf\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}],\"nextLink\":\"iwqvhkh\"}")
+            .toObject(AddonList.class);
+        Assertions.assertEquals("iwqvhkh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonList model = new AddonList();
+        AddonList model
+            = new AddonList().withValue(Arrays.asList(new AddonInner().withProperties(new AddonProperties()),
+                new AddonInner().withProperties(new AddonProperties()),
+                new AddonInner().withProperties(new AddonProperties()),
+                new AddonInner().withProperties(new AddonProperties()))).withNextLink("iwqvhkh");
         model = BinaryData.fromObject(model).toObject(AddonList.class);
+        Assertions.assertEquals("iwqvhkh", model.nextLink());
     }
 }

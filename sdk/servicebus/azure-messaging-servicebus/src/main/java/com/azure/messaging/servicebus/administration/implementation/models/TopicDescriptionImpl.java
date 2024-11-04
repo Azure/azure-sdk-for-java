@@ -30,7 +30,9 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
         = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
+     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
+     * message itself.
      */
     private Duration defaultMessageTimeToLive;
 
@@ -45,7 +47,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private Boolean requiresDuplicateDetection;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10
+     * minutes.
      */
     private Duration duplicateDetectionHistoryTimeWindow;
 
@@ -95,7 +98,9 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private OffsetDateTime accessedAt;
 
     /*
-     * Indicates if messages are received in the same order they are sent. If partitioned topics, defaults to false, and setting it to true has no effect. For unpartitioned topics, setting it to false will improve perf, but messages may not be received in the order they are sent.
+     * Indicates if messages are received in the same order they are sent. If partitioned topics, defaults to false, and
+     * setting it to true has no effect. For unpartitioned topics, setting it to false will improve perf, but messages
+     * may not be received in the order they are sent.
      */
     private Boolean supportOrdering;
 
@@ -110,7 +115,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private Integer subscriptionCount;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
+     * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5
+     * minutes.
      */
     private Duration autoDeleteOnIdle;
 
@@ -130,7 +136,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private Boolean enableSubscriptionPartitioning;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express topic holds a message in memory
+     * temporarily before writing it to persistent storage.
      */
     private Boolean enableExpress;
 

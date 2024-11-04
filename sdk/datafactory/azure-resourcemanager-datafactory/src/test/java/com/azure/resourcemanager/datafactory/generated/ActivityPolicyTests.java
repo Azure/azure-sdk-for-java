@@ -14,23 +14,23 @@ public final class ActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityPolicy model = BinaryData.fromString(
-            "{\"timeout\":\"dataqrfywwzsip\",\"retry\":\"dataqhvktcztmqdkh\",\"retryIntervalInSeconds\":1446450607,\"secureInput\":true,\"secureOutput\":false,\"\":{\"xqfrntz\":\"datavlyaprjzbx\"}}")
+            "{\"timeout\":\"datafksqfcxdleo\",\"retry\":\"datasdgkbaxygwvtkr\",\"retryIntervalInSeconds\":46399905,\"secureInput\":true,\"secureOutput\":false,\"\":{\"eipfotaaqyxk\":\"dataqztrpj\",\"q\":\"dataoabcoxqaavjkre\",\"ivianklqclftp\":\"datasviysbvo\"}}")
             .toObject(ActivityPolicy.class);
-        Assertions.assertEquals(1446450607, model.retryIntervalInSeconds());
+        Assertions.assertEquals(46399905, model.retryIntervalInSeconds());
         Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(false, model.secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityPolicy model = new ActivityPolicy().withTimeout("dataqrfywwzsip")
-            .withRetry("dataqhvktcztmqdkh")
-            .withRetryIntervalInSeconds(1446450607)
+        ActivityPolicy model = new ActivityPolicy().withTimeout("datafksqfcxdleo")
+            .withRetry("datasdgkbaxygwvtkr")
+            .withRetryIntervalInSeconds(46399905)
             .withSecureInput(true)
             .withSecureOutput(false)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityPolicy.class);
-        Assertions.assertEquals(1446450607, model.retryIntervalInSeconds());
+        Assertions.assertEquals(46399905, model.retryIntervalInSeconds());
         Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(false, model.secureOutput());
     }

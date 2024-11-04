@@ -10,7 +10,6 @@ parameters:
     type: number
     default: 90
 
-
 jobs:
   - job: SmokeTest
     timeoutInMinutes: ${{ parameters.Timeout }}
@@ -23,18 +22,12 @@ jobs:
       name: $(Pool)
       vmImage: $(OSVmImage)
 
-    variables:
-      azureCloudArmParameters: "@{ storageEndpointSuffix = 'core.windows.net'; azureCloud = 'AzureCloud'; }"
-      azureUSGovernmentArmParameters: "@{ storageEndpointSuffix = 'core.usgovcloudapi.net'; azureCloud = 'AzureUSGovernment'; }"
-      azureChinaCloudArmParameters: "@{ storageEndpointSuffix = 'core.chinacloudapi.cn'; azureCloud = 'AzureChinaCloud'; }"
-
-
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
           AgentImage: $(OSVmImage)
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: Use the latest package version from the dev feed
         inputs:
           mavenPomFile: $(PomFile)
@@ -46,9 +39,9 @@ jobs:
           publishJUnitResults: false
 
       - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+        displayName: 'Use Python 3.9'
         inputs:
-          versionSpec: '3.6'
+          versionSpec: '3.9'
 
       - task: PythonScript@0
         inputs:
@@ -60,7 +53,7 @@ jobs:
       - pwsh: Get-Content $(PomFile)
         displayName: Show pom.xml
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: Show dependency tree
         inputs:
           mavenPomFile: $(PomFile)
@@ -71,7 +64,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: $(PomFile)
@@ -85,12 +78,11 @@ jobs:
       - template: /eng/common/TestResources/deploy-test-resources.yml
         parameters:
           ServiceDirectory: $(ServiceDirectory)
-          ArmTemplateParameters: $(ArmTemplateParameters)
-          SubscriptionConfiguration: $(SubscriptionConfiguration)
+          ServiceConnection: azure-sdk-tests-public
 
       - ${{ parameters.TestTask }}
 
       - template: /eng/common/TestResources/remove-test-resources.yml
         parameters:
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
-          SubscriptionConfiguration: $(SubscriptionConfiguration)
+          ServiceConnection: azure-sdk-tests-public

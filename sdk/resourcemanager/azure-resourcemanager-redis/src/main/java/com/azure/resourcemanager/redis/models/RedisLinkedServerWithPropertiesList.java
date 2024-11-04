@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerWithPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of linked servers (with properties) of a Redis cache. */
+/**
+ * List of linked servers (with properties) of a Redis cache.
+ */
 @Fluent
-public final class RedisLinkedServerWithPropertiesList {
+public final class RedisLinkedServerWithPropertiesList
+    implements JsonSerializable<RedisLinkedServerWithPropertiesList> {
     /*
      * List of linked servers (with properties) of a Redis cache.
      */
-    @JsonProperty(value = "value")
     private List<RedisLinkedServerWithPropertiesInner> value;
 
     /*
      * Link for next set.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RedisLinkedServerWithPropertiesList class. */
+    /**
+     * Creates an instance of RedisLinkedServerWithPropertiesList class.
+     */
     public RedisLinkedServerWithPropertiesList() {
     }
 
     /**
      * Get the value property: List of linked servers (with properties) of a Redis cache.
-     *
+     * 
      * @return the value value.
      */
     public List<RedisLinkedServerWithPropertiesInner> value() {
@@ -39,7 +46,7 @@ public final class RedisLinkedServerWithPropertiesList {
 
     /**
      * Set the value property: List of linked servers (with properties) of a Redis cache.
-     *
+     * 
      * @param value the value value to set.
      * @return the RedisLinkedServerWithPropertiesList object itself.
      */
@@ -50,7 +57,7 @@ public final class RedisLinkedServerWithPropertiesList {
 
     /**
      * Get the nextLink property: Link for next set.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +66,53 @@ public final class RedisLinkedServerWithPropertiesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisLinkedServerWithPropertiesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisLinkedServerWithPropertiesList if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisLinkedServerWithPropertiesList.
+     */
+    public static RedisLinkedServerWithPropertiesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisLinkedServerWithPropertiesList deserializedRedisLinkedServerWithPropertiesList
+                = new RedisLinkedServerWithPropertiesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RedisLinkedServerWithPropertiesInner> value
+                        = reader.readArray(reader1 -> RedisLinkedServerWithPropertiesInner.fromJson(reader1));
+                    deserializedRedisLinkedServerWithPropertiesList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRedisLinkedServerWithPropertiesList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisLinkedServerWithPropertiesList;
+        });
     }
 }

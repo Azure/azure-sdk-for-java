@@ -5,41 +5,36 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for upgrading an agentpool.
  */
 @Fluent
-public final class AgentPoolUpgradeSettings {
+public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoolUpgradeSettings> {
     /*
-     * The maximum number or percentage of nodes that are surged during upgrade.
-     * 
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
-     * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
+     * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
      */
-    @JsonProperty(value = "maxSurge")
     private String maxSurge;
 
     /*
-     * The drain timeout for a node
-     * 
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
-     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
-     * specified, the default is 30 minutes.
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction wait
+     * time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not specified, the
+     * default is 30 minutes.
      */
-    @JsonProperty(value = "drainTimeoutInMinutes")
     private Integer drainTimeoutInMinutes;
 
     /*
-     * The soak duration for a node
-     * 
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
-     * node. If not specified, the default is 0 minutes.
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next node.
+     * If not specified, the default is 0 minutes.
      */
-    @JsonProperty(value = "nodeSoakDurationInMinutes")
     private Integer nodeSoakDurationInMinutes;
 
     /**
@@ -49,12 +44,10 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
-     * 
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
-     * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 1. For more information, including best practices, see:
-     * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
+     * Get the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
+     * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
+     * percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including
+     * best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
      * 
      * @return the maxSurge value.
      */
@@ -63,12 +56,10 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Set the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
-     * 
-     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
-     * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 1. For more information, including best practices, see:
-     * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
+     * Set the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
+     * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
+     * percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including
+     * best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
      * 
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -79,11 +70,9 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Get the drainTimeoutInMinutes property: The drain timeout for a node
-     * 
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
-     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
-     * specified, the default is 30 minutes.
+     * Get the drainTimeoutInMinutes property: The amount of time (in minutes) to wait on eviction of pods and graceful
+     * termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded,
+     * the upgrade fails. If not specified, the default is 30 minutes.
      * 
      * @return the drainTimeoutInMinutes value.
      */
@@ -92,11 +81,9 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Set the drainTimeoutInMinutes property: The drain timeout for a node
-     * 
-     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
-     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
-     * specified, the default is 30 minutes.
+     * Set the drainTimeoutInMinutes property: The amount of time (in minutes) to wait on eviction of pods and graceful
+     * termination per node. This eviction wait time honors waiting on pod disruption budgets. If this time is exceeded,
+     * the upgrade fails. If not specified, the default is 30 minutes.
      * 
      * @param drainTimeoutInMinutes the drainTimeoutInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -107,10 +94,8 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Get the nodeSoakDurationInMinutes property: The soak duration for a node
-     * 
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
-     * node. If not specified, the default is 0 minutes.
+     * Get the nodeSoakDurationInMinutes property: The amount of time (in minutes) to wait after draining a node and
+     * before reimaging it and moving on to next node. If not specified, the default is 0 minutes.
      * 
      * @return the nodeSoakDurationInMinutes value.
      */
@@ -119,10 +104,8 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Set the nodeSoakDurationInMinutes property: The soak duration for a node
-     * 
-     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
-     * node. If not specified, the default is 0 minutes.
+     * Set the nodeSoakDurationInMinutes property: The amount of time (in minutes) to wait after draining a node and
+     * before reimaging it and moving on to next node. If not specified, the default is 0 minutes.
      * 
      * @param nodeSoakDurationInMinutes the nodeSoakDurationInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.
@@ -138,5 +121,48 @@ public final class AgentPoolUpgradeSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("maxSurge", this.maxSurge);
+        jsonWriter.writeNumberField("drainTimeoutInMinutes", this.drainTimeoutInMinutes);
+        jsonWriter.writeNumberField("nodeSoakDurationInMinutes", this.nodeSoakDurationInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolUpgradeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolUpgradeSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolUpgradeSettings.
+     */
+    public static AgentPoolUpgradeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolUpgradeSettings deserializedAgentPoolUpgradeSettings = new AgentPoolUpgradeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxSurge".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.maxSurge = reader.getString();
+                } else if ("drainTimeoutInMinutes".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.drainTimeoutInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeSoakDurationInMinutes".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.nodeSoakDurationInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolUpgradeSettings;
+        });
     }
 }

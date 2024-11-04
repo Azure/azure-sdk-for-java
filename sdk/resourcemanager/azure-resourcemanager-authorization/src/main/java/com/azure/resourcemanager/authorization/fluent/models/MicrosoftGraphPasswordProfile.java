@@ -5,52 +5,54 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** passwordProfile. */
+/**
+ * passwordProfile.
+ */
 @Fluent
-public final class MicrosoftGraphPasswordProfile {
+public final class MicrosoftGraphPasswordProfile implements JsonSerializable<MicrosoftGraphPasswordProfile> {
     /*
      * true if the user must change her password on the next login; otherwise false.
      */
-    @JsonProperty(value = "forceChangePasswordNextSignIn")
     private Boolean forceChangePasswordNextSignIn;
 
     /*
-     * If true, at next sign-in, the user must perform a multi-factor authentication (MFA) before being forced to
-     * change their password. The behavior is identical to forceChangePasswordNextSignIn except that the user is
-     * required to first perform a multi-factor authentication before password change. After a password change, this
-     * property will be automatically reset to false. If not set, default is false.
+     * If true, at next sign-in, the user must perform a multi-factor authentication (MFA) before being forced to change
+     * their password. The behavior is identical to forceChangePasswordNextSignIn except that the user is required to
+     * first perform a multi-factor authentication before password change. After a password change, this property will
+     * be automatically reset to false. If not set, default is false.
      */
-    @JsonProperty(value = "forceChangePasswordNextSignInWithMfa")
     private Boolean forceChangePasswordNextSignInWithMfa;
 
     /*
-     * The password for the user. This property is required when a user is created. It can be updated, but the user
-     * will be required to change the password on the next login. The password must satisfy minimum requirements as
-     * specified by the user’s passwordPolicies property. By default, a strong password is required.
+     * The password for the user. This property is required when a user is created. It can be updated, but the user will
+     * be required to change the password on the next login. The password must satisfy minimum requirements as specified
+     * by the user’s passwordPolicies property. By default, a strong password is required.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * passwordProfile
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPasswordProfile class. */
+    /**
+     * Creates an instance of MicrosoftGraphPasswordProfile class.
+     */
     public MicrosoftGraphPasswordProfile() {
     }
 
     /**
      * Get the forceChangePasswordNextSignIn property: true if the user must change her password on the next login;
      * otherwise false.
-     *
+     * 
      * @return the forceChangePasswordNextSignIn value.
      */
     public Boolean forceChangePasswordNextSignIn() {
@@ -60,7 +62,7 @@ public final class MicrosoftGraphPasswordProfile {
     /**
      * Set the forceChangePasswordNextSignIn property: true if the user must change her password on the next login;
      * otherwise false.
-     *
+     * 
      * @param forceChangePasswordNextSignIn the forceChangePasswordNextSignIn value to set.
      * @return the MicrosoftGraphPasswordProfile object itself.
      */
@@ -75,7 +77,7 @@ public final class MicrosoftGraphPasswordProfile {
      * forceChangePasswordNextSignIn except that the user is required to first perform a multi-factor authentication
      * before password change. After a password change, this property will be automatically reset to false. If not set,
      * default is false.
-     *
+     * 
      * @return the forceChangePasswordNextSignInWithMfa value.
      */
     public Boolean forceChangePasswordNextSignInWithMfa() {
@@ -88,12 +90,12 @@ public final class MicrosoftGraphPasswordProfile {
      * forceChangePasswordNextSignIn except that the user is required to first perform a multi-factor authentication
      * before password change. After a password change, this property will be automatically reset to false. If not set,
      * default is false.
-     *
+     * 
      * @param forceChangePasswordNextSignInWithMfa the forceChangePasswordNextSignInWithMfa value to set.
      * @return the MicrosoftGraphPasswordProfile object itself.
      */
-    public MicrosoftGraphPasswordProfile withForceChangePasswordNextSignInWithMfa(
-        Boolean forceChangePasswordNextSignInWithMfa) {
+    public MicrosoftGraphPasswordProfile
+        withForceChangePasswordNextSignInWithMfa(Boolean forceChangePasswordNextSignInWithMfa) {
         this.forceChangePasswordNextSignInWithMfa = forceChangePasswordNextSignInWithMfa;
         return this;
     }
@@ -103,7 +105,7 @@ public final class MicrosoftGraphPasswordProfile {
      * updated, but the user will be required to change the password on the next login. The password must satisfy
      * minimum requirements as specified by the user’s passwordPolicies property. By default, a strong password is
      * required.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -115,7 +117,7 @@ public final class MicrosoftGraphPasswordProfile {
      * updated, but the user will be required to change the password on the next login. The password must satisfy
      * minimum requirements as specified by the user’s passwordPolicies property. By default, a strong password is
      * required.
-     *
+     * 
      * @param password the password value to set.
      * @return the MicrosoftGraphPasswordProfile object itself.
      */
@@ -126,17 +128,16 @@ public final class MicrosoftGraphPasswordProfile {
 
     /**
      * Get the additionalProperties property: passwordProfile.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: passwordProfile.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPasswordProfile object itself.
      */
@@ -145,19 +146,67 @@ public final class MicrosoftGraphPasswordProfile {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("forceChangePasswordNextSignIn", this.forceChangePasswordNextSignIn);
+        jsonWriter.writeBooleanField("forceChangePasswordNextSignInWithMfa", this.forceChangePasswordNextSignInWithMfa);
+        jsonWriter.writeStringField("password", this.password);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPasswordProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPasswordProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPasswordProfile.
+     */
+    public static MicrosoftGraphPasswordProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPasswordProfile deserializedMicrosoftGraphPasswordProfile
+                = new MicrosoftGraphPasswordProfile();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forceChangePasswordNextSignIn".equals(fieldName)) {
+                    deserializedMicrosoftGraphPasswordProfile.forceChangePasswordNextSignIn
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("forceChangePasswordNextSignInWithMfa".equals(fieldName)) {
+                    deserializedMicrosoftGraphPasswordProfile.forceChangePasswordNextSignInWithMfa
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("password".equals(fieldName)) {
+                    deserializedMicrosoftGraphPasswordProfile.password = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPasswordProfile.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPasswordProfile;
+        });
     }
 }

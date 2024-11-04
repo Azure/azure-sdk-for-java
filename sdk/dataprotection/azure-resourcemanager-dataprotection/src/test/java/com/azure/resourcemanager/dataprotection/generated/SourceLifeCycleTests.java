@@ -18,36 +18,40 @@ public final class SourceLifeCycleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceLifeCycle model = BinaryData.fromString(
-            "{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"piwyczuhxacpqjl\"},\"sourceDataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"hyus\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"sdvlmfwdgzxulucv\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"mrsreuzvxurisjnh\"}}]}")
+            "{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"hfstotxhojujbyp\"},\"sourceDataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"mc\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"xbjxyfwnylrcools\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"p\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"w\"}}]}")
             .toObject(SourceLifeCycle.class);
-        Assertions.assertEquals("piwyczuhxacpqjl", model.deleteAfter().duration());
+        Assertions.assertEquals("hfstotxhojujbyp", model.deleteAfter().duration());
         Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.sourceDataStore().dataStoreType());
-        Assertions.assertEquals("hyus", model.sourceDataStore().objectType());
+        Assertions.assertEquals("mc", model.sourceDataStore().objectType());
         Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
             model.targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("sdvlmfwdgzxulucv",
+        Assertions.assertEquals("xbjxyfwnylrcools",
             model.targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SourceLifeCycle model
-            = new SourceLifeCycle().withDeleteAfter(new DeleteOption().withDuration("piwyczuhxacpqjl"))
-                .withSourceDataStore(
-                    new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("hyus"))
-                .withTargetDataStoreCopySettings(Arrays.asList(
-                    new TargetCopySetting().withCopyAfter(new CopyOption())
-                        .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
-                            .withObjectType("sdvlmfwdgzxulucv")),
-                    new TargetCopySetting().withCopyAfter(new CopyOption()).withDataStore(new DataStoreInfoBase()
-                        .withDataStoreType(DataStoreTypes.ARCHIVE_STORE).withObjectType("mrsreuzvxurisjnh"))));
+        SourceLifeCycle model = new SourceLifeCycle()
+            .withDeleteAfter(new DeleteOption().withDuration("hfstotxhojujbyp"))
+            .withSourceDataStore(
+                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("mc"))
+            .withTargetDataStoreCopySettings(Arrays.asList(
+                new TargetCopySetting().withCopyAfter(new CopyOption())
+                    .withDataStore(new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE)
+                        .withObjectType("xbjxyfwnylrcools")),
+                new TargetCopySetting().withCopyAfter(new CopyOption())
+                    .withDataStore(
+                        new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("p")),
+                new TargetCopySetting().withCopyAfter(new CopyOption())
+                    .withDataStore(
+                        new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("w"))));
         model = BinaryData.fromObject(model).toObject(SourceLifeCycle.class);
-        Assertions.assertEquals("piwyczuhxacpqjl", model.deleteAfter().duration());
+        Assertions.assertEquals("hfstotxhojujbyp", model.deleteAfter().duration());
         Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.sourceDataStore().dataStoreType());
-        Assertions.assertEquals("hyus", model.sourceDataStore().objectType());
+        Assertions.assertEquals("mc", model.sourceDataStore().objectType());
         Assertions.assertEquals(DataStoreTypes.VAULT_STORE,
             model.targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("sdvlmfwdgzxulucv",
+        Assertions.assertEquals("xbjxyfwnylrcools",
             model.targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 }

@@ -20,11 +20,7 @@ public final class BackendsGetResponse extends ResponseBase<BackendsGetHeaders, 
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BackendsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        BackendContractInner value,
+    public BackendsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BackendContractInner value,
         BackendsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

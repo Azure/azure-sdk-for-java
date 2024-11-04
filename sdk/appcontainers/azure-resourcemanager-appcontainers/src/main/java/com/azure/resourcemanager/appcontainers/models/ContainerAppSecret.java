@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Container App Secret.
  */
 @Immutable
-public final class ContainerAppSecret {
+public final class ContainerAppSecret implements JsonSerializable<ContainerAppSecret> {
     /*
      * Secret Name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Secret Value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned
      * identity.
      */
-    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private String identity;
 
     /*
      * Azure Key Vault URL pointing to the secret referenced by the container app.
      */
-    @JsonProperty(value = "keyVaultUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultUrl;
 
     /**
@@ -86,5 +86,46 @@ public final class ContainerAppSecret {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppSecret from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppSecret if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerAppSecret.
+     */
+    public static ContainerAppSecret fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppSecret deserializedContainerAppSecret = new ContainerAppSecret();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedContainerAppSecret.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedContainerAppSecret.value = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedContainerAppSecret.identity = reader.getString();
+                } else if ("keyVaultUrl".equals(fieldName)) {
+                    deserializedContainerAppSecret.keyVaultUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppSecret;
+        });
     }
 }

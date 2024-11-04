@@ -14,9 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Guti4G {
     /*
-     * Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as
-     * defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the
-     * values 999-99 and 999-999 can be used on internal private networks.
+     * Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks.
      */
     @JsonProperty(value = "plmn", required = true)
     private PlmnId plmn;
@@ -41,8 +39,8 @@ public final class Guti4G {
 
     /**
      * Get the plmn property: Public land mobile network (PLMN) ID. This is made up of the mobile country code and
-     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be
-     * used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used
+     * for testing and the values 999-99 and 999-999 can be used on internal private networks.
      * 
      * @return the plmn value.
      */
@@ -52,8 +50,8 @@ public final class Guti4G {
 
     /**
      * Set the plmn property: Public land mobile network (PLMN) ID. This is made up of the mobile country code and
-     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be
-     * used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used
+     * for testing and the values 999-99 and 999-999 can be used on internal private networks.
      * 
      * @param plmn the plmn value to set.
      * @return the Guti4G object itself.
@@ -110,14 +108,12 @@ public final class Guti4G {
      */
     public void validate() {
         if (plmn() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property plmn in model Guti4G"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property plmn in model Guti4G"));
         } else {
             plmn().validate();
         }
         if (mmeId() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property mmeId in model Guti4G"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property mmeId in model Guti4G"));
         } else {
             mmeId().validate();
         }

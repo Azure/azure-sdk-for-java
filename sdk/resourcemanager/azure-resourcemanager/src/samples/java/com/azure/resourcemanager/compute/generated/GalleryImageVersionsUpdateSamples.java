@@ -28,11 +28,15 @@ public final class GalleryImageVersionsUpdateSamples {
      */
     public static void
         updateASimpleGalleryImageVersionManagedImageAsSource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
             .update("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", new GalleryImageVersionUpdate()
                 .withPublishingProfile(new GalleryImageVersionPublishingProfile()
                     .withTargetRegions(Arrays.asList(new TargetRegion().withName("West US").withRegionalReplicaCount(1),
-                        new TargetRegion().withName("East US").withRegionalReplicaCount(2)
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
                             .withStorageAccountType(StorageAccountType.STANDARD_ZRS))))
                 .withStorageProfile(
                     new GalleryImageVersionStorageProfile().withSource(new GalleryArtifactVersionFullSource().withId(
@@ -52,11 +56,15 @@ public final class GalleryImageVersionsUpdateSamples {
      */
     public static void
         updateASimpleGalleryImageVersionWithoutSourceId(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
             .update("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", new GalleryImageVersionUpdate()
                 .withPublishingProfile(new GalleryImageVersionPublishingProfile()
                     .withTargetRegions(Arrays.asList(new TargetRegion().withName("West US").withRegionalReplicaCount(1),
-                        new TargetRegion().withName("East US").withRegionalReplicaCount(2)
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
                             .withStorageAccountType(StorageAccountType.STANDARD_ZRS))))
                 .withStorageProfile(new GalleryImageVersionStorageProfile()), com.azure.core.util.Context.NONE);
     }

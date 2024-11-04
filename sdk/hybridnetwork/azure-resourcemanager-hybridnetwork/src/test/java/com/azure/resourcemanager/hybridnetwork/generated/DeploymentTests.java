@@ -26,8 +26,12 @@ public final class DeploymentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Deployment model = new Deployment().withName("blytk").withNamespace("mpew").withDesired(520113589)
-            .withReady(1577221415).withUpToDate(1139203375).withAvailable(910036850)
+        Deployment model = new Deployment().withName("blytk")
+            .withNamespace("mpew")
+            .withDesired(520113589)
+            .withReady(1577221415)
+            .withUpToDate(1139203375)
+            .withAvailable(910036850)
             .withCreationTime(OffsetDateTime.parse("2021-11-17T21:39:38Z"));
         model = BinaryData.fromObject(model).toObject(Deployment.class);
         Assertions.assertEquals("blytk", model.name());

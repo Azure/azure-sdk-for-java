@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for ApplyUpdateForResourceGroup ListByResourceGroup. */
+/**
+ * Samples for ApplyUpdateForResourceGroup ListByResourceGroup.
+ */
 public final class ApplyUpdateForResourceGroupListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ApplyUpdatesResourceGroup_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ApplyUpdatesResourceGroup_List.json
      */
     /**
      * Sample code: ApplyUpdatesResourceGroup_List.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void applyUpdatesResourceGroupList(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {

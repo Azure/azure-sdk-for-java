@@ -14,17 +14,19 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AvsClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AvsClientImpl.class})
+/**
+ * A builder for creating a new instance of the AvsClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { AvsClientImpl.class })
 public final class AvsClientBuilder {
     /*
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription.
-     *
+     * Sets The ID of the target subscription. The value must be an UUID.
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AvsClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class AvsClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AvsClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class AvsClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AvsClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class AvsClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AvsClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class AvsClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AvsClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class AvsClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AvsClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class AvsClientBuilder {
 
     /**
      * Builds an instance of AvsClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AvsClientImpl.
      */
     public AvsClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AvsClientImpl client =
-            new AvsClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AvsClientImpl client = new AvsClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+            localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

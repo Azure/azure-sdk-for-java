@@ -5,30 +5,37 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A collection of rooms. */
+/**
+ * A collection of rooms.
+ */
 @Fluent
-public final class RoomsCollection {
+public final class RoomsCollection implements JsonSerializable<RoomsCollection> {
     /*
      * A collection of rooms
      */
-    @JsonProperty(value = "value", required = true)
     private List<RoomModel> value;
 
     /*
      * If there are more rooms that can be retrieved, the next link will be populated.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RoomsCollection class. */
-    public RoomsCollection() {}
+    /**
+     * Creates an instance of RoomsCollection class.
+     */
+    public RoomsCollection() {
+    }
 
     /**
      * Get the value property: A collection of rooms.
-     *
+     * 
      * @return the value value.
      */
     public List<RoomModel> getValue() {
@@ -37,7 +44,7 @@ public final class RoomsCollection {
 
     /**
      * Set the value property: A collection of rooms.
-     *
+     * 
      * @param value the value value to set.
      * @return the RoomsCollection object itself.
      */
@@ -48,7 +55,7 @@ public final class RoomsCollection {
 
     /**
      * Get the nextLink property: If there are more rooms that can be retrieved, the next link will be populated.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,12 +64,50 @@ public final class RoomsCollection {
 
     /**
      * Set the nextLink property: If there are more rooms that can be retrieved, the next link will be populated.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RoomsCollection object itself.
      */
     public RoomsCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoomsCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoomsCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoomsCollection.
+     */
+    public static RoomsCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoomsCollection deserializedRoomsCollection = new RoomsCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RoomModel> value = reader.readArray(reader1 -> RoomModel.fromJson(reader1));
+                    deserializedRoomsCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRoomsCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoomsCollection;
+        });
     }
 }

@@ -5,28 +5,37 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ChoiceResultInternal model. */
+/**
+ * The ChoiceResultInternal model.
+ */
 @Fluent
-public final class ChoiceResultInternal {
+public final class ChoiceResultInternal implements JsonSerializable<ChoiceResultInternal> {
     /*
      * Label is the primary identifier for the choice detected
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the
-     * choice detected and phrases will be set to null
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to null
      */
-    @JsonProperty(value = "recognizedPhrase")
     private String recognizedPhrase;
 
     /**
+     * Creates an instance of ChoiceResultInternal class.
+     */
+    public ChoiceResultInternal() {
+    }
+
+    /**
      * Get the label property: Label is the primary identifier for the choice detected.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -35,7 +44,7 @@ public final class ChoiceResultInternal {
 
     /**
      * Set the label property: Label is the primary identifier for the choice detected.
-     *
+     * 
      * @param label the label value to set.
      * @return the ChoiceResultInternal object itself.
      */
@@ -45,10 +54,10 @@ public final class ChoiceResultInternal {
     }
 
     /**
-     * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
-     * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection.
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
      * null.
-     *
+     * 
      * @return the recognizedPhrase value.
      */
     public String getRecognizedPhrase() {
@@ -56,15 +65,54 @@ public final class ChoiceResultInternal {
     }
 
     /**
-     * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
-     * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection.
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
      * null.
-     *
+     * 
      * @param recognizedPhrase the recognizedPhrase value to set.
      * @return the ChoiceResultInternal object itself.
      */
     public ChoiceResultInternal setRecognizedPhrase(String recognizedPhrase) {
         this.recognizedPhrase = recognizedPhrase;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChoiceResultInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChoiceResultInternal if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChoiceResultInternal.
+     */
+    public static ChoiceResultInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChoiceResultInternal deserializedChoiceResultInternal = new ChoiceResultInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedChoiceResultInternal.label = reader.getString();
+                } else if ("recognizedPhrase".equals(fieldName)) {
+                    deserializedChoiceResultInternal.recognizedPhrase = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChoiceResultInternal;
+        });
     }
 }

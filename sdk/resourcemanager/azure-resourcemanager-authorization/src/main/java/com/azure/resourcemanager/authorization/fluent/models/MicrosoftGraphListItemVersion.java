@@ -5,35 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** listItemVersion. */
+/**
+ * listItemVersion.
+ */
 @Fluent
 public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemVersion {
     /*
      * fieldValueSet
      */
-    @JsonProperty(value = "fields")
     private MicrosoftGraphFieldValueSet fields;
 
     /*
      * listItemVersion
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphListItemVersion class. */
+    /**
+     * Creates an instance of MicrosoftGraphListItemVersion class.
+     */
     public MicrosoftGraphListItemVersion() {
     }
 
     /**
      * Get the fields property: fieldValueSet.
-     *
+     * 
      * @return the fields value.
      */
     public MicrosoftGraphFieldValueSet fields() {
@@ -42,7 +47,7 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
 
     /**
      * Set the fields property: fieldValueSet.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the MicrosoftGraphListItemVersion object itself.
      */
@@ -53,17 +58,16 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
 
     /**
      * Get the additionalProperties property: listItemVersion.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: listItemVersion.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphListItemVersion object itself.
      */
@@ -72,36 +76,36 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItemVersion withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItemVersion withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItemVersion withPublication(MicrosoftGraphPublicationFacet publication) {
         super.withPublication(publication);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItemVersion withId(String id) {
         super.withId(id);
@@ -110,7 +114,7 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -119,5 +123,71 @@ public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemV
         if (fields() != null) {
             fields().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeJsonField("publication", publication());
+        jsonWriter.writeJsonField("fields", this.fields);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphListItemVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphListItemVersion if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphListItemVersion.
+     */
+    public static MicrosoftGraphListItemVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphListItemVersion deserializedMicrosoftGraphListItemVersion
+                = new MicrosoftGraphListItemVersion();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItemVersion.withId(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItemVersion
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItemVersion.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("publication".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItemVersion
+                        .withPublication(MicrosoftGraphPublicationFacet.fromJson(reader));
+                } else if ("fields".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItemVersion.fields = MicrosoftGraphFieldValueSet.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphListItemVersion.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphListItemVersion;
+        });
     }
 }

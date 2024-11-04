@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DNSZone information. */
+/**
+ * DNSZone information.
+ */
 @Fluent
 public class DnsZone {
     /*
@@ -16,13 +18,15 @@ public class DnsZone {
     @JsonProperty(value = "subResource")
     private VaultSubResourceType subResource;
 
-    /** Creates an instance of DnsZone class. */
+    /**
+     * Creates an instance of DnsZone class.
+     */
     public DnsZone() {
     }
 
     /**
      * Get the subResource property: Subresource type for vault AzureBackup, AzureBackup_secondary or AzureSiteRecovery.
-     *
+     * 
      * @return the subResource value.
      */
     public VaultSubResourceType subResource() {
@@ -31,7 +35,7 @@ public class DnsZone {
 
     /**
      * Set the subResource property: Subresource type for vault AzureBackup, AzureBackup_secondary or AzureSiteRecovery.
-     *
+     * 
      * @param subResource the subResource value to set.
      * @return the DnsZone object itself.
      */
@@ -42,7 +46,7 @@ public class DnsZone {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,7 @@ import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import com.azure.spring.messaging.servicebus.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;

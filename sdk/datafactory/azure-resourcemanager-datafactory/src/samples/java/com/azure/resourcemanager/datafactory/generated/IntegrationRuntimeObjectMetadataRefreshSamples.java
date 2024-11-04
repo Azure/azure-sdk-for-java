@@ -9,7 +9,8 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Refresh.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeObjectMetadata_Refresh.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Refresh.

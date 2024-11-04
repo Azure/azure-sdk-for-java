@@ -12,8 +12,7 @@ public final class ListStorageAccountKeysResultImpl implements ListStorageAccoun
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    ListStorageAccountKeysResultImpl(
-        ListStorageAccountKeysResultInner innerObject,
+    ListStorageAccountKeysResultImpl(ListStorageAccountKeysResultInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

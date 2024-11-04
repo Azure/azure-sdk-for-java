@@ -7,6 +7,7 @@ module com.azure.core.serializer.json.gson {
     requires transitive com.google.gson;
 
     exports com.azure.core.serializer.json.gson;
+    exports com.azure.core.serializer.json.gson.models;
 
     provides com.azure.json.JsonProvider with com.azure.core.serializer.json.gson.GsonJsonProvider;
     provides com.azure.core.util.serializer.MemberNameConverterProvider

@@ -1,7 +1,0 @@
-trigger: none
-
-extends:
-  template: /sdk/maps/maps-tests-template.yml
-  parameters:
-    PackageName: azure-maps-elevation
-    SafeName: azuremapselevation

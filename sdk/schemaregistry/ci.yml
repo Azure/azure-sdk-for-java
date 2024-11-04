@@ -48,7 +48,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: schemaregistry
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-schemaregistry
         groupId: com.azure

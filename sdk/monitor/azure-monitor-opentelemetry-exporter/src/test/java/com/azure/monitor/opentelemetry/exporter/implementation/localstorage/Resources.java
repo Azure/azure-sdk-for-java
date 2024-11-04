@@ -15,8 +15,7 @@ class Resources {
     }
 
     static byte[] readBytes(String resourceName) throws IOException {
-        try (InputStream in =
-                 IntegrationTests.class.getClassLoader().getResourceAsStream(resourceName)) {
+        try (InputStream in = Resources.class.getClassLoader().getResourceAsStream(resourceName)) {
             ByteArrayOutputStream result = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int length;

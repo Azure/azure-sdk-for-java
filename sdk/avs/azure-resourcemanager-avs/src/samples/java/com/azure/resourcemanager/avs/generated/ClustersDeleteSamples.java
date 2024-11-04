@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_Delete.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Clusters_Delete.json
      */
     /**
      * Sample code: Clusters_Delete.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void clustersDelete(com.azure.resourcemanager.avs.AvsManager manager) {

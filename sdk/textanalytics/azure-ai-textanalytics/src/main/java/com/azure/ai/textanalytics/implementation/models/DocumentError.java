@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Contains details of errors encountered during a job execution. */
+/**
+ * Contains details of errors encountered during a job execution.
+ */
 @Fluent
 public final class DocumentError implements JsonSerializable<DocumentError> {
     /*
@@ -24,12 +26,15 @@ public final class DocumentError implements JsonSerializable<DocumentError> {
      */
     private Error error;
 
-    /** Creates an instance of DocumentError class. */
-    public DocumentError() {}
+    /**
+     * Creates an instance of DocumentError class.
+     */
+    public DocumentError() {
+    }
 
     /**
      * Get the id property: The ID of the input document.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -38,7 +43,7 @@ public final class DocumentError implements JsonSerializable<DocumentError> {
 
     /**
      * Set the id property: The ID of the input document.
-     *
+     * 
      * @param id the id value to set.
      * @return the DocumentError object itself.
      */
@@ -49,7 +54,7 @@ public final class DocumentError implements JsonSerializable<DocumentError> {
 
     /**
      * Get the error property: Error encountered.
-     *
+     * 
      * @return the error value.
      */
     public Error getError() {
@@ -58,7 +63,7 @@ public final class DocumentError implements JsonSerializable<DocumentError> {
 
     /**
      * Set the error property: Error encountered.
-     *
+     * 
      * @param error the error value to set.
      * @return the DocumentError object itself.
      */
@@ -67,6 +72,9 @@ public final class DocumentError implements JsonSerializable<DocumentError> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,31 +85,30 @@ public final class DocumentError implements JsonSerializable<DocumentError> {
 
     /**
      * Reads an instance of DocumentError from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentError if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentError.
      */
     public static DocumentError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DocumentError deserializedDocumentError = new DocumentError();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DocumentError deserializedDocumentError = new DocumentError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDocumentError.id = reader.getString();
-                        } else if ("error".equals(fieldName)) {
-                            deserializedDocumentError.error = Error.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedDocumentError.id = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedDocumentError.error = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDocumentError;
-                });
+            return deserializedDocumentError;
+        });
     }
 }

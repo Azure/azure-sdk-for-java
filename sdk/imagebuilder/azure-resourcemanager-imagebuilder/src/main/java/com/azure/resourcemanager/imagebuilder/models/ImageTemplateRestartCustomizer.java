@@ -5,40 +5,52 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Reboots a VM and waits for it to come back online (Windows). Corresponds to Packer windows-restart provisioner.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("WindowsRestart")
 @Fluent
 public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomizer {
     /*
+     * The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
+     */
+    private String type = "WindowsRestart";
+
+    /*
      * Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
      */
-    @JsonProperty(value = "restartCommand")
     private String restartCommand;
 
     /*
      * Command to check if restart succeeded [Default: '']
      */
-    @JsonProperty(value = "restartCheckCommand")
     private String restartCheckCommand;
 
     /*
      * Restart timeout specified as a string of magnitude and unit, e.g. '5m' (5 minutes) or '2h' (2 hours) [Default:
      * '5m']
      */
-    @JsonProperty(value = "restartTimeout")
     private String restartTimeout;
 
     /**
      * Creates an instance of ImageTemplateRestartCustomizer class.
      */
     public ImageTemplateRestartCustomizer() {
+    }
+
+    /**
+     * Get the type property: The type of customization tool you want to use on the Image. For example, "Shell" can be
+     * shell customizer.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -122,5 +134,54 @@ public final class ImageTemplateRestartCustomizer extends ImageTemplateCustomize
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("restartCommand", this.restartCommand);
+        jsonWriter.writeStringField("restartCheckCommand", this.restartCheckCommand);
+        jsonWriter.writeStringField("restartTimeout", this.restartTimeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateRestartCustomizer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateRestartCustomizer if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateRestartCustomizer.
+     */
+    public static ImageTemplateRestartCustomizer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateRestartCustomizer deserializedImageTemplateRestartCustomizer
+                = new ImageTemplateRestartCustomizer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplateRestartCustomizer.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateRestartCustomizer.type = reader.getString();
+                } else if ("restartCommand".equals(fieldName)) {
+                    deserializedImageTemplateRestartCustomizer.restartCommand = reader.getString();
+                } else if ("restartCheckCommand".equals(fieldName)) {
+                    deserializedImageTemplateRestartCustomizer.restartCheckCommand = reader.getString();
+                } else if ("restartTimeout".equals(fieldName)) {
+                    deserializedImageTemplateRestartCustomizer.restartTimeout = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateRestartCustomizer;
+        });
     }
 }

@@ -6,63 +6,52 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DeploymentsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"identity\":{\"principalId\":\"ncw\",\"tenantId\":\"hxg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ac\":{\"principalId\":\"cnapkteoell\",\"clientId\":\"tfdygpfqb\"},\"lzdahzxctobgbkdm\":{\"principalId\":\"pzfqrhhuaoppp\",\"clientId\":\"eqx\"},\"jy\":{\"principalId\":\"zpostmgrcfbu\",\"clientId\":\"mfqjhhkxbp\"}}},\"properties\":{\"provisioningState\":\"Deleted\",\"nginxVersion\":\"j\",\"managedResourceGroup\":\"gudivkrtswbxqz\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"fdxxivetvtcqaqtd\"}},\"ipAddress\":\"mcbxvwvxysl\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"obl\",\"containerName\":\"k\"}},\"scalingProperties\":{\"capacity\":293726964},\"userProfile\":{\"preferredEmail\":\"wwfbkrvrnsvshq\"}},\"sku\":{\"name\":\"hxcr\"},\"location\":\"fovasr\",\"tags\":{\"gjb\":\"wbhsqfsub\"},\"id\":\"rxbpyb\",\"name\":\"rfbjf\",\"type\":\"twss\"}";
+            = "{\"identity\":{\"principalId\":\"bexkpzksmondj\",\"tenantId\":\"uxvypomgkopkwh\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vhelxprglyatdd\":{\"principalId\":\"qgxy\",\"clientId\":\"ocmbqfqvmkcxoza\"},\"sdqrhzoymibmrq\":{\"principalId\":\"cbcuejrjxgciqi\",\"clientId\":\"hos\"}}},\"properties\":{\"provisioningState\":\"Failed\",\"nginxVersion\":\"wfluszdt\",\"managedResourceGroup\":\"rkwofyyvoqa\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"iwbwoenwashrtdtk\"}},\"ipAddress\":\"qxwbpokulpiu\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"pqiiobyuqe\",\"containerName\":\"qlpqwcciuq\"}},\"scalingProperties\":{\"capacity\":1924773766,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"auvfbtkuwhhmhyk\",\"capacity\":{\"min\":697722485,\"max\":1183832331}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"afnn\"},\"userProfile\":{\"preferredEmail\":\"ichkoymkcdyhb\"}},\"sku\":{\"name\":\"kpw\"},\"location\":\"eqnovvqfovl\",\"tags\":{\"ndsytgadg\":\"wsuwsyr\",\"ea\":\"r\"},\"id\":\"neqn\",\"name\":\"arrwlquu\",\"type\":\"jfqka\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NginxManager manager = NginxManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NginxDeployment response = manager.deployments()
-            .getByResourceGroupWithResponse("ylgqgitxmedjvcsl", "n", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("yhrfouyftaakcpw", "yzvqt", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("fovasr", response.location());
-        Assertions.assertEquals("wbhsqfsub", response.tags().get("gjb"));
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("gudivkrtswbxqz", response.properties().managedResourceGroup());
-        Assertions.assertEquals("fdxxivetvtcqaqtd",
+        Assertions.assertEquals("eqnovvqfovl", response.location());
+        Assertions.assertEquals("wsuwsyr", response.tags().get("ndsytgadg"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("rkwofyyvoqa", response.properties().managedResourceGroup());
+        Assertions.assertEquals("iwbwoenwashrtdtk",
             response.properties().networkProfile().networkInterfaceConfiguration().subnetId());
-        Assertions.assertEquals(true, response.properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("obl", response.properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("k", response.properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(293726964, response.properties().scalingProperties().capacity());
-        Assertions.assertEquals("wwfbkrvrnsvshq", response.properties().userProfile().preferredEmail());
-        Assertions.assertEquals("hxcr", response.sku().name());
+        Assertions.assertEquals(false, response.properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("pqiiobyuqe", response.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("qlpqwcciuq", response.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1924773766, response.properties().scalingProperties().capacity());
+        Assertions.assertEquals("auvfbtkuwhhmhyk", response.properties().scalingProperties().profiles().get(0).name());
+        Assertions.assertEquals(697722485,
+            response.properties().scalingProperties().profiles().get(0).capacity().min());
+        Assertions.assertEquals(1183832331,
+            response.properties().scalingProperties().profiles().get(0).capacity().max());
+        Assertions.assertEquals("afnn", response.properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("ichkoymkcdyhb", response.properties().userProfile().preferredEmail());
+        Assertions.assertEquals("kpw", response.sku().name());
     }
 }

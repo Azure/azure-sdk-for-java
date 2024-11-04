@@ -5,121 +5,107 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Classification task in AutoML Table vertical. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("Classification")
+/**
+ * Classification task in AutoML Table vertical.
+ */
 @Fluent
 public final class Classification extends AutoMLVertical {
     /*
-     * Positive label for binary metrics calculation.
+     * [Required] Task type for AutoMLJob.
      */
-    @JsonProperty(value = "positiveLabel")
-    private String positiveLabel;
+    private TaskType taskType = TaskType.CLASSIFICATION;
 
     /*
      * Primary metric for the task.
      */
-    @JsonProperty(value = "primaryMetric")
     private ClassificationPrimaryMetrics primaryMetric;
 
     /*
      * Inputs for training phase for an AutoML Job.
      */
-    @JsonProperty(value = "trainingSettings")
     private ClassificationTrainingSettings trainingSettings;
 
     /*
-     * Columns to use for CVSplit data.
+     * Positive label for binary metrics calculation.
      */
-    @JsonProperty(value = "cvSplitColumnNames")
-    private List<String> cvSplitColumnNames;
-
-    /*
-     * Featurization inputs needed for AutoML job.
-     */
-    @JsonProperty(value = "featurizationSettings")
-    private TableVerticalFeaturizationSettings featurizationSettings;
+    private String positiveLabel;
 
     /*
      * Execution constraints for AutoMLJob.
      */
-    @JsonProperty(value = "limitSettings")
     private TableVerticalLimitSettings limitSettings;
 
     /*
      * Number of cross validation folds to be applied on training dataset
      * when validation dataset is not provided.
      */
-    @JsonProperty(value = "nCrossValidations")
     private NCrossValidations nCrossValidations;
 
     /*
-     * Test data input.
+     * Columns to use for CVSplit data.
      */
-    @JsonProperty(value = "testData")
-    private MLTableJobInput testData;
+    private List<String> cvSplitColumnNames;
 
     /*
-     * The fraction of test dataset that needs to be set aside for validation purpose.
-     * Values between (0.0 , 1.0)
-     * Applied when validation dataset is not provided.
+     * The name of the sample weight column. Automated ML supports a weighted column as an input, causing rows in the
+     * data to be weighted up or down.
      */
-    @JsonProperty(value = "testDataSize")
-    private Double testDataSize;
+    private String weightColumnName;
 
     /*
      * Validation data inputs.
      */
-    @JsonProperty(value = "validationData")
     private MLTableJobInput validationData;
+
+    /*
+     * Test data input.
+     */
+    private MLTableJobInput testData;
 
     /*
      * The fraction of training dataset that needs to be set aside for validation purpose.
      * Values between (0.0 , 1.0)
      * Applied when validation dataset is not provided.
      */
-    @JsonProperty(value = "validationDataSize")
     private Double validationDataSize;
 
     /*
-     * The name of the sample weight column. Automated ML supports a weighted column as an input, causing rows in the
-     * data to be weighted up or down.
+     * The fraction of test dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
      */
-    @JsonProperty(value = "weightColumnName")
-    private String weightColumnName;
+    private Double testDataSize;
 
-    /** Creates an instance of Classification class. */
+    /*
+     * Featurization inputs needed for AutoML job.
+     */
+    private TableVerticalFeaturizationSettings featurizationSettings;
+
+    /**
+     * Creates an instance of Classification class.
+     */
     public Classification() {
     }
 
     /**
-     * Get the positiveLabel property: Positive label for binary metrics calculation.
-     *
-     * @return the positiveLabel value.
+     * Get the taskType property: [Required] Task type for AutoMLJob.
+     * 
+     * @return the taskType value.
      */
-    public String positiveLabel() {
-        return this.positiveLabel;
-    }
-
-    /**
-     * Set the positiveLabel property: Positive label for binary metrics calculation.
-     *
-     * @param positiveLabel the positiveLabel value to set.
-     * @return the Classification object itself.
-     */
-    public Classification withPositiveLabel(String positiveLabel) {
-        this.positiveLabel = positiveLabel;
-        return this;
+    @Override
+    public TaskType taskType() {
+        return this.taskType;
     }
 
     /**
      * Get the primaryMetric property: Primary metric for the task.
-     *
+     * 
      * @return the primaryMetric value.
      */
     public ClassificationPrimaryMetrics primaryMetric() {
@@ -128,7 +114,7 @@ public final class Classification extends AutoMLVertical {
 
     /**
      * Set the primaryMetric property: Primary metric for the task.
-     *
+     * 
      * @param primaryMetric the primaryMetric value to set.
      * @return the Classification object itself.
      */
@@ -139,7 +125,7 @@ public final class Classification extends AutoMLVertical {
 
     /**
      * Get the trainingSettings property: Inputs for training phase for an AutoML Job.
-     *
+     * 
      * @return the trainingSettings value.
      */
     public ClassificationTrainingSettings trainingSettings() {
@@ -148,7 +134,7 @@ public final class Classification extends AutoMLVertical {
 
     /**
      * Set the trainingSettings property: Inputs for training phase for an AutoML Job.
-     *
+     * 
      * @param trainingSettings the trainingSettings value to set.
      * @return the Classification object itself.
      */
@@ -158,48 +144,28 @@ public final class Classification extends AutoMLVertical {
     }
 
     /**
-     * Get the cvSplitColumnNames property: Columns to use for CVSplit data.
-     *
-     * @return the cvSplitColumnNames value.
+     * Get the positiveLabel property: Positive label for binary metrics calculation.
+     * 
+     * @return the positiveLabel value.
      */
-    public List<String> cvSplitColumnNames() {
-        return this.cvSplitColumnNames;
+    public String positiveLabel() {
+        return this.positiveLabel;
     }
 
     /**
-     * Set the cvSplitColumnNames property: Columns to use for CVSplit data.
-     *
-     * @param cvSplitColumnNames the cvSplitColumnNames value to set.
+     * Set the positiveLabel property: Positive label for binary metrics calculation.
+     * 
+     * @param positiveLabel the positiveLabel value to set.
      * @return the Classification object itself.
      */
-    public Classification withCvSplitColumnNames(List<String> cvSplitColumnNames) {
-        this.cvSplitColumnNames = cvSplitColumnNames;
-        return this;
-    }
-
-    /**
-     * Get the featurizationSettings property: Featurization inputs needed for AutoML job.
-     *
-     * @return the featurizationSettings value.
-     */
-    public TableVerticalFeaturizationSettings featurizationSettings() {
-        return this.featurizationSettings;
-    }
-
-    /**
-     * Set the featurizationSettings property: Featurization inputs needed for AutoML job.
-     *
-     * @param featurizationSettings the featurizationSettings value to set.
-     * @return the Classification object itself.
-     */
-    public Classification withFeaturizationSettings(TableVerticalFeaturizationSettings featurizationSettings) {
-        this.featurizationSettings = featurizationSettings;
+    public Classification withPositiveLabel(String positiveLabel) {
+        this.positiveLabel = positiveLabel;
         return this;
     }
 
     /**
      * Get the limitSettings property: Execution constraints for AutoMLJob.
-     *
+     * 
      * @return the limitSettings value.
      */
     public TableVerticalLimitSettings limitSettings() {
@@ -208,7 +174,7 @@ public final class Classification extends AutoMLVertical {
 
     /**
      * Set the limitSettings property: Execution constraints for AutoMLJob.
-     *
+     * 
      * @param limitSettings the limitSettings value to set.
      * @return the Classification object itself.
      */
@@ -218,9 +184,9 @@ public final class Classification extends AutoMLVertical {
     }
 
     /**
-     * Get the nCrossValidations property: Number of cross validation folds to be applied on training dataset when
-     * validation dataset is not provided.
-     *
+     * Get the nCrossValidations property: Number of cross validation folds to be applied on training dataset
+     * when validation dataset is not provided.
+     * 
      * @return the nCrossValidations value.
      */
     public NCrossValidations nCrossValidations() {
@@ -228,9 +194,9 @@ public final class Classification extends AutoMLVertical {
     }
 
     /**
-     * Set the nCrossValidations property: Number of cross validation folds to be applied on training dataset when
-     * validation dataset is not provided.
-     *
+     * Set the nCrossValidations property: Number of cross validation folds to be applied on training dataset
+     * when validation dataset is not provided.
+     * 
      * @param nCrossValidations the nCrossValidations value to set.
      * @return the Classification object itself.
      */
@@ -240,93 +206,29 @@ public final class Classification extends AutoMLVertical {
     }
 
     /**
-     * Get the testData property: Test data input.
-     *
-     * @return the testData value.
+     * Get the cvSplitColumnNames property: Columns to use for CVSplit data.
+     * 
+     * @return the cvSplitColumnNames value.
      */
-    public MLTableJobInput testData() {
-        return this.testData;
+    public List<String> cvSplitColumnNames() {
+        return this.cvSplitColumnNames;
     }
 
     /**
-     * Set the testData property: Test data input.
-     *
-     * @param testData the testData value to set.
+     * Set the cvSplitColumnNames property: Columns to use for CVSplit data.
+     * 
+     * @param cvSplitColumnNames the cvSplitColumnNames value to set.
      * @return the Classification object itself.
      */
-    public Classification withTestData(MLTableJobInput testData) {
-        this.testData = testData;
-        return this;
-    }
-
-    /**
-     * Get the testDataSize property: The fraction of test dataset that needs to be set aside for validation purpose.
-     * Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
-     * @return the testDataSize value.
-     */
-    public Double testDataSize() {
-        return this.testDataSize;
-    }
-
-    /**
-     * Set the testDataSize property: The fraction of test dataset that needs to be set aside for validation purpose.
-     * Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
-     * @param testDataSize the testDataSize value to set.
-     * @return the Classification object itself.
-     */
-    public Classification withTestDataSize(Double testDataSize) {
-        this.testDataSize = testDataSize;
-        return this;
-    }
-
-    /**
-     * Get the validationData property: Validation data inputs.
-     *
-     * @return the validationData value.
-     */
-    public MLTableJobInput validationData() {
-        return this.validationData;
-    }
-
-    /**
-     * Set the validationData property: Validation data inputs.
-     *
-     * @param validationData the validationData value to set.
-     * @return the Classification object itself.
-     */
-    public Classification withValidationData(MLTableJobInput validationData) {
-        this.validationData = validationData;
-        return this;
-    }
-
-    /**
-     * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
-     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
-     * @return the validationDataSize value.
-     */
-    public Double validationDataSize() {
-        return this.validationDataSize;
-    }
-
-    /**
-     * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
-     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
-     * @param validationDataSize the validationDataSize value to set.
-     * @return the Classification object itself.
-     */
-    public Classification withValidationDataSize(Double validationDataSize) {
-        this.validationDataSize = validationDataSize;
+    public Classification withCvSplitColumnNames(List<String> cvSplitColumnNames) {
+        this.cvSplitColumnNames = cvSplitColumnNames;
         return this;
     }
 
     /**
      * Get the weightColumnName property: The name of the sample weight column. Automated ML supports a weighted column
      * as an input, causing rows in the data to be weighted up or down.
-     *
+     * 
      * @return the weightColumnName value.
      */
     public String weightColumnName() {
@@ -336,7 +238,7 @@ public final class Classification extends AutoMLVertical {
     /**
      * Set the weightColumnName property: The name of the sample weight column. Automated ML supports a weighted column
      * as an input, causing rows in the data to be weighted up or down.
-     *
+     * 
      * @param weightColumnName the weightColumnName value to set.
      * @return the Classification object itself.
      */
@@ -345,21 +247,128 @@ public final class Classification extends AutoMLVertical {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the validationData property: Validation data inputs.
+     * 
+     * @return the validationData value.
+     */
+    public MLTableJobInput validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData property: Validation data inputs.
+     * 
+     * @param validationData the validationData value to set.
+     * @return the Classification object itself.
+     */
+    public Classification withValidationData(MLTableJobInput validationData) {
+        this.validationData = validationData;
+        return this;
+    }
+
+    /**
+     * Get the testData property: Test data input.
+     * 
+     * @return the testData value.
+     */
+    public MLTableJobInput testData() {
+        return this.testData;
+    }
+
+    /**
+     * Set the testData property: Test data input.
+     * 
+     * @param testData the testData value to set.
+     * @return the Classification object itself.
+     */
+    public Classification withTestData(MLTableJobInput testData) {
+        this.testData = testData;
+        return this;
+    }
+
+    /**
+     * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
+     * @return the validationDataSize value.
+     */
+    public Double validationDataSize() {
+        return this.validationDataSize;
+    }
+
+    /**
+     * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
+     * purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
+     * @param validationDataSize the validationDataSize value to set.
+     * @return the Classification object itself.
+     */
+    public Classification withValidationDataSize(Double validationDataSize) {
+        this.validationDataSize = validationDataSize;
+        return this;
+    }
+
+    /**
+     * Get the testDataSize property: The fraction of test dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
+     * @return the testDataSize value.
+     */
+    public Double testDataSize() {
+        return this.testDataSize;
+    }
+
+    /**
+     * Set the testDataSize property: The fraction of test dataset that needs to be set aside for validation purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
+     * @param testDataSize the testDataSize value to set.
+     * @return the Classification object itself.
+     */
+    public Classification withTestDataSize(Double testDataSize) {
+        this.testDataSize = testDataSize;
+        return this;
+    }
+
+    /**
+     * Get the featurizationSettings property: Featurization inputs needed for AutoML job.
+     * 
+     * @return the featurizationSettings value.
+     */
+    public TableVerticalFeaturizationSettings featurizationSettings() {
+        return this.featurizationSettings;
+    }
+
+    /**
+     * Set the featurizationSettings property: Featurization inputs needed for AutoML job.
+     * 
+     * @param featurizationSettings the featurizationSettings value to set.
+     * @return the Classification object itself.
+     */
+    public Classification withFeaturizationSettings(TableVerticalFeaturizationSettings featurizationSettings) {
+        this.featurizationSettings = featurizationSettings;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Classification withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Classification withTargetColumnName(String targetColumnName) {
-        super.withTargetColumnName(targetColumnName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Classification withTrainingData(MLTableJobInput trainingData) {
         super.withTrainingData(trainingData);
@@ -367,8 +376,17 @@ public final class Classification extends AutoMLVertical {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Classification withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -377,20 +395,106 @@ public final class Classification extends AutoMLVertical {
         if (trainingSettings() != null) {
             trainingSettings().validate();
         }
-        if (featurizationSettings() != null) {
-            featurizationSettings().validate();
-        }
         if (limitSettings() != null) {
             limitSettings().validate();
         }
         if (nCrossValidations() != null) {
             nCrossValidations().validate();
         }
-        if (testData() != null) {
-            testData().validate();
-        }
         if (validationData() != null) {
             validationData().validate();
         }
+        if (testData() != null) {
+            testData().validate();
+        }
+        if (featurizationSettings() != null) {
+            featurizationSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("trainingData", trainingData());
+        jsonWriter.writeStringField("logVerbosity", logVerbosity() == null ? null : logVerbosity().toString());
+        jsonWriter.writeStringField("targetColumnName", targetColumnName());
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
+        jsonWriter.writeStringField("primaryMetric", this.primaryMetric == null ? null : this.primaryMetric.toString());
+        jsonWriter.writeJsonField("trainingSettings", this.trainingSettings);
+        jsonWriter.writeStringField("positiveLabel", this.positiveLabel);
+        jsonWriter.writeJsonField("limitSettings", this.limitSettings);
+        jsonWriter.writeJsonField("nCrossValidations", this.nCrossValidations);
+        jsonWriter.writeArrayField("cvSplitColumnNames", this.cvSplitColumnNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("weightColumnName", this.weightColumnName);
+        jsonWriter.writeJsonField("validationData", this.validationData);
+        jsonWriter.writeJsonField("testData", this.testData);
+        jsonWriter.writeNumberField("validationDataSize", this.validationDataSize);
+        jsonWriter.writeNumberField("testDataSize", this.testDataSize);
+        jsonWriter.writeJsonField("featurizationSettings", this.featurizationSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Classification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Classification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Classification.
+     */
+    public static Classification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Classification deserializedClassification = new Classification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trainingData".equals(fieldName)) {
+                    deserializedClassification.withTrainingData(MLTableJobInput.fromJson(reader));
+                } else if ("logVerbosity".equals(fieldName)) {
+                    deserializedClassification.withLogVerbosity(LogVerbosity.fromString(reader.getString()));
+                } else if ("targetColumnName".equals(fieldName)) {
+                    deserializedClassification.withTargetColumnName(reader.getString());
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedClassification.taskType = TaskType.fromString(reader.getString());
+                } else if ("primaryMetric".equals(fieldName)) {
+                    deserializedClassification.primaryMetric
+                        = ClassificationPrimaryMetrics.fromString(reader.getString());
+                } else if ("trainingSettings".equals(fieldName)) {
+                    deserializedClassification.trainingSettings = ClassificationTrainingSettings.fromJson(reader);
+                } else if ("positiveLabel".equals(fieldName)) {
+                    deserializedClassification.positiveLabel = reader.getString();
+                } else if ("limitSettings".equals(fieldName)) {
+                    deserializedClassification.limitSettings = TableVerticalLimitSettings.fromJson(reader);
+                } else if ("nCrossValidations".equals(fieldName)) {
+                    deserializedClassification.nCrossValidations = NCrossValidations.fromJson(reader);
+                } else if ("cvSplitColumnNames".equals(fieldName)) {
+                    List<String> cvSplitColumnNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClassification.cvSplitColumnNames = cvSplitColumnNames;
+                } else if ("weightColumnName".equals(fieldName)) {
+                    deserializedClassification.weightColumnName = reader.getString();
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedClassification.validationData = MLTableJobInput.fromJson(reader);
+                } else if ("testData".equals(fieldName)) {
+                    deserializedClassification.testData = MLTableJobInput.fromJson(reader);
+                } else if ("validationDataSize".equals(fieldName)) {
+                    deserializedClassification.validationDataSize = reader.getNullable(JsonReader::getDouble);
+                } else if ("testDataSize".equals(fieldName)) {
+                    deserializedClassification.testDataSize = reader.getNullable(JsonReader::getDouble);
+                } else if ("featurizationSettings".equals(fieldName)) {
+                    deserializedClassification.featurizationSettings
+                        = TableVerticalFeaturizationSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClassification;
+        });
     }
 }

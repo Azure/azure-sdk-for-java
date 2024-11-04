@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** plannerPlan. */
+/**
+ * plannerPlan.
+ */
 @Fluent
 public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
     /*
      * identitySet
      */
-    @JsonProperty(value = "createdBy")
     private MicrosoftGraphIdentitySet createdBy;
 
     /*
@@ -28,52 +31,48 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
      * using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * ID of the Group that owns the plan. A valid group must exist before this field can be set. After it is set, this
      * property can’t be updated.
      */
-    @JsonProperty(value = "owner")
     private String owner;
 
     /*
      * Required. Title of the plan.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Read-only. Nullable. Collection of buckets in the plan.
      */
-    @JsonProperty(value = "buckets")
     private List<MicrosoftGraphPlannerBucket> buckets;
 
     /*
      * plannerPlanDetails
      */
-    @JsonProperty(value = "details")
     private MicrosoftGraphPlannerPlanDetails details;
 
     /*
      * Read-only. Nullable. Collection of tasks in the plan.
      */
-    @JsonProperty(value = "tasks")
     private List<MicrosoftGraphPlannerTask> tasks;
 
     /*
      * plannerPlan
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPlannerPlan class. */
+    /**
+     * Creates an instance of MicrosoftGraphPlannerPlan class.
+     */
     public MicrosoftGraphPlannerPlan() {
     }
 
     /**
      * Get the createdBy property: identitySet.
-     *
+     * 
      * @return the createdBy value.
      */
     public MicrosoftGraphIdentitySet createdBy() {
@@ -82,7 +81,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Set the createdBy property: identitySet.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -95,7 +94,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
      * Get the createdDateTime property: Read-only. Date and time at which the plan is created. The Timestamp type
      * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -106,7 +105,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
      * Set the createdDateTime property: Read-only. Date and time at which the plan is created. The Timestamp type
      * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -118,7 +117,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
     /**
      * Get the owner property: ID of the Group that owns the plan. A valid group must exist before this field can be
      * set. After it is set, this property can’t be updated.
-     *
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -128,7 +127,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
     /**
      * Set the owner property: ID of the Group that owns the plan. A valid group must exist before this field can be
      * set. After it is set, this property can’t be updated.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -139,7 +138,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Get the title property: Required. Title of the plan.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -148,7 +147,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Set the title property: Required. Title of the plan.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -159,7 +158,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Get the buckets property: Read-only. Nullable. Collection of buckets in the plan.
-     *
+     * 
      * @return the buckets value.
      */
     public List<MicrosoftGraphPlannerBucket> buckets() {
@@ -168,7 +167,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Set the buckets property: Read-only. Nullable. Collection of buckets in the plan.
-     *
+     * 
      * @param buckets the buckets value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -179,7 +178,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Get the details property: plannerPlanDetails.
-     *
+     * 
      * @return the details value.
      */
     public MicrosoftGraphPlannerPlanDetails details() {
@@ -188,7 +187,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Set the details property: plannerPlanDetails.
-     *
+     * 
      * @param details the details value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -199,7 +198,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Get the tasks property: Read-only. Nullable. Collection of tasks in the plan.
-     *
+     * 
      * @return the tasks value.
      */
     public List<MicrosoftGraphPlannerTask> tasks() {
@@ -208,7 +207,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Set the tasks property: Read-only. Nullable. Collection of tasks in the plan.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -219,17 +218,16 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: plannerPlan.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: plannerPlan.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPlannerPlan object itself.
      */
@@ -238,15 +236,9 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPlannerPlan withId(String id) {
         super.withId(id);
@@ -255,7 +247,7 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -273,5 +265,79 @@ public final class MicrosoftGraphPlannerPlan extends MicrosoftGraphEntity {
         if (tasks() != null) {
             tasks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("owner", this.owner);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeArrayField("buckets", this.buckets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("details", this.details);
+        jsonWriter.writeArrayField("tasks", this.tasks, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPlannerPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPlannerPlan if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPlannerPlan.
+     */
+    public static MicrosoftGraphPlannerPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPlannerPlan deserializedMicrosoftGraphPlannerPlan = new MicrosoftGraphPlannerPlan();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerPlan.withId(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerPlan.createdBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerPlan.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("owner".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerPlan.owner = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerPlan.title = reader.getString();
+                } else if ("buckets".equals(fieldName)) {
+                    List<MicrosoftGraphPlannerBucket> buckets
+                        = reader.readArray(reader1 -> MicrosoftGraphPlannerBucket.fromJson(reader1));
+                    deserializedMicrosoftGraphPlannerPlan.buckets = buckets;
+                } else if ("details".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerPlan.details = MicrosoftGraphPlannerPlanDetails.fromJson(reader);
+                } else if ("tasks".equals(fieldName)) {
+                    List<MicrosoftGraphPlannerTask> tasks
+                        = reader.readArray(reader1 -> MicrosoftGraphPlannerTask.fromJson(reader1));
+                    deserializedMicrosoftGraphPlannerPlan.tasks = tasks;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPlannerPlan.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPlannerPlan;
+        });
     }
 }

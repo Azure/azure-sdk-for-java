@@ -8,12 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.JavaComponentInner;
 import com.azure.resourcemanager.appcontainers.models.JavaComponent;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentConfigurationProperty;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentProvisioningState;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentServiceBind;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentType;
-import java.util.Collections;
-import java.util.List;
+import com.azure.resourcemanager.appcontainers.models.JavaComponentProperties;
 
 public final class JavaComponentImpl implements JavaComponent, JavaComponent.Definition, JavaComponent.Update {
     private JavaComponentInner innerObject;
@@ -32,34 +27,12 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
         return this.innerModel().type();
     }
 
+    public JavaComponentProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public JavaComponentType componentType() {
-        return this.innerModel().componentType();
-    }
-
-    public JavaComponentProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public List<JavaComponentConfigurationProperty> configurations() {
-        List<JavaComponentConfigurationProperty> inner = this.innerModel().configurations();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<JavaComponentServiceBind> serviceBinds() {
-        List<JavaComponentServiceBind> inner = this.innerModel().serviceBinds();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public String resourceGroupName() {
@@ -87,14 +60,16 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
     }
 
     public JavaComponent create() {
-        this.innerObject = serviceManager.serviceClient().getJavaComponents().createOrUpdate(resourceGroupName,
-            environmentName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJavaComponents()
+            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public JavaComponent create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getJavaComponents().createOrUpdate(resourceGroupName,
-            environmentName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getJavaComponents()
+            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), context);
         return this;
     }
 
@@ -109,14 +84,16 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
     }
 
     public JavaComponent apply() {
-        this.innerObject = serviceManager.serviceClient().getJavaComponents().update(resourceGroupName, environmentName,
-            name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJavaComponents()
+            .update(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public JavaComponent apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getJavaComponents().update(resourceGroupName, environmentName,
-            name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getJavaComponents()
+            .update(resourceGroupName, environmentName, name, this.innerModel(), context);
         return this;
     }
 
@@ -130,29 +107,23 @@ public final class JavaComponentImpl implements JavaComponent, JavaComponent.Def
     }
 
     public JavaComponent refresh() {
-        this.innerObject = serviceManager.serviceClient().getJavaComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJavaComponents()
+            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JavaComponent refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getJavaComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJavaComponents()
+            .getWithResponse(resourceGroupName, environmentName, name, context)
+            .getValue();
         return this;
     }
 
-    public JavaComponentImpl withComponentType(JavaComponentType componentType) {
-        this.innerModel().withComponentType(componentType);
-        return this;
-    }
-
-    public JavaComponentImpl withConfigurations(List<JavaComponentConfigurationProperty> configurations) {
-        this.innerModel().withConfigurations(configurations);
-        return this;
-    }
-
-    public JavaComponentImpl withServiceBinds(List<JavaComponentServiceBind> serviceBinds) {
-        this.innerModel().withServiceBinds(serviceBinds);
+    public JavaComponentImpl withProperties(JavaComponentProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 }

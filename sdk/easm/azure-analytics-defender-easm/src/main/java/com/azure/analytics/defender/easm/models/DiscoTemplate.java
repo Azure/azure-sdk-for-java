@@ -5,83 +5,77 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The items in the current page of results.
  */
 @Immutable
-public final class DiscoTemplate {
+public final class DiscoTemplate implements JsonSerializable<DiscoTemplate> {
 
     /*
      * The system generated unique id for the resource.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The caller provided unique name for the resource.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The name that can be used for display purposes.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The name of the industry.
      */
     @Generated
-    @JsonProperty(value = "industry")
     private String industry;
 
     /*
      * The name of the region.
      */
     @Generated
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The country code.
      */
     @Generated
-    @JsonProperty(value = "countryCode")
     private String countryCode;
 
     /*
      * The state code.
      */
     @Generated
-    @JsonProperty(value = "stateCode")
     private String stateCode;
 
     /*
      * The name of the city.
      */
     @Generated
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The list of disco template seeds.
      */
     @Generated
-    @JsonProperty(value = "seeds")
     private List<DiscoSource> seeds;
 
     /*
      * The list of disco template names.
      */
     @Generated
-    @JsonProperty(value = "names")
     private List<String> names;
 
     /**
@@ -189,5 +183,70 @@ public final class DiscoTemplate {
     @Generated
     public List<String> getNames() {
         return this.names;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("industry", this.industry);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("countryCode", this.countryCode);
+        jsonWriter.writeStringField("stateCode", this.stateCode);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeArrayField("seeds", this.seeds, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("names", this.names, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoTemplate from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoTemplate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiscoTemplate.
+     */
+    @Generated
+    public static DiscoTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoTemplate deserializedDiscoTemplate = new DiscoTemplate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedDiscoTemplate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiscoTemplate.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDiscoTemplate.displayName = reader.getString();
+                } else if ("industry".equals(fieldName)) {
+                    deserializedDiscoTemplate.industry = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedDiscoTemplate.region = reader.getString();
+                } else if ("countryCode".equals(fieldName)) {
+                    deserializedDiscoTemplate.countryCode = reader.getString();
+                } else if ("stateCode".equals(fieldName)) {
+                    deserializedDiscoTemplate.stateCode = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedDiscoTemplate.city = reader.getString();
+                } else if ("seeds".equals(fieldName)) {
+                    List<DiscoSource> seeds = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
+                    deserializedDiscoTemplate.seeds = seeds;
+                } else if ("names".equals(fieldName)) {
+                    List<String> names = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiscoTemplate.names = names;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDiscoTemplate;
+        });
     }
 }

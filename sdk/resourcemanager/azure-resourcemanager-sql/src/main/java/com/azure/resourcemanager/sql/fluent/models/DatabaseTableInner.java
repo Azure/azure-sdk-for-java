@@ -6,25 +6,46 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.TableTemporalType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A database table resource. */
+/**
+ * A database table resource.
+ */
 @Fluent
 public final class DatabaseTableInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private DatabaseTableProperties innerProperties;
 
-    /** Creates an instance of DatabaseTableInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DatabaseTableInner class.
+     */
     public DatabaseTableInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseTableProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class DatabaseTableInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the temporalType property: The table temporal type.
-     *
+     * 
      * @return the temporalType value.
      */
     public TableTemporalType temporalType() {
@@ -42,7 +93,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Set the temporalType property: The table temporal type.
-     *
+     * 
      * @param temporalType the temporalType value to set.
      * @return the DatabaseTableInner object itself.
      */
@@ -56,7 +107,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Get the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @return the memoryOptimized value.
      */
     public Boolean memoryOptimized() {
@@ -65,7 +116,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Set the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @param memoryOptimized the memoryOptimized value to set.
      * @return the DatabaseTableInner object itself.
      */
@@ -79,12 +130,55 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseTableInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseTableInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseTableInner.
+     */
+    public static DatabaseTableInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseTableInner deserializedDatabaseTableInner = new DatabaseTableInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseTableInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseTableInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseTableInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseTableInner.innerProperties = DatabaseTableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseTableInner;
+        });
     }
 }

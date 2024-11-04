@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.MapperTableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * CDC table details.
  */
 @Fluent
-public final class MapperTable {
+public final class MapperTable implements JsonSerializable<MapperTable> {
     /*
      * Name of the table.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Table properties.
      */
-    @JsonProperty(value = "properties")
     private MapperTableProperties innerProperties;
 
     /**
@@ -116,5 +118,44 @@ public final class MapperTable {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperTable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapperTable.
+     */
+    public static MapperTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperTable deserializedMapperTable = new MapperTable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMapperTable.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMapperTable.innerProperties = MapperTableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperTable;
+        });
     }
 }

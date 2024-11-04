@@ -6,38 +6,38 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeProfilePropertiesUpgradesItem;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of available upgrade versions.
  */
 @Fluent
-public final class AgentPoolUpgradeProfileProperties {
+public final class AgentPoolUpgradeProfileProperties implements JsonSerializable<AgentPoolUpgradeProfileProperties> {
     /*
      * The Kubernetes version (major.minor.patch).
      */
-    @JsonProperty(value = "kubernetesVersion", required = true)
     private String kubernetesVersion;
 
     /*
      * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
-    @JsonProperty(value = "osType", required = true)
     private OSType osType;
 
     /*
      * List of orchestrator types and versions available for upgrade.
      */
-    @JsonProperty(value = "upgrades")
     private List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades;
 
     /*
      * The latest AKS supported node image version.
      */
-    @JsonProperty(value = "latestNodeImageVersion")
     private String latestNodeImageVersion;
 
     /**
@@ -134,12 +134,14 @@ public final class AgentPoolUpgradeProfileProperties {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property kubernetesVersion in model AgentPoolUpgradeProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property kubernetesVersion in model AgentPoolUpgradeProfileProperties"));
         }
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osType in model AgentPoolUpgradeProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model AgentPoolUpgradeProfileProperties"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
@@ -147,4 +149,53 @@ public final class AgentPoolUpgradeProfileProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("latestNodeImageVersion", this.latestNodeImageVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolUpgradeProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolUpgradeProfileProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AgentPoolUpgradeProfileProperties.
+     */
+    public static AgentPoolUpgradeProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolUpgradeProfileProperties deserializedAgentPoolUpgradeProfileProperties
+                = new AgentPoolUpgradeProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeProfileProperties.kubernetesVersion = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeProfileProperties.osType = OSType.fromString(reader.getString());
+                } else if ("upgrades".equals(fieldName)) {
+                    List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades
+                        = reader.readArray(reader1 -> AgentPoolUpgradeProfilePropertiesUpgradesItem.fromJson(reader1));
+                    deserializedAgentPoolUpgradeProfileProperties.upgrades = upgrades;
+                } else if ("latestNodeImageVersion".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeProfileProperties.latestNodeImageVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolUpgradeProfileProperties;
+        });
+    }
 }

@@ -7,38 +7,38 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubConnection;
-import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
-import com.azure.messaging.webpubsub.client.implementation.websocket.ClientEndpointConfiguration;
-import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClientNettyImpl;
-import com.azure.messaging.webpubsub.client.implementation.websocket.CloseReason;
-import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSession;
-import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
-import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
-import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
-import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
-import com.azure.messaging.webpubsub.client.implementation.models.SequenceAckMessage;
-import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
-import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
-import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessageAck;
-import com.azure.messaging.webpubsub.client.models.AckResponseError;
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.LeaveGroupMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendToGroupMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.SequenceAckMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessageAck;
+import com.azure.messaging.webpubsub.client.implementation.websocket.ClientEndpointConfiguration;
+import com.azure.messaging.webpubsub.client.implementation.websocket.CloseReason;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClientNettyImpl;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSession;
+import com.azure.messaging.webpubsub.client.models.AckResponseError;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
-import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
+import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
-import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
-import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.Disposable;
@@ -86,26 +86,26 @@ final class WebPubSubAsyncClient implements Closeable {
     private WebSocketSession webSocketSession;
 
     // Reactor messages
-    private Sinks.Many<GroupMessageEvent> groupMessageEventSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<GroupMessageEvent> groupMessageEventSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<ServerMessageEvent> serverMessageEventSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<ServerMessageEvent> serverMessageEventSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<AckMessage> ackMessageSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<AckMessage> ackMessageSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<ConnectedEvent> connectedEventSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<ConnectedEvent> connectedEventSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<DisconnectedEvent> disconnectedEventSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<DisconnectedEvent> disconnectedEventSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<StoppedEvent> stoppedEventSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<StoppedEvent> stoppedEventSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<RejoinGroupFailedEvent> rejoinGroupFailedEventSink =
-        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<RejoinGroupFailedEvent> rejoinGroupFailedEventSink
+        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     // incremental ackId
     private final AtomicLong ackId = new AtomicLong(0);
@@ -133,21 +133,16 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private static final Duration ACK_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration RECOVER_TIMEOUT = Duration.ofSeconds(30);
-    private static final Retry RECONNECT_RETRY_SPEC =
-        Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1))
-            .filter(thr -> !(thr instanceof StopReconnectException));
+    private static final Retry RECONNECT_RETRY_SPEC
+        = Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1)).filter(thr -> !(thr instanceof StopReconnectException));
 
     // delay
     private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofMillis(100);
     private static final Duration SEQUENCE_ACK_DELAY = Duration.ofSeconds(5);
 
-    WebPubSubAsyncClient(WebSocketClient webSocketClient,
-                         Supplier<String> clientAccessUrlSupplier,
-                         WebPubSubProtocolType webPubSubProtocol,
-                         String applicationId, String userAgent,
-                         RetryStrategy retryStrategy,
-                         boolean autoReconnect,
-                         boolean autoRestoreGroup) {
+    WebPubSubAsyncClient(WebSocketClient webSocketClient, Supplier<String> clientAccessUrlSupplier,
+        WebPubSubProtocolType webPubSubProtocol, String applicationId, String userAgent, RetryStrategy retryStrategy,
+        boolean autoReconnect, boolean autoRestoreGroup) {
 
         updateLogger(applicationId, null);
 
@@ -155,8 +150,8 @@ final class WebPubSubAsyncClient implements Closeable {
 
         // options
         Objects.requireNonNull(clientAccessUrlSupplier);
-        this.clientAccessUrlProvider = Mono.fromSupplier(clientAccessUrlSupplier)
-            .subscribeOn(Schedulers.boundedElastic());
+        this.clientAccessUrlProvider
+            = Mono.fromSupplier(clientAccessUrlSupplier).subscribeOn(Schedulers.boundedElastic());
         this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
@@ -173,8 +168,7 @@ final class WebPubSubAsyncClient implements Closeable {
                     if (((SendMessageFailedException) s.failure()).isTransient()) {
                         int retryAttempt = retryCount.incrementAndGet();
                         if (retryAttempt <= retryStrategy.getMaxRetries()) {
-                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt))
-                                .then(Mono.just(s));
+                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt)).then(Mono.just(s));
                         }
                     }
                 }
@@ -203,21 +197,19 @@ final class WebPubSubAsyncClient implements Closeable {
 
     Mono<Void> start(Runnable postStartTask) {
         if (clientState.get() == WebPubSubClientState.CLOSED) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to start. Client is CLOSED.")));
+            return Mono
+                .error(logger.logExceptionAsError(new IllegalStateException("Failed to start. Client is CLOSED.")));
         }
         return Mono.defer(() -> {
-            logger.atInfo()
-                .addKeyValue("currentClientState", clientState.get())
-                .log("Start client called.");
+            logger.atInfo().addKeyValue("currentClientState", clientState.get()).log("Start client called.");
 
             isStoppedByUser.set(false);
             isStoppedByUserSink.set(null);
 
             boolean success = clientState.changeStateOn(WebPubSubClientState.STOPPED, WebPubSubClientState.CONNECTING);
             if (!success) {
-                return Mono.error(logger.logExceptionAsError(
-                    new IllegalStateException("Failed to start. Client is not STOPPED.")));
+                return Mono.error(
+                    logger.logExceptionAsError(new IllegalStateException("Failed to start. Client is not STOPPED.")));
             } else {
                 if (postStartTask != null) {
                     postStartTask.run();
@@ -227,8 +219,7 @@ final class WebPubSubAsyncClient implements Closeable {
             }
         }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() -> {
             // open connection from client
-            this.webSocketSession = webSocketClient.connectToServer(
-                clientEndpointConfiguration, url, loggerReference,
+            this.webSocketSession = webSocketClient.connectToServer(clientEndpointConfiguration, url, loggerReference,
                 this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
         }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
             // stop if error, do not send StoppedEvent when it fails at start(), which would have exception thrown
@@ -243,13 +234,11 @@ final class WebPubSubAsyncClient implements Closeable {
      */
     public Mono<Void> stop() {
         if (clientState.get() == WebPubSubClientState.CLOSED) {
-            return Mono.error(logger.logExceptionAsError(
-                new IllegalStateException("Failed to stop. Client is CLOSED.")));
+            return Mono
+                .error(logger.logExceptionAsError(new IllegalStateException("Failed to stop. Client is CLOSED.")));
         }
         return Mono.defer(() -> {
-            logger.atInfo()
-                .addKeyValue("currentClientState", clientState.get())
-                .log("Stop client called.");
+            logger.atInfo().addKeyValue("currentClientState", clientState.get()).log("Stop client called.");
 
             if (clientState.get() == WebPubSubClientState.STOPPED) {
                 // already STOPPED
@@ -326,16 +315,11 @@ final class WebPubSubAsyncClient implements Closeable {
         if (ackId == null) {
             ackId = nextAckId();
         }
-        return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
-            .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
+        return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId)).then(waitForAckMessage(ackId))
+            .retryWhen(sendMessageRetrySpec)
             .map(result -> {
-                groups.compute(group, (k, v) -> {
-                    if (v == null) {
-                        return new WebPubSubGroup(group).setJoined(true);
-                    } else {
-                        return v.setJoined(true);
-                    }
-                });
+                groups.compute(group,
+                    (k, v) -> (v == null) ? new WebPubSubGroup(group).setJoined(true) : v.setJoined(true));
                 return result;
             });
     }
@@ -362,16 +346,11 @@ final class WebPubSubAsyncClient implements Closeable {
         if (ackId == null) {
             ackId = nextAckId();
         }
-        return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
-            .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
+        return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId)).then(waitForAckMessage(ackId))
+            .retryWhen(sendMessageRetrySpec)
             .map(result -> {
-                groups.compute(group, (k, v) -> {
-                    if (v == null) {
-                        return new WebPubSubGroup(group).setJoined(false);
-                    } else {
-                        return v.setJoined(false);
-                    }
-                });
+                groups.compute(group,
+                    (k, v) -> (v == null) ? new WebPubSubGroup(group).setJoined(false) : v.setJoined(false));
                 return result;
             });
     }
@@ -421,18 +400,15 @@ final class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
-                                             SendToGroupOptions options) {
+        SendToGroupOptions options) {
         Objects.requireNonNull(group);
         Objects.requireNonNull(content);
         Objects.requireNonNull(dataFormat);
         Objects.requireNonNull(options);
 
-        Long ackId = options.isFireAndForget()
-            ? null
-            : (options.getAckId() != null ? options.getAckId() : nextAckId());
+        Long ackId = options.isFireAndForget() ? null : (options.getAckId() != null ? options.getAckId() : nextAckId());
 
-        SendToGroupMessage message = new SendToGroupMessage()
-            .setGroup(group)
+        SendToGroupMessage message = new SendToGroupMessage().setGroup(group)
             .setData(content)
             .setDataType(dataFormat.toString())
             .setAckId(ackId)
@@ -465,18 +441,15 @@ final class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
-                                           SendEventOptions options) {
+        SendEventOptions options) {
         Objects.requireNonNull(eventName);
         Objects.requireNonNull(content);
         Objects.requireNonNull(dataFormat);
         Objects.requireNonNull(options);
 
-        Long ackId = options.isFireAndForget()
-            ? null
-            : (options.getAckId() != null ? options.getAckId() : nextAckId());
+        Long ackId = options.isFireAndForget() ? null : (options.getAckId() != null ? options.getAckId() : nextAckId());
 
-        SendEventMessage message = new SendEventMessage()
-            .setEvent(eventName)
+        SendEventMessage message = new SendEventMessage().setEvent(eventName)
             .setData(content)
             .setDataType(dataFormat.toString())
             .setAckId(ackId);
@@ -556,22 +529,22 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Mono<Void> sendMessage(WebPubSubMessage message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
-//            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-//                try {
-//                    String json = JacksonAdapter.createDefaultSerializerAdapter()
-//                        .serialize(message, SerializerEncoding.JSON);
-//                    logger.atVerbose().addKeyValue("message", json).log("Send message");
-//                } catch (IOException e) {
-//                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
-//                }
-//            }
+            //            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+            //                try {
+            //                    String json = JacksonAdapter.createDefaultSerializerAdapter()
+            //                        .serialize(message, SerializerEncoding.JSON);
+            //                    logger.atVerbose().addKeyValue("message", json).log("Send message");
+            //                } catch (IOException e) {
+            //                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
+            //                }
+            //            }
 
             webSocketSession.sendObjectAsync(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
                 } else {
-                    sink.error(logSendMessageFailedException(
-                        "Failed to send message.", sendResult.getException(), true, message));
+                    sink.error(logSendMessageFailedException("Failed to send message.", sendResult.getException(), true,
+                        message));
                 }
             });
         }));
@@ -585,14 +558,13 @@ final class WebPubSubAsyncClient implements Closeable {
                     new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
             }
             if (state != WebPubSubClientState.CONNECTED) {
-                return Mono.error(logSendMessageFailedException(
-                    "Failed to send message. Client is " + state.name() + ".",
-                    null,
-                    state == WebPubSubClientState.RECOVERING
-                        || state == WebPubSubClientState.CONNECTING
-                        || state == WebPubSubClientState.RECONNECTING
-                        || state == WebPubSubClientState.DISCONNECTED,
-                    (Long) null));
+                return Mono.error(
+                    logSendMessageFailedException("Failed to send message. Client is " + state.name() + ".", null,
+                        state == WebPubSubClientState.RECOVERING
+                            || state == WebPubSubClientState.CONNECTING
+                            || state == WebPubSubClientState.RECONNECTING
+                            || state == WebPubSubClientState.DISCONNECTED,
+                        (Long) null));
             }
             if (webSocketSession == null || !webSocketSession.isOpen()) {
                 // something unexpected
@@ -622,11 +594,8 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private <EventT> void tryEmitNext(Sinks.Many<EventT> sink, EventT event) {
-        logger.atVerbose()
-            .addKeyValue("type", event.getClass().getSimpleName())
-            .log("Send event");
-        sink.emitNext(event,
-            emitFailureHandler("Unable to emit " + event.getClass().getSimpleName()));
+        logger.atVerbose().addKeyValue("type", event.getClass().getSimpleName()).log("Send event");
+        sink.emitNext(event, emitFailureHandler("Unable to emit " + event.getClass().getSimpleName()));
     }
 
     private Mono<WebPubSubResult> waitForAckMessage(Long ackId) {
@@ -634,13 +603,12 @@ final class WebPubSubAsyncClient implements Closeable {
             // fireAndForget
             return Mono.just(new WebPubSubResult(null, false));
         }
-        return receiveAckMessages()
-            .filter(m -> ackId == m.getAckId())
+        return receiveAckMessages().filter(m -> ackId == m.getAckId())
             // single AckMessage
             .next()
             // error from upstream
-            .onErrorMap(throwable -> logSendMessageFailedException(
-                "Acknowledge from the service not received.", throwable, true, ackId))
+            .onErrorMap(throwable -> logSendMessageFailedException("Acknowledge from the service not received.",
+                throwable, true, ackId))
             // error from AckMessage
             .flatMap(m -> {
                 if (m.isSuccess()) {
@@ -654,8 +622,8 @@ final class WebPubSubAsyncClient implements Closeable {
             })
             // timeout or stream closed
             .timeout(ACK_TIMEOUT, Mono.empty())
-            .switchIfEmpty(Mono.defer(() -> Mono.error(logSendMessageFailedException(
-                "Acknowledge from the service not received.", null, true, ackId))));
+            .switchIfEmpty(Mono.defer(() -> Mono.error(
+                logSendMessageFailedException("Acknowledge from the service not received.", null, true, ackId))));
     }
 
     private void handleSessionOpen(WebSocketSession session) {
@@ -674,14 +642,12 @@ final class WebPubSubAsyncClient implements Closeable {
                 if (session != null && session.isOpen()) {
                     session.close();
                 } else {
-                    logger.atError()
-                        .log("Failed to close session after session open");
+                    logger.atError().log("Failed to close session after session open");
                     handleClientStop();
                 }
                 return (Void) null;
             }).subscribeOn(Schedulers.boundedElastic())).subscribe(null, thr -> {
-                logger.atError()
-                    .log("Failed to close session after session open: " + thr.getMessage());
+                logger.atError().log("Failed to close session after session open: " + thr.getMessage());
                 // force a stopped state
                 handleClientStop();
             });
@@ -694,12 +660,11 @@ final class WebPubSubAsyncClient implements Closeable {
                         if (connection != null) {
                             Long id = connection.getSequenceAckId().getUpdated();
                             if (id != null) {
-                                return sendMessage(new SequenceAckMessage().setSequenceId(id))
-                                    .onErrorResume(error -> {
-                                        // ignore error, wait for next chance
-                                        connection.getSequenceAckId().setUpdated();
-                                        return Mono.empty();
-                                    });
+                                return sendMessage(new SequenceAckMessage().setSequenceId(id)).onErrorResume(error -> {
+                                    // ignore error, wait for next chance
+                                    connection.getSequenceAckId().setUpdated();
+                                    return Mono.empty();
+                                });
                             } else {
                                 return Mono.empty();
                             }
@@ -719,7 +684,8 @@ final class WebPubSubAsyncClient implements Closeable {
 
             // restore group
             if (autoRestoreGroup) {
-                List<Mono<WebPubSubResult>> restoreGroupMonoList = groups.values().stream()
+                List<Mono<WebPubSubResult>> restoreGroupMonoList = groups.values()
+                    .stream()
                     .filter(WebPubSubGroup::isJoined)
                     .map(group -> joinGroup(group.getName()).onErrorResume(error -> {
                         if (error instanceof SendMessageFailedException) {
@@ -732,12 +698,10 @@ final class WebPubSubAsyncClient implements Closeable {
 
                 // delay a bit, as handleSessionOpen is in websocket callback
                 Mono.delay(CLOSE_AFTER_SESSION_OPEN_DELAY)
-                    .thenMany(Flux.mergeSequentialDelayError(restoreGroupMonoList,
-                        Schedulers.DEFAULT_POOL_SIZE, Schedulers.DEFAULT_POOL_SIZE))
-                    .subscribe(null, thr -> {
-                        logger.atWarning()
-                            .log("Failed to auto restore group: " + thr.getMessage());
-                    });
+                    .thenMany(Flux.mergeSequentialDelayError(restoreGroupMonoList, Schedulers.DEFAULT_POOL_SIZE,
+                        Schedulers.DEFAULT_POOL_SIZE))
+                    .subscribe(null,
+                        thr -> logger.atWarning().log("Failed to auto restore group: " + thr.getMessage()));
             }
         }
     }
@@ -753,8 +717,7 @@ final class WebPubSubAsyncClient implements Closeable {
 
         final String connectionId = this.getConnectionId();
 
-        if (isStoppedByUser.compareAndSet(true, false)
-            || clientState.get() == WebPubSubClientState.STOPPING) {
+        if (isStoppedByUser.compareAndSet(true, false) || clientState.get() == WebPubSubClientState.STOPPING) {
             // connection close, send DisconnectedEvent
             handleConnectionClose();
 
@@ -766,10 +729,8 @@ final class WebPubSubAsyncClient implements Closeable {
             handleConnectionClose();
 
             // reconnect
-            handleNoRecovery().subscribe(null, thr -> {
-                logger.atWarning()
-                    .log("Failed to auto reconnect session: " + thr.getMessage());
-            });
+            handleNoRecovery().subscribe(null,
+                thr -> logger.atWarning().log("Failed to auto reconnect session: " + thr.getMessage()));
         } else {
             final WebPubSubConnection connection = this.webPubSubConnection;
             final String reconnectionToken = connection == null ? null : connection.getReconnectionToken();
@@ -779,10 +740,8 @@ final class WebPubSubAsyncClient implements Closeable {
                 handleConnectionClose();
 
                 // reconnect
-                handleNoRecovery().subscribe(null, thr -> {
-                    logger.atWarning()
-                        .log("Failed to auto reconnect session: " + thr.getMessage());
-                });
+                handleNoRecovery().subscribe(null,
+                    thr -> logger.atWarning().log("Failed to auto reconnect session.", thr));
             } else {
                 // connection not close, attempt recover
                 handleRecovery(connectionId, reconnectionToken).timeout(RECOVER_TIMEOUT, Mono.defer(() -> {
@@ -794,25 +753,22 @@ final class WebPubSubAsyncClient implements Closeable {
                     handleConnectionClose();
 
                     return handleNoRecovery();
-                })).subscribe(null, thr -> {
-                    logger.atWarning()
-                        .log("Failed to recover or reconnect session: " + thr.getMessage());
-                });
+                })).subscribe(null, thr -> logger.atWarning().log("Failed to recover or reconnect session.", thr));
             }
         }
     }
 
     private void handleMessage(Object webPubSubMessage) {
-//        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-//            try {
-//                String json = JacksonAdapter.createDefaultSerializerAdapter()
-//                    .serialize(webPubSubMessage, SerializerEncoding.JSON);
-//                logger.atVerbose().addKeyValue("message", json).log("Received message");
-//            } catch (IOException e) {
-//                throw logger.logExceptionAsError(
-//                    new UncheckedIOException("Failed to serialize received message for VERBOSE logging", e));
-//            }
-//        }
+        //        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+        //            try {
+        //                String json = JacksonAdapter.createDefaultSerializerAdapter()
+        //                    .serialize(webPubSubMessage, SerializerEncoding.JSON);
+        //                logger.atVerbose().addKeyValue("message", json).log("Received message");
+        //            } catch (IOException e) {
+        //                throw logger.logExceptionAsError(
+        //                    new UncheckedIOException("Failed to serialize received message for VERBOSE logging", e));
+        //            }
+        //        }
 
         if (webPubSubMessage instanceof GroupDataMessage) {
             final GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
@@ -822,12 +778,10 @@ final class WebPubSubAsyncClient implements Closeable {
                 emitMessage = updateSequenceAckId(groupDataMessage.getSequenceId());
             }
             if (emitMessage) {
-                tryEmitNext(groupMessageEventSink, new GroupMessageEvent(
-                    groupDataMessage.getGroup(),
-                    groupDataMessage.getData(),
-                    groupDataMessage.getDataType(),
-                    groupDataMessage.getFromUserId(),
-                    groupDataMessage.getSequenceId()));
+                tryEmitNext(groupMessageEventSink,
+                    new GroupMessageEvent(groupDataMessage.getGroup(), groupDataMessage.getData(),
+                        groupDataMessage.getDataType(), groupDataMessage.getFromUserId(),
+                        groupDataMessage.getSequenceId()));
             }
         } else if (webPubSubMessage instanceof ServerDataMessage) {
             final ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
@@ -837,10 +791,8 @@ final class WebPubSubAsyncClient implements Closeable {
                 emitMessage = updateSequenceAckId(serverDataMessage.getSequenceId());
             }
             if (emitMessage) {
-                tryEmitNext(serverMessageEventSink, new ServerMessageEvent(
-                    serverDataMessage.getData(),
-                    serverDataMessage.getDataType(),
-                    serverDataMessage.getSequenceId()));
+                tryEmitNext(serverMessageEventSink, new ServerMessageEvent(serverDataMessage.getData(),
+                    serverDataMessage.getDataType(), serverDataMessage.getSequenceId()));
             }
         } else if (webPubSubMessage instanceof AckMessage) {
             tryEmitNext(ackMessageSink, (AckMessage) webPubSubMessage);
@@ -856,17 +808,13 @@ final class WebPubSubAsyncClient implements Closeable {
             if (this.webPubSubConnection == null) {
                 this.webPubSubConnection = new WebPubSubConnection();
             }
-            this.webPubSubConnection.updateForConnected(
-                connectedMessage.getConnectionId(), connectedMessage.getReconnectionToken(),
-                () -> tryEmitNext(connectedEventSink, new ConnectedEvent(
-                    connectionId,
-                    connectedMessage.getUserId())));
+            this.webPubSubConnection.updateForConnected(connectedMessage.getConnectionId(),
+                connectedMessage.getReconnectionToken(),
+                () -> tryEmitNext(connectedEventSink, new ConnectedEvent(connectionId, connectedMessage.getUserId())));
         } else if (webPubSubMessage instanceof DisconnectedMessage) {
             final DisconnectedMessage disconnectedMessage = (DisconnectedMessage) webPubSubMessage;
             // send DisconnectedEvent, but connection close will be handled in handleSessionClose
-            handleConnectionClose(new DisconnectedEvent(
-                this.getConnectionId(),
-                disconnectedMessage.getReason()));
+            handleConnectionClose(new DisconnectedEvent(this.getConnectionId(), disconnectedMessage.getReason()));
         }
     }
 
@@ -889,8 +837,8 @@ final class WebPubSubAsyncClient implements Closeable {
             } else if (autoReconnect) {
                 // try reconnect
 
-                boolean success = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED,
-                    WebPubSubClientState.RECONNECTING);
+                boolean success
+                    = clientState.changeStateOn(WebPubSubClientState.DISCONNECTED, WebPubSubClientState.RECONNECTING);
                 if (!success) {
                     return Mono.error(logger.logExceptionAsError(
                         new StopReconnectException("Failed to start. Client is not DISCONNECTED.")));
@@ -898,19 +846,19 @@ final class WebPubSubAsyncClient implements Closeable {
 
                 return Mono.defer(() -> {
                     if (isStoppedByUser.compareAndSet(true, false)) {
-                        return Mono.error(logger.logExceptionAsWarning(
-                            new StopReconnectException("Client is stopped by user.")));
+                        return Mono.error(
+                            logger.logExceptionAsWarning(new StopReconnectException("Client is stopped by user.")));
                     } else {
                         return Mono.empty();
                     }
-                }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() -> {
-                    this.webSocketSession = webSocketClient.connectToServer(
-                        clientEndpointConfiguration, url, loggerReference,
-                        this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
-                }).subscribeOn(Schedulers.boundedElastic()))).retryWhen(RECONNECT_RETRY_SPEC).doOnError(error -> {
-                    // stopped by user
-                    handleClientStop();
-                });
+                })
+                    .then(clientAccessUrlProvider.flatMap(url -> Mono
+                        .<Void>fromRunnable(() -> this.webSocketSession
+                            = webSocketClient.connectToServer(clientEndpointConfiguration, url, loggerReference,
+                                this::handleMessage, this::handleSessionOpen, this::handleSessionClose))
+                        .subscribeOn(Schedulers.boundedElastic())))
+                    .retryWhen(RECONNECT_RETRY_SPEC)
+                    .doOnError(error -> handleClientStop()); // stopped by user
             } else {
                 handleClientStop();
                 return Mono.empty();
@@ -927,8 +875,8 @@ final class WebPubSubAsyncClient implements Closeable {
             } else {
                 // try recovery
 
-                boolean success = clientState.changeStateOn(WebPubSubClientState.CONNECTED,
-                    WebPubSubClientState.RECOVERING);
+                boolean success
+                    = clientState.changeStateOn(WebPubSubClientState.CONNECTED, WebPubSubClientState.RECOVERING);
                 if (!success) {
                     return Mono.error(logger.logExceptionAsError(
                         new StopReconnectException("Failed to recover. Client is not CONNECTED.")));
@@ -936,8 +884,8 @@ final class WebPubSubAsyncClient implements Closeable {
 
                 return Mono.defer(() -> {
                     if (isStoppedByUser.compareAndSet(true, false)) {
-                        return Mono.error(logger.logExceptionAsWarning(
-                            new StopReconnectException("Client is stopped by user.")));
+                        return Mono.error(
+                            logger.logExceptionAsWarning(new StopReconnectException("Client is stopped by user.")));
                     } else {
                         return Mono.empty();
                     }
@@ -947,9 +895,8 @@ final class WebPubSubAsyncClient implements Closeable {
                         .addQueryParameter("awps_reconnection_token", reconnectionToken)
                         .toString();
 
-                    this.webSocketSession = webSocketClient.connectToServer(
-                        clientEndpointConfiguration, recoveryUrl, loggerReference,
-                        this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
+                    this.webSocketSession = webSocketClient.connectToServer(clientEndpointConfiguration, recoveryUrl,
+                        loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
                 }).subscribeOn(Schedulers.boundedElastic()))).retryWhen(RECONNECT_RETRY_SPEC).doOnError(error -> {
                     // stopped by user
                     handleClientStop();
@@ -983,28 +930,23 @@ final class WebPubSubAsyncClient implements Closeable {
             tryEmitNext(stoppedEventSink, new StoppedEvent());
         }
 
-        groupMessageEventSink.emitComplete(
-            emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
+        groupMessageEventSink.emitComplete(emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
         groupMessageEventSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        serverMessageEventSink.emitComplete(
-            emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
+        serverMessageEventSink.emitComplete(emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
         serverMessageEventSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        connectedEventSink.emitComplete(
-            emitFailureHandler("Unable to emit Complete to connectedEventSink"));
+        connectedEventSink.emitComplete(emitFailureHandler("Unable to emit Complete to connectedEventSink"));
         connectedEventSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        disconnectedEventSink.emitComplete(
-            emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
+        disconnectedEventSink.emitComplete(emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
         disconnectedEventSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        stoppedEventSink.emitComplete(
-            emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
+        stoppedEventSink.emitComplete(emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
         stoppedEventSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        rejoinGroupFailedEventSink.emitComplete(
-            emitFailureHandler("Unable to emit Complete to rejoinGroupFailedEventSink"));
+        rejoinGroupFailedEventSink
+            .emitComplete(emitFailureHandler("Unable to emit Complete to rejoinGroupFailedEventSink"));
         rejoinGroupFailedEventSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
         ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
@@ -1018,9 +960,8 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private void handleConnectionClose(DisconnectedEvent disconnectedEvent) {
-        final DisconnectedEvent event = disconnectedEvent == null
-            ? new DisconnectedEvent(this.getConnectionId(), null)
-            : disconnectedEvent;
+        final DisconnectedEvent event
+            = disconnectedEvent == null ? new DisconnectedEvent(this.getConnectionId(), null) : disconnectedEvent;
 
         WebPubSubConnection connection = this.webPubSubConnection;
         if (connection != null) {
@@ -1048,8 +989,8 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private final class ClientState {
 
-        private final AtomicReference<WebPubSubClientState> clientState =
-            new AtomicReference<>(WebPubSubClientState.STOPPED);
+        private final AtomicReference<WebPubSubClientState> clientState
+            = new AtomicReference<>(WebPubSubClientState.STOPPED);
 
         WebPubSubClientState get() {
             return clientState.get();
@@ -1086,30 +1027,29 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Sinks.EmitFailureHandler emitFailureHandler(String message) {
         return (signalType, emitResult) -> {
-            LoggingUtils.addSignalTypeAndResult(this.logger.atWarning(), signalType, emitResult)
-                .log(message);
+            LoggingUtils.addSignalTypeAndResult(this.logger.atWarning(), signalType, emitResult).log(message);
             return emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED);
         };
     }
 
-    private RuntimeException logSendMessageFailedException(
-        String errorMessage, Throwable cause, boolean isTransient, WebPubSubMessage message) {
+    private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
+        WebPubSubMessage message) {
 
         return logSendMessageFailedException(errorMessage, cause, isTransient,
             (message instanceof WebPubSubMessageAck) ? ((WebPubSubMessageAck) message).getAckId() : null);
     }
 
-    private RuntimeException logSendMessageFailedException(
-        String errorMessage, Throwable cause, boolean isTransient, Long ackId) {
+    private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
+        Long ackId) {
 
         return logSendMessageFailedException(errorMessage, cause, isTransient, ackId, null);
     }
 
-    private RuntimeException logSendMessageFailedException(
-        String errorMessage, Throwable cause, boolean isTransient, Long ackId, AckResponseError error) {
+    private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
+        Long ackId, AckResponseError error) {
 
-        return logger.logExceptionAsWarning(
-            new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
+        return logger
+            .logExceptionAsWarning(new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
     }
 
     private static boolean isReliableProtocol(WebPubSubProtocolType webPubSubProtocol) {

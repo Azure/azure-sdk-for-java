@@ -5,82 +5,82 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity source for SAP Table source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapTableSource")
 @Fluent
 public final class SapTableSource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "SapTableSource";
+
+    /*
      * The number of rows to be retrieved. Type: integer(or Expression with resultType integer).
      */
-    @JsonProperty(value = "rowCount")
     private Object rowCount;
 
     /*
      * The number of rows that will be skipped. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "rowSkips")
     private Object rowSkips;
 
     /*
-     * The fields of the SAP table that will be retrieved. For example, column0, column1. Type: string (or Expression
-     * with resultType string).
+     * The fields of the SAP table that will be retrieved. For example, column0, column1. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "rfcTableFields")
     private Object rfcTableFields;
 
     /*
-     * The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME VALUE. Type: string (or Expression
-     * with resultType string).
+     * The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME VALUE. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "rfcTableOptions")
     private Object rfcTableOptions;
 
     /*
-     * Specifies the maximum number of rows that will be retrieved at a time when retrieving data from SAP Table. Type:
-     * integer (or Expression with resultType integer).
+     * Specifies the maximum number of rows that will be retrieved at a time when retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "batchSize")
     private Object batchSize;
 
     /*
-     * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or
-     * Expression with resultType string).
+     * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "customRfcReadTableFunctionModule")
     private Object customRfcReadTableFunctionModule;
 
     /*
-     * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data
-     * retrieved. Type: string (or Expression with resultType string).
+     * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sapDataColumnDelimiter")
     private Object sapDataColumnDelimiter;
 
     /*
-     * The partition mechanism that will be used for SAP table read in parallel. Possible values include: "None",
-     * "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate",
-     * "PartitionOnTime".
+     * The partition mechanism that will be used for SAP table read in parallel. Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate", "PartitionOnTime".
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for SAP table source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private SapTablePartitionSettings partitionSettings;
 
     /**
      * Creates an instance of SapTableSource class.
      */
     public SapTableSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -172,8 +172,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when
-     * retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
+     * Get the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when retrieving
+     * data from SAP Table. Type: integer (or Expression with resultType integer).
      * 
      * @return the batchSize value.
      */
@@ -182,8 +182,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Set the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when
-     * retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
+     * Set the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when retrieving
+     * data from SAP Table. Type: integer (or Expression with resultType integer).
      * 
      * @param batchSize the batchSize value to set.
      * @return the SapTableSource object itself.
@@ -216,8 +216,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
-     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      * 
      * @return the sapDataColumnDelimiter value.
      */
@@ -226,8 +226,8 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
-     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
+     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
      * 
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapTableSource object itself.
@@ -324,5 +324,94 @@ public final class SapTableSource extends TabularSource {
     public SapTableSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("rowCount", this.rowCount);
+        jsonWriter.writeUntypedField("rowSkips", this.rowSkips);
+        jsonWriter.writeUntypedField("rfcTableFields", this.rfcTableFields);
+        jsonWriter.writeUntypedField("rfcTableOptions", this.rfcTableOptions);
+        jsonWriter.writeUntypedField("batchSize", this.batchSize);
+        jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
+        jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapTableSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapTableSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapTableSource.
+     */
+    public static SapTableSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapTableSource deserializedSapTableSource = new SapTableSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSapTableSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSapTableSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSapTableSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedSapTableSource.setQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSapTableSource.setAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapTableSource.type = reader.getString();
+                } else if ("rowCount".equals(fieldName)) {
+                    deserializedSapTableSource.rowCount = reader.readUntyped();
+                } else if ("rowSkips".equals(fieldName)) {
+                    deserializedSapTableSource.rowSkips = reader.readUntyped();
+                } else if ("rfcTableFields".equals(fieldName)) {
+                    deserializedSapTableSource.rfcTableFields = reader.readUntyped();
+                } else if ("rfcTableOptions".equals(fieldName)) {
+                    deserializedSapTableSource.rfcTableOptions = reader.readUntyped();
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedSapTableSource.batchSize = reader.readUntyped();
+                } else if ("customRfcReadTableFunctionModule".equals(fieldName)) {
+                    deserializedSapTableSource.customRfcReadTableFunctionModule = reader.readUntyped();
+                } else if ("sapDataColumnDelimiter".equals(fieldName)) {
+                    deserializedSapTableSource.sapDataColumnDelimiter = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedSapTableSource.partitionOption = reader.readUntyped();
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedSapTableSource.partitionSettings = SapTablePartitionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapTableSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedSapTableSource;
+        });
     }
 }

@@ -13,26 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"Database\",\"location\":\"qb\",\"id\":\"h\",\"name\":\"efgwbmqjc\",\"type\":\"ntasfaymxbu\"},{\"kind\":\"Database\",\"location\":\"zealbmqkyo\",\"id\":\"yvfkmbts\",\"name\":\"ahxsgxjcmm\",\"type\":\"rrscubiwsdrnp\"},{\"kind\":\"Database\",\"location\":\"wodiffjxc\",\"id\":\"mmuabwi\",\"name\":\"vjogjonmcyefo\",\"type\":\"zbamwine\"},{\"kind\":\"Database\",\"location\":\"vfkakpold\",\"id\":\"evboclzhzjknyuxg\",\"name\":\"ttxpnrupza\",\"type\":\"mrdixtreki\"}]}")
-                .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("qb", model.value().get(0).location());
+        DatabaseListResult model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"Database\",\"location\":\"sgftipwc\",\"id\":\"yubhiqdx\",\"name\":\"urnpnuhzafccnuh\",\"type\":\"i\"}]}")
+            .toObject(DatabaseListResult.class);
+        Assertions.assertEquals("sgftipwc", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseListResult model =
-            new DatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabaseInner().withLocation("qb"),
-                            new DatabaseInner().withLocation("zealbmqkyo"),
-                            new DatabaseInner().withLocation("wodiffjxc"),
-                            new DatabaseInner().withLocation("vfkakpold")));
+        DatabaseListResult model
+            = new DatabaseListResult().withValue(Arrays.asList(new DatabaseInner().withLocation("sgftipwc")));
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("qb", model.value().get(0).location());
+        Assertions.assertEquals("sgftipwc", model.value().get(0).location());
     }
 }

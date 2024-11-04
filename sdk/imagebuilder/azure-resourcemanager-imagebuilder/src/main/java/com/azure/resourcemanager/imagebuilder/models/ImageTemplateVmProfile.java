@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the virtual machines used to build and validate images.
  */
 @Fluent
-public final class ImageTemplateVmProfile {
+public final class ImageTemplateVmProfile implements JsonSerializable<ImageTemplateVmProfile> {
     /*
      * Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the
      * default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size.
      */
-    @JsonProperty(value = "osDiskSizeGB")
     private Integer osDiskSizeGB;
 
     /*
      * Optional array of resource IDs of user assigned managed identities to be configured on the build VM and
      * validation VM. This may include the identity of the image template.
      */
-    @JsonProperty(value = "userAssignedIdentities")
     private List<String> userAssignedIdentities;
 
     /*
      * Optional configuration of the virtual network to use to deploy the build VM and validation VM in. Omit if no
      * specific virtual network needs to be used.
      */
-    @JsonProperty(value = "vnetConfig")
     private VirtualNetworkConfig vnetConfig;
 
     /**
@@ -47,8 +47,8 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
-     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
+     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      * 
      * @return the vmSize value.
      */
@@ -57,8 +57,8 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
-     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
+     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      * 
      * @param vmSize the vmSize value to set.
      * @return the ImageTemplateVmProfile object itself.
@@ -89,8 +89,8 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Get the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to
-     * be configured on the build VM and validation VM. This may include the identity of the image template.
+     * Get the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM and validation VM. This may include the identity of the image template.
      * 
      * @return the userAssignedIdentities value.
      */
@@ -99,8 +99,8 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Set the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to
-     * be configured on the build VM and validation VM. This may include the identity of the image template.
+     * Set the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM and validation VM. This may include the identity of the image template.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ImageTemplateVmProfile object itself.
@@ -141,5 +141,52 @@ public final class ImageTemplateVmProfile {
         if (vnetConfig() != null) {
             vnetConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeNumberField("osDiskSizeGB", this.osDiskSizeGB);
+        jsonWriter.writeArrayField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("vnetConfig", this.vnetConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateVmProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateVmProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateVmProfile.
+     */
+    public static ImageTemplateVmProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateVmProfile deserializedImageTemplateVmProfile = new ImageTemplateVmProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmSize".equals(fieldName)) {
+                    deserializedImageTemplateVmProfile.vmSize = reader.getString();
+                } else if ("osDiskSizeGB".equals(fieldName)) {
+                    deserializedImageTemplateVmProfile.osDiskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    List<String> userAssignedIdentities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageTemplateVmProfile.userAssignedIdentities = userAssignedIdentities;
+                } else if ("vnetConfig".equals(fieldName)) {
+                    deserializedImageTemplateVmProfile.vnetConfig = VirtualNetworkConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateVmProfile;
+        });
     }
 }

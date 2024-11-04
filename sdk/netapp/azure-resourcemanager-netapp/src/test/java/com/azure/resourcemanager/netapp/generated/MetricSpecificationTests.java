@@ -38,19 +38,26 @@ public final class MetricSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model = new MetricSpecification().withName("whybcib").withDisplayName("vdcsitynn")
-            .withDisplayDescription("mdectehfiqscjey").withUnit("hezrkgq")
+        MetricSpecification model = new MetricSpecification().withName("whybcib")
+            .withDisplayName("vdcsitynn")
+            .withDisplayDescription("mdectehfiqscjey")
+            .withUnit("hezrkgq")
             .withSupportedAggregationTypes(Arrays.asList(MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE,
                 MetricAggregationType.AVERAGE, MetricAggregationType.AVERAGE))
-            .withSupportedTimeGrainTypes(Arrays.asList("mkqsleyyv")).withInternalMetricName("qjpkcattpngjcrc")
-            .withEnableRegionalMdmAccount(true).withSourceMdmAccount("pjhvmdajvnys")
+            .withSupportedTimeGrainTypes(Arrays.asList("mkqsleyyv"))
+            .withInternalMetricName("qjpkcattpngjcrc")
+            .withEnableRegionalMdmAccount(true)
+            .withSourceMdmAccount("pjhvmdajvnys")
             .withSourceMdmNamespace("nqecanoaeup")
             .withDimensions(Arrays.asList(new Dimension().withName("ltrpmopj").withDisplayName("matuok"),
                 new Dimension().withName("fu").withDisplayName("aodsfcpkv"),
                 new Dimension().withName("dpuozmyz").withDisplayName("agfuaxbezyiu"),
                 new Dimension().withName("ktwh").withDisplayName("xw")))
-            .withAggregationType("wqsmbsur").withFillGapWithZero(true).withCategory("o")
-            .withResourceIdDimensionNameOverride("ocfs").withIsInternal(false);
+            .withAggregationType("wqsmbsur")
+            .withFillGapWithZero(true)
+            .withCategory("o")
+            .withResourceIdDimensionNameOverride("ocfs")
+            .withIsInternal(false);
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
         Assertions.assertEquals("whybcib", model.name());
         Assertions.assertEquals("vdcsitynn", model.displayName());

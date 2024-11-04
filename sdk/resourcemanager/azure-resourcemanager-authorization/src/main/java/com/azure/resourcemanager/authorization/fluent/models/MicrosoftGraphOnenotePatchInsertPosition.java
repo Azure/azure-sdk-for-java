@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onenotePatchInsertPosition. */
+/**
+ * onenotePatchInsertPosition.
+ */
 public final class MicrosoftGraphOnenotePatchInsertPosition
     extends ExpandableStringEnum<MicrosoftGraphOnenotePatchInsertPosition> {
-    /** Static value After for MicrosoftGraphOnenotePatchInsertPosition. */
+    /**
+     * Static value After for MicrosoftGraphOnenotePatchInsertPosition.
+     */
     public static final MicrosoftGraphOnenotePatchInsertPosition AFTER = fromString("After");
 
-    /** Static value Before for MicrosoftGraphOnenotePatchInsertPosition. */
+    /**
+     * Static value Before for MicrosoftGraphOnenotePatchInsertPosition.
+     */
     public static final MicrosoftGraphOnenotePatchInsertPosition BEFORE = fromString("Before");
 
     /**
      * Creates a new instance of MicrosoftGraphOnenotePatchInsertPosition value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class MicrosoftGraphOnenotePatchInsertPosition
 
     /**
      * Creates or finds a MicrosoftGraphOnenotePatchInsertPosition from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnenotePatchInsertPosition.
      */
-    @JsonCreator
     public static MicrosoftGraphOnenotePatchInsertPosition fromString(String name) {
         return fromString(name, MicrosoftGraphOnenotePatchInsertPosition.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnenotePatchInsertPosition values.
-     *
+     * 
      * @return known MicrosoftGraphOnenotePatchInsertPosition values.
      */
     public static Collection<MicrosoftGraphOnenotePatchInsertPosition> values() {

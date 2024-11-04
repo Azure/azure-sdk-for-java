@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -178,6 +179,15 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             new Object[] {
                 null
             }
+        };
+    }
+
+    @DataProvider(name = "testConfigs_onlyCustomSerializer")
+    public Object[][] testConfigs_onlyCustomSerializer() {
+        return new Object[][] {
+            new Object[] {
+                EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
+            },
         };
     }
 
@@ -479,6 +489,171 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         );
     }
 
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_onlyCustomSerializer", timeOut = TIMEOUT * 1000000)
+    public void handleCustomSerializationExceptionPojo(CosmosItemSerializer requestLevelSerializer) {
+        String id = "serializationFailure" + UUID.randomUUID();
+        TestDocument doc = TestDocument.create(id);
+        Consumer<TestDocument> onBeforeReplace = item -> item.someNumber = 999;
+        BiFunction<TestDocument, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
+
+            doc.someNumber = 555;
+            if (!isEnvelopeWrapped) {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/someNumber", 555);
+            } else {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/wrappedContent/someNumber", 555);
+            }
+        };
+
+        try {
+            runPointOperationAndQueryTestCase(
+                doc,
+                id,
+                onBeforeReplace,
+                onBeforePatch,
+                requestLevelSerializer,
+                TestDocument.class);
+
+            fail("A custom serialization exception should have been thrown.");
+        } catch (CosmosException cosmosException) {
+            assertThat(cosmosException).isNotNull();
+            assertThat(cosmosException.getStatusCode()).isEqualTo(400);
+            assertThat(cosmosException.getCause()).isNotNull();
+            assertThat(cosmosException.getCause()).isInstanceOf(RuntimeException.class);
+            assertThat(cosmosException.getCause().getCause()).isNotNull();
+            assertThat(cosmosException.getCause().getCause()).isInstanceOf(OutOfMemoryError.class);
+            assertThat(cosmosException.getCause().getCause().getMessage())
+                .isEqualTo("Some dummy Error thrown in custom serializer during serialization.");
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_onlyCustomSerializer", timeOut = TIMEOUT * 1000000)
+    public void handleCustomSerializationExceptionObjectNode(CosmosItemSerializer requestLevelSerializer) {
+        String id = "serializationFailure" + UUID.randomUUID();
+        ObjectNode doc = TestDocument.createAsObjectNode(id);
+        Consumer<ObjectNode> onBeforeReplace = item -> item.put("someNumber", 999);
+        BiFunction<ObjectNode, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
+
+            item.put("someNumber", 555);
+
+            if (!isEnvelopeWrapped) {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/someNumber", 555);
+            } else {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/wrappedContent/someNumber", 555);
+            }
+        };
+
+        try {
+            runPointOperationAndQueryTestCase(
+                doc,
+                id,
+                onBeforeReplace,
+                onBeforePatch,
+                requestLevelSerializer,
+                ObjectNode.class);
+
+            fail("A custom serialization exception should have been thrown.");
+        } catch (CosmosException cosmosException) {
+            assertThat(cosmosException).isNotNull();
+            assertThat(cosmosException.getStatusCode()).isEqualTo(400);
+            assertThat(cosmosException.getCause()).isNotNull();
+            assertThat(cosmosException.getCause()).isInstanceOf(RuntimeException.class);
+            assertThat(cosmosException.getCause().getCause()).isNotNull();
+            assertThat(cosmosException.getCause().getCause()).isInstanceOf(OutOfMemoryError.class);
+            assertThat(cosmosException.getCause().getCause().getMessage())
+                .isEqualTo("Some dummy Error thrown in custom serializer during serialization.");
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_onlyCustomSerializer", timeOut = TIMEOUT * 1000000)
+    public void handleCustomDeserializationExceptionPojo(CosmosItemSerializer requestLevelSerializer) {
+        String id = "deserializationFailure" + UUID.randomUUID();
+        TestDocument doc = TestDocument.create(id);
+        Consumer<TestDocument> onBeforeReplace = item -> item.someNumber = 999;
+        BiFunction<TestDocument, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
+
+            doc.someNumber = 555;
+            if (!isEnvelopeWrapped) {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/someNumber", 555);
+            } else {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/wrappedContent/someNumber", 555);
+            }
+        };
+
+        try {
+            runPointOperationAndQueryTestCase(
+                doc,
+                id,
+                onBeforeReplace,
+                onBeforePatch,
+                requestLevelSerializer,
+                TestDocument.class);
+
+            fail("A custom deserialization exception should have been thrown.");
+        } catch (CosmosException cosmosException) {
+            assertThat(cosmosException).isNotNull();
+            assertThat(cosmosException.getStatusCode()).isEqualTo(400);
+            assertThat(cosmosException.getCause()).isNotNull();
+            assertThat(cosmosException.getCause()).isInstanceOf(RuntimeException.class);
+            assertThat(cosmosException.getCause().getCause()).isNotNull();
+            assertThat(cosmosException.getCause().getCause()).isInstanceOf(OutOfMemoryError.class);
+            assertThat(cosmosException.getCause().getCause().getMessage())
+                .isEqualTo("Some dummy Error thrown in custom serializer during deserialization.");
+        }
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_onlyCustomSerializer", timeOut = TIMEOUT * 1000000)
+    public void handleCustomDeserializationExceptionObjectNode(CosmosItemSerializer requestLevelSerializer) {
+        String id = "deserializationFailure" + UUID.randomUUID();
+        ObjectNode doc = TestDocument.createAsObjectNode(id);
+        Consumer<ObjectNode> onBeforeReplace = item -> item.put("someNumber", 999);
+        BiFunction<ObjectNode, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
+
+            item.put("someNumber", 555);
+
+            if (!isEnvelopeWrapped) {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/someNumber", 555);
+            } else {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/wrappedContent/someNumber", 555);
+            }
+        };
+
+        try {
+            runPointOperationAndQueryTestCase(
+                doc,
+                id,
+                onBeforeReplace,
+                onBeforePatch,
+                requestLevelSerializer,
+                ObjectNode.class);
+
+            fail("A custom deserialization exception should have been thrown.");
+        } catch (CosmosException cosmosException) {
+            assertThat(cosmosException).isNotNull();
+            assertThat(cosmosException.getStatusCode()).isEqualTo(400);
+            assertThat(cosmosException.getCause()).isNotNull();
+            assertThat(cosmosException.getCause()).isInstanceOf(RuntimeException.class);
+            assertThat(cosmosException.getCause().getCause()).isNotNull();
+            assertThat(cosmosException.getCause().getCause()).isInstanceOf(OutOfMemoryError.class);
+            assertThat(cosmosException.getCause().getCause().getMessage())
+                .isEqualTo("Some dummy Error thrown in custom serializer during deserialization.");
+        }
+    }
 
     private <T> void runBatchAndChangeFeedTestCase(
         Function<String, T> docGenerator,
@@ -733,12 +908,18 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             }
 
             if (passThroughOnSerialize) {
-                return CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
+                return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().serializeSafe(
+                    CosmosItemSerializer.DEFAULT_SERIALIZER,
+                    item);
             }
 
             Map<String, Object> unwrappedJsonTree = CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
             if (unwrappedJsonTree.containsKey("wrappedContent")) {
                 throw new IllegalStateException("Double wrapping");
+            }
+
+            if (unwrappedJsonTree.get("id") != null && unwrappedJsonTree.get("id").toString().startsWith("serializationFailure")) {
+                throw new OutOfMemoryError("Some dummy Error thrown in custom serializer during serialization.");
             }
 
             Map<String, Object> wrappedJsonTree = new ConcurrentHashMap<>();
@@ -760,8 +941,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                 assertThat(jsonNodeMap.get("_trackingId")).isNotNull();
             }
 
-            TestDocumentWrappedInEnvelope envelope =
-                CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, TestDocumentWrappedInEnvelope.class);
+            TestDocumentWrappedInEnvelope envelope = ImplementationBridgeHelpers
+                .CosmosItemSerializerHelper
+                .getCosmosItemSerializerAccessor()
+                .deserializeSafe(
+                    CosmosItemSerializer.DEFAULT_SERIALIZER,
+                    jsonNodeMap,
+                    TestDocumentWrappedInEnvelope.class);
 
             if (envelope == null || envelope.wrappedContent == null) {
                 return null;
@@ -774,9 +960,17 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                 throw new IllegalStateException("Double wrapped");
             }
 
-            return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(
-                unwrappedContent,
-                classType);
+            if (unwrappedContent.get("id") != null && unwrappedContent.get("id").toString().startsWith("deserializationFailure")) {
+                throw new OutOfMemoryError("Some dummy Error thrown in custom serializer during deserialization.");
+            }
+
+            return ImplementationBridgeHelpers
+                .CosmosItemSerializerHelper
+                .getCosmosItemSerializerAccessor()
+                .deserializeSafe(
+                    CosmosItemSerializer.DEFAULT_SERIALIZER,
+                    unwrappedContent,
+                    classType);
         }
     }
 }

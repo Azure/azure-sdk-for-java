@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,122 @@
 ### Bugs Fixed
 
 ### Other Changes
+- `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`. [#42437](https://github.com/Azure/azure-sdk-for-java/pull/42437)
+
+## 1.14.0 (2024-10-03)
+
+### Features Added
+- Features now generally available from previous betas:
+  - Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
+  - Added support for a client assertion in `OnBehalfOfCredential` [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
+### Breaking Changes
+- Breaking changes generally available from previous betas:
+  - Removed support in `IntelliJCredential` for legacy Azure Toolkit for IntelliJ versions. Please upgrade to latest if you are using 3.52 or below.
+
+### Bugs Fixed
+- Fixed the request sent in `AzurePipelinesCredential` so it doesn't result in a redirect response when an invalid system access token is provided. 
+
+### Other Changes
+- Allow certain response headers to be logged in `AzurePipelinesCredential` for diagnostics and include them in the exception message.
+- Mark `AzureAuthorityHosts.AZURE_GERMANY` deprecated as the Germany cloud closed in 2021. [#42148](https://github.com/Azure/azure-sdk-for-java/issues/42148)
+- Using msal4j's managed identity implementation is now on by default. (Added in 1.13.0-beta.1) 
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `msal4j` from `1.17.1` to version `1.17.2`.
+
+## 1.14.0-beta.2 (2024-09-20)
+
+### Features Added
+- Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
+
+### Breaking Changes
+- Removed support in `IntelliJCredential` for legacy Azure Toolkit for IntelliJ versions. Please upgrade to latest if you are using 3.52 or below.
+
+### Bugs Fixed
+Fixed issue in `IntelliJCredential` blocking sign in [#39799](https://github.com/Azure/azure-sdk-for-java/issues/39799)
+
+## 1.13.3 (2024-09-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `msal4j` from `1.16.2` to version `1.17.1`.
+
+## 1.13.2 (2024-08-02)
+
+### Bugs Fixed
+- Fixed bugs in `AzurePowerShellCredential` - Fixed break on Windows related to ordering of parameters, and fixed [#41234](https://github.com/Azure/azure-sdk-for-java/issues/41234) (previously shipped in beta)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+- Upgraded `msal4j` from `1.16.1` to version `1.16.2`.
+
+## 1.14.0-beta.1 (2024-07-24)
+
+### Bugs Fixed
+- Fixed bugs in `AzurePowerShellCredential` - Fixed break on Windows related to ordering of parameters, and fixed [#41234](https://github.com/Azure/azure-sdk-for-java/issues/41234)
+
+## 1.13.1 (2024-07-16)
+
+### Features Added
+- Added support in `EnvironmentCredential` (and thus `DefaultAzureCredential` when it chooses `EnvironmentCredential`) for using subject name / issuer authentication with client certificates by setting `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` to `1` or `true`. [#40013](https://github.com/Azure/azure-sdk-for-java/issues/40013)
+### Bugs Fixed
+- Fixed certificate type detection, which fixes using a PFX certificate without a password. [#37210](https://github.com/Azure/azure-sdk-for-java/issues/37210)
+- Fix `PowershellCredential` issue when user had a profile [#41030](https://github.com/Azure/azure-sdk-for-java/pull/41030)
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`
+- Upgraded `azure-core-http-netty` from `1.15.1` to `1.15.2`
+- Upgraded `msal4j` from `1.16.0` to `1.16.1`
+
+## 1.13.0 (2024-06-20)
+
+### Features Added
+- GA for `AzurePipelinesCredential`
+
+### Bugs Fixed
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
+## 1.13.0-beta.2 (2024-06-10)
+
+### Features Added
+- Added support for a client assertion in `OnBehalfOfCredential` [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
+### Bugs Fixed
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files) 
+
+## 1.12.2 (2024-06-10)
+
+### Bugs Fixed
+- Managed identity bug fixes
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `msal4j` from `1.15.0` to version `1.15.1`.
+
+## 1.13.0-beta.1 (2024-05-23)
+
+### Features Added
+- Added `AzurePipelinesCredential` to support [Microsoft Entra Workload ID](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) in Azure Pipelines service connections.
+
+### Other Changes
+- Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
 
 ## 1.12.1 (2024-05-02)
 
@@ -822,7 +938,7 @@ No feature was deprecated or removed.
 ## 1.0.0-preview.1 (2019-06-28)
 Version 1.0.0-preview.1 is a preview of our efforts in creating an authentication API for Azure SDK client libraries that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
-our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+our efforts can be found in the [Azure SDK Design Guidelines for Java](https://aka.ms/azsdk/guide/java).
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 

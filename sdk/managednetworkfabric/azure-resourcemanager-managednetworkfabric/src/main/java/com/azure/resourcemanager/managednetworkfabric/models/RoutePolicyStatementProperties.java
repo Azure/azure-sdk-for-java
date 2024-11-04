@@ -109,18 +109,14 @@ public final class RoutePolicyStatementProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (condition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property condition in model RoutePolicyStatementProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property condition in model RoutePolicyStatementProperties"));
         } else {
             condition().validate();
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model RoutePolicyStatementProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property action in model RoutePolicyStatementProperties"));
         } else {
             action().validate();
         }

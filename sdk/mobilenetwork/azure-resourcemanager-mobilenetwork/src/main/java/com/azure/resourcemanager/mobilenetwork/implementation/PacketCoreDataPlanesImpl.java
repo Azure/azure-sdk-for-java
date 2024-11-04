@@ -38,8 +38,8 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
 
     public Response<PacketCoreDataPlane> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCoreDataPlaneName, Context context) {
-        Response<PacketCoreDataPlaneInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            packetCoreControlPlaneName, packetCoreDataPlaneName, context);
+        Response<PacketCoreDataPlaneInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PacketCoreDataPlaneImpl(inner.getValue(), this.manager()));

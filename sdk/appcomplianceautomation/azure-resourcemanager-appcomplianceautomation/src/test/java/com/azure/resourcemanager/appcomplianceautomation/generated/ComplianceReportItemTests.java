@@ -6,21 +6,12 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.ComplianceReportItem;
-import org.junit.jupiter.api.Test;
 
 public final class ComplianceReportItemTests {
-    @Test
-    public void testDeserialize() {
-        ComplianceReportItem model =
-            BinaryData
-                .fromString(
-                    "{\"categoryName\":\"pnazzm\",\"controlId\":\"runmp\",\"controlName\":\"tdbhrbnla\",\"controlType\":\"FullyAutomated\",\"complianceState\":\"Healthy\",\"policyId\":\"k\",\"policyDisplayName\":\"henbtkcxywnytn\",\"policyDescription\":\"yn\",\"subscriptionId\":\"idybyxczf\",\"resourceGroup\":\"haaxdbabphl\",\"resourceType\":\"qlfktsths\",\"resourceId\":\"ocmnyyazttbtwwrq\",\"statusChangeDate\":\"edckzywbiexzfey\"}")
-                .toObject(ComplianceReportItem.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        ComplianceReportItem model = new ComplianceReportItem();
-        model = BinaryData.fromObject(model).toObject(ComplianceReportItem.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComplianceReportItem model = BinaryData.fromString(
+            "{\"categoryName\":\"kvi\",\"controlFamilyName\":\"dscwxqupevzhf\",\"controlId\":\"otxhojujby\",\"controlName\":\"lmcuvhixb\",\"controlStatus\":\"Failed\",\"responsibilityTitle\":\"w\",\"responsibilityDescription\":\"lrcoolsttpki\",\"resourceId\":\"kbnujr\",\"resourceType\":\"vtylbfpncu\",\"resourceOrigin\":\"GCP\",\"resourceStatus\":\"Unhealthy\",\"resourceStatusChangeDate\":\"2021-02-21T18:31:28Z\"}")
+            .toObject(ComplianceReportItem.class);
     }
 }

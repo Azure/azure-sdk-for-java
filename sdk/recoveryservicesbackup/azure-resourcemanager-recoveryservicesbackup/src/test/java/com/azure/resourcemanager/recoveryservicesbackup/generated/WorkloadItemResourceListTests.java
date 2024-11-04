@@ -37,8 +37,10 @@ public final class WorkloadItemResourceListTests {
             .withValue(Arrays.asList(new WorkloadItemResourceInner().withLocation("qudf")
                 .withTags(mapOf("yffimrzrtuzqogs", "xbaaabjyv", "mewzsyyc", "xnevfdnwn", "judpfrxt", "uzsoi", "paxh",
                     "thzvaytdwkqbrqu"))
-                .withProperties(new WorkloadItem().withBackupManagementType("qugjhkycube").withWorkloadType("gssofwq")
-                    .withFriendlyName("qal").withProtectionState(ProtectionStatus.PROTECTION_FAILED))
+                .withProperties(new WorkloadItem().withBackupManagementType("qugjhkycube")
+                    .withWorkloadType("gssofwq")
+                    .withFriendlyName("qal")
+                    .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
                 .withEtag("jijpxac")));
         model = BinaryData.fromObject(model).toObject(WorkloadItemResourceList.class);
         Assertions.assertEquals("wlwnwxuqlcv", model.nextLink());

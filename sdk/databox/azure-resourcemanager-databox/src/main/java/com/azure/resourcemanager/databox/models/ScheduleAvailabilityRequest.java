@@ -6,46 +6,52 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body to get the availability for scheduling orders. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "skuName",
-    defaultImpl = ScheduleAvailabilityRequest.class)
-@JsonTypeName("ScheduleAvailabilityRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DataBox", value = DataBoxScheduleAvailabilityRequest.class),
-    @JsonSubTypes.Type(name = "DataBoxDisk", value = DiskScheduleAvailabilityRequest.class),
-    @JsonSubTypes.Type(name = "DataBoxHeavy", value = HeavyScheduleAvailabilityRequest.class)
-})
+/**
+ * Request body to get the availability for scheduling orders.
+ */
 @Fluent
-public class ScheduleAvailabilityRequest {
+public class ScheduleAvailabilityRequest implements JsonSerializable<ScheduleAvailabilityRequest> {
+    /*
+     * Sku Name for which the order is to be scheduled.
+     */
+    private SkuName skuName = SkuName.fromString("ScheduleAvailabilityRequest");
+
     /*
      * Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
      */
-    @JsonProperty(value = "storageLocation", required = true)
     private String storageLocation;
 
     /*
      * Country in which storage location should be supported.
      */
-    @JsonProperty(value = "country")
     private String country;
 
-    /** Creates an instance of ScheduleAvailabilityRequest class. */
+    /**
+     * Creates an instance of ScheduleAvailabilityRequest class.
+     */
     public ScheduleAvailabilityRequest() {
+    }
+
+    /**
+     * Get the skuName property: Sku Name for which the order is to be scheduled.
+     * 
+     * @return the skuName value.
+     */
+    public SkuName skuName() {
+        return this.skuName;
     }
 
     /**
      * Get the storageLocation property: Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @return the storageLocation value.
      */
     public String storageLocation() {
@@ -55,7 +61,7 @@ public class ScheduleAvailabilityRequest {
     /**
      * Set the storageLocation property: Location for data transfer. For locations check:
      * https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01.
-     *
+     * 
      * @param storageLocation the storageLocation value to set.
      * @return the ScheduleAvailabilityRequest object itself.
      */
@@ -66,7 +72,7 @@ public class ScheduleAvailabilityRequest {
 
     /**
      * Get the country property: Country in which storage location should be supported.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -75,7 +81,7 @@ public class ScheduleAvailabilityRequest {
 
     /**
      * Set the country property: Country in which storage location should be supported.
-     *
+     * 
      * @param country the country value to set.
      * @return the ScheduleAvailabilityRequest object itself.
      */
@@ -86,17 +92,88 @@ public class ScheduleAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageLocation in model ScheduleAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageLocation in model ScheduleAvailabilityRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleAvailabilityRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageLocation", this.storageLocation);
+        jsonWriter.writeStringField("skuName", this.skuName == null ? null : this.skuName.toString());
+        jsonWriter.writeStringField("country", this.country);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleAvailabilityRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleAvailabilityRequest.
+     */
+    public static ScheduleAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("skuName".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DataBox".equals(discriminatorValue)) {
+                    return DataBoxScheduleAvailabilityRequest.fromJson(readerToUse.reset());
+                } else if ("DataBoxDisk".equals(discriminatorValue)) {
+                    return DiskScheduleAvailabilityRequest.fromJson(readerToUse.reset());
+                } else if ("DataBoxHeavy".equals(discriminatorValue)) {
+                    return HeavyScheduleAvailabilityRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ScheduleAvailabilityRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleAvailabilityRequest deserializedScheduleAvailabilityRequest = new ScheduleAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageLocation".equals(fieldName)) {
+                    deserializedScheduleAvailabilityRequest.storageLocation = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedScheduleAvailabilityRequest.skuName = SkuName.fromString(reader.getString());
+                } else if ("country".equals(fieldName)) {
+                    deserializedScheduleAvailabilityRequest.country = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleAvailabilityRequest;
+        });
+    }
 }

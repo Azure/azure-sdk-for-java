@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.DefaultScaleSettings;
 public final class DefaultScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultScaleSettings model =
-            BinaryData.fromString("{\"scaleType\":\"Default\"}").toObject(DefaultScaleSettings.class);
+        DefaultScaleSettings model
+            = BinaryData.fromString("{\"scaleType\":\"Default\"}").toObject(DefaultScaleSettings.class);
     }
 
     @org.junit.jupiter.api.Test

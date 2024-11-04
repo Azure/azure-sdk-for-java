@@ -53,21 +53,22 @@ public class TestProxyUtils {
         "primaryKey", "secondaryKey", "adminPassword.value", "administratorLoginPassword", "runAsPassword",
         "adminPassword", "accessSAS", "WEBSITE_AUTH_ENCRYPTION_KEY", "decryptionKey", "primaryMasterKey",
         "primaryReadonlyMasterKey", "secondaryMasterKey", "secondaryReadonlyMasterKey", "certificatePassword",
-        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "appkey",
-        "functionKey", "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword",
-        "storageAccountPrimaryKey", "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken",
-        "azureBlobSource.containerUrl", "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
+        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "functionKey",
+        "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword", "storageAccountPrimaryKey",
+        "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
+        "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
+    public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
-
-        // upper and lower case versions intentional
-        new TestProxySanitizer("Operation-location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
-        new TestProxySanitizer("Operation-Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
                 .setGroupForReplace("secret"),
         new TestProxySanitizer("ServiceBusSupplementaryAuthorization", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)",
-            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"));
+            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"),
+        new TestProxySanitizer("operation-location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"),
+        new TestProxySanitizer("Location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"));
 
     // Values in this list must have a capture group named "secret" for the redaction to work.
     private static final List<String> BODY_REGEXES_TO_REDACT
@@ -78,7 +79,7 @@ public class TestProxyUtils {
             "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>",
             "SharedAccessKey=(?<secret>[^;\\\"]+)", "AccountKey=(?<secret>[^;\\\"]+)", "accesskey=(?<secret>[^;\\\"]+)",
             "AccessKey=(?<secret>[^;\\\"]+)", "Secret=(?<secret>[^;\\\"]+)", "access_token=(?<secret>.*?)(?=&|$)",
-            "refresh_token=(?<secret>.*?)(?=&|$)", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]*)");
+            "refresh_token=(?<secret>.*?)(?=&|$)");
 
     private static final List<String> HEADER_KEYS_TO_REDACT = Arrays.asList("Ocp-Apim-Subscription-Key", "api-key",
         "x-api-key", "subscription-key", "x-ms-encryption-key", "sshPassword");
@@ -440,6 +441,16 @@ public class TestProxyUtils {
 
         String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
+    }
+
+    /**
+     * Creates a request to remove sanitizers from the request.
+     * @return The {@link HttpRequest request} to be sent.
+     */
+    public static HttpRequest getRemoveSanitizerRequest() {
+
+        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {

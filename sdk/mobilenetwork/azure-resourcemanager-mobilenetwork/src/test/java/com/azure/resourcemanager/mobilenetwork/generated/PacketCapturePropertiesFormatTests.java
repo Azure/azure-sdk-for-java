@@ -13,24 +13,25 @@ public final class PacketCapturePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PacketCapturePropertiesFormat model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"status\":\"Error\",\"reason\":\"hfmvfaxkffe\",\"captureStartTime\":\"2021-05-15T04:16:32Z\",\"networkInterfaces\":[\"vmezy\",\"shxmzsbbzoggigrx\",\"burvjxxjnspy\",\"ptkoenkoukn\"],\"bytesToCapturePerPacket\":5351704758336650999,\"totalBytesPerSession\":5050642493378346293,\"timeLimitInSeconds\":133898645,\"outputFiles\":[\"ngkpocipazy\"]}")
+            "{\"provisioningState\":\"Succeeded\",\"status\":\"Error\",\"reason\":\"buxwgip\",\"captureStartTime\":\"2021-08-16T19:25:13Z\",\"networkInterfaces\":[\"wkgshwa\"],\"bytesToCapturePerPacket\":9069419469544491752,\"totalBytesPerSession\":3330402846072067803,\"timeLimitInSeconds\":624724935,\"outputFiles\":[\"uttmrywnuzoqft\"]}")
             .toObject(PacketCapturePropertiesFormat.class);
-        Assertions.assertEquals("vmezy", model.networkInterfaces().get(0));
-        Assertions.assertEquals(5351704758336650999L, model.bytesToCapturePerPacket());
-        Assertions.assertEquals(5050642493378346293L, model.totalBytesPerSession());
-        Assertions.assertEquals(133898645, model.timeLimitInSeconds());
+        Assertions.assertEquals("wkgshwa", model.networkInterfaces().get(0));
+        Assertions.assertEquals(9069419469544491752L, model.bytesToCapturePerPacket());
+        Assertions.assertEquals(3330402846072067803L, model.totalBytesPerSession());
+        Assertions.assertEquals(624724935, model.timeLimitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCapturePropertiesFormat model = new PacketCapturePropertiesFormat()
-            .withNetworkInterfaces(Arrays.asList("vmezy", "shxmzsbbzoggigrx", "burvjxxjnspy", "ptkoenkoukn"))
-            .withBytesToCapturePerPacket(5351704758336650999L).withTotalBytesPerSession(5050642493378346293L)
-            .withTimeLimitInSeconds(133898645);
+        PacketCapturePropertiesFormat model
+            = new PacketCapturePropertiesFormat().withNetworkInterfaces(Arrays.asList("wkgshwa"))
+                .withBytesToCapturePerPacket(9069419469544491752L)
+                .withTotalBytesPerSession(3330402846072067803L)
+                .withTimeLimitInSeconds(624724935);
         model = BinaryData.fromObject(model).toObject(PacketCapturePropertiesFormat.class);
-        Assertions.assertEquals("vmezy", model.networkInterfaces().get(0));
-        Assertions.assertEquals(5351704758336650999L, model.bytesToCapturePerPacket());
-        Assertions.assertEquals(5050642493378346293L, model.totalBytesPerSession());
-        Assertions.assertEquals(133898645, model.timeLimitInSeconds());
+        Assertions.assertEquals("wkgshwa", model.networkInterfaces().get(0));
+        Assertions.assertEquals(9069419469544491752L, model.bytesToCapturePerPacket());
+        Assertions.assertEquals(3330402846072067803L, model.totalBytesPerSession());
+        Assertions.assertEquals(624724935, model.timeLimitInSeconds());
     }
 }

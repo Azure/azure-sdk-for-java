@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
     @Test
     public void testGetValidationDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"inkfkbgbz\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"o\",\"privateIpAddress\":\"jmygvk\",\"linkIdentifier\":\"kjjeokbz\",\"groupId\":\"ezrxcczurtleipqx\",\"memberName\":\"wvz\"},{\"id\":\"zvd\",\"privateIpAddress\":\"zdix\",\"linkIdentifier\":\"q\",\"groupId\":\"odawopqhewjptmcg\",\"memberName\":\"ostzelndlatu\"},{\"id\":\"zlbiojlvfhrbbpn\",\"privateIpAddress\":\"vcwwyyurmochppr\",\"linkIdentifier\":\"snmokayzej\",\"groupId\":\"lbkpb\",\"memberName\":\"cpilj\"}]}";
+            = "{\"id\":\"l\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"rpqaf\",\"privateIpAddress\":\"ug\",\"linkIdentifier\":\"n\",\"groupId\":\"yetefyp\",\"memberName\":\"octfjgtixrjvzuyt\"},{\"id\":\"mlmuowol\",\"privateIpAddress\":\"uir\",\"linkIdentifier\":\"ionszonwp\",\"groupId\":\"ajinnixjawrtmjfj\",\"memberName\":\"ccxlzhcoxovnek\"},{\"id\":\"nlusfnrd\",\"privateIpAddress\":\"xtxrdcqtjvidt\",\"linkIdentifier\":\"epu\",\"groupId\":\"vyjtcvu\",\"memberName\":\"asiz\"},{\"id\":\"sfuughtuqfecjx\",\"privateIpAddress\":\"gtuhxuicbu\",\"linkIdentifier\":\"mr\",\"groupId\":\"njlx\",\"memberName\":\"rhwpus\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsWithResponse("v", "qqxeyskon", com.azure.core.util.Context.NONE)
+            .getValidationDetailsWithResponse("phwpnulaiywzej", "whslwkoj", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());

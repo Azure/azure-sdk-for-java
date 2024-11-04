@@ -23,14 +23,13 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
      */
     @Generated
     public ChatCompletionsResponseFormat() {
-        this.type = "ChatCompletionsResponseFormat";
     }
 
     /*
      * The discriminated type for the response format.
      */
     @Generated
-    private String type;
+    private String type = "ChatCompletionsResponseFormat";
 
     /**
      * Get the type property: The discriminated type for the response format.
@@ -83,6 +82,8 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
                     return ChatCompletionsTextResponseFormat.fromJson(readerToUse.reset());
                 } else if ("json_object".equals(discriminatorValue)) {
                     return ChatCompletionsJsonResponseFormat.fromJson(readerToUse.reset());
+                } else if ("json_schema".equals(discriminatorValue)) {
+                    return ChatCompletionsJsonSchemaResponseFormat.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

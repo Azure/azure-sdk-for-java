@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The effective RouteMap route configured on the connection resource.
  */
 @Fluent
-public final class EffectiveRouteMapRoute {
+public final class EffectiveRouteMapRoute implements JsonSerializable<EffectiveRouteMapRoute> {
     /*
      * The address prefix of the route.
      */
-    @JsonProperty(value = "prefix")
     private String prefix;
 
     /*
      * BGP communities of the route.
      */
-    @JsonProperty(value = "bgpCommunities")
     private String bgpCommunities;
 
     /*
      * The ASPath of this route.
      */
-    @JsonProperty(value = "asPath")
     private String asPath;
 
     /**
@@ -102,5 +103,47 @@ public final class EffectiveRouteMapRoute {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeStringField("bgpCommunities", this.bgpCommunities);
+        jsonWriter.writeStringField("asPath", this.asPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EffectiveRouteMapRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EffectiveRouteMapRoute if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EffectiveRouteMapRoute.
+     */
+    public static EffectiveRouteMapRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EffectiveRouteMapRoute deserializedEffectiveRouteMapRoute = new EffectiveRouteMapRoute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefix".equals(fieldName)) {
+                    deserializedEffectiveRouteMapRoute.prefix = reader.getString();
+                } else if ("bgpCommunities".equals(fieldName)) {
+                    deserializedEffectiveRouteMapRoute.bgpCommunities = reader.getString();
+                } else if ("asPath".equals(fieldName)) {
+                    deserializedEffectiveRouteMapRoute.asPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEffectiveRouteMapRoute;
+        });
     }
 }

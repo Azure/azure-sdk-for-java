@@ -10,10 +10,6 @@ module com.azure.resourcemanager.edgeorder {
     exports com.azure.resourcemanager.edgeorder.fluent.models;
     exports com.azure.resourcemanager.edgeorder.models;
 
-    opens com.azure.resourcemanager.edgeorder.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.edgeorder.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.edgeorder.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.edgeorder.models to com.azure.core;
 }

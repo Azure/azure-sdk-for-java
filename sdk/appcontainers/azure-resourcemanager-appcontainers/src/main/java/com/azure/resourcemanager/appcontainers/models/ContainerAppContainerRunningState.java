@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ContainerAppContainerRunningState extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ContainerAppContainerRunningState.
      */
-    @JsonCreator
     public static ContainerAppContainerRunningState fromString(String name) {
         return fromString(name, ContainerAppContainerRunningState.class);
     }

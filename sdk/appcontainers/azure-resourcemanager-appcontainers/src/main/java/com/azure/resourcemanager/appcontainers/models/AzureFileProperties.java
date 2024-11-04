@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure File Properties.
  */
 @Fluent
-public final class AzureFileProperties {
+public final class AzureFileProperties implements JsonSerializable<AzureFileProperties> {
     /*
      * Storage account name for azure file.
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * Storage account key for azure file.
      */
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
      * Access mode for storage
      */
-    @JsonProperty(value = "accessMode")
     private AccessMode accessMode;
 
     /*
      * Azure file share name.
      */
-    @JsonProperty(value = "shareName")
     private String shareName;
 
     /**
@@ -128,5 +128,50 @@ public final class AzureFileProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("accessMode", this.accessMode == null ? null : this.accessMode.toString());
+        jsonWriter.writeStringField("shareName", this.shareName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileProperties.
+     */
+    public static AzureFileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileProperties deserializedAzureFileProperties = new AzureFileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedAzureFileProperties.accountName = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureFileProperties.accountKey = reader.getString();
+                } else if ("accessMode".equals(fieldName)) {
+                    deserializedAzureFileProperties.accessMode = AccessMode.fromString(reader.getString());
+                } else if ("shareName".equals(fieldName)) {
+                    deserializedAzureFileProperties.shareName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileProperties;
+        });
     }
 }

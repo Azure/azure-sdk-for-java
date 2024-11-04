@@ -5,28 +5,39 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Subject details. */
+/**
+ * Subject details.
+ */
 @Fluent
-public final class SubjectInfo {
+public final class SubjectInfo implements JsonSerializable<SubjectInfo> {
     /*
      * Principal Id
      */
-    @JsonProperty(value = "principalId", required = true)
     private UUID principalId;
 
     /*
      * List of group Ids that the principalId is part of.
      */
-    @JsonProperty(value = "groupIds")
     private List<UUID> groupIds;
 
     /**
+     * Creates an instance of SubjectInfo class.
+     */
+    public SubjectInfo() {
+    }
+
+    /**
      * Get the principalId property: Principal Id.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID getPrincipalId() {
@@ -35,7 +46,7 @@ public final class SubjectInfo {
 
     /**
      * Set the principalId property: Principal Id.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the SubjectInfo object itself.
      */
@@ -46,7 +57,7 @@ public final class SubjectInfo {
 
     /**
      * Get the groupIds property: List of group Ids that the principalId is part of.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<UUID> getGroupIds() {
@@ -55,12 +66,56 @@ public final class SubjectInfo {
 
     /**
      * Set the groupIds property: List of group Ids that the principalId is part of.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the SubjectInfo object itself.
      */
     public SubjectInfo setGroupIds(List<UUID> groupIds) {
         this.groupIds = groupIds;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", Objects.toString(this.principalId, null));
+        jsonWriter.writeArrayField("groupIds", this.groupIds,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubjectInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubjectInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubjectInfo.
+     */
+    public static SubjectInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubjectInfo deserializedSubjectInfo = new SubjectInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedSubjectInfo.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("groupIds".equals(fieldName)) {
+                    List<UUID> groupIds = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedSubjectInfo.groupIds = groupIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubjectInfo;
+        });
     }
 }

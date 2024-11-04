@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Validation result for configuration service settings.
  */
 @Fluent
-public final class ConfigurationServiceGitPropertyValidateResult {
+public final class ConfigurationServiceGitPropertyValidateResult
+    implements JsonSerializable<ConfigurationServiceGitPropertyValidateResult> {
     /*
      * Indicate if the configuration service settings are valid
      */
-    @JsonProperty(value = "isValid")
     private Boolean isValid;
 
     /*
      * The detail validation results
      */
-    @JsonProperty(value = "gitReposValidationResult")
     private List<ValidationMessages> gitReposValidationResult;
 
     /**
@@ -81,5 +84,50 @@ public final class ConfigurationServiceGitPropertyValidateResult {
         if (gitReposValidationResult() != null) {
             gitReposValidationResult().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isValid", this.isValid);
+        jsonWriter.writeArrayField("gitReposValidationResult", this.gitReposValidationResult,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationServiceGitPropertyValidateResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationServiceGitPropertyValidateResult if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationServiceGitPropertyValidateResult.
+     */
+    public static ConfigurationServiceGitPropertyValidateResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationServiceGitPropertyValidateResult deserializedConfigurationServiceGitPropertyValidateResult
+                = new ConfigurationServiceGitPropertyValidateResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isValid".equals(fieldName)) {
+                    deserializedConfigurationServiceGitPropertyValidateResult.isValid
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gitReposValidationResult".equals(fieldName)) {
+                    List<ValidationMessages> gitReposValidationResult
+                        = reader.readArray(reader1 -> ValidationMessages.fromJson(reader1));
+                    deserializedConfigurationServiceGitPropertyValidateResult.gitReposValidationResult
+                        = gitReposValidationResult;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationServiceGitPropertyValidateResult;
+        });
     }
 }

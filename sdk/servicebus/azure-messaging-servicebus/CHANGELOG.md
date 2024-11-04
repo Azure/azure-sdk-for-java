@@ -1,8 +1,10 @@
 # Release History
 
-## 7.18.0-beta.1 (Unreleased)
+## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
+
+- Enabled RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache by default. ([42641](https://github.com/Azure/azure-sdk-for-java/pull/42641))
 
 ### Breaking Changes
 
@@ -10,12 +12,93 @@
 
 ### Other Changes
 
+## 7.17.5 (2024-10-16)
+
+### Bugs Fixed
+
+- Fixes the thread unsafe use of javax.crypto.Mac instance in ServiceBusSharedKeyCredential. ([42353](https://github.com/Azure/azure-sdk-for-java/pull/42353))
+- Fixed issue where `SubscriptionProperties.UserMetadata` was set to `null` when updating its value. ([#42332](https://github.com/Azure/azure-sdk-for-java/pull/42332))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded `azure-core-amqp` from `2.9.9` to `2.9.10`.
+- Upgraded `azure-identity` from `1.13.3` to `1.14.0`.
+
+## 7.17.4 (2024-09-27)
+
+### Features Added
+
+- Added runtime inspection for cores, pool size and Processor concurrency and a log statement linking to troubleshooting guideline on resourcing. This is based on the discussion here ([41489](https://github.com/Azure/azure-sdk-for-java/issues/41489))
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when the configuration `com.azure.core.amqp.cache` is opted-in. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
+
+### Bugs Fixed
+
+- Fixes the message size computation in ServiceBusMessageSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+- Upgraded `azure-core-amqp` from `2.9.8` to `2.9.9`.
+- Upgraded `azure-identity` from `1.13.2` to `1.13.3`.
+
+## 7.17.3 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+- Upgraded `azure-core-amqp` from `2.9.7` to `2.9.8`.
+- Upgraded `azure-identity` from `1.13.1` to `1.13.2`.
+
+## 7.17.2 (2024-07-26)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+- Upgraded `azure-core-amqp` from `2.9.6` to `2.9.7`.
+- Upgraded `azure-identity` from `1.13.0` to `1.13.1`.
+
+## 7.17.1 (2024-06-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Synchronous Receiver Client".
+
+### Bugs Fixed
+
+- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
+- Fixed issue where the scheduled enqueue time was not cleared when creating a new message from a received message.([#44585](https://github.com/Azure/azure-sdk-for-net/pull/44585)) 
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded `azure-core-amqp` from `2.9.4` to `2.9.6`.
+- Upgraded `azure-identity` from `1.12.1` to `1.13.0`.
+
+## 7.18.0-beta.1 (2024-05-15)
+
+### Features Added
+
+- Added the support for batch-delete APIs in Receiver client.
+
 ## 7.17.0 (2024-05-06)
 
 ### Bugs Fixed
 
 - Fixes the session message disposition to use management node as fall back. ([#39913](https://github.com/Azure/azure-sdk-for-java/issues/39913))
 - Fixes the session processor idle timeout to fall back to RetryOptions::tryTimeout. ([#39993](https://github.com/Azure/azure-sdk-for-java/issues/39993))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to `2.9.4`.
+- Upgraded `azure-identity` from `1.12.0` to `1.12.1`.
 
 ## 7.16.0 (2024-04-22)
 
@@ -733,7 +816,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 ### Features
 

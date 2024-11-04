@@ -6,6 +6,8 @@
 - [CreateOrReplace](#assetendpointprofiles_createorreplace)
 - [Delete](#assetendpointprofiles_delete)
 - [GetByResourceGroup](#assetendpointprofiles_getbyresourcegroup)
+- [List](#assetendpointprofiles_list)
+- [ListByResourceGroup](#assetendpointprofiles_listbyresourcegroup)
 - [Update](#assetendpointprofiles_update)
 
 ## Assets
@@ -13,6 +15,8 @@
 - [CreateOrReplace](#assets_createorreplace)
 - [Delete](#assets_delete)
 - [GetByResourceGroup](#assets_getbyresourcegroup)
+- [List](#assets_list)
+- [ListByResourceGroup](#assets_listbyresourcegroup)
 - [Update](#assets_update)
 
 ## OperationStatus
@@ -36,6 +40,11 @@ import java.util.Map;
  * Samples for AssetEndpointProfiles CreateOrReplace.
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Create_AssetEndpointProfile.
+     * json
+     */
     /**
      * Sample code: Create_AssetEndpointProfile.
      * 
@@ -78,6 +87,11 @@ public final class AssetEndpointProfilesCreateOrReplaceSamples {
  * Samples for AssetEndpointProfiles Delete.
  */
 public final class AssetEndpointProfilesDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Delete_AssetEndpointProfile.
+     * json
+     */
     /**
      * Sample code: Delete_AssetEndpointProfile.
      * 
@@ -98,6 +112,10 @@ public final class AssetEndpointProfilesDeleteSamples {
  * Samples for AssetEndpointProfiles GetByResourceGroup.
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_AssetEndpointProfile.json
+     */
     /**
      * Sample code: Get_AssetEndpointProfile.
      * 
@@ -107,6 +125,52 @@ public final class AssetEndpointProfilesGetByResourceGroupSamples {
         manager.assetEndpointProfiles()
             .getByResourceGroupWithResponse("myResourceGroup", "my-assetendpointprofile",
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AssetEndpointProfiles_List
+
+```java
+/**
+ * Samples for AssetEndpointProfiles List.
+ */
+public final class AssetEndpointProfilesListSamples {
+    /*
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * List_AssetEndpointProfiles_Subscription.json
+     */
+    /**
+     * Sample code: List_AssetEndpointProfiles_Subscription.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listAssetEndpointProfilesSubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assetEndpointProfiles().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AssetEndpointProfiles_ListByResourceGroup
+
+```java
+/**
+ * Samples for AssetEndpointProfiles ListByResourceGroup.
+ */
+public final class AssetEndpointProfilesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * List_AssetEndpointProfiles_ResourceGroup.json
+     */
+    /**
+     * Sample code: List_AssetEndpointProfiles_ResourceGroup.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void
+        listAssetEndpointProfilesResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assetEndpointProfiles().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -121,6 +185,11 @@ import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdat
  * Samples for AssetEndpointProfiles Update.
  */
 public final class AssetEndpointProfilesUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Update_AssetEndpointProfile.
+     * json
+     */
     /**
      * Sample code: Update_AssetEndpointProfile.
      * 
@@ -157,6 +226,10 @@ import java.util.Map;
  * Samples for Assets CreateOrReplace.
  */
 public final class AssetsCreateOrReplaceSamples {
+    /*
+     * x-ms-original-file: specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/
+     * Create_Asset_Without_DisplayName.json
+     */
     /**
      * Sample code: Create_Asset_Without_DisplayName.
      * 
@@ -232,6 +305,10 @@ public final class AssetsCreateOrReplaceSamples {
  * Samples for Assets Delete.
  */
 public final class AssetsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Delete_Asset.json
+     */
     /**
      * Sample code: Delete_Asset.
      * 
@@ -250,6 +327,10 @@ public final class AssetsDeleteSamples {
  * Samples for Assets GetByResourceGroup.
  */
 public final class AssetsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_Asset.json
+     */
     /**
      * Sample code: Get_Asset.
      * 
@@ -258,6 +339,50 @@ public final class AssetsGetByResourceGroupSamples {
     public static void getAsset(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.assets()
             .getByResourceGroupWithResponse("myResourceGroup", "my-asset", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Assets_List
+
+```java
+/**
+ * Samples for Assets List.
+ */
+public final class AssetsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/List_Assets_Subscription.json
+     */
+    /**
+     * Sample code: List_Assets_Subscription.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void listAssetsSubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Assets_ListByResourceGroup
+
+```java
+/**
+ * Samples for Assets ListByResourceGroup.
+ */
+public final class AssetsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/List_Assets_ResourceGroup.json
+     */
+    /**
+     * Sample code: List_Assets_ResourceGroup.
+     * 
+     * @param manager Entry point to DeviceRegistryManager.
+     */
+    public static void listAssetsResourceGroup(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        manager.assets().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -272,6 +397,10 @@ import com.azure.resourcemanager.deviceregistry.models.AssetUpdateProperties;
  * Samples for Assets Update.
  */
 public final class AssetsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Update_Asset.json
+     */
     /**
      * Sample code: Update_Asset.
      * 
@@ -295,6 +424,10 @@ public final class AssetsUpdateSamples {
  * Samples for OperationStatus Get.
  */
 public final class OperationStatusGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_OperationStatus.json
+     */
     /**
      * Sample code: Get_OperationStatus.
      * 
@@ -314,6 +447,10 @@ public final class OperationStatusGetSamples {
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/List_Operations.json
+     */
     /**
      * Sample code: List_Operations.
      * 

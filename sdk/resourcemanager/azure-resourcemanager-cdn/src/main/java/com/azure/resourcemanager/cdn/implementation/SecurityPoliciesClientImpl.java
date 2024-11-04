@@ -868,8 +868,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(String resourceGroupName,
         String profileName, String securityPolicyName, SecurityPolicyUpdateParameters securityPolicyUpdateProperties,
         Context context) {
-        return this.beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties,
-            context).getSyncPoller();
+        return this
+            .beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -889,7 +891,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     public Mono<SecurityPolicyInner> patchAsync(String resourceGroupName, String profileName, String securityPolicyName,
         SecurityPolicyUpdateParameters securityPolicyUpdateProperties) {
         return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1190,9 +1193,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1219,9 +1220,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

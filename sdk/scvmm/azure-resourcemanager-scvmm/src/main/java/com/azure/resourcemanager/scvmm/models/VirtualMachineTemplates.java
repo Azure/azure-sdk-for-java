@@ -8,12 +8,83 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualMachineTemplates. */
+/**
+ * Resource collection API of VirtualMachineTemplates.
+ */
 public interface VirtualMachineTemplates {
     /**
+     * Implements GET VirtualMachineTemplates in a subscription.
+     * 
+     * List of VirtualMachineTemplates in a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VirtualMachineTemplate list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualMachineTemplate> list();
+
+    /**
+     * Implements GET VirtualMachineTemplates in a subscription.
+     * 
+     * List of VirtualMachineTemplates in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VirtualMachineTemplate list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualMachineTemplate> list(Context context);
+
+    /**
+     * Implements GET VirtualMachineTemplates in a resource group.
+     * 
+     * List of VirtualMachineTemplates in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VirtualMachineTemplate list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualMachineTemplate> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Implements GET VirtualMachineTemplates in a resource group.
+     * 
+     * List of VirtualMachineTemplates in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VirtualMachineTemplate list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualMachineTemplate> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets a VirtualMachineTemplate.
+     * 
      * Implements VirtualMachineTemplate GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VirtualMachineTemplates resource definition along with {@link Response}.
+     */
+    Response<VirtualMachineTemplate> getByResourceGroupWithResponse(String resourceGroupName,
+        String virtualMachineTemplateName, Context context);
+
+    /**
+     * Gets a VirtualMachineTemplate.
+     * 
+     * Implements VirtualMachineTemplate GET method.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,36 +94,11 @@ public interface VirtualMachineTemplates {
     VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
-     * Implements VirtualMachineTemplate GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VirtualMachineTemplates resource definition along with {@link Response}.
-     */
-    Response<VirtualMachineTemplate> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineTemplateName, Context context);
-
-    /**
+     * Implements VirtualMachineTemplate DELETE method.
+     * 
      * Deregisters the ScVmm VM Template from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force);
-
-    /**
-     * Deregisters the ScVmm VM Template from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,65 +107,25 @@ public interface VirtualMachineTemplates {
     void delete(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
+     * Implements VirtualMachineTemplate DELETE method.
+     * 
      * Deregisters the ScVmm VM Template from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineTemplateName Name of the VirtualMachineTemplate.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force, Context context);
+    void delete(String resourceGroupName, String virtualMachineTemplateName, ForceDelete force, Context context);
 
     /**
-     * List of VirtualMachineTemplates in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VirtualMachineTemplate> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * List of VirtualMachineTemplates in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VirtualMachineTemplate> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * List of VirtualMachineTemplates in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VirtualMachineTemplate> list();
-
-    /**
-     * List of VirtualMachineTemplates in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualMachineTemplates as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VirtualMachineTemplate> list(Context context);
-
-    /**
+     * Gets a VirtualMachineTemplate.
+     * 
      * Implements VirtualMachineTemplate GET method.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,8 +135,10 @@ public interface VirtualMachineTemplates {
     VirtualMachineTemplate getById(String id);
 
     /**
+     * Gets a VirtualMachineTemplate.
+     * 
      * Implements VirtualMachineTemplate GET method.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,8 +149,10 @@ public interface VirtualMachineTemplates {
     Response<VirtualMachineTemplate> getByIdWithResponse(String id, Context context);
 
     /**
+     * Implements VirtualMachineTemplate DELETE method.
+     * 
      * Deregisters the ScVmm VM Template from Azure.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,21 +161,22 @@ public interface VirtualMachineTemplates {
     void deleteById(String id);
 
     /**
+     * Implements VirtualMachineTemplate DELETE method.
+     * 
      * Deregisters the ScVmm VM Template from Azure.
-     *
+     * 
      * @param id the resource ID.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Boolean force, Context context);
+    void deleteByIdWithResponse(String id, ForceDelete force, Context context);
 
     /**
      * Begins definition for a new VirtualMachineTemplate resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualMachineTemplate definition.
      */

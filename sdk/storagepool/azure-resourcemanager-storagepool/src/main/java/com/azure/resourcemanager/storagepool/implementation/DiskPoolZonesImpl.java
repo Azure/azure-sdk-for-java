@@ -19,20 +19,20 @@ public final class DiskPoolZonesImpl implements DiskPoolZones {
 
     private final com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager;
 
-    public DiskPoolZonesImpl(
-        DiskPoolZonesClient innerClient, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
+    public DiskPoolZonesImpl(DiskPoolZonesClient innerClient,
+        com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DiskPoolZoneInfo> list(String location) {
         PagedIterable<DiskPoolZoneInfoInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new DiskPoolZoneInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiskPoolZoneInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DiskPoolZoneInfo> list(String location, Context context) {
         PagedIterable<DiskPoolZoneInfoInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new DiskPoolZoneInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiskPoolZoneInfoImpl(inner1, this.manager()));
     }
 
     private DiskPoolZonesClient serviceClient() {

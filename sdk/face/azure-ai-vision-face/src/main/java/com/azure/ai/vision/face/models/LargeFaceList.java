@@ -5,41 +5,41 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Large face list is a list of faces, up to 1,000,000 faces.
  */
 @Immutable
-public final class LargeFaceList {
+public final class LargeFaceList implements JsonSerializable<LargeFaceList> {
 
     /*
      * User defined name, maximum length is 128.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * Optional user defined data. Length should not exceed 16K.
      */
     @Generated
-    @JsonProperty(value = "userData")
     private String userData;
 
     /*
-     * Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds.
+     * Name of recognition model. Recognition model is used when the face features are extracted and associated with
+     * detected faceIds.
      */
     @Generated
-    @JsonProperty(value = "recognitionModel")
     private FaceRecognitionModel recognitionModel;
 
     /*
      * Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      */
     @Generated
-    @JsonProperty(value = "largeFaceListId", access = JsonProperty.Access.WRITE_ONLY)
     private String largeFaceListId;
 
     /**
@@ -48,8 +48,7 @@ public final class LargeFaceList {
      * @param name the name value to set.
      */
     @Generated
-    @JsonCreator
-    private LargeFaceList(@JsonProperty(value = "name") String name) {
+    private LargeFaceList(String name) {
         this.name = name;
     }
 
@@ -93,5 +92,58 @@ public final class LargeFaceList {
     @Generated
     public String getLargeFaceListId() {
         return this.largeFaceListId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("userData", this.userData);
+        jsonWriter.writeStringField("recognitionModel",
+            this.recognitionModel == null ? null : this.recognitionModel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LargeFaceList from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LargeFaceList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LargeFaceList.
+     */
+    @Generated
+    public static LargeFaceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String largeFaceListId = null;
+            String userData = null;
+            FaceRecognitionModel recognitionModel = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("largeFaceListId".equals(fieldName)) {
+                    largeFaceListId = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    userData = reader.getString();
+                } else if ("recognitionModel".equals(fieldName)) {
+                    recognitionModel = FaceRecognitionModel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            LargeFaceList deserializedLargeFaceList = new LargeFaceList(name);
+            deserializedLargeFaceList.largeFaceListId = largeFaceListId;
+            deserializedLargeFaceList.userData = userData;
+            deserializedLargeFaceList.recognitionModel = recognitionModel;
+            return deserializedLargeFaceList;
+        });
     }
 }

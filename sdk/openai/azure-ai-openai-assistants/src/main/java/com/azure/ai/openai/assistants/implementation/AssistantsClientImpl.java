@@ -154,8 +154,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAssistant(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData assistantCreationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData assistantCreationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/assistants")
         @ExpectedResponses({ 200 })
@@ -164,8 +165,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createAssistantSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData assistantCreationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData assistantCreationOptions, RequestOptions requestOptions,
+            Context context);
 
         @Get("/assistants")
         @ExpectedResponses({ 200 })
@@ -174,7 +176,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAssistants(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/assistants")
         @ExpectedResponses({ 200 })
@@ -183,7 +185,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAssistantsSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/assistants/{assistantId}")
         @ExpectedResponses({ 200 })
@@ -192,7 +194,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAssistant(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @PathParam("assistantId") String assistantId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/assistants/{assistantId}")
@@ -202,7 +204,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAssistantSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @PathParam("assistantId") String assistantId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/assistants/{assistantId}")
@@ -212,9 +214,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateAssistant(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData updateAssistantOptions, RequestOptions requestOptions,
-            Context context);
+            @PathParam("assistantId") String assistantId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateAssistantOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/assistants/{assistantId}")
         @ExpectedResponses({ 200 })
@@ -223,9 +225,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateAssistantSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData updateAssistantOptions, RequestOptions requestOptions,
-            Context context);
+            @PathParam("assistantId") String assistantId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateAssistantOptions,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/assistants/{assistantId}")
         @ExpectedResponses({ 200 })
@@ -234,7 +236,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteAssistant(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @PathParam("assistantId") String assistantId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/assistants/{assistantId}")
@@ -244,88 +246,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteAssistantSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
+            @PathParam("assistantId") String assistantId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
-
-        @Post("/assistants/{assistantId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createAssistantFile(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/assistants/{assistantId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createAssistantFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Get("/assistants/{assistantId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAssistantFiles(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/assistants/{assistantId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listAssistantFilesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @HeaderParam("accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/assistants/{assistantId}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAssistantFile(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/assistants/{assistantId}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAssistantFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/assistants/{assistantId}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deleteAssistantFile(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/assistants/{assistantId}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deleteAssistantFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("assistantId") String assistantId, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads")
         @ExpectedResponses({ 200 })
@@ -334,7 +256,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createThread(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData assistantThreadCreationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -345,7 +267,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createThreadSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData assistantThreadCreationOptions, RequestOptions requestOptions,
             Context context);
 
@@ -356,7 +278,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getThread(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}")
@@ -366,7 +288,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getThreadSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/threads/{threadId}")
@@ -376,8 +298,10 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateThread(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @PathParam("threadId") String threadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateAssistantThreadOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/{threadId}")
         @ExpectedResponses({ 200 })
@@ -386,8 +310,10 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateThreadSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @PathParam("threadId") String threadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateAssistantThreadOptions, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/threads/{threadId}")
         @ExpectedResponses({ 200 })
@@ -396,7 +322,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteThread(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Delete("/threads/{threadId}")
@@ -406,7 +332,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteThreadSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/threads/{threadId}/messages")
@@ -416,8 +342,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createMessage(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @PathParam("threadId") String threadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData threadMessageOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })
@@ -426,8 +353,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createMessageSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @PathParam("threadId") String threadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData threadMessageOptions,
+            RequestOptions requestOptions, Context context);
 
         @Get("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })
@@ -436,7 +364,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMessages(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}/messages")
@@ -446,7 +374,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listMessagesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}/messages/{messageId}")
@@ -457,7 +385,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMessage(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/threads/{threadId}/messages/{messageId}")
         @ExpectedResponses({ 200 })
@@ -467,7 +395,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getMessageSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/messages/{messageId}")
         @ExpectedResponses({ 200 })
@@ -477,8 +405,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateMessage(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMessageRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/{threadId}/messages/{messageId}")
         @ExpectedResponses({ 200 })
@@ -488,49 +417,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateMessageSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/threads/{threadId}/messages/{messageId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMessageFiles(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/threads/{threadId}/messages/{messageId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listMessageFilesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/threads/{threadId}/messages/{messageId}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getMessageFile(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("/threads/{threadId}/messages/{messageId}/files/{fileId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getMessageFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMessageRequest, RequestOptions requestOptions,
             Context context);
 
         @Post("/threads/{threadId}/runs")
@@ -540,8 +428,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createRun(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createRunOptions, RequestOptions requestOptions, Context context);
+            @PathParam("threadId") String threadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createRunOptions,
+            RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs")
         @ExpectedResponses({ 200 })
@@ -550,8 +439,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createRunSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData createRunOptions, RequestOptions requestOptions, Context context);
+            @PathParam("threadId") String threadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createRunOptions,
+            RequestOptions requestOptions, Context context);
 
         @Get("/threads/{threadId}/runs")
         @ExpectedResponses({ 200 })
@@ -560,7 +450,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRuns(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}/runs")
@@ -570,7 +460,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("threadId") String threadId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("threadId") String threadId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}/runs/{runId}")
@@ -581,7 +471,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/threads/{threadId}/runs/{runId}")
         @ExpectedResponses({ 200 })
@@ -590,7 +480,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRunSync(@HostParam("endpoint") String endpoint, @PathParam("threadId") String threadId,
-            @PathParam("runId") String runId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("runId") String runId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/threads/{threadId}/runs/{runId}")
@@ -601,8 +491,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateRunRequest, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}")
         @ExpectedResponses({ 200 })
@@ -612,8 +502,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateRunRequest, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
         @ExpectedResponses({ 200 })
@@ -623,8 +513,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> submitToolOutputsToRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
         @ExpectedResponses({ 200 })
@@ -634,8 +525,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> submitToolOutputsToRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/cancel")
         @ExpectedResponses({ 200 })
@@ -645,7 +537,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/cancel")
         @ExpectedResponses({ 200 })
@@ -655,7 +547,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/runs")
         @ExpectedResponses({ 200 })
@@ -664,8 +556,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createThreadAndRun(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createAndRunThreadOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createAndRunThreadOptions, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/runs")
         @ExpectedResponses({ 200 })
@@ -674,8 +567,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createThreadAndRunSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData createAndRunThreadOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createAndRunThreadOptions, RequestOptions requestOptions,
+            Context context);
 
         @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
         @ExpectedResponses({ 200 })
@@ -685,7 +579,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRunStep(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @PathParam("stepId") String stepId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("stepId") String stepId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
@@ -696,7 +590,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRunStepSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @PathParam("stepId") String stepId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("stepId") String stepId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/threads/{threadId}/runs/{runId}/steps")
@@ -707,7 +601,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRunSteps(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/threads/{threadId}/runs/{runId}/steps")
         @ExpectedResponses({ 200 })
@@ -717,7 +611,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunStepsSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -726,7 +620,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listFiles(@HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files")
         @ExpectedResponses({ 200 })
@@ -734,7 +628,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
+        Response<BinaryData> listFilesSync(@HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
@@ -745,8 +639,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadFile(@HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+            Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/files")
@@ -756,8 +651,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadFileSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -766,7 +662,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteFile(@HostParam("endpoint") String endpoint,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Delete("/files/{fileId}")
@@ -776,7 +672,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -785,7 +681,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getFile(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -794,7 +690,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/files/{fileId}/content")
         @ExpectedResponses({ 200 })
@@ -803,7 +699,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getFileContent(@HostParam("endpoint") String endpoint,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/files/{fileId}/content")
@@ -813,15 +709,286 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
-            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("fileId") String fileId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
+
+        @Get("/vector_stores")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listVectorStores(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listVectorStoresSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createVectorStore(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData vectorStoreOptions, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/vector_stores")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createVectorStoreSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData vectorStoreOptions, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/vector_stores/{vectorStoreId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getVectorStore(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getVectorStoreSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores/{vectorStoreId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> modifyVectorStore(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData vectorStoreUpdateOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores/{vectorStoreId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> modifyVectorStoreSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData vectorStoreUpdateOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/vector_stores/{vectorStoreId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteVectorStore(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/vector_stores/{vectorStoreId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteVectorStoreSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listVectorStoreFiles(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listVectorStoreFilesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores/{vectorStoreId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createVectorStoreFile(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createVectorStoreFileRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/vector_stores/{vectorStoreId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createVectorStoreFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createVectorStoreFileRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getVectorStoreFile(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getVectorStoreFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/vector_stores/{vectorStoreId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteVectorStoreFile(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/vector_stores/{vectorStoreId}/files/{fileId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteVectorStoreFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("fileId") String fileId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores/{vectorStoreId}/file_batches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createVectorStoreFileBatch(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/vector_stores/{vectorStoreId}/file_batches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createVectorStoreFileBatchSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/file_batches/{batchId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getVectorStoreFileBatch(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/file_batches/{batchId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getVectorStoreFileBatchSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores/{vectorStoreId}/file_batches/{batchId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelVectorStoreFileBatch(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/vector_stores/{vectorStoreId}/file_batches/{batchId}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelVectorStoreFileBatchSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/file_batches/{batchId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listVectorStoreFileBatchFiles(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/vector_stores/{vectorStoreId}/file_batches/{batchId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listVectorStoreFileBatchFilesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("vectorStoreId") String vectorStoreId, @PathParam("batchId") String batchId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Creates a new assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Required)
      *     name: String (Optional)
@@ -832,18 +999,28 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Optional): [
-     *         String (Optional)
-     *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search: BinaryData (Optional)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -857,14 +1034,27 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -878,8 +1068,9 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createAssistantWithResponseAsync(BinaryData assistantCreationOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAssistant(this.getEndpoint(), accept,
+        return FluxUtil.withContext(context -> service.createAssistant(this.getEndpoint(), contentType, accept,
             assistantCreationOptions, requestOptions, context));
     }
 
@@ -887,7 +1078,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Required)
      *     name: String (Optional)
@@ -898,18 +1090,28 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Optional): [
-     *         String (Optional)
-     *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search: BinaryData (Optional)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -923,14 +1125,27 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -943,9 +1158,10 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createAssistantWithResponse(BinaryData assistantCreationOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createAssistantSync(this.getEndpoint(), accept, assistantCreationOptions, requestOptions,
-            Context.NONE);
+        return service.createAssistantSync(this.getEndpoint(), contentType, accept, assistantCreationOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -969,7 +1185,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -986,9 +1203,21 @@ public final class AssistantsClientImpl {
      *                     type: String (Required)
      *                 }
      *             ]
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
+     *             tool_resources (Required): {
+     *                 code_interpreter (Optional): {
+     *                     file_ids (Required): [
+     *                         String (Required)
+     *                     ]
+     *                 }
+     *                 file_search (Optional): {
+     *                     vector_store_ids (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                 }
+     *             }
+     *             temperature: Double (Required)
+     *             top_p: Double (Required)
+     *             response_format: BinaryData (Optional)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -998,7 +1227,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1036,7 +1266,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -1053,9 +1284,21 @@ public final class AssistantsClientImpl {
      *                     type: String (Required)
      *                 }
      *             ]
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
+     *             tool_resources (Required): {
+     *                 code_interpreter (Optional): {
+     *                     file_ids (Required): [
+     *                         String (Required)
+     *                     ]
+     *                 }
+     *                 file_search (Optional): {
+     *                     vector_store_ids (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                 }
+     *             }
+     *             temperature: Double (Required)
+     *             top_p: Double (Required)
+     *             response_format: BinaryData (Optional)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -1065,7 +1308,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1084,7 +1328,8 @@ public final class AssistantsClientImpl {
      * Retrieves an existing assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1098,14 +1343,27 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1127,7 +1385,8 @@ public final class AssistantsClientImpl {
      * Retrieves an existing assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1141,14 +1400,27 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1168,7 +1440,8 @@ public final class AssistantsClientImpl {
      * Modifies an existing assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     name: String (Optional)
@@ -1179,18 +1452,32 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Optional): [
-     *         String (Optional)
-     *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1204,14 +1491,27 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
@@ -1226,16 +1526,18 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAssistantWithResponseAsync(String assistantId,
         BinaryData updateAssistantOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateAssistant(this.getEndpoint(), assistantId, accept,
-            updateAssistantOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateAssistant(this.getEndpoint(), assistantId, contentType,
+            accept, updateAssistantOptions, requestOptions, context));
     }
 
     /**
      * Modifies an existing assistant.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     name: String (Optional)
@@ -1246,18 +1548,32 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Optional): [
-     *         String (Optional)
-     *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -1271,14 +1587,27 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     temperature: Double (Required)
+     *     top_p: Double (Required)
+     *     response_format: BinaryData (Optional)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
@@ -1292,8 +1621,9 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAssistantWithResponse(String assistantId, BinaryData updateAssistantOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateAssistantSync(this.getEndpoint(), assistantId, accept, updateAssistantOptions,
+        return service.updateAssistantSync(this.getEndpoint(), assistantId, contentType, accept, updateAssistantOptions,
             requestOptions, Context.NONE);
     }
 
@@ -1301,13 +1631,15 @@ public final class AssistantsClientImpl {
      * Deletes an assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1330,13 +1662,15 @@ public final class AssistantsClientImpl {
      * Deletes an assistant.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1353,350 +1687,70 @@ public final class AssistantsClientImpl {
     }
 
     /**
-     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     file_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     assistant_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant to attach the file to.
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAssistantFileWithResponseAsync(String assistantId, BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAssistantFile(this.getEndpoint(), assistantId, accept,
-            request, requestOptions, context));
-    }
-
-    /**
-     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     file_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     assistant_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant to attach the file to.
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.createAssistantFileSync(this.getEndpoint(), assistantId, accept, request, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             assistant_id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAssistantFilesWithResponseAsync(String assistantId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listAssistantFiles(this.getEndpoint(), assistantId, accept, requestOptions, context));
-    }
-
-    /**
-     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             assistant_id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.listAssistantFilesSync(this.getEndpoint(), assistantId, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Retrieves a file attached to an assistant.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     assistant_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant associated with the attached file.
-     * @param fileId The ID of the file to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAssistantFileWithResponseAsync(String assistantId, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAssistantFile(this.getEndpoint(), assistantId, fileId, accept,
-            requestOptions, context));
-    }
-
-    /**
-     * Retrieves a file attached to an assistant.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     assistant_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant associated with the attached file.
-     * @param fileId The ID of the file to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getAssistantFileSync(this.getEndpoint(), assistantId, fileId, accept, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
-     * files.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
-     * @param fileId The ID of the file to unlink from the specified assistant.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an assistant file deletion operation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAssistantFileWithResponseAsync(String assistantId, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAssistantFile(this.getEndpoint(), assistantId, fileId,
-            accept, requestOptions, context));
-    }
-
-    /**
-     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
-     * files.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
-     * @param fileId The ID of the file to unlink from the specified assistant.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an assistant file deletion operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteAssistantFileSync(this.getEndpoint(), assistantId, fileId, accept, requestOptions,
-            Context.NONE);
-    }
-
-    /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Optional): [
      *          (Optional){
      *             role: String(user/assistant) (Required)
      *             content: String (Required)
-     *             file_ids (Optional): [
-     *                 String (Optional)
+     *             attachments (Optional): [
+     *                  (Optional){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
      *             ]
      *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
      *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search: BinaryData (Optional)
+     *     }
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1710,8 +1764,9 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createThreadWithResponseAsync(BinaryData assistantThreadCreationOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(), accept,
+        return FluxUtil.withContext(context -> service.createThread(this.getEndpoint(), contentType, accept,
             assistantThreadCreationOptions, requestOptions, context));
     }
 
@@ -1719,38 +1774,67 @@ public final class AssistantsClientImpl {
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Optional): [
      *          (Optional){
      *             role: String(user/assistant) (Required)
      *             content: String (Required)
-     *             file_ids (Optional): [
-     *                 String (Optional)
+     *             attachments (Optional): [
+     *                  (Optional){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
      *             ]
      *             metadata (Optional): {
      *                 String: String (Required)
      *             }
      *         }
      *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search: BinaryData (Optional)
+     *     }
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1763,25 +1847,40 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createThreadWithResponse(BinaryData assistantThreadCreationOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createThreadSync(this.getEndpoint(), accept, assistantThreadCreationOptions, requestOptions,
-            Context.NONE);
+        return service.createThreadSync(this.getEndpoint(), contentType, accept, assistantThreadCreationOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Gets information about an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1803,16 +1902,30 @@ public final class AssistantsClientImpl {
      * Gets information about an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1832,29 +1945,57 @@ public final class AssistantsClientImpl {
      * Modifies an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to modify.
-     * @param request The request parameter.
+     * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1864,40 +2005,69 @@ public final class AssistantsClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateThreadWithResponseAsync(String threadId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateThreadWithResponseAsync(String threadId,
+        BinaryData updateAssistantThreadOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateThread(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateThread(this.getEndpoint(), threadId, contentType, accept,
+            updateAssistantThreadOptions, requestOptions, context));
     }
 
     /**
      * Modifies an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
+     *     tool_resources (Required): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to modify.
-     * @param request The request parameter.
+     * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1906,23 +2076,27 @@ public final class AssistantsClientImpl {
      * @return information about a single thread associated with an assistant along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData request,
+    public Response<BinaryData> updateThreadWithResponse(String threadId, BinaryData updateAssistantThreadOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateThreadSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+        return service.updateThreadSync(this.getEndpoint(), threadId, contentType, accept, updateAssistantThreadOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Deletes an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1944,13 +2118,15 @@ public final class AssistantsClientImpl {
      * Deletes an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1970,46 +2146,67 @@ public final class AssistantsClientImpl {
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     role: String(user/assistant) (Required)
      *     content: String (Required)
-     *     file_ids (Optional): [
-     *         String (Optional)
+     *     attachments (Optional): [
+     *          (Optional){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
      *             type: String (Required)
      *         }
      *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to create the new message on.
-     * @param request The request parameter.
+     * @param threadMessageOptions A single message within an assistant thread, as provided during that thread's
+     * creation for its initial state.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2019,57 +2216,79 @@ public final class AssistantsClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createMessageWithResponseAsync(String threadId, BinaryData request,
+    public Mono<Response<BinaryData>> createMessageWithResponseAsync(String threadId, BinaryData threadMessageOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createMessage(this.getEndpoint(), threadId, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createMessage(this.getEndpoint(), threadId, contentType, accept,
+            threadMessageOptions, requestOptions, context));
     }
 
     /**
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     role: String(user/assistant) (Required)
      *     content: String (Required)
-     *     file_ids (Optional): [
-     *         String (Optional)
+     *     attachments (Optional): [
+     *          (Optional){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
      *             type: String (Required)
      *         }
      *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to create the new message on.
-     * @param request The request parameter.
+     * @param threadMessageOptions A single message within an assistant thread, as provided during that thread's
+     * creation for its initial state.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2078,10 +2297,12 @@ public final class AssistantsClientImpl {
      * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData request,
+    public Response<BinaryData> createMessageWithResponse(String threadId, BinaryData threadMessageOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createMessageSync(this.getEndpoint(), threadId, accept, request, requestOptions, Context.NONE);
+        return service.createMessageSync(this.getEndpoint(), threadId, contentType, accept, threadMessageOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2090,6 +2311,7 @@ public final class AssistantsClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>runId</td><td>String</td><td>No</td><td>Filter messages by the run ID that generated them.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -2105,7 +2327,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2114,16 +2337,27 @@ public final class AssistantsClientImpl {
      *             object: String (Required)
      *             created_at: long (Required)
      *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details (Required): {
+     *                 reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             }
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
      *                     type: String (Required)
      *                 }
      *             ]
-     *             assistant_id: String (Optional)
-     *             run_id: String (Optional)
-     *             file_ids (Required): [
-     *                 String (Required)
+     *             assistant_id: String (Required)
+     *             run_id: String (Required)
+     *             attachments (Required): [
+     *                  (Required){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
      *             ]
      *             metadata (Required): {
      *                 String: String (Required)
@@ -2134,7 +2368,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2158,6 +2393,7 @@ public final class AssistantsClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>runId</td><td>String</td><td>No</td><td>Filter messages by the run ID that generated them.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -2173,7 +2409,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2182,16 +2419,27 @@ public final class AssistantsClientImpl {
      *             object: String (Required)
      *             created_at: long (Required)
      *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details (Required): {
+     *                 reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             }
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
      *                     type: String (Required)
      *                 }
      *             ]
-     *             assistant_id: String (Optional)
-     *             run_id: String (Optional)
-     *             file_ids (Required): [
-     *                 String (Required)
+     *             assistant_id: String (Required)
+     *             run_id: String (Required)
+     *             attachments (Required): [
+     *                  (Required){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
      *             ]
      *             metadata (Required): {
      *                 String: String (Required)
@@ -2202,7 +2450,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2222,28 +2471,41 @@ public final class AssistantsClientImpl {
      * Gets an existing message from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
      *             type: String (Required)
      *         }
      *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
@@ -2267,28 +2529,41 @@ public final class AssistantsClientImpl {
      * Gets an existing message from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
      *             type: String (Required)
      *         }
      *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
@@ -2310,42 +2585,57 @@ public final class AssistantsClientImpl {
      * Modifies an existing message on an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
      *             type: String (Required)
      *         }
      *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
-     * @param request The request parameter.
+     * @param updateMessageRequest The updateMessageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2356,52 +2646,68 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String threadId, String messageId,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData updateMessageRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), threadId, messageId, accept,
-            request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), threadId, messageId,
+            contentType, accept, updateMessageRequest, requestOptions, context));
     }
 
     /**
      * Modifies an existing message on an existing thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details (Required): {
+     *         reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     }
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
      *             type: String (Required)
      *         }
      *     ]
-     *     assistant_id: String (Optional)
-     *     run_id: String (Optional)
-     *     file_ids (Required): [
-     *         String (Required)
+     *     assistant_id: String (Required)
+     *     run_id: String (Required)
+     *     attachments (Required): [
+     *          (Required){
+     *             file_id: String (Required)
+     *             tools (Required): [
+     *                 BinaryData (Required)
+     *             ]
+     *         }
      *     ]
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
-     * @param request The request parameter.
+     * @param updateMessageRequest The updateMessageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2410,211 +2716,85 @@ public final class AssistantsClientImpl {
      * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId,
+        BinaryData updateMessageRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, accept, request, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             message_id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }</pre>
-     * 
-     * @param threadId The ID of the thread containing the message to list files from.
-     * @param messageId The ID of the message to list files from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMessageFilesWithResponseAsync(String threadId, String messageId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listMessageFiles(this.getEndpoint(), threadId, messageId, accept,
-            requestOptions, context));
-    }
-
-    /**
-     * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
-     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
-     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
-     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
-     * list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             message_id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }</pre>
-     * 
-     * @param threadId The ID of the thread containing the message to list files from.
-     * @param messageId The ID of the message to list files from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.listMessageFilesSync(this.getEndpoint(), threadId, messageId, accept, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Gets information about a file attachment to a message within a thread.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     message_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param threadId The ID of the thread containing the message to get information from.
-     * @param messageId The ID of the message to get information from.
-     * @param fileId The ID of the file to get information about.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attachment to a message within a thread along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMessageFileWithResponseAsync(String threadId, String messageId, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMessageFile(this.getEndpoint(), threadId, messageId, fileId,
-            accept, requestOptions, context));
-    }
-
-    /**
-     * Gets information about a file attachment to a message within a thread.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     message_id: String (Required)
-     * }
-     * }</pre>
-     * 
-     * @param threadId The ID of the thread containing the message to get information from.
-     * @param messageId The ID of the message to get information from.
-     * @param fileId The ID of the file to get information about.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attachment to a message within a thread along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getMessageFileSync(this.getEndpoint(), threadId, messageId, fileId, accept, requestOptions,
-            Context.NONE);
+        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, contentType, accept,
+            updateMessageRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Creates a new run for an assistant thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
      *     additional_instructions: String (Optional)
+     *     additional_messages (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details (Required): {
+     *                 reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             }
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
+     *             role: String(user/assistant) (Required)
+     *             content (Required): [
+     *                  (Required){
+     *                     type: String (Required)
+     *                 }
+     *             ]
+     *             assistant_id: String (Required)
+     *             run_id: String (Required)
+     *             attachments (Required): [
+     *                  (Required){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
      *     tools (Optional): [
      *          (Optional){
      *             type: String (Required)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
+     *     truncation_strategy (Optional): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2635,23 +2815,37 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to run.
-     * @param createRunOptions The details for the run to create.
+     * @param createRunOptions The details used when creating a new run of an assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2663,35 +2857,83 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createRunWithResponseAsync(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), threadId, accept, createRunOptions,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.createRun(this.getEndpoint(), threadId, contentType, accept,
+            createRunOptions, requestOptions, context));
     }
 
     /**
      * Creates a new run for an assistant thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
      *     additional_instructions: String (Optional)
+     *     additional_messages (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details (Required): {
+     *                 reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             }
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
+     *             role: String(user/assistant) (Required)
+     *             content (Required): [
+     *                  (Required){
+     *                     type: String (Required)
+     *                 }
+     *             ]
+     *             assistant_id: String (Required)
+     *             run_id: String (Required)
+     *             attachments (Required): [
+     *                  (Required){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
      *     tools (Optional): [
      *          (Optional){
      *             type: String (Required)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
+     *     truncation_strategy (Optional): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2712,23 +2954,37 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to run.
-     * @param createRunOptions The details for the run to create.
+     * @param createRunOptions The details used when creating a new run of an assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2739,9 +2995,10 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createRunSync(this.getEndpoint(), threadId, accept, createRunOptions, requestOptions,
-            Context.NONE);
+        return service.createRunSync(this.getEndpoint(), threadId, contentType, accept, createRunOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2765,7 +3022,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2789,15 +3047,28 @@ public final class AssistantsClientImpl {
      *                     type: String (Required)
      *                 }
      *             ]
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
      *             created_at: long (Required)
      *             expires_at: Long (Required)
      *             started_at: Long (Required)
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
+     *             incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *             usage (Required): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
+     *             temperature: Double (Optional)
+     *             top_p: Double (Optional)
+     *             max_prompt_tokens: Integer (Required)
+     *             max_completion_tokens: Integer (Required)
+     *             truncation_strategy (Required): {
+     *                 type: String(auto/last_messages) (Required)
+     *                 last_messages: Integer (Optional)
+     *             }
+     *             tool_choice: BinaryData (Required)
+     *             response_format: BinaryData (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -2807,7 +3078,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2846,7 +3118,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2870,15 +3143,28 @@ public final class AssistantsClientImpl {
      *                     type: String (Required)
      *                 }
      *             ]
-     *             file_ids (Required): [
-     *                 String (Required)
-     *             ]
      *             created_at: long (Required)
      *             expires_at: Long (Required)
      *             started_at: Long (Required)
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
+     *             incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *             usage (Required): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
+     *             temperature: Double (Optional)
+     *             top_p: Double (Optional)
+     *             max_prompt_tokens: Integer (Required)
+     *             max_completion_tokens: Integer (Required)
+     *             truncation_strategy (Required): {
+     *                 type: String(auto/last_messages) (Required)
+     *                 last_messages: Integer (Optional)
+     *             }
+     *             tool_choice: BinaryData (Required)
+     *             response_format: BinaryData (Required)
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -2888,7 +3174,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2908,7 +3195,8 @@ public final class AssistantsClientImpl {
      * Gets an existing run from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2929,20 +3217,34 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
@@ -2966,7 +3268,8 @@ public final class AssistantsClientImpl {
      * Gets an existing run from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2987,20 +3290,34 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
@@ -3021,17 +3338,20 @@ public final class AssistantsClientImpl {
      * Modifies an existing thread run.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3052,24 +3372,38 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
-     * @param request The request parameter.
+     * @param updateRunRequest The updateRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3079,28 +3413,32 @@ public final class AssistantsClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId,
+        BinaryData updateRunRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), threadId, runId, accept, request,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), threadId, runId, contentType,
+            accept, updateRunRequest, requestOptions, context));
     }
 
     /**
      * Modifies an existing thread run.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3121,24 +3459,38 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
-     * @param request The request parameter.
+     * @param updateRunRequest The updateRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3147,11 +3499,12 @@ public final class AssistantsClientImpl {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request,
+    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData updateRunRequest,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+        return service.updateRunSync(this.getEndpoint(), threadId, runId, contentType, accept, updateRunRequest,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -3159,7 +3512,8 @@ public final class AssistantsClientImpl {
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     tool_outputs (Required): [
      *          (Required){
@@ -3167,12 +3521,15 @@ public final class AssistantsClientImpl {
      *             output: String (Optional)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3193,24 +3550,38 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param request The request parameter.
+     * @param submitToolOutputsToRunRequest The submitToolOutputsToRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3221,10 +3592,11 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(), threadId, runId,
-            accept, request, requestOptions, context));
+            contentType, accept, submitToolOutputsToRunRequest, requestOptions, context));
     }
 
     /**
@@ -3232,7 +3604,8 @@ public final class AssistantsClientImpl {
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     tool_outputs (Required): [
      *          (Required){
@@ -3240,12 +3613,15 @@ public final class AssistantsClientImpl {
      *             output: String (Optional)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3266,24 +3642,38 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param request The request parameter.
+     * @param submitToolOutputsToRunRequest The submitToolOutputsToRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3292,18 +3682,20 @@ public final class AssistantsClientImpl {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId,
+        BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, contentType, accept,
+            submitToolOutputsToRunRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Cancels a run of an in progress thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3324,20 +3716,34 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
@@ -3361,7 +3767,8 @@ public final class AssistantsClientImpl {
      * Cancels a run of an in progress thread.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3382,20 +3789,34 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
@@ -3416,7 +3837,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     thread (Optional): {
@@ -3424,14 +3846,27 @@ public final class AssistantsClientImpl {
      *              (Optional){
      *                 role: String(user/assistant) (Required)
      *                 content: String (Required)
-     *                 file_ids (Optional): [
-     *                     String (Optional)
+     *                 attachments (Optional): [
+     *                      (Optional){
+     *                         file_id: String (Required)
+     *                         tools (Required): [
+     *                             BinaryData (Required)
+     *                         ]
+     *                     }
      *                 ]
      *                 metadata (Optional): {
      *                     String: String (Required)
      *                 }
      *             }
      *         ]
+     *         tool_resources (Optional): {
+     *             code_interpreter (Optional): {
+     *                 file_ids (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *             file_search: BinaryData (Optional)
+     *         }
      *         metadata (Optional): {
      *             String: String (Required)
      *         }
@@ -3443,15 +3878,40 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     stream: Boolean (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
+     *     truncation_strategy (Optional): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3472,20 +3932,34 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3499,8 +3973,9 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createThreadAndRunWithResponseAsync(BinaryData createAndRunThreadOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(), accept,
+        return FluxUtil.withContext(context -> service.createThreadAndRun(this.getEndpoint(), contentType, accept,
             createAndRunThreadOptions, requestOptions, context));
     }
 
@@ -3508,7 +3983,8 @@ public final class AssistantsClientImpl {
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assistant_id: String (Required)
      *     thread (Optional): {
@@ -3516,14 +3992,27 @@ public final class AssistantsClientImpl {
      *              (Optional){
      *                 role: String(user/assistant) (Required)
      *                 content: String (Required)
-     *                 file_ids (Optional): [
-     *                     String (Optional)
+     *                 attachments (Optional): [
+     *                      (Optional){
+     *                         file_id: String (Required)
+     *                         tools (Required): [
+     *                             BinaryData (Required)
+     *                         ]
+     *                     }
      *                 ]
      *                 metadata (Optional): {
      *                     String: String (Required)
      *                 }
      *             }
      *         ]
+     *         tool_resources (Optional): {
+     *             code_interpreter (Optional): {
+     *                 file_ids (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *             file_search: BinaryData (Optional)
+     *         }
      *         metadata (Optional): {
      *             String: String (Required)
      *         }
@@ -3535,15 +4024,40 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
+     *     tool_resources (Optional): {
+     *         code_interpreter (Optional): {
+     *             file_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *         file_search (Optional): {
+     *             vector_store_ids (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     *     stream: Boolean (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
+     *     truncation_strategy (Optional): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3564,20 +4078,34 @@ public final class AssistantsClientImpl {
      *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
      *     expires_at: Long (Required)
      *     started_at: Long (Required)
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3590,16 +4118,18 @@ public final class AssistantsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createThreadAndRunWithResponse(BinaryData createAndRunThreadOptions,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createThreadAndRunSync(this.getEndpoint(), accept, createAndRunThreadOptions, requestOptions,
-            Context.NONE);
+        return service.createThreadAndRunSync(this.getEndpoint(), contentType, accept, createAndRunThreadOptions,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Gets a single run step from a thread run.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3620,11 +4150,17 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
@@ -3648,7 +4184,8 @@ public final class AssistantsClientImpl {
      * Gets a single run step from a thread run.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3669,11 +4206,17 @@ public final class AssistantsClientImpl {
      *     completed_at: Long (Required)
      *     cancelled_at: Long (Required)
      *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
@@ -3714,7 +4257,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -3738,6 +4282,11 @@ public final class AssistantsClientImpl {
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
+     *             usage (Optional): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -3747,7 +4296,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
@@ -3788,7 +4338,8 @@ public final class AssistantsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -3812,6 +4363,11 @@ public final class AssistantsClientImpl {
      *             completed_at: Long (Required)
      *             cancelled_at: Long (Required)
      *             failed_at: Long (Required)
+     *             usage (Optional): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -3821,7 +4377,8 @@ public final class AssistantsClientImpl {
      *     last_id: String (Required)
      *     has_more: boolean (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
@@ -3846,12 +4403,13 @@ public final class AssistantsClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files
      * matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants",
-     * "assistants_output".</td></tr>
+     * "assistants_output", "batch", "batch_output", "vision".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -3861,11 +4419,14 @@ public final class AssistantsClientImpl {
      *             bytes: int (Required)
      *             filename: String (Required)
      *             created_at: long (Required)
-     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *             status_details: String (Optional)
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3888,12 +4449,13 @@ public final class AssistantsClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files
      * matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants",
-     * "assistants_output".</td></tr>
+     * "assistants_output", "batch", "batch_output", "vision".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -3903,11 +4465,14 @@ public final class AssistantsClientImpl {
      *             bytes: int (Required)
      *             filename: String (Required)
      *             created_at: long (Required)
-     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *             purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *             status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *             status_details: String (Optional)
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3926,18 +4491,22 @@ public final class AssistantsClientImpl {
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param request The request parameter.
+     * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3947,29 +4516,34 @@ public final class AssistantsClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData request, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.uploadFile(this.getEndpoint(), contentType, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.uploadFile(this.getEndpoint(), contentType, accept,
+            uploadFileRequest, requestOptions, context));
     }
 
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param request The request parameter.
+     * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3978,23 +4552,26 @@ public final class AssistantsClientImpl {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(this.getEndpoint(), contentType, accept, request, requestOptions, Context.NONE);
+        return service.uploadFileSync(this.getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4016,13 +4593,15 @@ public final class AssistantsClientImpl {
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4042,16 +4621,20 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4073,16 +4656,20 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
      *     bytes: int (Required)
      *     filename: String (Required)
      *     created_at: long (Required)
-     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
+     *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4102,9 +4689,11 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * byte[]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4125,9 +4714,11 @@ public final class AssistantsClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * byte[]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4141,5 +4732,1401 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns a list of vector stores.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             name: String (Required)
+     *             usage_bytes: int (Required)
+     *             file_counts (Required): {
+     *                 in_progress: int (Required)
+     *                 completed: int (Required)
+     *                 failed: int (Required)
+     *                 cancelled: int (Required)
+     *                 total: int (Required)
+     *             }
+     *             status: String(expired/in_progress/completed) (Required)
+     *             expires_after (Optional): {
+     *                 anchor: String(last_active_at) (Required)
+     *                 days: int (Required)
+     *             }
+     *             expires_at: Long (Optional)
+     *             last_active_at: Long (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listVectorStoresWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listVectorStores(this.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Returns a list of vector stores.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             name: String (Required)
+     *             usage_bytes: int (Required)
+     *             file_counts (Required): {
+     *                 in_progress: int (Required)
+     *                 completed: int (Required)
+     *                 failed: int (Required)
+     *                 cancelled: int (Required)
+     *                 total: int (Required)
+     *             }
+     *             status: String(expired/in_progress/completed) (Required)
+     *             expires_after (Optional): {
+     *                 anchor: String(last_active_at) (Required)
+     *                 days: int (Required)
+     *             }
+     *             expires_at: Long (Optional)
+     *             last_active_at: Long (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listVectorStoresWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listVectorStoresSync(this.getEndpoint(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     name: String (Optional)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreOptions Request object for creating a vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createVectorStoreWithResponseAsync(BinaryData vectorStoreOptions,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createVectorStore(this.getEndpoint(), contentType, accept,
+            vectorStoreOptions, requestOptions, context));
+    }
+
+    /**
+     * Creates a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     name: String (Optional)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreOptions Request object for creating a vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createVectorStoreWithResponse(BinaryData vectorStoreOptions,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createVectorStoreSync(this.getEndpoint(), contentType, accept, vectorStoreOptions,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getVectorStoreWithResponseAsync(String vectorStoreId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getVectorStore(this.getEndpoint(), vectorStoreId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getVectorStoreSync(this.getEndpoint(), vectorStoreId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * The ID of the vector store to modify.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Optional)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store to modify.
+     * @param vectorStoreUpdateOptions Request object for updating a vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> modifyVectorStoreWithResponseAsync(String vectorStoreId,
+        BinaryData vectorStoreUpdateOptions, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.modifyVectorStore(this.getEndpoint(), vectorStoreId, contentType,
+            accept, vectorStoreUpdateOptions, requestOptions, context));
+    }
+
+    /**
+     * The ID of the vector store to modify.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Optional)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store to modify.
+     * @param vectorStoreUpdateOptions Request object for updating a vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> modifyVectorStoreWithResponse(String vectorStoreId, BinaryData vectorStoreUpdateOptions,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.modifyVectorStoreSync(this.getEndpoint(), vectorStoreId, contentType, accept,
+            vectorStoreUpdateOptions, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteVectorStoreWithResponseAsync(String vectorStoreId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.deleteVectorStore(this.getEndpoint(), vectorStoreId, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteVectorStoreSync(this.getEndpoint(), vectorStoreId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns a list of vector store files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             usage_bytes: int (Required)
+     *             created_at: long (Required)
+     *             vector_store_id: String (Required)
+     *             status: String(in_progress/completed/failed/cancelled) (Required)
+     *             last_error (Required): {
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 message: String (Required)
+     *             }
+     *             chunking_strategy (Required): {
+     *                 type: String(other/static) (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the files belong to.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listVectorStoreFilesWithResponseAsync(String vectorStoreId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listVectorStoreFiles(this.getEndpoint(), vectorStoreId, accept,
+            requestOptions, context));
+    }
+
+    /**
+     * Returns a list of vector store files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             usage_bytes: int (Required)
+     *             created_at: long (Required)
+     *             vector_store_id: String (Required)
+     *             status: String(in_progress/completed/failed/cancelled) (Required)
+     *             last_error (Required): {
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 message: String (Required)
+     *             }
+     *             chunking_strategy (Required): {
+     *                 type: String(other/static) (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the files belong to.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listVectorStoreFilesWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listVectorStoreFilesSync(this.getEndpoint(), vectorStoreId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_id: String (Required)
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store for which to create a File.
+     * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createVectorStoreFileWithResponseAsync(String vectorStoreId,
+        BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createVectorStoreFile(this.getEndpoint(), vectorStoreId,
+            contentType, accept, createVectorStoreFileRequest, requestOptions, context));
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_id: String (Required)
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store for which to create a File.
+     * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId,
+        BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createVectorStoreFileSync(this.getEndpoint(), vectorStoreId, contentType, accept,
+            createVectorStoreFileRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Retrieves a vector store file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file being retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getVectorStoreFileWithResponseAsync(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getVectorStoreFile(this.getEndpoint(), vectorStoreId, fileId,
+            accept, requestOptions, context));
+    }
+
+    /**
+     * Retrieves a vector store file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         message: String (Required)
+     *     }
+     *     chunking_strategy (Required): {
+     *         type: String(other/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file being retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getVectorStoreFileWithResponse(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getVectorStoreFileSync(this.getEndpoint(), vectorStoreId, fileId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a vector store file. This will remove the file from the vector store but the file itself will not be
+     * deleted.
+     * To delete the file, use the delete file endpoint.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file to delete its relationship to the vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store file relationship along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteVectorStoreFileWithResponseAsync(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteVectorStoreFile(this.getEndpoint(), vectorStoreId, fileId,
+            accept, requestOptions, context));
+    }
+
+    /**
+     * Delete a vector store file. This will remove the file from the vector store but the file itself will not be
+     * deleted.
+     * To delete the file, use the delete file endpoint.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file to delete its relationship to the vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store file relationship along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteVectorStoreFileWithResponse(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteVectorStoreFileSync(this.getEndpoint(), vectorStoreId, fileId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Create a vector store file batch.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store for which to create a File Batch.
+     * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createVectorStoreFileBatchWithResponseAsync(String vectorStoreId,
+        BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createVectorStoreFileBatch(this.getEndpoint(), vectorStoreId,
+            contentType, accept, createVectorStoreFileBatchRequest, requestOptions, context));
+    }
+
+    /**
+     * Create a vector store file batch.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     chunking_strategy (Optional): {
+     *         type: String(auto/static) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store for which to create a File Batch.
+     * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createVectorStoreFileBatchWithResponse(String vectorStoreId,
+        BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createVectorStoreFileBatchSync(this.getEndpoint(), vectorStoreId, contentType, accept,
+            createVectorStoreFileBatchRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Retrieve a vector store file batch.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch being retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getVectorStoreFileBatchWithResponseAsync(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getVectorStoreFileBatch(this.getEndpoint(), vectorStoreId,
+            batchId, accept, requestOptions, context));
+    }
+
+    /**
+     * Retrieve a vector store file batch.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch being retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getVectorStoreFileBatchSync(this.getEndpoint(), vectorStoreId, batchId, accept, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
+     * possible.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelVectorStoreFileBatchWithResponseAsync(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelVectorStoreFileBatch(this.getEndpoint(), vectorStoreId,
+            batchId, accept, requestOptions, context));
+    }
+
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
+     * possible.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelVectorStoreFileBatchSync(this.getEndpoint(), vectorStoreId, batchId, accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             usage_bytes: int (Required)
+     *             created_at: long (Required)
+     *             vector_store_id: String (Required)
+     *             status: String(in_progress/completed/failed/cancelled) (Required)
+     *             last_error (Required): {
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 message: String (Required)
+     *             }
+     *             chunking_strategy (Required): {
+     *                 type: String(other/static) (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch that the files belong to.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listVectorStoreFileBatchFilesWithResponseAsync(String vectorStoreId,
+        String batchId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listVectorStoreFileBatchFiles(this.getEndpoint(), vectorStoreId,
+            batchId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             usage_bytes: int (Required)
+     *             created_at: long (Required)
+     *             vector_store_id: String (Required)
+     *             status: String(in_progress/completed/failed/cancelled) (Required)
+     *             last_error (Required): {
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 message: String (Required)
+     *             }
+     *             chunking_strategy (Required): {
+     *                 type: String(other/static) (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch that the files belong to.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listVectorStoreFileBatchFilesWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listVectorStoreFileBatchFilesSync(this.getEndpoint(), vectorStoreId, batchId, accept,
+            requestOptions, Context.NONE);
     }
 }

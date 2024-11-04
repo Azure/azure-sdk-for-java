@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
-/** The deleted secret item containing metadata about the deleted secret. */
+/**
+ * The deleted secret item containing metadata about the deleted secret.
+ */
 @Fluent
 public final class DeletedSecretItem extends SecretItem {
     /*
@@ -32,12 +34,15 @@ public final class DeletedSecretItem extends SecretItem {
      */
     private Long deletedDate;
 
-    /** Creates an instance of DeletedSecretItem class. */
-    public DeletedSecretItem() {}
+    /**
+     * Creates an instance of DeletedSecretItem class.
+     */
+    public DeletedSecretItem() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
-     *
+     * 
      * @return the recoveryId value.
      */
     public String getRecoveryId() {
@@ -46,7 +51,7 @@ public final class DeletedSecretItem extends SecretItem {
 
     /**
      * Set the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
-     *
+     * 
      * @param recoveryId the recoveryId value to set.
      * @return the DeletedSecretItem object itself.
      */
@@ -57,7 +62,7 @@ public final class DeletedSecretItem extends SecretItem {
 
     /**
      * Get the scheduledPurgeDate property: The time when the secret is scheduled to be purged, in UTC.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime getScheduledPurgeDate() {
@@ -69,7 +74,7 @@ public final class DeletedSecretItem extends SecretItem {
 
     /**
      * Get the deletedDate property: The time when the secret was deleted, in UTC.
-     *
+     * 
      * @return the deletedDate value.
      */
     public OffsetDateTime getDeletedDate() {
@@ -79,34 +84,45 @@ public final class DeletedSecretItem extends SecretItem {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretItem setAttributes(SecretAttributes attributes) {
         super.setAttributes(attributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretItem setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedSecretItem setContentType(String contentType) {
         super.setContentType(contentType);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,43 +136,42 @@ public final class DeletedSecretItem extends SecretItem {
 
     /**
      * Reads an instance of DeletedSecretItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedSecretItem if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedSecretItem.
      */
     public static DeletedSecretItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedSecretItem deserializedDeletedSecretItem = new DeletedSecretItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedSecretItem deserializedDeletedSecretItem = new DeletedSecretItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setId(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setAttributes(SecretAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedSecretItem.setTags(tags);
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setContentType(reader.getString());
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setManaged(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedSecretItem.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedSecretItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedSecretItem.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setId(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setAttributes(SecretAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedSecretItem.setTags(tags);
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setContentType(reader.getString());
+                } else if ("managed".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setManaged(reader.getNullable(JsonReader::getBoolean));
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedSecretItem.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedSecretItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedSecretItem.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedSecretItem;
-                });
+            return deserializedDeletedSecretItem;
+        });
     }
 }

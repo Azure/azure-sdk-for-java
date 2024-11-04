@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * Workload Network Public IP provisioning state.
+ */
 public final class WorkloadNetworkPublicIpProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkPublicIpProvisioningState> {
-    /** Static value Succeeded for WorkloadNetworkPublicIpProvisioningState. */
+    /**
+     * Static value Succeeded for WorkloadNetworkPublicIpProvisioningState.
+     */
     public static final WorkloadNetworkPublicIpProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkloadNetworkPublicIpProvisioningState. */
+    /**
+     * Static value Failed for WorkloadNetworkPublicIpProvisioningState.
+     */
     public static final WorkloadNetworkPublicIpProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Building for WorkloadNetworkPublicIpProvisioningState. */
-    public static final WorkloadNetworkPublicIpProvisioningState BUILDING = fromString("Building");
-
-    /** Static value Deleting for WorkloadNetworkPublicIpProvisioningState. */
-    public static final WorkloadNetworkPublicIpProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Updating for WorkloadNetworkPublicIpProvisioningState. */
-    public static final WorkloadNetworkPublicIpProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for WorkloadNetworkPublicIpProvisioningState. */
+    /**
+     * Static value Canceled for WorkloadNetworkPublicIpProvisioningState.
+     */
     public static final WorkloadNetworkPublicIpProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Building for WorkloadNetworkPublicIpProvisioningState.
+     */
+    public static final WorkloadNetworkPublicIpProvisioningState BUILDING = fromString("Building");
+
+    /**
+     * Static value Deleting for WorkloadNetworkPublicIpProvisioningState.
+     */
+    public static final WorkloadNetworkPublicIpProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Static value Updating for WorkloadNetworkPublicIpProvisioningState.
+     */
+    public static final WorkloadNetworkPublicIpProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of WorkloadNetworkPublicIpProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class WorkloadNetworkPublicIpProvisioningState
 
     /**
      * Creates or finds a WorkloadNetworkPublicIpProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkPublicIpProvisioningState.
      */
-    @JsonCreator
     public static WorkloadNetworkPublicIpProvisioningState fromString(String name) {
         return fromString(name, WorkloadNetworkPublicIpProvisioningState.class);
     }
 
     /**
      * Gets known WorkloadNetworkPublicIpProvisioningState values.
-     *
+     * 
      * @return known WorkloadNetworkPublicIpProvisioningState values.
      */
     public static Collection<WorkloadNetworkPublicIpProvisioningState> values() {

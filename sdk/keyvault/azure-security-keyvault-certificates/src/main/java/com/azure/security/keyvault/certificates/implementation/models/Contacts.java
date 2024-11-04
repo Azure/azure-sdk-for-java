@@ -13,7 +13,9 @@ import com.azure.security.keyvault.certificates.models.CertificateContact;
 import java.io.IOException;
 import java.util.List;
 
-/** The contacts for the vault certificates. */
+/**
+ * The contacts for the vault certificates.
+ */
 @Fluent
 public final class Contacts implements JsonSerializable<Contacts> {
     /*
@@ -26,12 +28,15 @@ public final class Contacts implements JsonSerializable<Contacts> {
      */
     private List<CertificateContact> contactList;
 
-    /** Creates an instance of Contacts class. */
-    public Contacts() {}
+    /**
+     * Creates an instance of Contacts class.
+     */
+    public Contacts() {
+    }
 
     /**
      * Get the id property: Identifier for the contacts collection.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -40,7 +45,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
 
     /**
      * Get the contactList property: The contact list for the vault certificates.
-     *
+     * 
      * @return the contactList value.
      */
     public List<CertificateContact> getContactList() {
@@ -49,7 +54,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
 
     /**
      * Set the contactList property: The contact list for the vault certificates.
-     *
+     * 
      * @param contactList the contactList value to set.
      * @return the Contacts object itself.
      */
@@ -58,6 +63,9 @@ public final class Contacts implements JsonSerializable<Contacts> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,32 +75,31 @@ public final class Contacts implements JsonSerializable<Contacts> {
 
     /**
      * Reads an instance of Contacts from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Contacts if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the Contacts.
      */
     public static Contacts fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Contacts deserializedContacts = new Contacts();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Contacts deserializedContacts = new Contacts();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedContacts.id = reader.getString();
-                        } else if ("contacts".equals(fieldName)) {
-                            List<CertificateContact> contactList =
-                                    reader.readArray(reader1 -> CertificateContact.fromJson(reader1));
-                            deserializedContacts.contactList = contactList;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedContacts.id = reader.getString();
+                } else if ("contacts".equals(fieldName)) {
+                    List<CertificateContact> contactList
+                        = reader.readArray(reader1 -> CertificateContact.fromJson(reader1));
+                    deserializedContacts.contactList = contactList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedContacts;
-                });
+            return deserializedContacts;
+        });
     }
 }

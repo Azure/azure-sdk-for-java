@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** scheduleEntity. */
+/**
+ * scheduleEntity.
+ */
 @Fluent
-public class MicrosoftGraphScheduleEntity {
+public class MicrosoftGraphScheduleEntity implements JsonSerializable<MicrosoftGraphScheduleEntity> {
     /*
      * The endDateTime property.
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * The startDateTime property.
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * scheduleEntityTheme
      */
-    @JsonProperty(value = "theme")
     private MicrosoftGraphScheduleEntityTheme theme;
 
     /*
      * scheduleEntity
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphScheduleEntity class. */
+    /**
+     * Creates an instance of MicrosoftGraphScheduleEntity class.
+     */
     public MicrosoftGraphScheduleEntity() {
     }
 
     /**
      * Get the endDateTime property: The endDateTime property.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -54,7 +58,7 @@ public class MicrosoftGraphScheduleEntity {
 
     /**
      * Set the endDateTime property: The endDateTime property.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the MicrosoftGraphScheduleEntity object itself.
      */
@@ -65,7 +69,7 @@ public class MicrosoftGraphScheduleEntity {
 
     /**
      * Get the startDateTime property: The startDateTime property.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -74,7 +78,7 @@ public class MicrosoftGraphScheduleEntity {
 
     /**
      * Set the startDateTime property: The startDateTime property.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphScheduleEntity object itself.
      */
@@ -85,7 +89,7 @@ public class MicrosoftGraphScheduleEntity {
 
     /**
      * Get the theme property: scheduleEntityTheme.
-     *
+     * 
      * @return the theme value.
      */
     public MicrosoftGraphScheduleEntityTheme theme() {
@@ -94,7 +98,7 @@ public class MicrosoftGraphScheduleEntity {
 
     /**
      * Set the theme property: scheduleEntityTheme.
-     *
+     * 
      * @param theme the theme value to set.
      * @return the MicrosoftGraphScheduleEntity object itself.
      */
@@ -105,17 +109,16 @@ public class MicrosoftGraphScheduleEntity {
 
     /**
      * Get the additionalProperties property: scheduleEntity.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: scheduleEntity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphScheduleEntity object itself.
      */
@@ -124,19 +127,69 @@ public class MicrosoftGraphScheduleEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeStringField("theme", this.theme == null ? null : this.theme.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphScheduleEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphScheduleEntity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphScheduleEntity.
+     */
+    public static MicrosoftGraphScheduleEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphScheduleEntity deserializedMicrosoftGraphScheduleEntity = new MicrosoftGraphScheduleEntity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphScheduleEntity.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphScheduleEntity.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("theme".equals(fieldName)) {
+                    deserializedMicrosoftGraphScheduleEntity.theme
+                        = MicrosoftGraphScheduleEntityTheme.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphScheduleEntity.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphScheduleEntity;
+        });
     }
 }

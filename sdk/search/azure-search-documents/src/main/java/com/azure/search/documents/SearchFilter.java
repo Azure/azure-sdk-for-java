@@ -130,8 +130,7 @@ public final class SearchFilter {
         }
 
         // Optimistically allocate an extra 5% for escapes
-        StringBuilder builder = new StringBuilder(2 + (int) (text.length() * 1.05))
-            .append("'");
+        StringBuilder builder = new StringBuilder(2 + (int) (text.length() * 1.05)).append("'");
 
         for (char ch : text.toCharArray()) {
             builder.append(ch);

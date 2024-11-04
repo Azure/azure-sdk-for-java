@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetReference model = BinaryData
-            .fromString("{\"referenceName\":\"mnitmujd\",\"parameters\":{\"xfzuvrzmzqmzj\":\"dataclyymffhmjpddn\"}}")
+        DatasetReference model = BinaryData.fromString(
+            "{\"referenceName\":\"kmyjmkxett\",\"parameters\":{\"dnqtoqxjhqx\":\"dataojfkq\",\"htkbtnq\":\"datas\",\"mbiipsnawwlqk\":\"datarngl\"}}")
             .toObject(DatasetReference.class);
-        Assertions.assertEquals("mnitmujd", model.referenceName());
+        Assertions.assertEquals("kmyjmkxett", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetReference model = new DatasetReference().withReferenceName("mnitmujd")
-            .withParameters(mapOf("xfzuvrzmzqmzj", "dataclyymffhmjpddn"));
+        DatasetReference model = new DatasetReference().withReferenceName("kmyjmkxett")
+            .withParameters(mapOf("dnqtoqxjhqx", "dataojfkq", "htkbtnq", "datas", "mbiipsnawwlqk", "datarngl"));
         model = BinaryData.fromObject(model).toObject(DatasetReference.class);
-        Assertions.assertEquals("mnitmujd", model.referenceName());
+        Assertions.assertEquals("kmyjmkxett", model.referenceName());
     }
 
     // Use "Map.of" if available

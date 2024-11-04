@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"yhyhsgzfczb\",\"privateLinkScopeId\":\"mfg\",\"privateEndpointConnections\":[{\"id\":\"qgleohibetnluank\",\"name\":\"fxeeebtijvacvbm\",\"type\":\"bqqxlaj\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"acevehjkuyx\",\"description\":\"afgaoqlt\"},\"provisioningState\":\"eyl\",\"groupIds\":[\"fgvxirpghriypoqe\",\"hlqhykprlpy\",\"nuciqdsmexiit\",\"fuxtyasiibmiybnn\"]}},{\"id\":\"tgnljhnmgixhcmav\",\"name\":\"foudor\",\"type\":\"gyyprotwy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"mbxhugcmjkav\",\"description\":\"gorbmftpm\"},\"provisioningState\":\"zfjltfvnzcyjto\",\"groupIds\":[\"opv\",\"bdb\"]}}]},\"location\":\"gqqihedsvqwt\",\"tags\":{\"ihsgq\":\"yibcy\"},\"id\":\"wdhohsdtmcdzsu\",\"name\":\"cohdx\",\"type\":\"zlmcmuapcvhdb\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"n\",\"privateLinkScopeId\":\"oxgjiuqhibt\",\"privateEndpointConnections\":[{\"id\":\"qw\",\"name\":\"d\",\"type\":\"rrxxgewpktvq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"qpzoyhlfbcgwgcl\",\"description\":\"xoe\"},\"provisioningState\":\"injipnwjf\",\"groupIds\":[\"lafcbahh\",\"zpofoiyjwpfilk\",\"kkholvdndvia\",\"ogphuartvtiu\"]}}]},\"location\":\"efchn\",\"tags\":{\"wrweoo\":\"hmnxhkxjqi\",\"rsnewmozqvbubqma\":\"ffifhx\",\"taboidvmf\":\"hsycxhxzgaz\",\"herngb\":\"hppubowsepdfgkmt\"},\"id\":\"c\",\"name\":\"uahokq\",\"type\":\"obkauxofsh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         HybridComputePrivateLinkScope response = manager.privateLinkScopes()
-            .getByResourceGroupWithResponse("fdgugeyzi", "grkyuizabsnmfpph", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("cvclxynpdk", "gfabuiyjibuzphdu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gqqihedsvqwt", response.location());
-        Assertions.assertEquals("yibcy", response.tags().get("ihsgq"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("efchn", response.location());
+        Assertions.assertEquals("hmnxhkxjqi", response.tags().get("wrweoo"));
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.properties().publicNetworkAccess());
     }
 }

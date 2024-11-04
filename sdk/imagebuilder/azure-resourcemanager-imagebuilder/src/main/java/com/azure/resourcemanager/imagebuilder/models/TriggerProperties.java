@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the properties of a trigger.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = TriggerProperties.class)
-@JsonTypeName("TriggerProperties")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "SourceImage", value = SourceImageTriggerProperties.class) })
 @Immutable
-public class TriggerProperties {
+public class TriggerProperties implements JsonSerializable<TriggerProperties> {
+    /*
+     * The kind of trigger.
+     */
+    private String kind = "TriggerProperties";
+
     /*
      * Trigger status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private TriggerStatus status;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of TriggerProperties class.
      */
     public TriggerProperties() {
+    }
+
+    /**
+     * Get the kind property: The kind of trigger.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
     }
 
     /**
@@ -50,12 +56,34 @@ public class TriggerProperties {
     }
 
     /**
+     * Set the status property: Trigger status.
+     * 
+     * @param status the status value to set.
+     * @return the TriggerProperties object itself.
+     */
+    TriggerProperties withStatus(TriggerStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the TriggerProperties object itself.
+     */
+    TriggerProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -67,5 +95,70 @@ public class TriggerProperties {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerProperties.
+     */
+    public static TriggerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SourceImage".equals(discriminatorValue)) {
+                    return SourceImageTriggerProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TriggerProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerProperties deserializedTriggerProperties = new TriggerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedTriggerProperties.kind = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedTriggerProperties.status = TriggerStatus.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTriggerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerProperties;
+        });
     }
 }

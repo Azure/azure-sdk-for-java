@@ -6,19 +6,34 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.avs.models.Sku;
+import com.azure.resourcemanager.avs.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
 
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"typmrbpizcdrqjsd\"}").toObject(Sku.class);
-        Assertions.assertEquals("typmrbpizcdrqjsd", model.name());
+        Sku model = BinaryData.fromString(
+            "{\"name\":\"czbysc\",\"tier\":\"Free\",\"size\":\"uhivyqniw\",\"family\":\"br\",\"capacity\":519347031}")
+            .toObject(Sku.class);
+        Assertions.assertEquals("czbysc", model.name());
+        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("uhivyqniw", model.size());
+        Assertions.assertEquals("br", model.family());
+        Assertions.assertEquals(519347031, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("typmrbpizcdrqjsd");
+        Sku model = new Sku().withName("czbysc")
+            .withTier(SkuTier.FREE)
+            .withSize("uhivyqniw")
+            .withFamily("br")
+            .withCapacity(519347031);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("typmrbpizcdrqjsd", model.name());
+        Assertions.assertEquals("czbysc", model.name());
+        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("uhivyqniw", model.size());
+        Assertions.assertEquals("br", model.family());
+        Assertions.assertEquals(519347031, model.capacity());
     }
 }

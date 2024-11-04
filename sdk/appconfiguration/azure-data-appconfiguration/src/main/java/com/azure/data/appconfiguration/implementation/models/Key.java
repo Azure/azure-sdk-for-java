@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The Key model. */
+/**
+ * The Key model.
+ */
 @Immutable
 public final class Key implements JsonSerializable<Key> {
     /*
@@ -19,49 +21,53 @@ public final class Key implements JsonSerializable<Key> {
      */
     private String name;
 
-    /** Creates an instance of Key class. */
-    public Key() {}
+    /**
+     * Creates an instance of Key class.
+     */
+    public Key() {
+    }
 
     /**
      * Get the name property: The name of the key.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of Key from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Key if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IOException If an error occurs while reading the Key.
      */
     public static Key fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Key deserializedKey = new Key();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Key deserializedKey = new Key();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            deserializedKey.name = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("name".equals(fieldName)) {
+                    deserializedKey.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKey;
-                });
+            return deserializedKey;
+        });
     }
 }

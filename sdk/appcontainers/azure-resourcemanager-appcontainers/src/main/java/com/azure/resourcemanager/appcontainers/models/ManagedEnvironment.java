@@ -206,6 +206,28 @@ public interface ManagedEnvironment {
     ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication();
 
     /**
+     * Gets the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+     * 
+     * @return the peerTrafficConfiguration value.
+     */
+    ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration();
+
+    /**
+     * Gets the privateEndpointConnections property: Private endpoint connections to the resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -295,7 +317,8 @@ public interface ManagedEnvironment {
             DefinitionStages.WithOpenTelemetryConfiguration, DefinitionStages.WithZoneRedundant,
             DefinitionStages.WithCustomDomainConfiguration, DefinitionStages.WithWorkloadProfiles,
             DefinitionStages.WithKedaConfiguration, DefinitionStages.WithDaprConfiguration,
-            DefinitionStages.WithInfrastructureResourceGroup, DefinitionStages.WithPeerAuthentication {
+            DefinitionStages.WithInfrastructureResourceGroup, DefinitionStages.WithPeerAuthentication,
+            DefinitionStages.WithPeerTrafficConfiguration, DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              * 
@@ -533,6 +556,35 @@ public interface ManagedEnvironment {
              */
             WithCreate withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication);
         }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify peerTrafficConfiguration.
+         */
+        interface WithPeerTrafficConfiguration {
+            /**
+             * Specifies the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+             * 
+             * @param peerTrafficConfiguration Peer traffic settings for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withPeerTrafficConfiguration(
+                ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
+             * Values: 'Enabled', 'Disabled'..
+             * 
+             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
+             * 'Disabled'.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
 
     /**
@@ -550,7 +602,8 @@ public interface ManagedEnvironment {
         UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration,
         UpdateStages.WithAppInsightsConfiguration, UpdateStages.WithOpenTelemetryConfiguration,
         UpdateStages.WithCustomDomainConfiguration, UpdateStages.WithWorkloadProfiles,
-        UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration, UpdateStages.WithPeerAuthentication {
+        UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration, UpdateStages.WithPeerAuthentication,
+        UpdateStages.WithPeerTrafficConfiguration, UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          * 
@@ -761,6 +814,35 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             Update withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify peerTrafficConfiguration.
+         */
+        interface WithPeerTrafficConfiguration {
+            /**
+             * Specifies the peerTrafficConfiguration property: Peer traffic settings for the Managed Environment.
+             * 
+             * @param peerTrafficConfiguration Peer traffic settings for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withPeerTrafficConfiguration(
+                ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
+             * Values: 'Enabled', 'Disabled'..
+             * 
+             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
+             * 'Disabled'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
 

@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ApiDefinitionInfo;
 import com.azure.resourcemanager.appservice.models.ApiManagementConfig;
 import com.azure.resourcemanager.appservice.models.AutoHealRules;
@@ -25,9 +30,9 @@ import com.azure.resourcemanager.appservice.models.SiteMachineKey;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.TlsCipherSuites;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -35,411 +40,344 @@ import java.util.Map;
  * Configuration of an App Service app.
  */
 @Fluent
-public final class SiteConfigInner {
+public final class SiteConfigInner implements JsonSerializable<SiteConfigInner> {
     /*
      * Number of workers.
      */
-    @JsonProperty(value = "numberOfWorkers")
     private Integer numberOfWorkers;
 
     /*
      * Default documents.
      */
-    @JsonProperty(value = "defaultDocuments")
     private List<String> defaultDocuments;
 
     /*
      * .NET Framework version.
      */
-    @JsonProperty(value = "netFrameworkVersion")
     private String netFrameworkVersion;
 
     /*
      * Version of PHP.
      */
-    @JsonProperty(value = "phpVersion")
     private String phpVersion;
 
     /*
      * Version of Python.
      */
-    @JsonProperty(value = "pythonVersion")
     private String pythonVersion;
 
     /*
      * Version of Node.js.
      */
-    @JsonProperty(value = "nodeVersion")
     private String nodeVersion;
 
     /*
      * Version of PowerShell.
      */
-    @JsonProperty(value = "powerShellVersion")
     private String powerShellVersion;
 
     /*
      * Linux App Framework and version
      */
-    @JsonProperty(value = "linuxFxVersion")
     private String linuxFxVersion;
 
     /*
      * Xenon App Framework and version
      */
-    @JsonProperty(value = "windowsFxVersion")
     private String windowsFxVersion;
 
     /*
      * <code>true</code> if request tracing is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "requestTracingEnabled")
     private Boolean requestTracingEnabled;
 
     /*
      * Request tracing expiration time.
      */
-    @JsonProperty(value = "requestTracingExpirationTime")
     private OffsetDateTime requestTracingExpirationTime;
 
     /*
      * <code>true</code> if remote debugging is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "remoteDebuggingEnabled")
     private Boolean remoteDebuggingEnabled;
 
     /*
      * Remote debugging version.
      */
-    @JsonProperty(value = "remoteDebuggingVersion")
     private String remoteDebuggingVersion;
 
     /*
      * <code>true</code> if HTTP logging is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "httpLoggingEnabled")
     private Boolean httpLoggingEnabled;
 
     /*
      * Flag to use Managed Identity Creds for ACR pull
      */
-    @JsonProperty(value = "acrUseManagedIdentityCreds")
     private Boolean acrUseManagedIdentityCreds;
 
     /*
      * If using user managed identity, the user managed identity ClientId
      */
-    @JsonProperty(value = "acrUserManagedIdentityID")
     private String acrUserManagedIdentityId;
 
     /*
      * HTTP logs directory size limit.
      */
-    @JsonProperty(value = "logsDirectorySizeLimit")
     private Integer logsDirectorySizeLimit;
 
     /*
      * <code>true</code> if detailed error logging is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "detailedErrorLoggingEnabled")
     private Boolean detailedErrorLoggingEnabled;
 
     /*
      * Publishing user name.
      */
-    @JsonProperty(value = "publishingUsername")
     private String publishingUsername;
 
     /*
      * Application settings.
      */
-    @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
 
     /*
      * Application metadata. This property cannot be retrieved, since it may contain secrets.
      */
-    @JsonProperty(value = "metadata")
     private List<NameValuePair> metadata;
 
     /*
      * Connection strings.
      */
-    @JsonProperty(value = "connectionStrings")
     private List<ConnStringInfo> connectionStrings;
 
     /*
      * Site MachineKey.
      */
-    @JsonProperty(value = "machineKey", access = JsonProperty.Access.WRITE_ONLY)
     private SiteMachineKey machineKey;
 
     /*
      * Handler mappings.
      */
-    @JsonProperty(value = "handlerMappings")
     private List<HandlerMapping> handlerMappings;
 
     /*
      * Document root.
      */
-    @JsonProperty(value = "documentRoot")
     private String documentRoot;
 
     /*
      * SCM type.
      */
-    @JsonProperty(value = "scmType")
     private ScmType scmType;
 
     /*
      * <code>true</code> to use 32-bit worker process; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "use32BitWorkerProcess")
     private Boolean use32BitWorkerProcess;
 
     /*
      * <code>true</code> if WebSocket is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "webSocketsEnabled")
     private Boolean webSocketsEnabled;
 
     /*
      * <code>true</code> if Always On is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "alwaysOn")
     private Boolean alwaysOn;
 
     /*
      * Java version.
      */
-    @JsonProperty(value = "javaVersion")
     private String javaVersion;
 
     /*
      * Java container.
      */
-    @JsonProperty(value = "javaContainer")
     private String javaContainer;
 
     /*
      * Java container version.
      */
-    @JsonProperty(value = "javaContainerVersion")
     private String javaContainerVersion;
 
     /*
      * App command line to launch.
      */
-    @JsonProperty(value = "appCommandLine")
     private String appCommandLine;
 
     /*
      * Managed pipeline mode.
      */
-    @JsonProperty(value = "managedPipelineMode")
     private ManagedPipelineMode managedPipelineMode;
 
     /*
      * Virtual applications.
      */
-    @JsonProperty(value = "virtualApplications")
     private List<VirtualApplication> virtualApplications;
 
     /*
      * Site load balancing.
      */
-    @JsonProperty(value = "loadBalancing")
     private SiteLoadBalancing loadBalancing;
 
     /*
      * This is work around for polymorphic types.
      */
-    @JsonProperty(value = "experiments")
     private Experiments experiments;
 
     /*
      * Site limits.
      */
-    @JsonProperty(value = "limits")
     private SiteLimits limits;
 
     /*
      * <code>true</code> if Auto Heal is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "autoHealEnabled")
     private Boolean autoHealEnabled;
 
     /*
      * Auto Heal rules.
      */
-    @JsonProperty(value = "autoHealRules")
     private AutoHealRules autoHealRules;
 
     /*
      * Tracing options.
      */
-    @JsonProperty(value = "tracingOptions")
     private String tracingOptions;
 
     /*
      * Virtual Network name.
      */
-    @JsonProperty(value = "vnetName")
     private String vnetName;
 
     /*
      * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and
      * User Defined Routes applied.
      */
-    @JsonProperty(value = "vnetRouteAllEnabled")
     private Boolean vnetRouteAllEnabled;
 
     /*
      * The number of private ports assigned to this app. These will be assigned dynamically on runtime.
      */
-    @JsonProperty(value = "vnetPrivatePortsCount")
     private Integer vnetPrivatePortsCount;
 
     /*
      * Cross-Origin Resource Sharing (CORS) settings.
      */
-    @JsonProperty(value = "cors")
     private CorsSettings cors;
 
     /*
      * Push endpoint settings.
      */
-    @JsonProperty(value = "push")
     private PushSettingsInner push;
 
     /*
      * Information about the formal API definition for the app.
      */
-    @JsonProperty(value = "apiDefinition")
     private ApiDefinitionInfo apiDefinition;
 
     /*
      * Azure API management settings linked to the app.
      */
-    @JsonProperty(value = "apiManagementConfig")
     private ApiManagementConfig apiManagementConfig;
 
     /*
      * Auto-swap slot name.
      */
-    @JsonProperty(value = "autoSwapSlotName")
     private String autoSwapSlotName;
 
     /*
      * <code>true</code> to enable local MySQL; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "localMySqlEnabled")
     private Boolean localMySqlEnabled;
 
     /*
      * Managed Service Identity Id
      */
-    @JsonProperty(value = "managedServiceIdentityId")
     private Integer managedServiceIdentityId;
 
     /*
      * Explicit Managed Service Identity Id
      */
-    @JsonProperty(value = "xManagedServiceIdentityId")
     private Integer xManagedServiceIdentityId;
 
     /*
      * Identity to use for Key Vault Reference authentication.
      */
-    @JsonProperty(value = "keyVaultReferenceIdentity")
     private String keyVaultReferenceIdentity;
 
     /*
      * IP security restrictions for main.
      */
-    @JsonProperty(value = "ipSecurityRestrictions")
     private List<IpSecurityRestriction> ipSecurityRestrictions;
 
     /*
      * Default action for main access restriction if no rules are matched.
      */
-    @JsonProperty(value = "ipSecurityRestrictionsDefaultAction")
     private DefaultAction ipSecurityRestrictionsDefaultAction;
 
     /*
      * IP security restrictions for scm.
      */
-    @JsonProperty(value = "scmIpSecurityRestrictions")
     private List<IpSecurityRestriction> scmIpSecurityRestrictions;
 
     /*
      * Default action for scm access restriction if no rules are matched.
      */
-    @JsonProperty(value = "scmIpSecurityRestrictionsDefaultAction")
     private DefaultAction scmIpSecurityRestrictionsDefaultAction;
 
     /*
      * IP security restrictions for scm to use main.
      */
-    @JsonProperty(value = "scmIpSecurityRestrictionsUseMain")
     private Boolean scmIpSecurityRestrictionsUseMain;
 
     /*
      * Http20Enabled: configures a web site to allow clients to connect over http2.0
      */
-    @JsonProperty(value = "http20Enabled")
     private Boolean http20Enabled;
 
     /*
      * MinTlsVersion: configures the minimum version of TLS required for SSL requests
      */
-    @JsonProperty(value = "minTlsVersion")
     private SupportedTlsVersions minTlsVersion;
 
     /*
      * The minimum strength TLS cipher suite allowed for an application
      */
-    @JsonProperty(value = "minTlsCipherSuite")
     private TlsCipherSuites minTlsCipherSuite;
 
     /*
      * ScmMinTlsVersion: configures the minimum version of TLS required for SSL requests for SCM site
      */
-    @JsonProperty(value = "scmMinTlsVersion")
     private SupportedTlsVersions scmMinTlsVersion;
 
     /*
      * State of FTP / FTPS service
      */
-    @JsonProperty(value = "ftpsState")
     private FtpsState ftpsState;
 
     /*
      * Number of preWarmed instances.
      * This setting only applies to the Consumption and Elastic Plans
      */
-    @JsonProperty(value = "preWarmedInstanceCount")
     private Integer preWarmedInstanceCount;
 
     /*
      * Maximum number of workers that a site can scale out to.
      * This setting only applies to the Consumption and Elastic Premium Plans
      */
-    @JsonProperty(value = "functionAppScaleLimit")
     private Integer functionAppScaleLimit;
 
     /*
      * Maximum number of workers that a site can scale out to.
      * This setting only applies to apps in plans where ElasticScaleEnabled is <code>true</code>
      */
-    @JsonProperty(value = "elasticWebAppScaleLimit")
     private Integer elasticWebAppScaleLimit;
 
     /*
      * Health check path
      */
-    @JsonProperty(value = "healthCheckPath")
     private String healthCheckPath;
 
     /*
@@ -447,7 +385,6 @@ public final class SiteConfigInner {
      * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
      */
-    @JsonProperty(value = "functionsRuntimeScaleMonitoringEnabled")
     private Boolean functionsRuntimeScaleMonitoringEnabled;
 
     /*
@@ -457,27 +394,22 @@ public final class SiteConfigInner {
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
      */
-    @JsonProperty(value = "websiteTimeZone")
     private String websiteTimeZone;
 
     /*
      * Number of minimum instance count for a site
      * This setting only applies to the Elastic Plans
      */
-    @JsonProperty(value = "minimumElasticInstanceCount")
     private Integer minimumElasticInstanceCount;
 
     /*
      * List of Azure Storage Accounts.
      */
-    @JsonProperty(value = "azureStorageAccounts")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /*
      * Property to allow or block all public traffic.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
 
     /**
@@ -709,8 +641,8 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the remoteDebuggingEnabled value.
      */
@@ -719,8 +651,8 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set.
      * @return the SiteConfigInner object itself.
@@ -833,8 +765,8 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is
-     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the detailedErrorLoggingEnabled value.
      */
@@ -843,8 +775,8 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is
-     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set.
      * @return the SiteConfigInner object itself.
@@ -895,8 +827,7 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain
-     * secrets.
+     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
      * 
      * @return the metadata value.
      */
@@ -905,8 +836,7 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain
-     * secrets.
+     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
      * 
      * @param metadata the metadata value to set.
      * @return the SiteConfigInner object itself.
@@ -1334,8 +1264,8 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @return the vnetRouteAllEnabled value.
      */
@@ -1344,8 +1274,8 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteConfigInner object itself.
@@ -1879,9 +1809,9 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with
-     * Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For
-     * Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see
+     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
+     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
+     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      * 
@@ -1892,9 +1822,9 @@ public final class SiteConfigInner {
     }
 
     /**
-     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with
-     * Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For
-     * Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see
+     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
+     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
+     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      * 
@@ -2026,5 +1956,295 @@ public final class SiteConfigInner {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("numberOfWorkers", this.numberOfWorkers);
+        jsonWriter.writeArrayField("defaultDocuments", this.defaultDocuments,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("netFrameworkVersion", this.netFrameworkVersion);
+        jsonWriter.writeStringField("phpVersion", this.phpVersion);
+        jsonWriter.writeStringField("pythonVersion", this.pythonVersion);
+        jsonWriter.writeStringField("nodeVersion", this.nodeVersion);
+        jsonWriter.writeStringField("powerShellVersion", this.powerShellVersion);
+        jsonWriter.writeStringField("linuxFxVersion", this.linuxFxVersion);
+        jsonWriter.writeStringField("windowsFxVersion", this.windowsFxVersion);
+        jsonWriter.writeBooleanField("requestTracingEnabled", this.requestTracingEnabled);
+        jsonWriter.writeStringField("requestTracingExpirationTime",
+            this.requestTracingExpirationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestTracingExpirationTime));
+        jsonWriter.writeBooleanField("remoteDebuggingEnabled", this.remoteDebuggingEnabled);
+        jsonWriter.writeStringField("remoteDebuggingVersion", this.remoteDebuggingVersion);
+        jsonWriter.writeBooleanField("httpLoggingEnabled", this.httpLoggingEnabled);
+        jsonWriter.writeBooleanField("acrUseManagedIdentityCreds", this.acrUseManagedIdentityCreds);
+        jsonWriter.writeStringField("acrUserManagedIdentityID", this.acrUserManagedIdentityId);
+        jsonWriter.writeNumberField("logsDirectorySizeLimit", this.logsDirectorySizeLimit);
+        jsonWriter.writeBooleanField("detailedErrorLoggingEnabled", this.detailedErrorLoggingEnabled);
+        jsonWriter.writeStringField("publishingUsername", this.publishingUsername);
+        jsonWriter.writeArrayField("appSettings", this.appSettings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("connectionStrings", this.connectionStrings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("handlerMappings", this.handlerMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("documentRoot", this.documentRoot);
+        jsonWriter.writeStringField("scmType", this.scmType == null ? null : this.scmType.toString());
+        jsonWriter.writeBooleanField("use32BitWorkerProcess", this.use32BitWorkerProcess);
+        jsonWriter.writeBooleanField("webSocketsEnabled", this.webSocketsEnabled);
+        jsonWriter.writeBooleanField("alwaysOn", this.alwaysOn);
+        jsonWriter.writeStringField("javaVersion", this.javaVersion);
+        jsonWriter.writeStringField("javaContainer", this.javaContainer);
+        jsonWriter.writeStringField("javaContainerVersion", this.javaContainerVersion);
+        jsonWriter.writeStringField("appCommandLine", this.appCommandLine);
+        jsonWriter.writeStringField("managedPipelineMode",
+            this.managedPipelineMode == null ? null : this.managedPipelineMode.toString());
+        jsonWriter.writeArrayField("virtualApplications", this.virtualApplications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("loadBalancing", this.loadBalancing == null ? null : this.loadBalancing.toString());
+        jsonWriter.writeJsonField("experiments", this.experiments);
+        jsonWriter.writeJsonField("limits", this.limits);
+        jsonWriter.writeBooleanField("autoHealEnabled", this.autoHealEnabled);
+        jsonWriter.writeJsonField("autoHealRules", this.autoHealRules);
+        jsonWriter.writeStringField("tracingOptions", this.tracingOptions);
+        jsonWriter.writeStringField("vnetName", this.vnetName);
+        jsonWriter.writeBooleanField("vnetRouteAllEnabled", this.vnetRouteAllEnabled);
+        jsonWriter.writeNumberField("vnetPrivatePortsCount", this.vnetPrivatePortsCount);
+        jsonWriter.writeJsonField("cors", this.cors);
+        jsonWriter.writeJsonField("push", this.push);
+        jsonWriter.writeJsonField("apiDefinition", this.apiDefinition);
+        jsonWriter.writeJsonField("apiManagementConfig", this.apiManagementConfig);
+        jsonWriter.writeStringField("autoSwapSlotName", this.autoSwapSlotName);
+        jsonWriter.writeBooleanField("localMySqlEnabled", this.localMySqlEnabled);
+        jsonWriter.writeNumberField("managedServiceIdentityId", this.managedServiceIdentityId);
+        jsonWriter.writeNumberField("xManagedServiceIdentityId", this.xManagedServiceIdentityId);
+        jsonWriter.writeStringField("keyVaultReferenceIdentity", this.keyVaultReferenceIdentity);
+        jsonWriter.writeArrayField("ipSecurityRestrictions", this.ipSecurityRestrictions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("ipSecurityRestrictionsDefaultAction",
+            this.ipSecurityRestrictionsDefaultAction == null
+                ? null
+                : this.ipSecurityRestrictionsDefaultAction.toString());
+        jsonWriter.writeArrayField("scmIpSecurityRestrictions", this.scmIpSecurityRestrictions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scmIpSecurityRestrictionsDefaultAction",
+            this.scmIpSecurityRestrictionsDefaultAction == null
+                ? null
+                : this.scmIpSecurityRestrictionsDefaultAction.toString());
+        jsonWriter.writeBooleanField("scmIpSecurityRestrictionsUseMain", this.scmIpSecurityRestrictionsUseMain);
+        jsonWriter.writeBooleanField("http20Enabled", this.http20Enabled);
+        jsonWriter.writeStringField("minTlsVersion", this.minTlsVersion == null ? null : this.minTlsVersion.toString());
+        jsonWriter.writeStringField("minTlsCipherSuite",
+            this.minTlsCipherSuite == null ? null : this.minTlsCipherSuite.toString());
+        jsonWriter.writeStringField("scmMinTlsVersion",
+            this.scmMinTlsVersion == null ? null : this.scmMinTlsVersion.toString());
+        jsonWriter.writeStringField("ftpsState", this.ftpsState == null ? null : this.ftpsState.toString());
+        jsonWriter.writeNumberField("preWarmedInstanceCount", this.preWarmedInstanceCount);
+        jsonWriter.writeNumberField("functionAppScaleLimit", this.functionAppScaleLimit);
+        jsonWriter.writeNumberField("elasticWebAppScaleLimit", this.elasticWebAppScaleLimit);
+        jsonWriter.writeStringField("healthCheckPath", this.healthCheckPath);
+        jsonWriter.writeBooleanField("functionsRuntimeScaleMonitoringEnabled",
+            this.functionsRuntimeScaleMonitoringEnabled);
+        jsonWriter.writeStringField("websiteTimeZone", this.websiteTimeZone);
+        jsonWriter.writeNumberField("minimumElasticInstanceCount", this.minimumElasticInstanceCount);
+        jsonWriter.writeMapField("azureStorageAccounts", this.azureStorageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteConfigInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteConfigInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteConfigInner.
+     */
+    public static SiteConfigInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteConfigInner deserializedSiteConfigInner = new SiteConfigInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfWorkers".equals(fieldName)) {
+                    deserializedSiteConfigInner.numberOfWorkers = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultDocuments".equals(fieldName)) {
+                    List<String> defaultDocuments = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteConfigInner.defaultDocuments = defaultDocuments;
+                } else if ("netFrameworkVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.netFrameworkVersion = reader.getString();
+                } else if ("phpVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.phpVersion = reader.getString();
+                } else if ("pythonVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.pythonVersion = reader.getString();
+                } else if ("nodeVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.nodeVersion = reader.getString();
+                } else if ("powerShellVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.powerShellVersion = reader.getString();
+                } else if ("linuxFxVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.linuxFxVersion = reader.getString();
+                } else if ("windowsFxVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.windowsFxVersion = reader.getString();
+                } else if ("requestTracingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.requestTracingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requestTracingExpirationTime".equals(fieldName)) {
+                    deserializedSiteConfigInner.requestTracingExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("remoteDebuggingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.remoteDebuggingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("remoteDebuggingVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.remoteDebuggingVersion = reader.getString();
+                } else if ("httpLoggingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.httpLoggingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("acrUseManagedIdentityCreds".equals(fieldName)) {
+                    deserializedSiteConfigInner.acrUseManagedIdentityCreds = reader.getNullable(JsonReader::getBoolean);
+                } else if ("acrUserManagedIdentityID".equals(fieldName)) {
+                    deserializedSiteConfigInner.acrUserManagedIdentityId = reader.getString();
+                } else if ("logsDirectorySizeLimit".equals(fieldName)) {
+                    deserializedSiteConfigInner.logsDirectorySizeLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("detailedErrorLoggingEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.detailedErrorLoggingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publishingUsername".equals(fieldName)) {
+                    deserializedSiteConfigInner.publishingUsername = reader.getString();
+                } else if ("appSettings".equals(fieldName)) {
+                    List<NameValuePair> appSettings = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
+                    deserializedSiteConfigInner.appSettings = appSettings;
+                } else if ("metadata".equals(fieldName)) {
+                    List<NameValuePair> metadata = reader.readArray(reader1 -> NameValuePair.fromJson(reader1));
+                    deserializedSiteConfigInner.metadata = metadata;
+                } else if ("connectionStrings".equals(fieldName)) {
+                    List<ConnStringInfo> connectionStrings
+                        = reader.readArray(reader1 -> ConnStringInfo.fromJson(reader1));
+                    deserializedSiteConfigInner.connectionStrings = connectionStrings;
+                } else if ("machineKey".equals(fieldName)) {
+                    deserializedSiteConfigInner.machineKey = SiteMachineKey.fromJson(reader);
+                } else if ("handlerMappings".equals(fieldName)) {
+                    List<HandlerMapping> handlerMappings
+                        = reader.readArray(reader1 -> HandlerMapping.fromJson(reader1));
+                    deserializedSiteConfigInner.handlerMappings = handlerMappings;
+                } else if ("documentRoot".equals(fieldName)) {
+                    deserializedSiteConfigInner.documentRoot = reader.getString();
+                } else if ("scmType".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmType = ScmType.fromString(reader.getString());
+                } else if ("use32BitWorkerProcess".equals(fieldName)) {
+                    deserializedSiteConfigInner.use32BitWorkerProcess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("webSocketsEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.webSocketsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alwaysOn".equals(fieldName)) {
+                    deserializedSiteConfigInner.alwaysOn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("javaVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.javaVersion = reader.getString();
+                } else if ("javaContainer".equals(fieldName)) {
+                    deserializedSiteConfigInner.javaContainer = reader.getString();
+                } else if ("javaContainerVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.javaContainerVersion = reader.getString();
+                } else if ("appCommandLine".equals(fieldName)) {
+                    deserializedSiteConfigInner.appCommandLine = reader.getString();
+                } else if ("managedPipelineMode".equals(fieldName)) {
+                    deserializedSiteConfigInner.managedPipelineMode
+                        = ManagedPipelineMode.fromString(reader.getString());
+                } else if ("virtualApplications".equals(fieldName)) {
+                    List<VirtualApplication> virtualApplications
+                        = reader.readArray(reader1 -> VirtualApplication.fromJson(reader1));
+                    deserializedSiteConfigInner.virtualApplications = virtualApplications;
+                } else if ("loadBalancing".equals(fieldName)) {
+                    deserializedSiteConfigInner.loadBalancing = SiteLoadBalancing.fromString(reader.getString());
+                } else if ("experiments".equals(fieldName)) {
+                    deserializedSiteConfigInner.experiments = Experiments.fromJson(reader);
+                } else if ("limits".equals(fieldName)) {
+                    deserializedSiteConfigInner.limits = SiteLimits.fromJson(reader);
+                } else if ("autoHealEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.autoHealEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoHealRules".equals(fieldName)) {
+                    deserializedSiteConfigInner.autoHealRules = AutoHealRules.fromJson(reader);
+                } else if ("tracingOptions".equals(fieldName)) {
+                    deserializedSiteConfigInner.tracingOptions = reader.getString();
+                } else if ("vnetName".equals(fieldName)) {
+                    deserializedSiteConfigInner.vnetName = reader.getString();
+                } else if ("vnetRouteAllEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.vnetRouteAllEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vnetPrivatePortsCount".equals(fieldName)) {
+                    deserializedSiteConfigInner.vnetPrivatePortsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("cors".equals(fieldName)) {
+                    deserializedSiteConfigInner.cors = CorsSettings.fromJson(reader);
+                } else if ("push".equals(fieldName)) {
+                    deserializedSiteConfigInner.push = PushSettingsInner.fromJson(reader);
+                } else if ("apiDefinition".equals(fieldName)) {
+                    deserializedSiteConfigInner.apiDefinition = ApiDefinitionInfo.fromJson(reader);
+                } else if ("apiManagementConfig".equals(fieldName)) {
+                    deserializedSiteConfigInner.apiManagementConfig = ApiManagementConfig.fromJson(reader);
+                } else if ("autoSwapSlotName".equals(fieldName)) {
+                    deserializedSiteConfigInner.autoSwapSlotName = reader.getString();
+                } else if ("localMySqlEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.localMySqlEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("managedServiceIdentityId".equals(fieldName)) {
+                    deserializedSiteConfigInner.managedServiceIdentityId = reader.getNullable(JsonReader::getInt);
+                } else if ("xManagedServiceIdentityId".equals(fieldName)) {
+                    deserializedSiteConfigInner.xManagedServiceIdentityId = reader.getNullable(JsonReader::getInt);
+                } else if ("keyVaultReferenceIdentity".equals(fieldName)) {
+                    deserializedSiteConfigInner.keyVaultReferenceIdentity = reader.getString();
+                } else if ("ipSecurityRestrictions".equals(fieldName)) {
+                    List<IpSecurityRestriction> ipSecurityRestrictions
+                        = reader.readArray(reader1 -> IpSecurityRestriction.fromJson(reader1));
+                    deserializedSiteConfigInner.ipSecurityRestrictions = ipSecurityRestrictions;
+                } else if ("ipSecurityRestrictionsDefaultAction".equals(fieldName)) {
+                    deserializedSiteConfigInner.ipSecurityRestrictionsDefaultAction
+                        = DefaultAction.fromString(reader.getString());
+                } else if ("scmIpSecurityRestrictions".equals(fieldName)) {
+                    List<IpSecurityRestriction> scmIpSecurityRestrictions
+                        = reader.readArray(reader1 -> IpSecurityRestriction.fromJson(reader1));
+                    deserializedSiteConfigInner.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+                } else if ("scmIpSecurityRestrictionsDefaultAction".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmIpSecurityRestrictionsDefaultAction
+                        = DefaultAction.fromString(reader.getString());
+                } else if ("scmIpSecurityRestrictionsUseMain".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmIpSecurityRestrictionsUseMain
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("http20Enabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.http20Enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("minTlsVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.minTlsVersion = SupportedTlsVersions.fromString(reader.getString());
+                } else if ("minTlsCipherSuite".equals(fieldName)) {
+                    deserializedSiteConfigInner.minTlsCipherSuite = TlsCipherSuites.fromString(reader.getString());
+                } else if ("scmMinTlsVersion".equals(fieldName)) {
+                    deserializedSiteConfigInner.scmMinTlsVersion = SupportedTlsVersions.fromString(reader.getString());
+                } else if ("ftpsState".equals(fieldName)) {
+                    deserializedSiteConfigInner.ftpsState = FtpsState.fromString(reader.getString());
+                } else if ("preWarmedInstanceCount".equals(fieldName)) {
+                    deserializedSiteConfigInner.preWarmedInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("functionAppScaleLimit".equals(fieldName)) {
+                    deserializedSiteConfigInner.functionAppScaleLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("elasticWebAppScaleLimit".equals(fieldName)) {
+                    deserializedSiteConfigInner.elasticWebAppScaleLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("healthCheckPath".equals(fieldName)) {
+                    deserializedSiteConfigInner.healthCheckPath = reader.getString();
+                } else if ("functionsRuntimeScaleMonitoringEnabled".equals(fieldName)) {
+                    deserializedSiteConfigInner.functionsRuntimeScaleMonitoringEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("websiteTimeZone".equals(fieldName)) {
+                    deserializedSiteConfigInner.websiteTimeZone = reader.getString();
+                } else if ("minimumElasticInstanceCount".equals(fieldName)) {
+                    deserializedSiteConfigInner.minimumElasticInstanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("azureStorageAccounts".equals(fieldName)) {
+                    Map<String, AzureStorageInfoValue> azureStorageAccounts
+                        = reader.readMap(reader1 -> AzureStorageInfoValue.fromJson(reader1));
+                    deserializedSiteConfigInner.azureStorageAccounts = azureStorageAccounts;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSiteConfigInner.publicNetworkAccess = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteConfigInner;
+        });
     }
 }

@@ -35,7 +35,8 @@ public class ClientCertificateCredentialBuilderFactory extends AzureAadCredentia
         String clientCertificatePath = credential.getClientCertificatePath();
         if (StringUtils.hasText(clientCertificatePath)) {
             if (StringUtils.hasText(credential.getClientCertificatePassword())) {
-                builder.pfxCertificate(clientCertificatePath, credential.getClientCertificatePassword());
+                builder.pfxCertificate(clientCertificatePath)
+                       .clientCertificatePassword(credential.getClientCertificatePassword());
             } else {
                 builder.pemCertificate(clientCertificatePath);
             }

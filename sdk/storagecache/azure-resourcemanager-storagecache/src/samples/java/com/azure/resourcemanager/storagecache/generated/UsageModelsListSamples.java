@@ -9,9 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class UsageModelsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * UsageModels_List.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/UsageModels_List.json
      */
     /**
      * Sample code: UsageModels_List.

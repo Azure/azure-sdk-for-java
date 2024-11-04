@@ -496,8 +496,8 @@ public final class ApplicationInsightsComponentProperties {
      * @param publicNetworkAccessForIngestion the publicNetworkAccessForIngestion value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
-    public ApplicationInsightsComponentProperties withPublicNetworkAccessForIngestion(
-        PublicNetworkAccessType publicNetworkAccessForIngestion) {
+    public ApplicationInsightsComponentProperties
+        withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion) {
         this.publicNetworkAccessForIngestion = publicNetworkAccessForIngestion;
         return this;
     }
@@ -517,8 +517,8 @@ public final class ApplicationInsightsComponentProperties {
      * @param publicNetworkAccessForQuery the publicNetworkAccessForQuery value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
-    public ApplicationInsightsComponentProperties withPublicNetworkAccessForQuery(
-        PublicNetworkAccessType publicNetworkAccessForQuery) {
+    public ApplicationInsightsComponentProperties
+        withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery) {
         this.publicNetworkAccessForQuery = publicNetworkAccessForQuery;
         return this;
     }
@@ -580,8 +580,8 @@ public final class ApplicationInsightsComponentProperties {
      * @param forceCustomerStorageForProfiler the forceCustomerStorageForProfiler value to set.
      * @return the ApplicationInsightsComponentProperties object itself.
      */
-    public ApplicationInsightsComponentProperties withForceCustomerStorageForProfiler(
-        Boolean forceCustomerStorageForProfiler) {
+    public ApplicationInsightsComponentProperties
+        withForceCustomerStorageForProfiler(Boolean forceCustomerStorageForProfiler) {
         this.forceCustomerStorageForProfiler = forceCustomerStorageForProfiler;
         return this;
     }
@@ -593,10 +593,8 @@ public final class ApplicationInsightsComponentProperties {
      */
     public void validate() {
         if (applicationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationType in model ApplicationInsightsComponentProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property applicationType in model ApplicationInsightsComponentProperties"));
         }
         if (privateLinkScopedResources() != null) {
             privateLinkScopedResources().forEach(e -> e.validate());

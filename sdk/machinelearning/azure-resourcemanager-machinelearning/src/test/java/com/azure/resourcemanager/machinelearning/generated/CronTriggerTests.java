@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CronTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CronTrigger model =
-            BinaryData
-                .fromString(
-                    "{\"triggerType\":\"Cron\",\"expression\":\"ksrl\",\"endTime\":\"desqplpvmjcdo\",\"startTime\":\"bidyv\",\"timeZone\":\"owx\"}")
-                .toObject(CronTrigger.class);
-        Assertions.assertEquals("desqplpvmjcdo", model.endTime());
-        Assertions.assertEquals("bidyv", model.startTime());
-        Assertions.assertEquals("owx", model.timeZone());
-        Assertions.assertEquals("ksrl", model.expression());
+        CronTrigger model = BinaryData.fromString(
+            "{\"triggerType\":\"Cron\",\"expression\":\"rbgpxeb\",\"endTime\":\"udcaytujrax\",\"startTime\":\"pryj\",\"timeZone\":\"tnsewou\"}")
+            .toObject(CronTrigger.class);
+        Assertions.assertEquals("udcaytujrax", model.endTime());
+        Assertions.assertEquals("pryj", model.startTime());
+        Assertions.assertEquals("tnsewou", model.timeZone());
+        Assertions.assertEquals("rbgpxeb", model.expression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CronTrigger model =
-            new CronTrigger()
-                .withEndTime("desqplpvmjcdo")
-                .withStartTime("bidyv")
-                .withTimeZone("owx")
-                .withExpression("ksrl");
+        CronTrigger model = new CronTrigger().withEndTime("udcaytujrax")
+            .withStartTime("pryj")
+            .withTimeZone("tnsewou")
+            .withExpression("rbgpxeb");
         model = BinaryData.fromObject(model).toObject(CronTrigger.class);
-        Assertions.assertEquals("desqplpvmjcdo", model.endTime());
-        Assertions.assertEquals("bidyv", model.startTime());
-        Assertions.assertEquals("owx", model.timeZone());
-        Assertions.assertEquals("ksrl", model.expression());
+        Assertions.assertEquals("udcaytujrax", model.endTime());
+        Assertions.assertEquals("pryj", model.startTime());
+        Assertions.assertEquals("tnsewou", model.timeZone());
+        Assertions.assertEquals("rbgpxeb", model.expression());
     }
 }

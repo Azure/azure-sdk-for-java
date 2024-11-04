@@ -6,29 +6,40 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class InterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InterfaceProperties model = BinaryData
-            .fromString(
-                "{\"name\":\"vyq\",\"ipv4Address\":\"wby\",\"ipv4Subnet\":\"k\",\"ipv4Gateway\":\"dumjgrtfwvuk\"}")
+        InterfaceProperties model = BinaryData.fromString(
+            "{\"name\":\"nyejhkryhtnap\",\"ipv4Address\":\"wlokjyem\",\"ipv4Subnet\":\"vnipjox\",\"ipv4Gateway\":\"nchgej\",\"vlanId\":178199431,\"ipv4AddressList\":[\"ailzydehojwyahu\",\"inpm\",\"njaqwixjspro\"],\"bfdIpv4Endpoints\":[\"putegjvwmfd\",\"t\",\"cmdv\",\"jhulsuuvmkjo\"]}")
             .toObject(InterfaceProperties.class);
-        Assertions.assertEquals("vyq", model.name());
-        Assertions.assertEquals("wby", model.ipv4Address());
-        Assertions.assertEquals("k", model.ipv4Subnet());
-        Assertions.assertEquals("dumjgrtfwvuk", model.ipv4Gateway());
+        Assertions.assertEquals("nyejhkryhtnap", model.name());
+        Assertions.assertEquals("wlokjyem", model.ipv4Address());
+        Assertions.assertEquals("vnipjox", model.ipv4Subnet());
+        Assertions.assertEquals("nchgej", model.ipv4Gateway());
+        Assertions.assertEquals(178199431, model.vlanId());
+        Assertions.assertEquals("ailzydehojwyahu", model.ipv4AddressList().get(0));
+        Assertions.assertEquals("putegjvwmfd", model.bfdIpv4Endpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InterfaceProperties model = new InterfaceProperties().withName("vyq").withIpv4Address("wby").withIpv4Subnet("k")
-            .withIpv4Gateway("dumjgrtfwvuk");
+        InterfaceProperties model = new InterfaceProperties().withName("nyejhkryhtnap")
+            .withIpv4Address("wlokjyem")
+            .withIpv4Subnet("vnipjox")
+            .withIpv4Gateway("nchgej")
+            .withVlanId(178199431)
+            .withIpv4AddressList(Arrays.asList("ailzydehojwyahu", "inpm", "njaqwixjspro"))
+            .withBfdIpv4Endpoints(Arrays.asList("putegjvwmfd", "t", "cmdv", "jhulsuuvmkjo"));
         model = BinaryData.fromObject(model).toObject(InterfaceProperties.class);
-        Assertions.assertEquals("vyq", model.name());
-        Assertions.assertEquals("wby", model.ipv4Address());
-        Assertions.assertEquals("k", model.ipv4Subnet());
-        Assertions.assertEquals("dumjgrtfwvuk", model.ipv4Gateway());
+        Assertions.assertEquals("nyejhkryhtnap", model.name());
+        Assertions.assertEquals("wlokjyem", model.ipv4Address());
+        Assertions.assertEquals("vnipjox", model.ipv4Subnet());
+        Assertions.assertEquals("nchgej", model.ipv4Gateway());
+        Assertions.assertEquals(178199431, model.vlanId());
+        Assertions.assertEquals("ailzydehojwyahu", model.ipv4AddressList().get(0));
+        Assertions.assertEquals("putegjvwmfd", model.bfdIpv4Endpoints().get(0));
     }
 }

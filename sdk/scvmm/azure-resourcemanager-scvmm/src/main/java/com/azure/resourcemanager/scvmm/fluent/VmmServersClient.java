@@ -12,15 +12,92 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.scvmm.fluent.models.VmmServerInner;
-import com.azure.resourcemanager.scvmm.models.ResourcePatch;
+import com.azure.resourcemanager.scvmm.models.ForceDelete;
+import com.azure.resourcemanager.scvmm.models.VmmServerTagsUpdate;
 
-/** An instance of this class provides access to all the operations defined in VmmServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VmmServersClient.
+ */
 public interface VmmServersClient {
     /**
-     * Implements VMMServer GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
+     * Implements GET VmmServers in a subscription.
+     * 
+     * List of VmmServers in a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VmmServerInner> list();
+
+    /**
+     * Implements GET VmmServers in a subscription.
+     * 
+     * List of VmmServers in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VmmServerInner> list(Context context);
+
+    /**
+     * Implements GET VmmServers in a resource group.
+     * 
+     * List of VmmServers in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VmmServerInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Implements GET VmmServers in a resource group.
+     * 
+     * List of VmmServers in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VmmServerInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets a VMMServer.
+     * 
+     * Implements VmmServer GET method.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VmmServers resource definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VmmServerInner> getByResourceGroupWithResponse(String resourceGroupName, String vmmServerName,
+        Context context);
+
+    /**
+     * Gets a VMMServer.
+     * 
+     * Implements VmmServer GET method.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -30,41 +107,30 @@ public interface VmmServersClient {
     VmmServerInner getByResourceGroup(String resourceGroupName, String vmmServerName);
 
     /**
-     * Implements VMMServer GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VmmServers resource definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VmmServerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vmmServerName, Context context);
-
-    /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body Request payload.
+     * Implements VmmServers PUT method.
+     * 
+     * Onboards the SCVmm fabric as an Azure VmmServer resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the VmmServers resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginCreateOrUpdate(
-        String resourceGroupName, String vmmServerName, VmmServerInner body);
+    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginCreateOrUpdate(String resourceGroupName,
+        String vmmServerName, VmmServerInner resource);
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body Request payload.
+     * Implements VmmServers PUT method.
+     * 
+     * Onboards the SCVmm fabric as an Azure VmmServer resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,29 +138,33 @@ public interface VmmServersClient {
      * @return the {@link SyncPoller} for polling of the VmmServers resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginCreateOrUpdate(
-        String resourceGroupName, String vmmServerName, VmmServerInner body, Context context);
+    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginCreateOrUpdate(String resourceGroupName,
+        String vmmServerName, VmmServerInner resource, Context context);
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body Request payload.
+     * Implements VmmServers PUT method.
+     * 
+     * Onboards the SCVmm fabric as an Azure VmmServer resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the VmmServers resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VmmServerInner createOrUpdate(String resourceGroupName, String vmmServerName, VmmServerInner body);
+    VmmServerInner createOrUpdate(String resourceGroupName, String vmmServerName, VmmServerInner resource);
 
     /**
-     * Onboards the SCVMM fabric as an Azure VmmServer resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body Request payload.
+     * Implements VmmServers PUT method.
+     * 
+     * Onboards the SCVmm fabric as an Azure VmmServer resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,30 +172,101 @@ public interface VmmServersClient {
      * @return the VmmServers resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VmmServerInner createOrUpdate(String resourceGroupName, String vmmServerName, VmmServerInner body, Context context);
+    VmmServerInner createOrUpdate(String resourceGroupName, String vmmServerName, VmmServerInner resource,
+        Context context);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * Implements VmmServers PATCH method.
+     * 
+     * Updates the VmmServers resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the VmmServers resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginUpdate(String resourceGroupName, String vmmServerName,
+        VmmServerTagsUpdate properties);
+
+    /**
+     * Implements VmmServers PATCH method.
+     * 
+     * Updates the VmmServers resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the VmmServers resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginUpdate(String resourceGroupName, String vmmServerName,
+        VmmServerTagsUpdate properties, Context context);
+
+    /**
+     * Implements VmmServers PATCH method.
+     * 
+     * Updates the VmmServers resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VmmServers resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VmmServerInner update(String resourceGroupName, String vmmServerName, VmmServerTagsUpdate properties);
+
+    /**
+     * Implements VmmServers PATCH method.
+     * 
+     * Updates the VmmServers resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VmmServers resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VmmServerInner update(String resourceGroupName, String vmmServerName, VmmServerTagsUpdate properties,
+        Context context);
+
+    /**
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmmServerName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmmServerName);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,28 +274,16 @@ public interface VmmServersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmmServerName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmmServerName, ForceDelete force,
+        Context context);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String vmmServerName, Boolean force);
-
-    /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,124 +292,18 @@ public interface VmmServersClient {
     void delete(String resourceGroupName, String vmmServerName);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String vmmServerName, Boolean force, Context context);
-
-    /**
-     * Updates the VmmServers resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body VmmServers patch payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the VmmServers resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginUpdate(
-        String resourceGroupName, String vmmServerName, ResourcePatch body);
-
-    /**
-     * Updates the VmmServers resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body VmmServers patch payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the VmmServers resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VmmServerInner>, VmmServerInner> beginUpdate(
-        String resourceGroupName, String vmmServerName, ResourcePatch body, Context context);
-
-    /**
-     * Updates the VmmServers resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body VmmServers patch payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VmmServers resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VmmServerInner update(String resourceGroupName, String vmmServerName, ResourcePatch body);
-
-    /**
-     * Updates the VmmServers resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param body VmmServers patch payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VmmServers resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VmmServerInner update(String resourceGroupName, String vmmServerName, ResourcePatch body, Context context);
-
-    /**
-     * List of VmmServers in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VmmServerInner> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * List of VmmServers in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VmmServerInner> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * List of VmmServers in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VmmServerInner> list();
-
-    /**
-     * List of VmmServers in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VmmServerInner> list(Context context);
+    void delete(String resourceGroupName, String vmmServerName, ForceDelete force, Context context);
 }

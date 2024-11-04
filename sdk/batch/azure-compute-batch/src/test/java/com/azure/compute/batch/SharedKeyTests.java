@@ -2,10 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.models.BatchNodeCommunicationMode;
+import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchPoolReplaceContent;
+import com.azure.compute.batch.models.BatchPoolUpdateContent;
+import com.azure.compute.batch.models.ImageReference;
+import com.azure.compute.batch.models.MetadataItem;
+import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.compute.batch.models.*;
-import com.azure.core.http.*;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -38,19 +46,23 @@ public class SharedKeyTests extends BatchClientTestBase {
             /*
              * Creating Pool
              * */
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                    .setSku("18.04-LTS").setVersion("latest");
+            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+                .setOffer("UbuntuServer")
+                .setSku("18.04-LTS")
+                .setVersion("latest");
 
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
             BatchPoolCreateContent poolCreateContent = new BatchPoolCreateContent(sharedKeyPoolId, vmSize);
             poolCreateContent.setTargetDedicatedNodes(2)
-                                .setVirtualMachineConfiguration(configuration)
-                                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
+                .setVirtualMachineConfiguration(configuration)
+                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
 
-            Response<Void> response = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateContent), null);
+            Response<Void> response
+                = batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateContent), null);
             String authorizationValue = response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-            Assertions.assertTrue(authorizationValue.contains("SharedKey"), "Test is not using SharedKey authentication");
+            Assertions.assertTrue(authorizationValue.contains("SharedKey"),
+                "Test is not using SharedKey authentication");
 
             /*
              * Getting Pool
@@ -67,7 +79,8 @@ public class SharedKeyTests extends BatchClientTestBase {
             ArrayList<MetadataItem> updatedMetadata = new ArrayList<MetadataItem>();
             updatedMetadata.add(new MetadataItem("foo", "bar"));
 
-            BatchPoolReplaceContent poolReplaceContent = new BatchPoolReplaceContent(new ArrayList<>(), updatedMetadata);
+            BatchPoolReplaceContent poolReplaceContent
+                = new BatchPoolReplaceContent(new ArrayList<>(), updatedMetadata);
 
             poolReplaceContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
@@ -83,31 +96,36 @@ public class SharedKeyTests extends BatchClientTestBase {
              */
             updatedMetadata.clear();
             updatedMetadata.add(new MetadataItem("key1", "value1"));
-            BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent().setMetadata(updatedMetadata).setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
-            Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolUpdateContent), null);
+            BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent().setMetadata(updatedMetadata)
+                .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
+            Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId,
+                BinaryData.fromObject(poolUpdateContent), null);
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
             HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNull(ocpDateHeader);
             HttpHeader dateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.DATE);
             Assertions.assertNotNull(dateHeader);
             authorizationValue = updatePoolRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-            Assertions.assertTrue(authorizationValue.contains("SharedKey"), "Test is not using SharedKey authentication");
+            Assertions.assertTrue(authorizationValue.contains("SharedKey"),
+                "Test is not using SharedKey authentication");
 
             /*
             * Get Pool With ocp-Date header
             * */
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setHeader(HttpHeaderName.fromString("ocp-date"), new DateTimeRfc1123(now()).toString());
-            Response<BinaryData> poolGetResponse = batchClientWithSharedKey.getPoolWithResponse(sharedKeyPoolId, requestOptions);
+            Response<BinaryData> poolGetResponse
+                = batchClientWithSharedKey.getPoolWithResponse(sharedKeyPoolId, requestOptions);
 
             HttpRequest getPoolRequest = poolGetResponse.getRequest();
             ocpDateHeader = getPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNotNull(ocpDateHeader);
-            Assertions.assertTrue(!ocpDateHeader.getValue().isEmpty());
+            Assertions.assertFalse(ocpDateHeader.getValue().isEmpty());
             pool = poolGetResponse.getValue().toObject(BatchPool.class);
 
             authorizationValue = getPoolRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-            Assertions.assertTrue(authorizationValue.contains("SharedKey"), "Test is not using SharedKey authentication");
+            Assertions.assertTrue(authorizationValue.contains("SharedKey"),
+                "Test is not using SharedKey authentication");
 
             Assertions.assertEquals(BatchNodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
             metadata = pool.getMetadata();

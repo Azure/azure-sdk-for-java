@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,7 +12,7 @@ import java.util.Collection;
  */
 public final class RefillPolicy extends ExpandableStringEnum<RefillPolicy> {
     /**
-     * Static value always for RefillPolicy.
+     * A refill policy that standby pool is automatically refilled to maintain maxReadyCapacity.
      */
     public static final RefillPolicy ALWAYS = fromString("always");
 
@@ -32,7 +31,6 @@ public final class RefillPolicy extends ExpandableStringEnum<RefillPolicy> {
      * @param name a name to look for.
      * @return the corresponding RefillPolicy.
      */
-    @JsonCreator
     public static RefillPolicy fromString(String name) {
         return fromString(name, RefillPolicy.class);
     }

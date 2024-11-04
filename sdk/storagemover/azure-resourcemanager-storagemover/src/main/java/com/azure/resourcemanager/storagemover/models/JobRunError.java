@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Error type. */
+/**
+ * Error type.
+ */
 @Fluent
 public final class JobRunError {
     /*
@@ -28,13 +30,15 @@ public final class JobRunError {
     @JsonProperty(value = "target")
     private String target;
 
-    /** Creates an instance of JobRunError class. */
+    /**
+     * Creates an instance of JobRunError class.
+     */
     public JobRunError() {
     }
 
     /**
      * Get the code property: Error code of the given entry.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -43,7 +47,7 @@ public final class JobRunError {
 
     /**
      * Set the code property: Error code of the given entry.
-     *
+     * 
      * @param code the code value to set.
      * @return the JobRunError object itself.
      */
@@ -54,7 +58,7 @@ public final class JobRunError {
 
     /**
      * Get the message property: Error message of the given entry.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -63,7 +67,7 @@ public final class JobRunError {
 
     /**
      * Set the message property: Error message of the given entry.
-     *
+     * 
      * @param message the message value to set.
      * @return the JobRunError object itself.
      */
@@ -74,7 +78,7 @@ public final class JobRunError {
 
     /**
      * Get the target property: Target of the given error entry.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -83,7 +87,7 @@ public final class JobRunError {
 
     /**
      * Set the target property: Target of the given error entry.
-     *
+     * 
      * @param target the target value to set.
      * @return the JobRunError object itself.
      */
@@ -94,7 +98,7 @@ public final class JobRunError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

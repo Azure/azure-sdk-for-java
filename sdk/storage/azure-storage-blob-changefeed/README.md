@@ -10,6 +10,7 @@ process change events that occur in your Blob Storage account at a low cost.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -20,7 +21,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.20</version>
+    <version>12.0.0-beta.26</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -212,7 +213,7 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL

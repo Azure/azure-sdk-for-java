@@ -5,40 +5,38 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This activity evaluates a boolean expression and executes either the activities under the ifTrueActivities property
  * or the ifFalseActivities property depending on the result of the expression.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("IfCondition")
-@JsonFlatten
 @Fluent
 public class IfConditionActivity extends ControlActivity {
     /*
-     * An expression that would evaluate to Boolean. This is used to determine the block of activities
-     * (ifTrueActivities or ifFalseActivities) that will be executed.
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.expression", required = true)
+    private String type = "IfCondition";
+
+    /*
+     * An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     */
     private Expression expression;
 
     /*
-     * List of activities to execute if expression is evaluated to true. This is an optional property and if not
-     * provided, the activity will exit without any action.
+     * List of activities to execute if expression is evaluated to true. This is an optional property and if not provided, the activity will exit without any action.
      */
-    @JsonProperty(value = "typeProperties.ifTrueActivities")
     private List<Activity> ifTrueActivities;
 
     /*
-     * List of activities to execute if expression is evaluated to false. This is an optional property and if not
-     * provided, the activity will exit without any action.
+     * List of activities to execute if expression is evaluated to false. This is an optional property and if not provided, the activity will exit without any action.
      */
-    @JsonProperty(value = "typeProperties.ifFalseActivities")
     private List<Activity> ifFalseActivities;
 
     /**
@@ -48,8 +46,18 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block
-     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
+     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
      * 
      * @return the expression value.
      */
@@ -58,8 +66,8 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block
-     * of activities (ifTrueActivities or ifFalseActivities) that will be executed.
+     * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
+     * activities (ifTrueActivities or ifFalseActivities) that will be executed.
      * 
      * @param expression the expression value to set.
      * @return the IfConditionActivity object itself.
@@ -92,8 +100,8 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
-     * an optional property and if not provided, the activity will exit without any action.
+     * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
+     * optional property and if not provided, the activity will exit without any action.
      * 
      * @return the ifFalseActivities value.
      */
@@ -102,8 +110,8 @@ public class IfConditionActivity extends ControlActivity {
     }
 
     /**
-     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is
-     * an optional property and if not provided, the activity will exit without any action.
+     * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
+     * optional property and if not provided, the activity will exit without any action.
      * 
      * @param ifFalseActivities the ifFalseActivities value to set.
      * @return the IfConditionActivity object itself.
@@ -165,5 +173,103 @@ public class IfConditionActivity extends ControlActivity {
     public IfConditionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (expression != null || ifTrueActivities != null || ifFalseActivities != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("expression", this.expression);
+            jsonWriter.writeArrayField("ifTrueActivities", this.ifTrueActivities,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("ifFalseActivities", this.ifFalseActivities,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IfConditionActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IfConditionActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IfConditionActivity.
+     */
+    public static IfConditionActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IfConditionActivity deserializedIfConditionActivity = new IfConditionActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIfConditionActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedIfConditionActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedIfConditionActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedIfConditionActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedIfConditionActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedIfConditionActivity.setUserProperties(userProperties);
+                } else if ("type".equals(fieldName)) {
+                    deserializedIfConditionActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("expression".equals(fieldName)) {
+                            deserializedIfConditionActivity.expression = Expression.fromJson(reader);
+                        } else if ("ifTrueActivities".equals(fieldName)) {
+                            List<Activity> ifTrueActivities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                            deserializedIfConditionActivity.ifTrueActivities = ifTrueActivities;
+                        } else if ("ifFalseActivities".equals(fieldName)) {
+                            List<Activity> ifFalseActivities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                            deserializedIfConditionActivity.ifFalseActivities = ifFalseActivities;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIfConditionActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedIfConditionActivity;
+        });
     }
 }

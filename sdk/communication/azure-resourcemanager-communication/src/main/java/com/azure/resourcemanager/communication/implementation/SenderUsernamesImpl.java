@@ -43,8 +43,8 @@ public final class SenderUsernamesImpl implements SenderUsernames {
 
     public Response<SenderUsernameResource> getWithResponse(String resourceGroupName, String emailServiceName,
         String domainName, String senderUsername, Context context) {
-        Response<SenderUsernameResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            emailServiceName, domainName, senderUsername, context);
+        Response<SenderUsernameResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SenderUsernameResourceImpl(inner.getValue(), this.manager()));
@@ -66,8 +66,8 @@ public final class SenderUsernamesImpl implements SenderUsernames {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String emailServiceName, String domainName,
         String senderUsername, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, context);
     }
 
     public void delete(String resourceGroupName, String emailServiceName, String domainName, String senderUsername) {

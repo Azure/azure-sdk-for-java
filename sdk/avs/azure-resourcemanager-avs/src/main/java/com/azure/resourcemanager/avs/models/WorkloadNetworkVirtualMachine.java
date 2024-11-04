@@ -4,48 +4,65 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 
-/** An immutable client-side representation of WorkloadNetworkVirtualMachine. */
+/**
+ * An immutable client-side representation of WorkloadNetworkVirtualMachine.
+ */
 public interface WorkloadNetworkVirtualMachine {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    WorkloadNetworkProvisioningState provisioningState();
+
+    /**
      * Gets the displayName property: Display name of the VM.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the vmType property: Virtual machine type.
-     *
+     * 
      * @return the vmType value.
      */
     VMTypeEnum vmType();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkloadNetworkVirtualMachineInner innerModel();

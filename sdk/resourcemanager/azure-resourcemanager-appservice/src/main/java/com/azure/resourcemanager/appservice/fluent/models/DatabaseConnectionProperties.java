@@ -6,19 +6,22 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.StaticSiteDatabaseConnectionConfigurationFileOverview;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * DatabaseConnection resource specific properties.
  */
 @Fluent
-public final class DatabaseConnectionProperties {
+public final class DatabaseConnectionProperties implements JsonSerializable<DatabaseConnectionProperties> {
     /*
      * The resource id of the database.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
@@ -26,25 +29,21 @@ public final class DatabaseConnectionProperties {
      * system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned
      * managed identity is indicated with the resource id of the managed identity resource.
      */
-    @JsonProperty(value = "connectionIdentity")
     private String connectionIdentity;
 
     /*
      * The connection string to use to connect to the database.
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * The region of the database resource.
      */
-    @JsonProperty(value = "region", required = true)
     private String region;
 
     /*
      * A list of configuration files associated with this database connection.
      */
-    @JsonProperty(value = "configurationFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles;
 
     /**
@@ -155,12 +154,14 @@ public final class DatabaseConnectionProperties {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceId in model DatabaseConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceId in model DatabaseConnectionProperties"));
         }
         if (region() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property region in model DatabaseConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property region in model DatabaseConnectionProperties"));
         }
         if (configurationFiles() != null) {
             configurationFiles().forEach(e -> e.validate());
@@ -168,4 +169,54 @@ public final class DatabaseConnectionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseConnectionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("connectionIdentity", this.connectionIdentity);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseConnectionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseConnectionProperties.
+     */
+    public static DatabaseConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseConnectionProperties deserializedDatabaseConnectionProperties = new DatabaseConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedDatabaseConnectionProperties.resourceId = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedDatabaseConnectionProperties.region = reader.getString();
+                } else if ("connectionIdentity".equals(fieldName)) {
+                    deserializedDatabaseConnectionProperties.connectionIdentity = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedDatabaseConnectionProperties.connectionString = reader.getString();
+                } else if ("configurationFiles".equals(fieldName)) {
+                    List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles = reader
+                        .readArray(reader1 -> StaticSiteDatabaseConnectionConfigurationFileOverview.fromJson(reader1));
+                    deserializedDatabaseConnectionProperties.configurationFiles = configurationFiles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseConnectionProperties;
+        });
+    }
 }

@@ -19,126 +19,70 @@ public final class DaprComponentResiliencyPoliciesCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprComponentResiliencyPoliciesCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":1701983547,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1998431294},\"circuitBreakerPolicy\":{\"consecutiveErrors\":672713653,\"timeoutInSeconds\":1300202975,\"intervalInSeconds\":64736512}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":499319607,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":972204015},\"circuitBreakerPolicy\":{\"consecutiveErrors\":1265182150,\"timeoutInSeconds\":112594464,\"intervalInSeconds\":9633412}}},\"id\":\"kkhminqcymczngn\",\"name\":\"dxxewuninv\",\"type\":\"db\"},{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":709462942,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1900039321},\"circuitBreakerPolicy\":{\"consecutiveErrors\":313351461,\"timeoutInSeconds\":720636191,\"intervalInSeconds\":1857605955}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":217232947,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":485950763},\"circuitBreakerPolicy\":{\"consecutiveErrors\":334709748,\"timeoutInSeconds\":297911426,\"intervalInSeconds\":1148214254}}},\"id\":\"napxbannovv\",\"name\":\"xc\",\"type\":\"ytprwnwvroev\"},{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":1307302388,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":67510907},\"circuitBreakerPolicy\":{\"consecutiveErrors\":491107905,\"timeoutInSeconds\":725083050,\"intervalInSeconds\":1312539760}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":810647712,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1031456845},\"circuitBreakerPolicy\":{\"consecutiveErrors\":1458275962,\"timeoutInSeconds\":952405971,\"intervalInSeconds\":1220621790}}},\"id\":\"d\",\"name\":\"nazpmk\",\"type\":\"lmv\"},{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":343155487,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1939182119},\"circuitBreakerPolicy\":{\"consecutiveErrors\":1553253878,\"timeoutInSeconds\":1749137224,\"intervalInSeconds\":1704256415}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":632448787,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1848154538},\"circuitBreakerPolicy\":{\"consecutiveErrors\":530417864,\"timeoutInSeconds\":540353819,\"intervalInSeconds\":796010051}}},\"id\":\"zqcyknap\",\"name\":\"ofyuicd\",\"type\":\"zb\"}],\"nextLink\":\"bwwg\"}")
+            "{\"value\":[{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":524957188,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1668703834},\"circuitBreakerPolicy\":{\"consecutiveErrors\":2091511430,\"timeoutInSeconds\":653682799,\"intervalInSeconds\":1265921223}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":236199125,\"retryBackOff\":{}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":570901557},\"circuitBreakerPolicy\":{\"consecutiveErrors\":991430794,\"timeoutInSeconds\":1327259513,\"intervalInSeconds\":989850966}}},\"id\":\"rem\",\"name\":\"hllizhceumoq\",\"type\":\"dkadppyibn\"}],\"nextLink\":\"ladywrxwhyd\"}")
             .toObject(DaprComponentResiliencyPoliciesCollection.class);
-        Assertions.assertEquals(1701983547, model.value().get(0).inboundPolicy().httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(1998431294,
+        Assertions.assertEquals(524957188, model.value().get(0).inboundPolicy().httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(1668703834,
             model.value().get(0).inboundPolicy().timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(672713653,
+        Assertions.assertEquals(2091511430,
             model.value().get(0).inboundPolicy().circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(1300202975,
+        Assertions.assertEquals(653682799,
             model.value().get(0).inboundPolicy().circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(64736512,
+        Assertions.assertEquals(1265921223,
             model.value().get(0).inboundPolicy().circuitBreakerPolicy().intervalInSeconds());
-        Assertions.assertEquals(499319607, model.value().get(0).outboundPolicy().httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(972204015,
+        Assertions.assertEquals(236199125, model.value().get(0).outboundPolicy().httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(570901557,
             model.value().get(0).outboundPolicy().timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(1265182150,
+        Assertions.assertEquals(991430794,
             model.value().get(0).outboundPolicy().circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(112594464,
+        Assertions.assertEquals(1327259513,
             model.value().get(0).outboundPolicy().circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(9633412,
+        Assertions.assertEquals(989850966,
             model.value().get(0).outboundPolicy().circuitBreakerPolicy().intervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprComponentResiliencyPoliciesCollection model
-            = new DaprComponentResiliencyPoliciesCollection().withValue(Arrays.asList(
-                new DaprComponentResiliencyPolicyInner()
-                    .withInboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(1701983547)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(1998431294))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(672713653).withTimeoutInSeconds(1300202975)
-                            .withIntervalInSeconds(64736512)))
-                    .withOutboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(499319607)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(972204015))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(1265182150).withTimeoutInSeconds(112594464)
-                            .withIntervalInSeconds(9633412))),
-                new DaprComponentResiliencyPolicyInner()
-                    .withInboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(709462942)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(1900039321))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(313351461).withTimeoutInSeconds(720636191)
-                            .withIntervalInSeconds(1857605955)))
-                    .withOutboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(217232947)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(485950763))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(334709748).withTimeoutInSeconds(297911426)
-                            .withIntervalInSeconds(1148214254))),
-                new DaprComponentResiliencyPolicyInner()
-                    .withInboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(1307302388)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(67510907))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(491107905).withTimeoutInSeconds(725083050)
-                            .withIntervalInSeconds(1312539760)))
-                    .withOutboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(810647712)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(1031456845))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(1458275962).withTimeoutInSeconds(952405971)
-                            .withIntervalInSeconds(1220621790))),
-                new DaprComponentResiliencyPolicyInner()
-                    .withInboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(343155487)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(1939182119))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(1553253878).withTimeoutInSeconds(1749137224)
-                            .withIntervalInSeconds(1704256415)))
-                    .withOutboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
-                        .withHttpRetryPolicy(
-                            new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(632448787)
-                                .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
-                        .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
-                            .withResponseTimeoutInSeconds(1848154538))
-                        .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                            .withConsecutiveErrors(530417864).withTimeoutInSeconds(540353819)
-                            .withIntervalInSeconds(796010051)))));
+        DaprComponentResiliencyPoliciesCollection model = new DaprComponentResiliencyPoliciesCollection()
+            .withValue(Arrays.asList(new DaprComponentResiliencyPolicyInner()
+                .withInboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
+                    .withHttpRetryPolicy(
+                        new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(524957188)
+                            .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
+                    .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
+                        .withResponseTimeoutInSeconds(1668703834))
+                    .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
+                        .withConsecutiveErrors(2091511430)
+                        .withTimeoutInSeconds(653682799)
+                        .withIntervalInSeconds(1265921223)))
+                .withOutboundPolicy(new DaprComponentResiliencyPolicyConfiguration()
+                    .withHttpRetryPolicy(
+                        new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(236199125)
+                            .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()))
+                    .withTimeoutPolicy(new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration()
+                        .withResponseTimeoutInSeconds(570901557))
+                    .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
+                        .withConsecutiveErrors(991430794)
+                        .withTimeoutInSeconds(1327259513)
+                        .withIntervalInSeconds(989850966)))));
         model = BinaryData.fromObject(model).toObject(DaprComponentResiliencyPoliciesCollection.class);
-        Assertions.assertEquals(1701983547, model.value().get(0).inboundPolicy().httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(1998431294,
+        Assertions.assertEquals(524957188, model.value().get(0).inboundPolicy().httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(1668703834,
             model.value().get(0).inboundPolicy().timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(672713653,
+        Assertions.assertEquals(2091511430,
             model.value().get(0).inboundPolicy().circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(1300202975,
+        Assertions.assertEquals(653682799,
             model.value().get(0).inboundPolicy().circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(64736512,
+        Assertions.assertEquals(1265921223,
             model.value().get(0).inboundPolicy().circuitBreakerPolicy().intervalInSeconds());
-        Assertions.assertEquals(499319607, model.value().get(0).outboundPolicy().httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(972204015,
+        Assertions.assertEquals(236199125, model.value().get(0).outboundPolicy().httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(570901557,
             model.value().get(0).outboundPolicy().timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(1265182150,
+        Assertions.assertEquals(991430794,
             model.value().get(0).outboundPolicy().circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(112594464,
+        Assertions.assertEquals(1327259513,
             model.value().get(0).outboundPolicy().circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(9633412,
+        Assertions.assertEquals(989850966,
             model.value().get(0).outboundPolicy().circuitBreakerPolicy().intervalInSeconds());
     }
 }

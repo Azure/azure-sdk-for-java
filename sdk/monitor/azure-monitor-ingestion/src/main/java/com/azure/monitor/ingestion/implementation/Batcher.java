@@ -10,7 +10,6 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -30,7 +29,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
- *  Provides iterator and streams for batches over log objects.
+ * Provides iterator and streams for batches over log objects.
  */
 public class Batcher implements Iterator<LogsIngestionRequest> {
     private static final ClientLogger LOGGER = new ClientLogger(Batcher.class);
@@ -87,8 +86,8 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
      */
     public Stream<LogsIngestionRequest> toStream() {
         if (concurrency == 1) {
-            return StreamSupport.stream(
-                Spliterators.spliteratorUnknownSize(this, Spliterator.NONNULL | Spliterator.ORDERED), false);
+            return StreamSupport
+                .stream(Spliterators.spliteratorUnknownSize(this, Spliterator.NONNULL | Spliterator.ORDERED), false);
         }
 
         return StreamSupport.stream(new ConcurrencyLimitingSpliterator<>(this, concurrency), true);
@@ -139,7 +138,7 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
 
     private LogsIngestionRequest createRequest(boolean last) throws IOException {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(byteArrayOutputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(byteArrayOutputStream)) {
             writer.writeStartArray();
             for (String log : serializedLogs) {
                 writer.writeRawValue(log);
@@ -161,7 +160,6 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
             return options.getObjectSerializer();
         }
 
-        return  DEFAULT_SERIALIZER;
+        return DEFAULT_SERIALIZER;
     }
-
 }

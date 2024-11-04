@@ -25,13 +25,16 @@ public final class ContainerConfiguration implements JsonSerializable<ContainerC
     private final ContainerType type;
 
     /*
-     * The collection of container Image names. This is the full Image reference, as would be specified to "docker pull". An Image will be sourced from the default Docker registry unless the Image is fully qualified with an alternative registry.
+     * The collection of container Image names. This is the full Image reference, as would be specified to
+     * "docker pull". An Image will be sourced from the default Docker registry unless the Image is fully qualified with
+     * an alternative registry.
      */
     @Generated
     private List<String> containerImageNames;
 
     /*
-     * Additional private registries from which containers can be pulled. If any Images must be downloaded from a private registry which requires credentials, then those credentials must be provided here.
+     * Additional private registries from which containers can be pulled. If any Images must be downloaded from a
+     * private registry which requires credentials, then those credentials must be provided here.
      */
     @Generated
     private List<ContainerRegistryReference> containerRegistries;

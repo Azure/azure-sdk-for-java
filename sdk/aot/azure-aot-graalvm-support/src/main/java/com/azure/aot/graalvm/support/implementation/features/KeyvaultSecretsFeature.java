@@ -20,8 +20,6 @@ public class KeyvaultSecretsFeature implements GraalVMFeature {
 
     @Override
     public Set<String[]> getDynamicProxies() {
-        return setsOf(
-            interfaces("com.azure.security.keyvault.secrets.implementation.SecretService")
-        );
+        return setsOf(interfaces("com.azure.security.keyvault.secrets.implementation.SecretService"));
     }
 }

@@ -5,52 +5,58 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Azure Function activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureFunctionActivity")
-@JsonFlatten
 @Fluent
 public class AzureFunctionActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "AzureFunctionActivity";
+
+    /*
      * Rest API method for target endpoint.
      */
-    @JsonProperty(value = "typeProperties.method", required = true)
     private AzureFunctionActivityMethod method;
 
     /*
-     * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType
-     * string)
+     * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "typeProperties.functionName", required = true)
     private Object functionName;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
-     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
-     * resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
-     * method Type: string (or Expression with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.body")
     private Object body;
 
     /**
      * Creates an instance of AzureFunctionActivity class.
      */
     public AzureFunctionActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -211,5 +217,109 @@ public class AzureFunctionActivity extends ExecutionActivity {
     public AzureFunctionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (method != null || functionName != null || headers != null || body != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+            jsonWriter.writeUntypedField("functionName", this.functionName);
+            jsonWriter.writeUntypedField("headers", this.headers);
+            jsonWriter.writeUntypedField("body", this.body);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFunctionActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFunctionActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFunctionActivity.
+     */
+    public static AzureFunctionActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFunctionActivity deserializedAzureFunctionActivity = new AzureFunctionActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureFunctionActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureFunctionActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedAzureFunctionActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedAzureFunctionActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedAzureFunctionActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedAzureFunctionActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureFunctionActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedAzureFunctionActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFunctionActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("method".equals(fieldName)) {
+                            deserializedAzureFunctionActivity.method
+                                = AzureFunctionActivityMethod.fromString(reader.getString());
+                        } else if ("functionName".equals(fieldName)) {
+                            deserializedAzureFunctionActivity.functionName = reader.readUntyped();
+                        } else if ("headers".equals(fieldName)) {
+                            deserializedAzureFunctionActivity.headers = reader.readUntyped();
+                        } else if ("body".equals(fieldName)) {
+                            deserializedAzureFunctionActivity.body = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureFunctionActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureFunctionActivity;
+        });
     }
 }

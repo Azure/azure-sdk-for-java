@@ -13,25 +13,19 @@ import java.util.Arrays;
 public final class ControllerConnectionDetailsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControllerConnectionDetailsListInner model =
-            BinaryData
-                .fromString(
-                    "{\"connectionDetailsList\":[{\"orchestratorSpecificConnectionDetails\":{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}},{\"orchestratorSpecificConnectionDetails\":{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}}]}")
-                .toObject(ControllerConnectionDetailsListInner.class);
+        ControllerConnectionDetailsListInner model = BinaryData.fromString(
+            "{\"connectionDetailsList\":[{\"orchestratorSpecificConnectionDetails\":{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}},{\"orchestratorSpecificConnectionDetails\":{\"instanceType\":\"OrchestratorSpecificConnectionDetails\"}}]}")
+            .toObject(ControllerConnectionDetailsListInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControllerConnectionDetailsListInner model =
-            new ControllerConnectionDetailsListInner()
-                .withConnectionDetailsList(
-                    Arrays
-                        .asList(
-                            new ControllerConnectionDetails()
-                                .withOrchestratorSpecificConnectionDetails(new OrchestratorSpecificConnectionDetails()),
-                            new ControllerConnectionDetails()
-                                .withOrchestratorSpecificConnectionDetails(
-                                    new OrchestratorSpecificConnectionDetails())));
+        ControllerConnectionDetailsListInner model
+            = new ControllerConnectionDetailsListInner().withConnectionDetailsList(Arrays.asList(
+                new ControllerConnectionDetails()
+                    .withOrchestratorSpecificConnectionDetails(new OrchestratorSpecificConnectionDetails()),
+                new ControllerConnectionDetails()
+                    .withOrchestratorSpecificConnectionDetails(new OrchestratorSpecificConnectionDetails())));
         model = BinaryData.fromObject(model).toObject(ControllerConnectionDetailsListInner.class);
     }
 }

@@ -6,38 +6,57 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.Amount;
 import com.azure.resourcemanager.consumption.models.AmountWithExchangeRate;
 import com.azure.resourcemanager.consumption.models.LotSource;
 import com.azure.resourcemanager.consumption.models.Reseller;
 import com.azure.resourcemanager.consumption.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A lot summary resource. */
+/**
+ * A lot summary resource.
+ */
 @Fluent
 public final class LotSummaryInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LotSummaryInner.class);
-
     /*
      * The lot properties.
      */
-    @JsonProperty(value = "properties")
     private LotProperties innerProperties;
 
     /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
+     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user
+     * is updating the latest version or not.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LotSummaryInner class.
+     */
+    public LotSummaryInner() {
+    }
 
     /**
      * Get the innerProperties property: The lot properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LotProperties innerProperties() {
@@ -47,7 +66,7 @@ public final class LotSummaryInner extends ProxyResource {
     /**
      * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -57,7 +76,7 @@ public final class LotSummaryInner extends ProxyResource {
     /**
      * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the LotSummaryInner object itself.
      */
@@ -67,8 +86,38 @@ public final class LotSummaryInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the originalAmount property: The original amount of a lot.
-     *
+     * 
      * @return the originalAmount value.
      */
     public Amount originalAmount() {
@@ -77,7 +126,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the closedBalance property: The balance as of the last invoice.
-     *
+     * 
      * @return the closedBalance value.
      */
     public Amount closedBalance() {
@@ -86,7 +135,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the source property: The source of the lot.
-     *
+     * 
      * @return the source value.
      */
     public LotSource source() {
@@ -95,7 +144,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the startDate property: The date when the lot became effective.
-     *
+     * 
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -104,7 +153,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the expirationDate property: The expiration date of a lot.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -114,7 +163,7 @@ public final class LotSummaryInner extends ProxyResource {
     /**
      * Get the poNumber property: The po number of the invoice on which the lot was added. This property is not
      * available for ConsumptionCommitment lots.
-     *
+     * 
      * @return the poNumber value.
      */
     public String poNumber() {
@@ -123,7 +172,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the purchasedDate property: The date when the lot was added.
-     *
+     * 
      * @return the purchasedDate value.
      */
     public OffsetDateTime purchasedDate() {
@@ -132,7 +181,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the lot.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -141,7 +190,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the creditCurrency property: The currency of the lot.
-     *
+     * 
      * @return the creditCurrency value.
      */
     public String creditCurrency() {
@@ -150,7 +199,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the billingCurrency property: The billing currency of the lot.
-     *
+     * 
      * @return the billingCurrency value.
      */
     public String billingCurrency() {
@@ -159,7 +208,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the originalAmountInBillingCurrency property: The original amount of a lot in billing currency.
-     *
+     * 
      * @return the originalAmountInBillingCurrency value.
      */
     public AmountWithExchangeRate originalAmountInBillingCurrency() {
@@ -168,7 +217,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the closedBalanceInBillingCurrency property: The balance as of the last invoice in billing currency.
-     *
+     * 
      * @return the closedBalanceInBillingCurrency value.
      */
     public AmountWithExchangeRate closedBalanceInBillingCurrency() {
@@ -177,7 +226,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the reseller property: The reseller of the lot.
-     *
+     * 
      * @return the reseller value.
      */
     public Reseller reseller() {
@@ -186,7 +235,7 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Get the etag property: The eTag for the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etagPropertiesEtag() {
@@ -195,12 +244,58 @@ public final class LotSummaryInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("eTag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LotSummaryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LotSummaryInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LotSummaryInner.
+     */
+    public static LotSummaryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LotSummaryInner deserializedLotSummaryInner = new LotSummaryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLotSummaryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLotSummaryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLotSummaryInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLotSummaryInner.innerProperties = LotProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedLotSummaryInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLotSummaryInner;
+        });
     }
 }

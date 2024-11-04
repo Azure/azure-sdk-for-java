@@ -5,57 +5,59 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.ProviderOperation;
 import com.azure.resourcemanager.authorization.models.ResourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Provider Operations metadata. */
+/**
+ * Provider Operations metadata.
+ */
 @Fluent
-public final class ProviderOperationsMetadataInner {
+public final class ProviderOperationsMetadataInner implements JsonSerializable<ProviderOperationsMetadataInner> {
     /*
      * The provider id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The provider name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The provider type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The provider display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The provider resource types
      */
-    @JsonProperty(value = "resourceTypes")
     private List<ResourceType> resourceTypes;
 
     /*
      * The provider operations.
      */
-    @JsonProperty(value = "operations")
     private List<ProviderOperation> operations;
 
-    /** Creates an instance of ProviderOperationsMetadataInner class. */
+    /**
+     * Creates an instance of ProviderOperationsMetadataInner class.
+     */
     public ProviderOperationsMetadataInner() {
     }
 
     /**
      * Get the id property: The provider id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +66,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the id property: The provider id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -75,7 +77,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the name property: The provider name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +86,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the name property: The provider name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -95,7 +97,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the type property: The provider type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -104,7 +106,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the type property: The provider type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -115,7 +117,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the displayName property: The provider display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -124,7 +126,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the displayName property: The provider display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -135,7 +137,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the resourceTypes property: The provider resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<ResourceType> resourceTypes() {
@@ -144,7 +146,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the resourceTypes property: The provider resource types.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -155,7 +157,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the operations property: The provider operations.
-     *
+     * 
      * @return the operations value.
      */
     public List<ProviderOperation> operations() {
@@ -164,7 +166,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the operations property: The provider operations.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -175,7 +177,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -185,5 +187,60 @@ public final class ProviderOperationsMetadataInner {
         if (operations() != null) {
             operations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("resourceTypes", this.resourceTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderOperationsMetadataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderOperationsMetadataInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderOperationsMetadataInner.
+     */
+    public static ProviderOperationsMetadataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderOperationsMetadataInner deserializedProviderOperationsMetadataInner
+                = new ProviderOperationsMetadataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProviderOperationsMetadataInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProviderOperationsMetadataInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProviderOperationsMetadataInner.type = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProviderOperationsMetadataInner.displayName = reader.getString();
+                } else if ("resourceTypes".equals(fieldName)) {
+                    List<ResourceType> resourceTypes = reader.readArray(reader1 -> ResourceType.fromJson(reader1));
+                    deserializedProviderOperationsMetadataInner.resourceTypes = resourceTypes;
+                } else if ("operations".equals(fieldName)) {
+                    List<ProviderOperation> operations
+                        = reader.readArray(reader1 -> ProviderOperation.fromJson(reader1));
+                    deserializedProviderOperationsMetadataInner.operations = operations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderOperationsMetadataInner;
+        });
     }
 }

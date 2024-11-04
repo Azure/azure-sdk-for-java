@@ -212,25 +212,21 @@ public final class InteractionResourceFormatImpl
     }
 
     public InteractionResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInteractions()
-                .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInteractions()
+            .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public InteractionResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInteractions()
-                .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInteractions()
+            .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), context);
         return this;
     }
 
-    InteractionResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    InteractionResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new InteractionResourceFormatInner();
         this.serviceManager = serviceManager;
         this.interactionName = name;
@@ -241,58 +237,48 @@ public final class InteractionResourceFormatImpl
     }
 
     public InteractionResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInteractions()
-                .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInteractions()
+            .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public InteractionResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInteractions()
-                .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInteractions()
+            .createOrUpdate(resourceGroupName, hubName, interactionName, this.innerModel(), context);
         return this;
     }
 
-    InteractionResourceFormatImpl(
-        InteractionResourceFormatInner innerObject,
+    InteractionResourceFormatImpl(InteractionResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.interactionName = Utils.getValueFromIdByName(innerObject.id(), "interactions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.interactionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "interactions");
     }
 
     public InteractionResourceFormat refresh() {
         String localLocaleCode = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInteractions()
-                .getWithResponse(resourceGroupName, hubName, interactionName, localLocaleCode, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInteractions()
+            .getWithResponse(resourceGroupName, hubName, interactionName, localLocaleCode, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InteractionResourceFormat refresh(Context context) {
         String localLocaleCode = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInteractions()
-                .getWithResponse(resourceGroupName, hubName, interactionName, localLocaleCode, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInteractions()
+            .getWithResponse(resourceGroupName, hubName, interactionName, localLocaleCode, context)
+            .getValue();
         return this;
     }
 
     public Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(Context context) {
-        return serviceManager
-            .interactions()
+        return serviceManager.interactions()
             .suggestRelationshipLinksWithResponse(resourceGroupName, hubName, interactionName, context);
     }
 
@@ -310,8 +296,8 @@ public final class InteractionResourceFormatImpl
         return this;
     }
 
-    public InteractionResourceFormatImpl withPrimaryParticipantProfilePropertyName(
-        String primaryParticipantProfilePropertyName) {
+    public InteractionResourceFormatImpl
+        withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName) {
         this.innerModel().withPrimaryParticipantProfilePropertyName(primaryParticipantProfilePropertyName);
         return this;
     }

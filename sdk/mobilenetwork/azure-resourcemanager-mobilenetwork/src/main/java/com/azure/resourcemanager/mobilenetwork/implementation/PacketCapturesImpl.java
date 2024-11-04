@@ -31,8 +31,8 @@ public final class PacketCapturesImpl implements PacketCaptures {
 
     public Response<PacketCapture> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCaptureName, Context context) {
-        Response<PacketCaptureInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            packetCoreControlPlaneName, packetCaptureName, context);
+        Response<PacketCaptureInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PacketCaptureImpl(inner.getValue(), this.manager()));

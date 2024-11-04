@@ -13,22 +13,23 @@ public final class DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguratio
     public void testDeserialize() throws Exception {
         DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration model = BinaryData
             .fromString(
-                "{\"consecutiveErrors\":1053497499,\"timeoutInSeconds\":729007822,\"intervalInSeconds\":367318900}")
+                "{\"consecutiveErrors\":865412735,\"timeoutInSeconds\":2077361898,\"intervalInSeconds\":996358381}")
             .toObject(DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration.class);
-        Assertions.assertEquals(1053497499, model.consecutiveErrors());
-        Assertions.assertEquals(729007822, model.timeoutInSeconds());
-        Assertions.assertEquals(367318900, model.intervalInSeconds());
+        Assertions.assertEquals(865412735, model.consecutiveErrors());
+        Assertions.assertEquals(2077361898, model.timeoutInSeconds());
+        Assertions.assertEquals(996358381, model.intervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration model
-            = new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration().withConsecutiveErrors(1053497499)
-                .withTimeoutInSeconds(729007822).withIntervalInSeconds(367318900);
+            = new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration().withConsecutiveErrors(865412735)
+                .withTimeoutInSeconds(2077361898)
+                .withIntervalInSeconds(996358381);
         model = BinaryData.fromObject(model)
             .toObject(DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration.class);
-        Assertions.assertEquals(1053497499, model.consecutiveErrors());
-        Assertions.assertEquals(729007822, model.timeoutInSeconds());
-        Assertions.assertEquals(367318900, model.intervalInSeconds());
+        Assertions.assertEquals(865412735, model.consecutiveErrors());
+        Assertions.assertEquals(2077361898, model.timeoutInSeconds());
+        Assertions.assertEquals(996358381, model.intervalInSeconds());
     }
 }

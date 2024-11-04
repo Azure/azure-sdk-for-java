@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryForLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryForLogSpecification model =
-            BinaryData
-                .fromString("{\"name\":\"dbhrbnlankxm\",\"displayName\":\"k\",\"blobDuration\":\"henbtkcxywnytn\"}")
-                .toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("dbhrbnlankxm", model.name());
-        Assertions.assertEquals("k", model.displayName());
-        Assertions.assertEquals("henbtkcxywnytn", model.blobDuration());
+        ClientDiscoveryForLogSpecification model = BinaryData
+            .fromString("{\"name\":\"ujqgidok\",\"displayName\":\"ljyoxgvcltb\",\"blobDuration\":\"ncghkje\"}")
+            .toObject(ClientDiscoveryForLogSpecification.class);
+        Assertions.assertEquals("ujqgidok", model.name());
+        Assertions.assertEquals("ljyoxgvcltb", model.displayName());
+        Assertions.assertEquals("ncghkje", model.blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryForLogSpecification model =
-            new ClientDiscoveryForLogSpecification()
-                .withName("dbhrbnlankxm")
-                .withDisplayName("k")
-                .withBlobDuration("henbtkcxywnytn");
+        ClientDiscoveryForLogSpecification model = new ClientDiscoveryForLogSpecification().withName("ujqgidok")
+            .withDisplayName("ljyoxgvcltb")
+            .withBlobDuration("ncghkje");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("dbhrbnlankxm", model.name());
-        Assertions.assertEquals("k", model.displayName());
-        Assertions.assertEquals("henbtkcxywnytn", model.blobDuration());
+        Assertions.assertEquals("ujqgidok", model.name());
+        Assertions.assertEquals("ljyoxgvcltb", model.displayName());
+        Assertions.assertEquals("ncghkje", model.blobDuration());
     }
 }

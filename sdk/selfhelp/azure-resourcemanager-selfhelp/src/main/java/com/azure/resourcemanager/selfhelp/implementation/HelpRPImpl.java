@@ -25,8 +25,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.selfhelp.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.selfhelp.fluent.DiagnosticsClient;
-import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionNlpSubscriptionScopesClient;
-import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionNlpTenantScopesClient;
+import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionNlpsClient;
 import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionsClient;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
 import com.azure.resourcemanager.selfhelp.fluent.OperationsClient;
@@ -48,20 +47,6 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = HelpRPBuilder.class)
 public final class HelpRPImpl implements HelpRP {
-    /**
-     * The ID of the target subscription. The value must be an UUID.
-     */
-    private final String subscriptionId;
-
-    /**
-     * Gets The ID of the target subscription. The value must be an UUID.
-     * 
-     * @return the subscriptionId value.
-     */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
     /**
      * server parameter.
      */
@@ -245,31 +230,17 @@ public final class HelpRPImpl implements HelpRP {
     }
 
     /**
-     * The DiscoverySolutionNlpTenantScopesClient object to access its operations.
+     * The DiscoverySolutionNlpsClient object to access its operations.
      */
-    private final DiscoverySolutionNlpTenantScopesClient discoverySolutionNlpTenantScopes;
+    private final DiscoverySolutionNlpsClient discoverySolutionNlps;
 
     /**
-     * Gets the DiscoverySolutionNlpTenantScopesClient object to access its operations.
+     * Gets the DiscoverySolutionNlpsClient object to access its operations.
      * 
-     * @return the DiscoverySolutionNlpTenantScopesClient object.
+     * @return the DiscoverySolutionNlpsClient object.
      */
-    public DiscoverySolutionNlpTenantScopesClient getDiscoverySolutionNlpTenantScopes() {
-        return this.discoverySolutionNlpTenantScopes;
-    }
-
-    /**
-     * The DiscoverySolutionNlpSubscriptionScopesClient object to access its operations.
-     */
-    private final DiscoverySolutionNlpSubscriptionScopesClient discoverySolutionNlpSubscriptionScopes;
-
-    /**
-     * Gets the DiscoverySolutionNlpSubscriptionScopesClient object to access its operations.
-     * 
-     * @return the DiscoverySolutionNlpSubscriptionScopesClient object.
-     */
-    public DiscoverySolutionNlpSubscriptionScopesClient getDiscoverySolutionNlpSubscriptionScopes() {
-        return this.discoverySolutionNlpSubscriptionScopes;
+    public DiscoverySolutionNlpsClient getDiscoverySolutionNlps() {
+        return this.discoverySolutionNlps;
     }
 
     /**
@@ -279,15 +250,13 @@ public final class HelpRPImpl implements HelpRP {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     HelpRPImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String subscriptionId, String endpoint) {
+        AzureEnvironment environment, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2024-03-01-preview";
         this.operations = new OperationsClientImpl(this);
@@ -298,8 +267,7 @@ public final class HelpRPImpl implements HelpRP {
         this.simplifiedSolutions = new SimplifiedSolutionsClientImpl(this);
         this.troubleshooters = new TroubleshootersClientImpl(this);
         this.solutionSelfHelps = new SolutionSelfHelpsClientImpl(this);
-        this.discoverySolutionNlpTenantScopes = new DiscoverySolutionNlpTenantScopesClientImpl(this);
-        this.discoverySolutionNlpSubscriptionScopes = new DiscoverySolutionNlpSubscriptionScopesClientImpl(this);
+        this.discoverySolutionNlps = new DiscoverySolutionNlpsClientImpl(this);
     }
 
     /**

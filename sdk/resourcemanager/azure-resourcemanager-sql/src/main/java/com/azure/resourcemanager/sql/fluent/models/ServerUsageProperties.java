@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a server usage. */
+/**
+ * Properties of a server usage.
+ */
 @Immutable
-public final class ServerUsageProperties {
+public final class ServerUsageProperties implements JsonSerializable<ServerUsageProperties> {
     /*
      * User-readable name of the metric.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Current value of the metric.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Double currentValue;
 
     /*
      * Boundary value of the metric.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Double limit;
 
     /*
      * Unit of the metric.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
-    /** Creates an instance of ServerUsageProperties class. */
+    /**
+     * Creates an instance of ServerUsageProperties class.
+     */
     public ServerUsageProperties() {
     }
 
     /**
      * Get the displayName property: User-readable name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -49,7 +53,7 @@ public final class ServerUsageProperties {
 
     /**
      * Get the currentValue property: Current value of the metric.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -58,7 +62,7 @@ public final class ServerUsageProperties {
 
     /**
      * Get the limit property: Boundary value of the metric.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -67,7 +71,7 @@ public final class ServerUsageProperties {
 
     /**
      * Get the unit property: Unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -76,9 +80,50 @@ public final class ServerUsageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerUsageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerUsageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerUsageProperties.
+     */
+    public static ServerUsageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerUsageProperties deserializedServerUsageProperties = new ServerUsageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedServerUsageProperties.displayName = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedServerUsageProperties.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedServerUsageProperties.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedServerUsageProperties.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerUsageProperties;
+        });
     }
 }

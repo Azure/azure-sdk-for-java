@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Manual trigger configuration for a single execution job. Properties replicaCompletionCount and parallelism would be
  * set to 1 by default.
  */
 @Fluent
-public final class JobConfigurationManualTriggerConfig {
+public final class JobConfigurationManualTriggerConfig
+    implements JsonSerializable<JobConfigurationManualTriggerConfig> {
     /*
      * Minimum number of successful replica completions before overall job completion.
      */
-    @JsonProperty(value = "replicaCompletionCount")
     private Integer replicaCompletionCount;
 
     /*
      * Number of parallel replicas of a job that can run at a given time.
      */
-    @JsonProperty(value = "parallelism")
     private Integer parallelism;
 
     /**
@@ -79,5 +82,47 @@ public final class JobConfigurationManualTriggerConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("replicaCompletionCount", this.replicaCompletionCount);
+        jsonWriter.writeNumberField("parallelism", this.parallelism);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobConfigurationManualTriggerConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobConfigurationManualTriggerConfig if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobConfigurationManualTriggerConfig.
+     */
+    public static JobConfigurationManualTriggerConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobConfigurationManualTriggerConfig deserializedJobConfigurationManualTriggerConfig
+                = new JobConfigurationManualTriggerConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("replicaCompletionCount".equals(fieldName)) {
+                    deserializedJobConfigurationManualTriggerConfig.replicaCompletionCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("parallelism".equals(fieldName)) {
+                    deserializedJobConfigurationManualTriggerConfig.parallelism
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobConfigurationManualTriggerConfig;
+        });
     }
 }

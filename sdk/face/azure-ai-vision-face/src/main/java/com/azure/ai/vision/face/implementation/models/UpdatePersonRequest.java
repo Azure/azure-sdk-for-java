@@ -5,26 +5,28 @@ package com.azure.ai.vision.face.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The UpdatePersonRequest model.
  */
 @Fluent
-public final class UpdatePersonRequest {
+public final class UpdatePersonRequest implements JsonSerializable<UpdatePersonRequest> {
 
     /*
      * User defined name, maximum length is 128.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Optional user defined data. Length should not exceed 16K.
      */
     @Generated
-    @JsonProperty(value = "userData")
     private String userData;
 
     /**
@@ -76,5 +78,44 @@ public final class UpdatePersonRequest {
     public UpdatePersonRequest setUserData(String userData) {
         this.userData = userData;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdatePersonRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdatePersonRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdatePersonRequest.
+     */
+    @Generated
+    public static UpdatePersonRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdatePersonRequest deserializedUpdatePersonRequest = new UpdatePersonRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedUpdatePersonRequest.name = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    deserializedUpdatePersonRequest.userData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedUpdatePersonRequest;
+        });
     }
 }

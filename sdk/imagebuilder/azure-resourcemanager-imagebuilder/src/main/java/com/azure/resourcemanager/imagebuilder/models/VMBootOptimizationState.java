@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Enabling this field will improve VM boot time by optimizing the final customized image output.
  */
@@ -36,7 +33,6 @@ public enum VMBootOptimizationState {
      * @param value the serialized value to parse.
      * @return the parsed VMBootOptimizationState object, or null if unable to parse.
      */
-    @JsonCreator
     public static VMBootOptimizationState fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum VMBootOptimizationState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

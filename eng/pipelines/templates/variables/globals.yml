@@ -2,8 +2,6 @@ variables:
   DocWardenVersion: '0.7.2'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
   JavaBuildVersion: '1.21'
-  # This is the highest Java version we can write all our Javadocs with. Libraries that support a higher version can override this value in their CI templates.
-  JavadocSafeJavaBuildVersion: '1.17' # TODO (vcolin7): Remove and use JavaBuildVersion in templates once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
   # This is the highest LTS Java version we use to build the Cosmos Spark connectors and libraries baselined on Java 7.
   FallbackJavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
@@ -13,6 +11,9 @@ variables:
   LatestNonLtsJdkFeatureVersion: '20'
   # This is the version of Python used by various tools in the Java build/release processes
   PythonVersion: '3.9'
+
+  # java2docfx needs to run against Java 17
+  Java2docfxJavaVersion: '17'
 
   # True if 'Enable system diagnostics' is checked when running a pipeline manually
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
@@ -24,7 +25,7 @@ variables:
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   # See https://github.com/actions/virtual-environments/issues/1499 for more info about the wagon options
   # If reports about Maven dependency downloads become more common investigate re-introducing "-Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false", or other iterations of the configurations.
-  WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60'
+  WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dmaven.wagon.http.pool=false'
   DefaultOptions: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=$(MavenLogLevel) -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx4096m'
@@ -48,6 +49,9 @@ variables:
   # This will be overwritten by the test matrix, if configured.
   RunAggregateReports: false
   IsLatestNonLtsJdk: false
+
+  # This will be overwritten by the test matrix, if configured.
+  VersionOverride: ''
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true

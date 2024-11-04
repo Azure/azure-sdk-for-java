@@ -29,7 +29,7 @@ public final class MessageTextFilePathDetails implements JsonSerializable<Messag
      * @param fileId the fileId value to set.
      */
     @Generated
-    private MessageTextFilePathDetails(String fileId) {
+    public MessageTextFilePathDetails(String fileId) {
         this.fileId = fileId;
     }
 

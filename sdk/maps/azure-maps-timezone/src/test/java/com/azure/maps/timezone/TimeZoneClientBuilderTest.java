@@ -3,8 +3,7 @@
 
 package com.azure.maps.timezone;
 
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,84 +12,56 @@ public class TimeZoneClientBuilderTest {
     // Test for null timezoneClientId, the client ID value
     @Test
     public void missingtimezoneClientId() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.timezoneClientId(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().timezoneClientId(null));
     }
 
     // Test for missing endpoint
     @Test
     public void missingEndpoint() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.endpoint(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().endpoint(null));
     }
 
     // Test for missing configuration
     @Test
     public void missingConfiguration() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.configuration(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().configuration(null));
     }
 
     // Test for missing http log options
     @Test
     public void missingHttpLogOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.httpLogOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().httpLogOptions(null));
     }
 
     // Test for missing retry policy
     @Test
     public void missingRetryPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.retryPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().retryPolicy(null));
     }
 
     // Test for missing client options
     @Test
     public void missingClientOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.clientOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().clientOptions(null));
     }
 
     // Test for missing add policy
     @Test
     public void missingAddPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.addPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new TimeZoneClientBuilder().addPolicy(null));
     }
 
     // Test for null timezone id, valid token credential
     @Test
     public void missingTimeZoneClientIdValidTokenCredential() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-            builder.credential(tokenCredential);
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new TimeZoneClientBuilder().credential(new MockTokenCredential()).buildClient());
     }
 
     // Test for null key credential and null token credential despite valid timezoneClientId
     @Test
     public void missingCredentials() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final TimeZoneClientBuilder builder = new TimeZoneClientBuilder();
-            builder.timezoneClientId("timezoneClientId");
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new TimeZoneClientBuilder().timezoneClientId("timezoneClientId").buildClient());
     }
 }

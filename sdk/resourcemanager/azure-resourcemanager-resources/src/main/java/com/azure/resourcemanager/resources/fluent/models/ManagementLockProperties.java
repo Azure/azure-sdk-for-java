@@ -6,35 +6,40 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLockOwner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The lock properties. */
+/**
+ * The lock properties.
+ */
 @Fluent
-public final class ManagementLockProperties {
+public final class ManagementLockProperties implements JsonSerializable<ManagementLockProperties> {
     /*
      * The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
      * users are able to read and modify the resources, but not delete. ReadOnly means authorized users can only read
      * from a resource, but they can't modify or delete it.
      */
-    @JsonProperty(value = "level", required = true)
     private LockLevel level;
 
     /*
      * Notes about the lock. Maximum of 512 characters.
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
     /*
      * The owners of the lock.
      */
-    @JsonProperty(value = "owners")
     private List<ManagementLockOwner> owners;
 
-    /** Creates an instance of ManagementLockProperties class. */
+    /**
+     * Creates an instance of ManagementLockProperties class.
+     */
     public ManagementLockProperties() {
     }
 
@@ -42,7 +47,7 @@ public final class ManagementLockProperties {
      * Get the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @return the level value.
      */
     public LockLevel level() {
@@ -53,7 +58,7 @@ public final class ManagementLockProperties {
      * Set the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @param level the level value to set.
      * @return the ManagementLockProperties object itself.
      */
@@ -64,7 +69,7 @@ public final class ManagementLockProperties {
 
     /**
      * Get the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -73,7 +78,7 @@ public final class ManagementLockProperties {
 
     /**
      * Set the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ManagementLockProperties object itself.
      */
@@ -84,7 +89,7 @@ public final class ManagementLockProperties {
 
     /**
      * Get the owners property: The owners of the lock.
-     *
+     * 
      * @return the owners value.
      */
     public List<ManagementLockOwner> owners() {
@@ -93,7 +98,7 @@ public final class ManagementLockProperties {
 
     /**
      * Set the owners property: The owners of the lock.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the ManagementLockProperties object itself.
      */
@@ -104,14 +109,13 @@ public final class ManagementLockProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (level() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property level in model ManagementLockProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property level in model ManagementLockProperties"));
         }
         if (owners() != null) {
             owners().forEach(e -> e.validate());
@@ -119,4 +123,49 @@ public final class ManagementLockProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementLockProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("notes", this.notes);
+        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementLockProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementLockProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementLockProperties.
+     */
+    public static ManagementLockProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementLockProperties deserializedManagementLockProperties = new ManagementLockProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("level".equals(fieldName)) {
+                    deserializedManagementLockProperties.level = LockLevel.fromString(reader.getString());
+                } else if ("notes".equals(fieldName)) {
+                    deserializedManagementLockProperties.notes = reader.getString();
+                } else if ("owners".equals(fieldName)) {
+                    List<ManagementLockOwner> owners
+                        = reader.readArray(reader1 -> ManagementLockOwner.fromJson(reader1));
+                    deserializedManagementLockProperties.owners = owners;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementLockProperties;
+        });
+    }
 }

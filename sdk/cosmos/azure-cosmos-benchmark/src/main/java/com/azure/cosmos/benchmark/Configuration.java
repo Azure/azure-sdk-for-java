@@ -47,6 +47,12 @@ public class Configuration {
     @Parameter(names = "-masterKey", description = "Master Key")
     private String masterKey;
 
+    @Parameter(names = "-serviceEndpointForResultsUploadAccount", description = "Service Endpoint for run results upload account")
+    private String serviceEndpointForRunResultsUploadAccount;
+
+    @Parameter(names = "-masterKeyForResultsUploadAccount", description = "Master Key for run results upload account")
+    private String masterKeyForRunResultsUploadAccount;
+
     @Parameter(names = "-databaseId", description = "Database ID")
     private String databaseId;
 
@@ -136,6 +142,9 @@ public class Configuration {
 
     @Parameter(names = "-isRegionScopedSessionContainerEnabled", description = "A flag to denote whether region scoped session container is enabled")
     private String isRegionScopedSessionContainerEnabled = String.valueOf(false);
+
+    @Parameter(names = "isPartitionLevelCircuitBreakerEnabled", description = "A flag to denote whether partition level circuit breaker is enabled.")
+    private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(true);
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -397,6 +406,14 @@ public class Configuration {
         return masterKey;
     }
 
+    public String getServiceEndpointForRunResultsUploadAccount() {
+        return serviceEndpointForRunResultsUploadAccount;
+    }
+
+    public String getMasterKeyForRunResultsUploadAccount() {
+        return masterKeyForRunResultsUploadAccount;
+    }
+
     public String getApplicationName() {
         return applicationName;
     }
@@ -637,6 +654,10 @@ public class Configuration {
 
     public boolean isRegionScopedSessionContainerEnabled() {
         return Boolean.parseBoolean(isRegionScopedSessionContainerEnabled);
+    }
+
+    public boolean isPartitionLevelCircuitBreakerEnabled() {
+        return Boolean.parseBoolean(isPartitionLevelCircuitBreakerEnabled);
     }
 
     public void tryGetValuesFromSystem() {

@@ -37,7 +37,7 @@ public final class MessageTextDetails implements JsonSerializable<MessageTextDet
      * @param annotations the annotations value to set.
      */
     @Generated
-    private MessageTextDetails(String value, List<MessageTextAnnotation> annotations) {
+    public MessageTextDetails(String value, List<MessageTextAnnotation> annotations) {
         this.value = value;
         this.annotations = annotations;
     }

@@ -1331,7 +1331,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
         String volumeQuotaRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

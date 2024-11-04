@@ -2,23 +2,51 @@
 // Licensed under the MIT License.
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
+import static com.azure.core.http.netty.implementation.NettyUtility.NETTY_TCNATIVE_VERSION_PROPERTY;
+import static com.azure.core.http.netty.implementation.NettyUtility.NETTY_VERSION_PROPERTY;
+import static com.azure.core.http.netty.implementation.NettyUtility.PROPERTIES_FILE_NAME;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NettyUtilityTests {
     @Test
-    public void validateNettyVersions() {
-        StringBuilder logger = new StringBuilder();
-        NettyUtility.validateNettyVersions(logger::append);
+    public void validateNettyVersionsWithWhatThePomSpecifies() {
+        Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
+        NettyUtility.NettyVersionLogInformation logInformation = NettyUtility.createNettyVersionLogInformation(
+            pomVersions.get(NETTY_VERSION_PROPERTY), pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY));
 
-        String logMessage = logger.toString();
+        // Should never have version mismatches when running tests, that would mean either the version properties are
+        // wrong or there is a dependency diamond within azure-core-http-netty. Either way, it should be fixed.
+        assertFalse(logInformation.shouldLog());
+        for (String artifactFullName : logInformation.classpathNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
+        for (String artifactFullName : logInformation.classPathNativeNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
+    }
 
-        // Version information is always logged.
-        assertFalse(logMessage.isEmpty(), "Version logs are always expected.");
+    @Test
+    public void validateNettyVersionsWithJunkVersions() {
+        NettyUtility.NettyVersionLogInformation logInformation
+            = NettyUtility.createNettyVersionLogInformation("4.0.0.Final", "2.0.0.Final");
 
-        // But azure-core-http-netty shouldn't have version mismatches.
-        assertFalse(logMessage.contains(NettyUtility.NETTY_VERSION_MISMATCH_LOG),
-            "Unexpected Netty version mismatch logs.");
+        // Junk versions used should flag for logging.
+        assertTrue(logInformation.shouldLog());
+        for (String artifactFullName : logInformation.classpathNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
+        for (String artifactFullName : logInformation.classPathNativeNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
     }
 }

@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
+import com.azure.resourcemanager.mobilenetwork.fluent.models.SimGroupInner;
 import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 
 /**
@@ -236,4 +237,31 @@ public interface MobileNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MobileNetworkInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SimGroupInner> listSimGroups(String resourceGroupName, String mobileNetworkName);
+
+    /**
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SimGroupInner> listSimGroups(String resourceGroupName, String mobileNetworkName, Context context);
 }

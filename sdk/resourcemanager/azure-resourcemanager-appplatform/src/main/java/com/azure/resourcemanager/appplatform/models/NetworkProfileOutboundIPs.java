@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Desired outbound IP resources for Azure Spring Apps resource.
  */
 @Immutable
-public final class NetworkProfileOutboundIPs {
+public final class NetworkProfileOutboundIPs implements JsonSerializable<NetworkProfileOutboundIPs> {
     /*
      * A list of public IP addresses.
      */
-    @JsonProperty(value = "publicIPs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicIPs;
 
     /**
@@ -40,5 +43,41 @@ public final class NetworkProfileOutboundIPs {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfileOutboundIPs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfileOutboundIPs if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfileOutboundIPs.
+     */
+    public static NetworkProfileOutboundIPs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfileOutboundIPs deserializedNetworkProfileOutboundIPs = new NetworkProfileOutboundIPs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicIPs".equals(fieldName)) {
+                    List<String> publicIPs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkProfileOutboundIPs.publicIPs = publicIPs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfileOutboundIPs;
+        });
     }
 }

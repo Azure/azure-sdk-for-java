@@ -5,117 +5,105 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The CassandraClusterPublicStatusDataCentersItemNode model.
  */
 @Fluent
-public final class CassandraClusterPublicStatusDataCentersItemNode {
+public final class CassandraClusterPublicStatusDataCentersItemNode
+    implements JsonSerializable<CassandraClusterPublicStatusDataCentersItemNode> {
     /*
      * The node's IP address.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The state of the node in Cassandra ring.
      */
-    @JsonProperty(value = "state")
     private NodeState state;
 
     /*
      * The status property.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Cassandra service status on this node
      */
-    @JsonProperty(value = "cassandraProcessStatus")
     private String cassandraProcessStatus;
 
     /*
      * The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots
-     * subdirectories. Because all SSTable data files are included, any data that is not cleaned up (such as
-     * TTL-expired cells or tombstones) is counted.
+     * subdirectories. Because all SSTable data files are included, any data that is not cleaned up (such as TTL-expired
+     * cells or tombstones) is counted.
      */
-    @JsonProperty(value = "load")
     private String load;
 
     /*
      * List of tokens this node covers.
      */
-    @JsonProperty(value = "tokens")
     private List<String> tokens;
 
     /*
      * The size property.
      */
-    @JsonProperty(value = "size")
     private Integer size;
 
     /*
      * The network ID of the node.
      */
-    @JsonProperty(value = "hostID")
     private String hostId;
 
     /*
      * The rack this node is part of.
      */
-    @JsonProperty(value = "rack")
     private String rack;
 
     /*
      * The timestamp when these statistics were captured.
      */
-    @JsonProperty(value = "timestamp")
     private String timestamp;
 
     /*
      * The amount of disk used, in kB, of the directory /var/lib/cassandra.
      */
-    @JsonProperty(value = "diskUsedKB")
     private Long diskUsedKB;
 
     /*
      * The amount of disk free, in kB, of the directory /var/lib/cassandra.
      */
-    @JsonProperty(value = "diskFreeKB")
     private Long diskFreeKB;
 
     /*
      * Used memory (calculated as total - free - buffers - cache), in kB.
      */
-    @JsonProperty(value = "memoryUsedKB")
     private Long memoryUsedKB;
 
     /*
      * Memory used by kernel buffers (Buffers in /proc/meminfo) and page cache and slabs (Cached and SReclaimable in
      * /proc/meminfo), in kB.
      */
-    @JsonProperty(value = "memoryBuffersAndCachedKB")
     private Long memoryBuffersAndCachedKB;
 
     /*
      * Unused memory (MemFree and SwapFree in /proc/meminfo), in kB.
      */
-    @JsonProperty(value = "memoryFreeKB")
     private Long memoryFreeKB;
 
     /*
      * Total installed memory (MemTotal and SwapTotal in /proc/meminfo), in kB.
      */
-    @JsonProperty(value = "memoryTotalKB")
     private Long memoryTotalKB;
 
     /*
      * A float representing the current system-wide CPU utilization as a percentage.
      */
-    @JsonProperty(value = "cpuUsage")
     private Double cpuUsage;
 
     /**
@@ -476,5 +464,101 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("cassandraProcessStatus", this.cassandraProcessStatus);
+        jsonWriter.writeStringField("load", this.load);
+        jsonWriter.writeArrayField("tokens", this.tokens, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("hostID", this.hostId);
+        jsonWriter.writeStringField("rack", this.rack);
+        jsonWriter.writeStringField("timestamp", this.timestamp);
+        jsonWriter.writeNumberField("diskUsedKB", this.diskUsedKB);
+        jsonWriter.writeNumberField("diskFreeKB", this.diskFreeKB);
+        jsonWriter.writeNumberField("memoryUsedKB", this.memoryUsedKB);
+        jsonWriter.writeNumberField("memoryBuffersAndCachedKB", this.memoryBuffersAndCachedKB);
+        jsonWriter.writeNumberField("memoryFreeKB", this.memoryFreeKB);
+        jsonWriter.writeNumberField("memoryTotalKB", this.memoryTotalKB);
+        jsonWriter.writeNumberField("cpuUsage", this.cpuUsage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraClusterPublicStatusDataCentersItemNode from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraClusterPublicStatusDataCentersItemNode if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CassandraClusterPublicStatusDataCentersItemNode.
+     */
+    public static CassandraClusterPublicStatusDataCentersItemNode fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraClusterPublicStatusDataCentersItemNode deserializedCassandraClusterPublicStatusDataCentersItemNode
+                = new CassandraClusterPublicStatusDataCentersItemNode();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.address = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.state
+                        = NodeState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.status = reader.getString();
+                } else if ("cassandraProcessStatus".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.cassandraProcessStatus
+                        = reader.getString();
+                } else if ("load".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.load = reader.getString();
+                } else if ("tokens".equals(fieldName)) {
+                    List<String> tokens = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.tokens = tokens;
+                } else if ("size".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.size
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("hostID".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.hostId = reader.getString();
+                } else if ("rack".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.rack = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.timestamp = reader.getString();
+                } else if ("diskUsedKB".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.diskUsedKB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("diskFreeKB".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.diskFreeKB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryUsedKB".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.memoryUsedKB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryBuffersAndCachedKB".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.memoryBuffersAndCachedKB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryFreeKB".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.memoryFreeKB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryTotalKB".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.memoryTotalKB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("cpuUsage".equals(fieldName)) {
+                    deserializedCassandraClusterPublicStatusDataCentersItemNode.cpuUsage
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraClusterPublicStatusDataCentersItemNode;
+        });
     }
 }

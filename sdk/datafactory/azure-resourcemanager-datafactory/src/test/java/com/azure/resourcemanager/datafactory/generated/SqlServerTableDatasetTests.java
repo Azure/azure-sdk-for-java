@@ -19,35 +19,37 @@ public final class SqlServerTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerTableDataset model = BinaryData.fromString(
-            "{\"type\":\"ptlsrvqzgaqs\",\"typeProperties\":{\"tableName\":\"dataiuokglts\",\"schema\":\"dataoiobh\",\"table\":\"datab\"},\"description\":\"r\",\"structure\":\"datalvgrghnhuoxrqhjn\",\"schema\":\"datapesw\",\"linkedServiceName\":{\"referenceName\":\"nhqkgebzqz\",\"parameters\":{\"aosxsxoxvimdvetq\":\"dataviujojzdvms\",\"u\":\"datadbitqsbyujsgomri\",\"xgfygfkgxbd\":\"datagrmsdbv\"}},\"parameters\":{\"porrvkxtfctane\":{\"type\":\"SecureString\",\"defaultValue\":\"datawbdpsesboynpy\"}},\"annotations\":[\"dataqxdhnpjnezji\"],\"folder\":{\"name\":\"umltpmrzwv\"},\"\":{\"uqhngqqxjbsoto\":\"dataqffuxvf\"}}")
+            "{\"type\":\"SqlServerTable\",\"typeProperties\":{\"tableName\":\"dataszfutgpbygbnbc\",\"schema\":\"dataiqgtzpv\",\"table\":\"datawfl\"},\"description\":\"hxzuxerxhyw\",\"structure\":\"datakqsqvvdkfp\",\"schema\":\"datadajdqxymxxyfr\",\"linkedServiceName\":{\"referenceName\":\"j\",\"parameters\":{\"ld\":\"dataetfvgwfw\",\"rsnxfrp\":\"datagwouppvyddqsvc\",\"xzxlcqzfxa\":\"datawwqclmdmtfxxepz\"}},\"parameters\":{\"smkir\":{\"type\":\"SecureString\",\"defaultValue\":\"datacj\"},\"hkcomeobw\":{\"type\":\"Bool\",\"defaultValue\":\"dataipud\"}},\"annotations\":[\"datazltenlbfxl\",\"dataxozesn\"],\"folder\":{\"name\":\"uomtxj\"},\"\":{\"wis\":\"dataxymckikkqyvur\",\"ktehognsdd\":\"datayfmrzcqfevnkyak\"}}")
             .toObject(SqlServerTableDataset.class);
-        Assertions.assertEquals("r", model.description());
-        Assertions.assertEquals("nhqkgebzqz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("porrvkxtfctane").type());
-        Assertions.assertEquals("umltpmrzwv", model.folder().name());
+        Assertions.assertEquals("hxzuxerxhyw", model.description());
+        Assertions.assertEquals("j", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("smkir").type());
+        Assertions.assertEquals("uomtxj", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerTableDataset model = new SqlServerTableDataset().withDescription("r")
-            .withStructure("datalvgrghnhuoxrqhjn")
-            .withSchema("datapesw")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("nhqkgebzqz")
-                .withParameters(mapOf("aosxsxoxvimdvetq", "dataviujojzdvms", "u", "datadbitqsbyujsgomri", "xgfygfkgxbd",
-                    "datagrmsdbv")))
-            .withParameters(mapOf("porrvkxtfctane",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                    .withDefaultValue("datawbdpsesboynpy")))
-            .withAnnotations(Arrays.asList("dataqxdhnpjnezji"))
-            .withFolder(new DatasetFolder().withName("umltpmrzwv"))
-            .withTableName("dataiuokglts")
-            .withSchemaTypePropertiesSchema("dataoiobh")
-            .withTable("datab");
+        SqlServerTableDataset model
+            = new SqlServerTableDataset().withDescription("hxzuxerxhyw")
+                .withStructure("datakqsqvvdkfp")
+                .withSchema("datadajdqxymxxyfr")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("j")
+                    .withParameters(mapOf("ld", "dataetfvgwfw", "rsnxfrp", "datagwouppvyddqsvc", "xzxlcqzfxa",
+                        "datawwqclmdmtfxxepz")))
+                .withParameters(mapOf("smkir",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datacj"),
+                    "hkcomeobw",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataipud")))
+                .withAnnotations(Arrays.asList("datazltenlbfxl", "dataxozesn"))
+                .withFolder(new DatasetFolder().withName("uomtxj"))
+                .withTableName("dataszfutgpbygbnbc")
+                .withSchemaTypePropertiesSchema("dataiqgtzpv")
+                .withTable("datawfl");
         model = BinaryData.fromObject(model).toObject(SqlServerTableDataset.class);
-        Assertions.assertEquals("r", model.description());
-        Assertions.assertEquals("nhqkgebzqz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("porrvkxtfctane").type());
-        Assertions.assertEquals("umltpmrzwv", model.folder().name());
+        Assertions.assertEquals("hxzuxerxhyw", model.description());
+        Assertions.assertEquals("j", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("smkir").type());
+        Assertions.assertEquals("uomtxj", model.folder().name());
     }
 
     // Use "Map.of" if available

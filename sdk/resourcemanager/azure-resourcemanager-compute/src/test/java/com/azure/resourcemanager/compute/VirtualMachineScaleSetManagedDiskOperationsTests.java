@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -51,37 +51,31 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define(generateRandomResourceName("vmssvnet", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
-        VirtualMachineScaleSet vmScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withNewDataDisk(100)
-                .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
-                .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
-                .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS) // Override the default STANDARD_LRS
-                .create();
+        VirtualMachineScaleSet vmScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(100)
+            .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+            .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
+            .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS) // Override the default STANDARD_LRS
+            .create();
 
         Assertions.assertTrue(vmScaleSet.managedOSDiskStorageAccountType().equals(StorageAccountTypes.PREMIUM_LRS));
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
@@ -112,16 +106,13 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         // test attach/detach data disk to single instance
         final String diskName = generateRandomResourceName("disk", 10);
-        Disk disk0 =
-            this
-                .computeManager
-                .disks()
-                .define(diskName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withData()
-                .withSizeInGB(32)
-                .create();
+        Disk disk0 = this.computeManager.disks()
+            .define(diskName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withData()
+            .withSizeInGB(32)
+            .create();
 
         Iterator<VirtualMachineScaleSetVM> vmIterator = virtualMachines.iterator();
         VirtualMachineScaleSetVM vm0 = vmIterator.next();
@@ -155,8 +146,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         // cannot attach disk with same lun
         expectedException = null;
         try {
-            vm0
-                .update()
+            vm0.update()
                 .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE)
                 .withExistingDataDisk(disk0, newDiskLun, CachingTypes.NONE);
         } catch (IllegalStateException e) {
@@ -194,30 +184,27 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        VirtualMachine vm =
-            this
-                .computeManager
-                .virtualMachines()
-                .define(generateRandomResourceName("vm", 10))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername(userName)
-                .withSsh(sshPublicKey())
-                .withUnmanagedDisks()
-                .defineUnmanagedDataDisk("disk-1")
-                .withNewVhd(100)
-                .withLun(1)
-                .attach()
-                .defineUnmanagedDataDisk("disk-2")
-                .withNewVhd(50)
-                .withLun(2)
-                .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .create();
+        VirtualMachine vm = this.computeManager.virtualMachines()
+            .define(generateRandomResourceName("vm", 10))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername(userName)
+            .withSsh(sshPublicKey())
+            .withUnmanagedDisks()
+            .defineUnmanagedDataDisk("disk-1")
+            .withNewVhd(100)
+            .withLun(1)
+            .attach()
+            .defineUnmanagedDataDisk("disk-2")
+            .withNewVhd(50)
+            .withLun(2)
+            .attach()
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .create();
 
         Assertions.assertNotNull(vm);
 
@@ -229,45 +216,36 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         vm.deallocate();
         vm.generalize();
 
-        VirtualMachineCustomImage virtualMachineCustomImage =
-            this
-                .computeManager
-                .virtualMachineCustomImages()
-                .define(customImageName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .fromVirtualMachine(vm)
-                .create();
+        VirtualMachineCustomImage virtualMachineCustomImage = this.computeManager.virtualMachineCustomImages()
+            .define(customImageName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .fromVirtualMachine(vm)
+            .create();
 
         Assertions.assertNotNull(virtualMachineCustomImage);
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define(generateRandomResourceName("vmssvnet", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
-        VirtualMachineScaleSet vmScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D5_V2)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withoutPrimaryInternalLoadBalancer()
-                .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
-                .withRootUsername(userName)
-                .withSsh(sshPublicKey())
-                .create();
+        VirtualMachineScaleSet vmScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D1_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
+            .withRootUsername(userName)
+            .withSsh(sshPublicKey())
+            .create();
 
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         PagedIterable<VirtualMachineScaleSetVM> virtualMachines = virtualMachineScaleSetVMs.list();

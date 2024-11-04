@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-/** Samples for RoleAssignments List. */
+/**
+ * Samples for RoleAssignments List.
+ */
 public final class RoleAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_ListForSubscription.json
+     * x-ms-original-file:
+     * specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/
+     * RoleAssignments_ListForSubscription.json
      */
     /**
      * Sample code: List role assignments for subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listRoleAssignmentsForSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .accessManagement()
+        azure.accessManagement()
             .roleAssignments()
             .manager()
             .roleServiceClient()

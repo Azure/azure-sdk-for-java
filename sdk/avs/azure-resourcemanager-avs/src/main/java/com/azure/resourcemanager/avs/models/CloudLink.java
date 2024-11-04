@@ -4,78 +4,103 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.CloudLinkInner;
 
-/** An immutable client-side representation of CloudLink. */
+/**
+ * An immutable client-side representation of CloudLink.
+ */
 public interface CloudLink {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    CloudLinkProvisioningState provisioningState();
+
+    /**
      * Gets the status property: The state of the cloud link.
-     *
+     * 
      * @return the status value.
      */
     CloudLinkStatus status();
 
     /**
      * Gets the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @return the linkedCloud value.
      */
     String linkedCloud();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.CloudLinkInner object.
-     *
+     * 
      * @return the inner object.
      */
     CloudLinkInner innerModel();
 
-    /** The entirety of the CloudLink definition. */
+    /**
+     * The entirety of the CloudLink definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The CloudLink definition stages. */
+    /**
+     * The CloudLink definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the CloudLink definition. */
+        /**
+         * The first stage of the CloudLink definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the CloudLink definition allowing to specify parent resource. */
+        /**
+         * The stage of the CloudLink definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, privateCloudName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param privateCloudName The name of the private cloud.
+             * @param privateCloudName Name of the private cloud.
              * @return the next definition stage.
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
@@ -88,25 +113,27 @@ public interface CloudLink {
         interface WithCreate extends DefinitionStages.WithLinkedCloud {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             CloudLink create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             CloudLink create(Context context);
         }
 
-        /** The stage of the CloudLink definition allowing to specify linkedCloud. */
+        /**
+         * The stage of the CloudLink definition allowing to specify linkedCloud.
+         */
         interface WithLinkedCloud {
             /**
              * Specifies the linkedCloud property: Identifier of the other private cloud participating in the link..
-             *
+             * 
              * @param linkedCloud Identifier of the other private cloud participating in the link.
              * @return the next definition stage.
              */
@@ -116,36 +143,42 @@ public interface CloudLink {
 
     /**
      * Begins update for the CloudLink resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     CloudLink.Update update();
 
-    /** The template for CloudLink update. */
+    /**
+     * The template for CloudLink update.
+     */
     interface Update extends UpdateStages.WithLinkedCloud {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         CloudLink apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         CloudLink apply(Context context);
     }
 
-    /** The CloudLink update stages. */
+    /**
+     * The CloudLink update stages.
+     */
     interface UpdateStages {
-        /** The stage of the CloudLink update allowing to specify linkedCloud. */
+        /**
+         * The stage of the CloudLink update allowing to specify linkedCloud.
+         */
         interface WithLinkedCloud {
             /**
              * Specifies the linkedCloud property: Identifier of the other private cloud participating in the link..
-             *
+             * 
              * @param linkedCloud Identifier of the other private cloud participating in the link.
              * @return the next definition stage.
              */
@@ -155,14 +188,14 @@ public interface CloudLink {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     CloudLink refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

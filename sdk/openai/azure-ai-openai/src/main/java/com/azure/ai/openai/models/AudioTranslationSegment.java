@@ -78,7 +78,8 @@ public final class AudioTranslationSegment implements JsonSerializable<AudioTran
     /*
      * The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never represent
+     * The model may process several segments from a single seek position, so while the seek position will never
+     * represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      */

@@ -5,25 +5,46 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.IoTCheckRequirementsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Represents IoT requirements check request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("IOT")
+/**
+ * Represents IoT requirements check request.
+ */
 @Fluent
 public final class IoTCheckRequirements extends DataConnectorsCheckRequirements {
     /*
+     * Describes the kind of connector to be checked.
+     */
+    private DataConnectorKind kind = DataConnectorKind.IOT;
+
+    /*
      * IoT requirements check properties.
      */
-    @JsonProperty(value = "properties")
     private IoTCheckRequirementsProperties innerProperties;
 
     /**
+     * Creates an instance of IoTCheckRequirements class.
+     */
+    public IoTCheckRequirements() {
+    }
+
+    /**
+     * Get the kind property: Describes the kind of connector to be checked.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: IoT requirements check properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTCheckRequirementsProperties innerProperties() {
@@ -32,7 +53,7 @@ public final class IoTCheckRequirements extends DataConnectorsCheckRequirements 
 
     /**
      * Get the subscriptionId property: The subscription id to connect to, and get the data from.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -41,7 +62,7 @@ public final class IoTCheckRequirements extends DataConnectorsCheckRequirements 
 
     /**
      * Set the subscriptionId property: The subscription id to connect to, and get the data from.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the IoTCheckRequirements object itself.
      */
@@ -55,14 +76,52 @@ public final class IoTCheckRequirements extends DataConnectorsCheckRequirements 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTCheckRequirements from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTCheckRequirements if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTCheckRequirements.
+     */
+    public static IoTCheckRequirements fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTCheckRequirements deserializedIoTCheckRequirements = new IoTCheckRequirements();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedIoTCheckRequirements.kind = DataConnectorKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTCheckRequirements.innerProperties = IoTCheckRequirementsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTCheckRequirements;
+        });
     }
 }

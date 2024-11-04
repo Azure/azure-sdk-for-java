@@ -42,47 +42,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RestProxyTests {
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface {
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
-        Response<Void> testMethod(
-            @BodyParam("application/octet-stream") ByteBuffer request,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength
-        );
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+        Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
-        Response<Void> testMethod(
-            @BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength
-        );
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         Void testMethodReturnsVoid();
 
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200 })
         void testHeadMethod();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethodReturnsResponseVoid();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<InputStream> testDownload();
     }
 
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() throws IOException {
         HttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
-        try (Response<Void> response =
-            testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
+        try (Response<Void> response
+            = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -94,12 +86,12 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-
+    
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-
+    
         streamResponse.close();
-
+    
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
@@ -108,9 +100,7 @@ public class RestProxyTests {
     @MethodSource("knownLengthBinaryDataIsPassthroughArgumentProvider")
     public void knownLengthBinaryDataIsPassthrough(BinaryData data, long contentLength) {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
@@ -128,22 +118,17 @@ public class RestProxyTests {
 
         Files.write(file, bytes);
 
-        return Stream.of(
-            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
+        return Stream.of(Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
-                BinaryData.fromObject(bytes).getLength())
-        );
+            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length), Arguments
+                .of(Named.of("serializable", BinaryData.fromObject(bytes)), BinaryData.fromObject(bytes).getLength()));
     }
 
     @ParameterizedTest
     @MethodSource("doesNotChangeBinaryDataContentTypeDataProvider")
     public void doesNotChangeBinaryDataContentType(BinaryData data, long contentLength) {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
@@ -159,9 +144,7 @@ public class RestProxyTests {
     @Test
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
@@ -180,14 +163,12 @@ public class RestProxyTests {
         Files.write(file, bytes);
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
 
-        return Stream.of(
-            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
+        return Stream.of(Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
             Arguments.of(Named.of("stream", BinaryData.fromStream(stream, (long) bytes.length)), bytes.length),
             Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
-                BinaryData.fromObject(bytes).getLength())
-        );
+                BinaryData.fromObject(bytes).getLength()));
     }
 
     private static final class LocalHttpClient implements HttpClient {
@@ -197,7 +178,7 @@ public class RestProxyTests {
         @Override
         public Response<?> send(HttpRequest request) {
             lastHttpRequest = request;
-            boolean success = request.getUrl().getPath().equals("/my/url/path");
+            boolean success = request.getUri().getPath().equals("/my/uri/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
@@ -223,18 +204,16 @@ public class RestProxyTests {
 
     @Test
     public void doesNotChangeEncodedPath() throws IOException {
-        String nextLinkUrl =
-            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient((request) -> {
-                assertEquals(nextLinkUrl, request.getUrl().toString());
+        String nextLinkUri
+            = "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
+            assertEquals(nextLinkUri, request.getUri().toString());
 
-                return new MockHttpResponse(null, 200);
-            })
-            .build();
+            return new MockHttpResponse(null, 200);
+        }).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testListNext(nextLinkUrl).close();
+        testInterface.testListNext(nextLinkUri).close();
     }
 }

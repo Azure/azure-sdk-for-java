@@ -62,7 +62,7 @@ import static org.mockito.Mockito.when;
 public class WebSocketsProxyConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";
-    private static final int AMQP_PORT = 5671;
+    private static final int AMQPS_PORT = 5671;
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
@@ -213,7 +213,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             assertEquals(1, constructed.size());
             // The ProxyImpl object constructed inside addTransportLayer method.
             final ProxyImpl proxyImpl = constructed.get(0);
-            final String expectedConnectHostnameAndPort = HOSTNAME + ":" + AMQP_PORT;
+            final String expectedConnectHostnameAndPort = HOSTNAME + ":" + AMQPS_PORT;
             verify(proxyImpl).configure(eq(expectedConnectHostnameAndPort), any(), any(), any());
         }
     }
@@ -234,7 +234,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         final ConnectionOptions connectionOptionsWithCustomEndpoint
             = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope",
                 AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
-                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, customEndpointPort);
+                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, customEndpointPort, true);
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
             proxyOptions, peerDetails, AmqpMetricsProvider.noop());

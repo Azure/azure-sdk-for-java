@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface DeviceRegistryClient {
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -26,7 +26,7 @@ public interface DeviceRegistryClient {
     String getApiVersion();
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */

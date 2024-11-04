@@ -13,23 +13,23 @@ public final class ServiceStatusesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceStatuses model = BinaryData.fromString(
-            "{\"extensionService\":{\"status\":\"szdnr\",\"startupType\":\"qguhmuo\"},\"guestConfigurationService\":{\"status\":\"prwzwbnguitnwui\",\"startupType\":\"a\"}}")
+            "{\"extensionService\":{\"status\":\"gug\",\"startupType\":\"krxd\"},\"guestConfigurationService\":{\"status\":\"dt\",\"startupType\":\"zrvqdr\"}}")
             .toObject(ServiceStatuses.class);
-        Assertions.assertEquals("szdnr", model.extensionService().status());
-        Assertions.assertEquals("qguhmuo", model.extensionService().startupType());
-        Assertions.assertEquals("prwzwbnguitnwui", model.guestConfigurationService().status());
-        Assertions.assertEquals("a", model.guestConfigurationService().startupType());
+        Assertions.assertEquals("gug", model.extensionService().status());
+        Assertions.assertEquals("krxd", model.extensionService().startupType());
+        Assertions.assertEquals("dt", model.guestConfigurationService().status());
+        Assertions.assertEquals("zrvqdr", model.guestConfigurationService().startupType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceStatuses model = new ServiceStatuses()
-            .withExtensionService(new ServiceStatus().withStatus("szdnr").withStartupType("qguhmuo"))
-            .withGuestConfigurationService(new ServiceStatus().withStatus("prwzwbnguitnwui").withStartupType("a"));
+        ServiceStatuses model
+            = new ServiceStatuses().withExtensionService(new ServiceStatus().withStatus("gug").withStartupType("krxd"))
+                .withGuestConfigurationService(new ServiceStatus().withStatus("dt").withStartupType("zrvqdr"));
         model = BinaryData.fromObject(model).toObject(ServiceStatuses.class);
-        Assertions.assertEquals("szdnr", model.extensionService().status());
-        Assertions.assertEquals("qguhmuo", model.extensionService().startupType());
-        Assertions.assertEquals("prwzwbnguitnwui", model.guestConfigurationService().status());
-        Assertions.assertEquals("a", model.guestConfigurationService().startupType());
+        Assertions.assertEquals("gug", model.extensionService().status());
+        Assertions.assertEquals("krxd", model.extensionService().startupType());
+        Assertions.assertEquals("dt", model.guestConfigurationService().status());
+        Assertions.assertEquals("zrvqdr", model.guestConfigurationService().startupType());
     }
 }

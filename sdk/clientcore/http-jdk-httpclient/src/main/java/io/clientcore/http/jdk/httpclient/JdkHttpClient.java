@@ -43,14 +43,13 @@ import static io.clientcore.http.jdk.httpclient.implementation.JdkHttpUtils.from
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
-    private final java.net.http.HttpClient jdkHttpClient;
-
     private final Set<String> restrictedHeaders;
-
     private final Duration writeTimeout;
     private final Duration responseTimeout;
     private final Duration readTimeout;
     private final boolean hasReadTimeout;
+
+    final java.net.http.HttpClient jdkHttpClient;
 
     JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
         Duration responseTimeout, Duration readTimeout) {
@@ -209,7 +208,8 @@ class JdkHttpClient implements HttpClient {
 
         }
 
-        return new JdkHttpResponse(request, response.statusCode(), coreHeaders, body == null ? BinaryData.EMPTY : body);
+        return new JdkHttpResponse(request, response.statusCode(), coreHeaders,
+            body == null ? BinaryData.empty() : body);
     }
 
     private static ResponseBodyMode getResponseBodyMode(HttpRequest request, String contentType,

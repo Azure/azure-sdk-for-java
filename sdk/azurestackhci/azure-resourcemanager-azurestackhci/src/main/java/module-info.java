@@ -10,10 +10,6 @@ module com.azure.resourcemanager.azurestackhci {
     exports com.azure.resourcemanager.azurestackhci.fluent.models;
     exports com.azure.resourcemanager.azurestackhci.models;
 
-    opens com.azure.resourcemanager.azurestackhci.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.azurestackhci.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.azurestackhci.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.azurestackhci.models to com.azure.core;
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DeploymentLogs model. */
+/**
+ * The DeploymentLogs model.
+ */
 @Fluent
-public final class DeploymentLogsInner {
+public final class DeploymentLogsInner implements JsonSerializable<DeploymentLogsInner> {
     /*
      * The retrieved online deployment logs.
      */
-    @JsonProperty(value = "content")
     private String content;
 
-    /** Creates an instance of DeploymentLogsInner class. */
+    /**
+     * Creates an instance of DeploymentLogsInner class.
+     */
     public DeploymentLogsInner() {
     }
 
     /**
      * Get the content property: The retrieved online deployment logs.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -31,7 +38,7 @@ public final class DeploymentLogsInner {
 
     /**
      * Set the content property: The retrieved online deployment logs.
-     *
+     * 
      * @param content the content value to set.
      * @return the DeploymentLogsInner object itself.
      */
@@ -42,9 +49,45 @@ public final class DeploymentLogsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentLogsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentLogsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentLogsInner.
+     */
+    public static DeploymentLogsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentLogsInner deserializedDeploymentLogsInner = new DeploymentLogsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedDeploymentLogsInner.content = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentLogsInner;
+        });
     }
 }

@@ -39,7 +39,7 @@ default_project = Project(None, None, None, None)
 valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -55,10 +55,15 @@ sdk_string = "/sdk/"
 # Function that creates the aggregate POM.
 def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
     artifacts_list_identifiers = artifacts_list.split(',')
-    
+
     additional_modules_identifiers = []
     if additional_modules_list is not None:
         additional_modules_identifiers = additional_modules_list.split(',')
+        # Combine the lists so dependencies are calculated correctly. While there
+        # should be no duplicates between the artifacts list and additional modules,
+        # it's better to be safe. This will remove the duplicates
+        combined_list = artifacts_list_identifiers + additional_modules_identifiers
+        artifacts_list_identifiers = list(set(combined_list))
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
@@ -83,7 +88,6 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
 
     # Finally map the project identifiers to projects.
     add_source_projects(source_projects, artifacts_list_identifiers, projects)
-    add_source_projects(source_projects, additional_modules_identifiers, projects)
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
 

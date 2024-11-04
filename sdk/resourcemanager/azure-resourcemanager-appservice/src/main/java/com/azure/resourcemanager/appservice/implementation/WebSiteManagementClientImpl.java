@@ -33,13 +33,13 @@ import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsRequestHistoriesClient;
-import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionScopeRepetitionsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionScopeRepetitionsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowsClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowTriggerHistoriesClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowTriggersClient;
 import com.azure.resourcemanager.appservice.fluent.WorkflowVersionsClient;
-import com.azure.resourcemanager.appservice.fluent.WorkflowsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -585,7 +585,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-01-01";
+        this.apiVersion = "2023-12-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
         this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);

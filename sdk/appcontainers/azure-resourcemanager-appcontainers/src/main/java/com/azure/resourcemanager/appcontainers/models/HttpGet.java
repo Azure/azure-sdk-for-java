@@ -6,30 +6,31 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Model representing a http get request.
  */
 @Fluent
-public final class HttpGet {
+public final class HttpGet implements JsonSerializable<HttpGet> {
     /*
      * URL to make HTTP GET request against.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Name of the file that the request should be saved to.
      */
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
      * List of headers to send with the request.
      */
-    @JsonProperty(value = "headers")
     private List<String> headers;
 
     /**
@@ -105,10 +106,53 @@ public final class HttpGet {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property url in model HttpGet"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property url in model HttpGet"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpGet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpGet if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HttpGet.
+     */
+    public static HttpGet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpGet deserializedHttpGet = new HttpGet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedHttpGet.url = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedHttpGet.fileName = reader.getString();
+                } else if ("headers".equals(fieldName)) {
+                    List<String> headers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHttpGet.headers = headers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpGet;
+        });
+    }
 }

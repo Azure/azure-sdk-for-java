@@ -31,9 +31,9 @@ import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.KeyInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployLogInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.NetworkFeaturesInner;
 import com.azure.resourcemanager.appservice.fluent.models.NetworkTraceInner;
 import com.azure.resourcemanager.appservice.fluent.models.OperationInner;
@@ -54,6 +54,7 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsV2Inne
 import com.azure.resourcemanager.appservice.fluent.models.SiteCloneabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigurationSnapshotInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteContainerInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteExtensionInfoInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
@@ -78,10 +79,9 @@ import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
 import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
 import com.azure.resourcemanager.appservice.models.DeletedAppRestoreRequest;
-import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.MigrateMySqlRequest;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.PremierAddOnPatchResource;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.SnapshotRestoreRequest;
 import com.azure.resourcemanager.appservice.models.StorageMigrationOptions;
 import com.azure.resourcemanager.appservice.models.WorkflowArtifacts;
@@ -1383,7 +1383,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1403,7 +1403,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1421,7 +1421,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1440,7 +1440,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1526,7 +1526,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1546,7 +1546,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1564,7 +1564,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1583,7 +1583,7 @@ public interface WebAppsClient
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11349,7 +11349,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11360,7 +11360,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(String resourceGroupName,
         String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -11370,7 +11370,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11380,7 +11380,8 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -11390,7 +11391,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11400,7 +11401,8 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -11410,7 +11412,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -11421,8 +11423,8 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context);
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -11432,7 +11434,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11442,7 +11444,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -11452,7 +11454,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11462,7 +11464,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -11472,7 +11474,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -11483,7 +11485,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context);
 
     /**
      * Deletes a private endpoint connection
@@ -13055,6 +13057,244 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void restoreSnapshot(String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest, Context context);
+
+    /**
+     * Lists all the site containers of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of site containers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteContainerInner> listSiteContainersAsync(String resourceGroupName, String name);
+
+    /**
+     * Lists all the site containers of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of site containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteContainerInner> listSiteContainers(String resourceGroupName, String name);
+
+    /**
+     * Lists all the site containers of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of site containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteContainerInner> listSiteContainers(String resourceGroupName, String name, Context context);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteContainerInner>> getSiteContainerWithResponseAsync(String resourceGroupName, String name,
+        String containerName);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteContainerInner> getSiteContainerAsync(String resourceGroupName, String name, String containerName);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteContainerInner> getSiteContainerWithResponse(String resourceGroupName, String name,
+        String containerName, Context context);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteContainerInner getSiteContainer(String resourceGroupName, String name, String containerName);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteContainerInner>> createOrUpdateSiteContainerWithResponseAsync(String resourceGroupName,
+        String name, String containerName, SiteContainerInner request);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteContainerInner> createOrUpdateSiteContainerAsync(String resourceGroupName, String name,
+        String containerName, SiteContainerInner request);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteContainerInner> createOrUpdateSiteContainerWithResponse(String resourceGroupName, String name,
+        String containerName, SiteContainerInner request, Context context);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteContainerInner createOrUpdateSiteContainer(String resourceGroupName, String name, String containerName,
+        SiteContainerInner request);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteSiteContainerWithResponseAsync(String resourceGroupName, String name,
+        String containerName);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteSiteContainerAsync(String resourceGroupName, String name, String containerName);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteSiteContainerWithResponse(String resourceGroupName, String name, String containerName,
+        Context context);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSiteContainer(String resourceGroupName, String name, String containerName);
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
@@ -14684,7 +14924,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14705,7 +14945,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14724,7 +14964,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -14745,7 +14985,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14837,7 +15077,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14858,7 +15098,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14877,7 +15117,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -14898,7 +15138,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -24915,7 +25155,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -24926,7 +25166,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionSlotWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -24937,7 +25177,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -24948,7 +25188,7 @@ public interface WebAppsClient
     PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionSlotAsync(String resourceGroupName, String name,
             String privateEndpointConnectionName, String slot,
-            PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -24959,7 +25199,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -24970,7 +25210,7 @@ public interface WebAppsClient
     SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionSlot(String resourceGroupName, String name,
             String privateEndpointConnectionName, String slot,
-            PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -24981,7 +25221,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -24993,7 +25233,7 @@ public interface WebAppsClient
     SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionSlot(String resourceGroupName, String name,
             String privateEndpointConnectionName, String slot,
-            PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context);
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -25004,7 +25244,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25014,7 +25254,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionSlotAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -25025,7 +25265,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25035,7 +25275,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnectionSlot(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper);
 
     /**
      * Approves or rejects a private endpoint connection
@@ -25046,7 +25286,7 @@ public interface WebAppsClient
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -25057,7 +25297,7 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnectionSlot(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context);
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context);
 
     /**
      * Deletes a private endpoint connection
@@ -26791,6 +27031,276 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     void restoreSnapshotSlot(String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest,
         Context context);
+
+    /**
+     * Lists all the site containers of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a list of site containers
+     * for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of site containers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SiteContainerInner> listSiteContainersSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Lists all the site containers of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a list of site containers
+     * for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of site containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteContainerInner> listSiteContainersSlot(String resourceGroupName, String name, String slot);
+
+    /**
+     * Lists all the site containers of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a list of site containers
+     * for the production slot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of site containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteContainerInner> listSiteContainersSlot(String resourceGroupName, String name, String slot,
+        Context context);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteContainerInner>> getSiteContainerSlotWithResponseAsync(String resourceGroupName, String name,
+        String slot, String containerName);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteContainerInner> getSiteContainerSlotAsync(String resourceGroupName, String name, String slot,
+        String containerName);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteContainerInner> getSiteContainerSlotWithResponse(String resourceGroupName, String name, String slot,
+        String containerName, Context context);
+
+    /**
+     * Gets a site container of a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a site container of a site, or a deployment slot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteContainerInner getSiteContainerSlot(String resourceGroupName, String name, String slot, String containerName);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteContainerInner>> createOrUpdateSiteContainerSlotWithResponseAsync(String resourceGroupName,
+        String name, String slot, String containerName, SiteContainerInner request);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteContainerInner> createOrUpdateSiteContainerSlotAsync(String resourceGroupName, String name, String slot,
+        String containerName, SiteContainerInner request);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteContainerInner> createOrUpdateSiteContainerSlotWithResponse(String resourceGroupName, String name,
+        String slot, String containerName, SiteContainerInner request, Context context);
+
+    /**
+     * Creates or Updates a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @param request Container Entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container of a site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteContainerInner createOrUpdateSiteContainerSlot(String resourceGroupName, String name, String slot,
+        String containerName, SiteContainerInner request);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteSiteContainerSlotWithResponseAsync(String resourceGroupName, String name, String slot,
+        String containerName);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteSiteContainerSlotAsync(String resourceGroupName, String name, String slot, String containerName);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteSiteContainerSlotWithResponse(String resourceGroupName, String name, String slot,
+        String containerName, Context context);
+
+    /**
+     * Deletes a site container for a site, or a deployment slot.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
+     * production slot.
+     * @param containerName Site Container Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSiteContainerSlot(String resourceGroupName, String name, String slot, String containerName);
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.

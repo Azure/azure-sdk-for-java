@@ -13,13 +13,14 @@ public final class FormatReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FormatReadSettings model = BinaryData.fromString(
-            "{\"type\":\"lgkkiuq\",\"\":{\"qaf\":\"dataafobpyeobrtae\",\"kelow\":\"datahpkiiunyrob\",\"upski\":\"datamrvdtqhrtnqssqy\",\"aued\":\"dataokphamefzzgwj\"}}")
+            "{\"type\":\"FormatReadSettings\",\"\":{\"gdaajlhgsuqmrky\":\"datazmixwaxtnkvtzdvx\",\"hpqlxnbdjt\":\"dataovcbdsr\"}}")
             .toObject(FormatReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FormatReadSettings model = new FormatReadSettings().withAdditionalProperties(mapOf("type", "lgkkiuq"));
+        FormatReadSettings model
+            = new FormatReadSettings().withAdditionalProperties(mapOf("type", "FormatReadSettings"));
         model = BinaryData.fromObject(model).toObject(FormatReadSettings.class);
     }
 

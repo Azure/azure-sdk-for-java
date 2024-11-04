@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The MultiLanguageAnalysisInput model. */
+/**
+ * The MultiLanguageAnalysisInput model.
+ */
 @Fluent
 public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiLanguageAnalysisInput> {
     /*
@@ -20,12 +22,15 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
      */
     private List<MultiLanguageInput> documents;
 
-    /** Creates an instance of MultiLanguageAnalysisInput class. */
-    public MultiLanguageAnalysisInput() {}
+    /**
+     * Creates an instance of MultiLanguageAnalysisInput class.
+     */
+    public MultiLanguageAnalysisInput() {
+    }
 
     /**
      * Get the documents property: The documents property.
-     *
+     * 
      * @return the documents value.
      */
     public List<MultiLanguageInput> getDocuments() {
@@ -34,7 +39,7 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
 
     /**
      * Set the documents property: The documents property.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the MultiLanguageAnalysisInput object itself.
      */
@@ -43,6 +48,9 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -52,31 +60,29 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
 
     /**
      * Reads an instance of MultiLanguageAnalysisInput from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MultiLanguageAnalysisInput if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MultiLanguageAnalysisInput.
      */
     public static MultiLanguageAnalysisInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    MultiLanguageAnalysisInput deserializedMultiLanguageAnalysisInput =
-                            new MultiLanguageAnalysisInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            MultiLanguageAnalysisInput deserializedMultiLanguageAnalysisInput = new MultiLanguageAnalysisInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("documents".equals(fieldName)) {
-                            List<MultiLanguageInput> documents =
-                                    reader.readArray(reader1 -> MultiLanguageInput.fromJson(reader1));
-                            deserializedMultiLanguageAnalysisInput.documents = documents;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("documents".equals(fieldName)) {
+                    List<MultiLanguageInput> documents
+                        = reader.readArray(reader1 -> MultiLanguageInput.fromJson(reader1));
+                    deserializedMultiLanguageAnalysisInput.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedMultiLanguageAnalysisInput;
-                });
+            return deserializedMultiLanguageAnalysisInput;
+        });
     }
 }

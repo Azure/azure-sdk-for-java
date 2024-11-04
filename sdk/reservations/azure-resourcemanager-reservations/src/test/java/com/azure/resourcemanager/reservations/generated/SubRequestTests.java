@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SubRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubRequest model =
-            BinaryData
-                .fromString(
-                    "{\"limit\":1110186498,\"name\":{\"value\":\"kjj\",\"localizedValue\":\"xrbuukzclew\"},\"resourceType\":\"mlwpazt\",\"unit\":\"ofncckwyfzqwhxxb\",\"provisioningState\":\"Failed\",\"message\":\"xzfe\",\"subRequestId\":\"tpp\"}")
-                .toObject(SubRequest.class);
-        Assertions.assertEquals("kjj", model.name().value());
-        Assertions.assertEquals("ofncckwyfzqwhxxb", model.unit());
-        Assertions.assertEquals(QuotaRequestState.FAILED, model.provisioningState());
+        SubRequest model = BinaryData.fromString(
+            "{\"limit\":1622767746,\"name\":{\"value\":\"nnqvsa\",\"localizedValue\":\"qntorudsgsahmkyc\"},\"resourceType\":\"auwjuetaebu\",\"unit\":\"vdmovsmzlxwabm\",\"provisioningState\":\"Accepted\",\"message\":\"kif\",\"subRequestId\":\"tpuqujmq\"}")
+            .toObject(SubRequest.class);
+        Assertions.assertEquals("nnqvsa", model.name().value());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.unit());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubRequest model =
-            new SubRequest()
-                .withName(new ResourceName().withValue("kjj"))
-                .withUnit("ofncckwyfzqwhxxb")
-                .withProvisioningState(QuotaRequestState.FAILED);
+        SubRequest model = new SubRequest().withName(new ResourceName().withValue("nnqvsa"))
+            .withUnit("vdmovsmzlxwabm")
+            .withProvisioningState(QuotaRequestState.ACCEPTED);
         model = BinaryData.fromObject(model).toObject(SubRequest.class);
-        Assertions.assertEquals("kjj", model.name().value());
-        Assertions.assertEquals("ofncckwyfzqwhxxb", model.unit());
-        Assertions.assertEquals(QuotaRequestState.FAILED, model.provisioningState());
+        Assertions.assertEquals("nnqvsa", model.name().value());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.unit());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.provisioningState());
     }
 }

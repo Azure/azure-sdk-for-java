@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DNS Service log level. */
+/**
+ * DNS service log level.
+ */
 public final class DnsServiceLogLevelEnum extends ExpandableStringEnum<DnsServiceLogLevelEnum> {
-    /** Static value DEBUG for DnsServiceLogLevelEnum. */
+    /**
+     * Static value DEBUG for DnsServiceLogLevelEnum.
+     */
     public static final DnsServiceLogLevelEnum DEBUG = fromString("DEBUG");
 
-    /** Static value INFO for DnsServiceLogLevelEnum. */
+    /**
+     * Static value INFO for DnsServiceLogLevelEnum.
+     */
     public static final DnsServiceLogLevelEnum INFO = fromString("INFO");
 
-    /** Static value WARNING for DnsServiceLogLevelEnum. */
+    /**
+     * Static value WARNING for DnsServiceLogLevelEnum.
+     */
     public static final DnsServiceLogLevelEnum WARNING = fromString("WARNING");
 
-    /** Static value ERROR for DnsServiceLogLevelEnum. */
+    /**
+     * Static value ERROR for DnsServiceLogLevelEnum.
+     */
     public static final DnsServiceLogLevelEnum ERROR = fromString("ERROR");
 
-    /** Static value FATAL for DnsServiceLogLevelEnum. */
+    /**
+     * Static value FATAL for DnsServiceLogLevelEnum.
+     */
     public static final DnsServiceLogLevelEnum FATAL = fromString("FATAL");
 
     /**
      * Creates a new instance of DnsServiceLogLevelEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class DnsServiceLogLevelEnum extends ExpandableStringEnum<DnsServic
 
     /**
      * Creates or finds a DnsServiceLogLevelEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsServiceLogLevelEnum.
      */
-    @JsonCreator
     public static DnsServiceLogLevelEnum fromString(String name) {
         return fromString(name, DnsServiceLogLevelEnum.class);
     }
 
     /**
      * Gets known DnsServiceLogLevelEnum values.
-     *
+     * 
      * @return known DnsServiceLogLevelEnum values.
      */
     public static Collection<DnsServiceLogLevelEnum> values() {

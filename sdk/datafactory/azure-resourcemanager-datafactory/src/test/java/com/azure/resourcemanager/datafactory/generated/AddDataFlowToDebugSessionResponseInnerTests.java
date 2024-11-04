@@ -12,14 +12,14 @@ public final class AddDataFlowToDebugSessionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddDataFlowToDebugSessionResponseInner model
-            = BinaryData.fromString("{\"jobVersion\":\"r\"}").toObject(AddDataFlowToDebugSessionResponseInner.class);
-        Assertions.assertEquals("r", model.jobVersion());
+            = BinaryData.fromString("{\"jobVersion\":\"l\"}").toObject(AddDataFlowToDebugSessionResponseInner.class);
+        Assertions.assertEquals("l", model.jobVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddDataFlowToDebugSessionResponseInner model = new AddDataFlowToDebugSessionResponseInner().withJobVersion("r");
+        AddDataFlowToDebugSessionResponseInner model = new AddDataFlowToDebugSessionResponseInner().withJobVersion("l");
         model = BinaryData.fromObject(model).toObject(AddDataFlowToDebugSessionResponseInner.class);
-        Assertions.assertEquals("r", model.jobVersion());
+        Assertions.assertEquals("l", model.jobVersion());
     }
 }

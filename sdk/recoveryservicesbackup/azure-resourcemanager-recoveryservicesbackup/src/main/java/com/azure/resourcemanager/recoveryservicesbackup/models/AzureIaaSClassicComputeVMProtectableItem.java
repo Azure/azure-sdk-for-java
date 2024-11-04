@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * IaaS VM workload-specific backup item representing the Classic Compute VM.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectableItemType",
+    defaultImpl = AzureIaaSClassicComputeVMProtectableItem.class,
+    visible = true)
 @JsonTypeName("Microsoft.ClassicCompute/virtualMachines")
 @Fluent
 public final class AzureIaaSClassicComputeVMProtectableItem extends IaaSvmProtectableItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableItemType", required = true)
+    private String protectableItemType = "Microsoft.ClassicCompute/virtualMachines";
+
     /**
      * Creates an instance of AzureIaaSClassicComputeVMProtectableItem class.
      */
     public AzureIaaSClassicComputeVMProtectableItem() {
+    }
+
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
     }
 
     /**

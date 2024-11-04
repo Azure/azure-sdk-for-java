@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A class represent the compliance result. */
+/**
+ * A class represent the compliance result.
+ */
 @Immutable
-public final class ComplianceResult {
+public final class ComplianceResult implements JsonSerializable<ComplianceResult> {
     /*
      * The name of the compliance. e.g. "M365"
      */
-    @JsonProperty(value = "complianceName", access = JsonProperty.Access.WRITE_ONLY)
     private String complianceName;
 
     /*
      * List of categories.
      */
-    @JsonProperty(value = "categories", access = JsonProperty.Access.WRITE_ONLY)
     private List<Category> categories;
 
-    /** Creates an instance of ComplianceResult class. */
+    /**
+     * Creates an instance of ComplianceResult class.
+     */
     public ComplianceResult() {
     }
 
     /**
      * Get the complianceName property: The name of the compliance. e.g. "M365".
-     *
+     * 
      * @return the complianceName value.
      */
     public String complianceName() {
@@ -38,7 +44,7 @@ public final class ComplianceResult {
 
     /**
      * Get the categories property: List of categories.
-     *
+     * 
      * @return the categories value.
      */
     public List<Category> categories() {
@@ -47,12 +53,50 @@ public final class ComplianceResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (categories() != null) {
             categories().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComplianceResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComplianceResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComplianceResult.
+     */
+    public static ComplianceResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComplianceResult deserializedComplianceResult = new ComplianceResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("complianceName".equals(fieldName)) {
+                    deserializedComplianceResult.complianceName = reader.getString();
+                } else if ("categories".equals(fieldName)) {
+                    List<Category> categories = reader.readArray(reader1 -> Category.fromJson(reader1));
+                    deserializedComplianceResult.categories = categories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComplianceResult;
+        });
     }
 }

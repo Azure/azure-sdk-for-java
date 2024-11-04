@@ -5,31 +5,49 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC
  * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MultiPoint")
 @Fluent
 public final class GeoJsonMultiPoint extends GeoJsonGeometry {
     /*
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     */
+    private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_MULTI_POINT;
+
+    /*
      * Coordinates for the `GeoJson MultiPoint` geometry.
      */
-    @JsonProperty(value = "coordinates", required = true)
     private List<List<Double>> coordinates;
 
-    /** Creates an instance of GeoJsonMultiPoint class. */
-    public GeoJsonMultiPoint() {}
+    /**
+     * Creates an instance of GeoJsonMultiPoint class.
+     */
+    public GeoJsonMultiPoint() {
+    }
+
+    /**
+     * Get the type property: Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point,
+     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and
+     * FeatureCollection.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public GeoJsonObjectType getType() {
+        return this.type;
+    }
 
     /**
      * Get the coordinates property: Coordinates for the `GeoJson MultiPoint` geometry.
-     *
+     * 
      * @return the coordinates value.
      */
     public List<List<Double>> getCoordinates() {
@@ -38,12 +56,55 @@ public final class GeoJsonMultiPoint extends GeoJsonGeometry {
 
     /**
      * Set the coordinates property: Coordinates for the `GeoJson MultiPoint` geometry.
-     *
+     * 
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonMultiPoint object itself.
      */
     public GeoJsonMultiPoint setCoordinates(List<List<Double>> coordinates) {
         this.coordinates = coordinates;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("coordinates", this.coordinates,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeDouble(element1)));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoJsonMultiPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoJsonMultiPoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoJsonMultiPoint.
+     */
+    public static GeoJsonMultiPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoJsonMultiPoint deserializedGeoJsonMultiPoint = new GeoJsonMultiPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("coordinates".equals(fieldName)) {
+                    List<List<Double>> coordinates
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getDouble()));
+                    deserializedGeoJsonMultiPoint.coordinates = coordinates;
+                } else if ("type".equals(fieldName)) {
+                    deserializedGeoJsonMultiPoint.type = GeoJsonObjectType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoJsonMultiPoint;
+        });
     }
 }

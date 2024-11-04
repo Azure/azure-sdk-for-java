@@ -22,7 +22,7 @@ public final class FleetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"xqhabi\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"zb\"},\"agentProfile\":{\"subnetId\":\"npqxuh\",\"vmSize\":\"y\"},\"fqdn\":\"iwbybrkxvdumjg\",\"kubernetesVersion\":\"fwvuk\",\"portalFqdn\":\"audccsnhs\"}},\"eTag\":\"nyejhkryhtnap\",\"identity\":{\"principalId\":\"49001f48-1c5c-4e49-9eff-cbb4546b1b75\",\"tenantId\":\"5d578534-e9eb-425e-9053-b5f30fae8a41\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mkkvnip\":{\"principalId\":\"a628debd-5b28-4bcd-934f-0d345785def9\",\"clientId\":\"25802801-4428-4ee1-b9f0-3bc56ae69949\"}}},\"location\":\"xzjnchgejs\",\"tags\":{\"ahuxinpm\":\"mailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\",\"vwryoqpso\":\"odjpslwejd\"},\"id\":\"cctazakljlahbc\",\"name\":\"yffdfdos\",\"type\":\"gexpaojakhmsbz\"}],\"nextLink\":\"crzevdphlx\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"xqhabi\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"zb\"},\"agentProfile\":{\"subnetId\":\"npqxuh\",\"vmSize\":\"y\"},\"fqdn\":\"iwbybrkxvdumjg\",\"kubernetesVersion\":\"fwvuk\",\"portalFqdn\":\"audccsnhs\"}},\"eTag\":\"nyejhkryhtnap\",\"identity\":{\"principalId\":\"9129709b-b1c6-4d07-8aed-9118fbbd221e\",\"tenantId\":\"f900dab4-8d8c-4265-8181-bde62eb3e9c1\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mkkvnip\":{\"principalId\":\"8d8d28f4-cb24-4154-910a-e49e8c25945a\",\"clientId\":\"13a0dec1-d80d-4237-b503-5ffc5f429ee2\"}}},\"location\":\"xzjnchgejs\",\"tags\":{\"ahuxinpm\":\"mailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\",\"vwryoqpso\":\"odjpslwejd\"},\"id\":\"cctazakljlahbc\",\"name\":\"yffdfdos\",\"type\":\"gexpaojakhmsbz\"}],\"nextLink\":\"crzevdphlx\"}")
             .toObject(FleetListResult.class);
         Assertions.assertEquals("xzjnchgejs", model.value().get(0).location());
         Assertions.assertEquals("mailzydehojw", model.value().get(0).tags().get("ahuxinpm"));
@@ -48,7 +48,8 @@ public final class FleetListResultTests {
                     .withUserAssignedIdentities(mapOf("mkkvnip", new UserAssignedIdentity())))
                 .withHubProfile(new FleetHubProfile().withDnsPrefix("xqhabi")
                     .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(true)
-                        .withEnableVnetIntegration(false).withSubnetId("zb"))
+                        .withEnableVnetIntegration(false)
+                        .withSubnetId("zb"))
                     .withAgentProfile(new AgentProfile().withSubnetId("npqxuh").withVmSize("y")))))
             .withNextLink("crzevdphlx");
         model = BinaryData.fromObject(model).toObject(FleetListResult.class);

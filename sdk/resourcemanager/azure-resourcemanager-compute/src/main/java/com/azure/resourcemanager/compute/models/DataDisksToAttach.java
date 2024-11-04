@@ -6,51 +6,49 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the data disk to be attached.
  */
 @Fluent
-public final class DataDisksToAttach {
+public final class DataDisksToAttach implements JsonSerializable<DataDisksToAttach> {
     /*
      * ID of the managed data disk.
      */
-    @JsonProperty(value = "diskId", required = true)
     private String diskId;
 
     /*
      * The logical unit number of the data disk. This value is used to identify data disks within the VM and therefore
      * must be unique for each data disk attached to a VM. If not specified, lun would be auto assigned.
      */
-    @JsonProperty(value = "lun")
     private Integer lun;
 
     /*
      * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting
      * behavior is: **None for Standard storage. ReadOnly for Premium storage.**
      */
-    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
      * Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
-     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data
-     * disk is retained after VM is deleted. The default value is set to **Detach**.
+     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data disk
+     * is retained after VM is deleted. The default value is set to **Detach**.
      */
-    @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
     /*
      * Specifies the customer managed disk encryption set resource id for the managed disk.
      */
-    @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /**
@@ -172,8 +170,8 @@ public final class DataDisksToAttach {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -182,8 +180,8 @@ public final class DataDisksToAttach {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the DataDisksToAttach object itself.
@@ -200,8 +198,8 @@ public final class DataDisksToAttach {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskId in model DataDisksToAttach"));
         }
         if (diskEncryptionSet() != null) {
             diskEncryptionSet().validate();
@@ -209,4 +207,56 @@ public final class DataDisksToAttach {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataDisksToAttach.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeNumberField("lun", this.lun);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        jsonWriter.writeJsonField("diskEncryptionSet", this.diskEncryptionSet);
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataDisksToAttach from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataDisksToAttach if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataDisksToAttach.
+     */
+    public static DataDisksToAttach fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataDisksToAttach deserializedDataDisksToAttach = new DataDisksToAttach();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedDataDisksToAttach.diskId = reader.getString();
+                } else if ("lun".equals(fieldName)) {
+                    deserializedDataDisksToAttach.lun = reader.getNullable(JsonReader::getInt);
+                } else if ("caching".equals(fieldName)) {
+                    deserializedDataDisksToAttach.caching = CachingTypes.fromString(reader.getString());
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedDataDisksToAttach.deleteOption = DiskDeleteOptionTypes.fromString(reader.getString());
+                } else if ("diskEncryptionSet".equals(fieldName)) {
+                    deserializedDataDisksToAttach.diskEncryptionSet = DiskEncryptionSetParameters.fromJson(reader);
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedDataDisksToAttach.writeAcceleratorEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataDisksToAttach;
+        });
+    }
 }

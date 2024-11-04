@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Gallery Application version operation response.
  */
 @Fluent
-public final class GalleryApplicationVersionList {
+public final class GalleryApplicationVersionList implements JsonSerializable<GalleryApplicationVersionList> {
     /*
      * A list of gallery Application Versions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<GalleryApplicationVersionInner> value;
 
     /*
      * The uri to fetch the next page of gallery Application Versions. Call ListNext() with this to fetch the next page
      * of gallery Application Versions.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,12 +85,56 @@ public final class GalleryApplicationVersionList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model GalleryApplicationVersionList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model GalleryApplicationVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationVersionList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryApplicationVersionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryApplicationVersionList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryApplicationVersionList.
+     */
+    public static GalleryApplicationVersionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryApplicationVersionList deserializedGalleryApplicationVersionList
+                = new GalleryApplicationVersionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GalleryApplicationVersionInner> value
+                        = reader.readArray(reader1 -> GalleryApplicationVersionInner.fromJson(reader1));
+                    deserializedGalleryApplicationVersionList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGalleryApplicationVersionList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryApplicationVersionList;
+        });
+    }
 }

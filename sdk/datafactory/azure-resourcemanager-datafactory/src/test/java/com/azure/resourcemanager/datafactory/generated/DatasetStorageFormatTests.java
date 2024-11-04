@@ -13,15 +13,15 @@ public final class DatasetStorageFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetStorageFormat model = BinaryData.fromString(
-            "{\"type\":\"tjhffecqkoqy\",\"serializer\":\"dataergaghpuzx\",\"deserializer\":\"datayehhfdyldhg\",\"\":{\"iyuq\":\"datazfz\"}}")
+            "{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datadivznl\",\"deserializer\":\"dataslkskhjqjpvbai\",\"\":{\"ywbqgroigbsfsgs\":\"datatgzgta\",\"fmhl\":\"dataenwl\",\"tryldsxebuhsxr\":\"dataqlxspmrj\"}}")
             .toObject(DatasetStorageFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetStorageFormat model = new DatasetStorageFormat().withSerializer("dataergaghpuzx")
-            .withDeserializer("datayehhfdyldhg")
-            .withAdditionalProperties(mapOf("type", "tjhffecqkoqy"));
+        DatasetStorageFormat model = new DatasetStorageFormat().withSerializer("datadivznl")
+            .withDeserializer("dataslkskhjqjpvbai")
+            .withAdditionalProperties(mapOf("type", "DatasetStorageFormat"));
         model = BinaryData.fromObject(model).toObject(DatasetStorageFormat.class);
     }
 

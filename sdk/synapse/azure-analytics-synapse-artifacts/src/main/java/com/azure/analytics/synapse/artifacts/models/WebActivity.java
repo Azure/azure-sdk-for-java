@@ -5,75 +5,78 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Web activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("WebActivity")
-@JsonFlatten
 @Fluent
 public class WebActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "WebActivity";
+
+    /*
      * Rest API method for target endpoint.
      */
-    @JsonProperty(value = "typeProperties.method", required = true)
     private WebActivityMethod method;
 
     /*
      * Web activity target endpoint and path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
-     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
-     * resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
-     * method Type: string (or Expression with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.body")
     private Object body;
 
     /*
      * Authentication method used for calling the endpoint.
      */
-    @JsonProperty(value = "typeProperties.authentication")
     private WebActivityAuthentication authentication;
 
     /*
      * List of datasets passed to web endpoint.
      */
-    @JsonProperty(value = "typeProperties.datasets")
     private List<DatasetReference> datasets;
 
     /*
      * List of linked services passed to web endpoint.
      */
-    @JsonProperty(value = "typeProperties.linkedServices")
     private List<LinkedServiceReference> linkedServices;
 
     /*
      * The integration runtime reference.
      */
-    @JsonProperty(value = "typeProperties.connectVia")
     private IntegrationRuntimeReference connectVia;
 
     /**
      * Creates an instance of WebActivity class.
      */
     public WebActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -97,8 +100,7 @@ public class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @return the url value.
      */
@@ -107,8 +109,7 @@ public class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @param url the url value to set.
      * @return the WebActivity object itself.
@@ -314,5 +315,132 @@ public class WebActivity extends ExecutionActivity {
     public WebActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (method != null
+            || url != null
+            || headers != null
+            || body != null
+            || authentication != null
+            || datasets != null
+            || linkedServices != null
+            || connectVia != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+            jsonWriter.writeUntypedField("url", this.url);
+            jsonWriter.writeUntypedField("headers", this.headers);
+            jsonWriter.writeUntypedField("body", this.body);
+            jsonWriter.writeJsonField("authentication", this.authentication);
+            jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("linkedServices", this.linkedServices,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeJsonField("connectVia", this.connectVia);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebActivity.
+     */
+    public static WebActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebActivity deserializedWebActivity = new WebActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWebActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedWebActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedWebActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedWebActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedWebActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedWebActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedWebActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedWebActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("method".equals(fieldName)) {
+                            deserializedWebActivity.method = WebActivityMethod.fromString(reader.getString());
+                        } else if ("url".equals(fieldName)) {
+                            deserializedWebActivity.url = reader.readUntyped();
+                        } else if ("headers".equals(fieldName)) {
+                            deserializedWebActivity.headers = reader.readUntyped();
+                        } else if ("body".equals(fieldName)) {
+                            deserializedWebActivity.body = reader.readUntyped();
+                        } else if ("authentication".equals(fieldName)) {
+                            deserializedWebActivity.authentication = WebActivityAuthentication.fromJson(reader);
+                        } else if ("datasets".equals(fieldName)) {
+                            List<DatasetReference> datasets
+                                = reader.readArray(reader1 -> DatasetReference.fromJson(reader1));
+                            deserializedWebActivity.datasets = datasets;
+                        } else if ("linkedServices".equals(fieldName)) {
+                            List<LinkedServiceReference> linkedServices
+                                = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                            deserializedWebActivity.linkedServices = linkedServices;
+                        } else if ("connectVia".equals(fieldName)) {
+                            deserializedWebActivity.connectVia = IntegrationRuntimeReference.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedWebActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedWebActivity;
+        });
     }
 }

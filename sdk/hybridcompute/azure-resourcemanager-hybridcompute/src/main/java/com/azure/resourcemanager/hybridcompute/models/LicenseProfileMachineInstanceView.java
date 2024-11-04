@@ -4,246 +4,105 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileArmProductProfileProperties;
-import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewSoftwareAssurance;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * License Profile Instance View in Machine Properties.
+ * An immutable client-side representation of LicenseProfileMachineInstanceView.
  */
-@Fluent
-public final class LicenseProfileMachineInstanceView {
-    /*
-     * Indicates the license status of the OS.
-     */
-    @JsonProperty(value = "licenseStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private LicenseStatus licenseStatus;
-
-    /*
-     * Indicates the license channel.
-     */
-    @JsonProperty(value = "licenseChannel", access = JsonProperty.Access.WRITE_ONLY)
-    private String licenseChannel;
-
-    /*
-     * The softwareAssurance property.
-     */
-    @JsonProperty(value = "softwareAssurance", access = JsonProperty.Access.WRITE_ONLY)
-    private LicenseProfileMachineInstanceViewSoftwareAssurance innerSoftwareAssurance;
-
-    /*
-     * Properties for the Machine ESU profile.
-     */
-    @JsonProperty(value = "esuProfile")
-    private LicenseProfileMachineInstanceViewEsuProperties esuProfile;
-
-    /*
-     * Hybrid Compute Product Profile properties
-     */
-    @JsonProperty(value = "productProfile", access = JsonProperty.Access.WRITE_ONLY)
-    private LicenseProfileArmProductProfileProperties innerProductProfile;
-
+public interface LicenseProfileMachineInstanceView {
     /**
-     * Creates an instance of LicenseProfileMachineInstanceView class.
-     */
-    public LicenseProfileMachineInstanceView() {
-    }
-
-    /**
-     * Get the licenseStatus property: Indicates the license status of the OS.
+     * Gets the licenseStatus property: Indicates the license status of the OS.
      * 
      * @return the licenseStatus value.
      */
-    public LicenseStatus licenseStatus() {
-        return this.licenseStatus;
-    }
+    LicenseStatus licenseStatus();
 
     /**
-     * Get the licenseChannel property: Indicates the license channel.
+     * Gets the licenseChannel property: Indicates the license channel.
      * 
      * @return the licenseChannel value.
      */
-    public String licenseChannel() {
-        return this.licenseChannel;
-    }
+    String licenseChannel();
 
     /**
-     * Get the innerSoftwareAssurance property: The softwareAssurance property.
-     * 
-     * @return the innerSoftwareAssurance value.
-     */
-    private LicenseProfileMachineInstanceViewSoftwareAssurance innerSoftwareAssurance() {
-        return this.innerSoftwareAssurance;
-    }
-
-    /**
-     * Get the esuProfile property: Properties for the Machine ESU profile.
+     * Gets the esuProfile property: Properties for the Machine ESU profile.
      * 
      * @return the esuProfile value.
      */
-    public LicenseProfileMachineInstanceViewEsuProperties esuProfile() {
-        return this.esuProfile;
-    }
+    LicenseProfileMachineInstanceViewEsuProperties esuProfile();
 
     /**
-     * Set the esuProfile property: Properties for the Machine ESU profile.
-     * 
-     * @param esuProfile the esuProfile value to set.
-     * @return the LicenseProfileMachineInstanceView object itself.
-     */
-    public LicenseProfileMachineInstanceView withEsuProfile(LicenseProfileMachineInstanceViewEsuProperties esuProfile) {
-        this.esuProfile = esuProfile;
-        return this;
-    }
-
-    /**
-     * Get the innerProductProfile property: Hybrid Compute Product Profile properties.
-     * 
-     * @return the innerProductProfile value.
-     */
-    private LicenseProfileArmProductProfileProperties innerProductProfile() {
-        return this.innerProductProfile;
-    }
-
-    /**
-     * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
-     * agreement.
+     * Gets the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software
+     * Assurance agreement.
      * 
      * @return the softwareAssuranceCustomer value.
      */
-    public Boolean softwareAssuranceCustomer() {
-        return this.innerSoftwareAssurance() == null ? null : this.innerSoftwareAssurance().softwareAssuranceCustomer();
-    }
+    Boolean softwareAssuranceCustomer();
 
     /**
-     * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
-     * agreement.
-     * 
-     * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
-     * @return the LicenseProfileMachineInstanceView object itself.
-     */
-    public LicenseProfileMachineInstanceView withSoftwareAssuranceCustomer(Boolean softwareAssuranceCustomer) {
-        if (this.innerSoftwareAssurance() == null) {
-            this.innerSoftwareAssurance = new LicenseProfileMachineInstanceViewSoftwareAssurance();
-        }
-        this.innerSoftwareAssurance().withSoftwareAssuranceCustomer(softwareAssuranceCustomer);
-        return this;
-    }
-
-    /**
-     * Get the subscriptionStatus property: Indicates the subscription status of the product.
+     * Gets the subscriptionStatus property: Indicates the subscription status of the product.
      * 
      * @return the subscriptionStatus value.
      */
-    public LicenseProfileSubscriptionStatus subscriptionStatus() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().subscriptionStatus();
-    }
+    LicenseProfileSubscriptionStatus subscriptionStatus();
 
     /**
-     * Set the subscriptionStatus property: Indicates the subscription status of the product.
-     * 
-     * @param subscriptionStatus the subscriptionStatus value to set.
-     * @return the LicenseProfileMachineInstanceView object itself.
-     */
-    public LicenseProfileMachineInstanceView
-        withSubscriptionStatus(LicenseProfileSubscriptionStatus subscriptionStatus) {
-        if (this.innerProductProfile() == null) {
-            this.innerProductProfile = new LicenseProfileArmProductProfileProperties();
-        }
-        this.innerProductProfile().withSubscriptionStatus(subscriptionStatus);
-        return this;
-    }
-
-    /**
-     * Get the productType property: Indicates the product type of the license.
+     * Gets the productType property: Indicates the product type of the license.
      * 
      * @return the productType value.
      */
-    public LicenseProfileProductType productType() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().productType();
-    }
+    LicenseProfileProductType productType();
 
     /**
-     * Set the productType property: Indicates the product type of the license.
-     * 
-     * @param productType the productType value to set.
-     * @return the LicenseProfileMachineInstanceView object itself.
-     */
-    public LicenseProfileMachineInstanceView withProductType(LicenseProfileProductType productType) {
-        if (this.innerProductProfile() == null) {
-            this.innerProductProfile = new LicenseProfileArmProductProfileProperties();
-        }
-        this.innerProductProfile().withProductType(productType);
-        return this;
-    }
-
-    /**
-     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
-     * 
-     * @return the billingStartDate value.
-     */
-    public OffsetDateTime billingStartDate() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().billingStartDate();
-    }
-
-    /**
-     * Get the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
+     * Gets the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
      * 
      * @return the enrollmentDate value.
      */
-    public OffsetDateTime enrollmentDate() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().enrollmentDate();
-    }
+    OffsetDateTime enrollmentDate();
 
     /**
-     * Get the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
+     * Gets the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    OffsetDateTime billingStartDate();
+
+    /**
+     * Gets the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
      * 
      * @return the disenrollmentDate value.
      */
-    public OffsetDateTime disenrollmentDate() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().disenrollmentDate();
-    }
+    OffsetDateTime disenrollmentDate();
 
     /**
-     * Get the productFeatures property: The list of product features.
+     * Gets the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    OffsetDateTime billingEndDate();
+
+    /**
+     * Gets the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    ManagementError error();
+
+    /**
+     * Gets the productFeatures property: The list of product features.
      * 
      * @return the productFeatures value.
      */
-    public List<ProductFeature> productFeatures() {
-        return this.innerProductProfile() == null ? null : this.innerProductProfile().productFeatures();
-    }
+    List<ProductFeature> productFeatures();
 
     /**
-     * Set the productFeatures property: The list of product features.
+     * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner
+     * object.
      * 
-     * @param productFeatures the productFeatures value to set.
-     * @return the LicenseProfileMachineInstanceView object itself.
+     * @return the inner object.
      */
-    public LicenseProfileMachineInstanceView withProductFeatures(List<ProductFeature> productFeatures) {
-        if (this.innerProductProfile() == null) {
-            this.innerProductProfile = new LicenseProfileArmProductProfileProperties();
-        }
-        this.innerProductProfile().withProductFeatures(productFeatures);
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerSoftwareAssurance() != null) {
-            innerSoftwareAssurance().validate();
-        }
-        if (esuProfile() != null) {
-            esuProfile().validate();
-        }
-        if (innerProductProfile() != null) {
-            innerProductProfile().validate();
-        }
-    }
+    LicenseProfileMachineInstanceViewInner innerModel();
 }

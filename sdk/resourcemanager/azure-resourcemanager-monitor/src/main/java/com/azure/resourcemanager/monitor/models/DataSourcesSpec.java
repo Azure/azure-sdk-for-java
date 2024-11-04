@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specification of data sources that will be collected.
  */
 @Fluent
-public class DataSourcesSpec {
+public class DataSourcesSpec implements JsonSerializable<DataSourcesSpec> {
     /*
      * The list of performance counter data source configurations.
      */
-    @JsonProperty(value = "performanceCounters")
     private List<PerfCounterDataSource> performanceCounters;
 
     /*
      * The list of Windows Event Log data source configurations.
      */
-    @JsonProperty(value = "windowsEventLogs")
     private List<WindowsEventLogDataSource> windowsEventLogs;
 
     /*
      * The list of Syslog data source configurations.
      */
-    @JsonProperty(value = "syslog")
     private List<SyslogDataSource> syslog;
 
     /*
      * The list of Azure VM extension data source configurations.
      */
-    @JsonProperty(value = "extensions")
     private List<ExtensionDataSource> extensions;
 
     /*
      * The list of Log files source configurations.
      */
-    @JsonProperty(value = "logFiles")
     private List<LogFilesDataSource> logFiles;
 
     /*
      * The list of IIS logs source configurations.
      */
-    @JsonProperty(value = "iisLogs")
     private List<IisLogsDataSource> iisLogs;
 
     /**
@@ -199,5 +197,68 @@ public class DataSourcesSpec {
         if (iisLogs() != null) {
             iisLogs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("performanceCounters", this.performanceCounters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("windowsEventLogs", this.windowsEventLogs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("syslog", this.syslog, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logFiles", this.logFiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("iisLogs", this.iisLogs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataSourcesSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataSourcesSpec if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataSourcesSpec.
+     */
+    public static DataSourcesSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataSourcesSpec deserializedDataSourcesSpec = new DataSourcesSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("performanceCounters".equals(fieldName)) {
+                    List<PerfCounterDataSource> performanceCounters
+                        = reader.readArray(reader1 -> PerfCounterDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.performanceCounters = performanceCounters;
+                } else if ("windowsEventLogs".equals(fieldName)) {
+                    List<WindowsEventLogDataSource> windowsEventLogs
+                        = reader.readArray(reader1 -> WindowsEventLogDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.windowsEventLogs = windowsEventLogs;
+                } else if ("syslog".equals(fieldName)) {
+                    List<SyslogDataSource> syslog = reader.readArray(reader1 -> SyslogDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.syslog = syslog;
+                } else if ("extensions".equals(fieldName)) {
+                    List<ExtensionDataSource> extensions
+                        = reader.readArray(reader1 -> ExtensionDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.extensions = extensions;
+                } else if ("logFiles".equals(fieldName)) {
+                    List<LogFilesDataSource> logFiles
+                        = reader.readArray(reader1 -> LogFilesDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.logFiles = logFiles;
+                } else if ("iisLogs".equals(fieldName)) {
+                    List<IisLogsDataSource> iisLogs = reader.readArray(reader1 -> IisLogsDataSource.fromJson(reader1));
+                    deserializedDataSourcesSpec.iisLogs = iisLogs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataSourcesSpec;
+        });
     }
 }

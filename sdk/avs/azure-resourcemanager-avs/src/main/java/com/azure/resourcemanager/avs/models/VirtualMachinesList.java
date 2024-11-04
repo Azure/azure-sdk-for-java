@@ -4,33 +4,40 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of Virtual Machines. */
-@Immutable
-public final class VirtualMachinesList {
+/**
+ * The response of a VirtualMachine list operation.
+ */
+@Fluent
+public final class VirtualMachinesList implements JsonSerializable<VirtualMachinesList> {
     /*
-     * The items to be displayed on the page
+     * The VirtualMachine items on this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineInner> value;
 
     /*
-     * URL to get the next page if any
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of VirtualMachinesList class. */
+    /**
+     * Creates an instance of VirtualMachinesList class.
+     */
     public VirtualMachinesList() {
     }
 
     /**
-     * Get the value property: The items to be displayed on the page.
-     *
+     * Get the value property: The VirtualMachine items on this page.
+     * 
      * @return the value value.
      */
     public List<VirtualMachineInner> value() {
@@ -38,8 +45,19 @@ public final class VirtualMachinesList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Set the value property: The VirtualMachine items on this page.
+     * 
+     * @param value the value value to set.
+     * @return the VirtualMachinesList object itself.
+     */
+    public VirtualMachinesList withValue(List<VirtualMachineInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +65,71 @@ public final class VirtualMachinesList {
     }
 
     /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the VirtualMachinesList object itself.
+     */
+    public VirtualMachinesList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model VirtualMachinesList"));
+        } else {
             value().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinesList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachinesList.
+     */
+    public static VirtualMachinesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinesList deserializedVirtualMachinesList = new VirtualMachinesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineInner> value
+                        = reader.readArray(reader1 -> VirtualMachineInner.fromJson(reader1));
+                    deserializedVirtualMachinesList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachinesList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinesList;
+        });
     }
 }

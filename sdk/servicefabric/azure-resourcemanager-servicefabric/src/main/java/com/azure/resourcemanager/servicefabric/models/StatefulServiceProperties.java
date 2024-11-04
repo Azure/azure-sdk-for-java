@@ -5,58 +5,63 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The properties of a stateful service resource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceKind")
-@JsonTypeName("Stateful")
 @Fluent
 public final class StatefulServiceProperties extends ServiceResourceProperties {
+    /*
+     * The kind of service (Stateless or Stateful).
+     */
+    private ServiceKind serviceKind = ServiceKind.STATEFUL;
+
     /*
      * A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the
      * value of this property is true, if not it is false.
      */
-    @JsonProperty(value = "hasPersistedState")
     private Boolean hasPersistedState;
 
     /*
      * The target replica set size as a number.
      */
-    @JsonProperty(value = "targetReplicaSetSize")
     private Integer targetReplicaSetSize;
 
     /*
      * The minimum replica set size as a number.
      */
-    @JsonProperty(value = "minReplicaSetSize")
     private Integer minReplicaSetSize;
 
     /*
      * The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format
      * (hh:mm:ss.s).
      */
-    @JsonProperty(value = "replicaRestartWaitDuration")
     private OffsetDateTime replicaRestartWaitDuration;
 
     /*
      * The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601
      * format (hh:mm:ss.s).
      */
-    @JsonProperty(value = "quorumLossWaitDuration")
     private OffsetDateTime quorumLossWaitDuration;
 
     /*
      * The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601
      * format (hh:mm:ss.s).
      */
-    @JsonProperty(value = "standByReplicaKeepDuration")
     private OffsetDateTime standByReplicaKeepDuration;
+
+    /*
+     * The current deployment or provisioning state, which only appears in the response
+     */
+    private String provisioningState;
 
     /**
      * Creates an instance of StatefulServiceProperties class.
@@ -65,8 +70,18 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
-     * Get the hasPersistedState property: A flag indicating whether this is a persistent service which stores states
-     * on the local disk. If it is then the value of this property is true, if not it is false.
+     * Get the serviceKind property: The kind of service (Stateless or Stateful).
+     * 
+     * @return the serviceKind value.
+     */
+    @Override
+    public ServiceKind serviceKind() {
+        return this.serviceKind;
+    }
+
+    /**
+     * Get the hasPersistedState property: A flag indicating whether this is a persistent service which stores states on
+     * the local disk. If it is then the value of this property is true, if not it is false.
      * 
      * @return the hasPersistedState value.
      */
@@ -75,8 +90,8 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
-     * Set the hasPersistedState property: A flag indicating whether this is a persistent service which stores states
-     * on the local disk. If it is then the value of this property is true, if not it is false.
+     * Set the hasPersistedState property: A flag indicating whether this is a persistent service which stores states on
+     * the local disk. If it is then the value of this property is true, if not it is false.
      * 
      * @param hasPersistedState the hasPersistedState value to set.
      * @return the StatefulServiceProperties object itself.
@@ -127,8 +142,8 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
-     * Get the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new
-     * replica is created, represented in ISO 8601 format (hh:mm:ss.s).
+     * Get the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new replica
+     * is created, represented in ISO 8601 format (hh:mm:ss.s).
      * 
      * @return the replicaRestartWaitDuration value.
      */
@@ -137,8 +152,8 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
-     * Set the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new
-     * replica is created, represented in ISO 8601 format (hh:mm:ss.s).
+     * Set the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new replica
+     * is created, represented in ISO 8601 format (hh:mm:ss.s).
      * 
      * @param replicaRestartWaitDuration the replicaRestartWaitDuration value to set.
      * @return the StatefulServiceProperties object itself.
@@ -190,6 +205,17 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     public StatefulServiceProperties withStandByReplicaKeepDuration(OffsetDateTime standByReplicaKeepDuration) {
         this.standByReplicaKeepDuration = standByReplicaKeepDuration;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -282,6 +308,125 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+        if (partitionDescription() != null) {
+            partitionDescription().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placementConstraints", placementConstraints());
+        jsonWriter.writeArrayField("correlationScheme", correlationScheme(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceLoadMetrics", serviceLoadMetrics(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("servicePlacementPolicies", servicePlacementPolicies(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultMoveCost", defaultMoveCost() == null ? null : defaultMoveCost().toString());
+        jsonWriter.writeStringField("serviceTypeName", serviceTypeName());
+        jsonWriter.writeJsonField("partitionDescription", partitionDescription());
+        jsonWriter.writeStringField("servicePackageActivationMode",
+            servicePackageActivationMode() == null ? null : servicePackageActivationMode().toString());
+        jsonWriter.writeStringField("serviceDnsName", serviceDnsName());
+        jsonWriter.writeStringField("serviceKind", this.serviceKind == null ? null : this.serviceKind.toString());
+        jsonWriter.writeBooleanField("hasPersistedState", this.hasPersistedState);
+        jsonWriter.writeNumberField("targetReplicaSetSize", this.targetReplicaSetSize);
+        jsonWriter.writeNumberField("minReplicaSetSize", this.minReplicaSetSize);
+        jsonWriter.writeStringField("replicaRestartWaitDuration",
+            this.replicaRestartWaitDuration == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.replicaRestartWaitDuration));
+        jsonWriter.writeStringField("quorumLossWaitDuration",
+            this.quorumLossWaitDuration == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quorumLossWaitDuration));
+        jsonWriter.writeStringField("standByReplicaKeepDuration",
+            this.standByReplicaKeepDuration == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.standByReplicaKeepDuration));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatefulServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatefulServiceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatefulServiceProperties.
+     */
+    public static StatefulServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatefulServiceProperties deserializedStatefulServiceProperties = new StatefulServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementConstraints".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.withPlacementConstraints(reader.getString());
+                } else if ("correlationScheme".equals(fieldName)) {
+                    List<ServiceCorrelationDescription> correlationScheme
+                        = reader.readArray(reader1 -> ServiceCorrelationDescription.fromJson(reader1));
+                    deserializedStatefulServiceProperties.withCorrelationScheme(correlationScheme);
+                } else if ("serviceLoadMetrics".equals(fieldName)) {
+                    List<ServiceLoadMetricDescription> serviceLoadMetrics
+                        = reader.readArray(reader1 -> ServiceLoadMetricDescription.fromJson(reader1));
+                    deserializedStatefulServiceProperties.withServiceLoadMetrics(serviceLoadMetrics);
+                } else if ("servicePlacementPolicies".equals(fieldName)) {
+                    List<ServicePlacementPolicyDescription> servicePlacementPolicies
+                        = reader.readArray(reader1 -> ServicePlacementPolicyDescription.fromJson(reader1));
+                    deserializedStatefulServiceProperties.withServicePlacementPolicies(servicePlacementPolicies);
+                } else if ("defaultMoveCost".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.withDefaultMoveCost(MoveCost.fromString(reader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.provisioningState = reader.getString();
+                } else if ("serviceTypeName".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.withServiceTypeName(reader.getString());
+                } else if ("partitionDescription".equals(fieldName)) {
+                    deserializedStatefulServiceProperties
+                        .withPartitionDescription(PartitionSchemeDescription.fromJson(reader));
+                } else if ("servicePackageActivationMode".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.withServicePackageActivationMode(
+                        ArmServicePackageActivationMode.fromString(reader.getString()));
+                } else if ("serviceDnsName".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.withServiceDnsName(reader.getString());
+                } else if ("serviceKind".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.serviceKind = ServiceKind.fromString(reader.getString());
+                } else if ("hasPersistedState".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.hasPersistedState
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targetReplicaSetSize".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.targetReplicaSetSize = reader.getNullable(JsonReader::getInt);
+                } else if ("minReplicaSetSize".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.minReplicaSetSize = reader.getNullable(JsonReader::getInt);
+                } else if ("replicaRestartWaitDuration".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.replicaRestartWaitDuration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("quorumLossWaitDuration".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.quorumLossWaitDuration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("standByReplicaKeepDuration".equals(fieldName)) {
+                    deserializedStatefulServiceProperties.standByReplicaKeepDuration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatefulServiceProperties;
+        });
     }
 }

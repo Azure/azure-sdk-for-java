@@ -6,11 +6,15 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.ChangesManagementClient;
+import com.azure.resourcemanager.resources.fluent.DataBoundariesManagementClient;
+import com.azure.resourcemanager.resources.fluent.DeploymentStacksManagementClient;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.implementation.ChangesManagementClientBuilder;
+import com.azure.resourcemanager.resources.implementation.DataBoundariesManagementClientBuilder;
+import com.azure.resourcemanager.resources.implementation.DeploymentStacksManagementClientBuilder;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import com.azure.resourcemanager.resources.implementation.ManagementLockClientBuilder;
@@ -59,6 +63,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private final PolicyClient policyClient;
     private final ManagementLockClient managementLockClient;
     private final ChangesManagementClient resourceChangeClient;
+    private final DeploymentStacksManagementClient deploymentStackClient;
+    private final DataBoundariesManagementClient dataBoundaryClient;
     // The collections
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
@@ -178,10 +184,9 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.httpPipeline = httpPipeline;
             this.profile = profile;
-            this.subscriptionClient = new SubscriptionClientBuilder()
-                    .pipeline(httpPipeline)
-                    .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                    .buildClient();
+            this.subscriptionClient = new SubscriptionClientBuilder().pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .buildClient();
         }
 
         public Subscriptions subscriptions() {
@@ -216,43 +221,44 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            null,
-            profile,
-            new ResourceManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(null, profile,
+            new ResourceManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
         super.withResourceManager(this);
 
-        this.featureClient = new FeatureClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-
-        this.subscriptionClient = new SubscriptionClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .buildClient();
-
-        this.policyClient = new PolicyClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-
-        this.managementLockClient = new ManagementLockClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-
-        this.resourceChangeClient = new ChangesManagementClientBuilder()
-            .pipeline(httpPipeline)
+        this.featureClient = new FeatureClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.subscriptionClient = new SubscriptionClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .buildClient();
+
+        this.policyClient = new PolicyClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.managementLockClient = new ManagementLockClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.resourceChangeClient = new ChangesManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.deploymentStackClient = new DeploymentStacksManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.dataBoundaryClient = new DataBoundariesManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .buildClient();
 
         for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
@@ -303,6 +309,26 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
      */
     public ChangesManagementClient resourceChangeClient() {
         return resourceChangeClient;
+    }
+
+    /**
+     * Wrapped inner deployment stack client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return wrapped inner deployment stack client.
+     */
+    public DeploymentStacksManagementClient deploymentStackClient() {
+        return deploymentStackClient;
+    }
+
+    /**
+     * Wrapped inner data boundary client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return wrapped inner data boundary client.
+     */
+    public DataBoundariesManagementClient dataBoundaryClient() {
+        return dataBoundaryClient;
     }
 
     /**

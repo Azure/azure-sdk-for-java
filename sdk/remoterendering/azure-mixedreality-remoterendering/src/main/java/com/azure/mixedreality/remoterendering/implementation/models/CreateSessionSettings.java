@@ -4,39 +4,38 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Settings of the session to be created. */
-@Fluent
-public final class CreateSessionSettings {
+/**
+ * Settings of the session to be created.
+ */
+@Immutable
+public final class CreateSessionSettings implements JsonSerializable<CreateSessionSettings> {
     /*
-     * The time in minutes the session will run after reaching the 'Ready'
-     * state. It has to be between 0 and 1440.
+     * The time in minutes the session will run after reaching the 'Ready' state. It has to be between 0 and 1440.
      */
-    @JsonProperty(value = "maxLeaseTimeMinutes", required = true)
-    private int maxLeaseTimeMinutes;
+    private final int maxLeaseTimeMinutes;
 
     /*
-     * The size of the server used for the rendering session. The size impacts
-     * the number of polygons the server can render. Refer to
-     * https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
-     * details.
+     * The size of the server used for the rendering session. The size impacts the number of polygons the server can
+     * render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for details.
      */
-    @JsonProperty(value = "size", required = true)
-    private SessionSize size;
+    private final SessionSize size;
 
     /**
      * Creates an instance of CreateSessionSettings class.
-     *
+     * 
      * @param maxLeaseTimeMinutes the maxLeaseTimeMinutes value to set.
      * @param size the size value to set.
      */
-    @JsonCreator
-    public CreateSessionSettings(
-            @JsonProperty(value = "maxLeaseTimeMinutes", required = true) int maxLeaseTimeMinutes,
-            @JsonProperty(value = "size", required = true) SessionSize size) {
+    public CreateSessionSettings(int maxLeaseTimeMinutes, SessionSize size) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
         this.size = size;
     }
@@ -44,7 +43,7 @@ public final class CreateSessionSettings {
     /**
      * Get the maxLeaseTimeMinutes property: The time in minutes the session will run after reaching the 'Ready' state.
      * It has to be between 0 and 1440.
-     *
+     * 
      * @return the maxLeaseTimeMinutes value.
      */
     public int getMaxLeaseTimeMinutes() {
@@ -55,10 +54,66 @@ public final class CreateSessionSettings {
      * Get the size property: The size of the server used for the rendering session. The size impacts the number of
      * polygons the server can render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for
      * details.
-     *
+     * 
      * @return the size value.
      */
     public SessionSize getSize() {
         return this.size;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("maxLeaseTimeMinutes", this.maxLeaseTimeMinutes);
+        jsonWriter.writeStringField("size", this.size == null ? null : this.size.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateSessionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateSessionSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateSessionSettings.
+     */
+    public static CreateSessionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean maxLeaseTimeMinutesFound = false;
+            int maxLeaseTimeMinutes = 0;
+            boolean sizeFound = false;
+            SessionSize size = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxLeaseTimeMinutes".equals(fieldName)) {
+                    maxLeaseTimeMinutes = reader.getInt();
+                    maxLeaseTimeMinutesFound = true;
+                } else if ("size".equals(fieldName)) {
+                    size = SessionSize.fromString(reader.getString());
+                    sizeFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (maxLeaseTimeMinutesFound && sizeFound) {
+                return new CreateSessionSettings(maxLeaseTimeMinutes, size);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!maxLeaseTimeMinutesFound) {
+                missingProperties.add("maxLeaseTimeMinutes");
+            }
+            if (!sizeFound) {
+                missingProperties.add("size");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

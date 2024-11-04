@@ -11,7 +11,7 @@ const verRegEx = /<version>(.+)<\/version>/g;
 const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
 const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 const data = {};
-const servicesInvalidUrl = [];
+const servicesInvalidUrl = ["securitydevops"];
 const deprecatedArtifacts = [
     "azure-resourcemanager-batchai",
     "azure-resourcemanager-loadtestservice",
@@ -251,7 +251,7 @@ async function sendRequest(url) {
 }
 
 function getSpecsMapping() {
-    const api_specs_file = path.join(__dirname, "../../eng/mgmt/automation/api-specs.yaml");
+    const api_specs_file = path.join(__dirname, "../../eng/automation/api-specs.yaml");
     const data = fs.readFileSync(api_specs_file, "utf-8");
     let specs = { managedapplications: "resources" };
     Object.entries(yaml.parse(data)).forEach(([rp, service]) => {

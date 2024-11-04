@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class SimPoliciesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * SimPolicyListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimPolicyListByMobileNetwork.json
      */
     /**
      * Sample code: List SIM policies in a mobile network.
@@ -20,7 +18,7 @@ public final class SimPoliciesListByMobileNetworkSamples {
      */
     public static void
         listSIMPoliciesInAMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simPolicies().listByMobileNetwork("testResourceGroupName", "testMobileNetwork",
-            com.azure.core.util.Context.NONE);
+        manager.simPolicies()
+            .listByMobileNetwork("testResourceGroupName", "testMobileNetwork", com.azure.core.util.Context.NONE);
     }
 }

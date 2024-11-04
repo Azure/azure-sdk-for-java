@@ -15,8 +15,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -5,58 +5,55 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /** The RecognizeCompleted model. */
 @Fluent
-public final class RecognizeCompleted {
+public final class RecognizeCompleted implements JsonSerializable<RecognizeCompleted> {
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Determines the sub-type pf the recognize operation
      */
-    @JsonProperty(value = "recognitionType")
     private RecognitionType recognitionType;
 
     /*
      * Defines the result for RecognitionType = Dtmf
      */
-    @JsonProperty(value = "collectTonesResult")
     private CollectTonesResult collectTonesResult;
 
     /*
      * Defines the code, sub-code and message for the operation
      */
-    @JsonProperty(value = "resultInfo")
     private ResultInformation resultInfo;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private AcsEventTypeInternal type;
 
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /**
@@ -219,5 +216,60 @@ public final class RecognizeCompleted {
     public RecognizeCompleted setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("operationContext", operationContext)
+            .writeStringField("recognitionType", Objects.toString(recognitionType, null))
+            .writeJsonField("collectTonesResult", collectTonesResult)
+            .writeJsonField("resultInfo", resultInfo)
+            .writeStringField("type", Objects.toString(type, null))
+            .writeStringField("callConnectionId", callConnectionId)
+            .writeStringField("serverCallId", serverCallId)
+            .writeStringField("correlationId", correlationId)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link RecognizeCompleted} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link RecognizeCompleted}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static RecognizeCompleted fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeCompleted recognizeCompleted = new RecognizeCompleted();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationContext".equals(fieldName)) {
+                    recognizeCompleted.operationContext = reader.getString();
+                } else if ("recognitionType".equals(fieldName)) {
+                    recognizeCompleted.recognitionType = RecognitionType.fromString(reader.getString());
+                } else if ("collectTonesResult".equals(fieldName)) {
+                    recognizeCompleted.collectTonesResult = CollectTonesResult.fromJson(reader);
+                } else if ("resultInfo".equals(fieldName)) {
+                    recognizeCompleted.resultInfo = ResultInformation.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    recognizeCompleted.type = AcsEventTypeInternal.fromString(reader.getString());
+                } else if ("callConnectionId".equals(fieldName)) {
+                    recognizeCompleted.callConnectionId = reader.getString();
+                } else if ("serverCallId".equals(fieldName)) {
+                    recognizeCompleted.serverCallId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    recognizeCompleted.correlationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return recognizeCompleted;
+        });
     }
 }

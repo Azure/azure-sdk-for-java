@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Deleted Backup Instance.
@@ -15,8 +19,27 @@ public final class DeletedBackupInstance extends BackupInstance {
     /*
      * Deletion info of Backup Instance
      */
-    @JsonProperty(value = "deletionInfo", access = JsonProperty.Access.WRITE_ONLY)
     private DeletionInfo deletionInfo;
+
+    /*
+     * Specifies the protection status of the resource
+     */
+    private ProtectionStatusDetails protectionStatus;
+
+    /*
+     * Specifies the current protection state of the resource
+     */
+    private CurrentProtectionState currentProtectionState;
+
+    /*
+     * Specifies the protection error of the resource
+     */
+    private UserFacingError protectionErrorDetails;
+
+    /*
+     * Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
+     */
+    private String provisioningState;
 
     /**
      * Creates an instance of DeletedBackupInstance class.
@@ -31,6 +54,47 @@ public final class DeletedBackupInstance extends BackupInstance {
      */
     public DeletionInfo deletionInfo() {
         return this.deletionInfo;
+    }
+
+    /**
+     * Get the protectionStatus property: Specifies the protection status of the resource.
+     * 
+     * @return the protectionStatus value.
+     */
+    @Override
+    public ProtectionStatusDetails protectionStatus() {
+        return this.protectionStatus;
+    }
+
+    /**
+     * Get the currentProtectionState property: Specifies the current protection state of the resource.
+     * 
+     * @return the currentProtectionState value.
+     */
+    @Override
+    public CurrentProtectionState currentProtectionState() {
+        return this.currentProtectionState;
+    }
+
+    /**
+     * Get the protectionErrorDetails property: Specifies the protection error of the resource.
+     * 
+     * @return the protectionErrorDetails value.
+     */
+    @Override
+    public UserFacingError protectionErrorDetails() {
+        return this.protectionErrorDetails;
+    }
+
+    /**
+     * Get the provisioningState property: Specifies the provisioning state of the resource i.e.
+     * provisioning/updating/Succeeded/Failed.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -66,6 +130,15 @@ public final class DeletedBackupInstance extends BackupInstance {
     @Override
     public DeletedBackupInstance withPolicyInfo(PolicyInfo policyInfo) {
         super.withPolicyInfo(policyInfo);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeletedBackupInstance withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
@@ -116,5 +189,80 @@ public final class DeletedBackupInstance extends BackupInstance {
         if (deletionInfo() != null) {
             deletionInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataSourceInfo", dataSourceInfo());
+        jsonWriter.writeJsonField("policyInfo", policyInfo());
+        jsonWriter.writeStringField("objectType", objectType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeJsonField("dataSourceSetInfo", dataSourceSetInfo());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("datasourceAuthCredentials", datasourceAuthCredentials());
+        jsonWriter.writeStringField("validationType", validationType() == null ? null : validationType().toString());
+        jsonWriter.writeJsonField("identityDetails", identityDetails());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedBackupInstance from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedBackupInstance if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeletedBackupInstance.
+     */
+    public static DeletedBackupInstance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedBackupInstance deserializedDeletedBackupInstance = new DeletedBackupInstance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSourceInfo".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withDataSourceInfo(Datasource.fromJson(reader));
+                } else if ("policyInfo".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withPolicyInfo(PolicyInfo.fromJson(reader));
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withObjectType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withFriendlyName(reader.getString());
+                } else if ("dataSourceSetInfo".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withDataSourceSetInfo(DatasourceSet.fromJson(reader));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDeletedBackupInstance
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.protectionStatus = ProtectionStatusDetails.fromJson(reader);
+                } else if ("currentProtectionState".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.currentProtectionState
+                        = CurrentProtectionState.fromString(reader.getString());
+                } else if ("protectionErrorDetails".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.protectionErrorDetails = UserFacingError.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.provisioningState = reader.getString();
+                } else if ("datasourceAuthCredentials".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withDatasourceAuthCredentials(AuthCredentials.fromJson(reader));
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withValidationType(ValidationType.fromString(reader.getString()));
+                } else if ("identityDetails".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.withIdentityDetails(IdentityDetails.fromJson(reader));
+                } else if ("deletionInfo".equals(fieldName)) {
+                    deserializedDeletedBackupInstance.deletionInfo = DeletionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedBackupInstance;
+        });
     }
 }

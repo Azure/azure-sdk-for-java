@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Diagnostics resource specific properties.
  */
 @Fluent
-public final class DiagnosticsProperties {
+public final class DiagnosticsProperties implements JsonSerializable<DiagnosticsProperties> {
     /*
      * Metadata of the diagnostics response.
      */
-    @JsonProperty(value = "metadata")
     private DiagnosticsDefinition metadata;
 
     /*
      * Set of data collections associated with the response.
      */
-    @JsonProperty(value = "dataset")
     private List<DiagnosticsDataApiResponse> dataset;
 
     /*
      * Status of the diagnostics response.
      */
-    @JsonProperty(value = "status")
     private DiagnosticsStatus status;
 
     /*
      * List of data providers' metadata.
      */
-    @JsonProperty(value = "dataProviderMetadata")
     private DiagnosticDataProviderMetadata dataProviderMetadata;
 
     /**
@@ -141,5 +141,53 @@ public final class DiagnosticsProperties {
         if (dataProviderMetadata() != null) {
             dataProviderMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("dataset", this.dataset, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeJsonField("dataProviderMetadata", this.dataProviderMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticsProperties.
+     */
+    public static DiagnosticsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticsProperties deserializedDiagnosticsProperties = new DiagnosticsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedDiagnosticsProperties.metadata = DiagnosticsDefinition.fromJson(reader);
+                } else if ("dataset".equals(fieldName)) {
+                    List<DiagnosticsDataApiResponse> dataset
+                        = reader.readArray(reader1 -> DiagnosticsDataApiResponse.fromJson(reader1));
+                    deserializedDiagnosticsProperties.dataset = dataset;
+                } else if ("status".equals(fieldName)) {
+                    deserializedDiagnosticsProperties.status = DiagnosticsStatus.fromJson(reader);
+                } else if ("dataProviderMetadata".equals(fieldName)) {
+                    deserializedDiagnosticsProperties.dataProviderMetadata
+                        = DiagnosticDataProviderMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticsProperties;
+        });
     }
 }

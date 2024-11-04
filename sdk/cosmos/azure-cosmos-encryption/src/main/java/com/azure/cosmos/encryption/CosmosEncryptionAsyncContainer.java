@@ -16,6 +16,7 @@ import com.azure.cosmos.encryption.implementation.EncryptionSettings;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -83,6 +84,9 @@ public final class CosmosEncryptionAsyncContainer {
     private final EncryptionProcessor encryptionProcessor;
 
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+
+    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
@@ -1379,10 +1383,9 @@ public final class CosmosEncryptionAsyncContainer {
                     .flatMap(encryptedIdPartitionKeyTuple -> {
 
 
-                        Map<String, Object> jsonTree = effectiveItemSerializer
-                            .serialize(
-                                itemBatchOperation.getItem()
-                            );
+                        Map<String, Object> jsonTree = itemSerializerAccessor.serializeSafe(
+                            effectiveItemSerializer,
+                            itemBatchOperation.getItem());
 
                         ObjectNode objectNode = jsonTree instanceof ObjectNodeMap
                             ? ((ObjectNodeMap)jsonTree).getObjectNode().deepCopy()
@@ -1579,8 +1582,9 @@ public final class CosmosEncryptionAsyncContainer {
                         }
                     })
                     .flatMap(encryptedIdPartitionKeyTuple -> {
-                        Map<String, Object> jsonTree = effectiveItemSerializer
-                            .serialize(cosmosItemOperation.getItem());
+                        Map<String, Object> jsonTree = itemSerializerAccessor.serializeSafe(
+                            effectiveItemSerializer,
+                            cosmosItemOperation.getItem());
 
                         ObjectNode objectNode = jsonTree instanceof ObjectNodeMap
                             ? ((ObjectNodeMap)jsonTree).getObjectNode().deepCopy()
@@ -1680,8 +1684,9 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private void setRequestHeaders(CosmosBulkExecutionOptions requestOptions) {
-        cosmosBulkExecutionOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        cosmosBulkExecutionOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+        CosmosBulkExecutionOptionsImpl requestOptionsImpl = cosmosBulkExecutionOptionsAccessor.getImpl(requestOptions);
+        requestOptionsImpl.setHeader(Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        requestOptionsImpl.setHeader(Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     boolean isIncorrectContainerRid(CosmosException cosmosException) {

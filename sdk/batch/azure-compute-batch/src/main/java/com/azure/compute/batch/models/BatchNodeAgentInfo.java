@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +22,16 @@ import java.time.format.DateTimeFormatter;
 public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgentInfo> {
 
     /*
-     * The version of the Batch Compute Node agent running on the Compute Node. This version number can be checked against the Compute Node agent release notes located at https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
+     * The version of the Batch Compute Node agent running on the Compute Node. This version number can be checked
+     * against the Compute Node agent release notes located at
+     * https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
      */
     @Generated
     private final String version;
 
     /*
-     * The time when the Compute Node agent was updated on the Compute Node. This is the most recent time that the Compute Node agent was updated to a new version.
+     * The time when the Compute Node agent was updated on the Compute Node. This is the most recent time that the
+     * Compute Node agent was updated to a new version.
      */
     @Generated
     private final OffsetDateTime lastUpdateTime;
@@ -100,8 +104,8 @@ public final class BatchNodeAgentInfo implements JsonSerializable<BatchNodeAgent
                 if ("version".equals(fieldName)) {
                     version = reader.getString();
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

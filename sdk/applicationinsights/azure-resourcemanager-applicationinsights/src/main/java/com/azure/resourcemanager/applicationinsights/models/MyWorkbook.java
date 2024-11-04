@@ -172,11 +172,8 @@ public interface MyWorkbook {
     MyWorkbookInner innerModel();
 
     /** The entirety of the MyWorkbook definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The MyWorkbook definition stages. */
@@ -219,21 +216,11 @@ public interface MyWorkbook {
          * The stage of the MyWorkbook definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithName,
-                DefinitionStages.WithType,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithSerializedData,
-                DefinitionStages.WithVersion,
-                DefinitionStages.WithCategory,
-                DefinitionStages.WithTagsPropertiesTags,
-                DefinitionStages.WithSourceId,
-                DefinitionStages.WithStorageUri,
-                DefinitionStages.WithSourceIdParameter {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithName, DefinitionStages.WithType, DefinitionStages.WithEtag, DefinitionStages.WithKind,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithSerializedData, DefinitionStages.WithVersion,
+            DefinitionStages.WithCategory, DefinitionStages.WithTagsPropertiesTags, DefinitionStages.WithSourceId,
+            DefinitionStages.WithStorageUri, DefinitionStages.WithSourceIdParameter {
             /**
              * Executes the create request.
              *
@@ -419,19 +406,10 @@ public interface MyWorkbook {
     MyWorkbook.Update update();
 
     /** The template for MyWorkbook update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithEtag,
-            UpdateStages.WithKind,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithSerializedData,
-            UpdateStages.WithVersion,
-            UpdateStages.WithCategory,
-            UpdateStages.WithTagsPropertiesTags,
-            UpdateStages.WithSourceId,
-            UpdateStages.WithStorageUri,
-            UpdateStages.WithSourceIdParameter {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithEtag,
+        UpdateStages.WithKind, UpdateStages.WithDisplayName, UpdateStages.WithSerializedData, UpdateStages.WithVersion,
+        UpdateStages.WithCategory, UpdateStages.WithTagsPropertiesTags, UpdateStages.WithSourceId,
+        UpdateStages.WithStorageUri, UpdateStages.WithSourceIdParameter {
         /**
          * Executes the update request.
          *

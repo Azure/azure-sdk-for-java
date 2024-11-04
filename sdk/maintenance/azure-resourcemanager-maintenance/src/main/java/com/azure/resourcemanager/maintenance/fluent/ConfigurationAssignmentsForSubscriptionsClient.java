@@ -17,9 +17,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
 public interface ConfigurationAssignmentsForSubscriptionsClient {
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,9 +32,9 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
 
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,9 +46,9 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
      * @param context The context to associate with this operation.
@@ -58,14 +58,14 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
      * @return configuration Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationAssignmentInner> createOrUpdateWithResponse(
-        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment, Context context);
+    Response<ConfigurationAssignmentInner> createOrUpdateWithResponse(String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment, Context context);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,14 +74,14 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
      * @return configuration Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationAssignmentInner createOrUpdate(
-        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment);
+    ConfigurationAssignmentInner createOrUpdate(String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
      * @param context The context to associate with this operation.
@@ -91,14 +91,14 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
      * @return configuration Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationAssignmentInner> updateWithResponse(
-        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment, Context context);
+    Response<ConfigurationAssignmentInner> updateWithResponse(String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment, Context context);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,14 +107,14 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
      * @return configuration Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationAssignmentInner update(
-        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment);
+    ConfigurationAssignmentInner update(String configurationAssignmentName,
+        ConfigurationAssignmentInner configurationAssignment);
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param configurationAssignmentName Unique configuration assignment name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,9 +127,9 @@ public interface ConfigurationAssignmentsForSubscriptionsClient {
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param configurationAssignmentName Unique configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

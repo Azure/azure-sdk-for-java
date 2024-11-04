@@ -16,7 +16,8 @@ public final class TropicalStormLocationOptions {
     private Boolean includeCurrentStorm;
 
     /**
-     * 
+     * TropicalStormLocationOptions constructor
+     *
      * @param year Year of the cyclone(s).
      * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
@@ -29,6 +30,7 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get year of the cyclone(s).
+     *
      * @return Year of the cyclone(s).
      */
     public Integer getYear() {
@@ -37,6 +39,7 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get basin identifier.
+     *
      * @return Basin identifier.
      */
     public BasinId getBasinId() {
@@ -45,6 +48,7 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get government storm Id.
+     *
      * @return Government storm Id.
      */
     public Integer getGovernmentStormId() {
@@ -53,6 +57,7 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get WeatherDataUnit
+     *
      * @return WeatherDataUnit - specifies to return the data in either metric units or imperial units. Default value is metric.
      */
     public WeatherDataUnit getUnit() {
@@ -61,6 +66,7 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get includeDetails
+     *
      * @return includeDetails - when true, wind radii summary data is included in the response.
      */
     public Boolean getIncludeDetails() {
@@ -69,8 +75,9 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get includeGeometricDetails
+     *
      * @return includeGeometricDetails - when true, wind radii summary data and geoJSON details are included in the
-     *     response.
+     * response.
      */
     public Boolean getIncludeGeometricDetails() {
         return this.includeGeometricDetails;
@@ -78,6 +85,7 @@ public final class TropicalStormLocationOptions {
 
     /**
      * Get includeCurrentStorm
+     *
      * @return includeCurrentStorm - when true, return the current storm location.
      */
     public Boolean getIncludeCurrentStorm() {
@@ -85,6 +93,8 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set year of the cyclone(s)
+     *
      * @param year Year of the cyclone(s).
      * @return TropicalStormLocationOptions
      */
@@ -94,6 +104,8 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set basin identifier.
+     *
      * @param basinId Basin identifier.
      * @return TropicalStormLocationOptions
      */
@@ -103,6 +115,8 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set government storm Id.
+     *
      * @param governmentStormId Government storm Id.
      * @return TropicalStormLocationOptions
      */
@@ -112,6 +126,8 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set WeatherDataUnit
+     *
      * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @return TropicalStormLocationOptions
      */
@@ -121,6 +137,8 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set includeDetails
+     *
      * @param includeDetails When true, wind radii summary data is included in the response.
      * @return TropicalStormLocationOptions
      */
@@ -130,8 +148,10 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set includeGeometricDetails
+     *
      * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
-     *     response.
+     * response.
      * @return TropicalStormLocationOptions
      */
     public TropicalStormLocationOptions setIncludeGeometricDetails(Boolean includeGeometricDetails) {
@@ -140,6 +160,8 @@ public final class TropicalStormLocationOptions {
     }
 
     /**
+     * Set includeCurrentStorm
+     * 
      * @param includeCurrentStorm When true, return the current storm location.
      * @return TropicalStormLocationOptions
      */

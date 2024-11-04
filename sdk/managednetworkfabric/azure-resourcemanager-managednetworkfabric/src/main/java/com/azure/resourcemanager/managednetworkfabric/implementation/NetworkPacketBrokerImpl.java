@@ -126,25 +126,21 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkPacketBrokers()
-                .create(resourceGroupName, networkPacketBrokerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkPacketBrokers()
+            .create(resourceGroupName, networkPacketBrokerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkPacketBroker create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkPacketBrokers()
-                .create(resourceGroupName, networkPacketBrokerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkPacketBrokers()
+            .create(resourceGroupName, networkPacketBrokerName, this.innerModel(), context);
         return this;
     }
 
-    NetworkPacketBrokerImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkPacketBrokerImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkPacketBrokerInner();
         this.serviceManager = serviceManager;
         this.networkPacketBrokerName = name;
@@ -156,25 +152,20 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkPacketBrokers()
-                .update(resourceGroupName, networkPacketBrokerName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkPacketBrokers()
+            .update(resourceGroupName, networkPacketBrokerName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkPacketBroker apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkPacketBrokers()
-                .update(resourceGroupName, networkPacketBrokerName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkPacketBrokers()
+            .update(resourceGroupName, networkPacketBrokerName, updateBody, context);
         return this;
     }
 
-    NetworkPacketBrokerImpl(
-        NetworkPacketBrokerInner innerObject,
+    NetworkPacketBrokerImpl(NetworkPacketBrokerInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -183,22 +174,18 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkPacketBrokers()
-                .getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkPacketBrokers()
+            .getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkPacketBroker refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkPacketBrokers()
-                .getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkPacketBrokers()
+            .getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, context)
+            .getValue();
         return this;
     }
 

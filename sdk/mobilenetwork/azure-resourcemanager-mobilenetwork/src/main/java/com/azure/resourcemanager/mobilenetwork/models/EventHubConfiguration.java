@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EventHubConfiguration {
     /*
-     * Resource ID of Azure Event Hub to send packet core events to.
+     * Resource ID  of Azure Event Hub to send packet core events to.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
@@ -78,8 +78,8 @@ public final class EventHubConfiguration {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model EventHubConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model EventHubConfiguration"));
         }
     }
 

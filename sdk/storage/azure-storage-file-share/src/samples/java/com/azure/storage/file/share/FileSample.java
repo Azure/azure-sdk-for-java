@@ -75,7 +75,7 @@ public class FileSample {
 
         String sourceURL = clientURL;
         Duration pollInterval = Duration.ofSeconds(2);
-        SyncPoller<ShareFileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, (Map<String, String>) null, pollInterval);
+        SyncPoller<ShareFileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL  + "<SAS_TOKEN>", (Map<String, String>) null, pollInterval);
 
         try {
             poller.waitForCompletion(Duration.ofMinutes(15));

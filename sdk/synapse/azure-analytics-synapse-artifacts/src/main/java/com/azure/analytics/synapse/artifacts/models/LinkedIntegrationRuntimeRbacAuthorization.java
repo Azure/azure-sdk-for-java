@@ -5,27 +5,40 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The role based access control (RBAC) authorization type integration runtime.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
-@JsonTypeName("RBAC")
 @Fluent
 public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedIntegrationRuntimeType {
     /*
+     * The authorization type for integration runtime sharing.
+     */
+    private String authorizationType = "RBAC";
+
+    /*
      * The resource identifier of the integration runtime to be shared.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /**
      * Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class.
      */
     public LinkedIntegrationRuntimeRbacAuthorization() {
+    }
+
+    /**
+     * Get the authorizationType property: The authorization type for integration runtime sharing.
+     * 
+     * @return the authorizationType value.
+     */
+    @Override
+    public String getAuthorizationType() {
+        return this.authorizationType;
     }
 
     /**
@@ -46,5 +59,46 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     public LinkedIntegrationRuntimeRbacAuthorization setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("authorizationType", this.authorizationType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedIntegrationRuntimeRbacAuthorization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedIntegrationRuntimeRbacAuthorization if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkedIntegrationRuntimeRbacAuthorization.
+     */
+    public static LinkedIntegrationRuntimeRbacAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedIntegrationRuntimeRbacAuthorization deserializedLinkedIntegrationRuntimeRbacAuthorization
+                = new LinkedIntegrationRuntimeRbacAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntimeRbacAuthorization.resourceId = reader.getString();
+                } else if ("authorizationType".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntimeRbacAuthorization.authorizationType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedIntegrationRuntimeRbacAuthorization;
+        });
     }
 }

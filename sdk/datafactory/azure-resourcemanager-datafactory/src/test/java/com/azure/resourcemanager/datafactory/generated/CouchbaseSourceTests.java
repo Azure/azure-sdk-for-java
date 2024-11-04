@@ -11,19 +11,19 @@ public final class CouchbaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CouchbaseSource model = BinaryData.fromString(
-            "{\"type\":\"h\",\"query\":\"dataoyznjddshazlom\",\"queryTimeout\":\"datajwwbrhjhcwcfftsz\",\"additionalColumns\":\"datavy\",\"sourceRetryCount\":\"datavh\",\"sourceRetryWait\":\"dataeoikxjpuwg\",\"maxConcurrentConnections\":\"datasaqfnbxuw\",\"disableMetricsCollection\":\"datambuslegtsqz\",\"\":{\"hvde\":\"dataoru\",\"ylgpznb\":\"datadcdjhfxbkgpnxu\"}}")
+            "{\"type\":\"CouchbaseSource\",\"query\":\"datadhismwjkq\",\"queryTimeout\":\"datayuygybshch\",\"additionalColumns\":\"dataeaitzgewwqwibt\",\"sourceRetryCount\":\"datahcgbzrlf\",\"sourceRetryWait\":\"datawusqupk\",\"maxConcurrentConnections\":\"datappmwozwjinxyrtec\",\"disableMetricsCollection\":\"datazslttk\",\"\":{\"mahuw\":\"datakujceeczhsdpfoa\",\"ewrryt\":\"dataodddq\",\"s\":\"datasocqkdclbzqnao\",\"cbhezau\":\"datamp\"}}")
             .toObject(CouchbaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datavh")
-            .withSourceRetryWait("dataeoikxjpuwg")
-            .withMaxConcurrentConnections("datasaqfnbxuw")
-            .withDisableMetricsCollection("datambuslegtsqz")
-            .withQueryTimeout("datajwwbrhjhcwcfftsz")
-            .withAdditionalColumns("datavy")
-            .withQuery("dataoyznjddshazlom");
+        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datahcgbzrlf")
+            .withSourceRetryWait("datawusqupk")
+            .withMaxConcurrentConnections("datappmwozwjinxyrtec")
+            .withDisableMetricsCollection("datazslttk")
+            .withQueryTimeout("datayuygybshch")
+            .withAdditionalColumns("dataeaitzgewwqwibt")
+            .withQuery("datadhismwjkq");
         model = BinaryData.fromObject(model).toObject(CouchbaseSource.class);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SourceControlOperationState extends ExpandableStringEnum<Sour
      * @param name a name to look for.
      * @return the corresponding SourceControlOperationState.
      */
-    @JsonCreator
     public static SourceControlOperationState fromString(String name) {
         return fromString(name, SourceControlOperationState.class);
     }

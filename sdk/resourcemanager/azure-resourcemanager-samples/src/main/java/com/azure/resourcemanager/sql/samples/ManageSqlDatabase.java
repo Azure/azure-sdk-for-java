@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -49,15 +48,19 @@ public final class ManageSqlDatabase {
 
             // ============================================================
             // Create a SQL Server, with 2 firewall rules.
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withAdministratorLogin(administratorLogin)
-                    .withAdministratorPassword(administratorPassword)
-                    .defineFirewallRule("filewallRule1").withIpAddress(firewallRuleIPAddress).attach()
-                    .defineFirewallRule("filewallRule2")
-                        .withIpAddressRange(firewallRuleStartIPAddress, firewallRuleEndIPAddress).attach()
-                    .create();
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAdministratorLogin(administratorLogin)
+                .withAdministratorPassword(administratorPassword)
+                .defineFirewallRule("filewallRule1")
+                .withIpAddress(firewallRuleIPAddress)
+                .attach()
+                .defineFirewallRule("filewallRule2")
+                .withIpAddressRange(firewallRuleStartIPAddress, firewallRuleEndIPAddress)
+                .attach()
+                .create();
 
             Utils.print(sqlServer);
 
@@ -65,18 +68,16 @@ public final class ManageSqlDatabase {
             // Create a Database in SQL server created above.
             System.out.println("Creating a database");
 
-            SqlDatabase database = sqlServer.databases()
-                    .define(databaseName)
-                    .create();
+            SqlDatabase database = sqlServer.databases().define(databaseName).create();
             Utils.print(database);
 
             // ============================================================
             // Update the edition of database.
             System.out.println("Updating a database");
             database = database.update()
-                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
-                    .withMaxSizeBytes(1024 * 1024 * 1024 * 20)
-                    .apply();
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
+                .withMaxSizeBytes(1024 * 1024 * 1024 * 20)
+                .apply();
             Utils.print(database);
 
             // ============================================================
@@ -84,7 +85,7 @@ public final class ManageSqlDatabase {
             System.out.println("Listing all firewall rules");
 
             List<SqlFirewallRule> firewallRules = sqlServer.firewallRules().list();
-            for (SqlFirewallRule firewallRule: firewallRules) {
+            for (SqlFirewallRule firewallRule : firewallRules) {
                 // Print information of the firewall rule.
                 Utils.print(firewallRule);
 
@@ -96,9 +97,8 @@ public final class ManageSqlDatabase {
             // ============================================================
             // Add new firewall rules.
             System.out.println("Creating a firewall rule for SQL Server");
-            SqlFirewallRule firewallRule = sqlServer.firewallRules().define("myFirewallRule")
-                    .withIpAddress("10.10.10.10")
-                    .create();
+            SqlFirewallRule firewallRule
+                = sqlServer.firewallRules().define("myFirewallRule").withIpAddress("10.10.10.10").create();
 
             Utils.print(firewallRule);
 
@@ -122,6 +122,7 @@ public final class ManageSqlDatabase {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -134,8 +135,7 @@ public final class ManageSqlDatabase {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -153,6 +153,5 @@ public final class ManageSqlDatabase {
     private ManageSqlDatabase() {
 
     }
-
 
 }

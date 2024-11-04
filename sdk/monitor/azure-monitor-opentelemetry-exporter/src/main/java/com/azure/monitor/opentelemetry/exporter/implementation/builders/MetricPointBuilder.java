@@ -15,8 +15,7 @@ public final class MetricPointBuilder {
     private final MetricDataPoint data = new MetricDataPoint();
 
     public void setNamespace(String namespace) {
-        data.setNamespace(
-            truncateTelemetry(namespace, MAX_METRIC_NAME_SPACE_LENGTH, "MetricPoint.namespace"));
+        data.setNamespace(truncateTelemetry(namespace, MAX_METRIC_NAME_SPACE_LENGTH, "MetricPoint.namespace"));
     }
 
     public void setName(String name) {

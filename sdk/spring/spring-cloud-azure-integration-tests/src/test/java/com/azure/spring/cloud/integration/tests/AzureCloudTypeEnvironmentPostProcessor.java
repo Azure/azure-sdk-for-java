@@ -3,11 +3,12 @@
 
 package com.azure.spring.cloud.integration.tests;
 
-import com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultEnvironmentPostProcessor;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -20,6 +21,10 @@ public class AzureCloudTypeEnvironmentPostProcessor implements EnvironmentPostPr
 
     private static final String CLOUD_TYPE_PROPERTY_KEY = "spring.cloud.azure.profile.cloud-type";
     private final Log logger;
+
+    public AzureCloudTypeEnvironmentPostProcessor() {
+        this.logger = new DeferredLog();
+    }
 
     public AzureCloudTypeEnvironmentPostProcessor(Log logger) {
         this.logger = logger;

@@ -8,26 +8,28 @@ import com.azure.resourcemanager.databricks.models.AccessConnector;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AccessConnectors Update. */
+/**
+ * Samples for AccessConnectors Update.
+ */
 public final class AccessConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/AccessConnectorPatchUpdate.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-05-01/examples/
+     * AccessConnectorPatchUpdate.json
      */
     /**
      * Sample code: Update an azure databricks accessConnector.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
-    public static void updateAnAzureDatabricksAccessConnector(
-        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        AccessConnector resource =
-            manager
-                .accessConnectors()
-                .getByResourceGroupWithResponse("rg", "myAccessConnector", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1")).apply();
+    public static void
+        updateAnAzureDatabricksAccessConnector(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        AccessConnector resource = manager.accessConnectors()
+            .getByResourceGroupWithResponse("rg", "myAccessConnector", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

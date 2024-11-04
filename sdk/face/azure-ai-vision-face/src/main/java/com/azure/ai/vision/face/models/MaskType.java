@@ -5,7 +5,6 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class MaskType extends ExpandableStringEnum<MaskType> {
      * @return the corresponding MaskType.
      */
     @Generated
-    @JsonCreator
     public static MaskType fromString(String name) {
         return fromString(name, MaskType.class);
     }

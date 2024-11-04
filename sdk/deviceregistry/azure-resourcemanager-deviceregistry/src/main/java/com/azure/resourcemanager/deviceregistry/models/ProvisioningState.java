@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,22 +12,22 @@ import java.util.Collection;
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /**
-     * Static value Succeeded for ProvisioningState.
+     * Resource has been created.
      */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Failed for ProvisioningState.
+     * Resource creation failed.
      */
     public static final ProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Static value Canceled for ProvisioningState.
+     * Resource creation was canceled.
      */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Accepted for ProvisioningState.
+     * Resource has been accepted by the server.
      */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 
@@ -47,7 +46,6 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
      * @param name a name to look for.
      * @return the corresponding ProvisioningState.
      */
-    @JsonCreator
     public static ProvisioningState fromString(String name) {
         return fromString(name, ProvisioningState.class);
     }

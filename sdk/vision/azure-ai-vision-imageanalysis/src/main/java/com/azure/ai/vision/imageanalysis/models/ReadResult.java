@@ -5,23 +5,25 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The results of a Read (OCR) operation.
  */
 @Immutable
-public final class ReadResult {
+public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /*
-     * A list of text blocks in the image. At the moment only one block is returned, containing all the text detected
-     * in the image.
+     * A list of text blocks in the image. At the moment only one block is returned, containing all the text detected in
+     * the image.
      */
     @Generated
-    @JsonProperty(value = "blocks")
-    private List<DetectedTextBlock> blocks;
+    private final List<DetectedTextBlock> blocks;
 
     /**
      * Creates an instance of ReadResult class.
@@ -29,19 +31,55 @@ public final class ReadResult {
      * @param blocks the blocks value to set.
      */
     @Generated
-    @JsonCreator
-    private ReadResult(@JsonProperty(value = "blocks") List<DetectedTextBlock> blocks) {
+    private ReadResult(List<DetectedTextBlock> blocks) {
         this.blocks = blocks;
     }
 
     /**
-     * Get the blocks property: A list of text blocks in the image. At the moment only one block is returned,
-     * containing all the text detected in the image.
+     * Get the blocks property: A list of text blocks in the image. At the moment only one block is returned, containing
+     * all the text detected in the image.
      *
      * @return the blocks value.
      */
     @Generated
     public List<DetectedTextBlock> getBlocks() {
         return this.blocks;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("blocks", this.blocks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReadResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReadResult if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReadResult.
+     */
+    @Generated
+    public static ReadResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<DetectedTextBlock> blocks = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("blocks".equals(fieldName)) {
+                    blocks = reader.readArray(reader1 -> DetectedTextBlock.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ReadResult(blocks);
+        });
     }
 }

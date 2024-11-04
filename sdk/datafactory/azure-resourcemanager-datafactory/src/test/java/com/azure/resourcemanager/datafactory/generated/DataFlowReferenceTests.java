@@ -15,22 +15,22 @@ public final class DataFlowReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowReference model = BinaryData.fromString(
-            "{\"type\":\"DataFlowReference\",\"referenceName\":\"dqaolfylnkk\",\"datasetParameters\":\"datapjvlywltmfwo\",\"parameters\":{\"fnqzocr\":\"datawhlwy\"},\"\":{\"ncaqttiekoifu\":\"dataczeuntgx\",\"yri\":\"datanyttzgix\",\"lqtxnrflkndrn\":\"datalgmgbe\"}}")
+            "{\"type\":\"DataFlowReference\",\"referenceName\":\"eqir\",\"datasetParameters\":\"datajclykcg\",\"parameters\":{\"punettepdjxq\":\"datapjlvczuoda\"},\"\":{\"uiylpc\":\"dataoy\",\"vesk\":\"dataaewse\",\"fn\":\"dataxegqphr\",\"bcbcpz\":\"datahctmjtsgh\"}}")
             .toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("dqaolfylnkk", model.referenceName());
+        Assertions.assertEquals("eqir", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowReference model = new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-            .withReferenceName("dqaolfylnkk")
-            .withDatasetParameters("datapjvlywltmfwo")
-            .withParameters(mapOf("fnqzocr", "datawhlwy"))
+            .withReferenceName("eqir")
+            .withDatasetParameters("datajclykcg")
+            .withParameters(mapOf("punettepdjxq", "datapjlvczuoda"))
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("dqaolfylnkk", model.referenceName());
+        Assertions.assertEquals("eqir", model.referenceName());
     }
 
     // Use "Map.of" if available

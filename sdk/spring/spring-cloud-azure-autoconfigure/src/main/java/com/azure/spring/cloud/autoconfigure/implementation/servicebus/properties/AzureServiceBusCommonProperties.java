@@ -10,7 +10,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 /**
  *
  */
-abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
+public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
     // https://docs.microsoft.com/rest/api/servicebus/addressing-and-protocol
@@ -34,6 +34,13 @@ abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigur
      * The type of Service Bus entity, which is a Queue or a Topic.
      */
     private ServiceBusEntityType entityType;
+
+    /**
+     * Sets a custom endpoint address when connecting to the Service Bus service. This can be useful when your network
+     * does not allow connecting to the standard Azure Service Bus endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     */
+    private String customEndpointAddress;
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -93,4 +100,11 @@ abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigur
         this.entityType = type;
     }
 
+    public String getCustomEndpointAddress() {
+        return customEndpointAddress;
+    }
+
+    public void setCustomEndpointAddress(String customEndpointAddress) {
+        this.customEndpointAddress = customEndpointAddress;
+    }
 }

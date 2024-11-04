@@ -5,48 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.AssignmentType;
 import com.azure.resourcemanager.authorization.models.ExpandedProperties;
 import com.azure.resourcemanager.authorization.models.MemberType;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
 import com.azure.resourcemanager.authorization.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Role Assignment schedule. */
+/**
+ * Role Assignment schedule.
+ */
 @Fluent
-public final class RoleAssignmentScheduleInner {
+public final class RoleAssignmentScheduleInner implements JsonSerializable<RoleAssignmentScheduleInner> {
     /*
      * The role assignment schedule Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The role assignment schedule name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The role assignment schedule type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Role assignment schedule properties.
      */
-    @JsonProperty(value = "properties")
     private RoleAssignmentScheduleProperties innerProperties;
 
-    /** Creates an instance of RoleAssignmentScheduleInner class. */
+    /**
+     * Creates an instance of RoleAssignmentScheduleInner class.
+     */
     public RoleAssignmentScheduleInner() {
     }
 
     /**
      * Get the id property: The role assignment schedule Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -55,7 +59,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the name property: The role assignment schedule name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the type property: The role assignment schedule type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -73,7 +77,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the innerProperties property: Role assignment schedule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleAssignmentScheduleProperties innerProperties() {
@@ -82,7 +86,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the scope property: The role assignment schedule scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -91,7 +95,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the scope property: The role assignment schedule scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -105,7 +109,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -114,7 +118,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -128,7 +132,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the principalId property: The principal ID.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -137,7 +141,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the principalId property: The principal ID.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -151,7 +155,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -160,7 +164,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -175,7 +179,7 @@ public final class RoleAssignmentScheduleInner {
     /**
      * Get the roleAssignmentScheduleRequestId property: The id of roleAssignmentScheduleRequest used to create this
      * roleAssignmentSchedule.
-     *
+     * 
      * @return the roleAssignmentScheduleRequestId value.
      */
     public String roleAssignmentScheduleRequestId() {
@@ -185,7 +189,7 @@ public final class RoleAssignmentScheduleInner {
     /**
      * Set the roleAssignmentScheduleRequestId property: The id of roleAssignmentScheduleRequest used to create this
      * roleAssignmentSchedule.
-     *
+     * 
      * @param roleAssignmentScheduleRequestId the roleAssignmentScheduleRequestId value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -200,7 +204,7 @@ public final class RoleAssignmentScheduleInner {
     /**
      * Get the linkedRoleEligibilityScheduleId property: The id of roleEligibilitySchedule used to activated this
      * roleAssignmentSchedule.
-     *
+     * 
      * @return the linkedRoleEligibilityScheduleId value.
      */
     public String linkedRoleEligibilityScheduleId() {
@@ -210,7 +214,7 @@ public final class RoleAssignmentScheduleInner {
     /**
      * Set the linkedRoleEligibilityScheduleId property: The id of roleEligibilitySchedule used to activated this
      * roleAssignmentSchedule.
-     *
+     * 
      * @param linkedRoleEligibilityScheduleId the linkedRoleEligibilityScheduleId value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -224,7 +228,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the assignmentType property: Assignment type of the role assignment schedule.
-     *
+     * 
      * @return the assignmentType value.
      */
     public AssignmentType assignmentType() {
@@ -233,7 +237,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the assignmentType property: Assignment type of the role assignment schedule.
-     *
+     * 
      * @param assignmentType the assignmentType value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -247,7 +251,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the memberType property: Membership type of the role assignment schedule.
-     *
+     * 
      * @return the memberType value.
      */
     public MemberType memberType() {
@@ -256,7 +260,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the memberType property: Membership type of the role assignment schedule.
-     *
+     * 
      * @param memberType the memberType value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -270,7 +274,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the status property: The status of the role assignment schedule.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -279,7 +283,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the status property: The status of the role assignment schedule.
-     *
+     * 
      * @param status the status value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -293,7 +297,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the startDateTime property: Start DateTime when role assignment schedule.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -302,7 +306,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the startDateTime property: Start DateTime when role assignment schedule.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -316,7 +320,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the endDateTime property: End DateTime when role assignment schedule.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -325,7 +329,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the endDateTime property: End DateTime when role assignment schedule.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -339,9 +343,9 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -350,9 +354,9 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -366,7 +370,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -375,7 +379,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -389,7 +393,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the createdOn property: DateTime when role assignment schedule was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -398,7 +402,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the createdOn property: DateTime when role assignment schedule was created.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -412,7 +416,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the updatedOn property: DateTime when role assignment schedule was modified.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -421,7 +425,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the updatedOn property: DateTime when role assignment schedule was modified.
-     *
+     * 
      * @param updatedOn the updatedOn value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -435,7 +439,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Get the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @return the expandedProperties value.
      */
     public ExpandedProperties expandedProperties() {
@@ -444,7 +448,7 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Set the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @param expandedProperties the expandedProperties value to set.
      * @return the RoleAssignmentScheduleInner object itself.
      */
@@ -458,12 +462,55 @@ public final class RoleAssignmentScheduleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentScheduleInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleAssignmentScheduleInner.
+     */
+    public static RoleAssignmentScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentScheduleInner deserializedRoleAssignmentScheduleInner = new RoleAssignmentScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleInner.innerProperties
+                        = RoleAssignmentScheduleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentScheduleInner;
+        });
     }
 }

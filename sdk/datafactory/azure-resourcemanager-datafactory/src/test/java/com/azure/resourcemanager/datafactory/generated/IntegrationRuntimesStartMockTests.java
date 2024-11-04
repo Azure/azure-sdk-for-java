@@ -20,7 +20,7 @@ public final class IntegrationRuntimesStartMockTests {
     @Test
     public void testStart() throws Exception {
         String responseStr
-            = "{\"name\":\"jctvohywyvstv\",\"properties\":{\"type\":\"SelfHosted\",\"dataFactoryName\":\"q\",\"state\":\"Limited\",\"\":{\"lwgr\":\"dataocqrylivofnhckl\",\"pxvemjjfvanefw\":\"datavlqq\",\"npbgqemjdtc\":\"dataodnlw\"}}}";
+            = "{\"name\":\"dirxprxlgzpnrm\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"yvmxtju\",\"state\":\"Stopping\",\"\":{\"lteiu\":\"dataky\",\"hvfcw\":\"datavrpvhivvlmzcvpo\",\"oezgibfisfmc\":\"datadyze\"}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IntegrationRuntimesStartMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .start("bxwda", "hiiduogakrpmj", "dbdcyijnoibclfqd", com.azure.core.util.Context.NONE);
+            .start("lsrxzatlzwrpjoqc", "owzwshsgre", "cp", com.azure.core.util.Context.NONE);
 
     }
 }

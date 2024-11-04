@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -89,7 +88,6 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
      * @param name a name to look for.
      * @return the corresponding AccessTier.
      */
-    @JsonCreator
     public static AccessTier fromString(String name) {
         return fromString(name, AccessTier.class);
     }

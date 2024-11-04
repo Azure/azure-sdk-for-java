@@ -11,19 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"xlonz\",\"query\":\"datafo\",\"queryTimeout\":\"datassx\",\"additionalColumns\":\"datahhlhprjcfyvkkgx\",\"sourceRetryCount\":\"datadfs\",\"sourceRetryWait\":\"datagw\",\"maxConcurrentConnections\":\"dataghdn\",\"disableMetricsCollection\":\"dataydhqkariatxhpx\",\"\":{\"oghg\":\"dataa\",\"mcwetx\":\"datagzbzsasg\",\"qbageltffqalmcq\":\"datasgcwadv\",\"slctyvmiz\":\"datampzwwtcwbgmxwpy\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"datavijdr\",\"queryTimeout\":\"datayqvhz\",\"additionalColumns\":\"datayvhrenozl\",\"sourceRetryCount\":\"dataqfghlosho\",\"sourceRetryWait\":\"datakpcmtsbandesalv\",\"maxConcurrentConnections\":\"datawrljmlo\",\"disableMetricsCollection\":\"datatzvtfyqe\",\"\":{\"xhcygfg\":\"databsyni\",\"aosttbwap\":\"datamdbazggr\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("datadfs")
-            .withSourceRetryWait("datagw")
-            .withMaxConcurrentConnections("dataghdn")
-            .withDisableMetricsCollection("dataydhqkariatxhpx")
-            .withQueryTimeout("datassx")
-            .withAdditionalColumns("datahhlhprjcfyvkkgx")
-            .withQuery("datafo");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataqfghlosho")
+            .withSourceRetryWait("datakpcmtsbandesalv")
+            .withMaxConcurrentConnections("datawrljmlo")
+            .withDisableMetricsCollection("datatzvtfyqe")
+            .withQueryTimeout("datayqvhz")
+            .withAdditionalColumns("datayvhrenozl")
+            .withQuery("datavijdr");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

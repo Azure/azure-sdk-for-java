@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Retention policy of a resource metric.
  */
 @Fluent
-public final class MetricAvailability {
+public final class MetricAvailability implements JsonSerializable<MetricAvailability> {
     /*
      * The timeGrain property.
      */
-    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /*
      * The blobDuration property.
      */
-    @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
     /**
@@ -76,5 +78,44 @@ public final class MetricAvailability {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeGrain", this.timeGrain);
+        jsonWriter.writeStringField("blobDuration", this.blobDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricAvailability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricAvailability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricAvailability.
+     */
+    public static MetricAvailability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricAvailability deserializedMetricAvailability = new MetricAvailability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeGrain".equals(fieldName)) {
+                    deserializedMetricAvailability.timeGrain = reader.getString();
+                } else if ("blobDuration".equals(fieldName)) {
+                    deserializedMetricAvailability.blobDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricAvailability;
+        });
     }
 }

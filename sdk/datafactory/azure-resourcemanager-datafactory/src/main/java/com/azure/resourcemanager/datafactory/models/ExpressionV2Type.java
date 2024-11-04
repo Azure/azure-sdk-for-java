@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,6 +32,11 @@ public final class ExpressionV2Type extends ExpandableStringEnum<ExpressionV2Typ
     public static final ExpressionV2Type BINARY = fromString("Binary");
 
     /**
+     * Static value NAry for ExpressionV2Type.
+     */
+    public static final ExpressionV2Type NARY = fromString("NAry");
+
+    /**
      * Creates a new instance of ExpressionV2Type value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -47,7 +51,6 @@ public final class ExpressionV2Type extends ExpandableStringEnum<ExpressionV2Typ
      * @param name a name to look for.
      * @return the corresponding ExpressionV2Type.
      */
-    @JsonCreator
     public static ExpressionV2Type fromString(String name) {
         return fromString(name, ExpressionV2Type.class);
     }

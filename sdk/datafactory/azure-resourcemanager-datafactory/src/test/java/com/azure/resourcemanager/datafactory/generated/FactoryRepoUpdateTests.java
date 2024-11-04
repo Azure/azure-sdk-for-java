@@ -13,33 +13,33 @@ public final class FactoryRepoUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FactoryRepoUpdate model = BinaryData.fromString(
-            "{\"factoryResourceId\":\"gidyjrrf\",\"repoConfiguration\":{\"type\":\"osvexcsonpclhoc\",\"accountName\":\"hslkevleggzf\",\"repositoryName\":\"u\",\"collaborationBranch\":\"fmvfaxkffeiit\",\"rootFolder\":\"lvmezyvshxmzsbbz\",\"lastCommitId\":\"gigr\",\"disablePublish\":true}}")
+            "{\"factoryResourceId\":\"qzbqjvsov\",\"repoConfiguration\":{\"type\":\"FactoryRepoConfiguration\",\"accountName\":\"okacspk\",\"repositoryName\":\"lhzdobp\",\"collaborationBranch\":\"jmflbvvnch\",\"rootFolder\":\"kcciwwzjuqkhr\",\"lastCommitId\":\"jiwkuofoskghsau\",\"disablePublish\":true}}")
             .toObject(FactoryRepoUpdate.class);
-        Assertions.assertEquals("gidyjrrf", model.factoryResourceId());
-        Assertions.assertEquals("hslkevleggzf", model.repoConfiguration().accountName());
-        Assertions.assertEquals("u", model.repoConfiguration().repositoryName());
-        Assertions.assertEquals("fmvfaxkffeiit", model.repoConfiguration().collaborationBranch());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.repoConfiguration().rootFolder());
-        Assertions.assertEquals("gigr", model.repoConfiguration().lastCommitId());
+        Assertions.assertEquals("qzbqjvsov", model.factoryResourceId());
+        Assertions.assertEquals("okacspk", model.repoConfiguration().accountName());
+        Assertions.assertEquals("lhzdobp", model.repoConfiguration().repositoryName());
+        Assertions.assertEquals("jmflbvvnch", model.repoConfiguration().collaborationBranch());
+        Assertions.assertEquals("kcciwwzjuqkhr", model.repoConfiguration().rootFolder());
+        Assertions.assertEquals("jiwkuofoskghsau", model.repoConfiguration().lastCommitId());
         Assertions.assertEquals(true, model.repoConfiguration().disablePublish());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryRepoUpdate model = new FactoryRepoUpdate().withFactoryResourceId("gidyjrrf")
-            .withRepoConfiguration(new FactoryRepoConfiguration().withAccountName("hslkevleggzf")
-                .withRepositoryName("u")
-                .withCollaborationBranch("fmvfaxkffeiit")
-                .withRootFolder("lvmezyvshxmzsbbz")
-                .withLastCommitId("gigr")
+        FactoryRepoUpdate model = new FactoryRepoUpdate().withFactoryResourceId("qzbqjvsov")
+            .withRepoConfiguration(new FactoryRepoConfiguration().withAccountName("okacspk")
+                .withRepositoryName("lhzdobp")
+                .withCollaborationBranch("jmflbvvnch")
+                .withRootFolder("kcciwwzjuqkhr")
+                .withLastCommitId("jiwkuofoskghsau")
                 .withDisablePublish(true));
         model = BinaryData.fromObject(model).toObject(FactoryRepoUpdate.class);
-        Assertions.assertEquals("gidyjrrf", model.factoryResourceId());
-        Assertions.assertEquals("hslkevleggzf", model.repoConfiguration().accountName());
-        Assertions.assertEquals("u", model.repoConfiguration().repositoryName());
-        Assertions.assertEquals("fmvfaxkffeiit", model.repoConfiguration().collaborationBranch());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.repoConfiguration().rootFolder());
-        Assertions.assertEquals("gigr", model.repoConfiguration().lastCommitId());
+        Assertions.assertEquals("qzbqjvsov", model.factoryResourceId());
+        Assertions.assertEquals("okacspk", model.repoConfiguration().accountName());
+        Assertions.assertEquals("lhzdobp", model.repoConfiguration().repositoryName());
+        Assertions.assertEquals("jmflbvvnch", model.repoConfiguration().collaborationBranch());
+        Assertions.assertEquals("kcciwwzjuqkhr", model.repoConfiguration().rootFolder());
+        Assertions.assertEquals("jiwkuofoskghsau", model.repoConfiguration().lastCommitId());
         Assertions.assertEquals(true, model.repoConfiguration().disablePublish());
     }
 }

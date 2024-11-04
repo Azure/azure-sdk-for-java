@@ -51,24 +51,23 @@ public class SimpleClass implements JsonSerializable<SimpleClass> {
     }
 
     public static SimpleClass fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-            reader -> {
-                SimpleClass simpleClass = new SimpleClass();
+        return jsonReader.readObject(reader -> {
+            SimpleClass simpleClass = new SimpleClass();
 
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                    if ("field1".equals(fieldName)) {
-                        simpleClass.field1 = reader.getString();
-                    } else if ("field2".equals(fieldName)) {
-                        simpleClass.field2 = reader.getString();
-                    } else {
-                        reader.skipChildren();
-                    }
+                if ("field1".equals(fieldName)) {
+                    simpleClass.field1 = reader.getString();
+                } else if ("field2".equals(fieldName)) {
+                    simpleClass.field2 = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
+            }
 
-                return simpleClass;
-            });
+            return simpleClass;
+        });
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.machinelearning.fluent.models.ResourceQuotaInne
 public final class ResourceQuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceQuotaInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"bkh\",\"amlWorkspaceLocation\":\"deyeamdphagalpbu\",\"type\":\"gipwhonowkg\",\"name\":{\"value\":\"ankixzbinjeput\",\"localizedValue\":\"rywn\"},\"limit\":4868014576917618697,\"unit\":\"Count\"}")
-                .toObject(ResourceQuotaInner.class);
+        ResourceQuotaInner model = BinaryData.fromString(
+            "{\"id\":\"rdqmhjjdhtldwkyz\",\"amlWorkspaceLocation\":\"utknc\",\"type\":\"cwsvlxotog\",\"name\":{\"value\":\"upqsx\",\"localizedValue\":\"micykvceoveilo\"},\"limit\":2837447101588730204,\"unit\":\"Count\"}")
+            .toObject(ResourceQuotaInner.class);
     }
 
     @org.junit.jupiter.api.Test

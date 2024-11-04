@@ -20,7 +20,6 @@ import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterIn
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.MeshRevisionProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.MeshUpgradeProfileInner;
-import com.azure.resourcemanager.containerservice.fluent.models.OSOptionProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.containerservice.fluent.models.RunCommandResultInner;
 import com.azure.resourcemanager.containerservice.models.Format;
@@ -41,58 +40,6 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedClustersClient extends InnerSupportsGet<ManagedClusterInner>,
     InnerSupportsListing<ManagedClusterInner>, InnerSupportsDelete<Void> {
-    /**
-     * Gets supported OS options in the specified subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param resourceType The resource type for which the OS options needs to be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OSOptionProfileInner>> getOSOptionsWithResponseAsync(String location, String resourceType);
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OSOptionProfileInner> getOSOptionsAsync(String location);
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param resourceType The resource type for which the OS options needs to be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OSOptionProfileInner> getOSOptionsWithResponse(String location, String resourceType, Context context);
-
-    /**
-     * Gets supported OS options in the specified subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return supported OS options in the specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OSOptionProfileInner getOSOptions(String location);
-
     /**
      * Gets a list of supported Kubernetes versions in the specified subscription.
      * 

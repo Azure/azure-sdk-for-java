@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class IngressClientCertificateMode extends ExpandableStringEnum<Ing
      * @param name a name to look for.
      * @return the corresponding IngressClientCertificateMode.
      */
-    @JsonCreator
     public static IngressClientCertificateMode fromString(String name) {
         return fromString(name, IngressClientCertificateMode.class);
     }

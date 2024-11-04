@@ -62,15 +62,19 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                 try {
                     if (paramCount == 3) {
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
-                        return new ResponseConstructor(3, LambdaMetafactory.metafactory(LOOKUP, "apply",
-                                ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type())
-                            .getTarget());
+                        return new ResponseConstructor(3,
+                            LambdaMetafactory
+                                .metafactory(LOOKUP, "apply", ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE,
+                                    ctrMethodHandle, ctrMethodHandle.type())
+                                .getTarget());
                     } else {
                         MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
 
-                        return new ResponseConstructor(4, LambdaMetafactory.metafactory(LOOKUP, "apply",
-                                ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type())
-                            .getTarget());
+                        return new ResponseConstructor(4,
+                            LambdaMetafactory
+                                .metafactory(LOOKUP, "apply", ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE,
+                                    ctrMethodHandle, ctrMethodHandle.type())
+                                .getTarget());
                     }
                 } catch (Throwable t) {
                     throw logger.logThrowableAsError(new RuntimeException(t));
@@ -117,9 +121,11 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                 switch (this.parameterCount) {
                     case 3:
                         return callMethodHandle(responseFunc, httpRequest, responseStatusCode, responseHeaders);
+
                     case 4:
                         return callMethodHandle(responseFunc, httpRequest, responseStatusCode, responseHeaders,
                             bodyAsObject);
+
                     default:
                         throw logger.logThrowableAsError(
                             new IllegalStateException("Response constructor with expected parameters not found."));
@@ -144,8 +150,8 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
 
     @FunctionalInterface
     private interface ResponseFunc4 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class,
-            Object.class);
+        MethodType SIGNATURE
+            = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class, Object.class);
         MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc4.class);
 
         Object apply(HttpRequest httpRequest, int responseStatusCode, HttpHeaders responseHeaders, Object body);

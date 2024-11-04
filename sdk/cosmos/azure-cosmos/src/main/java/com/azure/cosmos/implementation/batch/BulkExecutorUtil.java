@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CollectionRoutingMapNotFoundException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
@@ -110,7 +111,7 @@ final class BulkExecutorUtil {
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
-            final Mono<String> pkRangeIdMono = Mono.defer(() ->
+            return Mono.defer(() ->
                 BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
@@ -152,8 +153,6 @@ final class BulkExecutorUtil {
                             null)
                     )
                 );
-
-            return pkRangeIdMono;
         } else {
             throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
         }
@@ -202,26 +201,4 @@ final class BulkExecutorUtil {
             cosmosItemOperationType == CosmosItemOperationType.DELETE ||
             cosmosItemOperationType == CosmosItemOperationType.PATCH;
     }
-
-    static class CollectionRoutingMapNotFoundException extends CosmosException {
-
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Instantiates a new Invalid partition exception.
-         *
-         * @param msg the msg
-         */
-        public CollectionRoutingMapNotFoundException(String msg) {
-            super(HttpConstants.StatusCodes.NOTFOUND, msg);
-            setSubStatus();
-        }
-
-        private void setSubStatus() {
-            this.getResponseHeaders().put(
-                WFConstants.BackendHeaders.SUB_STATUS,
-                Integer.toString(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
-        }
-    }
-
 }

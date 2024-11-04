@@ -22,19 +22,29 @@ import java.util.Map;
 public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolCreateContent> {
 
     /*
-     * A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
+     * A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric
+     * characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is
+     * case-preserving and case-insensitive (that is, you may not have two Pool IDs within an Account that differ only
+     * by case).
      */
     @Generated
     private final String id;
 
     /*
-     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a
+     * maximum length of 1024.
      */
     @Generated
     private String displayName;
 
     /*
-     * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration), see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
+     * available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with
+     * virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
+     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
+     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
+     * series).
      */
     @Generated
     private final String vmSize;
@@ -46,49 +56,70 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
-     * The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no
+     * effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If
+     * you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API
+     * directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     private Duration resizeTimeout;
 
     /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
      */
     @Generated
     private Map<String, String> resourceTags;
 
     /*
-     * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
+     * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if enableAutoScale
+     * is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes,
+     * targetLowPriorityNodes, or both.
      */
     @Generated
     private Integer targetDedicatedNodes;
 
     /*
-     * The desired number of Spot/Low-priority Compute Nodes in the Pool. This property must not be specified if enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool. This property must not be specified if
+     * enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either
+     * targetDedicatedNodes, targetLowPriorityNodes, or both.
      */
     @Generated
     private Integer targetLowPriorityNodes;
 
     /*
-     * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and
+     * targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool
+     * automatically resizes according to the formula. The default value is false.
      */
     @Generated
     private Boolean enableAutoScale;
 
     /*
-     * A formula for the desired number of Compute Nodes in the Pool. This property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see 'Automatically scale Compute Nodes in an Azure Batch Pool' (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * A formula for the desired number of Compute Nodes in the Pool. This property must not be specified if
+     * enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for
+     * validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with
+     * detailed error information. For more information about specifying this formula, see 'Automatically scale Compute
+     * Nodes in an Azure Batch Pool' (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
      */
     @Generated
     private String autoScaleFormula;
 
     /*
-     * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default
+     * value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a
+     * value less than 5 minutes or greater than 168 hours, the Batch service returns an error; if you are calling the
+     * REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
 
     /*
-     * Whether the Pool permits direct communication between Compute Nodes. Enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is false.
+     * Whether the Pool permits direct communication between Compute Nodes. Enabling inter-node communication limits the
+     * maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the
+     * Pool not reaching its desired size. The default value is false.
      */
     @Generated
     private Boolean enableInterNodeCommunication;
@@ -100,19 +131,27 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     private NetworkConfiguration networkConfiguration;
 
     /*
-     * A Task specified to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted.
+     * A Task specified to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added
+     * to the Pool or when the Compute Node is restarted.
      */
     @Generated
     private BatchStartTask startTask;
 
     /*
-     * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}). Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
+     * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
+     * application ID must be fully qualified
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
+     * accountName}/applications/{applicationName}). Changes to Package references affect all new Nodes joining the
+     * Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is
+     * a maximum of 10 Package references on any given Pool.
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
+     * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
+     * default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or
+     * 256.
      */
     @Generated
     private Integer taskSlotsPerNode;
@@ -130,13 +169,15 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     private List<UserAccount> userAccounts;
 
     /*
-     * A list of name-value pairs associated with the Pool as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+     * A list of name-value pairs associated with the Pool as metadata. The Batch service does not assign any meaning to
+     * metadata; it is solely for the use of user code.
      */
     @Generated
     private List<MetadataItem> metadata;
 
     /*
-     * Mount storage using specified file system for the entire lifetime of the pool. Mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.
+     * Mount storage using specified file system for the entire lifetime of the pool. Mount the storage using Azure
+     * fileshare, NFS, CIFS or Blobfuse based file system.
      */
     @Generated
     private List<MountConfiguration> mountConfiguration;

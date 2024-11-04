@@ -27,9 +27,7 @@ import java.util.Map;
  */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * Caches_Update_ldap_only.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_Update_ldap_only.json
      */
     /**
      * Sample code: Caches_Update_ldap_only.
@@ -38,39 +36,49 @@ public final class CachesUpdateSamples {
      */
     public static void cachesUpdateLdapOnly(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         Cache resource = manager.caches()
-            .getByResourceGroupWithResponse("scgroup", "sc1", com.azure.core.util.Context.NONE).getValue();
-        resource
-            .update().withTags(
-                mapOf("Dept", "Contoso"))
-            .withUpgradeSettings(
-                new CacheUpgradeSettings()
-                    .withUpgradeScheduleEnabled(
-                        true)
-                    .withScheduledTime(OffsetDateTime.parse("2022-04-26T18:25:43.511Z")))
-            .withNetworkSettings(
-                new CacheNetworkSettings().withMtu(1500).withDnsServers(Arrays.asList("10.1.22.33", "10.1.12.33"))
-                    .withDnsSearchDomain("contoso.com").withNtpServer("time.contoso.com"))
-            .withSecuritySettings(
-                new CacheSecuritySettings()
-                    .withAccessPolicies(Arrays.asList(
-                        new NfsAccessPolicy().withName("default")
-                            .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                .withAccess(NfsAccessRuleAccess.RW).withSuid(false).withSubmountAccess(true)
-                                .withRootSquash(false))),
-                        new NfsAccessPolicy().withName("restrictive")
-                            .withAccessRules(Arrays.asList(
-                                new NfsAccessRule().withScope(NfsAccessRuleScope.HOST).withFilter("10.99.3.145")
-                                    .withAccess(NfsAccessRuleAccess.RW).withSuid(true).withSubmountAccess(true)
-                                    .withRootSquash(false),
-                                new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK).withFilter("10.99.1.0/24")
-                                    .withAccess(NfsAccessRuleAccess.RW).withSuid(true).withSubmountAccess(true)
-                                    .withRootSquash(false),
-                                new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                    .withAccess(NfsAccessRuleAccess.NO).withSuid(false).withSubmountAccess(true)
-                                    .withRootSquash(true).withAnonymousUid("65534").withAnonymousGid("65534"))))))
-            .withDirectoryServicesSettings(new CacheDirectorySettings().withUsernameDownload(
-                new CacheUsernameDownloadSettings().withExtendedGroups(true).withUsernameSource(UsernameSource.LDAP)
-                    .withLdapServer("192.0.2.12").withLdapBaseDN("dc=contosoad,dc=contoso,dc=local")
+            .getByResourceGroupWithResponse("scgroup", "sc1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Dept", "Contoso"))
+            .withUpgradeSettings(new CacheUpgradeSettings().withUpgradeScheduleEnabled(true)
+                .withScheduledTime(OffsetDateTime.parse("2022-04-26T18:25:43.511Z")))
+            .withNetworkSettings(new CacheNetworkSettings().withMtu(1500)
+                .withDnsServers(Arrays.asList("10.1.22.33", "10.1.12.33"))
+                .withDnsSearchDomain("contoso.com")
+                .withNtpServer("time.contoso.com"))
+            .withSecuritySettings(new CacheSecuritySettings().withAccessPolicies(Arrays.asList(
+                new NfsAccessPolicy().withName("default")
+                    .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
+                        .withAccess(NfsAccessRuleAccess.RW)
+                        .withSuid(false)
+                        .withSubmountAccess(true)
+                        .withRootSquash(false))),
+                new NfsAccessPolicy().withName("restrictive")
+                    .withAccessRules(Arrays.asList(
+                        new NfsAccessRule().withScope(NfsAccessRuleScope.HOST)
+                            .withFilter("10.99.3.145")
+                            .withAccess(NfsAccessRuleAccess.RW)
+                            .withSuid(true)
+                            .withSubmountAccess(true)
+                            .withRootSquash(false),
+                        new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
+                            .withFilter("10.99.1.0/24")
+                            .withAccess(NfsAccessRuleAccess.RW)
+                            .withSuid(true)
+                            .withSubmountAccess(true)
+                            .withRootSquash(false),
+                        new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
+                            .withAccess(NfsAccessRuleAccess.NO)
+                            .withSuid(false)
+                            .withSubmountAccess(true)
+                            .withRootSquash(true)
+                            .withAnonymousUid("65534")
+                            .withAnonymousGid("65534"))))))
+            .withDirectoryServicesSettings(new CacheDirectorySettings()
+                .withUsernameDownload(new CacheUsernameDownloadSettings().withExtendedGroups(true)
+                    .withUsernameSource(UsernameSource.LDAP)
+                    .withLdapServer("192.0.2.12")
+                    .withLdapBaseDN("dc=contosoad,dc=contoso,dc=local")
                     .withCredentials(new CacheUsernameDownloadSettingsCredentials()
                         .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
                         .withBindPassword("fakeTokenPlaceholder"))))
@@ -78,9 +86,7 @@ public final class CachesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * Caches_Update.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.
@@ -89,40 +95,50 @@ public final class CachesUpdateSamples {
      */
     public static void cachesUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         Cache resource = manager.caches()
-            .getByResourceGroupWithResponse("scgroup", "sc1", com.azure.core.util.Context.NONE).getValue();
-        resource
-            .update().withTags(
-                mapOf("Dept", "Contoso"))
-            .withUpgradeSettings(
-                new CacheUpgradeSettings()
-                    .withUpgradeScheduleEnabled(
-                        true)
-                    .withScheduledTime(OffsetDateTime.parse("2022-04-26T18:25:43.511Z")))
-            .withNetworkSettings(
-                new CacheNetworkSettings().withMtu(1500).withDnsServers(Arrays.asList("10.1.22.33", "10.1.12.33"))
-                    .withDnsSearchDomain("contoso.com").withNtpServer("time.contoso.com"))
-            .withSecuritySettings(
-                new CacheSecuritySettings()
-                    .withAccessPolicies(Arrays.asList(
-                        new NfsAccessPolicy().withName("default")
-                            .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                .withAccess(NfsAccessRuleAccess.RW).withSuid(false).withSubmountAccess(true)
-                                .withRootSquash(false))),
-                        new NfsAccessPolicy().withName("restrictive")
-                            .withAccessRules(Arrays.asList(
-                                new NfsAccessRule().withScope(NfsAccessRuleScope.HOST).withFilter("10.99.3.145")
-                                    .withAccess(NfsAccessRuleAccess.RW).withSuid(true).withSubmountAccess(true)
-                                    .withRootSquash(false),
-                                new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK).withFilter("10.99.1.0/24")
-                                    .withAccess(NfsAccessRuleAccess.RW).withSuid(true).withSubmountAccess(true)
-                                    .withRootSquash(false),
-                                new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                    .withAccess(NfsAccessRuleAccess.NO).withSuid(false).withSubmountAccess(true)
-                                    .withRootSquash(true).withAnonymousUid("65534").withAnonymousGid("65534"))))))
+            .getByResourceGroupWithResponse("scgroup", "sc1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Dept", "Contoso"))
+            .withUpgradeSettings(new CacheUpgradeSettings().withUpgradeScheduleEnabled(true)
+                .withScheduledTime(OffsetDateTime.parse("2022-04-26T18:25:43.511Z")))
+            .withNetworkSettings(new CacheNetworkSettings().withMtu(1500)
+                .withDnsServers(Arrays.asList("10.1.22.33", "10.1.12.33"))
+                .withDnsSearchDomain("contoso.com")
+                .withNtpServer("time.contoso.com"))
+            .withSecuritySettings(new CacheSecuritySettings().withAccessPolicies(Arrays.asList(
+                new NfsAccessPolicy().withName("default")
+                    .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
+                        .withAccess(NfsAccessRuleAccess.RW)
+                        .withSuid(false)
+                        .withSubmountAccess(true)
+                        .withRootSquash(false))),
+                new NfsAccessPolicy().withName("restrictive")
+                    .withAccessRules(Arrays.asList(
+                        new NfsAccessRule().withScope(NfsAccessRuleScope.HOST)
+                            .withFilter("10.99.3.145")
+                            .withAccess(NfsAccessRuleAccess.RW)
+                            .withSuid(true)
+                            .withSubmountAccess(true)
+                            .withRootSquash(false),
+                        new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
+                            .withFilter("10.99.1.0/24")
+                            .withAccess(NfsAccessRuleAccess.RW)
+                            .withSuid(true)
+                            .withSubmountAccess(true)
+                            .withRootSquash(false),
+                        new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
+                            .withAccess(NfsAccessRuleAccess.NO)
+                            .withSuid(false)
+                            .withSubmountAccess(true)
+                            .withRootSquash(true)
+                            .withAnonymousUid("65534")
+                            .withAnonymousGid("65534"))))))
             .withDirectoryServicesSettings(new CacheDirectorySettings()
                 .withActiveDirectory(new CacheActiveDirectorySettings().withPrimaryDnsIpAddress("192.0.2.10")
-                    .withSecondaryDnsIpAddress("192.0.2.11").withDomainName("contosoAd.contoso.local")
-                    .withDomainNetBiosName("contosoAd").withCacheNetBiosName("contosoSmb"))
+                    .withSecondaryDnsIpAddress("192.0.2.11")
+                    .withDomainName("contosoAd.contoso.local")
+                    .withDomainNetBiosName("contosoAd")
+                    .withCacheNetBiosName("contosoSmb"))
                 .withUsernameDownload(
                     new CacheUsernameDownloadSettings().withExtendedGroups(true).withUsernameSource(UsernameSource.AD)))
             .apply();

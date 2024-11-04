@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the PolicyClientImpl type. */
-@ServiceClientBuilder(serviceClients = {PolicyClientImpl.class})
+/**
+ * A builder for creating a new instance of the PolicyClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { PolicyClientImpl.class })
 public final class PolicyClientBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +26,7 @@ public final class PolicyClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the PolicyClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class PolicyClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the PolicyClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class PolicyClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the PolicyClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class PolicyClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the PolicyClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class PolicyClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the PolicyClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class PolicyClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the PolicyClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class PolicyClientBuilder {
 
     /**
      * Builds an instance of PolicyClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PolicyClientImpl.
      */
     public PolicyClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        PolicyClientImpl client =
-            new PolicyClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        PolicyClientImpl client = new PolicyClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+            localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

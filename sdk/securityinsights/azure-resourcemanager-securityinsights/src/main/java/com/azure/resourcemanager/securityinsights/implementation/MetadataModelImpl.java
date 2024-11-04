@@ -172,22 +172,18 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
     }
 
     public MetadataModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetadatas()
-                .createWithResponse(resourceGroupName, workspaceName, metadataName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetadatas()
+            .createWithResponse(resourceGroupName, workspaceName, metadataName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public MetadataModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetadatas()
-                .createWithResponse(resourceGroupName, workspaceName, metadataName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetadatas()
+            .createWithResponse(resourceGroupName, workspaceName, metadataName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -203,52 +199,43 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
     }
 
     public MetadataModel apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetadatas()
-                .updateWithResponse(resourceGroupName, workspaceName, metadataName, updateMetadataPatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetadatas()
+            .updateWithResponse(resourceGroupName, workspaceName, metadataName, updateMetadataPatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MetadataModel apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetadatas()
-                .updateWithResponse(resourceGroupName, workspaceName, metadataName, updateMetadataPatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetadatas()
+            .updateWithResponse(resourceGroupName, workspaceName, metadataName, updateMetadataPatch, context)
+            .getValue();
         return this;
     }
 
-    MetadataModelImpl(
-        MetadataModelInner innerObject,
+    MetadataModelImpl(MetadataModelInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.metadataName = Utils.getValueFromIdByName(innerObject.id(), "metadata");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.metadataName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metadata");
     }
 
     public MetadataModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetadatas()
-                .getWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetadatas()
+            .getWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MetadataModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMetadatas()
-                .getWithResponse(resourceGroupName, workspaceName, metadataName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMetadatas()
+            .getWithResponse(resourceGroupName, workspaceName, metadataName, context)
+            .getValue();
         return this;
     }
 

@@ -5,41 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** directory. */
+/**
+ * directory.
+ */
 @Fluent
 public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
     /*
      * The administrativeUnits property.
      */
-    @JsonProperty(value = "administrativeUnits")
     private List<MicrosoftGraphAdministrativeUnit> administrativeUnits;
 
     /*
      * Recently deleted items. Read-only. Nullable.
      */
-    @JsonProperty(value = "deletedItems")
     private List<MicrosoftGraphDirectoryObjectInner> deletedItems;
 
     /*
      * directory
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDirectory class. */
+    /**
+     * Creates an instance of MicrosoftGraphDirectory class.
+     */
     public MicrosoftGraphDirectory() {
     }
 
     /**
      * Get the administrativeUnits property: The administrativeUnits property.
-     *
+     * 
      * @return the administrativeUnits value.
      */
     public List<MicrosoftGraphAdministrativeUnit> administrativeUnits() {
@@ -48,7 +50,7 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
 
     /**
      * Set the administrativeUnits property: The administrativeUnits property.
-     *
+     * 
      * @param administrativeUnits the administrativeUnits value to set.
      * @return the MicrosoftGraphDirectory object itself.
      */
@@ -59,7 +61,7 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
 
     /**
      * Get the deletedItems property: Recently deleted items. Read-only. Nullable.
-     *
+     * 
      * @return the deletedItems value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> deletedItems() {
@@ -68,7 +70,7 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
 
     /**
      * Set the deletedItems property: Recently deleted items. Read-only. Nullable.
-     *
+     * 
      * @param deletedItems the deletedItems value to set.
      * @return the MicrosoftGraphDirectory object itself.
      */
@@ -79,17 +81,16 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: directory.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: directory.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDirectory object itself.
      */
@@ -98,15 +99,9 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDirectory withId(String id) {
         super.withId(id);
@@ -115,7 +110,7 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -127,5 +122,63 @@ public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {
         if (deletedItems() != null) {
             deletedItems().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("administrativeUnits", this.administrativeUnits,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("deletedItems", this.deletedItems, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDirectory from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDirectory if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDirectory.
+     */
+    public static MicrosoftGraphDirectory fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDirectory deserializedMicrosoftGraphDirectory = new MicrosoftGraphDirectory();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDirectory.withId(reader.getString());
+                } else if ("administrativeUnits".equals(fieldName)) {
+                    List<MicrosoftGraphAdministrativeUnit> administrativeUnits
+                        = reader.readArray(reader1 -> MicrosoftGraphAdministrativeUnit.fromJson(reader1));
+                    deserializedMicrosoftGraphDirectory.administrativeUnits = administrativeUnits;
+                } else if ("deletedItems".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> deletedItems
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphDirectory.deletedItems = deletedItems;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDirectory.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDirectory;
+        });
     }
 }

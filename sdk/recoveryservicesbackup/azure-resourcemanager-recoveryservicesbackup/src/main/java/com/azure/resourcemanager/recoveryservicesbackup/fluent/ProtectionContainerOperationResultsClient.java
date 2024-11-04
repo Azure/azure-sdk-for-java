@@ -11,8 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * ProtectionContainerOperationResultsClient.
+ * An instance of this class provides access to all the operations defined in ProtectionContainerOperationResultsClient.
  */
 public interface ProtectionContainerOperationResultsClient {
     /**

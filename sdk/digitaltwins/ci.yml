@@ -47,7 +47,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: digitaltwins
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-digitaltwins-core
         groupId: com.azure

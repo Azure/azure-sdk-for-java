@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for WorkloadNetworks CreatePublicIp. */
+/**
+ * Samples for WorkloadNetworks CreatePublicIp.
+ */
 public final class WorkloadNetworksCreatePublicIpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreatePublicIPs.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_CreatePublicIP.
+     * json
      */
     /**
      * Sample code: WorkloadNetworks_CreatePublicIP.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksCreatePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .workloadNetworks()
+        manager.workloadNetworks()
             .definePublicIp("publicIP1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("publicIP1")

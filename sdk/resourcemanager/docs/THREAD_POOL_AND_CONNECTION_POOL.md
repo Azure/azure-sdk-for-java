@@ -71,14 +71,18 @@ Reference: [Reactor Netty Event Loop Group](https://projectreactor.io/docs/netty
 ### Configure Azure Identity client to use the singleton HttpClient (DefaultAzureCredential for example):
 By default, Azure Identity uses `ForkJoinPool.commonPool()` for token acquisition. The pool size equals the number of processors available to the runtime on initialization minus 1 (with a minimum of 1). 
 
-A static commonPool() is available and appropriate for most applications. The common pool is used by any ForkJoinTask that is not explicitly submitted to a specified pool. Using the common pool normally reduces resource usage (its threads are slowly reclaimed during periods of non-use, and reinstated upon subsequent use).
+There are known issues with this approach:
+ - [[BUG] ClientSecretCredential.getToken().block() will hang when parallelism is high](https://github.com/Azure/azure-sdk-for-java/issues/39676)
+ - [[FAQ] My app uses Java's Security Manager and I have granted it all Permissions, yet it tells me it doesn't have the permission to do something](https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#my-app-uses-javas-security-manager-and-i-have-granted-it-all-permissions-yet-it-tells-me-it-doesnt-have-the-permission-to-do-something)
+
+Simplest solution for above issues is to use a dedicated `ExecutorService` for the `TokenCredential` e.g. `Executors.newCachedThreadPool()`:
 ```java readme-sample-azureIdentityThreadpool
-// Use the singleton httpClient for Azure Identity
+// Use the singleton httpClient and a dedicated ExecutorService for Azure Identity
 final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 final TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-    .executorService(ForkJoinPool.commonPool()) // thread pool for executing token acquisition, usually we leave it default
-    .httpClient(singletonHttpClient)
+    .executorService(Executors.newCachedThreadPool()) // use a dedicated `ExecutorService` for the `TokenCredential`
+    .httpClient(singletonHttpClient) // use the singleton HttpClient
     .build();
 ```
 Reference: 

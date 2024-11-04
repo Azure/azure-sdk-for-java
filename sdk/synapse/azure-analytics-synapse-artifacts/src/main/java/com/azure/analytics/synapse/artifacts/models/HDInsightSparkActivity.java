@@ -5,75 +5,78 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * HDInsight Spark activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HDInsightSpark")
-@JsonFlatten
 @Fluent
 public class HDInsightSparkActivity extends ExecutionActivity {
     /*
-     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
-     * string).
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.rootPath", required = true)
+    private String type = "HDInsightSpark";
+
+    /*
+     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType string).
+     */
     private Object rootPath;
 
     /*
-     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with
-     * resultType string).
+     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.entryFilePath", required = true)
     private Object entryFilePath;
 
     /*
      * The user-specified arguments to HDInsightSparkActivity.
      */
-    @JsonProperty(value = "typeProperties.arguments")
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
-    @JsonProperty(value = "typeProperties.getDebugInfo")
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * The storage linked service for uploading the entry file and dependencies, and for receiving logs.
      */
-    @JsonProperty(value = "typeProperties.sparkJobLinkedService")
     private LinkedServiceReference sparkJobLinkedService;
 
     /*
      * The application's Java/Spark main class.
      */
-    @JsonProperty(value = "typeProperties.className")
     private String className;
 
     /*
      * The user to impersonate that will execute the job. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.proxyUser")
     private Object proxyUser;
 
     /*
      * Spark configuration property.
      */
-    @JsonProperty(value = "typeProperties.sparkConfig")
     private Map<String, Object> sparkConfig;
 
     /**
      * Creates an instance of HDInsightSparkActivity class.
      */
     public HDInsightSparkActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -161,8 +164,8 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
      * 
      * @return the sparkJobLinkedService value.
      */
@@ -171,8 +174,8 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
      * 
      * @param sparkJobLinkedService the sparkJobLinkedService value to set.
      * @return the HDInsightSparkActivity object itself.
@@ -314,5 +317,133 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     public HDInsightSparkActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (rootPath != null
+            || entryFilePath != null
+            || arguments != null
+            || getDebugInfo != null
+            || sparkJobLinkedService != null
+            || className != null
+            || proxyUser != null
+            || sparkConfig != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("rootPath", this.rootPath);
+            jsonWriter.writeUntypedField("entryFilePath", this.entryFilePath);
+            jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeStringField("getDebugInfo",
+                this.getDebugInfo == null ? null : this.getDebugInfo.toString());
+            jsonWriter.writeJsonField("sparkJobLinkedService", this.sparkJobLinkedService);
+            jsonWriter.writeStringField("className", this.className);
+            jsonWriter.writeUntypedField("proxyUser", this.proxyUser);
+            jsonWriter.writeMapField("sparkConfig", this.sparkConfig,
+                (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightSparkActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightSparkActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightSparkActivity.
+     */
+    public static HDInsightSparkActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightSparkActivity deserializedHDInsightSparkActivity = new HDInsightSparkActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedHDInsightSparkActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedHDInsightSparkActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightSparkActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("rootPath".equals(fieldName)) {
+                            deserializedHDInsightSparkActivity.rootPath = reader.readUntyped();
+                        } else if ("entryFilePath".equals(fieldName)) {
+                            deserializedHDInsightSparkActivity.entryFilePath = reader.readUntyped();
+                        } else if ("arguments".equals(fieldName)) {
+                            List<Object> arguments = reader.readArray(reader1 -> reader1.readUntyped());
+                            deserializedHDInsightSparkActivity.arguments = arguments;
+                        } else if ("getDebugInfo".equals(fieldName)) {
+                            deserializedHDInsightSparkActivity.getDebugInfo
+                                = HDInsightActivityDebugInfoOption.fromString(reader.getString());
+                        } else if ("sparkJobLinkedService".equals(fieldName)) {
+                            deserializedHDInsightSparkActivity.sparkJobLinkedService
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("className".equals(fieldName)) {
+                            deserializedHDInsightSparkActivity.className = reader.getString();
+                        } else if ("proxyUser".equals(fieldName)) {
+                            deserializedHDInsightSparkActivity.proxyUser = reader.readUntyped();
+                        } else if ("sparkConfig".equals(fieldName)) {
+                            Map<String, Object> sparkConfig = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedHDInsightSparkActivity.sparkConfig = sparkConfig;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightSparkActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightSparkActivity;
+        });
     }
 }

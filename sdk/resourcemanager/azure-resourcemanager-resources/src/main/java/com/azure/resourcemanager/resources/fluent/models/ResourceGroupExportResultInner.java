@@ -6,32 +6,41 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resource group export result. */
+/**
+ * Resource group export result.
+ */
 @Fluent
-public final class ResourceGroupExportResultInner {
+public final class ResourceGroupExportResultInner implements JsonSerializable<ResourceGroupExportResultInner> {
     /*
-     * The template content.
+     * The template content. Used if outputFormat is empty or set to 'Json'.
      */
-    @JsonProperty(value = "template")
     private Object template;
 
     /*
-     * Error Response
-     *
+     * The formatted export content. Used if outputFormat is set to 'Bicep'.
+     */
+    private String output;
+
+    /*
      * The template export error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of ResourceGroupExportResultInner class. */
+    /**
+     * Creates an instance of ResourceGroupExportResultInner class.
+     */
     public ResourceGroupExportResultInner() {
     }
 
     /**
-     * Get the template property: The template content.
-     *
+     * Get the template property: The template content. Used if outputFormat is empty or set to 'Json'.
+     * 
      * @return the template value.
      */
     public Object template() {
@@ -39,8 +48,8 @@ public final class ResourceGroupExportResultInner {
     }
 
     /**
-     * Set the template property: The template content.
-     *
+     * Set the template property: The template content. Used if outputFormat is empty or set to 'Json'.
+     * 
      * @param template the template value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
@@ -50,10 +59,28 @@ public final class ResourceGroupExportResultInner {
     }
 
     /**
-     * Get the error property: Error Response
-     *
-     * <p>The template export error.
-     *
+     * Get the output property: The formatted export content. Used if outputFormat is set to 'Bicep'.
+     * 
+     * @return the output value.
+     */
+    public String output() {
+        return this.output;
+    }
+
+    /**
+     * Set the output property: The formatted export content. Used if outputFormat is set to 'Bicep'.
+     * 
+     * @param output the output value to set.
+     * @return the ResourceGroupExportResultInner object itself.
+     */
+    public ResourceGroupExportResultInner withOutput(String output) {
+        this.output = output;
+        return this;
+    }
+
+    /**
+     * Get the error property: The template export error.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -61,10 +88,8 @@ public final class ResourceGroupExportResultInner {
     }
 
     /**
-     * Set the error property: Error Response
-     *
-     * <p>The template export error.
-     *
+     * Set the error property: The template export error.
+     * 
      * @param error the error value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
@@ -75,9 +100,52 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("template", this.template);
+        jsonWriter.writeStringField("output", this.output);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceGroupExportResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceGroupExportResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceGroupExportResultInner.
+     */
+    public static ResourceGroupExportResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceGroupExportResultInner deserializedResourceGroupExportResultInner
+                = new ResourceGroupExportResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("template".equals(fieldName)) {
+                    deserializedResourceGroupExportResultInner.template = reader.readUntyped();
+                } else if ("output".equals(fieldName)) {
+                    deserializedResourceGroupExportResultInner.output = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedResourceGroupExportResultInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceGroupExportResultInner;
+        });
     }
 }

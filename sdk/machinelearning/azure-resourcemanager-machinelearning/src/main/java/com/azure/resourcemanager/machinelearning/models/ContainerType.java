@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerType. */
+/**
+ * Defines values for ContainerType.
+ */
 public final class ContainerType extends ExpandableStringEnum<ContainerType> {
-    /** Static value StorageInitializer for ContainerType. */
+    /**
+     * Static value StorageInitializer for ContainerType.
+     */
     public static final ContainerType STORAGE_INITIALIZER = fromString("StorageInitializer");
 
-    /** Static value InferenceServer for ContainerType. */
+    /**
+     * Static value InferenceServer for ContainerType.
+     */
     public static final ContainerType INFERENCE_SERVER = fromString("InferenceServer");
 
     /**
      * Creates a new instance of ContainerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
 
     /**
      * Creates or finds a ContainerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerType.
      */
-    @JsonCreator
     public static ContainerType fromString(String name) {
         return fromString(name, ContainerType.class);
     }
 
     /**
      * Gets known ContainerType values.
-     *
+     * 
      * @return known ContainerType values.
      */
     public static Collection<ContainerType> values() {

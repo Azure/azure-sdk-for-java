@@ -15,7 +15,9 @@ import java.util.Map;
  */
 public final class PipelinesCreateRunSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.
+     * json
      */
     /**
      * Sample code: Pipelines_CreateRun.

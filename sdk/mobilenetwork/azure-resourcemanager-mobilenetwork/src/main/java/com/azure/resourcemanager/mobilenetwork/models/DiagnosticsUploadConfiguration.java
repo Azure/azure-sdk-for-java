@@ -52,8 +52,9 @@ public final class DiagnosticsUploadConfiguration {
      */
     public void validate() {
         if (storageAccountContainerUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountContainerUrl in model DiagnosticsUploadConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountContainerUrl in model DiagnosticsUploadConfiguration"));
         }
     }
 

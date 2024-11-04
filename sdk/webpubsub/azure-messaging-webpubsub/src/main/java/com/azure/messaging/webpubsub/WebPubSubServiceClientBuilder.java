@@ -13,7 +13,6 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -35,7 +34,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestApiImpl;
+import com.azure.messaging.webpubsub.implementation.WebPubSubServiceClientImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -94,13 +93,10 @@ import java.util.Objects;
  * @see WebPubSubServiceAsyncClient
  * @see WebPubSubServiceClient
  */
-@ServiceClientBuilder(serviceClients = {WebPubSubServiceAsyncClient.class, WebPubSubServiceClient.class})
-public final class WebPubSubServiceClientBuilder implements
-    AzureKeyCredentialTrait<WebPubSubServiceClientBuilder>,
-    ConfigurationTrait<WebPubSubServiceClientBuilder>,
-    ConnectionStringTrait<WebPubSubServiceClientBuilder>,
-    EndpointTrait<WebPubSubServiceClientBuilder>,
-    HttpTrait<WebPubSubServiceClientBuilder>,
+@ServiceClientBuilder(serviceClients = { WebPubSubServiceAsyncClient.class, WebPubSubServiceClient.class })
+public final class WebPubSubServiceClientBuilder implements AzureKeyCredentialTrait<WebPubSubServiceClientBuilder>,
+    ConfigurationTrait<WebPubSubServiceClientBuilder>, ConnectionStringTrait<WebPubSubServiceClientBuilder>,
+    EndpointTrait<WebPubSubServiceClientBuilder>, HttpTrait<WebPubSubServiceClientBuilder>,
     TokenCredentialTrait<WebPubSubServiceClientBuilder> {
     private static final String WPS_DEFAULT_SCOPE = "https://webpubsub.azure.com/.default";
     private final ClientLogger logger = new ClientLogger(WebPubSubServiceClientBuilder.class);
@@ -237,10 +233,10 @@ public final class WebPubSubServiceClientBuilder implements
     }
 
     /**
-     * Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or
+     * Target hub name, which should start with alphabetic characters and only contain alphanumeric characters or
      * underscore.
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alphanumeric
      * characters or underscore.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code hub} is {@code null}.
@@ -409,8 +405,7 @@ public final class WebPubSubServiceClientBuilder implements
         return this;
     }
 
-
-    private AzureWebPubSubServiceRestApiImpl buildInnerClient() {
+    private WebPubSubServiceClientImpl buildInnerClient() {
         if (hub == null || hub.isEmpty()) {
             logger.logThrowableAsError(
                 new IllegalStateException("hub is not valid - it must be non-null and non-empty."));
@@ -432,8 +427,8 @@ public final class WebPubSubServiceClientBuilder implements
                 url = new URL(csEndpoint);
                 this.endpoint = csEndpoint;
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsWarning(new IllegalArgumentException("Connection string contains invalid "
-                    + "endpoint", e));
+                throw logger.logExceptionAsWarning(
+                    new IllegalArgumentException("Connection string contains invalid " + "endpoint", e));
             }
 
             String port = csParams.get("port");
@@ -448,27 +443,23 @@ public final class WebPubSubServiceClientBuilder implements
         }
 
         // Service version
-        final WebPubSubServiceVersion serviceVersion =
-            version != null ? version : WebPubSubServiceVersion.getLatest();
-
+        final WebPubSubServiceVersion serviceVersion = version != null ? version : WebPubSubServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new AzureWebPubSubServiceRestApiImpl(pipeline, endpoint, serviceVersion);
+            return new WebPubSubServiceClientImpl(pipeline, endpoint, serviceVersion);
         }
 
         // Global Env configuration store
-        final Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         final String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         final String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new CookiePolicy());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
@@ -476,13 +467,12 @@ public final class WebPubSubServiceClientBuilder implements
             WebPubSubAuthenticationPolicy webPubSubAuthPolicy = new WebPubSubAuthenticationPolicy(credential);
             policies.add(webPubSubAuthPolicy);
         } else if (this.tokenCredential != null) {
-            BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                WPS_DEFAULT_SCOPE);
+            BearerTokenAuthenticationPolicy tokenPolicy
+                = new BearerTokenAuthenticationPolicy(this.tokenCredential, WPS_DEFAULT_SCOPE);
             policies.add(tokenPolicy);
         } else {
-            throw logger.logExceptionAsError(
-                new IllegalStateException("No credential available to create the client. "
-                    + "Please provide connection string or AzureKeyCredential or TokenCredential."));
+            throw logger.logExceptionAsError(new IllegalStateException("No credential available to create the client. "
+                + "Please provide connection string or AzureKeyCredential or TokenCredential."));
         }
 
         if (!CoreUtils.isNullOrEmpty(reverseProxyEndpoint)) {
@@ -490,22 +480,18 @@ public final class WebPubSubServiceClientBuilder implements
         }
         policies.addAll(this.policies);
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        HttpHeaders addHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (addHeaders != null) {
+            policies.add(new AddHeadersPolicy(addHeaders));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline buildPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-        return new AzureWebPubSubServiceRestApiImpl(buildPipeline, endpoint, serviceVersion);
+        return new WebPubSubServiceClientImpl(buildPipeline, endpoint, serviceVersion);
     }
-
 
     /**
      * Builds an instance of WebPubSubAsyncServiceClient with the provided parameters.

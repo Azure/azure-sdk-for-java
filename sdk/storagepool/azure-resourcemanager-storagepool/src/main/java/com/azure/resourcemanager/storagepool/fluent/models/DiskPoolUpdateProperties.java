@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Disk;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for Disk Pool update request. */
+/**
+ * Properties for Disk Pool update request.
+ */
 @Fluent
-public final class DiskPoolUpdateProperties {
+public final class DiskPoolUpdateProperties implements JsonSerializable<DiskPoolUpdateProperties> {
     /*
      * List of Azure Managed Disks to attach to a Disk Pool.
      */
-    @JsonProperty(value = "disks")
     private List<Disk> disks;
 
-    /** Creates an instance of DiskPoolUpdateProperties class. */
+    /**
+     * Creates an instance of DiskPoolUpdateProperties class.
+     */
     public DiskPoolUpdateProperties() {
     }
 
     /**
      * Get the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @return the disks value.
      */
     public List<Disk> disks() {
@@ -33,7 +40,7 @@ public final class DiskPoolUpdateProperties {
 
     /**
      * Set the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the DiskPoolUpdateProperties object itself.
      */
@@ -44,12 +51,49 @@ public final class DiskPoolUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (disks() != null) {
             disks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("disks", this.disks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskPoolUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskPoolUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskPoolUpdateProperties.
+     */
+    public static DiskPoolUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskPoolUpdateProperties deserializedDiskPoolUpdateProperties = new DiskPoolUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disks".equals(fieldName)) {
+                    List<Disk> disks = reader.readArray(reader1 -> Disk.fromJson(reader1));
+                    deserializedDiskPoolUpdateProperties.disks = disks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskPoolUpdateProperties;
+        });
     }
 }

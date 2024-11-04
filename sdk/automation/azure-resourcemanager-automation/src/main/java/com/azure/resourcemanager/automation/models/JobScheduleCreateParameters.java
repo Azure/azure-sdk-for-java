@@ -6,22 +6,33 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.JobScheduleCreateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create job schedule operation. */
+/**
+ * The parameters supplied to the create job schedule operation.
+ */
 @Fluent
-public final class JobScheduleCreateParameters {
+public final class JobScheduleCreateParameters implements JsonSerializable<JobScheduleCreateParameters> {
     /*
      * Gets or sets the list of job schedule properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private JobScheduleCreateProperties innerProperties = new JobScheduleCreateProperties();
 
     /**
+     * Creates an instance of JobScheduleCreateParameters class.
+     */
+    public JobScheduleCreateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets the list of job schedule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobScheduleCreateProperties innerProperties() {
@@ -30,7 +41,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Get the schedule property: Gets or sets the schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public ScheduleAssociationProperty schedule() {
@@ -39,7 +50,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Set the schedule property: Gets or sets the schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the JobScheduleCreateParameters object itself.
      */
@@ -53,7 +64,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -62,7 +73,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the JobScheduleCreateParameters object itself.
      */
@@ -76,7 +87,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Get the runOn property: Gets or sets the hybrid worker group that the scheduled job should run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -85,7 +96,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Set the runOn property: Gets or sets the hybrid worker group that the scheduled job should run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobScheduleCreateParameters object itself.
      */
@@ -99,7 +110,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Get the parameters property: Gets or sets a list of job properties.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -108,7 +119,7 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Set the parameters property: Gets or sets a list of job properties.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the JobScheduleCreateParameters object itself.
      */
@@ -122,19 +133,56 @@ public final class JobScheduleCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model JobScheduleCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model JobScheduleCreateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobScheduleCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobScheduleCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobScheduleCreateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobScheduleCreateParameters.
+     */
+    public static JobScheduleCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobScheduleCreateParameters deserializedJobScheduleCreateParameters = new JobScheduleCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedJobScheduleCreateParameters.innerProperties
+                        = JobScheduleCreateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobScheduleCreateParameters;
+        });
+    }
 }

@@ -12,16 +12,16 @@ public final class ClusterPoolAvailableUpgradeNodeOsUpgradePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolAvailableUpgradeNodeOsUpgradeProperties model
-            = BinaryData.fromString("{\"upgradeType\":\"NodeOsUpgrade\",\"latestVersion\":\"aysjkixqtnqttez\"}")
+            = BinaryData.fromString("{\"upgradeType\":\"NodeOsUpgrade\",\"latestVersion\":\"xlktwkuzi\"}")
                 .toObject(ClusterPoolAvailableUpgradeNodeOsUpgradeProperties.class);
-        Assertions.assertEquals("aysjkixqtnqttez", model.latestVersion());
+        Assertions.assertEquals("xlktwkuzi", model.latestVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolAvailableUpgradeNodeOsUpgradeProperties model
-            = new ClusterPoolAvailableUpgradeNodeOsUpgradeProperties().withLatestVersion("aysjkixqtnqttez");
+            = new ClusterPoolAvailableUpgradeNodeOsUpgradeProperties().withLatestVersion("xlktwkuzi");
         model = BinaryData.fromObject(model).toObject(ClusterPoolAvailableUpgradeNodeOsUpgradeProperties.class);
-        Assertions.assertEquals("aysjkixqtnqttez", model.latestVersion());
+        Assertions.assertEquals("xlktwkuzi", model.latestVersion());
     }
 }

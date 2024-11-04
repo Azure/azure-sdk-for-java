@@ -37,13 +37,15 @@ public final class UserAccount implements JsonSerializable<UserAccount> {
     private ElevationLevel elevationLevel;
 
     /*
-     * The Linux-specific user configuration for the user Account. This property is ignored if specified on a Windows Pool. If not specified, the user is created with the default options.
+     * The Linux-specific user configuration for the user Account. This property is ignored if specified on a Windows
+     * Pool. If not specified, the user is created with the default options.
      */
     @Generated
     private LinuxUserConfiguration linuxUserConfiguration;
 
     /*
-     * The Windows-specific user configuration for the user Account. This property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user is created with the default options.
+     * The Windows-specific user configuration for the user Account. This property can only be specified if the user is
+     * on a Windows Pool. If not specified and on a Windows Pool, the user is created with the default options.
      */
     @Generated
     private WindowsUserConfiguration windowsUserConfiguration;

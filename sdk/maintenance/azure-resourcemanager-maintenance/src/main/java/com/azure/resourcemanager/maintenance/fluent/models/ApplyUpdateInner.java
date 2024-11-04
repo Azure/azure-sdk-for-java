@@ -11,7 +11,9 @@ import com.azure.resourcemanager.maintenance.models.UpdateStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Apply Update request. */
+/**
+ * Apply Update request.
+ */
 @Fluent
 public final class ApplyUpdateInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ApplyUpdateInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ApplyUpdateInner class. */
+    /**
+     * Creates an instance of ApplyUpdateInner class.
+     */
     public ApplyUpdateInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the apply update.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplyUpdateProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -59,7 +63,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApplyUpdateInner object itself.
      */
@@ -73,7 +77,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Get the resourceId property: The resourceId.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -82,7 +86,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Set the resourceId property: The resourceId.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ApplyUpdateInner object itself.
      */
@@ -96,7 +100,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Get the lastUpdateTime property: Last Update time.
-     *
+     * 
      * @return the lastUpdateTime value.
      */
     public OffsetDateTime lastUpdateTime() {
@@ -105,7 +109,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Set the lastUpdateTime property: Last Update time.
-     *
+     * 
      * @param lastUpdateTime the lastUpdateTime value to set.
      * @return the ApplyUpdateInner object itself.
      */
@@ -119,7 +123,7 @@ public final class ApplyUpdateInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

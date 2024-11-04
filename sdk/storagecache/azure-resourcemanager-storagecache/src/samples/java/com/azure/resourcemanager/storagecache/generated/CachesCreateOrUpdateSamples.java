@@ -33,9 +33,7 @@ import java.util.Map;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * Caches_CreateOrUpdate_ldap_only.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_CreateOrUpdate_ldap_only.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate_ldap_only.
@@ -44,8 +42,13 @@ public final class CachesCreateOrUpdateSamples {
      */
     public static void
         cachesCreateOrUpdateLdapOnly(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.caches().define("sc1").withRegion("westus").withExistingResourceGroup("scgroup")
-            .withTags(mapOf("Dept", "Contoso")).withSku(new CacheSku().withName("Standard_2G")).withCacheSizeGB(3072)
+        manager.caches()
+            .define("sc1")
+            .withRegion("westus")
+            .withExistingResourceGroup("scgroup")
+            .withTags(mapOf("Dept", "Contoso"))
+            .withSku(new CacheSku().withName("Standard_2G"))
+            .withCacheSizeGB(3072)
             .withSubnet(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1")
             .withUpgradeSettings(new CacheUpgradeSettings().withUpgradeScheduleEnabled(true)
@@ -55,15 +58,17 @@ public final class CachesCreateOrUpdateSamples {
                 .withSourceVault(new KeyVaultKeyReferenceSourceVault().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
             .withSecuritySettings(
-                new CacheSecuritySettings()
-                    .withAccessPolicies(
-                        Arrays.asList(new NfsAccessPolicy().withName("default")
-                            .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                .withAccess(NfsAccessRuleAccess.RW).withSuid(false).withSubmountAccess(true)
-                                .withRootSquash(false))))))
-            .withDirectoryServicesSettings(new CacheDirectorySettings().withUsernameDownload(
-                new CacheUsernameDownloadSettings().withExtendedGroups(true).withUsernameSource(UsernameSource.LDAP)
-                    .withLdapServer("192.0.2.12").withLdapBaseDN("dc=contosoad,dc=contoso,dc=local")
+                new CacheSecuritySettings().withAccessPolicies(Arrays.asList(new NfsAccessPolicy().withName("default")
+                    .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
+                        .withAccess(NfsAccessRuleAccess.RW)
+                        .withSuid(false)
+                        .withSubmountAccess(true)
+                        .withRootSquash(false))))))
+            .withDirectoryServicesSettings(new CacheDirectorySettings()
+                .withUsernameDownload(new CacheUsernameDownloadSettings().withExtendedGroups(true)
+                    .withUsernameSource(UsernameSource.LDAP)
+                    .withLdapServer("192.0.2.12")
+                    .withLdapBaseDN("dc=contosoad,dc=contoso,dc=local")
                     .withCredentials(new CacheUsernameDownloadSettingsCredentials()
                         .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
                         .withBindPassword("fakeTokenPlaceholder"))))
@@ -71,9 +76,7 @@ public final class CachesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * Caches_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
@@ -81,13 +84,17 @@ public final class CachesCreateOrUpdateSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void cachesCreateOrUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.caches().define("sc1").withRegion("westus").withExistingResourceGroup("scgroup")
+        manager.caches()
+            .define("sc1")
+            .withRegion("westus")
+            .withExistingResourceGroup("scgroup")
             .withTags(mapOf("Dept", "Contoso"))
             .withIdentity(new CacheIdentity().withType(CacheIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
                     new UserAssignedIdentitiesValueAutoGenerated())))
-            .withSku(new CacheSku().withName("Standard_2G")).withCacheSizeGB(3072)
+            .withSku(new CacheSku().withName("Standard_2G"))
+            .withCacheSizeGB(3072)
             .withSubnet(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1")
             .withUpgradeSettings(new CacheUpgradeSettings().withUpgradeScheduleEnabled(true)
@@ -97,24 +104,27 @@ public final class CachesCreateOrUpdateSamples {
                 .withSourceVault(new KeyVaultKeyReferenceSourceVault().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
             .withSecuritySettings(
-                new CacheSecuritySettings()
-                    .withAccessPolicies(
-                        Arrays.asList(new NfsAccessPolicy().withName("default")
-                            .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                .withAccess(NfsAccessRuleAccess.RW).withSuid(false).withSubmountAccess(true)
-                                .withRootSquash(false))))))
+                new CacheSecuritySettings().withAccessPolicies(Arrays.asList(new NfsAccessPolicy().withName("default")
+                    .withAccessRules(Arrays.asList(new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
+                        .withAccess(NfsAccessRuleAccess.RW)
+                        .withSuid(false)
+                        .withSubmountAccess(true)
+                        .withRootSquash(false))))))
             .withDirectoryServicesSettings(new CacheDirectorySettings()
                 .withActiveDirectory(new CacheActiveDirectorySettings().withPrimaryDnsIpAddress("192.0.2.10")
-                    .withSecondaryDnsIpAddress("192.0.2.11").withDomainName("contosoAd.contoso.local")
-                    .withDomainNetBiosName("contosoAd").withCacheNetBiosName("contosoSmb")
+                    .withSecondaryDnsIpAddress("192.0.2.11")
+                    .withDomainName("contosoAd.contoso.local")
+                    .withDomainNetBiosName("contosoAd")
+                    .withCacheNetBiosName("contosoSmb")
                     .withCredentials(new CacheActiveDirectorySettingsCredentials().withUsername("consotoAdmin")
                         .withPassword("fakeTokenPlaceholder")))
-                .withUsernameDownload(
-                    new CacheUsernameDownloadSettings().withExtendedGroups(true).withUsernameSource(UsernameSource.LDAP)
-                        .withLdapServer("192.0.2.12").withLdapBaseDN("dc=contosoad,dc=contoso,dc=local")
-                        .withCredentials(new CacheUsernameDownloadSettingsCredentials()
-                            .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
-                            .withBindPassword("fakeTokenPlaceholder"))))
+                .withUsernameDownload(new CacheUsernameDownloadSettings().withExtendedGroups(true)
+                    .withUsernameSource(UsernameSource.LDAP)
+                    .withLdapServer("192.0.2.12")
+                    .withLdapBaseDN("dc=contosoad,dc=contoso,dc=local")
+                    .withCredentials(new CacheUsernameDownloadSettingsCredentials()
+                        .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
+                        .withBindPassword("fakeTokenPlaceholder"))))
             .create();
     }
 

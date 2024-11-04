@@ -6,29 +6,30 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A run command request.
  */
 @Fluent
-public final class RunCommandRequest {
+public final class RunCommandRequest implements JsonSerializable<RunCommandRequest> {
     /*
      * The command to run.
      */
-    @JsonProperty(value = "command", required = true)
     private String command;
 
     /*
      * A base64 encoded zip file containing the files required by the command.
      */
-    @JsonProperty(value = "context")
     private String context;
 
     /*
      * AuthToken issued for AKS AAD Server App.
      */
-    @JsonProperty(value = "clusterToken")
     private String clusterToken;
 
     /**
@@ -104,10 +105,53 @@ public final class RunCommandRequest {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property command in model RunCommandRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property command in model RunCommandRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunCommandRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("command", this.command);
+        jsonWriter.writeStringField("context", this.context);
+        jsonWriter.writeStringField("clusterToken", this.clusterToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunCommandRequest.
+     */
+    public static RunCommandRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandRequest deserializedRunCommandRequest = new RunCommandRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("command".equals(fieldName)) {
+                    deserializedRunCommandRequest.command = reader.getString();
+                } else if ("context".equals(fieldName)) {
+                    deserializedRunCommandRequest.context = reader.getString();
+                } else if ("clusterToken".equals(fieldName)) {
+                    deserializedRunCommandRequest.clusterToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandRequest;
+        });
+    }
 }

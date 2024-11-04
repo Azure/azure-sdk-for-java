@@ -11,19 +11,19 @@ public final class HBaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HBaseSource model = BinaryData.fromString(
-            "{\"type\":\"pipslcfw\",\"query\":\"datakujwn\",\"queryTimeout\":\"datamipn\",\"additionalColumns\":\"dataedp\",\"sourceRetryCount\":\"datazzqfbo\",\"sourceRetryWait\":\"datafghdg\",\"maxConcurrentConnections\":\"datahncxoqxtjzdpll\",\"disableMetricsCollection\":\"datalvk\",\"\":{\"ttxqxvmybq\":\"dataosoxxoqyikdjaog\",\"lf\":\"datalg\",\"miw\":\"datasdccmdplhzjiqi\",\"punuvfs\":\"datahmzkxrqzgshqx\"}}")
+            "{\"type\":\"HBaseSource\",\"query\":\"datafn\",\"queryTimeout\":\"dataeyavldovpwrq\",\"additionalColumns\":\"datazokplzliizb\",\"sourceRetryCount\":\"datajumulhfq\",\"sourceRetryWait\":\"datanchah\",\"maxConcurrentConnections\":\"datanrptrqcap\",\"disableMetricsCollection\":\"datafvowzbk\",\"\":{\"qzzkplqmca\":\"datapzdpujywjmo\",\"jgfpqwwugfwpvj\":\"dataseiauveeng\"}}")
             .toObject(HBaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HBaseSource model = new HBaseSource().withSourceRetryCount("datazzqfbo")
-            .withSourceRetryWait("datafghdg")
-            .withMaxConcurrentConnections("datahncxoqxtjzdpll")
-            .withDisableMetricsCollection("datalvk")
-            .withQueryTimeout("datamipn")
-            .withAdditionalColumns("dataedp")
-            .withQuery("datakujwn");
+        HBaseSource model = new HBaseSource().withSourceRetryCount("datajumulhfq")
+            .withSourceRetryWait("datanchah")
+            .withMaxConcurrentConnections("datanrptrqcap")
+            .withDisableMetricsCollection("datafvowzbk")
+            .withQueryTimeout("dataeyavldovpwrq")
+            .withAdditionalColumns("datazokplzliizb")
+            .withQuery("datafn");
         model = BinaryData.fromObject(model).toObject(HBaseSource.class);
     }
 }

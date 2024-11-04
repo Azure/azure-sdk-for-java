@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for StorageAccounts AbortHierarchicalNamespaceMigration. */
+/**
+ * Samples for StorageAccounts AbortHierarchicalNamespaceMigration.
+ */
 public final class StorageAccountsAbortHierarchicalNamespaceMigrationSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountAbortHierarchicalNamespaceMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountAbortHierarchicalNamespaceMigration.json
      */
     /**
      * Sample code: StorageAccountAbortHierarchicalNamespaceMigration.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountAbortHierarchicalNamespaceMigration(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountAbortHierarchicalNamespaceMigration(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()

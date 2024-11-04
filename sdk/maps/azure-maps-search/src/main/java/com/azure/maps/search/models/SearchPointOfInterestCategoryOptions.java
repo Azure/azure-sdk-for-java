@@ -11,7 +11,8 @@ import com.azure.core.models.GeoPosition;
  * Options for searching point of interest category.
  */
 @Fluent
-public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointOfInterestOptions<SearchPointOfInterestCategoryOptions> {
+public final class SearchPointOfInterestCategoryOptions
+    extends BaseSearchPointOfInterestOptions<SearchPointOfInterestCategoryOptions> {
     private Boolean isTypeAhead;
     private List<SearchIndexes> extendedPostalCodesFor;
     private String query;

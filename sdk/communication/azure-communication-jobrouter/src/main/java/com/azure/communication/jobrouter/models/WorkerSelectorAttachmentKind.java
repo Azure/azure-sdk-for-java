@@ -5,7 +5,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,6 @@ public final class WorkerSelectorAttachmentKind extends ExpandableStringEnum<Wor
      * @return the corresponding WorkerSelectorAttachmentKind.
      */
     @Generated
-    @JsonCreator
     public static WorkerSelectorAttachmentKind fromString(String name) {
         return fromString(name, WorkerSelectorAttachmentKind.class);
     }

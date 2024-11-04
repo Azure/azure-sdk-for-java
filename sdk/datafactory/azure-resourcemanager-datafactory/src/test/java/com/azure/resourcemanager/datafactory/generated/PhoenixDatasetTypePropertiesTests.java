@@ -11,14 +11,15 @@ public final class PhoenixDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PhoenixDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datah\",\"table\":\"dataeinvzsodm\",\"schema\":\"datarq\"}")
+            = BinaryData.fromString("{\"tableName\":\"datambdqra\",\"table\":\"datad\",\"schema\":\"dataluobbva\"}")
                 .toObject(PhoenixDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixDatasetTypeProperties model
-            = new PhoenixDatasetTypeProperties().withTableName("datah").withTable("dataeinvzsodm").withSchema("datarq");
+        PhoenixDatasetTypeProperties model = new PhoenixDatasetTypeProperties().withTableName("datambdqra")
+            .withTable("datad")
+            .withSchema("dataluobbva");
         model = BinaryData.fromObject(model).toObject(PhoenixDatasetTypeProperties.class);
     }
 }

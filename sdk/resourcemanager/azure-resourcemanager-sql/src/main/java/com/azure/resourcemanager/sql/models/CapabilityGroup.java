@@ -5,42 +5,61 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CapabilityGroup. */
+/**
+ * Defines values for CapabilityGroup.
+ */
 public final class CapabilityGroup extends ExpandableStringEnum<CapabilityGroup> {
-    /** Static value supportedEditions for CapabilityGroup. */
+    /**
+     * Static value supportedEditions for CapabilityGroup.
+     */
     public static final CapabilityGroup SUPPORTED_EDITIONS = fromString("supportedEditions");
 
-    /** Static value supportedElasticPoolEditions for CapabilityGroup. */
+    /**
+     * Static value supportedElasticPoolEditions for CapabilityGroup.
+     */
     public static final CapabilityGroup SUPPORTED_ELASTIC_POOL_EDITIONS = fromString("supportedElasticPoolEditions");
 
-    /** Static value supportedManagedInstanceVersions for CapabilityGroup. */
-    public static final CapabilityGroup SUPPORTED_MANAGED_INSTANCE_VERSIONS =
-        fromString("supportedManagedInstanceVersions");
+    /**
+     * Static value supportedManagedInstanceVersions for CapabilityGroup.
+     */
+    public static final CapabilityGroup SUPPORTED_MANAGED_INSTANCE_VERSIONS
+        = fromString("supportedManagedInstanceVersions");
 
-    /** Static value supportedInstancePoolEditions for CapabilityGroup. */
+    /**
+     * Static value supportedInstancePoolEditions for CapabilityGroup.
+     */
     public static final CapabilityGroup SUPPORTED_INSTANCE_POOL_EDITIONS = fromString("supportedInstancePoolEditions");
 
-    /** Static value supportedManagedInstanceEditions for CapabilityGroup. */
-    public static final CapabilityGroup SUPPORTED_MANAGED_INSTANCE_EDITIONS =
-        fromString("supportedManagedInstanceEditions");
+    /**
+     * Static value supportedManagedInstanceEditions for CapabilityGroup.
+     */
+    public static final CapabilityGroup SUPPORTED_MANAGED_INSTANCE_EDITIONS
+        = fromString("supportedManagedInstanceEditions");
+
+    /**
+     * Creates a new instance of CapabilityGroup value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapabilityGroup() {
+    }
 
     /**
      * Creates or finds a CapabilityGroup from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CapabilityGroup.
      */
-    @JsonCreator
     public static CapabilityGroup fromString(String name) {
         return fromString(name, CapabilityGroup.class);
     }
 
     /**
      * Gets known CapabilityGroup values.
-     *
+     * 
      * @return known CapabilityGroup values.
      */
     public static Collection<CapabilityGroup> values() {

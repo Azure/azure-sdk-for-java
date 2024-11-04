@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MigrationConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MigrationConfigsClient.
+ */
 public final class MigrationConfigsClientImpl implements MigrationConfigsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MigrationConfigsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ServiceBusManagementClientImpl client;
 
     /**
      * Initializes an instance of MigrationConfigsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MigrationConfigsClientImpl(ServiceBusManagementClientImpl client) {
-        this.service =
-            RestProxy.create(MigrationConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MigrationConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,117 +71,79 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface MigrationConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/migrationConfigurations")
-        @ExpectedResponses({200})
+    public interface MigrationConfigsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MigrationConfigListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MigrationConfigListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/migrationConfigurations/{configName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createAndStartMigration(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+        Mono<Response<Flux<ByteBuffer>>> createAndStartMigration(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("configName") MigrationConfigurationName configName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") MigrationConfigPropertiesInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/migrationConfigurations/{configName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("configName") MigrationConfigurationName configName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/migrationConfigurations/{configName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MigrationConfigPropertiesInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+        Mono<Response<MigrationConfigPropertiesInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("configName") MigrationConfigurationName configName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/migrationConfigurations/{configName}/upgrade")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}/upgrade")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> completeMigration(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+        Mono<Response<Void>> completeMigration(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("configName") MigrationConfigurationName configName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus"
-                + "/namespaces/{namespaceName}/migrationConfigurations/{configName}/revert")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}/revert")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> revert(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+        Mono<Response<Void>> revert(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @PathParam("configName") MigrationConfigurationName configName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationConfigListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all migrationConfigurations.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,13 +152,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return all migrationConfigurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationConfigPropertiesInner>> listSinglePageAsync(
-        String resourceGroupName, String namespaceName) {
+    private Mono<PagedResponse<MigrationConfigPropertiesInner>> listSinglePageAsync(String resourceGroupName,
+        String namespaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -200,39 +166,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<MigrationConfigPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<MigrationConfigPropertiesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all migrationConfigurations.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -242,13 +190,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return all migrationConfigurations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationConfigPropertiesInner>> listSinglePageAsync(
-        String resourceGroupName, String namespaceName, Context context) {
+    private Mono<PagedResponse<MigrationConfigPropertiesInner>> listSinglePageAsync(String resourceGroupName,
+        String namespaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -258,36 +204,21 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, namespaceName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all migrationConfigurations.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,13 +228,13 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MigrationConfigPropertiesInner> listAsync(String resourceGroupName, String namespaceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, namespaceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all migrationConfigurations.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -313,16 +244,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return all migrationConfigurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationConfigPropertiesInner> listAsync(
-        String resourceGroupName, String namespaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, namespaceName, context),
+    private PagedFlux<MigrationConfigPropertiesInner> listAsync(String resourceGroupName, String namespaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, namespaceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all migrationConfigurations.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,7 +267,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
 
     /**
      * Gets all migrationConfigurations.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -347,14 +277,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return all migrationConfigurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationConfigPropertiesInner> list(
-        String resourceGroupName, String namespaceName, Context context) {
+    public PagedIterable<MigrationConfigPropertiesInner> list(String resourceGroupName, String namespaceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, namespaceName, context));
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -363,19 +293,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Migration Config operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        MigrationConfigurationName configName,
-        MigrationConfigPropertiesInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(String resourceGroupName,
+        String namespaceName, MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -388,10 +313,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -400,25 +323,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createAndStartMigration(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            configName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createAndStartMigration(this.client.getEndpoint(), resourceGroupName,
+                namespaceName, configName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -428,20 +341,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Migration Config operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        MigrationConfigurationName configName,
-        MigrationConfigPropertiesInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createAndStartMigrationWithResponseAsync(String resourceGroupName,
+        String namespaceName, MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,10 +362,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -466,22 +372,13 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createAndStartMigration(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                configName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createAndStartMigration(this.client.getEndpoint(), resourceGroupName, namespaceName, configName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -493,26 +390,18 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
-        beginCreateAndStartMigrationAsync(
-            String resourceGroupName,
-            String namespaceName,
-            MigrationConfigurationName configName,
-            MigrationConfigPropertiesInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createAndStartMigrationWithResponseAsync(resourceGroupName, namespaceName, configName, parameters);
-        return this
-            .client
-            .<MigrationConfigPropertiesInner, MigrationConfigPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MigrationConfigPropertiesInner.class,
-                MigrationConfigPropertiesInner.class,
-                this.client.getContext());
+        beginCreateAndStartMigrationAsync(String resourceGroupName, String namespaceName,
+            MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createAndStartMigrationWithResponseAsync(resourceGroupName, namespaceName, configName, parameters);
+        return this.client.<MigrationConfigPropertiesInner, MigrationConfigPropertiesInner>getLroResult(mono,
+            this.client.getHttpPipeline(), MigrationConfigPropertiesInner.class, MigrationConfigPropertiesInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -525,28 +414,19 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
-        beginCreateAndStartMigrationAsync(
-            String resourceGroupName,
-            String namespaceName,
-            MigrationConfigurationName configName,
-            MigrationConfigPropertiesInner parameters,
-            Context context) {
+        beginCreateAndStartMigrationAsync(String resourceGroupName, String namespaceName,
+            MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createAndStartMigrationWithResponseAsync(resourceGroupName, namespaceName, configName, parameters, context);
-        return this
-            .client
-            .<MigrationConfigPropertiesInner, MigrationConfigPropertiesInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                MigrationConfigPropertiesInner.class,
-                MigrationConfigPropertiesInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createAndStartMigrationWithResponseAsync(resourceGroupName,
+            namespaceName, configName, parameters, context);
+        return this.client.<MigrationConfigPropertiesInner, MigrationConfigPropertiesInner>getLroResult(mono,
+            this.client.getHttpPipeline(), MigrationConfigPropertiesInner.class, MigrationConfigPropertiesInner.class,
+            context);
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -558,18 +438,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
-        beginCreateAndStartMigration(
-            String resourceGroupName,
-            String namespaceName,
-            MigrationConfigurationName configName,
-            MigrationConfigPropertiesInner parameters) {
-        return beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters)
+        beginCreateAndStartMigration(String resourceGroupName, String namespaceName,
+            MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
+        return this.beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -582,19 +459,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrationConfigPropertiesInner>, MigrationConfigPropertiesInner>
-        beginCreateAndStartMigration(
-            String resourceGroupName,
-            String namespaceName,
-            MigrationConfigurationName configName,
-            MigrationConfigPropertiesInner parameters,
-            Context context) {
-        return beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters, context)
+        beginCreateAndStartMigration(String resourceGroupName, String namespaceName,
+            MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters, Context context) {
+        return this.beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -605,19 +478,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(
-        String resourceGroupName,
-        String namespaceName,
-        MigrationConfigurationName configName,
-        MigrationConfigPropertiesInner parameters) {
-        return beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters)
-            .last()
+    public Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(String resourceGroupName,
+        String namespaceName, MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
+        return beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -629,11 +498,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(
-        String resourceGroupName,
-        String namespaceName,
-        MigrationConfigurationName configName,
-        MigrationConfigPropertiesInner parameters,
+    private Mono<MigrationConfigPropertiesInner> createAndStartMigrationAsync(String resourceGroupName,
+        String namespaceName, MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters,
         Context context) {
         return beginCreateAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters, context)
             .last()
@@ -642,7 +508,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -653,17 +519,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return single item in List or Get Migration Config operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationConfigPropertiesInner createAndStartMigration(
-        String resourceGroupName,
-        String namespaceName,
-        MigrationConfigurationName configName,
-        MigrationConfigPropertiesInner parameters) {
+    public MigrationConfigPropertiesInner createAndStartMigration(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters) {
         return createAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters).block();
     }
 
     /**
      * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -675,18 +538,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return single item in List or Get Migration Config operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationConfigPropertiesInner createAndStartMigration(
-        String resourceGroupName,
-        String namespaceName,
-        MigrationConfigurationName configName,
-        MigrationConfigPropertiesInner parameters,
-        Context context) {
+    public MigrationConfigPropertiesInner createAndStartMigration(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, MigrationConfigPropertiesInner parameters, Context context) {
         return createAndStartMigrationAsync(resourceGroupName, namespaceName, configName, parameters, context).block();
     }
 
     /**
      * Deletes a MigrationConfiguration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -696,13 +555,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -715,31 +572,19 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            configName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                configName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a MigrationConfiguration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -750,13 +595,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -769,28 +612,18 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                configName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, namespaceName, configName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes a MigrationConfiguration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -800,29 +633,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, configName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a MigrationConfiguration.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be "$default".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
-        deleteAsync(resourceGroupName, namespaceName, configName).block();
-    }
-
-    /**
-     * Deletes a MigrationConfiguration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -833,14 +651,29 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
     }
 
     /**
+     * Deletes a MigrationConfiguration.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param configName The configuration name. Should always be "$default".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+        deleteWithResponse(resourceGroupName, namespaceName, configName, Context.NONE);
+    }
+
+    /**
      * Retrieves Migration Config.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -848,16 +681,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Migration Config operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(String resourceGroupName,
+        String namespaceName, MigrationConfigurationName configName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -870,31 +701,19 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            configName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, namespaceName, configName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves Migration Config.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -903,16 +722,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single item in List or Get Migration Config operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    private Mono<Response<MigrationConfigPropertiesInner>> getWithResponseAsync(String resourceGroupName,
+        String namespaceName, MigrationConfigurationName configName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -925,28 +742,18 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                configName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, namespaceName, configName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Retrieves Migration Config.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -956,32 +763,15 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return single item in List or Get Migration Config operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MigrationConfigPropertiesInner> getAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<MigrationConfigPropertiesInner> getAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         return getWithResponseAsync(resourceGroupName, namespaceName, configName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves Migration Config.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be "$default".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Migration Config operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationConfigPropertiesInner get(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
-        return getAsync(resourceGroupName, namespaceName, configName).block();
-    }
-
-    /**
-     * Retrieves Migration Config.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -992,16 +782,33 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return single item in List or Get Migration Config operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MigrationConfigPropertiesInner> getWithResponse(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    public Response<MigrationConfigPropertiesInner> getWithResponse(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
         return getWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
+    }
+
+    /**
+     * Retrieves Migration Config.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param configName The configuration name. Should always be "$default".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single item in List or Get Migration Config operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MigrationConfigPropertiesInner get(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
+        return getWithResponse(resourceGroupName, namespaceName, configName, Context.NONE).getValue();
     }
 
     /**
      * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
      * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
      * entity migration is in-progress.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1011,13 +818,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> completeMigrationWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Response<Void>> completeMigrationWithResponseAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1030,25 +835,14 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .completeMigration(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            configName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.completeMigration(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                    configName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1056,7 +850,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
      * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
      * entity migration is in-progress.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1067,13 +861,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> completeMigrationWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    private Mono<Response<Void>> completeMigrationWithResponseAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1086,30 +878,20 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .completeMigration(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                configName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.completeMigration(this.client.getEndpoint(), resourceGroupName, namespaceName, configName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
      * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
      * entity migration is in-progress.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1119,8 +901,8 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> completeMigrationAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Void> completeMigrationAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         return completeMigrationWithResponseAsync(resourceGroupName, namespaceName, configName)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1129,25 +911,7 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
      * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
      * entity migration is in-progress.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be "$default".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void completeMigration(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
-        completeMigrationAsync(resourceGroupName, namespaceName, configName).block();
-    }
-
-    /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
-     * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
-     * entity migration is in-progress.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1158,14 +922,32 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> completeMigrationWithResponse(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    public Response<Void> completeMigrationWithResponse(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
         return completeMigrationWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
     }
 
     /**
+     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any
+     * entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when
+     * entity migration is in-progress.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param configName The configuration name. Should always be "$default".
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void completeMigration(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
+        completeMigrationWithResponse(resourceGroupName, namespaceName, configName, Context.NONE);
+    }
+
+    /**
      * This operation reverts Migration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1175,13 +957,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> revertWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Response<Void>> revertWithResponseAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1194,31 +974,19 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .revert(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            namespaceName,
-                            configName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.revert(this.client.getEndpoint(), resourceGroupName, namespaceName,
+                configName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation reverts Migration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1229,13 +997,11 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> revertWithResponseAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
+    private Mono<Response<Void>> revertWithResponseAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1248,28 +1014,18 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .revert(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                namespaceName,
-                configName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.revert(this.client.getEndpoint(), resourceGroupName, namespaceName, configName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * This operation reverts Migration.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1279,14 +1035,32 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revertAsync(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
+    public Mono<Void> revertAsync(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName) {
         return revertWithResponseAsync(resourceGroupName, namespaceName, configName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * This operation reverts Migration.
-     *
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param configName The configuration name. Should always be "$default".
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> revertWithResponse(String resourceGroupName, String namespaceName,
+        MigrationConfigurationName configName, Context context) {
+        return revertWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
+    }
+
+    /**
+     * This operation reverts Migration.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param configName The configuration name. Should always be "$default".
@@ -1296,37 +1070,18 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revert(String resourceGroupName, String namespaceName, MigrationConfigurationName configName) {
-        revertAsync(resourceGroupName, namespaceName, configName).block();
-    }
-
-    /**
-     * This operation reverts Migration.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param configName The configuration name. Should always be "$default".
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> revertWithResponse(
-        String resourceGroupName, String namespaceName, MigrationConfigurationName configName, Context context) {
-        return revertWithResponseAsync(resourceGroupName, namespaceName, configName, context).block();
+        revertWithResponse(resourceGroupName, namespaceName, configName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the List migrationConfigurations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationConfigPropertiesInner>> listNextSinglePageAsync(String nextLink) {
@@ -1334,62 +1089,41 @@ public final class MigrationConfigsClientImpl implements MigrationConfigsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MigrationConfigPropertiesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MigrationConfigPropertiesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the List migrationConfigurations operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationConfigPropertiesInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MigrationConfigPropertiesInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

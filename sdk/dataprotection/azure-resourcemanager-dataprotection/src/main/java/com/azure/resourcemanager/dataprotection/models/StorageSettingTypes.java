@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class StorageSettingTypes extends ExpandableStringEnum<StorageSetti
      * @param name a name to look for.
      * @return the corresponding StorageSettingTypes.
      */
-    @JsonCreator
     public static StorageSettingTypes fromString(String name) {
         return fromString(name, StorageSettingTypes.class);
     }

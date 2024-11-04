@@ -11,7 +11,7 @@ import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
-import com.azure.identity.{ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
+import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
@@ -19,8 +19,9 @@ import org.apache.spark.{SparkContext, TaskContext}
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.{Scheduler, Schedulers}
 
+import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
-import java.util.ConcurrentModificationException
+import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -107,6 +108,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         .mkString(", ")
     }
   }
+
 
   def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
     purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration), forceClosure = false)
@@ -227,12 +229,24 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       authConfig match {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
           case servicePrincipalAuthConfig: CosmosServicePrincipalAuthConfig =>
-              val tokenCredential = new ClientSecretCredentialBuilder()
+              val tokenCredential = if (servicePrincipalAuthConfig.clientCertPemBase64.isDefined) {
+                val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(servicePrincipalAuthConfig.clientCertPemBase64.get))
+                new ClientCertificateCredentialBuilder()
                   .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
                   .tenantId(servicePrincipalAuthConfig.tenantId)
                   .clientId(servicePrincipalAuthConfig.clientId)
-                  .clientSecret(servicePrincipalAuthConfig.clientSecret)
+                  .pemCertificate(certInputStream)
+                  .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
                   .build()
+              } else {
+                new ClientSecretCredentialBuilder()
+                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
+                  .tenantId(servicePrincipalAuthConfig.tenantId)
+                  .clientId(servicePrincipalAuthConfig.clientId)
+                  .clientSecret(servicePrincipalAuthConfig.clientSecret.get)
+                  .build()
+              }
+
               builder.credential(tokenCredential)
           case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig =>
             builder.credential(createTokenCredential(managedIdentityAuthConfig))
@@ -322,7 +336,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           builder = builder.directMode(directConfig)
 
           if (cosmosClientConfiguration.proactiveConnectionInitialization.isDefined &&
-            !cosmosClientConfiguration.proactiveConnectionInitialization.get.isEmpty) {
+            cosmosClientConfiguration.proactiveConnectionInitialization.get.nonEmpty) {
             val containerIdentities = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
               cosmosClientConfiguration.proactiveConnectionInitialization.get)
 
@@ -380,7 +394,23 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None =>
       }
 
-      builder.buildAsyncClient()
+      if (cosmosClientConfiguration.clientBuilderInterceptors.isDefined) {
+        logInfo(s"Applying CosmosClientBuilder interceptors")
+        for (interceptorFunction <- cosmosClientConfiguration.clientBuilderInterceptors.get) {
+          builder = interceptorFunction.apply(builder)
+        }
+      }
+
+      var client = builder.buildAsyncClient()
+
+    if (cosmosClientConfiguration.clientInterceptors.isDefined) {
+      logInfo(s"Applying CosmosClient interceptors")
+      for (interceptorFunction <- cosmosClientConfiguration.clientInterceptors.get) {
+        client = interceptorFunction.apply(client)
+      }
+    }
+
+    client
   }
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
@@ -390,12 +420,23 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                     azureEnvironment: AzureEnvironment,
                                                     authConfig: CosmosServicePrincipalAuthConfig): CosmosManager = {
       val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
-      val tokenCredential = new ClientSecretCredentialBuilder()
+      val tokenCredential = if (authConfig.clientCertPemBase64.isDefined) {
+        val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(authConfig.clientCertPemBase64.get))
+        new ClientCertificateCredentialBuilder()
           .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
-          .clientSecret(authConfig.clientSecret)
+          .pemCertificate(certInputStream)
+          .sendCertificateChain(authConfig.sendChain)
           .build()
+      } else {
+        new ClientSecretCredentialBuilder()
+          .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
+          .tenantId(authConfig.tenantId)
+          .clientId(authConfig.clientId)
+          .clientSecret(authConfig.clientSecret.get)
+          .build()
+      }
       CosmosManager.authenticate(tokenCredential, azureProfile)
   }
 
@@ -416,7 +457,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   }
 
   private[this] def createTokenCredential(authConfig: CosmosManagedIdentityAuthConfig): CosmosAccessTokenCredential = {
-    val tokenProvider: (List[String] => CosmosAccessToken) = {
+    val tokenProvider: List[String] => CosmosAccessToken = {
         val tokenCredentialBuilder = new ManagedIdentityCredentialBuilder()
         if (authConfig.clientId.isDefined) {
           tokenCredentialBuilder.clientId(authConfig.clientId.get)
@@ -552,7 +593,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         // difference
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
-                                                        preferredRegionsList: String)
+                                                        preferredRegionsList: String,
+                                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+                                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
 
   private[this] object ClientConfigurationWrapper {
     def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
@@ -566,7 +609,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         clientConfig.preferredRegionsList match {
           case Some(regionListArray) => s"[${regionListArray.mkString(", ")}]"
           case None => ""
-        }
+        },
+        clientConfig.clientBuilderInterceptors,
+        clientConfig.clientInterceptors
       )
     }
   }
@@ -610,7 +655,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     extends SparkListener
       with BasicLoggingTrait {
 
-    override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
+    override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd): Unit = {
         monitoredSparkApplications.remove(ctx) match {
           case Some(_) =>
             logInfo(
@@ -619,11 +664,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None =>
             logWarning(s"ApplicationEndListener:onApplicationEnd (${ctx.hashCode}) - not monitored anymore")
         }
-
     }
   }
 
-  private[this] class CosmosAccessTokenCredential(val tokenProvider: (List[String]) =>CosmosAccessToken) extends TokenCredential {
+  private[this] class CosmosAccessTokenCredential(val tokenProvider: List[String] =>CosmosAccessToken) extends TokenCredential {
     override def getToken(tokenRequestContext: TokenRequestContext): Mono[AccessToken] = {
       val returnValue: Mono[AccessToken] = Mono.fromCallable(() => {
         val token = tokenProvider

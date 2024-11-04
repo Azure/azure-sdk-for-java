@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found identity document fields from a file source URL.
- * See fields found on a license <a href=https://aka.ms/documentintelligence/iddocumentfields>here</a>
+ * See fields found on a license <a href=https://aka.ms/formrecognizer/iddocumentfields>here</a>
  */
 public class AnalyzeIdentityDocumentsFromUrlAsync {
 
@@ -38,8 +38,9 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
+                null,
                 null,
                 null,
                 null,
@@ -57,7 +58,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         identityDocumentPollerResult.subscribe(identityDocumentResults -> {
             for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {

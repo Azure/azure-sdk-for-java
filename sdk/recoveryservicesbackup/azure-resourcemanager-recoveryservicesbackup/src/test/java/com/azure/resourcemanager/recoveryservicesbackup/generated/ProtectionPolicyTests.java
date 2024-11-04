@@ -13,18 +13,18 @@ public final class ProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":624396177,\"resourceGuardOperationRequests\":[\"eojnabc\"]}")
+            "{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":291050041,\"resourceGuardOperationRequests\":[\"ck\",\"rlhrxs\",\"kyv\"]}")
             .toObject(ProtectionPolicy.class);
-        Assertions.assertEquals(624396177, model.protectedItemsCount());
-        Assertions.assertEquals("eojnabc", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(291050041, model.protectedItemsCount());
+        Assertions.assertEquals("ck", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionPolicy model = new ProtectionPolicy().withProtectedItemsCount(624396177)
-            .withResourceGuardOperationRequests(Arrays.asList("eojnabc"));
+        ProtectionPolicy model = new ProtectionPolicy().withProtectedItemsCount(291050041)
+            .withResourceGuardOperationRequests(Arrays.asList("ck", "rlhrxs", "kyv"));
         model = BinaryData.fromObject(model).toObject(ProtectionPolicy.class);
-        Assertions.assertEquals(624396177, model.protectedItemsCount());
-        Assertions.assertEquals("eojnabc", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(291050041, model.protectedItemsCount());
+        Assertions.assertEquals("ck", model.resourceGuardOperationRequests().get(0));
     }
 }

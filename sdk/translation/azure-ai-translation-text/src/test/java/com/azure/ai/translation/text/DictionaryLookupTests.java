@@ -3,7 +3,6 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
-import com.azure.ai.translation.text.models.InputTextItem;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,24 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DictionaryLookupTests extends TextTranslationClientBase {
     @Test
     public void singleInputItem() {
+        DictionaryLookupItem response = getTranslationClient().lookupDictionaryEntries("en", "es", "fly");
 
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("fly"));
-
-        List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", content, null);
-
-        assertEquals("fly", response.get(0).getNormalizedSource());
-        assertEquals("fly", response.get(0).getDisplaySource());
+        assertEquals("fly", response.getNormalizedSource());
+        assertEquals("fly", response.getDisplaySource());
     }
 
     @Test
     public void multipleInputItems() {
+        ArrayList<String> content = new ArrayList<>();
+        content.add("fly");
+        content.add("fox");
 
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("fly"));
-        content.add(new InputTextItem("fox"));
-
-        List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", content, null);
+        List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", content);
         assertEquals(2, response.size());
     }
 }

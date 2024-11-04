@@ -8,6 +8,9 @@ package com.azure.resourcemanager.standbypool.generated;
  * Samples for StandbyVirtualMachines ListByStandbyVirtualMachinePoolResource.
  */
 public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResourceSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
+     */
     /**
      * Sample code: StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.
      * 

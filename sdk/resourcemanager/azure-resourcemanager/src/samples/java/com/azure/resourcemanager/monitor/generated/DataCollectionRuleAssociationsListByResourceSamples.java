@@ -19,8 +19,12 @@ public final class DataCollectionRuleAssociationsListByResourceSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAssociationsForSpecifiedResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRuleAssociations().listByResource(
-            "subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRuleAssociations()
+            .listByResource(
+                "subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
+                com.azure.core.util.Context.NONE);
     }
 }

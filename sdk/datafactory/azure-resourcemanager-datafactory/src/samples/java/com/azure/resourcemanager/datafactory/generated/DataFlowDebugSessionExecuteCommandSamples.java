@@ -13,7 +13,8 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandType;
  */
 public final class DataFlowDebugSessionExecuteCommandSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_ExecuteCommand.json
      */
     /**
      * Sample code: DataFlowDebugSession_ExecuteCommand.

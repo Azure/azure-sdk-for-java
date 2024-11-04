@@ -7,12 +7,13 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information to be stored in Vault properties as an element of privateEndpointConnections List. */
+/**
+ * Information to be stored in Vault properties as an element of privateEndpointConnections List.
+ */
 @Immutable
 public final class PrivateEndpointConnectionVaultProperties {
     /*
-     * Format of id
-     * subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.[Service]/{resource}/{resourceName}/privateEndpointConnections/{connectionName}.
+     * Format of id subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.[Service]/{resource}/{resourceName}/privateEndpointConnections/{connectionName}.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -41,14 +42,16 @@ public final class PrivateEndpointConnectionVaultProperties {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of PrivateEndpointConnectionVaultProperties class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionVaultProperties class.
+     */
     public PrivateEndpointConnectionVaultProperties() {
     }
 
     /**
      * Get the id property: Format of id
      * subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.[Service]/{resource}/{resourceName}/privateEndpointConnections/{connectionName}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +60,7 @@ public final class PrivateEndpointConnectionVaultProperties {
 
     /**
      * Get the properties property: Private Endpoint Connection Response Properties.
-     *
+     * 
      * @return the properties value.
      */
     public PrivateEndpointConnection properties() {
@@ -66,7 +69,7 @@ public final class PrivateEndpointConnectionVaultProperties {
 
     /**
      * Get the name property: The name of the private Endpoint Connection.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +79,7 @@ public final class PrivateEndpointConnectionVaultProperties {
     /**
      * Get the type property: The type, which will be of the format,
      * Microsoft.RecoveryServices/vaults/privateEndpointConnections.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -85,7 +88,7 @@ public final class PrivateEndpointConnectionVaultProperties {
 
     /**
      * Get the location property: The location of the private Endpoint connection.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -94,7 +97,7 @@ public final class PrivateEndpointConnectionVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

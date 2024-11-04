@@ -18,34 +18,33 @@ public final class MongoDbAtlasLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasLinkedService model = BinaryData.fromString(
-            "{\"type\":\"fshhc\",\"typeProperties\":{\"connectionString\":\"datayvjispkgkhvpvbz\",\"database\":\"datayo\",\"driverVersion\":\"dataxstxsfztlvs\"},\"connectVia\":{\"referenceName\":\"sowyhxwhdyfgtwx\",\"parameters\":{\"im\":\"databzfiacmwmc\",\"tnolziohdxyuk\":\"datahrfmcjjxxwzdwmju\",\"sffpizef\":\"dataplfwykrpojen\",\"zcevf\":\"datajgblehxpeuahvxf\"}},\"description\":\"ekyd\",\"parameters\":{\"pejhyrzzxqtcg\":{\"type\":\"Bool\",\"defaultValue\":\"datafkneckvyrvdszri\"},\"juingnfunhtzgxs\":{\"type\":\"Bool\",\"defaultValue\":\"datahzcicitykzyi\"},\"dhjztbwzjbqzqwb\":{\"type\":\"Object\",\"defaultValue\":\"datamopk\"}},\"annotations\":[\"datahqzdbzlkd\",\"databekvprkwpvxieqc\"],\"\":{\"aeiuex\":\"datazshfafbeh\",\"ecrizkabafdlsiza\":\"datapgrmwdwlraeplpf\"}}")
+            "{\"type\":\"MongoDbAtlas\",\"typeProperties\":{\"connectionString\":\"datarp\",\"database\":\"datasozaoutjliwbnw\",\"driverVersion\":\"datagbzjoyyptnok\"},\"version\":\"qxkzeowizvj\",\"connectVia\":{\"referenceName\":\"zxkflz\",\"parameters\":{\"wgnwhldctn\":\"dataxxboauvkkc\",\"mtnlcvl\":\"datachuqmdy\"}},\"description\":\"vhedrbz\",\"parameters\":{\"dkdlxd\":{\"type\":\"Int\",\"defaultValue\":\"datagwxwc\"},\"j\":{\"type\":\"String\",\"defaultValue\":\"dataalz\"},\"oypqussxi\":{\"type\":\"SecureString\",\"defaultValue\":\"datayxow\"}},\"annotations\":[\"datacrsdgtj\",\"datalop\"],\"\":{\"prszehijlwrfea\":\"dataaxt\",\"qaklsfx\":\"datazjpghjmgpc\",\"mfqmvnhsfjxt\":\"datarxix\"}}")
             .toObject(MongoDbAtlasLinkedService.class);
-        Assertions.assertEquals("sowyhxwhdyfgtwx", model.connectVia().referenceName());
-        Assertions.assertEquals("ekyd", model.description());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("pejhyrzzxqtcg").type());
+        Assertions.assertEquals("qxkzeowizvj", model.version());
+        Assertions.assertEquals("zxkflz", model.connectVia().referenceName());
+        Assertions.assertEquals("vhedrbz", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("dkdlxd").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasLinkedService model = new MongoDbAtlasLinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("sowyhxwhdyfgtwx")
-                .withParameters(mapOf("im", "databzfiacmwmc", "tnolziohdxyuk", "datahrfmcjjxxwzdwmju", "sffpizef",
-                    "dataplfwykrpojen", "zcevf", "datajgblehxpeuahvxf")))
-            .withDescription("ekyd")
-            .withParameters(mapOf("pejhyrzzxqtcg",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datafkneckvyrvdszri"),
-                "juingnfunhtzgxs",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datahzcicitykzyi"),
-                "dhjztbwzjbqzqwb",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datamopk")))
-            .withAnnotations(Arrays.asList("datahqzdbzlkd", "databekvprkwpvxieqc"))
-            .withConnectionString("datayvjispkgkhvpvbz")
-            .withDatabase("datayo")
-            .withDriverVersion("dataxstxsfztlvs");
+        MongoDbAtlasLinkedService model = new MongoDbAtlasLinkedService().withVersion("qxkzeowizvj")
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("zxkflz")
+                .withParameters(mapOf("wgnwhldctn", "dataxxboauvkkc", "mtnlcvl", "datachuqmdy")))
+            .withDescription("vhedrbz")
+            .withParameters(mapOf("dkdlxd",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datagwxwc"), "j",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataalz"), "oypqussxi",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datayxow")))
+            .withAnnotations(Arrays.asList("datacrsdgtj", "datalop"))
+            .withConnectionString("datarp")
+            .withDatabase("datasozaoutjliwbnw")
+            .withDriverVersion("datagbzjoyyptnok");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasLinkedService.class);
-        Assertions.assertEquals("sowyhxwhdyfgtwx", model.connectVia().referenceName());
-        Assertions.assertEquals("ekyd", model.description());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("pejhyrzzxqtcg").type());
+        Assertions.assertEquals("qxkzeowizvj", model.version());
+        Assertions.assertEquals("zxkflz", model.connectVia().referenceName());
+        Assertions.assertEquals("vhedrbz", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("dkdlxd").type());
     }
 
     // Use "Map.of" if available

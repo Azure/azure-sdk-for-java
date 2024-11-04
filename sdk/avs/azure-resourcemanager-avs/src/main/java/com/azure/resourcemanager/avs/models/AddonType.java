@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of private cloud addon. */
+/**
+ * Addon type.
+ */
 public final class AddonType extends ExpandableStringEnum<AddonType> {
-    /** Static value SRM for AddonType. */
+    /**
+     * Static value SRM for AddonType.
+     */
     public static final AddonType SRM = fromString("SRM");
 
-    /** Static value VR for AddonType. */
+    /**
+     * Static value VR for AddonType.
+     */
     public static final AddonType VR = fromString("VR");
 
-    /** Static value HCX for AddonType. */
+    /**
+     * Static value HCX for AddonType.
+     */
     public static final AddonType HCX = fromString("HCX");
 
-    /** Static value Arc for AddonType. */
+    /**
+     * Static value Arc for AddonType.
+     */
     public static final AddonType ARC = fromString("Arc");
 
     /**
      * Creates a new instance of AddonType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class AddonType extends ExpandableStringEnum<AddonType> {
 
     /**
      * Creates or finds a AddonType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AddonType.
      */
-    @JsonCreator
     public static AddonType fromString(String name) {
         return fromString(name, AddonType.class);
     }
 
     /**
      * Gets known AddonType values.
-     *
+     * 
      * @return known AddonType values.
      */
     public static Collection<AddonType> values() {

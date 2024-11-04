@@ -6,6 +6,7 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -121,8 +122,8 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
                 } else if ("quota".equals(fieldName)) {
                     quota = reader.getInt();
                 } else if ("quotaResetDateTime".equals(fieldName)) {
-                    quotaResetDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    quotaResetDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -88,52 +88,48 @@ public class Transforms {
 
         // add documents
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getDocuments())) {
-            AnalyzeResultHelper.setDocuments(analyzeResult, innerAnalyzeResult.getDocuments().stream()
-                .map(document -> {
-                    AnalyzedDocument analyzedDocument = new AnalyzedDocument();
-                    AnalyzedDocumentHelper.setBoundingRegions(analyzedDocument,
-                        toBoundingRegions(document.getBoundingRegions()));
-                    AnalyzedDocumentHelper.setConfidence(analyzedDocument, document.getConfidence());
-                    AnalyzedDocumentHelper.setDocType(analyzedDocument, document.getDocType());
-                    AnalyzedDocumentHelper.setFields(analyzedDocument, toDocumentFields(document.getFields()));
-                    AnalyzedDocumentHelper.setSpans(analyzedDocument, toDocumentSpans(document.getSpans()));
-                    return analyzedDocument;
-                })
-                .collect(Collectors.toList()));
+            AnalyzeResultHelper.setDocuments(analyzeResult, innerAnalyzeResult.getDocuments().stream().map(document -> {
+                AnalyzedDocument analyzedDocument = new AnalyzedDocument();
+                AnalyzedDocumentHelper.setBoundingRegions(analyzedDocument,
+                    toBoundingRegions(document.getBoundingRegions()));
+                AnalyzedDocumentHelper.setConfidence(analyzedDocument, document.getConfidence());
+                AnalyzedDocumentHelper.setDocType(analyzedDocument, document.getDocType());
+                AnalyzedDocumentHelper.setFields(analyzedDocument, toDocumentFields(document.getFields()));
+                AnalyzedDocumentHelper.setSpans(analyzedDocument, toDocumentSpans(document.getSpans()));
+                return analyzedDocument;
+            }).collect(Collectors.toList()));
         }
 
         AnalyzeResultHelper.setContent(analyzeResult, innerAnalyzeResult.getContent());
         AnalyzeResultHelper.setModelId(analyzeResult, innerAnalyzeResult.getModelId());
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getLanguages())) {
-            AnalyzeResultHelper.setLanguages(analyzeResult, innerAnalyzeResult.getLanguages()
-                .stream()
-                .map(innerLanguage -> {
+            AnalyzeResultHelper.setLanguages(analyzeResult,
+                innerAnalyzeResult.getLanguages().stream().map(innerLanguage -> {
                     DocumentLanguage documentLanguage = new DocumentLanguage();
                     DocumentLanguageHelper.setLocale(documentLanguage, innerLanguage.getLocale());
                     DocumentLanguageHelper.setSpans(documentLanguage, toDocumentSpans(innerLanguage.getSpans()));
                     DocumentLanguageHelper.setConfidence(documentLanguage, innerLanguage.getConfidence());
                     return documentLanguage;
-                })
-                .collect(Collectors.toList()));
+                }).collect(Collectors.toList()));
         }
 
         //add pages
-        AnalyzeResultHelper.setPages(analyzeResult, innerAnalyzeResult.getPages().stream()
-            .map(innerDocumentPage -> {
-                DocumentPage documentPage = new DocumentPage();
-                DocumentPageHelper.setAngle(documentPage, innerDocumentPage.getAngle());
-                DocumentPageHelper.setHeight(documentPage, innerDocumentPage.getHeight());
-                DocumentPageHelper.setWidth(documentPage, innerDocumentPage.getWidth());
-                DocumentPageHelper.setPageNumber(documentPage, innerDocumentPage.getPageNumber());
-                DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
-                    ? null : DocumentPageLengthUnit.fromString(innerDocumentPage.getUnit().toString()));
-                DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
-
-                DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
+        AnalyzeResultHelper.setPages(analyzeResult, innerAnalyzeResult.getPages().stream().map(innerDocumentPage -> {
+            DocumentPage documentPage = new DocumentPage();
+            DocumentPageHelper.setAngle(documentPage, innerDocumentPage.getAngle());
+            DocumentPageHelper.setHeight(documentPage, innerDocumentPage.getHeight());
+            DocumentPageHelper.setWidth(documentPage, innerDocumentPage.getWidth());
+            DocumentPageHelper.setPageNumber(documentPage, innerDocumentPage.getPageNumber());
+            DocumentPageHelper.setUnit(documentPage,
+                innerDocumentPage.getUnit() == null
                     ? null
-                    : innerDocumentPage.getSelectionMarks()
-                    .stream()
-                    .map(innerSelectionMark -> {
+                    : DocumentPageLengthUnit.fromString(innerDocumentPage.getUnit().toString()));
+            DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
+
+            DocumentPageHelper.setSelectionMarks(documentPage,
+                innerDocumentPage.getSelectionMarks() == null
+                    ? null
+                    : innerDocumentPage.getSelectionMarks().stream().map(innerSelectionMark -> {
                         DocumentSelectionMark documentSelectionMark = new DocumentSelectionMark();
                         DocumentSelectionMarkHelper.setBoundingPolygon(documentSelectionMark,
                             toPolygonPoints(innerSelectionMark.getPolygon()));
@@ -144,33 +140,30 @@ public class Transforms {
                         DocumentSelectionMarkHelper.setState(documentSelectionMark,
                             DocumentSelectionMarkState.fromString(innerSelectionMark.getState().toString()));
                         return documentSelectionMark;
-                    })
-                    .collect(Collectors.toList()));
-                DocumentPageHelper.setLines(documentPage,
-                    innerDocumentPage.getLines() == null ? null : innerDocumentPage.getLines()
-                        .stream()
-                        .map(innerDocumentLine -> {
-                            DocumentLine documentLine = new DocumentLine();
-                            DocumentLineHelper.setBoundingPolygon(documentLine,
-                                toPolygonPoints(innerDocumentLine.getPolygon()));
-                            DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
-                            DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
-                            DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
-                            return documentLine;
-                        })
-                        .collect(Collectors.toList()));
-                DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
-                DocumentPageHelper.setFormulas(documentPage, fromInnerFormulas(innerDocumentPage.getFormulas()));
-                DocumentPageHelper.setBarcodes(documentPage, fromInnerBarcodes(innerDocumentPage.getBarcodes()));
-                return documentPage;
-            })
-            .collect(Collectors.toList()));
+                    }).collect(Collectors.toList()));
+            List<DocumentWord> documentWords = toDocumentWords(innerDocumentPage);
+            DocumentPageHelper.setLines(documentPage,
+                innerDocumentPage.getLines() == null
+                    ? null
+                    : innerDocumentPage.getLines().stream().map(innerDocumentLine -> {
+                        DocumentLine documentLine = new DocumentLine();
+                        DocumentLineHelper.setBoundingPolygon(documentLine,
+                            toPolygonPoints(innerDocumentLine.getPolygon()));
+                        DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
+                        DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
+                        DocumentLineHelper.setPageWords(documentLine, documentWords);
+                        return documentLine;
+                    }).collect(Collectors.toList()));
+            DocumentPageHelper.setWords(documentPage, documentWords);
+            DocumentPageHelper.setFormulas(documentPage, fromInnerFormulas(innerDocumentPage.getFormulas()));
+            DocumentPageHelper.setBarcodes(documentPage, fromInnerBarcodes(innerDocumentPage.getBarcodes()));
+            return documentPage;
+        }).collect(Collectors.toList()));
 
         // add key value pairs
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getKeyValuePairs())) {
-            AnalyzeResultHelper.setKeyValuePairs(analyzeResult, innerAnalyzeResult.getKeyValuePairs()
-                .stream()
-                .map(innerKeyValuePair -> {
+            AnalyzeResultHelper.setKeyValuePairs(analyzeResult,
+                innerAnalyzeResult.getKeyValuePairs().stream().map(innerKeyValuePair -> {
                     DocumentKeyValuePair documentKeyValuePair = new DocumentKeyValuePair();
                     DocumentKeyValuePairHelper.setValue(documentKeyValuePair,
                         toDocumentKeyValueElement(innerKeyValuePair.getValue()));
@@ -178,15 +171,13 @@ public class Transforms {
                         toDocumentKeyValueElement(innerKeyValuePair.getKey()));
                     DocumentKeyValuePairHelper.setConfidence(documentKeyValuePair, innerKeyValuePair.getConfidence());
                     return documentKeyValuePair;
-                })
-                .collect(Collectors.toList()));
+                }).collect(Collectors.toList()));
         }
 
         // add styles
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getStyles())) {
-            AnalyzeResultHelper.setStyles(analyzeResult, innerAnalyzeResult.getStyles()
-                .stream()
-                .map(innerDocumentStyle -> {
+            AnalyzeResultHelper.setStyles(analyzeResult,
+                innerAnalyzeResult.getStyles().stream().map(innerDocumentStyle -> {
                     DocumentStyle documentStyle = new DocumentStyle();
                     DocumentStyleHelper.setConfidence(documentStyle, innerDocumentStyle.getConfidence());
                     DocumentStyleHelper.setIsHandwritten(documentStyle, innerDocumentStyle.isHandwritten());
@@ -195,45 +186,41 @@ public class Transforms {
                     DocumentStyleHelper.setBackgroundColor(documentStyle, innerDocumentStyle.getBackgroundColor());
                     if (innerDocumentStyle.getFontWeight() != null) {
                         DocumentStyleHelper.setFontWeight(documentStyle,
-                                FontWeight.fromString(innerDocumentStyle.getFontWeight().toString()));
+                            FontWeight.fromString(innerDocumentStyle.getFontWeight().toString()));
                     }
                     DocumentStyleHelper.setSimilarFontFamily(documentStyle, innerDocumentStyle.getSimilarFontFamily());
                     if (innerDocumentStyle.getFontStyle() != null) {
                         DocumentStyleHelper.setFontStyle(documentStyle,
-                                FontStyle.fromString(innerDocumentStyle.getFontStyle().toString()));
+                            FontStyle.fromString(innerDocumentStyle.getFontStyle().toString()));
                     }
                     return documentStyle;
-                })
-                .collect(Collectors.toList()));
+                }).collect(Collectors.toList()));
         }
 
         // add paragraphs
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getParagraphs())) {
-            AnalyzeResultHelper.setParagraphs(analyzeResult, innerAnalyzeResult.getParagraphs()
-                .stream()
-                .map(innerParagraph -> {
+            AnalyzeResultHelper.setParagraphs(analyzeResult,
+                innerAnalyzeResult.getParagraphs().stream().map(innerParagraph -> {
                     DocumentParagraph documentParagraph = new DocumentParagraph();
                     DocumentParagraphHelper.setContent(documentParagraph, innerParagraph.getContent());
-                    DocumentParagraphHelper.setRole(documentParagraph, innerParagraph.getRole() == null ? null
-                        : ParagraphRole.fromString(innerParagraph.getRole().toString()));
+                    DocumentParagraphHelper.setRole(documentParagraph,
+                        innerParagraph.getRole() == null
+                            ? null
+                            : ParagraphRole.fromString(innerParagraph.getRole().toString()));
                     DocumentParagraphHelper.setBoundingRegions(documentParagraph,
                         toBoundingRegions(innerParagraph.getBoundingRegions()));
-                    DocumentParagraphHelper.setSpans(documentParagraph,
-                        toDocumentSpans(innerParagraph.getSpans()));
+                    DocumentParagraphHelper.setSpans(documentParagraph, toDocumentSpans(innerParagraph.getSpans()));
                     return documentParagraph;
-                })
-                .collect(Collectors.toList()));
+                }).collect(Collectors.toList()));
         }
 
         // add tables
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getTables())) {
-            AnalyzeResultHelper.setTables(analyzeResult, innerAnalyzeResult.getTables()
-                .stream()
-                .map(innerDocumentTable -> {
+            AnalyzeResultHelper.setTables(analyzeResult,
+                innerAnalyzeResult.getTables().stream().map(innerDocumentTable -> {
                     DocumentTable documentTable = new DocumentTable();
-                    DocumentTableHelper.setCells(documentTable, innerDocumentTable.getCells()
-                        .stream()
-                        .map(innerDocumentCell -> {
+                    DocumentTableHelper.setCells(documentTable,
+                        innerDocumentTable.getCells().stream().map(innerDocumentCell -> {
                             DocumentTableCell documentTableCell = new DocumentTableCell();
                             DocumentTableCellHelper.setBoundingRegions(documentTableCell,
                                 toBoundingRegions(innerDocumentCell.getBoundingRegions()));
@@ -242,28 +229,26 @@ public class Transforms {
                             DocumentTableCellHelper.setContent(documentTableCell, innerDocumentCell.getContent());
                             DocumentTableCellHelper.setColumnIndex(documentTableCell,
                                 innerDocumentCell.getColumnIndex());
-                            DocumentTableCellHelper.setKind(documentTableCell, innerDocumentCell.getKind() == null
-                                ? DocumentTableCellKind.CONTENT
-                                : DocumentTableCellKind.fromString(innerDocumentCell.getKind().toString()));
+                            DocumentTableCellHelper.setKind(documentTableCell,
+                                innerDocumentCell.getKind() == null
+                                    ? DocumentTableCellKind.CONTENT
+                                    : DocumentTableCellKind.fromString(innerDocumentCell.getKind().toString()));
                             DocumentTableCellHelper.setRowIndex(documentTableCell, innerDocumentCell.getRowIndex());
                             DocumentTableCellHelper.setColumnSpan(documentTableCell, innerDocumentCell.getColumnSpan());
                             DocumentTableCellHelper.setRowSpan(documentTableCell, innerDocumentCell.getRowSpan());
                             return documentTableCell;
-                        })
-                        .collect(Collectors.toList()));
+                        }).collect(Collectors.toList()));
                     DocumentTableHelper.setBoundingRegions(documentTable,
                         toBoundingRegions(innerDocumentTable.getBoundingRegions()));
                     DocumentTableHelper.setSpans(documentTable, toDocumentSpans(innerDocumentTable.getSpans()));
                     DocumentTableHelper.setColumnCount(documentTable, innerDocumentTable.getColumnCount());
                     DocumentTableHelper.setRowCount(documentTable, innerDocumentTable.getRowCount());
                     return documentTable;
-                })
-                .collect(Collectors.toList()));
+                }).collect(Collectors.toList()));
         }
 
         return analyzeResult;
     }
-
 
     private static List<DocumentBarcode> fromInnerBarcodes(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBarcode> barcodes) {
@@ -271,15 +256,15 @@ public class Transforms {
             return barcodes.stream().map(innerBarcode -> {
                 DocumentBarcode documentBarcode = new DocumentBarcode();
                 DocumentBarcodeHelper.setKind(documentBarcode,
-                    innerBarcode.getKind() == null ? null : DocumentBarcodeKind.fromString(
-                        innerBarcode.getKind().toString()));
+                    innerBarcode.getKind() == null
+                        ? null
+                        : DocumentBarcodeKind.fromString(innerBarcode.getKind().toString()));
                 DocumentBarcodeHelper.setValue(documentBarcode, innerBarcode.getValue());
                 DocumentBarcodeHelper.setConfidence(documentBarcode, innerBarcode.getConfidence());
                 DocumentBarcodeHelper.setSpan(documentBarcode, getDocumentSpan(innerBarcode.getSpan()));
                 DocumentBarcodeHelper.setBoundingPolygon(documentBarcode, toPolygonPoints(innerBarcode.getPolygon()));
                 return documentBarcode;
-            })
-                .collect(Collectors.toList());
+            }).collect(Collectors.toList());
         }
         return null;
     }
@@ -290,8 +275,9 @@ public class Transforms {
             return formulas.stream().map(innerFormula -> {
                 DocumentFormula documentFormula = new DocumentFormula();
                 DocumentFormulaHelper.setKind(documentFormula,
-                    innerFormula.getKind() == null ? null : DocumentFormulaKind.fromString(
-                        innerFormula.getKind().toString()));
+                    innerFormula.getKind() == null
+                        ? null
+                        : DocumentFormulaKind.fromString(innerFormula.getKind().toString()));
                 DocumentFormulaHelper.setValue(documentFormula, innerFormula.getValue());
                 DocumentFormulaHelper.setConfidence(documentFormula, innerFormula.getConfidence());
                 DocumentFormulaHelper.setSpan(documentFormula, getDocumentSpan(innerFormula.getSpan()));
@@ -302,29 +288,30 @@ public class Transforms {
         return null;
     }
 
-    public static BuildDocumentModelRequest getBuildDocumentModelRequest(
-        ContentSource contentSource, DocumentModelBuildMode buildMode,
-        String modelId, BuildDocumentModelOptions buildDocumentModelOptions) {
+    public static BuildDocumentModelRequest getBuildDocumentModelRequest(ContentSource contentSource,
+        DocumentModelBuildMode buildMode, String modelId, BuildDocumentModelOptions buildDocumentModelOptions) {
         BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest(modelId,
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
-                .fromString(buildMode.toString()))
-            .setDescription(buildDocumentModelOptions.getDescription())
-            .setTags(buildDocumentModelOptions.getTags());
+                .fromString(buildMode.toString())).setDescription(buildDocumentModelOptions.getDescription())
+                    .setTags(buildDocumentModelOptions.getTags());
         if (contentSource instanceof BlobContentSource) {
             BlobContentSource azureBlobSource = (BlobContentSource) contentSource;
-            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(azureBlobSource.getContainerUrl())
-                .setPrefix(azureBlobSource.getPrefix()));
+            buildDocumentModelRequest.setAzureBlobSource(
+                new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
+                    azureBlobSource.getContainerUrl()).setPrefix(azureBlobSource.getPrefix()));
         } else if (contentSource instanceof BlobFileListContentSource) {
             BlobFileListContentSource azureBlobFileListSource = (BlobFileListContentSource) contentSource;
-            buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(azureBlobFileListSource.getContainerUrl(), azureBlobFileListSource.getFileList()));
+            buildDocumentModelRequest.setAzureBlobFileListSource(
+                new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
+                    azureBlobFileListSource.getContainerUrl(), azureBlobFileListSource.getFileList()));
         }
         return buildDocumentModelRequest;
     }
 
     public static BuildDocumentClassifierRequest getBuildDocumentClassifierRequest(String classifierId,
-                                                                                   String description, Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> docTypes) {
-        return new BuildDocumentClassifierRequest(classifierId, docTypes)
-        .setDescription(description);
+        String description,
+        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> docTypes) {
+        return new BuildDocumentClassifierRequest(classifierId, docTypes).setDescription(description);
     }
 
     /**
@@ -345,28 +332,18 @@ public class Transforms {
         if (throwable.getValue() != null && throwable.getValue().getError() != null) {
             error = (throwable.getValue().getError());
         }
-        return new HttpResponseException(
-            throwable.getMessage(),
-            throwable.getResponse(),
-            toResponseError(error)
-        );
+        return new HttpResponseException(throwable.getMessage(), throwable.getResponse(), toResponseError(error));
     }
 
-    public static HttpResponseException mapResponseErrorToHttpResponseException(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
-        return new HttpResponseException(
-            error.getMessage(),
-            null,
-            toResponseError(error)
-        );
+    public static HttpResponseException mapResponseErrorToHttpResponseException(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
+        return new HttpResponseException(error.getMessage(), null, toResponseError(error));
     }
 
-    public static DocumentModelCopyAuthorization toCopyAuthorization(
-        CopyAuthorization innerCopyAuthorization) {
+    public static DocumentModelCopyAuthorization toCopyAuthorization(CopyAuthorization innerCopyAuthorization) {
         return new DocumentModelCopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
-            innerCopyAuthorization.getTargetResourceRegion(),
-            innerCopyAuthorization.getTargetModelId(),
-            innerCopyAuthorization.getTargetModelLocation(),
-            innerCopyAuthorization.getAccessToken(),
+            innerCopyAuthorization.getTargetResourceRegion(), innerCopyAuthorization.getTargetModelId(),
+            innerCopyAuthorization.getTargetModelLocation(), innerCopyAuthorization.getAccessToken(),
             innerCopyAuthorization.getExpirationDateTime());
     }
 
@@ -377,38 +354,45 @@ public class Transforms {
             getInfoResponse.getCustomDocumentModels().getCount());
         ResourceDetailsHelper.setDocumentModelLimit(resourceDetails,
             getInfoResponse.getCustomDocumentModels().getLimit());
-        ResourceDetailsHelper.setCustomNeuralDocumentModelBuilds(resourceDetails, toQuotaDetails(getInfoResponse.getCustomNeuralDocumentModelBuilds()));
+        ResourceDetailsHelper.setCustomNeuralDocumentModelBuilds(resourceDetails,
+            toQuotaDetails(getInfoResponse.getCustomNeuralDocumentModelBuilds()));
         return resourceDetails;
     }
 
-    public static DocumentModelDetails toDocumentModelFromOperationId(com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails operationDetails) {
+    public static DocumentModelDetails toDocumentModelFromOperationId(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails operationDetails) {
         if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) {
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
-                buildOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) operationDetails).getResult();
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails buildOperationModelResult
+                = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) operationDetails)
+                    .getResult();
             return toDocumentModelDetails(buildOperationModelResult);
         } else if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) {
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
-                copyOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) operationDetails).getResult();
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails copyOperationModelResult
+                = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) operationDetails)
+                    .getResult();
             return toDocumentModelDetails(copyOperationModelResult);
         } else if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) {
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
-                composeOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) operationDetails).getResult();
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails composeOperationModelResult
+                = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) operationDetails)
+                    .getResult();
             return toDocumentModelDetails(composeOperationModelResult);
         }
         return new DocumentModelDetails();
     }
 
-    public static DocumentClassifierDetails toDocumentClassifierFromOperationId(com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails operationDetails) {
+    public static DocumentClassifierDetails toDocumentClassifierFromOperationId(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails operationDetails) {
         if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierBuildOperationDetails) {
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails
-                classifierDetails =
-                ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierBuildOperationDetails) operationDetails).getResult();
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails classifierDetails
+                = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierBuildOperationDetails) operationDetails)
+                    .getResult();
             return fromInnerDocumentClassifierDetails(classifierDetails);
         }
         return null;
     }
 
-    public static DocumentModelDetails toDocumentModelDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelDetails) {
+    public static DocumentModelDetails toDocumentModelDetails(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelDetails) {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
         if (modelDetails != null) {
             DocumentModelDetailsHelper.setModelId(documentModelDetails, modelDetails.getModelId());
@@ -431,10 +415,12 @@ public class Transforms {
                 DocumentTypeDetails documentTypeDetails = new DocumentTypeDetails();
                 DocumentTypeDetailsHelper.setDescription(documentTypeDetails, innerDocTypeInfo.getDescription());
                 Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
-                innerDocTypeInfo.getFieldSchema().forEach((schemaKey, innerDocSchema)
-                    -> schemaMap.put(schemaKey, toDocumentFieldSchema(innerDocSchema)));
+                innerDocTypeInfo.getFieldSchema()
+                    .forEach(
+                        (schemaKey, innerDocSchema) -> schemaMap.put(schemaKey, toDocumentFieldSchema(innerDocSchema)));
                 DocumentTypeDetailsHelper.setFieldSchema(documentTypeDetails, schemaMap);
-                DocumentTypeDetailsHelper.setFieldConfidence(documentTypeDetails, innerDocTypeInfo.getFieldConfidence());
+                DocumentTypeDetailsHelper.setFieldConfidence(documentTypeDetails,
+                    innerDocTypeInfo.getFieldConfidence());
                 docTypeMap.put(key, documentTypeDetails);
                 DocumentTypeDetailsHelper.setBuildMode(documentTypeDetails,
                     innerDocTypeInfo.getBuildMode() != null
@@ -443,7 +429,7 @@ public class Transforms {
             });
             return docTypeMap;
         }
-        return  null;
+        return null;
     }
 
     private static DocumentFieldSchema toDocumentFieldSchema(
@@ -470,8 +456,8 @@ public class Transforms {
     private static Map<String, DocumentFieldSchema> toDocumentFieldProperties(
         Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldSchema> properties) {
         Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
-        properties.forEach((key, innerDocFieldSchema) ->
-            schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
+        properties
+            .forEach((key, innerDocFieldSchema) -> schemaMap.put(key, toDocumentFieldSchema(innerDocFieldSchema)));
         return schemaMap;
     }
 
@@ -493,8 +479,8 @@ public class Transforms {
         Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentField> innerFields) {
         Map<String, DocumentField> documentFieldMap = new HashMap<>();
         if (!CoreUtils.isNullOrEmpty(innerFields)) {
-            innerFields.forEach((key, innerDocumentField) ->
-                documentFieldMap.put(key, toDocumentField(innerDocumentField)));
+            innerFields
+                .forEach((key, innerDocumentField) -> documentFieldMap.put(key, toDocumentField(innerDocumentField)));
         }
         return documentFieldMap;
     }
@@ -515,70 +501,74 @@ public class Transforms {
     }
 
     private static void setDocumentFieldValue(
-        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentField innerDocumentField, DocumentField documentField) {
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentField innerDocumentField,
+        DocumentField documentField) {
 
-        if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.STRING.equals(
-            innerDocumentField.getType())) {
+        if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.STRING
+            .equals(innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueString());
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.DATE.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.DATE
+            .equals(innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueDate());
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.TIME.equals(
-            innerDocumentField.getType())) {
-            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueTime() == null
-                ? null : LocalTime.parse(innerDocumentField.getValueTime(),
-                DateTimeFormatter.ofPattern("HH:mm:ss")));
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.PHONE_NUMBER.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.TIME
+            .equals(innerDocumentField.getType())) {
+            DocumentFieldHelper.setValue(documentField,
+                innerDocumentField.getValueTime() == null
+                    ? null
+                    : LocalTime.parse(innerDocumentField.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss")));
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.PHONE_NUMBER
+            .equals(innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValuePhoneNumber());
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER
+            .equals(innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField,
                 innerDocumentField.getValueNumber() == null
-                    ? null : Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
-            innerDocumentField.getType())) {
+                    ? null
+                    : Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER
+            .equals(innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SELECTION_MARK.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SELECTION_MARK
+            .equals(innerDocumentField.getType())) {
             if (innerDocumentField.getValueSelectionMark() == null) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 DocumentFieldHelper.setValue(documentField,
                     DocumentSelectionMarkState.fromString(innerDocumentField.getValueSelectionMark().toString()));
             }
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.COUNTRY_REGION.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.COUNTRY_REGION
+            .equals(innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueCountryRegion());
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SIGNATURE.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SIGNATURE
+            .equals(innerDocumentField.getType())) {
             if (innerDocumentField.getValueSignature() != null) {
                 DocumentFieldHelper.setValue(documentField,
                     DocumentSignatureType.fromString(innerDocumentField.getValueSignature().toString()));
             }
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ARRAY.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ARRAY
+            .equals(innerDocumentField.getType())) {
             if (CoreUtils.isNullOrEmpty(innerDocumentField.getValueArray())) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
-                DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueArray()
-                    .stream()
-                    .map(Transforms::toDocumentField)
-                    .collect(Collectors.toList()));
+                DocumentFieldHelper.setValue(documentField,
+                    innerDocumentField.getValueArray()
+                        .stream()
+                        .map(Transforms::toDocumentField)
+                        .collect(Collectors.toList()));
             }
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.OBJECT.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.OBJECT
+            .equals(innerDocumentField.getType())) {
             if (CoreUtils.isNullOrEmpty(innerDocumentField.getValueObject())) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 HashMap<String, DocumentField> documentFieldMap = new HashMap<>();
                 innerDocumentField.getValueObject()
-                    .forEach((key, innerMapDocumentField)
-                        -> documentFieldMap.put(key, toDocumentField(innerMapDocumentField)));
+                    .forEach((key, innerMapDocumentField) -> documentFieldMap.put(key,
+                        toDocumentField(innerMapDocumentField)));
                 DocumentFieldHelper.setValue(documentField, documentFieldMap);
             }
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.CURRENCY.equals(
-            innerDocumentField.getType())) {
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.CURRENCY
+            .equals(innerDocumentField.getType())) {
             if (innerDocumentField.getValueCurrency() == null) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
@@ -588,19 +578,17 @@ public class Transforms {
                     innerDocumentField.getValueCurrency().getCurrencySymbol());
                 DocumentFieldHelper.setValue(documentField, currencyValue);
             }
-        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS.equals(
-            innerDocumentField.getType())) {
-            com.azure.ai.formrecognizer.documentanalysis.implementation.models.AddressValue innerValueAddress =
-                innerDocumentField.getValueAddress();
+        } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS
+            .equals(innerDocumentField.getType())) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.AddressValue innerValueAddress
+                = innerDocumentField.getValueAddress();
             if (innerValueAddress == null) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 AddressValue addressValue = new AddressValue();
                 AddressValueHelper.setCity(addressValue, innerValueAddress.getCity());
-                AddressValueHelper.setStreetAddress(addressValue,
-                    innerValueAddress.getStreetAddress());
-                AddressValueHelper.setCountryRegion(addressValue,
-                    innerValueAddress.getCountryRegion());
+                AddressValueHelper.setStreetAddress(addressValue, innerValueAddress.getStreetAddress());
+                AddressValueHelper.setCountryRegion(addressValue, innerValueAddress.getCountryRegion());
                 AddressValueHelper.setHouseNumber(addressValue, innerValueAddress.getHouseNumber());
                 AddressValueHelper.setRoad(addressValue, innerValueAddress.getRoad());
                 AddressValueHelper.setPoBox(addressValue, innerValueAddress.getPoBox());
@@ -620,10 +608,7 @@ public class Transforms {
     private static List<DocumentSpan> toDocumentSpans(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSpan> innerDocumentSpans) {
         if (!CoreUtils.isNullOrEmpty(innerDocumentSpans)) {
-            return innerDocumentSpans
-                .stream()
-                .map(Transforms::getDocumentSpan)
-                .collect(Collectors.toList());
+            return innerDocumentSpans.stream().map(Transforms::getDocumentSpan).collect(Collectors.toList());
         } else {
             return null;
         }
@@ -640,15 +625,13 @@ public class Transforms {
     private static List<BoundingRegion> toBoundingRegions(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.BoundingRegion> innerBoundingRegions) {
         if (!CoreUtils.isNullOrEmpty(innerBoundingRegions)) {
-            return innerBoundingRegions
-                .stream()
-                .map(innerBoundingRegion -> {
-                    BoundingRegion boundingRegion = new BoundingRegion();
-                    BoundingRegionHelper.setBoundingPolygon(boundingRegion, toPolygonPoints(innerBoundingRegion.getPolygon()));
-                    BoundingRegionHelper.setPageNumber(boundingRegion, innerBoundingRegion.getPageNumber());
-                    return boundingRegion;
-                })
-                .collect(Collectors.toList());
+            return innerBoundingRegions.stream().map(innerBoundingRegion -> {
+                BoundingRegion boundingRegion = new BoundingRegion();
+                BoundingRegionHelper.setBoundingPolygon(boundingRegion,
+                    toPolygonPoints(innerBoundingRegion.getPolygon()));
+                BoundingRegionHelper.setPageNumber(boundingRegion, innerBoundingRegion.getPageNumber());
+                return boundingRegion;
+            }).collect(Collectors.toList());
         } else {
             return null;
         }
@@ -670,45 +653,48 @@ public class Transforms {
 
     public static List<DocumentModelSummary> toDocumentModelInfo(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> modelSummaryList) {
-        return modelSummaryList
-            .stream()
-            .map(modelSummary -> {
-                DocumentModelSummary documentModelSummary = new DocumentModelSummary();
-                DocumentModelSummaryHelper.setModelId(documentModelSummary, modelSummary.getModelId());
-                DocumentModelSummaryHelper.setDescription(documentModelSummary, modelSummary.getDescription());
-                DocumentModelSummaryHelper.setCreatedOn(documentModelSummary, modelSummary.getCreatedDateTime());
-                DocumentModelSummaryHelper.setTags(documentModelSummary, modelSummary.getTags());
-                DocumentModelSummaryHelper.setExpiresOn(documentModelSummary, modelSummary.getExpirationDateTime());
-                DocumentModelSummaryHelper.setServiceVersion(documentModelSummary,
-                    modelSummary.getApiVersion());
-                return documentModelSummary;
-            }).collect(Collectors.toList());
+        return modelSummaryList.stream().map(modelSummary -> {
+            DocumentModelSummary documentModelSummary = new DocumentModelSummary();
+            DocumentModelSummaryHelper.setModelId(documentModelSummary, modelSummary.getModelId());
+            DocumentModelSummaryHelper.setDescription(documentModelSummary, modelSummary.getDescription());
+            DocumentModelSummaryHelper.setCreatedOn(documentModelSummary, modelSummary.getCreatedDateTime());
+            DocumentModelSummaryHelper.setTags(documentModelSummary, modelSummary.getTags());
+            DocumentModelSummaryHelper.setExpiresOn(documentModelSummary, modelSummary.getExpirationDateTime());
+            DocumentModelSummaryHelper.setServiceVersion(documentModelSummary, modelSummary.getApiVersion());
+            return documentModelSummary;
+        }).collect(Collectors.toList());
     }
 
-    public static OperationDetails toOperationDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails innerOperationDetails) {
+    public static OperationDetails toOperationDetails(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails innerOperationDetails) {
         OperationDetails operationDetails = null;
         if (innerOperationDetails != null) {
             if (innerOperationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) {
                 DocumentModelBuildOperationDetails buildOperationDetails = new DocumentModelBuildOperationDetails();
-                DocumentModelBuildOperationDetailsHelper.setResult(buildOperationDetails,
-                    toDocumentModelDetails(((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) innerOperationDetails).getResult()));
+                DocumentModelBuildOperationDetailsHelper.setResult(buildOperationDetails, toDocumentModelDetails(
+                    ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) innerOperationDetails)
+                        .getResult()));
                 operationDetails = buildOperationDetails;
             } else if (innerOperationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) {
-                DocumentModelComposeOperationDetails composeOperationDetails = new DocumentModelComposeOperationDetails();
-                DocumentModelComposeOperationDetailsHelper.setResult(composeOperationDetails,
-                    toDocumentModelDetails(((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) innerOperationDetails).getResult()));
+                DocumentModelComposeOperationDetails composeOperationDetails
+                    = new DocumentModelComposeOperationDetails();
+                DocumentModelComposeOperationDetailsHelper.setResult(composeOperationDetails, toDocumentModelDetails(
+                    ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) innerOperationDetails)
+                        .getResult()));
                 operationDetails = composeOperationDetails;
             } else if (innerOperationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) {
                 DocumentModelCopyToOperationDetails copyToOperationDetails = new DocumentModelCopyToOperationDetails();
-                DocumentModelCopyToOperationDetailsHelper.setResult(copyToOperationDetails,
-                    toDocumentModelDetails(((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) innerOperationDetails).getResult()));
+                DocumentModelCopyToOperationDetailsHelper.setResult(copyToOperationDetails, toDocumentModelDetails(
+                    ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) innerOperationDetails)
+                        .getResult()));
                 operationDetails = copyToOperationDetails;
             }
             OperationDetailsHelper.setOperationId(operationDetails, innerOperationDetails.getOperationId());
             OperationDetailsHelper.setCreatedOn(operationDetails, innerOperationDetails.getCreatedDateTime());
             OperationDetailsHelper.setLastUpdatedOn(operationDetails, innerOperationDetails.getLastUpdatedDateTime());
             OperationDetailsHelper.setPercentCompleted(operationDetails,
-                innerOperationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
+                innerOperationDetails.getPercentCompleted() == null
+                    ? Integer.valueOf(0)
                     : innerOperationDetails.getPercentCompleted());
             OperationDetailsHelper.setStatus(operationDetails,
                 OperationStatus.fromString(innerOperationDetails.getStatus().toString()));
@@ -720,111 +706,115 @@ public class Transforms {
         return operationDetails;
     }
 
-    public static List<OperationSummary> toOperationSummary(List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> operationSummary) {
-        return operationSummary
-            .stream()
-            .map(operationSummaryItem -> {
-                OperationSummary documentModelOperationSummary = new OperationSummary();
-                OperationSummaryHelper.setOperationId(documentModelOperationSummary, operationSummaryItem.getOperationId());
-                OperationSummaryHelper.setCreatedOn(documentModelOperationSummary, operationSummaryItem.getCreatedDateTime());
-                OperationSummaryHelper.setKind(documentModelOperationSummary, operationSummaryItem.getKind() == null
-                    ? null : OperationKind.fromString(operationSummaryItem.getKind().toString()));
-                OperationSummaryHelper.setLastUpdatedOn(documentModelOperationSummary, operationSummaryItem.getLastUpdatedDateTime());
-                OperationSummaryHelper.setPercentCompleted(documentModelOperationSummary,
-                    operationSummaryItem.getPercentCompleted() == null ? Integer.valueOf(0)
-                        : operationSummaryItem.getPercentCompleted());
-                OperationSummaryHelper.setStatus(documentModelOperationSummary, operationSummaryItem.getStatus() == null
-                    ? null : OperationStatus.fromString(operationSummaryItem.getStatus().toString()));
-                OperationSummaryHelper.setResourceLocation(documentModelOperationSummary, operationSummaryItem.getResourceLocation());
-                OperationSummaryHelper.setTags(documentModelOperationSummary, operationSummaryItem.getTags());
-                return documentModelOperationSummary;
-            }).collect(Collectors.toList());
+    public static List<OperationSummary> toOperationSummary(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> operationSummary) {
+        return operationSummary.stream().map(operationSummaryItem -> {
+            OperationSummary documentModelOperationSummary = new OperationSummary();
+            OperationSummaryHelper.setOperationId(documentModelOperationSummary, operationSummaryItem.getOperationId());
+            OperationSummaryHelper.setCreatedOn(documentModelOperationSummary,
+                operationSummaryItem.getCreatedDateTime());
+            OperationSummaryHelper.setKind(documentModelOperationSummary,
+                operationSummaryItem.getKind() == null
+                    ? null
+                    : OperationKind.fromString(operationSummaryItem.getKind().toString()));
+            OperationSummaryHelper.setLastUpdatedOn(documentModelOperationSummary,
+                operationSummaryItem.getLastUpdatedDateTime());
+            OperationSummaryHelper.setPercentCompleted(documentModelOperationSummary,
+                operationSummaryItem.getPercentCompleted() == null
+                    ? Integer.valueOf(0)
+                    : operationSummaryItem.getPercentCompleted());
+            OperationSummaryHelper.setStatus(documentModelOperationSummary,
+                operationSummaryItem.getStatus() == null
+                    ? null
+                    : OperationStatus.fromString(operationSummaryItem.getStatus().toString()));
+            OperationSummaryHelper.setResourceLocation(documentModelOperationSummary,
+                operationSummaryItem.getResourceLocation());
+            OperationSummaryHelper.setTags(documentModelOperationSummary, operationSummaryItem.getTags());
+            return documentModelOperationSummary;
+        }).collect(Collectors.toList());
     }
 
-    public static OperationResult toDocumentOperationResult(
-        String operationLocation) {
+    public static OperationResult toDocumentOperationResult(String operationLocation) {
         OperationResult operationResult = new OperationResult();
-        OperationResultHelper.setResultId(
-            operationResult,
-            Utility.parseResultId(operationLocation));
+        OperationResultHelper.setResultId(operationResult, Utility.parseResultId(operationLocation));
 
         return operationResult;
     }
 
     public static AuthorizeCopyRequest getAuthorizeCopyRequest(CopyAuthorizationOptions copyAuthorizationOptions,
-                                                               String modelId) {
-        return new AuthorizeCopyRequest(modelId)
-            .setDescription(copyAuthorizationOptions.getDescription())
+        String modelId) {
+        return new AuthorizeCopyRequest(modelId).setDescription(copyAuthorizationOptions.getDescription())
             .setTags(copyAuthorizationOptions.getTags());
     }
 
     public static ComposeDocumentModelRequest getComposeDocumentModelRequest(List<String> componentModelIds,
-                                                                             ComposeDocumentModelOptions composeDocumentModelOptions,
-                                                                             String modelId) {
-        return new ComposeDocumentModelRequest(modelId, componentModelIds.stream()
-            .map(ComponentDocumentModelDetails::new)
-            .collect(Collectors.toList()))
-            .setDescription(composeDocumentModelOptions.getDescription())
-            .setTags(composeDocumentModelOptions.getTags());
+        ComposeDocumentModelOptions composeDocumentModelOptions, String modelId) {
+        return new ComposeDocumentModelRequest(modelId,
+            componentModelIds.stream().map(ComponentDocumentModelDetails::new).collect(Collectors.toList()))
+                .setDescription(composeDocumentModelOptions.getDescription())
+                .setTags(composeDocumentModelOptions.getTags());
     }
 
     public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
-        return new CopyAuthorization(target.getTargetResourceId(),
-        target.getTargetResourceRegion(),
-        target.getTargetModelId(),
-        target.getTargetModelLocation(),
-        target.getAccessToken(),
-        target.getExpiresOn());
+        return new CopyAuthorization(target.getTargetResourceId(), target.getTargetResourceRegion(),
+            target.getTargetModelId(), target.getTargetModelLocation(), target.getAccessToken(), target.getExpiresOn());
     }
 
-    private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
+    private static ResponseError
+        toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
         if (error == null) {
             return null;
         }
-        com.azure.ai.formrecognizer.documentanalysis.implementation.models.InnerError innerError = error.getInnererror();
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.InnerError innerError
+            = error.getInnererror();
         String message = error.getMessage();
         StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
 
         if (innerError != null) {
             errorInformationStringBuilder.append(", " + "errorCode" + ": [")
-                .append(innerError.getCode()).append("], ").append("message")
-                .append(": ").append(innerError.getMessage());
+                .append(innerError.getCode())
+                .append("], ")
+                .append("message")
+                .append(": ")
+                .append(innerError.getMessage());
         }
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
     }
 
     private static List<DocumentWord> toDocumentWords(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentPage innerDocumentPage) {
-        return innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
-            .stream()
-            .map(innerDocumentWord -> {
+        return innerDocumentPage.getWords() == null
+            ? null
+            : innerDocumentPage.getWords().stream().map(innerDocumentWord -> {
                 DocumentWord documentWord = new DocumentWord();
-                DocumentWordHelper.setBoundingPolygon(documentWord,
-                    toPolygonPoints(innerDocumentWord.getPolygon()));
+                DocumentWordHelper.setBoundingPolygon(documentWord, toPolygonPoints(innerDocumentWord.getPolygon()));
                 DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
                 DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
                 DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
                 return documentWord;
-            })
-            .collect(Collectors.toList());
+            }).collect(Collectors.toList());
     }
 
-    public static Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> toInnerDocTypes(Map<String, ClassifierDocumentTypeDetails> tags) {
+    public static
         Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails>
-            innerTags = new HashMap<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails>();
+        toInnerDocTypes(Map<String, ClassifierDocumentTypeDetails> tags) {
+        Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> innerTags
+            = new HashMap<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails>();
         tags.forEach((key, classifierDocumentTypeDetails) -> {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
                 = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
             if (classifierDocumentTypeDetails.getContentSource() instanceof BlobFileListContentSource) {
                 innerClassifyDocTypeDetails.setAzureBlobFileListSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
-                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl(),
+                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
+                            .getContainerUrl(),
                         ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getFileList()));
             } else {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
                         ((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl())
-                        .setPrefix(((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getPrefix()));
+                            .setPrefix(
+                                ((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getPrefix()));
             }
             innerTags.put(key, innerClassifyDocTypeDetails);
         });
@@ -834,15 +824,15 @@ public class Transforms {
     public static List<DocumentClassifierDetails> fromInnerCDocumentClassifierDetails(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails> details) {
         List<DocumentClassifierDetails> converted = new ArrayList<>(details.size());
-        for (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails detail
-            : details) {
+        for (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails detail : details) {
             converted.add(fromInnerDocumentClassifierDetails(detail));
         }
 
         return converted;
     }
 
-    public static DocumentClassifierDetails fromInnerDocumentClassifierDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails inner) {
+    public static DocumentClassifierDetails fromInnerDocumentClassifierDetails(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails inner) {
         DocumentClassifierDetails classifierDetails = new DocumentClassifierDetails();
         DocumentClassifierDetailsHelper.setClassifierId(classifierDetails, inner.getClassifierId());
         DocumentClassifierDetailsHelper.setDescription(classifierDetails, inner.getDescription());
@@ -857,7 +847,8 @@ public class Transforms {
     private static Map<String, ClassifierDocumentTypeDetails> fromInnerDocTypes(
         Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> innerDocTypes) {
         Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
-        innerDocTypes.forEach((s, classifierDocumentTypeDetails) -> documentTypeDetailsMap.put(s, fromInnerClassifierDetails(classifierDocumentTypeDetails)));
+        innerDocTypes.forEach((s, classifierDocumentTypeDetails) -> documentTypeDetailsMap.put(s,
+            fromInnerClassifierDetails(classifierDocumentTypeDetails)));
 
         return documentTypeDetailsMap;
     }
@@ -868,9 +859,8 @@ public class Transforms {
         if (innerClassifier.getAzureBlobSource() != null) {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource blobContentSource
                 = innerClassifier.getAzureBlobSource();
-            classifierDocumentTypeDetails =
-                new ClassifierDocumentTypeDetails(new BlobContentSource(blobContentSource.getContainerUrl())
-                .setPrefix(blobContentSource.getPrefix()));
+            classifierDocumentTypeDetails = new ClassifierDocumentTypeDetails(
+                new BlobContentSource(blobContentSource.getContainerUrl()).setPrefix(blobContentSource.getPrefix()));
         } else if (innerClassifier.getAzureBlobFileListSource() != null) {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource listSource
                 = innerClassifier.getAzureBlobFileListSource();
@@ -880,7 +870,8 @@ public class Transforms {
         return classifierDocumentTypeDetails;
     }
 
-    private static QuotaDetails toQuotaDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.QuotaDetails innerQuotaDetails) {
+    private static QuotaDetails toQuotaDetails(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.QuotaDetails innerQuotaDetails) {
         QuotaDetails quotaDetails = new QuotaDetails();
         QuotaDetailsHelper.setUsed(quotaDetails, innerQuotaDetails.getUsed());
         QuotaDetailsHelper.setQuotaResetDateTime(quotaDetails, innerQuotaDetails.getQuotaResetDateTime());

@@ -48,8 +48,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @param client the instance of the service client containing this operation class.
      */
     FavoritesClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FavoritesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FavoritesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,84 +60,57 @@ public final class FavoritesClientImpl implements FavoritesClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface FavoritesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<ApplicationInsightsComponentFavoriteInner>>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<List<ApplicationInsightsComponentFavoriteInner>>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
             @QueryParam("favoriteType") FavoriteType favoriteType,
             @QueryParam("sourceType") FavoriteSourceType sourceType,
-            @QueryParam("canFetchContent") Boolean canFetchContent,
-            @QueryParam("tags") String tags,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("canFetchContent") Boolean canFetchContent, @QueryParam("tags") String tags,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentFavoriteInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("favoriteId") String favoriteId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInsightsComponentFavoriteInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("favoriteId") String favoriteId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentFavoriteInner>> add(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<ApplicationInsightsComponentFavoriteInner>> add(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
             @PathParam("favoriteId") String favoriteId,
             @BodyParam("application/json") ApplicationInsightsComponentFavoriteInner favoriteProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentFavoriteInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<ApplicationInsightsComponentFavoriteInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
             @PathParam("favoriteId") String favoriteId,
             @BodyParam("application/json") ApplicationInsightsComponentFavoriteInner favoriteProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/favorites/{favoriteId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("favoriteId") String favoriteId,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("favoriteId") String favoriteId, Context context);
     }
 
     /**
@@ -159,56 +132,34 @@ public final class FavoritesClientImpl implements FavoritesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentFavoriteInner>>> listWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        FavoriteType favoriteType,
-        FavoriteSourceType sourceType,
-        Boolean canFetchContent,
-        List<String> tags) {
+        String resourceGroupName, String resourceName, FavoriteType favoriteType, FavoriteSourceType sourceType,
+        Boolean canFetchContent, List<String> tags) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
-        String tagsConverted =
-            (tags == null)
-                ? null
-                : tags
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String tagsConverted = (tags == null)
+            ? null
+            : tags.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            favoriteType,
-                            sourceType,
-                            canFetchContent,
-                            tagsConverted,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, favoriteType, sourceType, canFetchContent, tagsConverted,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -232,55 +183,33 @@ public final class FavoritesClientImpl implements FavoritesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentFavoriteInner>>> listWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        FavoriteType favoriteType,
-        FavoriteSourceType sourceType,
-        Boolean canFetchContent,
-        List<String> tags,
-        Context context) {
+        String resourceGroupName, String resourceName, FavoriteType favoriteType, FavoriteSourceType sourceType,
+        Boolean canFetchContent, List<String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
-        String tagsConverted =
-            (tags == null)
-                ? null
-                : tags
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String tagsConverted = (tags == null)
+            ? null
+            : tags.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                favoriteType,
-                sourceType,
-                canFetchContent,
-                tagsConverted,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, favoriteType, sourceType, canFetchContent, tagsConverted, accept, context);
     }
 
     /**
@@ -295,8 +224,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ApplicationInsightsComponentFavoriteInner>> listAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<List<ApplicationInsightsComponentFavoriteInner>> listAsync(String resourceGroupName,
+        String resourceName) {
         final FavoriteType favoriteType = null;
         final FavoriteSourceType sourceType = null;
         final Boolean canFetchContent = null;
@@ -323,17 +252,11 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return a list of favorites defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<ApplicationInsightsComponentFavoriteInner>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        FavoriteType favoriteType,
-        FavoriteSourceType sourceType,
-        Boolean canFetchContent,
-        List<String> tags,
-        Context context) {
-        return listWithResponseAsync(
-                resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags, context)
-            .block();
+    public Response<List<ApplicationInsightsComponentFavoriteInner>> listWithResponse(String resourceGroupName,
+        String resourceName, FavoriteType favoriteType, FavoriteSourceType sourceType, Boolean canFetchContent,
+        List<String> tags, Context context) {
+        return listWithResponseAsync(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags,
+            context).block();
     }
 
     /**
@@ -352,9 +275,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final FavoriteSourceType sourceType = null;
         final Boolean canFetchContent = null;
         final List<String> tags = null;
-        return listWithResponse(
-                resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags, Context.NONE)
-            .getValue();
+        return listWithResponse(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags,
+            Context.NONE).getValue();
     }
 
     /**
@@ -370,23 +292,19 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String favoriteId) {
+    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String favoriteId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -397,18 +315,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            favoriteId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, favoriteId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -426,23 +334,19 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String favoriteId, Context context) {
+    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String favoriteId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -453,16 +357,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                favoriteId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, favoriteId, accept, context);
     }
 
     /**
@@ -478,8 +374,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentFavoriteInner> getAsync(
-        String resourceGroupName, String resourceName, String favoriteId) {
+    private Mono<ApplicationInsightsComponentFavoriteInner> getAsync(String resourceGroupName, String resourceName,
+        String favoriteId) {
         return getWithResponseAsync(resourceGroupName, resourceName, favoriteId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -498,8 +394,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentFavoriteInner> getWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context) {
+    public Response<ApplicationInsightsComponentFavoriteInner> getWithResponse(String resourceGroupName,
+        String resourceName, String favoriteId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, favoriteId, context).block();
     }
 
@@ -515,8 +411,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return a single favorite by its FavoriteId, defined within an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentFavoriteInner get(
-        String resourceGroupName, String resourceName, String favoriteId) {
+    public ApplicationInsightsComponentFavoriteInner get(String resourceGroupName, String resourceName,
+        String favoriteId) {
         return getWithResponse(resourceGroupName, resourceName, favoriteId, Context.NONE).getValue();
     }
 
@@ -535,26 +431,19 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> addWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> addWithResponseAsync(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -571,19 +460,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .add(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            favoriteId,
-                            favoriteProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.add(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, favoriteId, favoriteProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -603,27 +481,20 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> addWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
+    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> addWithResponseAsync(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -640,17 +511,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .add(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                favoriteId,
-                favoriteProperties,
-                accept,
-                context);
+        return service.add(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, favoriteId, favoriteProperties, accept, context);
     }
 
     /**
@@ -668,11 +530,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentFavoriteInner> addAsync(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    private Mono<ApplicationInsightsComponentFavoriteInner> addAsync(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return addWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -693,11 +552,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentFavoriteInner> addWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
+    public Response<ApplicationInsightsComponentFavoriteInner> addWithResponse(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties,
         Context context) {
         return addWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties, context).block();
     }
@@ -716,11 +572,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return properties that define a favorite that is associated to an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentFavoriteInner add(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    public ApplicationInsightsComponentFavoriteInner add(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return addWithResponse(resourceGroupName, resourceName, favoriteId, favoriteProperties, Context.NONE)
             .getValue();
     }
@@ -739,26 +592,19 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -775,19 +621,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            favoriteId,
-                            favoriteProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, favoriteId, favoriteProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -806,27 +641,20 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
+    private Mono<Response<ApplicationInsightsComponentFavoriteInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -843,17 +671,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                favoriteId,
-                favoriteProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, favoriteId, favoriteProperties, accept, context);
     }
 
     /**
@@ -870,11 +689,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentFavoriteInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    private Mono<ApplicationInsightsComponentFavoriteInner> updateAsync(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -894,11 +710,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentFavoriteInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
+    public Response<ApplicationInsightsComponentFavoriteInner> updateWithResponse(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties, context)
             .block();
@@ -917,11 +730,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return properties that define a favorite that is associated to an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentFavoriteInner update(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties) {
+    public ApplicationInsightsComponentFavoriteInner update(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return updateWithResponse(resourceGroupName, resourceName, favoriteId, favoriteProperties, Context.NONE)
             .getValue();
     }
@@ -938,23 +748,19 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String favoriteId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String favoriteId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -964,17 +770,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         }
         final String apiVersion = "2015-05-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            favoriteId,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, favoriteId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -991,23 +788,19 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String favoriteId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String favoriteId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1017,15 +810,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
         }
         final String apiVersion = "2015-05-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                favoriteId,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, favoriteId, context);
     }
 
     /**
@@ -1057,8 +843,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String favoriteId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, favoriteId, context).block();
     }
 

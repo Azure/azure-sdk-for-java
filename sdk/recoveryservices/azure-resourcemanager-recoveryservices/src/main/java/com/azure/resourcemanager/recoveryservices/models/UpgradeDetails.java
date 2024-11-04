@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Details for upgrading vault. */
+/**
+ * Details for upgrading vault.
+ */
 @Immutable
 public final class UpgradeDetails {
     /*
@@ -65,13 +67,15 @@ public final class UpgradeDetails {
     @JsonProperty(value = "previousResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String previousResourceId;
 
-    /** Creates an instance of UpgradeDetails class. */
+    /**
+     * Creates an instance of UpgradeDetails class.
+     */
     public UpgradeDetails() {
     }
 
     /**
      * Get the operationId property: ID of the vault upgrade operation.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -80,7 +84,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the startTimeUtc property: UTC time at which the upgrade operation has started.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -89,7 +93,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the lastUpdatedTimeUtc property: UTC time at which the upgrade operation status was last updated.
-     *
+     * 
      * @return the lastUpdatedTimeUtc value.
      */
     public OffsetDateTime lastUpdatedTimeUtc() {
@@ -98,7 +102,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the endTimeUtc property: UTC time at which the upgrade operation has ended.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -107,7 +111,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the status property: Status of the vault upgrade operation.
-     *
+     * 
      * @return the status value.
      */
     public VaultUpgradeState status() {
@@ -116,7 +120,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the message property: Message to the user containing information about the upgrade operation.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -125,7 +129,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the triggerType property: The way the vault upgrade was triggered.
-     *
+     * 
      * @return the triggerType value.
      */
     public TriggerType triggerType() {
@@ -134,7 +138,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the upgradedResourceId property: Resource ID of the upgraded vault.
-     *
+     * 
      * @return the upgradedResourceId value.
      */
     public String upgradedResourceId() {
@@ -143,7 +147,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the previousResourceId property: Resource ID of the vault before the upgrade.
-     *
+     * 
      * @return the previousResourceId value.
      */
     public String previousResourceId() {
@@ -152,7 +156,7 @@ public final class UpgradeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,7 @@ import java.time.Duration;
 /**
  * Class helps thread sleep in tests.
  */
-public class TestDelayProvider implements DelayProvider {
+public final class TestDelayProvider implements DelayProvider {
 
     private final boolean isLiveMode;
 

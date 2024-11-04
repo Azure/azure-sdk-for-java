@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for Table Get. */
+/**
+ * Samples for Table Get.
+ */
 public final class TableGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationGet.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/TableOperationGet.json
      */
     /**
      * Sample code: TableOperationGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tableOperationGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getTables()

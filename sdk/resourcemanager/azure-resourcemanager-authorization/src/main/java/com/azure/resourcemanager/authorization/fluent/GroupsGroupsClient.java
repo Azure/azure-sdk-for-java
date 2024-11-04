@@ -19,11 +19,13 @@ import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroup
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GroupsGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GroupsGroupsClient.
+ */
 public interface GroupsGroupsClient {
     /**
      * Get entities from groups.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -35,27 +37,20 @@ public interface GroupsGroupsClient {
      * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphGroupInner> listGroupAsync(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<Get6ItemsItem> orderby,
-        List<Get7ItemsItem> select,
+    PagedFlux<MicrosoftGraphGroupInner> listGroupAsync(String consistencyLevel, Integer top, Integer skip,
+        String search, String filter, Boolean count, List<Get6ItemsItem> orderby, List<Get7ItemsItem> select,
         List<Get8ItemsItem> expand);
 
     /**
      * Get entities from groups.
-     *
+     * 
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from groups as paginated response with {@link PagedFlux}.
      */
@@ -64,9 +59,9 @@ public interface GroupsGroupsClient {
 
     /**
      * Get entities from groups.
-     *
+     * 
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from groups as paginated response with {@link PagedIterable}.
      */
@@ -75,7 +70,7 @@ public interface GroupsGroupsClient {
 
     /**
      * Get entities from groups.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -88,30 +83,22 @@ public interface GroupsGroupsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphGroupInner> listGroup(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<Get6ItemsItem> orderby,
-        List<Get7ItemsItem> select,
-        List<Get8ItemsItem> expand,
-        Context context);
+    PagedIterable<MicrosoftGraphGroupInner> listGroup(String consistencyLevel, Integer top, Integer skip, String search,
+        String filter, Boolean count, List<Get6ItemsItem> orderby, List<Get7ItemsItem> select,
+        List<Get8ItemsItem> expand, Context context);
 
     /**
      * Add new entity to groups.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -120,11 +107,11 @@ public interface GroupsGroupsClient {
 
     /**
      * Add new entity to groups.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group on successful completion of {@link Mono}.
      */
@@ -133,12 +120,12 @@ public interface GroupsGroupsClient {
 
     /**
      * Add new entity to groups.
-     *
+     * 
      * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group along with {@link Response}.
      */
@@ -147,11 +134,11 @@ public interface GroupsGroupsClient {
 
     /**
      * Add new entity to groups.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group.
      */
@@ -160,28 +147,28 @@ public interface GroupsGroupsClient {
 
     /**
      * Get entity from groups by key.
-     *
+     * 
      * @param groupId key: id of group.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
      * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from groups by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphGroupInner>> getGroupWithResponseAsync(
-        String groupId, String consistencyLevel, List<Get2ItemsItem> select, List<Get3ItemsItem> expand);
+    Mono<Response<MicrosoftGraphGroupInner>> getGroupWithResponseAsync(String groupId, String consistencyLevel,
+        List<Get2ItemsItem> select, List<Get3ItemsItem> expand);
 
     /**
      * Get entity from groups by key.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from groups by key on successful completion of {@link Mono}.
      */
@@ -190,7 +177,7 @@ public interface GroupsGroupsClient {
 
     /**
      * Get entity from groups by key.
-     *
+     * 
      * @param groupId key: id of group.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
@@ -198,25 +185,21 @@ public interface GroupsGroupsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from groups by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphGroupInner> getGroupWithResponse(
-        String groupId,
-        String consistencyLevel,
-        List<Get2ItemsItem> select,
-        List<Get3ItemsItem> expand,
-        Context context);
+    Response<MicrosoftGraphGroupInner> getGroupWithResponse(String groupId, String consistencyLevel,
+        List<Get2ItemsItem> select, List<Get3ItemsItem> expand, Context context);
 
     /**
      * Get entity from groups by key.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from groups by key.
      */
@@ -225,12 +208,12 @@ public interface GroupsGroupsClient {
 
     /**
      * Update entity in groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -239,12 +222,12 @@ public interface GroupsGroupsClient {
 
     /**
      * Update entity in groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -253,13 +236,13 @@ public interface GroupsGroupsClient {
 
     /**
      * Update entity in groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New property values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -268,12 +251,12 @@ public interface GroupsGroupsClient {
 
     /**
      * Update entity in groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -281,12 +264,12 @@ public interface GroupsGroupsClient {
 
     /**
      * Delete entity from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -295,11 +278,11 @@ public interface GroupsGroupsClient {
 
     /**
      * Delete entity from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -308,13 +291,13 @@ public interface GroupsGroupsClient {
 
     /**
      * Delete entity from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param ifMatch ETag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -323,11 +306,11 @@ public interface GroupsGroupsClient {
 
     /**
      * Delete entity from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

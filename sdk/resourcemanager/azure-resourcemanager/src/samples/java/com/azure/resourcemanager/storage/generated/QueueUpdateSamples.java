@@ -6,23 +6,25 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.fluent.models.StorageQueueInner;
 
-/** Samples for Queue Update. */
+/**
+ * Samples for Queue Update.
+ */
 public final class QueueUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/QueueOperationPatch.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/QueueOperationPatch.json
      */
     /**
      * Sample code: QueueOperationPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void queueOperationPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getQueues()
-            .updateWithResponse(
-                "res3376", "sto328", "queue6185", new StorageQueueInner(), com.azure.core.util.Context.NONE);
+            .updateWithResponse("res3376", "sto328", "queue6185", new StorageQueueInner(),
+                com.azure.core.util.Context.NONE);
     }
 }

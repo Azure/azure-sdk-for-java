@@ -17,7 +17,7 @@ public final class FleetPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetPatch model = BinaryData.fromString(
-            "{\"tags\":{\"lmmnkzsmodmglo\":\"ciqfou\",\"uqktap\":\"gpbkwtmut\",\"kdosvqw\":\"pwgcuertu\"},\"identity\":{\"principalId\":\"e4f1f309-089c-46fb-ac3b-3c01aa0c8746\",\"tenantId\":\"bcd67f66-2101-4fbc-a8dc-b6e81b82765a\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"ddgmb\":{\"principalId\":\"3ee58557-bfda-4329-b201-eaf0e5f5b581\",\"clientId\":\"64553cbb-762f-4378-a77b-5b92a57dea0d\"}}}}")
+            "{\"tags\":{\"lmmnkzsmodmglo\":\"ciqfou\",\"uqktap\":\"gpbkwtmut\",\"kdosvqw\":\"pwgcuertu\"},\"identity\":{\"principalId\":\"b72393e3-ca16-48ad-98e2-41ffac14035d\",\"tenantId\":\"9114159d-6552-492d-923b-36324e429dbf\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"ddgmb\":{\"principalId\":\"952e663c-b45b-4c31-89dd-6881ea650c5d\",\"clientId\":\"55be8e48-df08-4c0a-9219-c3fcd42a2282\"}}}}")
             .toObject(FleetPatch.class);
         Assertions.assertEquals("ciqfou", model.tags().get("lmmnkzsmodmglo"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
@@ -26,7 +26,8 @@ public final class FleetPatchTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetPatch model = new FleetPatch()
-            .withTags(mapOf("lmmnkzsmodmglo", "ciqfou", "uqktap", "gpbkwtmut", "kdosvqw", "pwgcuertu")).withIdentity(
+            .withTags(mapOf("lmmnkzsmodmglo", "ciqfou", "uqktap", "gpbkwtmut", "kdosvqw", "pwgcuertu"))
+            .withIdentity(
                 new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf("ddgmb", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(FleetPatch.class);

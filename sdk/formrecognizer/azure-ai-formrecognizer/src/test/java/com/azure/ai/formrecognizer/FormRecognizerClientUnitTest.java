@@ -6,10 +6,12 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 
@@ -36,8 +38,8 @@ public class FormRecognizerClientUnitTest {
 
     @BeforeAll
     protected static void beforeTest() {
-        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
-            .endpoint(VALID_HTTPS_LOCALHOST)
+        FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder().endpoint(VALID_HTTPS_LOCALHOST)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .credential(new AzureKeyCredential("fakeKey"));
 
         client = builder.buildClient();
@@ -86,12 +88,10 @@ public class FormRecognizerClientUnitTest {
     @Test
     public void recognizeCustomFormLabeledDataWithEmptyModelId() {
         Exception ex = assertThrows(RuntimeException.class,
-            () -> asyncClient.beginRecognizeCustomForms(
-                    "",
-                    BinaryData.fromBytes(INPUT_STRING.getBytes()).toFluxByteBuffer(),
+            () -> asyncClient
+                .beginRecognizeCustomForms("", BinaryData.fromBytes(INPUT_STRING.getBytes()).toFluxByteBuffer(),
                     INPUT_STRING.length(),
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.APPLICATION_PDF)
+                    new RecognizeCustomFormsOptions().setContentType(FormContentType.APPLICATION_PDF)
                         .setFieldElementsIncluded(true))
                 .setPollInterval(ONE_NANO_DURATION)
                 .getSyncPoller());
@@ -105,12 +105,10 @@ public class FormRecognizerClientUnitTest {
     public void recognizeCustomFormLabeledDataWithNullModelId() {
         String inputString = "Hello World!";
         Exception ex = assertThrows(RuntimeException.class,
-            () -> asyncClient.beginRecognizeCustomForms(
-                    null,
-                    BinaryData.fromBytes(inputString.getBytes()).toFluxByteBuffer(),
+            () -> asyncClient
+                .beginRecognizeCustomForms(null, BinaryData.fromBytes(inputString.getBytes()).toFluxByteBuffer(),
                     inputString.length(),
-                    new RecognizeCustomFormsOptions()
-                        .setContentType(FormContentType.APPLICATION_PDF)
+                    new RecognizeCustomFormsOptions().setContentType(FormContentType.APPLICATION_PDF)
                         .setFieldElementsIncluded(true))
                 .setPollInterval(ONE_NANO_DURATION)
                 .getSyncPoller());
@@ -124,7 +122,8 @@ public class FormRecognizerClientUnitTest {
     public void recognizeCustomFormFromUrlLabeledDataWithNullModelId() {
         Exception ex = assertThrows(RuntimeException.class,
             () -> asyncClient.beginRecognizeCustomFormsFromUrl(null, FAKE_ENCODED_EMPTY_SPACE_URL)
-                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+                .setPollInterval(ONE_NANO_DURATION)
+                .getSyncPoller());
         assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
@@ -135,7 +134,8 @@ public class FormRecognizerClientUnitTest {
     public void recognizeCustomFormFromUrlLabeledDataWithEmptyModelId() {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> asyncClient.beginRecognizeCustomFormsFromUrl("", FAKE_ENCODED_EMPTY_SPACE_URL)
-                .setPollInterval(ONE_NANO_DURATION).getSyncPoller());
+                .setPollInterval(ONE_NANO_DURATION)
+                .getSyncPoller());
         assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
@@ -160,8 +160,7 @@ public class FormRecognizerClientUnitTest {
      */
     @Test
     public void recognizeBusinessCardDataNullDataSync() {
-        assertThrows(NullPointerException.class,
-            () -> client.beginRecognizeBusinessCards(null, 0));
+        assertThrows(NullPointerException.class, () -> client.beginRecognizeBusinessCards(null, 0));
     }
 
     /**
@@ -178,14 +177,16 @@ public class FormRecognizerClientUnitTest {
      */
     @Test
     public void recognizeCustomFormLabeledDataWithEmptyModelIdSync() {
-        Exception ex = assertThrows(RuntimeException.class,
-            () -> client.beginRecognizeCustomForms("",
-                    new ByteArrayInputStream(INPUT_STRING.getBytes()),
-                    INPUT_STRING.length(),
-                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
-                    Context.NONE)
-                .setPollInterval(ONE_NANO_DURATION));
-        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        Exception ex
+            = assertThrows(RuntimeException.class,
+                () -> client
+                    .beginRecognizeCustomForms("", new ByteArrayInputStream(INPUT_STRING.getBytes()),
+                        INPUT_STRING.length(),
+                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF)
+                            .setFieldElementsIncluded(true),
+                        Context.NONE)
+                    .setPollInterval(ONE_NANO_DURATION));
+        assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**
@@ -196,7 +197,7 @@ public class FormRecognizerClientUnitTest {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.beginRecognizeCustomFormsFromUrl("", FAKE_ENCODED_EMPTY_SPACE_URL,
                 new RecognizeCustomFormsOptions().setPollInterval(ONE_NANO_DURATION), Context.NONE));
-        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**
@@ -204,9 +205,9 @@ public class FormRecognizerClientUnitTest {
      */
     @Test
     public void recognizeCustomFormFromUrlLabeledDataWithNullModelIdSync() {
-        Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-            null, FAKE_ENCODED_EMPTY_SPACE_URL, new RecognizeCustomFormsOptions()
-                .setPollInterval(ONE_NANO_DURATION), Context.NONE));
+        Exception ex = assertThrows(RuntimeException.class,
+            () -> client.beginRecognizeCustomFormsFromUrl(null, FAKE_ENCODED_EMPTY_SPACE_URL,
+                new RecognizeCustomFormsOptions().setPollInterval(ONE_NANO_DURATION), Context.NONE));
         assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
@@ -216,10 +217,11 @@ public class FormRecognizerClientUnitTest {
     @Test
     public void clientBuilderWithInvalidEndpoint() {
         assertThrows(RuntimeException.class,
-            () -> new FormRecognizerClientBuilder()
-                .credential(new AzureKeyCredential("fakeKey"))
+            () -> new FormRecognizerClientBuilder().credential(new AzureKeyCredential("fakeKey"))
                 .endpoint(INVALID_ENDPOINT)
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
                 .buildClient()
-                .beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG).getFinalResult());
+                .beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG)
+                .getFinalResult());
     }
 }

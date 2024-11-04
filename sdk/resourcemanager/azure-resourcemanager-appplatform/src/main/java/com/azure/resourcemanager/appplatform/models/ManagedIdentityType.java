@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ManagedIdentityType extends ExpandableStringEnum<ManagedIdent
      * @param name a name to look for.
      * @return the corresponding ManagedIdentityType.
      */
-    @JsonCreator
     public static ManagedIdentityType fromString(String name) {
         return fromString(name, ManagedIdentityType.class);
     }

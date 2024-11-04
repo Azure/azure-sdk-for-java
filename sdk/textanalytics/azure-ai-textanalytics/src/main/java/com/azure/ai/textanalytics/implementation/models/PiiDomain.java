@@ -7,25 +7,32 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** The PII domain used for PII Entity Recognition. */
+/**
+ * The PII domain used for PII Entity Recognition.
+ */
 public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
-    /** Indicates that entities in the Personal Health Information domain should be redacted. */
+    /**
+     * Indicates that entities in the Personal Health Information domain should be redacted.
+     */
     public static final PiiDomain PHI = fromString("phi");
 
-    /** Indicates that no domain is specified. */
+    /**
+     * Indicates that no domain is specified.
+     */
     public static final PiiDomain NONE = fromString("none");
 
     /**
      * Creates a new instance of PiiDomain value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PiiDomain() {}
+    public PiiDomain() {
+    }
 
     /**
      * Creates or finds a PiiDomain from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PiiDomain.
      */
@@ -35,7 +42,7 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
 
     /**
      * Gets known PiiDomain values.
-     *
+     * 
      * @return known PiiDomain values.
      */
     public static Collection<PiiDomain> values() {

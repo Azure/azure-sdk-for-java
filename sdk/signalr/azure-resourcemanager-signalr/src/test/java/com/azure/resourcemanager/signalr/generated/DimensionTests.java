@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Dimension model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"alhbx\",\"displayName\":\"e\",\"internalName\":\"zzvdudgwds\",\"toBeExportedForShoebox\":true}")
-                .toObject(Dimension.class);
+        Dimension model = BinaryData.fromString(
+            "{\"name\":\"alhbx\",\"displayName\":\"e\",\"internalName\":\"zzvdudgwds\",\"toBeExportedForShoebox\":true}")
+            .toObject(Dimension.class);
         Assertions.assertEquals("alhbx", model.name());
         Assertions.assertEquals("e", model.displayName());
         Assertions.assertEquals("zzvdudgwds", model.internalName());
@@ -24,12 +22,10 @@ public final class DimensionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Dimension model =
-            new Dimension()
-                .withName("alhbx")
-                .withDisplayName("e")
-                .withInternalName("zzvdudgwds")
-                .withToBeExportedForShoebox(true);
+        Dimension model = new Dimension().withName("alhbx")
+            .withDisplayName("e")
+            .withInternalName("zzvdudgwds")
+            .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(Dimension.class);
         Assertions.assertEquals("alhbx", model.name());
         Assertions.assertEquals("e", model.displayName());

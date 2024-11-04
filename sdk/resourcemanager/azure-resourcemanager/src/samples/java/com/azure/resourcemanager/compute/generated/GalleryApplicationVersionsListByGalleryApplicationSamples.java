@@ -20,7 +20,11 @@ public final class GalleryApplicationVersionsListByGalleryApplicationSamples {
      */
     public static void listGalleryApplicationVersionsInAGalleryApplicationDefinition(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryApplicationVersions().listByGalleryApplication(
-            "myResourceGroup", "myGalleryName", "myGalleryApplicationName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryApplicationVersions()
+            .listByGalleryApplication("myResourceGroup", "myGalleryName", "myGalleryApplicationName",
+                com.azure.core.util.Context.NONE);
     }
 }

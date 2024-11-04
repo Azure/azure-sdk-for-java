@@ -12,6 +12,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -37,16 +39,17 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
@@ -108,6 +111,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private final boolean requiresEncryption;
 
+    private final BlobClientSideEncryptionOptions clientSideEncryptionOptions;
+
     EncryptionScope getEncryptionScopeInternal() {
         return encryptionScope;
     }
@@ -126,6 +131,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     boolean isRequiresEncryption() {
         return requiresEncryption;
+    }
+
+    BlobClientSideEncryptionOptions getClientSideEncryptionOptions() {
+        return clientSideEncryptionOptions;
     }
 
     /**
@@ -148,7 +157,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion, boolean requiresEncryption) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption,
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
@@ -156,6 +166,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
         this.requiresEncryption = requiresEncryption;
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
     }
 
     /**
@@ -172,7 +183,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption,
+            clientSideEncryptionOptions);
     }
 
     /**
@@ -186,14 +198,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public EncryptedBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
     boolean isEncryptionRequired() {
@@ -294,8 +305,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
-        Mono<BlockBlobItem> uploadTask = this.uploadWithResponse(data, parallelTransferOptions, null, null, null,
-            null).flatMap(FluxUtil::toMono);
+        Mono<BlockBlobItem> uploadTask
+            = this.uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
 
         if (overwrite) {
             return uploadTask;
@@ -367,9 +378,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
         try {
-            return this.uploadWithResponse(new BlobParallelUploadOptions(data)
-                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions));
+            return this.uploadWithResponse(
+                new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelTransferOptions)
+                    .setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTier(tier)
+                    .setRequestConditions(requestConditions));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -434,11 +448,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         try {
             StorageImplUtils.assertNotNull("options", options);
             // Can't use a Collections.emptyMap() because we add metadata for encryption.
-            final Map<String, String> metadataFinal = options.getMetadata() == null
-                ? new HashMap<>() : options.getMetadata();
+            final Map<String, String> metadataFinal
+                = options.getMetadata() == null ? new HashMap<>() : options.getMetadata();
 
-            final ParallelTransferOptions parallelTransferOptions =
-                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+            final ParallelTransferOptions parallelTransferOptions
+                = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
 
             Flux<ByteBuffer> data = options.getDataFlux();
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
@@ -446,8 +460,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
-                .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
-                .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
+                .setParallelTransferOptions(options.getParallelTransferOptions())
+                .setHeaders(options.getHeaders())
+                .setMetadata(metadataFinal)
+                .setTags(options.getTags())
+                .setTier(options.getTier())
                 .setRequestConditions(options.getRequestConditions())
                 .setComputeMd5(options.isComputeMd5()));
         } catch (RuntimeException ex) {
@@ -555,9 +572,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
         try {
-            return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-                    .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                    .setTier(tier).setRequestConditions(requestConditions))
+            return this.uploadFromFileWithResponse(
+                new BlobUploadFromFileOptions(filePath).setParallelTransferOptions(parallelTransferOptions)
+                    .setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTier(tier)
+                    .setRequestConditions(requestConditions))
                 .then();
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -606,16 +626,19 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             StorageImplUtils.assertNotNull("options", options);
             return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
                 channel -> this.uploadWithResponse(new BlobParallelUploadOptions(FluxUtil.readFile(channel))
-                        .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
-                        .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
-                        .setRequestConditions(options.getRequestConditions()))
-                    .doFinally(ignored -> {
+                    .setParallelTransferOptions(options.getParallelTransferOptions())
+                    .setHeaders(options.getHeaders())
+                    .setMetadata(options.getMetadata())
+                    .setTags(options.getTags())
+                    .setTier(options.getTier())
+                    .setRequestConditions(options.getRequestConditions())).doFinally(ignored -> {
                         try {
                             channel.close();
                         } catch (IOException e) {
                             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                         }
-                    }), channel -> UploadUtils.uploadFileCleanup(channel, LOGGER));
+                    }),
+                channel -> UploadUtils.uploadFileCleanup(channel, LOGGER));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -630,15 +653,16 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey());
+            Encryptor encryptor
+                = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey(), clientSideEncryptionOptions);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);
 
             byte[] keyToWrap = encryptor.getKeyToWrap();
 
-            return keyWrapper.getKeyId().flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, keyToWrap)
-                .map(encryptedKey -> {
+            return keyWrapper.getKeyId()
+                .flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, keyToWrap).map(encryptedKey -> {
                     WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
                     EncryptionData encryptionData;
@@ -672,13 +696,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param metadata The customer's metadata to be updated.
      * @return A Mono containing the cipher text
      */
-    private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
-        Map<String, String> metadata) {
+    private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText, Map<String, String> metadata) {
         return this.encryptBlob(plainText).flatMapMany(encryptedBlob -> {
-            try {
-                metadata.put(ENCRYPTION_DATA_KEY, encryptedBlob.getEncryptionData().toJsonString());
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeJson(encryptedBlob.getEncryptionData()).flush();
+                metadata.put(ENCRYPTION_DATA_KEY, outputStream.toString(StandardCharsets.UTF_8.name()));
                 return encryptedBlob.getCiphertextFlux();
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
         });
@@ -726,27 +751,30 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
         Supplier<Mono<T>> downloadCall) {
-        return this.getPropertiesWithResponse(requestConditions)
-            .flatMap(response -> {
-                BlobRequestConditions requestConditionsFinal = requestConditions == null
-                    ? new BlobRequestConditions() : requestConditions;
+        return this.getPropertiesWithResponse(requestConditions).flatMap(response -> {
+            BlobRequestConditions requestConditionsFinal
+                = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-                requestConditionsFinal.setIfMatch(response.getValue().getETag());
-                Mono<T> result = downloadCall.get();
+            requestConditionsFinal.setIfMatch(response.getValue().getETag());
+            Mono<T> result = downloadCall.get();
 
-                String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
-                if (encryptionDataKey != null) {
-                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                        EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
-                }
-                return result;
-            });
+            String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
+            if (encryptionDataKey != null) {
+                EncryptionData encryptionData
+                    = EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption);
+
+                result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY, encryptionData))
+                    .contextWrite(context -> context.put(Constants.ADJUSTED_BLOB_LENGTH_KEY, EncryptedBlobLength
+                        .computeAdjustedBlobLength(encryptionData, response.getValue().getBlobSize())));
+            }
+
+            return result;
+        });
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
-    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
-        DownloadRetryOptions options,
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         return populateRequestConditionsAndContext(requestConditions,
             () -> super.downloadContentWithResponse(options, requestConditions));
@@ -788,19 +816,21 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
-        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
+            = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
         return this.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
-                    .setParallelTransferOptions(finalParallelTransferOptions)
-                    .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
-                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions));
+            .setParallelTransferOptions(finalParallelTransferOptions)
+            .setDownloadRetryOptions(options)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(rangeGetContentMd5)
+            .setOpenOptions(openOptions));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
-        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions());
+        options.setRequestConditions(
+            options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions());
         return populateRequestConditionsAndContext(options.getRequestConditions(),
             () -> super.downloadToFileWithResponse(options));
     }
@@ -811,8 +841,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     public Flux<ByteBuffer> query(String expression) {
         // This is eagerly thrown instead of waiting for the subscription to happen.
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query data encrypted on client side"));
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Cannot query data encrypted on client side"));
     }
 
     /**
@@ -821,7 +851,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
         // This is eagerly thrown instead of waiting for the subscription to happen.
-        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query data encrypted on client side"));
+        throw LOGGER
+            .logExceptionAsError(new UnsupportedOperationException("Cannot query data encrypted on client side"));
     }
 }

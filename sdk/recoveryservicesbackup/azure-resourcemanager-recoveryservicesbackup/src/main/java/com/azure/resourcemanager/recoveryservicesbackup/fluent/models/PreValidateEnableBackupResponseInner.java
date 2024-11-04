@@ -38,8 +38,7 @@ public final class PreValidateEnableBackupResponseInner {
     private String recommendation;
 
     /*
-     * Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is
-     * required
+     * Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
      * for portal
      */
     @JsonProperty(value = "containerName")

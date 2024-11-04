@@ -6,44 +6,61 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesAdjustmentDetailsItem;
 import com.azure.resourcemanager.consumption.models.BalancePropertiesNewPurchasesDetailsItem;
 import com.azure.resourcemanager.consumption.models.BillingFrequency;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-/** A balance resource. */
+/**
+ * A balance resource.
+ */
 @Fluent
 public final class BalanceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BalanceInner.class);
-
     /*
      * The properties of the balance.
      */
-    @JsonProperty(value = "properties")
     private BalanceProperties innerProperties;
 
     /*
      * The etag for the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BalanceInner class.
+     */
+    public BalanceInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the balance.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BalanceProperties innerProperties() {
@@ -52,7 +69,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the etag property: The etag for the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -61,7 +78,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -69,8 +86,38 @@ public final class BalanceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the currency property: The ISO currency in which the meter is charged, for example, USD.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -79,7 +126,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the beginningBalance property: The beginning balance for the billing period.
-     *
+     * 
      * @return the beginningBalance value.
      */
     public BigDecimal beginningBalance() {
@@ -89,7 +136,7 @@ public final class BalanceInner extends ProxyResource {
     /**
      * Get the endingBalance property: The ending balance for the billing period (for open periods this will be updated
      * daily).
-     *
+     * 
      * @return the endingBalance value.
      */
     public BigDecimal endingBalance() {
@@ -98,7 +145,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the newPurchases property: Total new purchase amount.
-     *
+     * 
      * @return the newPurchases value.
      */
     public BigDecimal newPurchases() {
@@ -107,7 +154,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the adjustments property: Total adjustment amount.
-     *
+     * 
      * @return the adjustments value.
      */
     public BigDecimal adjustments() {
@@ -116,7 +163,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the utilized property: Total Commitment usage.
-     *
+     * 
      * @return the utilized value.
      */
     public BigDecimal utilized() {
@@ -125,7 +172,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the serviceOverage property: Overage for Azure services.
-     *
+     * 
      * @return the serviceOverage value.
      */
     public BigDecimal serviceOverage() {
@@ -134,7 +181,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the chargesBilledSeparately property: Charges Billed separately.
-     *
+     * 
      * @return the chargesBilledSeparately value.
      */
     public BigDecimal chargesBilledSeparately() {
@@ -143,7 +190,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the totalOverage property: serviceOverage + chargesBilledSeparately.
-     *
+     * 
      * @return the totalOverage value.
      */
     public BigDecimal totalOverage() {
@@ -152,7 +199,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the totalUsage property: Azure service commitment + total Overage.
-     *
+     * 
      * @return the totalUsage value.
      */
     public BigDecimal totalUsage() {
@@ -161,7 +208,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the azureMarketplaceServiceCharges property: Total charges for Azure Marketplace.
-     *
+     * 
      * @return the azureMarketplaceServiceCharges value.
      */
     public BigDecimal azureMarketplaceServiceCharges() {
@@ -170,7 +217,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the billingFrequency property: The billing frequency.
-     *
+     * 
      * @return the billingFrequency value.
      */
     public BillingFrequency billingFrequency() {
@@ -179,7 +226,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Set the billingFrequency property: The billing frequency.
-     *
+     * 
      * @param billingFrequency the billingFrequency value to set.
      * @return the BalanceInner object itself.
      */
@@ -193,7 +240,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the priceHidden property: Price is hidden or not.
-     *
+     * 
      * @return the priceHidden value.
      */
     public Boolean priceHidden() {
@@ -202,7 +249,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the newPurchasesDetails property: List of new purchases.
-     *
+     * 
      * @return the newPurchasesDetails value.
      */
     public List<BalancePropertiesNewPurchasesDetailsItem> newPurchasesDetails() {
@@ -211,7 +258,7 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Get the adjustmentDetails property: List of Adjustments (Promo credit, SIE credit etc.).
-     *
+     * 
      * @return the adjustmentDetails value.
      */
     public List<BalancePropertiesAdjustmentDetailsItem> adjustmentDetails() {
@@ -220,12 +267,60 @@ public final class BalanceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BalanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BalanceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BalanceInner.
+     */
+    public static BalanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BalanceInner deserializedBalanceInner = new BalanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBalanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBalanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBalanceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBalanceInner.innerProperties = BalanceProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBalanceInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBalanceInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBalanceInner;
+        });
     }
 }

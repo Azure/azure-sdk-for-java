@@ -10,10 +10,6 @@ module com.azure.resourcemanager.cognitiveservices {
     exports com.azure.resourcemanager.cognitiveservices.fluent.models;
     exports com.azure.resourcemanager.cognitiveservices.models;
 
-    opens com.azure.resourcemanager.cognitiveservices.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.cognitiveservices.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.cognitiveservices.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.cognitiveservices.models to com.azure.core;
 }

@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -26,7 +25,6 @@ import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.apache.commons.lang3.NotImplementedException;
@@ -65,7 +63,6 @@ public class AddressResolverTest {
     private RxCollectionCache collectionCache;
     private ICollectionRoutingMapCache collectionRoutingMapCache;
     private IAddressCache fabricAddressCache;
-
     private int collectionCacheRefreshedCount;
     private Map<String, Integer> routingMapRefreshCount;
     private Map<ServiceIdentity, Integer> addressesRefreshCount;

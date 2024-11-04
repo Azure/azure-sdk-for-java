@@ -11,19 +11,19 @@ public final class ConcurSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConcurSource model = BinaryData.fromString(
-            "{\"type\":\"hdcilinbu\",\"query\":\"datajzknkffzdyozn\",\"queryTimeout\":\"datawe\",\"additionalColumns\":\"datawxmcsxidazslwhuy\",\"sourceRetryCount\":\"datapfperheipl\",\"sourceRetryWait\":\"dataswhqrdvqva\",\"maxConcurrentConnections\":\"dataauuw\",\"disableMetricsCollection\":\"datagofumbp\",\"\":{\"omavbotaoaixi\":\"datadmfjgklm\",\"mqwut\":\"datacwyinfywtqvjno\",\"xugd\":\"datayaeyyiwraowpdm\"}}")
+            "{\"type\":\"ConcurSource\",\"query\":\"datasmgh\",\"queryTimeout\":\"datatuujcuavctxyrmws\",\"additionalColumns\":\"datazmy\",\"sourceRetryCount\":\"datan\",\"sourceRetryWait\":\"dataajxv\",\"maxConcurrentConnections\":\"dataidlwmewrgu\",\"disableMetricsCollection\":\"dataugpkunvygupgnnvm\",\"\":{\"ekmsn\":\"dataqmxww\",\"jypxcqmdeecdh\":\"datafjbefszfrxfy\",\"mykgrtwh\":\"datajsizyhp\"}}")
             .toObject(ConcurSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConcurSource model = new ConcurSource().withSourceRetryCount("datapfperheipl")
-            .withSourceRetryWait("dataswhqrdvqva")
-            .withMaxConcurrentConnections("dataauuw")
-            .withDisableMetricsCollection("datagofumbp")
-            .withQueryTimeout("datawe")
-            .withAdditionalColumns("datawxmcsxidazslwhuy")
-            .withQuery("datajzknkffzdyozn");
+        ConcurSource model = new ConcurSource().withSourceRetryCount("datan")
+            .withSourceRetryWait("dataajxv")
+            .withMaxConcurrentConnections("dataidlwmewrgu")
+            .withDisableMetricsCollection("dataugpkunvygupgnnvm")
+            .withQueryTimeout("datatuujcuavctxyrmws")
+            .withAdditionalColumns("datazmy")
+            .withQuery("datasmgh");
         model = BinaryData.fromObject(model).toObject(ConcurSource.class);
     }
 }

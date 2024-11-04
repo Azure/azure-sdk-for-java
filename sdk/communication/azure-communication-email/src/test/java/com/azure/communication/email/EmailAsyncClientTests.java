@@ -30,17 +30,14 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress(SENDER_ADDRESS)
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
             .setSubject("test subject")
             .setBodyHtml("<h1>test message</h1>");
 
-        StepVerifier.create(emailAsyncClient.beginSend(message).last())
-            .assertNext(response -> {
-                assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
-            })
-            .verifyComplete();
+        StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
+            assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+        }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -48,19 +45,16 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailToMultipleRecipients(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress(SENDER_ADDRESS)
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setSubject("test subject")
             .setBodyPlainText("test message")
             .setToRecipients(RECIPIENT_ADDRESS, SECOND_RECIPIENT_ADDRESS)
             .setCcRecipients(RECIPIENT_ADDRESS)
             .setBccRecipients(RECIPIENT_ADDRESS);
 
-        StepVerifier.create(emailAsyncClient.beginSend(message).last())
-            .assertNext(response -> {
-                assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
-            })
-            .verifyComplete();
+        StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
+            assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+        }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -68,23 +62,35 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailWithAttachment(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailAttachment attachment = new EmailAttachment(
-            "attachment.txt",
-            "text/plain",
-            BinaryData.fromString("test")
-        );
+        EmailAttachment attachment = new EmailAttachment("attachment.txt", "text/plain", BinaryData.fromString("test"));
 
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress(SENDER_ADDRESS)
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
             .setSubject("test subject")
             .setBodyHtml("<h1>test message</h1>")
             .setAttachments(attachment);
 
-        StepVerifier.create(emailAsyncClient.beginSend(message).last())
-            .assertNext(response -> {
-                assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
-            })
-            .verifyComplete();
+        StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
+            assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestParameters")
+    public void sendEmailWithInlineAttachment(HttpClient httpClient) {
+        emailAsyncClient = getEmailAsyncClient(httpClient);
+
+        EmailAttachment attachment = new EmailAttachment("inlineimage.jpg", "image/jpeg", BinaryData.fromString("test"))
+            .setContentId("inline_image");
+
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
+            .setAttachments(attachment);
+
+        StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
+            assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+        }).verifyComplete();
     }
 }

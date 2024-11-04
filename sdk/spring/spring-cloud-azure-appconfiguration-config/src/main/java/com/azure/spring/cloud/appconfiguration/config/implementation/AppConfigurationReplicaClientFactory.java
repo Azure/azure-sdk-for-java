@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
 /**
@@ -25,12 +26,12 @@ public class AppConfigurationReplicaClientFactory {
      * @param configStores configuration info for config stores
      */
     public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
-        List<ConfigStore> configStores) {
+        List<ConfigStore> configStores, ReplicaLookUp replicaLookUp) {
         this.configStores = configStores;
         if (CONNECTIONS.size() == 0) {
             for (ConfigStore store : configStores) {
-                ConnectionManager manager = new ConnectionManager(clientBuilder, store);
-                CONNECTIONS.put(manager.getOriginEndpoint(), manager);
+                ConnectionManager manager = new ConnectionManager(clientBuilder, store, replicaLookUp);
+                CONNECTIONS.put(manager.getMainEndpoint(), manager);
             }
         }
     }

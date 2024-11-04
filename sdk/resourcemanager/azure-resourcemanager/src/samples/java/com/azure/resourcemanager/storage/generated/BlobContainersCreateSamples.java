@@ -7,70 +7,64 @@ package com.azure.resourcemanager.storage.generated;
 import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 
-/** Samples for BlobContainers Create. */
+/**
+ * Samples for BlobContainers Create.
+ */
 public final class BlobContainersCreateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPutDefaultEncryptionScope.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * BlobContainersPutDefaultEncryptionScope.json
      */
     /**
      * Sample code: PutContainerWithDefaultEncryptionScope.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void putContainerWithDefaultEncryptionScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .createWithResponse(
-                "res3376",
-                "sto328",
-                "container6185",
-                new BlobContainerInner()
-                    .withDefaultEncryptionScope("encryptionscope185")
+            .createWithResponse("res3376", "sto328", "container6185",
+                new BlobContainerInner().withDefaultEncryptionScope("encryptionscope185")
                     .withDenyEncryptionScopeOverride(true),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPutObjectLevelWorm.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * BlobContainersPutObjectLevelWorm.json
      */
     /**
      * Sample code: PutContainerWithObjectLevelWorm.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void putContainerWithObjectLevelWorm(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .createWithResponse(
-                "res3376",
-                "sto328",
-                "container6185",
-                new BlobContainerInner()
-                    .withImmutableStorageWithVersioning(new ImmutableStorageWithVersioning().withEnabled(true)),
+            .createWithResponse("res3376", "sto328", "container6185", new BlobContainerInner()
+                .withImmutableStorageWithVersioning(new ImmutableStorageWithVersioning().withEnabled(true)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPut.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/BlobContainersPut.json
      */
     /**
      * Sample code: PutContainers.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void putContainers(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .createWithResponse(
-                "res3376", "sto328", "container6185", new BlobContainerInner(), com.azure.core.util.Context.NONE);
+            .createWithResponse("res3376", "sto328", "container6185", new BlobContainerInner(),
+                com.azure.core.util.Context.NONE);
     }
 }

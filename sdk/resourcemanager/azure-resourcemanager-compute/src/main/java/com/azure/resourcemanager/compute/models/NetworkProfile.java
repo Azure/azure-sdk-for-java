@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies the network interfaces or the networking configuration of the virtual machine.
  */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
      * Specifies the list of resource Ids for the network interfaces associated with the virtual machine.
      */
-    @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterfaceReference> networkInterfaces;
 
     /*
      * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
      * Configurations
      */
-    @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
 
     /*
      * Specifies the networking configurations that will be used to create the virtual machine networking resources.
      */
-    @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;
 
     /**
@@ -39,8 +40,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
-     * with the virtual machine.
+     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
+     * the virtual machine.
      * 
      * @return the networkInterfaces value.
      */
@@ -49,8 +50,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
-     * with the virtual machine.
+     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
+     * the virtual machine.
      * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
@@ -117,5 +118,54 @@ public final class NetworkProfile {
         if (networkInterfaceConfigurations() != null) {
             networkInterfaceConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("networkInterfaces", this.networkInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("networkApiVersion",
+            this.networkApiVersion == null ? null : this.networkApiVersion.toString());
+        jsonWriter.writeArrayField("networkInterfaceConfigurations", this.networkInterfaceConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterfaceReference> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterfaceReference.fromJson(reader1));
+                    deserializedNetworkProfile.networkInterfaces = networkInterfaces;
+                } else if ("networkApiVersion".equals(fieldName)) {
+                    deserializedNetworkProfile.networkApiVersion = NetworkApiVersion.fromString(reader.getString());
+                } else if ("networkInterfaceConfigurations".equals(fieldName)) {
+                    List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations
+                        = reader.readArray(reader1 -> VirtualMachineNetworkInterfaceConfiguration.fromJson(reader1));
+                    deserializedNetworkProfile.networkInterfaceConfigurations = networkInterfaceConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
     }
 }

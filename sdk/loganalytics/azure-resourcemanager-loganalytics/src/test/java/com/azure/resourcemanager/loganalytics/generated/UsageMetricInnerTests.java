@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageMetricInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageMetricInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":{\"value\":\"xknalaulppg\",\"localizedValue\":\"tpnapnyiropuhpig\"},\"unit\":\"gylgqgitxmedjvcs\",\"currentValue\":1.7087985829917218,\"limit\":85.38784112555038,\"nextResetTime\":\"2021-09-17T17:00:46Z\",\"quotaPeriod\":\"zhxgktrmgucn\"}")
-                .toObject(UsageMetricInner.class);
+        UsageMetricInner model = BinaryData.fromString(
+            "{\"name\":{\"value\":\"xknalaulppg\",\"localizedValue\":\"tpnapnyiropuhpig\"},\"unit\":\"gylgqgitxmedjvcs\",\"currentValue\":1.7087985829917218,\"limit\":85.38784112555038,\"nextResetTime\":\"2021-09-17T17:00:46Z\",\"quotaPeriod\":\"zhxgktrmgucn\"}")
+            .toObject(UsageMetricInner.class);
         Assertions.assertEquals("xknalaulppg", model.name().value());
         Assertions.assertEquals("tpnapnyiropuhpig", model.name().localizedValue());
         Assertions.assertEquals("gylgqgitxmedjvcs", model.unit());
@@ -29,14 +27,13 @@ public final class UsageMetricInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageMetricInner model =
-            new UsageMetricInner()
-                .withName(new MetricName().withValue("xknalaulppg").withLocalizedValue("tpnapnyiropuhpig"))
-                .withUnit("gylgqgitxmedjvcs")
-                .withCurrentValue(1.7087985829917218D)
-                .withLimit(85.38784112555038D)
-                .withNextResetTime(OffsetDateTime.parse("2021-09-17T17:00:46Z"))
-                .withQuotaPeriod("zhxgktrmgucn");
+        UsageMetricInner model = new UsageMetricInner()
+            .withName(new MetricName().withValue("xknalaulppg").withLocalizedValue("tpnapnyiropuhpig"))
+            .withUnit("gylgqgitxmedjvcs")
+            .withCurrentValue(1.7087985829917218D)
+            .withLimit(85.38784112555038D)
+            .withNextResetTime(OffsetDateTime.parse("2021-09-17T17:00:46Z"))
+            .withQuotaPeriod("zhxgktrmgucn");
         model = BinaryData.fromObject(model).toObject(UsageMetricInner.class);
         Assertions.assertEquals("xknalaulppg", model.name().value());
         Assertions.assertEquals("tpnapnyiropuhpig", model.name().localizedValue());

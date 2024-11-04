@@ -12,7 +12,8 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
  */
 public final class IntegrationRuntimesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Update.json
      */
     /**
      * Sample code: IntegrationRuntimes_Update.

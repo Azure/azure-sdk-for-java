@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
      * @param name a name to look for.
      * @return the corresponding NetezzaPartitionOption.
      */
-    @JsonCreator
     public static NetezzaPartitionOption fromString(String name) {
         return fromString(name, NetezzaPartitionOption.class);
     }

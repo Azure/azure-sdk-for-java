@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Diagnostics for an App Service Environment.
  */
 @Fluent
-public final class HostingEnvironmentDiagnosticsInner {
+public final class HostingEnvironmentDiagnosticsInner implements JsonSerializable<HostingEnvironmentDiagnosticsInner> {
     /*
      * Name/identifier of the diagnostics.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Diagnostics output.
      */
-    @JsonProperty(value = "diagnosticsOutput")
     private String diagnosticsOutput;
 
     /**
@@ -76,5 +78,45 @@ public final class HostingEnvironmentDiagnosticsInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("diagnosticsOutput", this.diagnosticsOutput);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostingEnvironmentDiagnosticsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostingEnvironmentDiagnosticsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HostingEnvironmentDiagnosticsInner.
+     */
+    public static HostingEnvironmentDiagnosticsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostingEnvironmentDiagnosticsInner deserializedHostingEnvironmentDiagnosticsInner
+                = new HostingEnvironmentDiagnosticsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHostingEnvironmentDiagnosticsInner.name = reader.getString();
+                } else if ("diagnosticsOutput".equals(fieldName)) {
+                    deserializedHostingEnvironmentDiagnosticsInner.diagnosticsOutput = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostingEnvironmentDiagnosticsInner;
+        });
     }
 }

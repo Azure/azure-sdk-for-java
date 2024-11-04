@@ -185,8 +185,10 @@ public final class AcsEmailDeliveryReportReceivedEventData
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
-        jsonWriter.writeStringField("deliveryAttemptTimeStamp", this.deliveryAttemptTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
+        jsonWriter.writeStringField("deliveryAttemptTimestamp",
+            this.deliveryAttemptTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -218,7 +220,7 @@ public final class AcsEmailDeliveryReportReceivedEventData
                 } else if ("deliveryStatusDetails".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.deliveryStatusDetails
                         = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
-                } else if ("deliveryAttemptTimeStamp".equals(fieldName)) {
+                } else if ("deliveryAttemptTimestamp".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportReceivedEventData.deliveryAttemptTimestamp
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {

@@ -8,9 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -18,10 +15,8 @@ import java.util.Map;
 /**
  * Defines headers for Query operation.
  */
-@JacksonXmlRootElement(localName = "Blob-Query-Headers")
 @Fluent
 public final class BlobQueryHeaders {
-    @JsonUnwrapped
     private final BlobsQueryHeaders internalHeaders;
 
     static {
@@ -31,7 +26,6 @@ public final class BlobQueryHeaders {
     /*
      * The errorCode property.
      */
-    @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
     private BlobQueryHeaders(BlobsQueryHeaders internalHeaders) {

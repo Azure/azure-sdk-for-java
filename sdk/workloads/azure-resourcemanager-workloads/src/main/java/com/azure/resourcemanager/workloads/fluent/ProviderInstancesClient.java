@@ -68,8 +68,8 @@ public interface ProviderInstancesClient {
      *     resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProviderInstanceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    Response<ProviderInstanceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String providerInstanceName, Context context);
 
     /**
      * Gets properties of a provider instance.
@@ -105,11 +105,8 @@ public interface ProviderInstancesClient {
      * @return the {@link SyncPoller} for polling of a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(
-        String resourceGroupName,
-        String monitorName,
-        String providerInstanceName,
-        ProviderInstanceInner providerInstanceParameter);
+    SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(String resourceGroupName,
+        String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter);
 
     /**
      * Creates a provider instance.
@@ -128,11 +125,8 @@ public interface ProviderInstancesClient {
      * @return the {@link SyncPoller} for polling of a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(
-        String resourceGroupName,
-        String monitorName,
-        String providerInstanceName,
-        ProviderInstanceInner providerInstanceParameter,
+    SyncPoller<PollResult<ProviderInstanceInner>, ProviderInstanceInner> beginCreate(String resourceGroupName,
+        String monitorName, String providerInstanceName, ProviderInstanceInner providerInstanceParameter,
         Context context);
 
     /**
@@ -151,10 +145,7 @@ public interface ProviderInstancesClient {
      * @return a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProviderInstanceInner create(
-        String resourceGroupName,
-        String monitorName,
-        String providerInstanceName,
+    ProviderInstanceInner create(String resourceGroupName, String monitorName, String providerInstanceName,
         ProviderInstanceInner providerInstanceParameter);
 
     /**
@@ -174,12 +165,8 @@ public interface ProviderInstancesClient {
      * @return a provider instance associated with SAP monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProviderInstanceInner create(
-        String resourceGroupName,
-        String monitorName,
-        String providerInstanceName,
-        ProviderInstanceInner providerInstanceParameter,
-        Context context);
+    ProviderInstanceInner create(String resourceGroupName, String monitorName, String providerInstanceName,
+        ProviderInstanceInner providerInstanceParameter, Context context);
 
     /**
      * Deletes a provider instance.
@@ -196,8 +183,8 @@ public interface ProviderInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String monitorName, String providerInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String monitorName, String providerInstanceName);
 
     /**
      * Deletes a provider instance.
@@ -215,8 +202,8 @@ public interface ProviderInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String monitorName, String providerInstanceName, Context context);
 
     /**
      * Deletes a provider instance.
@@ -251,6 +238,6 @@ public interface ProviderInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String monitorName, String providerInstanceName,
+        Context context);
 }

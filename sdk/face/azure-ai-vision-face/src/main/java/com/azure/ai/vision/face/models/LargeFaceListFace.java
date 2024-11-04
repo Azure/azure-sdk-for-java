@@ -5,26 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Face resource for large face list.
  */
 @Immutable
-public final class LargeFaceListFace {
+public final class LargeFaceListFace implements JsonSerializable<LargeFaceListFace> {
 
     /*
      * Face ID of the face.
      */
     @Generated
-    @JsonProperty(value = "persistedFaceId", access = JsonProperty.Access.WRITE_ONLY)
     private String persistedFaceId;
 
     /*
      * User-provided data attached to the face. The length limit is 1K.
      */
     @Generated
-    @JsonProperty(value = "userData")
     private String userData;
 
     /**
@@ -52,5 +54,44 @@ public final class LargeFaceListFace {
     @Generated
     public String getUserData() {
         return this.userData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LargeFaceListFace from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LargeFaceListFace if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LargeFaceListFace.
+     */
+    @Generated
+    public static LargeFaceListFace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LargeFaceListFace deserializedLargeFaceListFace = new LargeFaceListFace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("persistedFaceId".equals(fieldName)) {
+                    deserializedLargeFaceListFace.persistedFaceId = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    deserializedLargeFaceListFace.userData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedLargeFaceListFace;
+        });
     }
 }

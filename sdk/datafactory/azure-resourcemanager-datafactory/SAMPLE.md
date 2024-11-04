@@ -182,7 +182,8 @@ import java.time.OffsetDateTime;
  */
 public final class ActivityRunsQueryByPipelineRunSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ActivityRuns_QueryByPipelineRun.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ActivityRuns_QueryByPipelineRun.json
      */
     /**
      * Sample code: ActivityRuns_QueryByPipelineRun.
@@ -215,7 +216,8 @@ import java.util.List;
  */
 public final class ChangeDataCaptureCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Create.json
      */
     /**
      * Sample code: ChangeDataCapture_Create.
@@ -236,7 +238,8 @@ public final class ChangeDataCaptureCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Update.json
      */
     /**
      * Sample code: ChangeDataCapture_Update.
@@ -266,7 +269,8 @@ public final class ChangeDataCaptureCreateOrUpdateSamples {
  */
 public final class ChangeDataCaptureDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Delete.json
      */
     /**
      * Sample code: ChangeDataCapture_Delete.
@@ -289,7 +293,9 @@ public final class ChangeDataCaptureDeleteSamples {
  */
 public final class ChangeDataCaptureGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Get
+     * .json
      */
     /**
      * Sample code: ChangeDataCapture_Get.
@@ -312,7 +318,8 @@ public final class ChangeDataCaptureGetSamples {
  */
 public final class ChangeDataCaptureListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_ListByFactory.json
      */
     /**
      * Sample code: ChangeDataCapture_ListByFactory.
@@ -335,7 +342,8 @@ public final class ChangeDataCaptureListByFactorySamples {
  */
 public final class ChangeDataCaptureStartSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Start.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Start.json
      */
     /**
      * Sample code: ChangeDataCapture_Start.
@@ -358,7 +366,8 @@ public final class ChangeDataCaptureStartSamples {
  */
 public final class ChangeDataCaptureStatusSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Status.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Status.json
      */
     /**
      * Sample code: ChangeDataCapture_Start.
@@ -381,7 +390,8 @@ public final class ChangeDataCaptureStatusSamples {
  */
 public final class ChangeDataCaptureStopSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ChangeDataCapture_Stop.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ChangeDataCapture_Stop.json
      */
     /**
      * Sample code: ChangeDataCapture_Stop.
@@ -399,7 +409,6 @@ public final class ChangeDataCaptureStopSamples {
 ### CredentialOperations_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredential;
 
 /**
@@ -407,7 +416,9 @@ import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredential;
  */
 public final class CredentialOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Create.
+     * json
      */
     /**
      * Sample code: Credentials_Create.
@@ -416,10 +427,11 @@ public final class CredentialOperationsCreateOrUpdateSamples {
      */
     public static void credentialsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager.credentialOperations()
-            .createOrUpdateWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential",
-                new CredentialResourceInner().withProperties(new ManagedIdentityCredential().withResourceId(
-                    "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami")),
-                null, com.azure.core.util.Context.NONE);
+            .define("exampleCredential")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties(new ManagedIdentityCredential().withResourceId(
+                "/subscriptions/12345678-1234-1234-1234-12345678abc/resourcegroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleUami"))
+            .create();
     }
 }
 ```
@@ -432,7 +444,9 @@ public final class CredentialOperationsCreateOrUpdateSamples {
  */
 public final class CredentialOperationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Delete.
+     * json
      */
     /**
      * Sample code: Credentials_Delete.
@@ -455,7 +469,8 @@ public final class CredentialOperationsDeleteSamples {
  */
 public final class CredentialOperationsGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_Get.json
      */
     /**
      * Sample code: Credentials_Get.
@@ -478,7 +493,8 @@ public final class CredentialOperationsGetSamples {
  */
 public final class CredentialOperationsListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Credentials_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Credentials_ListByFactory.json
      */
     /**
      * Sample code: Credentials_ListByFactory.
@@ -520,7 +536,8 @@ import java.util.Map;
  */
 public final class DataFlowDebugSessionAddDataFlowSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_AddDataFlow.json
      */
     /**
      * Sample code: DataFlowDebugSession_AddDataFlow.
@@ -603,7 +620,8 @@ import java.util.Map;
  */
 public final class DataFlowDebugSessionCreateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_Create.json
      */
     /**
      * Sample code: DataFlowDebugSession_Create.
@@ -650,7 +668,8 @@ import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRe
  */
 public final class DataFlowDebugSessionDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_Delete.json
      */
     /**
      * Sample code: DataFlowDebugSession_Delete.
@@ -678,7 +697,8 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandType;
  */
 public final class DataFlowDebugSessionExecuteCommandSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_ExecuteCommand.json
      */
     /**
      * Sample code: DataFlowDebugSession_ExecuteCommand.
@@ -705,7 +725,8 @@ public final class DataFlowDebugSessionExecuteCommandSamples {
  */
 public final class DataFlowDebugSessionQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_QueryByFactory.json
      */
     /**
      * Sample code: DataFlowDebugSession_QueryByFactory.
@@ -735,7 +756,8 @@ import java.util.Arrays;
  */
 public final class DataFlowsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Create.json
      */
     /**
      * Sample code: DataFlows_Create.
@@ -773,7 +795,8 @@ public final class DataFlowsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Update.json
      */
     /**
      * Sample code: DataFlows_Update.
@@ -822,7 +845,8 @@ public final class DataFlowsCreateOrUpdateSamples {
  */
 public final class DataFlowsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Delete.json
      */
     /**
      * Sample code: DataFlows_Delete.
@@ -845,7 +869,8 @@ public final class DataFlowsDeleteSamples {
  */
 public final class DataFlowsGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Get.json
      */
     /**
      * Sample code: DataFlows_Get.
@@ -868,7 +893,8 @@ public final class DataFlowsGetSamples {
  */
 public final class DataFlowsListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlows_ListByFactory.json
      */
     /**
      * Sample code: DataFlows_ListByFactory.
@@ -902,7 +928,8 @@ import java.util.Map;
  */
 public final class DatasetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
      */
     /**
      * Sample code: Datasets_Create.
@@ -929,7 +956,8 @@ public final class DatasetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
      */
     /**
      * Sample code: Datasets_Update.
@@ -979,7 +1007,8 @@ public final class DatasetsCreateOrUpdateSamples {
  */
 public final class DatasetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Delete.json
      */
     /**
      * Sample code: Datasets_Delete.
@@ -1002,7 +1031,8 @@ public final class DatasetsDeleteSamples {
  */
 public final class DatasetsGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
      */
     /**
      * Sample code: Datasets_Get.
@@ -1025,7 +1055,8 @@ public final class DatasetsGetSamples {
  */
 public final class DatasetsListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Datasets_ListByFactory.json
      */
     /**
      * Sample code: Datasets_ListByFactory.
@@ -1049,7 +1080,8 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
  */
 public final class ExposureControlGetFeatureValueSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValue.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ExposureControl_GetFeatureValue.json
      */
     /**
      * Sample code: ExposureControl_GetFeatureValue.
@@ -1077,7 +1109,8 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
  */
 public final class ExposureControlGetFeatureValueByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValueByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ExposureControl_GetFeatureValueByFactory.json
      */
     /**
      * Sample code: ExposureControl_GetFeatureValueByFactory.
@@ -1107,7 +1140,8 @@ import java.util.Arrays;
  */
 public final class ExposureControlQueryFeatureValuesByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ExposureControl_QueryFeatureValuesByFactory.json
      */
     /**
      * Sample code: ExposureControl_QueryFeatureValuesByFactory.
@@ -1138,7 +1172,8 @@ import com.azure.resourcemanager.datafactory.models.FactoryVstsConfiguration;
  */
 public final class FactoriesConfigureFactoryRepoSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_ConfigureFactoryRepo.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Factories_ConfigureFactoryRepo.json
      */
     /**
      * Sample code: Factories_ConfigureFactoryRepo.
@@ -1169,7 +1204,8 @@ public final class FactoriesConfigureFactoryRepoSamples {
  */
 public final class FactoriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_CreateOrUpdate.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Factories_CreateOrUpdate.json
      */
     /**
      * Sample code: Factories_CreateOrUpdate.
@@ -1194,7 +1230,8 @@ public final class FactoriesCreateOrUpdateSamples {
  */
 public final class FactoriesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Delete.json
      */
     /**
      * Sample code: Factories_Delete.
@@ -1217,7 +1254,8 @@ public final class FactoriesDeleteSamples {
  */
 public final class FactoriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Get.json
      */
     /**
      * Sample code: Factories_Get.
@@ -1242,7 +1280,8 @@ import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
  */
 public final class FactoriesGetDataPlaneAccessSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_GetDataPlaneAccess.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Factories_GetDataPlaneAccess.json
      */
     /**
      * Sample code: Factories_GetDataPlaneAccess.
@@ -1272,7 +1311,8 @@ import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenRequest;
  */
 public final class FactoriesGetGitHubAccessTokenSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_GetGitHubAccessToken.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Factories_GetGitHubAccessToken.json
      */
     /**
      * Sample code: Factories_GetGitHubAccessToken.
@@ -1298,7 +1338,8 @@ public final class FactoriesGetGitHubAccessTokenSamples {
  */
 public final class FactoriesListSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_List.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_List.json
      */
     /**
      * Sample code: Factories_List.
@@ -1319,7 +1360,8 @@ public final class FactoriesListSamples {
  */
 public final class FactoriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_ListByResourceGroup.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Factories_ListByResourceGroup.json
      */
     /**
      * Sample code: Factories_ListByResourceGroup.
@@ -1344,7 +1386,8 @@ import java.util.Map;
  */
 public final class FactoriesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Update.json
      */
     /**
      * Sample code: Factories_Update.
@@ -1385,7 +1428,8 @@ import java.util.Map;
  */
 public final class GlobalParametersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GlobalParameters_Create.json
      */
     /**
      * Sample code: GlobalParameters_Create.
@@ -1401,7 +1445,8 @@ public final class GlobalParametersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GlobalParameters_Update.json
      */
     /**
      * Sample code: GlobalParameters_Update.
@@ -1425,7 +1470,8 @@ public final class GlobalParametersCreateOrUpdateSamples {
  */
 public final class GlobalParametersDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GlobalParameters_Delete.json
      */
     /**
      * Sample code: GlobalParameters_Delete.
@@ -1448,7 +1494,9 @@ public final class GlobalParametersDeleteSamples {
  */
 public final class GlobalParametersGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Get.
+     * json
      */
     /**
      * Sample code: GlobalParameters_Get.
@@ -1470,7 +1518,8 @@ public final class GlobalParametersGetSamples {
  */
 public final class GlobalParametersListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GlobalParameters_ListByFactory.json
      */
     /**
      * Sample code: GlobalParameters_ListByFactory.
@@ -1492,7 +1541,8 @@ public final class GlobalParametersListByFactorySamples {
  */
 public final class IntegrationRuntimeNodesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeNodes_Delete.json
      */
     /**
      * Sample code: IntegrationRuntimesNodes_Delete.
@@ -1516,7 +1566,8 @@ public final class IntegrationRuntimeNodesDeleteSamples {
  */
 public final class IntegrationRuntimeNodesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeNodes_Get.json
      */
     /**
      * Sample code: IntegrationRuntimeNodes_Get.
@@ -1539,7 +1590,8 @@ public final class IntegrationRuntimeNodesGetSamples {
  */
 public final class IntegrationRuntimeNodesGetIpAddressSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_GetIpAddress.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeNodes_GetIpAddress.json
      */
     /**
      * Sample code: IntegrationRuntimeNodes_GetIpAddress.
@@ -1565,7 +1617,8 @@ import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNode
  */
 public final class IntegrationRuntimeNodesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeNodes_Update.json
      */
     /**
      * Sample code: IntegrationRuntimeNodes_Update.
@@ -1590,7 +1643,8 @@ import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest
  */
 public final class IntegrationRuntimeObjectMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeObjectMetadata_Get.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Get.
@@ -1614,7 +1668,8 @@ public final class IntegrationRuntimeObjectMetadataGetSamples {
  */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Refresh.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeObjectMetadata_Refresh.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Refresh.
@@ -1639,7 +1694,8 @@ import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRunti
  */
 public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_CreateLinkedIntegrationRuntime.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_CreateLinkedIntegrationRuntime.json
      */
     /**
      * Sample code: IntegrationRuntimes_CreateLinkedIntegrationRuntime.
@@ -1670,7 +1726,8 @@ import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime
  */
 public final class IntegrationRuntimesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Create.json
      */
     /**
      * Sample code: IntegrationRuntimes_Create.
@@ -1695,7 +1752,8 @@ public final class IntegrationRuntimesCreateOrUpdateSamples {
  */
 public final class IntegrationRuntimesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Delete.json
      */
     /**
      * Sample code: IntegrationRuntimes_Delete.
@@ -1718,7 +1776,8 @@ public final class IntegrationRuntimesDeleteSamples {
  */
 public final class IntegrationRuntimesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Get.json
      */
     /**
      * Sample code: IntegrationRuntimes_Get.
@@ -1741,7 +1800,8 @@ public final class IntegrationRuntimesGetSamples {
  */
 public final class IntegrationRuntimesGetConnectionInfoSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetConnectionInfo.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_GetConnectionInfo.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetConnectionInfo.
@@ -1765,7 +1825,8 @@ public final class IntegrationRuntimesGetConnectionInfoSamples {
  */
 public final class IntegrationRuntimesGetMonitoringDataSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetMonitoringData.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_GetMonitoringData.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetMonitoringData.
@@ -1789,7 +1850,8 @@ public final class IntegrationRuntimesGetMonitoringDataSamples {
  */
 public final class IntegrationRuntimesGetStatusSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetStatus.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_GetStatus.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetStatus.
@@ -1812,7 +1874,8 @@ public final class IntegrationRuntimesGetStatusSamples {
  */
 public final class IntegrationRuntimesListAuthKeysSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListAuthKeys.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_ListAuthKeys.json
      */
     /**
      * Sample code: IntegrationRuntimes_ListAuthKeys.
@@ -1836,7 +1899,8 @@ public final class IntegrationRuntimesListAuthKeysSamples {
  */
 public final class IntegrationRuntimesListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_ListByFactory.json
      */
     /**
      * Sample code: IntegrationRuntimes_ListByFactory.
@@ -1859,7 +1923,8 @@ public final class IntegrationRuntimesListByFactorySamples {
  */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: IntegrationRuntimes_OutboundNetworkDependenciesEndpoints.
@@ -1886,7 +1951,8 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerate
  */
 public final class IntegrationRuntimesRegenerateAuthKeySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RegenerateAuthKey.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_RegenerateAuthKey.json
      */
     /**
      * Sample code: IntegrationRuntimes_RegenerateAuthKey.
@@ -1913,7 +1979,8 @@ import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequ
  */
 public final class IntegrationRuntimesRemoveLinksSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RemoveLinks.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_RemoveLinks.json
      */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
@@ -1937,7 +2004,8 @@ public final class IntegrationRuntimesRemoveLinksSamples {
  */
 public final class IntegrationRuntimesStartSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Start.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Start.json
      */
     /**
      * Sample code: IntegrationRuntimes_Start.
@@ -1960,7 +2028,8 @@ public final class IntegrationRuntimesStartSamples {
  */
 public final class IntegrationRuntimesStopSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Stop.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Stop.json
      */
     /**
      * Sample code: IntegrationRuntimes_Stop.
@@ -1983,7 +2052,8 @@ public final class IntegrationRuntimesStopSamples {
  */
 public final class IntegrationRuntimesSyncCredentialsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_SyncCredentials.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_SyncCredentials.json
      */
     /**
      * Sample code: IntegrationRuntimes_SyncCredentials.
@@ -2010,7 +2080,8 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
  */
 public final class IntegrationRuntimesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Update.json
      */
     /**
      * Sample code: IntegrationRuntimes_Update.
@@ -2035,7 +2106,8 @@ public final class IntegrationRuntimesUpdateSamples {
  */
 public final class IntegrationRuntimesUpgradeSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Upgrade.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_Upgrade.json
      */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
@@ -2064,7 +2136,9 @@ import java.io.IOException;
  */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create
+     * .json
      */
     /**
      * Sample code: LinkedServices_Create.
@@ -2085,7 +2159,9 @@ public final class LinkedServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update
+     * .json
      */
     /**
      * Sample code: LinkedServices_Update.
@@ -2117,7 +2193,9 @@ public final class LinkedServicesCreateOrUpdateSamples {
  */
 public final class LinkedServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Delete
+     * .json
      */
     /**
      * Sample code: LinkedServices_Delete.
@@ -2140,7 +2218,9 @@ public final class LinkedServicesDeleteSamples {
  */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Get.
+     * json
      */
     /**
      * Sample code: LinkedServices_Get.
@@ -2163,7 +2243,8 @@ public final class LinkedServicesGetSamples {
  */
 public final class LinkedServicesListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * LinkedServices_ListByFactory.json
      */
     /**
      * Sample code: LinkedServices_ListByFactory.
@@ -2190,7 +2271,8 @@ import java.util.Map;
  */
 public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedPrivateEndpoints_Create.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
@@ -2232,7 +2314,8 @@ public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
  */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedPrivateEndpoints_Delete.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Delete.
@@ -2255,7 +2338,8 @@ public final class ManagedPrivateEndpointsDeleteSamples {
  */
 public final class ManagedPrivateEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedPrivateEndpoints_Get.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_Get.
@@ -2278,7 +2362,8 @@ public final class ManagedPrivateEndpointsGetSamples {
  */
 public final class ManagedPrivateEndpointsListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedPrivateEndpoints_ListByFactory.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_ListByFactory.
@@ -2306,7 +2391,8 @@ import java.util.Map;
  */
 public final class ManagedVirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedVirtualNetworks_Create.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
@@ -2343,7 +2429,8 @@ public final class ManagedVirtualNetworksCreateOrUpdateSamples {
  */
 public final class ManagedVirtualNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedVirtualNetworks_Get.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Get.
@@ -2366,7 +2453,8 @@ public final class ManagedVirtualNetworksGetSamples {
  */
 public final class ManagedVirtualNetworksListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ManagedVirtualNetworks_ListByFactory.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_ListByFactory.
@@ -2389,7 +2477,8 @@ public final class ManagedVirtualNetworksListByFactorySamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -2410,7 +2499,9 @@ public final class OperationsListSamples {
  */
 public final class PipelineRunsCancelSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Cancel.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Cancel.
+     * json
      */
     /**
      * Sample code: PipelineRuns_Cancel.
@@ -2433,7 +2524,8 @@ public final class PipelineRunsCancelSamples {
  */
 public final class PipelineRunsGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Get.json
      */
     /**
      * Sample code: PipelineRuns_Get.
@@ -2463,7 +2555,8 @@ import java.util.Arrays;
  */
 public final class PipelineRunsQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * PipelineRuns_QueryByFactory.json
      */
     /**
      * Sample code: PipelineRuns_QueryByFactory.
@@ -2511,7 +2604,8 @@ import java.util.Map;
  */
 public final class PipelinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
      */
     /**
      * Sample code: Pipelines_Create.
@@ -2552,7 +2646,8 @@ public final class PipelinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
      */
     /**
      * Sample code: Pipelines_Update.
@@ -2617,7 +2712,9 @@ import java.util.Map;
  */
 public final class PipelinesCreateRunSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.
+     * json
      */
     /**
      * Sample code: Pipelines_CreateRun.
@@ -2657,7 +2754,8 @@ public final class PipelinesCreateRunSamples {
  */
 public final class PipelinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Delete.json
      */
     /**
      * Sample code: Pipelines_Delete.
@@ -2680,7 +2778,8 @@ public final class PipelinesDeleteSamples {
  */
 public final class PipelinesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Get.json
      */
     /**
      * Sample code: Pipelines_Get.
@@ -2703,7 +2802,8 @@ public final class PipelinesGetSamples {
  */
 public final class PipelinesListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Pipelines_ListByFactory.json
      */
     /**
      * Sample code: Pipelines_ListByFactory.
@@ -2725,7 +2825,8 @@ public final class PipelinesListByFactorySamples {
  */
 public final class PrivateEndPointConnectionsListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PrivateEndPointConnections_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * PrivateEndPointConnections_ListByFactory.json
      */
     /**
      * Sample code: privateEndPointConnections_ListByFactory.
@@ -2752,7 +2853,8 @@ import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionState;
  */
 public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ApproveRejectPrivateEndpointConnection.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ApproveRejectPrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a factory.
@@ -2783,7 +2885,8 @@ public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a datafactory.
@@ -2807,7 +2910,8 @@ public final class PrivateEndpointConnectionOperationDeleteSamples {
  */
 public final class PrivateEndpointConnectionOperationGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get a private endpoint connection for a datafactory.
@@ -2831,7 +2935,8 @@ public final class PrivateEndpointConnectionOperationGetSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GetPrivateLinkResources.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GetPrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources of a site.
@@ -2854,7 +2959,9 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class TriggerRunsCancelSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.
+     * json
      */
     /**
      * Sample code: Triggers_Cancel.
@@ -2884,7 +2991,8 @@ import java.util.Arrays;
  */
 public final class TriggerRunsQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * TriggerRuns_QueryByFactory.json
      */
     /**
      * Sample code: TriggerRuns_QueryByFactory.
@@ -2912,7 +3020,9 @@ public final class TriggerRunsQueryByFactorySamples {
  */
 public final class TriggerRunsRerunSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Rerun.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Rerun.
+     * json
      */
     /**
      * Sample code: Triggers_Rerun.
@@ -2949,7 +3059,8 @@ import java.util.Map;
  */
 public final class TriggersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
      */
     /**
      * Sample code: Triggers_Create.
@@ -2977,7 +3088,8 @@ public final class TriggersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Update.json
      */
     /**
      * Sample code: Triggers_Update.
@@ -3028,7 +3140,8 @@ public final class TriggersCreateOrUpdateSamples {
  */
 public final class TriggersDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Delete.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Delete.json
      */
     /**
      * Sample code: Triggers_Delete.
@@ -3051,7 +3164,8 @@ public final class TriggersDeleteSamples {
  */
 public final class TriggersGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Get.json
      */
     /**
      * Sample code: Triggers_Get.
@@ -3074,7 +3188,8 @@ public final class TriggersGetSamples {
  */
 public final class TriggersGetEventSubscriptionStatusSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_GetEventSubscriptionStatus.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_GetEventSubscriptionStatus.json
      */
     /**
      * Sample code: Triggers_GetEventSubscriptionStatus.
@@ -3098,7 +3213,8 @@ public final class TriggersGetEventSubscriptionStatusSamples {
  */
 public final class TriggersListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_ListByFactory.json
      */
     /**
      * Sample code: Triggers_ListByFactory.
@@ -3122,7 +3238,8 @@ import com.azure.resourcemanager.datafactory.models.TriggerFilterParameters;
  */
 public final class TriggersQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_QueryByFactory.json
      */
     /**
      * Sample code: Triggers_QueryByFactory.
@@ -3146,7 +3263,8 @@ public final class TriggersQueryByFactorySamples {
  */
 public final class TriggersStartSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Start.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Start.json
      */
     /**
      * Sample code: Triggers_Start.
@@ -3168,7 +3286,8 @@ public final class TriggersStartSamples {
  */
 public final class TriggersStopSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Stop.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Stop.json
      */
     /**
      * Sample code: Triggers_Stop.
@@ -3190,7 +3309,8 @@ public final class TriggersStopSamples {
  */
 public final class TriggersSubscribeToEventsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_SubscribeToEvents.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_SubscribeToEvents.json
      */
     /**
      * Sample code: Triggers_SubscribeToEvents.
@@ -3213,7 +3333,8 @@ public final class TriggersSubscribeToEventsSamples {
  */
 public final class TriggersUnsubscribeFromEventsSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_UnsubscribeFromEvents.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_UnsubscribeFromEvents.json
      */
     /**
      * Sample code: Triggers_UnsubscribeFromEvents.

@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DaprServiceBindMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprServiceBindMetadata model = BinaryData.fromString("{\"name\":\"yvpnqicvinvkjj\",\"value\":\"xrbuukzclew\"}")
+        DaprServiceBindMetadata model = BinaryData.fromString("{\"name\":\"zk\",\"value\":\"oqreyfkzikfjawn\"}")
             .toObject(DaprServiceBindMetadata.class);
-        Assertions.assertEquals("yvpnqicvinvkjj", model.name());
-        Assertions.assertEquals("xrbuukzclew", model.value());
+        Assertions.assertEquals("zk", model.name());
+        Assertions.assertEquals("oqreyfkzikfjawn", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprServiceBindMetadata model
-            = new DaprServiceBindMetadata().withName("yvpnqicvinvkjj").withValue("xrbuukzclew");
+        DaprServiceBindMetadata model = new DaprServiceBindMetadata().withName("zk").withValue("oqreyfkzikfjawn");
         model = BinaryData.fromObject(model).toObject(DaprServiceBindMetadata.class);
-        Assertions.assertEquals("yvpnqicvinvkjj", model.name());
-        Assertions.assertEquals("xrbuukzclew", model.value());
+        Assertions.assertEquals("zk", model.name());
+        Assertions.assertEquals("oqreyfkzikfjawn", model.value());
     }
 }

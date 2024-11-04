@@ -40,15 +40,18 @@ public final class ProtectionContainerResourceListTests {
                     .withTags(mapOf("lfzxiavrmbzonoki", "ikpzimejza", "rgz", "rjqc"))
                     .withProperties(new ProtectionContainer().withFriendlyName("bqwrvtldgm")
                         .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
-                        .withRegistrationStatus("mpipaslthaqfxs").withHealthStatus("wutwbdsre")
+                        .withRegistrationStatus("mpipaslthaqfxs")
+                        .withHealthStatus("wutwbdsre")
                         .withProtectableObjectType("drhneuyow"))
                     .withEtag("d"),
                 new ProtectionContainerResourceInner().withLocation("qhhahhxvrhmzkwpj")
                     .withTags(mapOf("ujxukndxd", "spughftqsxhq", "syqtfi", "grjguufzd", "phoszqz", "whbotzingamv",
                         "kfwynw", "dphqamv"))
                     .withProperties(new ProtectionContainer().withFriendlyName("szfjvfbgofelja")
-                        .withBackupManagementType(BackupManagementType.AZURE_SQL).withRegistrationStatus("qhl")
-                        .withHealthStatus("riiiojnalghfkv").withProtectableObjectType("sexso"))
+                        .withBackupManagementType(BackupManagementType.AZURE_SQL)
+                        .withRegistrationStatus("qhl")
+                        .withHealthStatus("riiiojnalghfkv")
+                        .withProtectableObjectType("sexso"))
                     .withEtag("el")));
         model = BinaryData.fromObject(model).toObject(ProtectionContainerResourceList.class);
         Assertions.assertEquals("v", model.nextLink());

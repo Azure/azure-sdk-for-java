@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Capabilities information. */
+/**
+ * Capabilities information.
+ */
 @Fluent
 public final class CapabilitiesProperties {
     /*
@@ -17,13 +19,15 @@ public final class CapabilitiesProperties {
     @JsonProperty(value = "dnsZones")
     private List<DnsZone> dnsZones;
 
-    /** Creates an instance of CapabilitiesProperties class. */
+    /**
+     * Creates an instance of CapabilitiesProperties class.
+     */
     public CapabilitiesProperties() {
     }
 
     /**
      * Get the dnsZones property: The dnsZones property.
-     *
+     * 
      * @return the dnsZones value.
      */
     public List<DnsZone> dnsZones() {
@@ -32,7 +36,7 @@ public final class CapabilitiesProperties {
 
     /**
      * Set the dnsZones property: The dnsZones property.
-     *
+     * 
      * @param dnsZones the dnsZones value to set.
      * @return the CapabilitiesProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class CapabilitiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

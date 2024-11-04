@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DelegatedSubnetResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelegatedSubnetResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"big\",\"tags\":{\"kanyktzlcuiywg\":\"qfbow\",\"nhzgpphrcgyn\":\"ywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\"},\"id\":\"c\",\"name\":\"pmivkwlzu\",\"type\":\"ccfwnfnbacfion\"}")
-                .toObject(DelegatedSubnetResource.class);
-        Assertions.assertEquals("big", model.location());
-        Assertions.assertEquals("qfbow", model.tags().get("kanyktzlcuiywg"));
+        DelegatedSubnetResource model = BinaryData.fromString(
+            "{\"location\":\"kftutqxlngxlefg\",\"tags\":{\"tthzrvqd\":\"xkrxdqmi\",\"ehoqfbowskan\":\"abhjybi\"},\"id\":\"ktzlcuiywg\",\"name\":\"ywgndrv\",\"type\":\"nhzgpphrcgyn\"}")
+            .toObject(DelegatedSubnetResource.class);
+        Assertions.assertEquals("kftutqxlngxlefg", model.location());
+        Assertions.assertEquals("xkrxdqmi", model.tags().get("tthzrvqd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelegatedSubnetResource model =
-            new DelegatedSubnetResource()
-                .withLocation("big")
-                .withTags(mapOf("kanyktzlcuiywg", "qfbow", "nhzgpphrcgyn", "ywgndrv", "fsxlzevgbmqjqa", "ocpecfvmmco"));
+        DelegatedSubnetResource model = new DelegatedSubnetResource().withLocation("kftutqxlngxlefg")
+            .withTags(mapOf("tthzrvqd", "xkrxdqmi", "ehoqfbowskan", "abhjybi"));
         model = BinaryData.fromObject(model).toObject(DelegatedSubnetResource.class);
-        Assertions.assertEquals("big", model.location());
-        Assertions.assertEquals("qfbow", model.tags().get("kanyktzlcuiywg"));
+        Assertions.assertEquals("kftutqxlngxlefg", model.location());
+        Assertions.assertEquals("xkrxdqmi", model.tags().get("tthzrvqd"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

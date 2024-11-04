@@ -19,10 +19,8 @@ import reactor.core.publisher.Mono;
 /** Entry point for Virtual Network Gateway management API in Azure. */
 @Fluent
 public interface VirtualNetworkGateway
-    extends GroupableResource<NetworkManager, VirtualNetworkGatewayInner>,
-        Refreshable<VirtualNetworkGateway>,
-        Updatable<VirtualNetworkGateway.Update>,
-        UpdatableWithTags<VirtualNetworkGateway> {
+    extends GroupableResource<NetworkManager, VirtualNetworkGatewayInner>, Refreshable<VirtualNetworkGateway>,
+    Updatable<VirtualNetworkGateway.Update>, UpdatableWithTags<VirtualNetworkGateway> {
 
     // Actions
 
@@ -102,14 +100,8 @@ public interface VirtualNetworkGateway
     Collection<VirtualNetworkGatewayIpConfiguration> ipConfigurations();
 
     /** The entirety of the virtual network gateway definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithGatewayType,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithNetwork,
-            DefinitionStages.WithBgp,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithGatewayType,
+        DefinitionStages.WithSku, DefinitionStages.WithNetwork, DefinitionStages.WithBgp, DefinitionStages.WithCreate {
     }
 
     /** Grouping of virtual network gateway definition stages. */
@@ -224,11 +216,8 @@ public interface VirtualNetworkGateway
          * The stage of the virtual network gateway definition which contains all the minimum required inputs for the
          * resource to be created, but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<VirtualNetworkGateway>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithPublicIPAddress,
-                DefinitionStages.WithBgp {
+        interface WithCreate extends Creatable<VirtualNetworkGateway>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithPublicIPAddress, DefinitionStages.WithBgp {
         }
     }
 
@@ -288,11 +277,7 @@ public interface VirtualNetworkGateway
     /**
      * The template for a virtual network gateway update operation, containing all the settings that can be modified.
      */
-    interface Update
-        extends Appliable<VirtualNetworkGateway>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithBgp,
-            UpdateStages.WithPointToSiteConfiguration {
+    interface Update extends Appliable<VirtualNetworkGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
+        UpdateStages.WithBgp, UpdateStages.WithPointToSiteConfiguration {
     }
 }

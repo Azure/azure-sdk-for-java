@@ -21,22 +21,18 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
 
     private final com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager;
 
-    public OrchestratorInstanceServicesImpl(
-        OrchestratorInstanceServicesClient innerClient,
+    public OrchestratorInstanceServicesImpl(OrchestratorInstanceServicesClient innerClient,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Orchestrator> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<OrchestratorInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public Response<Orchestrator> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<OrchestratorInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OrchestratorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,97 +58,77 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
 
     public PagedIterable<Orchestrator> list() {
         PagedIterable<OrchestratorInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Orchestrator> list(Context context) {
         PagedIterable<OrchestratorInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Orchestrator> listByResourceGroup(String resourceGroupName) {
         PagedIterable<OrchestratorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Orchestrator> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<OrchestratorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrchestratorImpl(inner1, this.manager()));
     }
 
     public Orchestrator getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<Orchestrator> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
         Boolean localForceDelete = null;
         this.delete(resourceGroupName, resourceName, localForceDelete, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
         this.delete(resourceGroupName, resourceName, forceDelete, context);
     }

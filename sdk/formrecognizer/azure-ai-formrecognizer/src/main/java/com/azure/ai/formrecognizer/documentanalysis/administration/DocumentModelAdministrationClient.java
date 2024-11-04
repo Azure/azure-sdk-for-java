@@ -76,11 +76,9 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.T
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getInnerCopyAuthorization;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocTypes;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getBuildDocumentModelOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getComposeModelOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getCopyAuthorizationOptions;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
  * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
@@ -234,8 +232,8 @@ public final class DocumentModelAdministrationClient {
      * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModel(
-        String blobContainerUrl, DocumentModelBuildMode buildMode) {
+    public SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModel(String blobContainerUrl,
+        DocumentModelBuildMode buildMode) {
         return beginBuildDocumentModel(blobContainerUrl, buildMode, null, null, Context.NONE);
     }
 
@@ -353,8 +351,8 @@ public final class DocumentModelAdministrationClient {
      * @throws NullPointerException If {@code blobContainerUrl} and {@code fileList} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModel(
-        ContentSource contentSource, DocumentModelBuildMode buildMode) {
+    public SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModel(ContentSource contentSource,
+        DocumentModelBuildMode buildMode) {
         return beginBuildDocumentModel(contentSource, buildMode, null, Context.NONE);
     }
 
@@ -432,7 +430,6 @@ public final class DocumentModelAdministrationClient {
             modelId = Utility.generateRandomModelID();
         }
         String finalModelId = modelId;
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
         if (contentSource instanceof BlobFileListContentSource) {
             BlobFileListContentSource blobFileListContentSource = (BlobFileListContentSource) contentSource;
             Objects.requireNonNull(blobFileListContentSource.getContainerUrl(), "'blobContainerUrl' is required.");
@@ -442,12 +439,11 @@ public final class DocumentModelAdministrationClient {
             BlobContentSource blobContentSource = (BlobContentSource) contentSource;
             Objects.requireNonNull(blobContentSource.getContainerUrl(), "'blobContainerUrl' is required.");
         }
-        return SyncPoller.createPoller(
-            DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, buildModelActivationOperation(
-                contentSource, buildMode, finalModelId, finalBuildDocumentModelOptions, finalContext).apply(cxt)),
-            buildModelPollingOperation(finalContext), getCancellationIsNotSupported(),
-            buildModelFetchingOperation(finalContext));
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                buildModelActivationOperation(contentSource, buildMode, finalModelId, finalBuildDocumentModelOptions,
+                    context).apply(cxt)),
+            buildModelPollingOperation(context), getCancellationIsNotSupported(), buildModelFetchingOperation(context));
     }
 
     /**
@@ -496,8 +492,8 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceDetails> getResourceDetailsWithResponse(Context context) {
         try {
-            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails> response =
-                miscellaneousImpl.getResourceInfoWithResponse(enableSyncRestProxy(getTracingContext(context)));
+            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails> response
+                = miscellaneousImpl.getResourceInfoWithResponse(context);
 
             return new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -541,20 +537,19 @@ public final class DocumentModelAdministrationClient {
      *
      * @param modelId The unique model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-
+    
      * @return A {@link Response} containing status code and HTTP headers.
      * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'modelId' is required and cannot be null or empty"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
 
         try {
-            return
-                documentModelsImpl.deleteModelWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
+            return documentModelsImpl.deleteModelWithResponse(modelId, context);
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -629,8 +624,8 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link Response} containing the {@link DocumentModelCopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentModelCopyAuthorization> getCopyAuthorizationWithResponse(
-        CopyAuthorizationOptions copyAuthorizationOptions, Context context) {
+    public Response<DocumentModelCopyAuthorization>
+        getCopyAuthorizationWithResponse(CopyAuthorizationOptions copyAuthorizationOptions, Context context) {
         copyAuthorizationOptions = getCopyAuthorizationOptions(copyAuthorizationOptions);
         String modelId = copyAuthorizationOptions.getModelId();
         modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
@@ -638,8 +633,8 @@ public final class DocumentModelAdministrationClient {
         AuthorizeCopyRequest authorizeCopyRequest = getAuthorizeCopyRequest(copyAuthorizationOptions, modelId);
 
         try {
-            Response<CopyAuthorization> response = documentModelsImpl.authorizeModelCopyWithResponse(
-                authorizeCopyRequest, enableSyncRestProxy(getTracingContext(context)));
+            Response<CopyAuthorization> response
+                = documentModelsImpl.authorizeModelCopyWithResponse(authorizeCopyRequest, context);
 
             return new SimpleResponse<>(response, Transforms.toCopyAuthorization(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -759,14 +754,13 @@ public final class DocumentModelAdministrationClient {
         String modelId = composeDocumentModelOptions.getModelId();
         modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
-        final ComposeDocumentModelRequest composeRequest =
-            getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
+        final ComposeDocumentModelRequest composeRequest
+            = getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
 
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, composeModelActivationOperation(
-                composeRequest, finalContext).apply(cxt)), buildModelPollingOperation(finalContext),
-            getCancellationIsNotSupported(), buildModelFetchingOperation(finalContext));
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                composeModelActivationOperation(composeRequest, context).apply(cxt)),
+            buildModelPollingOperation(context), getCancellationIsNotSupported(), buildModelFetchingOperation(context));
     }
 
     /**
@@ -856,12 +850,11 @@ public final class DocumentModelAdministrationClient {
 
     private SyncPoller<OperationResult, DocumentModelDetails> beginCopyDocumentModelToSync(String sourceModelId,
         DocumentModelCopyAuthorization target, Context context) {
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
+
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, getCopyActivationOperation(sourceModelId,
-                target, finalContext).apply(cxt)),
-            buildModelPollingOperation(finalContext), getCancellationIsNotSupported(),
-            buildModelFetchingOperation(finalContext));
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                getCopyActivationOperation(sourceModelId, target, context).apply(cxt)),
+            buildModelPollingOperation(context), getCancellationIsNotSupported(), buildModelFetchingOperation(context));
     }
 
     /**
@@ -914,15 +907,14 @@ public final class DocumentModelAdministrationClient {
     }
 
     private PagedIterable<DocumentModelSummary> listDocumentModelsSync(Context context) {
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
-        return new PagedIterable<>(() -> listFirstPageModelInfo(finalContext),
-            continuationToken -> listNextPageModelInfo(continuationToken, finalContext));
+        return new PagedIterable<>(() -> listFirstPageModelInfo(context),
+            continuationToken -> listNextPageModelInfo(continuationToken, context));
     }
 
     private PagedResponse<DocumentModelSummary> listFirstPageModelInfo(Context context) {
         try {
-            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> res =
-                documentModelsImpl.listModelsSinglePage(context);
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> res
+                = documentModelsImpl.listModelsSinglePage(context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 Transforms.toDocumentModelInfo(res.getValue()), res.getContinuationToken(), null);
         } catch (ErrorResponseException ex) {
@@ -935,8 +927,8 @@ public final class DocumentModelAdministrationClient {
             return null;
         }
         try {
-            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> res =
-                documentModelsImpl.listModelsNextSinglePage(nextPageLink, context);
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> res
+                = documentModelsImpl.listModelsNextSinglePage(nextPageLink, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 Transforms.toDocumentModelInfo(res.getValue()), res.getContinuationToken(), null);
         } catch (ErrorResponseException ex) {
@@ -1008,12 +1000,12 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentModelDetails> getDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'modelId' is required and cannot be null or empty"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
         try {
-            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails> response =
-                documentModelsImpl.getModelWithResponse(modelId, enableSyncRestProxy(getTracingContext(context)));
+            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails> response
+                = documentModelsImpl.getModelWithResponse(modelId, context);
 
             return new SimpleResponse<>(response, Transforms.toDocumentModelDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -1083,13 +1075,12 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationDetails> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'operationId' is required and cannot be null or empty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'operationId' is required and cannot be null or empty"));
         }
         try {
-            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails> response =
-                miscellaneousImpl.getOperationWithResponse(operationId,
-                    enableSyncRestProxy(getTracingContext(context)));
+            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails> response
+                = miscellaneousImpl.getOperationWithResponse(operationId, context);
 
             return new SimpleResponse<>(response, Transforms.toOperationDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -1155,15 +1146,14 @@ public final class DocumentModelAdministrationClient {
     }
 
     private PagedIterable<OperationSummary> listOperationsSync(Context context) {
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
-        return new PagedIterable<>(() -> listFirstPageOperationInfo(finalContext),
-            continuationToken -> listNextPageOperationInfo(continuationToken, finalContext));
+        return new PagedIterable<>(() -> listFirstPageOperationInfo(context),
+            continuationToken -> listNextPageOperationInfo(continuationToken, context));
     }
 
     private PagedResponse<OperationSummary> listFirstPageOperationInfo(Context context) {
         try {
-            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> res =
-                miscellaneousImpl.listOperationsSinglePage(context);
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> res
+                = miscellaneousImpl.listOperationsSinglePage(context);
 
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 Transforms.toOperationSummary(res.getValue()), res.getContinuationToken(), null);
@@ -1177,8 +1167,8 @@ public final class DocumentModelAdministrationClient {
             return null;
         }
         try {
-            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> res =
-                miscellaneousImpl.listOperationsNextSinglePage(nextPageLink, context);
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> res
+                = miscellaneousImpl.listOperationsNextSinglePage(nextPageLink, context);
 
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 Transforms.toOperationSummary(res.getValue()), res.getContinuationToken(), null);
@@ -1230,8 +1220,8 @@ public final class DocumentModelAdministrationClient {
      * @throws NullPointerException If {@code documentTypes} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(
-        Map<String, ClassifierDocumentTypeDetails> documentTypes) {
+    public SyncPoller<OperationResult, DocumentClassifierDetails>
+        beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> documentTypes) {
         return beginBuildDocumentClassifier(documentTypes, null, Context.NONE);
     }
 
@@ -1295,20 +1285,19 @@ public final class DocumentModelAdministrationClient {
         Map<String, ClassifierDocumentTypeDetails> documentTypes, BuildDocumentClassifierOptions options,
         Context context) {
 
-        BuildDocumentClassifierOptions
-            finalBuildDocumentClassifierOptions = options == null ? new BuildDocumentClassifierOptions() : options;
+        BuildDocumentClassifierOptions finalBuildDocumentClassifierOptions
+            = options == null ? new BuildDocumentClassifierOptions() : options;
         String classifierId = finalBuildDocumentClassifierOptions.getClassifierId();
         if (classifierId == null) {
             classifierId = Utility.generateRandomModelID();
         }
         String finalId = classifierId;
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
 
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, buildClassifierActivationOperation(
-                finalId, documentTypes, finalBuildDocumentClassifierOptions, finalContext).apply(cxt)),
-            buildModelPollingOperation(finalContext), getCancellationIsNotSupported(),
-            classifierFetchingOperation(finalContext));
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                buildClassifierActivationOperation(finalId, documentTypes, finalBuildDocumentClassifierOptions, context)
+                    .apply(cxt)),
+            buildModelPollingOperation(context), getCancellationIsNotSupported(), classifierFetchingOperation(context));
     }
 
     /**
@@ -1361,15 +1350,14 @@ public final class DocumentModelAdministrationClient {
     }
 
     private PagedIterable<DocumentClassifierDetails> listDocumentClassifiersSync(Context context) {
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
-        return new PagedIterable<>(() -> listFirstPageClassifiers(finalContext),
-            continuationToken -> listNextPageClassifiers(continuationToken, finalContext));
+        return new PagedIterable<>(() -> listFirstPageClassifiers(context),
+            continuationToken -> listNextPageClassifiers(continuationToken, context));
     }
 
     private PagedResponse<DocumentClassifierDetails> listFirstPageClassifiers(Context context) {
         try {
-            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails>
-                res = documentClassifiersImpl.listClassifiersSinglePage(context);
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails> res
+                = documentClassifiersImpl.listClassifiersSinglePage(context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 fromInnerCDocumentClassifierDetails(res.getValue()), res.getContinuationToken(), null);
         } catch (ErrorResponseException ex) {
@@ -1382,8 +1370,8 @@ public final class DocumentModelAdministrationClient {
             return null;
         }
         try {
-            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails>
-                res = documentClassifiersImpl.listClassifiersNextSinglePage(nextPageLink, context);
+            PagedResponse<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails> res
+                = documentClassifiersImpl.listClassifiersNextSinglePage(nextPageLink, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 fromInnerCDocumentClassifierDetails(res.getValue()), res.getContinuationToken(), null);
         } catch (ErrorResponseException ex) {
@@ -1464,13 +1452,12 @@ public final class DocumentModelAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentClassifierDetails> getDocumentClassifierWithResponse(String classifierId, Context context) {
         if (CoreUtils.isNullOrEmpty(classifierId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'classifierId' is required and cannot be null or empty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'classifierId' is required and cannot be null or empty"));
         }
         try {
-            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails>
-                response = documentClassifiersImpl.getClassifierWithResponse(classifierId,
-                enableSyncRestProxy(getTracingContext(context)));
+            Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifierDetails> response
+                = documentClassifiersImpl.getClassifierWithResponse(classifierId, context);
 
             return new SimpleResponse<>(response, Transforms.fromInnerDocumentClassifierDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
@@ -1514,20 +1501,18 @@ public final class DocumentModelAdministrationClient {
      *
      * @param classifierId The unique document classifier identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-
+    
      * @return A {@link Response} containing status code and HTTP headers.
      * @throws IllegalArgumentException If {@code classifierId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDocumentClassifierWithResponse(String classifierId, Context context) {
         if (CoreUtils.isNullOrEmpty(classifierId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'classifierId' is required and cannot be null or empty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'classifierId' is required and cannot be null or empty"));
         }
         try {
-            return
-                documentClassifiersImpl.deleteClassifierWithResponse(classifierId,
-                    enableSyncRestProxy(getTracingContext(context)));
+            return documentClassifiersImpl.deleteClassifierWithResponse(classifierId, context);
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -1538,8 +1523,8 @@ public final class DocumentModelAdministrationClient {
         BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
         return (pollingContext) -> {
             try {
-                BuildDocumentModelRequest buildDocumentModelRequest = getBuildDocumentModelRequest(contentSource,
-                    buildMode, modelId, buildDocumentModelOptions);
+                BuildDocumentModelRequest buildDocumentModelRequest
+                    = getBuildDocumentModelRequest(contentSource, buildMode, modelId, buildDocumentModelOptions);
 
                 ResponseBase<DocumentModelsBuildModelHeaders, Void> response
                     = documentModelsImpl.buildModelWithResponse(buildDocumentModelRequest, context);
@@ -1575,20 +1560,21 @@ public final class DocumentModelAdministrationClient {
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case FAILED:
                 throw LOGGER.logExceptionAsError(
                     Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
+
             case CANCELED:
             default:
-                status = LongRunningOperationStatus.fromString(
-                    getOperationResponse.getStatus().toString(), true);
+                status = LongRunningOperationStatus.fromString(getOperationResponse.getStatus().toString(), true);
                 break;
         }
-        return new PollResponse<>(status,
-            trainingModelOperationResponse.getValue());
+        return new PollResponse<>(status, trainingModelOperationResponse.getValue());
     }
 
     private BiFunction<PollingContext<OperationResult>, PollResponse<OperationResult>, OperationResult>
@@ -1603,9 +1589,8 @@ public final class DocumentModelAdministrationClient {
         return (pollingContext) -> {
             try {
                 final String modelId = pollingContext.getLatestResponse().getValue().getOperationId();
-                return
-                    Transforms.toDocumentModelFromOperationId(miscellaneousImpl.getOperationWithResponse(modelId,
-                        context).getValue());
+                return Transforms.toDocumentModelFromOperationId(
+                    miscellaneousImpl.getOperationWithResponse(modelId, context).getValue());
             } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
@@ -1636,7 +1621,7 @@ public final class DocumentModelAdministrationClient {
                 ResponseBase<DocumentModelsCopyModelToHeaders, Void> response
                     = documentModelsImpl.copyModelToWithResponse(modelId, copyRequest, context);
                 return Transforms.toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation());
-            }  catch (ErrorResponseException ex) {
+            } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }
         };
@@ -1665,8 +1650,8 @@ public final class DocumentModelAdministrationClient {
         return (pollingContext) -> {
             try {
                 final String classifierId = pollingContext.getLatestResponse().getValue().getOperationId();
-                return Transforms.toDocumentClassifierFromOperationId(miscellaneousImpl.getOperationWithResponse(
-                        classifierId, context).getValue());
+                return Transforms.toDocumentClassifierFromOperationId(
+                    miscellaneousImpl.getOperationWithResponse(classifierId, context).getValue());
             } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
             }

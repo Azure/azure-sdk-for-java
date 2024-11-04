@@ -14,8 +14,7 @@ public final class SnapshotResourceImpl implements SnapshotResource {
 
     private final com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager;
 
-    SnapshotResourceImpl(
-        SnapshotResourceInner innerObject,
+    SnapshotResourceImpl(SnapshotResourceInner innerObject,
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

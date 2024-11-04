@@ -5,31 +5,32 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SearchesReverseSearchAddressBatchHeaders model. */
+/**
+ * The SearchesReverseSearchAddressBatchHeaders model.
+ */
 @Fluent
 public final class SearchesReverseSearchAddressBatchHeaders {
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SearchesReverseSearchAddressBatchHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SearchesReverseSearchAddressBatchHeaders(HttpHeaders rawHeaders) {
-        this.location = rawHeaders.getValue("Location");
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -38,7 +39,7 @@ public final class SearchesReverseSearchAddressBatchHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the SearchesReverseSearchAddressBatchHeaders object itself.
      */

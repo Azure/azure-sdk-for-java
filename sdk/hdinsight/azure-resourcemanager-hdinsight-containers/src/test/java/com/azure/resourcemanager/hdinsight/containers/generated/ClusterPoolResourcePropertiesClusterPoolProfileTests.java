@@ -6,22 +6,28 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesClusterPoolProfile;
+import com.azure.resourcemanager.hdinsight.containers.models.IpTag;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterPoolResourcePropertiesClusterPoolProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolResourcePropertiesClusterPoolProfile model
-            = BinaryData.fromString("{\"clusterPoolVersion\":\"dcc\"}")
-                .toObject(ClusterPoolResourcePropertiesClusterPoolProfile.class);
-        Assertions.assertEquals("dcc", model.clusterPoolVersion());
+        ClusterPoolResourcePropertiesClusterPoolProfile model = BinaryData.fromString(
+            "{\"clusterPoolVersion\":\"bcryffdfd\",\"publicIpTag\":{\"ipTagType\":\"ygexpaojakhmsb\",\"tag\":\"jhcrz\"}}")
+            .toObject(ClusterPoolResourcePropertiesClusterPoolProfile.class);
+        Assertions.assertEquals("bcryffdfd", model.clusterPoolVersion());
+        Assertions.assertEquals("ygexpaojakhmsb", model.publicIpTag().ipTagType());
+        Assertions.assertEquals("jhcrz", model.publicIpTag().tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPoolResourcePropertiesClusterPoolProfile model
-            = new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("dcc");
+            = new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("bcryffdfd")
+                .withPublicIpTag(new IpTag().withIpTagType("ygexpaojakhmsb").withTag("jhcrz"));
         model = BinaryData.fromObject(model).toObject(ClusterPoolResourcePropertiesClusterPoolProfile.class);
-        Assertions.assertEquals("dcc", model.clusterPoolVersion());
+        Assertions.assertEquals("bcryffdfd", model.clusterPoolVersion());
+        Assertions.assertEquals("ygexpaojakhmsb", model.publicIpTag().ipTagType());
+        Assertions.assertEquals("jhcrz", model.publicIpTag().tag());
     }
 }

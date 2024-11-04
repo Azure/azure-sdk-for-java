@@ -13,22 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SapApplicationServerInstanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapApplicationServerInstanceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"instanceNo\":\"gmgsxnkjzkde\",\"subnet\":\"pvlopwiyighxpkd\",\"hostname\":\"baiuebbaumny\",\"kernelVersion\":\"ped\",\"kernelPatch\":\"jn\",\"ipAddress\":\"ckhsmtxpsieb\",\"gatewayPort\":4922743900723589322,\"icmHttpPort\":3953779484897603289,\"icmHttpsPort\":8344746335940164882,\"loadBalancerDetails\":{\"id\":\"dqmh\"},\"vmDetails\":[{\"type\":\"Unknown\",\"virtualMachineId\":\"dwkyzxuu\",\"storageDetails\":[]},{\"type\":\"Active\",\"virtualMachineId\":\"scwsv\",\"storageDetails\":[]},{\"type\":\"Active\",\"virtualMachineId\":\"g\",\"storageDetails\":[]}],\"status\":\"Offline\",\"health\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"i\",\"tags\":{\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\",\"nermcl\":\"kphywpnvjto\",\"uscrpabgyepsb\":\"plpho\"},\"id\":\"tazqugxywpmueefj\",\"name\":\"wfqkquj\",\"type\":\"dsuyonobgla\"}")
-                .toObject(SapApplicationServerInstanceInner.class);
+        SapApplicationServerInstanceInner model = BinaryData.fromString(
+            "{\"properties\":{\"instanceNo\":\"gmgsxnkjzkde\",\"subnet\":\"pvlopwiyighxpkd\",\"hostname\":\"baiuebbaumny\",\"kernelVersion\":\"ped\",\"kernelPatch\":\"jn\",\"ipAddress\":\"ckhsmtxpsieb\",\"gatewayPort\":4922743900723589322,\"icmHttpPort\":3953779484897603289,\"icmHttpsPort\":8344746335940164882,\"loadBalancerDetails\":{\"id\":\"dqmh\"},\"vmDetails\":[{\"type\":\"Unknown\",\"virtualMachineId\":\"dwkyzxuu\",\"storageDetails\":[]},{\"type\":\"Active\",\"virtualMachineId\":\"scwsv\",\"storageDetails\":[]},{\"type\":\"Active\",\"virtualMachineId\":\"g\",\"storageDetails\":[]}],\"status\":\"Offline\",\"health\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"i\",\"tags\":{\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\",\"nermcl\":\"kphywpnvjto\",\"uscrpabgyepsb\":\"plpho\"},\"id\":\"tazqugxywpmueefj\",\"name\":\"wfqkquj\",\"type\":\"dsuyonobgla\"}")
+            .toObject(SapApplicationServerInstanceInner.class);
         Assertions.assertEquals("i", model.location());
         Assertions.assertEquals("vce", model.tags().get("vei"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapApplicationServerInstanceInner model =
-            new SapApplicationServerInstanceInner()
-                .withLocation("i")
-                .withTags(
-                    mapOf("vei", "vce", "dhbt", "ovnotyfjfcnjbkcn", "nermcl", "kphywpnvjto", "uscrpabgyepsb", "plpho"));
+        SapApplicationServerInstanceInner model = new SapApplicationServerInstanceInner().withLocation("i")
+            .withTags(
+                mapOf("vei", "vce", "dhbt", "ovnotyfjfcnjbkcn", "nermcl", "kphywpnvjto", "uscrpabgyepsb", "plpho"));
         model = BinaryData.fromObject(model).toObject(SapApplicationServerInstanceInner.class);
         Assertions.assertEquals("i", model.location());
         Assertions.assertEquals("vce", model.tags().get("vei"));

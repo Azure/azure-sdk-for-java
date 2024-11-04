@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ArcConfiguration model.
  */
 @Fluent
-public final class ArcConfiguration {
+public final class ArcConfiguration implements JsonSerializable<ArcConfiguration> {
     /*
      * The artifactsStorageType property.
      */
-    @JsonProperty(value = "artifactsStorageType")
     private StorageType artifactsStorageType;
 
     /*
      * The artifactStorageClassName property.
      */
-    @JsonProperty(value = "artifactStorageClassName")
     private String artifactStorageClassName;
 
     /*
      * The artifactStorageMountPath property.
      */
-    @JsonProperty(value = "artifactStorageMountPath")
     private String artifactStorageMountPath;
 
     /*
      * The artifactStorageNodeName property.
      */
-    @JsonProperty(value = "artifactStorageNodeName")
     private String artifactStorageNodeName;
 
     /*
      * The artifactStorageAccessMode property.
      */
-    @JsonProperty(value = "artifactStorageAccessMode")
     private String artifactStorageAccessMode;
 
     /*
      * The frontEndServiceConfiguration property.
      */
-    @JsonProperty(value = "frontEndServiceConfiguration")
     private FrontEndConfiguration frontEndServiceConfiguration;
 
     /*
      * The kubeConfig property.
      */
-    @JsonProperty(value = "kubeConfig")
     private String kubeConfig;
 
     /**
@@ -209,5 +206,60 @@ public final class ArcConfiguration {
         if (frontEndServiceConfiguration() != null) {
             frontEndServiceConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("artifactsStorageType",
+            this.artifactsStorageType == null ? null : this.artifactsStorageType.toString());
+        jsonWriter.writeStringField("artifactStorageClassName", this.artifactStorageClassName);
+        jsonWriter.writeStringField("artifactStorageMountPath", this.artifactStorageMountPath);
+        jsonWriter.writeStringField("artifactStorageNodeName", this.artifactStorageNodeName);
+        jsonWriter.writeStringField("artifactStorageAccessMode", this.artifactStorageAccessMode);
+        jsonWriter.writeJsonField("frontEndServiceConfiguration", this.frontEndServiceConfiguration);
+        jsonWriter.writeStringField("kubeConfig", this.kubeConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArcConfiguration.
+     */
+    public static ArcConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcConfiguration deserializedArcConfiguration = new ArcConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactsStorageType".equals(fieldName)) {
+                    deserializedArcConfiguration.artifactsStorageType = StorageType.fromString(reader.getString());
+                } else if ("artifactStorageClassName".equals(fieldName)) {
+                    deserializedArcConfiguration.artifactStorageClassName = reader.getString();
+                } else if ("artifactStorageMountPath".equals(fieldName)) {
+                    deserializedArcConfiguration.artifactStorageMountPath = reader.getString();
+                } else if ("artifactStorageNodeName".equals(fieldName)) {
+                    deserializedArcConfiguration.artifactStorageNodeName = reader.getString();
+                } else if ("artifactStorageAccessMode".equals(fieldName)) {
+                    deserializedArcConfiguration.artifactStorageAccessMode = reader.getString();
+                } else if ("frontEndServiceConfiguration".equals(fieldName)) {
+                    deserializedArcConfiguration.frontEndServiceConfiguration = FrontEndConfiguration.fromJson(reader);
+                } else if ("kubeConfig".equals(fieldName)) {
+                    deserializedArcConfiguration.kubeConfig = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcConfiguration;
+        });
     }
 }

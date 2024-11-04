@@ -18,6 +18,7 @@ APIs in one client library, you will know how to use them in other client librar
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 
 ### Include the package
 
@@ -242,7 +243,7 @@ logging to be enabled. The following table explains what logging is enabled for 
 | `HttpLogDetailLevel` value            | Logging enabled                                                                                  |
 |---------------------------------------|--------------------------------------------------------------------------------------------------|
 | `HttpLogDetailLevel.NONE`             | No HTTP request or response logging                                                              |
-| `HttpLogDetailLevel.BASIC`            | HTTP request method, response status code, and request and response URL                          |
+| `HttpLogDetailLevel.BASIC`            | HTTP request method, response status code, and request and response URI                          |
 | `HttpLogDetailLevel.HEADERS`          | All of `HttpLogDetailLevel.BASIC` and request and response headers if the log level is `verbose` |
 | `HttpLogDetailLevel.BODY`             | All of `HttpLogDetailLevel.BASIC` and request and response body if it's under 10KB in size       |
 | `HttpLogDetailLevel.BODY_AND_HEADERS` | All of `HttpLogDetailLevel.HEADERS` and `HttpLogDetailLevel.BODY`                                |

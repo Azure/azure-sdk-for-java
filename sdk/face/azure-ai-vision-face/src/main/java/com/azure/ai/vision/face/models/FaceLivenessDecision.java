@@ -5,7 +5,6 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class FaceLivenessDecision extends ExpandableStringEnum<FaceLivenes
      * @return the corresponding FaceLivenessDecision.
      */
     @Generated
-    @JsonCreator
     public static FaceLivenessDecision fromString(String name) {
         return fromString(name, FaceLivenessDecision.class);
     }

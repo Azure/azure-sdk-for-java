@@ -6,20 +6,17 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.Category;
-import org.junit.jupiter.api.Test;
 
 public final class CategoryTests {
-    @Test
-    public void testDeserialize() {
-        Category model =
-            BinaryData
-                .fromString(
-                    "{\"categoryName\":\"tgrhpdjpjumas\",\"categoryType\":\"FullyAutomated\",\"categoryStatus\":\"Unhealthy\",\"controlFamilies\":[{\"familyName\":\"gual\",\"familyType\":\"FullyAutomated\",\"familyStatus\":\"Healthy\",\"controls\":[]}]}")
-                .toObject(Category.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Category model = BinaryData.fromString(
+            "{\"categoryName\":\"ygdvwv\",\"categoryStatus\":\"NotApplicable\",\"controlFamilies\":[{\"controlFamilyName\":\"wxrt\",\"controlFamilyStatus\":\"Failed\",\"controls\":[{\"controlId\":\"xg\",\"controlName\":\"agvrvmnpkuk\",\"controlFullName\":\"i\",\"controlDescription\":\"blxgwimf\",\"controlDescriptionHyperLink\":\"hfjx\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{},{}]},{\"controlId\":\"foqreyfkzik\",\"controlName\":\"aw\",\"controlFullName\":\"a\",\"controlDescription\":\"xwczelpcire\",\"controlDescriptionHyperLink\":\"feaenwab\",\"controlStatus\":\"Passed\",\"responsibilities\":[{},{},{}]},{\"controlId\":\"dxbjhwuaanozj\",\"controlName\":\"ph\",\"controlFullName\":\"ulpjr\",\"controlDescription\":\"ag\",\"controlDescriptionHyperLink\":\"vimjwos\",\"controlStatus\":\"Passed\",\"responsibilities\":[{}]}]},{\"controlFamilyName\":\"skfc\",\"controlFamilyStatus\":\"Failed\",\"controls\":[{\"controlId\":\"ekkezzikhlyfjh\",\"controlName\":\"qgge\",\"controlFullName\":\"unygaeqid\",\"controlDescription\":\"fatpxllrxcyjmoa\",\"controlDescriptionHyperLink\":\"uvarmywdmjsjq\",\"controlStatus\":\"Failed\",\"responsibilities\":[{},{},{}]},{\"controlId\":\"xrwlyc\",\"controlName\":\"uhpkxkgymar\",\"controlFullName\":\"n\",\"controlDescription\":\"xqugjhkycubedd\",\"controlDescriptionHyperLink\":\"sofwqmzqalkrmnji\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{},{}]},{\"controlId\":\"qudf\",\"controlName\":\"yxbaaabjyvayf\",\"controlFullName\":\"m\",\"controlDescription\":\"rtuzqogs\",\"controlDescriptionHyperLink\":\"nevfdnw\",\"controlStatus\":\"Failed\",\"responsibilities\":[{},{},{}]},{\"controlId\":\"syyceuzsoibjud\",\"controlName\":\"rx\",\"controlFullName\":\"thzvaytdwkqbrqu\",\"controlDescription\":\"axhexiilivp\",\"controlDescriptionHyperLink\":\"iirqtd\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{},{},{},{}]}]},{\"controlFamilyName\":\"uzf\",\"controlFamilyStatus\":\"Failed\",\"controls\":[{\"controlId\":\"xrxxlep\",\"controlName\":\"amxjezwlw\",\"controlFullName\":\"xuqlcvydypat\",\"controlDescription\":\"oa\",\"controlDescriptionHyperLink\":\"kniod\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{}]},{\"controlId\":\"nuj\",\"controlName\":\"mmsbvdkcrodtjin\",\"controlFullName\":\"jlfltkacjvefkdlf\",\"controlDescription\":\"kggkfpa\",\"controlDescriptionHyperLink\":\"owpulpq\",\"controlStatus\":\"NotApplicable\",\"responsibilities\":[{}]}]}]}")
+            .toObject(Category.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Category model = new Category();
         model = BinaryData.fromObject(model).toObject(Category.class);
     }

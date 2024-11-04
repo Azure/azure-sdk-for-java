@@ -6,23 +6,26 @@ package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of the StandbyVirtualMachine.
  */
 @Immutable
-public final class StandbyVirtualMachineResourceProperties {
+public final class StandbyVirtualMachineResourceProperties
+    implements JsonSerializable<StandbyVirtualMachineResourceProperties> {
     /*
      * Resource id of the virtual machine.
      */
-    @JsonProperty(value = "virtualMachineResourceId", required = true)
     private String virtualMachineResourceId;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -63,4 +66,45 @@ public final class StandbyVirtualMachineResourceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StandbyVirtualMachineResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualMachineResourceId", this.virtualMachineResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StandbyVirtualMachineResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StandbyVirtualMachineResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StandbyVirtualMachineResourceProperties.
+     */
+    public static StandbyVirtualMachineResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StandbyVirtualMachineResourceProperties deserializedStandbyVirtualMachineResourceProperties
+                = new StandbyVirtualMachineResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachineResourceId".equals(fieldName)) {
+                    deserializedStandbyVirtualMachineResourceProperties.virtualMachineResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStandbyVirtualMachineResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStandbyVirtualMachineResourceProperties;
+        });
+    }
 }

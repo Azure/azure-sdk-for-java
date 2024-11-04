@@ -9,7 +9,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.VectorQueryKind;
 import java.io.IOException;
 
 /**
@@ -20,6 +19,11 @@ import java.io.IOException;
 public final class VectorizableImageBinaryQuery extends VectorQuery {
 
     /*
+     * The kind of vector query being performed.
+     */
+    private VectorQueryKind kind = VectorQueryKind.IMAGE_BINARY;
+
+    /*
      * The base 64 encoded binary of an image to be vectorized to perform a vector search query.
      */
     private String base64Image;
@@ -28,6 +32,16 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      * Creates an instance of VectorizableImageBinaryQuery class.
      */
     public VectorizableImageBinaryQuery() {
+    }
+
+    /**
+     * Get the kind property: The kind of vector query being performed.
+     *
+     * @return the kind value.
+     */
+    @Override
+    public VectorQueryKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -106,17 +120,29 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VectorizableImageBinaryQuery setFilterOverride(String filterOverride) {
+        super.setFilterOverride(filterOverride);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind",
-            VectorQueryKind.IMAGE_BINARY == null ? null : VectorQueryKind.IMAGE_BINARY.toString());
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
+        jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("base64Image", this.base64Image);
         return jsonWriter.writeEndObject();
     }
@@ -127,7 +153,6 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorizableImageBinaryQuery if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorizableImageBinaryQuery.
      */
     public static VectorizableImageBinaryQuery fromJson(JsonReader jsonReader) throws IOException {
@@ -136,14 +161,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("kind".equals(fieldName)) {
-                    String kind = reader.getString();
-                    if (!"imageBinary".equals(kind)) {
-                        throw new IllegalStateException(
-                            "'kind' was expected to be non-null and equal to 'imageBinary'. The found 'kind' was '"
-                                + kind + "'.");
-                    }
-                } else if ("k".equals(fieldName)) {
+                if ("k".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery
                         .setKNearestNeighborsCount(reader.getNullable(JsonReader::getInt));
                 } else if ("fields".equals(fieldName)) {
@@ -156,6 +174,10 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
                     deserializedVectorizableImageBinaryQuery.setWeight(reader.getNullable(JsonReader::getFloat));
                 } else if ("threshold".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.setThreshold(VectorThreshold.fromJson(reader));
+                } else if ("filterOverride".equals(fieldName)) {
+                    deserializedVectorizableImageBinaryQuery.setFilterOverride(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedVectorizableImageBinaryQuery.kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("base64Image".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.base64Image = reader.getString();
                 } else {

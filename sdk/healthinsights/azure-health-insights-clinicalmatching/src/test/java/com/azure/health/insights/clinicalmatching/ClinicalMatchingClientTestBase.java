@@ -26,11 +26,11 @@ public class ClinicalMatchingClientTestBase extends TestProxyTestBase {
 
     ClinicalMatchingClientBuilder getClientBuilder() {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080");
+        String endpoint
+            = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080");
 
-        ClinicalMatchingClientBuilder builder = new ClinicalMatchingClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey));
+        ClinicalMatchingClientBuilder builder
+            = new ClinicalMatchingClientBuilder().endpoint(endpoint).credential(new AzureKeyCredential(apiKey));
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
@@ -38,14 +38,18 @@ public class ClinicalMatchingClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
         }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2030");
+        }
         return builder;
     }
 
     private BinaryData getTMRequest() {
-        File requestFile = new File(ClinicalMatchingClientTestBase.class.getResource("/ClinicalMatchingClientTest.request.json").getPath());
+        File requestFile = new File(
+            ClinicalMatchingClientTestBase.class.getResource("/ClinicalMatchingClientTest.request.json").getPath());
         try {
-            BinaryData requestBody = BinaryData.fromFile(requestFile.toPath());
-            return requestBody;
+            return BinaryData.fromFile(requestFile.toPath());
         } catch (Exception e) {
             e.printStackTrace();
         }

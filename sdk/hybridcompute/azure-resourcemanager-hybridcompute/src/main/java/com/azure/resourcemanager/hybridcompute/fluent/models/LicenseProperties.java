@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseDetails;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes the properties of a License Profile.
  */
 @Fluent
-public final class LicenseProperties {
+public final class LicenseProperties implements JsonSerializable<LicenseProperties> {
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Describes the tenant id.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The type of the license resource.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * Describes the properties of a License.
      */
-    @JsonProperty(value = "licenseDetails")
     private LicenseDetails licenseDetails;
 
     /**
@@ -123,5 +123,49 @@ public final class LicenseProperties {
         if (licenseDetails() != null) {
             licenseDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeJsonField("licenseDetails", this.licenseDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProperties.
+     */
+    public static LicenseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProperties deserializedLicenseProperties = new LicenseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedLicenseProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedLicenseProperties.tenantId = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedLicenseProperties.licenseType = LicenseType.fromString(reader.getString());
+                } else if ("licenseDetails".equals(fieldName)) {
+                    deserializedLicenseProperties.licenseDetails = LicenseDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProperties;
+        });
     }
 }

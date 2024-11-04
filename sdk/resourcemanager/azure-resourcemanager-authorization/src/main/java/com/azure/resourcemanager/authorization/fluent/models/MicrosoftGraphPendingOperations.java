@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** pendingOperations. */
+/**
+ * pendingOperations.
+ */
 @Fluent
-public final class MicrosoftGraphPendingOperations {
+public final class MicrosoftGraphPendingOperations implements JsonSerializable<MicrosoftGraphPendingOperations> {
     /*
      * pendingContentUpdate
      */
-    @JsonProperty(value = "pendingContentUpdate")
     private MicrosoftGraphPendingContentUpdate pendingContentUpdate;
 
     /*
      * pendingOperations
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPendingOperations class. */
+    /**
+     * Creates an instance of MicrosoftGraphPendingOperations class.
+     */
     public MicrosoftGraphPendingOperations() {
     }
 
     /**
      * Get the pendingContentUpdate property: pendingContentUpdate.
-     *
+     * 
      * @return the pendingContentUpdate value.
      */
     public MicrosoftGraphPendingContentUpdate pendingContentUpdate() {
@@ -41,29 +45,28 @@ public final class MicrosoftGraphPendingOperations {
 
     /**
      * Set the pendingContentUpdate property: pendingContentUpdate.
-     *
+     * 
      * @param pendingContentUpdate the pendingContentUpdate value to set.
      * @return the MicrosoftGraphPendingOperations object itself.
      */
-    public MicrosoftGraphPendingOperations withPendingContentUpdate(
-        MicrosoftGraphPendingContentUpdate pendingContentUpdate) {
+    public MicrosoftGraphPendingOperations
+        withPendingContentUpdate(MicrosoftGraphPendingContentUpdate pendingContentUpdate) {
         this.pendingContentUpdate = pendingContentUpdate;
         return this;
     }
 
     /**
      * Get the additionalProperties property: pendingOperations.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: pendingOperations.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPendingOperations object itself.
      */
@@ -72,22 +75,63 @@ public final class MicrosoftGraphPendingOperations {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pendingContentUpdate() != null) {
             pendingContentUpdate().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pendingContentUpdate", this.pendingContentUpdate);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPendingOperations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPendingOperations if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPendingOperations.
+     */
+    public static MicrosoftGraphPendingOperations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPendingOperations deserializedMicrosoftGraphPendingOperations
+                = new MicrosoftGraphPendingOperations();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pendingContentUpdate".equals(fieldName)) {
+                    deserializedMicrosoftGraphPendingOperations.pendingContentUpdate
+                        = MicrosoftGraphPendingContentUpdate.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPendingOperations.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPendingOperations;
+        });
     }
 }

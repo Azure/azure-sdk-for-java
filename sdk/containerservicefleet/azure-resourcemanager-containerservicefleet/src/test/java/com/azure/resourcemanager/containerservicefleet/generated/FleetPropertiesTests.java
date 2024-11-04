@@ -29,7 +29,8 @@ public final class FleetPropertiesTests {
     public void testSerialize() throws Exception {
         FleetProperties model = new FleetProperties().withHubProfile(new FleetHubProfile().withDnsPrefix("xbnjbiksq")
             .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(true)
-                .withEnableVnetIntegration(true).withSubnetId("nqpjwnzlljfmpp"))
+                .withEnableVnetIntegration(true)
+                .withSubnetId("nqpjwnzlljfmpp"))
             .withAgentProfile(new AgentProfile().withSubnetId("vmgxsab").withVmSize("qduujitcjczdz")));
         model = BinaryData.fromObject(model).toObject(FleetProperties.class);
         Assertions.assertEquals("xbnjbiksq", model.hubProfile().dnsPrefix());

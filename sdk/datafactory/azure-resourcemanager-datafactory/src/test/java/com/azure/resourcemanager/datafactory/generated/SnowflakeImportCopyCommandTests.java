@@ -13,17 +13,17 @@ public final class SnowflakeImportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeImportCopyCommand model = BinaryData.fromString(
-            "{\"type\":\"lb\",\"additionalCopyOptions\":{\"ezgbqi\":\"datanfqqlg\",\"aceokrarzkza\":\"datawe\",\"zomtzpukm\":\"dataznvyeuxd\"},\"additionalFormatOptions\":{\"nlfzq\":\"datalzb\",\"wzesejdcpcpeu\":\"datamxuo\",\"jrptltytbqhejhn\":\"databofzmvtwyjc\"},\"\":{\"vygquiwcfqzo\":\"datafmeeuuurxgslxz\",\"irqkskyyam\":\"datagwwdevqmtejhvggy\",\"lmibvczdj\":\"datamimsyiwcdwqjbrrx\"}}")
+            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"saqfnbxuw\":\"datahgyeoikxjpuwgg\"},\"additionalFormatOptions\":{\"egtsqzkzworuhhv\":\"databus\",\"bkgp\":\"dataeodcdjhf\",\"tyuvuzqtrfziub\":\"dataxusylgpznbklhw\"},\"storageIntegration\":\"datalvktjbmce\",\"\":{\"bwhjvonu\":\"dataukdawgz\",\"k\":\"datavygx\",\"jcjvdajxebm\":\"datatjoxocothsg\",\"nd\":\"dataiyrctfaabkukra\"}}")
             .toObject(SnowflakeImportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeImportCopyCommand model = new SnowflakeImportCopyCommand()
-            .withAdditionalCopyOptions(
-                mapOf("ezgbqi", "datanfqqlg", "aceokrarzkza", "datawe", "zomtzpukm", "dataznvyeuxd"))
-            .withAdditionalFormatOptions(
-                mapOf("nlfzq", "datalzb", "wzesejdcpcpeu", "datamxuo", "jrptltytbqhejhn", "databofzmvtwyjc"));
+        SnowflakeImportCopyCommand model
+            = new SnowflakeImportCopyCommand().withAdditionalCopyOptions(mapOf("saqfnbxuw", "datahgyeoikxjpuwgg"))
+                .withAdditionalFormatOptions(
+                    mapOf("egtsqzkzworuhhv", "databus", "bkgp", "dataeodcdjhf", "tyuvuzqtrfziub", "dataxusylgpznbklhw"))
+                .withStorageIntegration("datalvktjbmce");
         model = BinaryData.fromObject(model).toObject(SnowflakeImportCopyCommand.class);
     }
 

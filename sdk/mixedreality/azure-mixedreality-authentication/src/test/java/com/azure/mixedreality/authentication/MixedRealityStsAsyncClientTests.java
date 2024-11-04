@@ -17,8 +17,7 @@ public class MixedRealityStsAsyncClientTests extends MixedRealityStsClientTestBa
     private MixedRealityStsAsyncClient client;
 
     private void initializeClient(HttpClient httpClient) {
-        client = new MixedRealityStsClientBuilder()
-            .accountId(super.getAccountId())
+        client = new MixedRealityStsClientBuilder().accountId(super.getAccountId())
             .accountDomain(super.getAccountDomain())
             .pipeline(super.getHttpPipeline(httpClient))
             .buildAsyncClient();
@@ -31,14 +30,12 @@ public class MixedRealityStsAsyncClientTests extends MixedRealityStsClientTestBa
         initializeClient(httpClient);
 
         // act
-        StepVerifier.create(this.client.getToken())
-            .assertNext(actual -> {
-                // assert
-                assertNotNull(actual);
-                assertNotNull(actual.getToken());
-                assertNotNull(actual.getExpiresAt());
-            })
-            .verifyComplete();
+        StepVerifier.create(this.client.getToken()).assertNext(actual -> {
+            // assert
+            assertNotNull(actual);
+            assertNotNull(actual.getToken());
+            assertNotNull(actual.getExpiresAt());
+        }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -48,20 +45,18 @@ public class MixedRealityStsAsyncClientTests extends MixedRealityStsClientTestBa
         initializeClient(httpClient);
 
         // act
-        StepVerifier.create(this.client.getTokenWithResponse())
-            .assertNext(actualResponse -> {
-                // assert
-                assertNotNull(actualResponse);
-                assertEquals(200, actualResponse.getStatusCode());
+        StepVerifier.create(this.client.getTokenWithResponse()).assertNext(actualResponse -> {
+            // assert
+            assertNotNull(actualResponse);
+            assertEquals(200, actualResponse.getStatusCode());
 
-                // act
-                AccessToken actual = actualResponse.getValue();
+            // act
+            AccessToken actual = actualResponse.getValue();
 
-                // assert
-                assertNotNull(actual);
-                assertNotNull(actual.getToken());
-                assertNotNull(actual.getExpiresAt());
-            })
-            .verifyComplete();
+            // assert
+            assertNotNull(actual);
+            assertNotNull(actual.getToken());
+            assertNotNull(actual.getExpiresAt());
+        }).verifyComplete();
     }
 }

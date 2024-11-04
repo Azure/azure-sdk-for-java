@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -36,10 +36,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupPro
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceEncryptionConfigsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceStorageConfigsNonCrrsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceVaultConfigsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupStatusImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsageSummariesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupWorkloadItemsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BmsPrepareDataMoveOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.DeletedProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ExportJobsOperationResultsImpl;
@@ -76,8 +76,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.RestoresI
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.SecurityPINsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.TieringCostOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationResultsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationResults;
@@ -90,10 +90,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionI
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceStorageConfigsNonCrrs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummaries;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
-import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DeletedProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
@@ -129,8 +129,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.Restores;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringCostOperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResults;
-import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatuses;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperations;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatuses;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -256,8 +256,10 @@ public final class RecoveryServicesBackupManager {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new RecoveryServicesBackupClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -409,12 +411,19 @@ public final class RecoveryServicesBackupManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.recoveryservicesbackup")
-                .append("/").append("1.3.0");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.recoveryservicesbackup")
+                .append("/")
+                .append("1.4.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -433,18 +442,21 @@ public final class RecoveryServicesBackupManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new RecoveryServicesBackupManager(httpPipeline, profile, defaultPollInterval);
         }
     }

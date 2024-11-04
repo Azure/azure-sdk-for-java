@@ -13,14 +13,14 @@ public final class SyncBackupInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SyncBackupInstanceRequest model
-            = BinaryData.fromString("{\"syncType\":\"Default\"}").toObject(SyncBackupInstanceRequest.class);
-        Assertions.assertEquals(SyncType.DEFAULT, model.syncType());
+            = BinaryData.fromString("{\"syncType\":\"ForceResync\"}").toObject(SyncBackupInstanceRequest.class);
+        Assertions.assertEquals(SyncType.FORCE_RESYNC, model.syncType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SyncBackupInstanceRequest model = new SyncBackupInstanceRequest().withSyncType(SyncType.DEFAULT);
+        SyncBackupInstanceRequest model = new SyncBackupInstanceRequest().withSyncType(SyncType.FORCE_RESYNC);
         model = BinaryData.fromObject(model).toObject(SyncBackupInstanceRequest.class);
-        Assertions.assertEquals(SyncType.DEFAULT, model.syncType());
+        Assertions.assertEquals(SyncType.FORCE_RESYNC, model.syncType());
     }
 }

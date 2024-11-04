@@ -19,7 +19,11 @@ public final class CloudServiceRoleInstancesGetInstanceViewSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInstanceViewOfCloudServiceRoleInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceRoleInstances().getInstanceViewWithResponse(
-            "{roleInstance-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceRoleInstances()
+            .getInstanceViewWithResponse("{roleInstance-name}", "ConstosoRG", "{cs-name}",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,48 +5,48 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The build result triggered by a build.
  */
 @Fluent
-public final class TriggeredBuildResult {
+public final class TriggeredBuildResult implements JsonSerializable<TriggeredBuildResult> {
     /*
      * The unique build id of this build result
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The provisioning state of this build result
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private TriggeredBuildResultProvisioningState provisioningState;
 
     /*
      * The container image of this build result
      */
-    @JsonProperty(value = "image")
     private String image;
 
     /*
      * The last transition time of this build result
      */
-    @JsonProperty(value = "lastTransitionTime")
     private OffsetDateTime lastTransitionTime;
 
     /*
      * The last transition reason of this build result
      */
-    @JsonProperty(value = "lastTransitionReason")
     private String lastTransitionReason;
 
     /*
      * The last transition status of this build result
      */
-    @JsonProperty(value = "lastTransitionStatus")
     private String lastTransitionStatus;
 
     /**
@@ -170,5 +170,60 @@ public final class TriggeredBuildResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("lastTransitionTime",
+            this.lastTransitionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTransitionTime));
+        jsonWriter.writeStringField("lastTransitionReason", this.lastTransitionReason);
+        jsonWriter.writeStringField("lastTransitionStatus", this.lastTransitionStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggeredBuildResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggeredBuildResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggeredBuildResult.
+     */
+    public static TriggeredBuildResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggeredBuildResult deserializedTriggeredBuildResult = new TriggeredBuildResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.id = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.provisioningState
+                        = TriggeredBuildResultProvisioningState.fromString(reader.getString());
+                } else if ("image".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.image = reader.getString();
+                } else if ("lastTransitionTime".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.lastTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastTransitionReason".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.lastTransitionReason = reader.getString();
+                } else if ("lastTransitionStatus".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.lastTransitionStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggeredBuildResult;
+        });
     }
 }

@@ -4,6 +4,8 @@
 package com.azure.communication.callingserver;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,7 +15,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-
+// Package marked to be deprecated
+@LiveOnly()
 public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -21,9 +24,11 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecordingWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
+        CallAutomationAsyncClient callAutomationAsyncClient
+            = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
         deleteRecording(callAutomationAsyncClient);
     }
 
@@ -33,16 +38,17 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecordingWithTokenCredentialAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
-        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
+        CallAutomationAsyncClient callAutomationAsyncClient
+            = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
         deleteRecording(callAutomationAsyncClient);
     }
 
     private void deleteRecording(CallAutomationAsyncClient callAutomationAsyncClient) {
-        StepVerifier.create(callAutomationAsyncClient
-            .getCallRecordingAsync()
-            .deleteRecordingWithResponse(RECORDING_DELETE_URL))
+        StepVerifier
+            .create(callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(200))))
             .verifyComplete();
     }
@@ -53,12 +59,12 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecording401Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callAutomationAsyncClient
-                .getCallRecordingAsync()
-                .deleteRecordingWithResponse(RECORDING_DELETE_URL))
+        StepVerifier
+            .create(callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(401))))
             .verifyComplete();
     }
@@ -69,12 +75,13 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecording404Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callAutomationAsyncClient
-                .getCallRecordingAsync()
-                .deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
+        StepVerifier
+            .create(
+                callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(404))))
             .verifyComplete();
     }

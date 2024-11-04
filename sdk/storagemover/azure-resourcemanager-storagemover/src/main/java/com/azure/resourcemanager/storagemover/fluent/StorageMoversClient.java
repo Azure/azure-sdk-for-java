@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagemover.fluent.models.StorageMoverInner;
 import com.azure.resourcemanager.storagemover.models.StorageMoverUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in StorageMoversClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageMoversClient.
+ */
 public interface StorageMoversClient {
     /**
      * Lists all Storage Movers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Storage Movers as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface StorageMoversClient {
 
     /**
      * Lists all Storage Movers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface StorageMoversClient {
 
     /**
      * Lists all Storage Movers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface StorageMoversClient {
 
     /**
      * Lists all Storage Movers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface StorageMoversClient {
 
     /**
      * Gets a Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -75,12 +77,12 @@ public interface StorageMoversClient {
      * @return a Storage Mover resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageMoverInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String storageMoverName, Context context);
+    Response<StorageMoverInner> getByResourceGroupWithResponse(String resourceGroupName, String storageMoverName,
+        Context context);
 
     /**
      * Gets a Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,29 +95,27 @@ public interface StorageMoversClient {
 
     /**
      * Creates or updates a top-level Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The Storage Mover resource, which is a container for a group of Agents, Projects, and
-     *     Endpoints.
+     * @param storageMover The storageMover parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageMoverInner> createOrUpdateWithResponse(
-        String resourceGroupName, String storageMoverName, StorageMoverInner storageMover, Context context);
+    Response<StorageMoverInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
+        StorageMoverInner storageMover, Context context);
 
     /**
      * Creates or updates a top-level Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The Storage Mover resource, which is a container for a group of Agents, Projects, and
-     *     Endpoints.
+     * @param storageMover The storageMover parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -126,39 +126,39 @@ public interface StorageMoversClient {
 
     /**
      * Updates properties for a Storage Mover resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The Storage Mover resource.
+     * @param storageMover The storageMover parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageMoverInner> updateWithResponse(
-        String resourceGroupName, String storageMoverName, StorageMoverUpdateParameters storageMover, Context context);
+    Response<StorageMoverInner> updateWithResponse(String resourceGroupName, String storageMoverName,
+        StorageMoverUpdateParameters storageMover, Context context);
 
     /**
      * Updates properties for a Storage Mover resource. Properties not specified in the request body will be unchanged.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
-     * @param storageMover The Storage Mover resource.
+     * @param storageMover The storageMover parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageMoverInner update(
-        String resourceGroupName, String storageMoverName, StorageMoverUpdateParameters storageMover);
+    StorageMoverInner update(String resourceGroupName, String storageMoverName,
+        StorageMoverUpdateParameters storageMover);
 
     /**
      * Deletes a Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +171,7 @@ public interface StorageMoversClient {
 
     /**
      * Deletes a Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -185,7 +185,7 @@ public interface StorageMoversClient {
 
     /**
      * Deletes a Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,7 +197,7 @@ public interface StorageMoversClient {
 
     /**
      * Deletes a Storage Mover resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.

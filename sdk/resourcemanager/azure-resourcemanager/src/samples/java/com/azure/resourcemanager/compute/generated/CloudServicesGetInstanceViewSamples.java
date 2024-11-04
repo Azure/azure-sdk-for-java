@@ -20,7 +20,10 @@ public final class CloudServicesGetInstanceViewSamples {
      */
     public static void
         getCloudServiceInstanceViewWithMultipleRoles(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().getInstanceViewWithResponse("ConstosoRG",
-            "{cs-name}", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .getInstanceViewWithResponse("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

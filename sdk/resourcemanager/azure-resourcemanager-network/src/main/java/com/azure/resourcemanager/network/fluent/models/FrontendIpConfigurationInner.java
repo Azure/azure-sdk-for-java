@@ -6,10 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,32 +23,27 @@ public final class FrontendIpConfigurationInner extends SubResource {
     /*
      * Properties of the load balancer probe.
      */
-    @JsonProperty(value = "properties")
     private FrontendIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
      * This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**
@@ -351,5 +349,56 @@ public final class FrontendIpConfigurationInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendIpConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendIpConfigurationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontendIpConfigurationInner.
+     */
+    public static FrontendIpConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendIpConfigurationInner deserializedFrontendIpConfigurationInner = new FrontendIpConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.innerProperties
+                        = FrontendIpConfigurationPropertiesFormatInner.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationInner.type = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFrontendIpConfigurationInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendIpConfigurationInner;
+        });
     }
 }

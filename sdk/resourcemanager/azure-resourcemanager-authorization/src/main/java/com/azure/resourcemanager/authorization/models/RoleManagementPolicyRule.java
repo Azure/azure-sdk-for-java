@@ -5,50 +5,50 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The role management policy rule. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleType",
-    defaultImpl = RoleManagementPolicyRule.class)
-@JsonTypeName("RoleManagementPolicyRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "RoleManagementPolicyApprovalRule", value = RoleManagementPolicyApprovalRule.class),
-    @JsonSubTypes.Type(
-        name = "RoleManagementPolicyAuthenticationContextRule",
-        value = RoleManagementPolicyAuthenticationContextRule.class),
-    @JsonSubTypes.Type(name = "RoleManagementPolicyEnablementRule", value = RoleManagementPolicyEnablementRule.class),
-    @JsonSubTypes.Type(name = "RoleManagementPolicyExpirationRule", value = RoleManagementPolicyExpirationRule.class),
-    @JsonSubTypes.Type(
-        name = "RoleManagementPolicyNotificationRule",
-        value = RoleManagementPolicyNotificationRule.class)
-})
+/**
+ * The role management policy rule.
+ */
 @Fluent
-public class RoleManagementPolicyRule {
+public class RoleManagementPolicyRule implements JsonSerializable<RoleManagementPolicyRule> {
+    /*
+     * The type of rule
+     */
+    private RoleManagementPolicyRuleType ruleType = RoleManagementPolicyRuleType.fromString("RoleManagementPolicyRule");
+
     /*
      * The id of the rule.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The target of the current rule.
      */
-    @JsonProperty(value = "target")
     private RoleManagementPolicyRuleTarget target;
 
-    /** Creates an instance of RoleManagementPolicyRule class. */
+    /**
+     * Creates an instance of RoleManagementPolicyRule class.
+     */
     public RoleManagementPolicyRule() {
     }
 
     /**
+     * Get the ruleType property: The type of rule.
+     * 
+     * @return the ruleType value.
+     */
+    public RoleManagementPolicyRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the id property: The id of the rule.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +57,7 @@ public class RoleManagementPolicyRule {
 
     /**
      * Set the id property: The id of the rule.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoleManagementPolicyRule object itself.
      */
@@ -68,7 +68,7 @@ public class RoleManagementPolicyRule {
 
     /**
      * Get the target property: The target of the current rule.
-     *
+     * 
      * @return the target value.
      */
     public RoleManagementPolicyRuleTarget target() {
@@ -77,7 +77,7 @@ public class RoleManagementPolicyRule {
 
     /**
      * Set the target property: The target of the current rule.
-     *
+     * 
      * @param target the target value to set.
      * @return the RoleManagementPolicyRule object itself.
      */
@@ -88,12 +88,88 @@ public class RoleManagementPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (target() != null) {
             target().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyRule.
+     */
+    public static RoleManagementPolicyRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("RoleManagementPolicyApprovalRule".equals(discriminatorValue)) {
+                    return RoleManagementPolicyApprovalRule.fromJson(readerToUse.reset());
+                } else if ("RoleManagementPolicyAuthenticationContextRule".equals(discriminatorValue)) {
+                    return RoleManagementPolicyAuthenticationContextRule.fromJson(readerToUse.reset());
+                } else if ("RoleManagementPolicyEnablementRule".equals(discriminatorValue)) {
+                    return RoleManagementPolicyEnablementRule.fromJson(readerToUse.reset());
+                } else if ("RoleManagementPolicyExpirationRule".equals(discriminatorValue)) {
+                    return RoleManagementPolicyExpirationRule.fromJson(readerToUse.reset());
+                } else if ("RoleManagementPolicyNotificationRule".equals(discriminatorValue)) {
+                    return RoleManagementPolicyNotificationRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RoleManagementPolicyRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyRule deserializedRoleManagementPolicyRule = new RoleManagementPolicyRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyRule.ruleType
+                        = RoleManagementPolicyRuleType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyRule.id = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedRoleManagementPolicyRule.target = RoleManagementPolicyRuleTarget.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyRule;
+        });
     }
 }

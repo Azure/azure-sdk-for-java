@@ -5,57 +5,54 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.BuildConfiguration;
 import com.azure.resourcemanager.appcontainers.models.BuildProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.BuildStatus;
 import com.azure.resourcemanager.appcontainers.models.ContainerRegistryWithCustomImage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The build properties.
  */
 @Fluent
-public final class BuildProperties {
+public final class BuildProperties implements JsonSerializable<BuildProperties> {
     /*
      * Build provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private BuildProvisioningState provisioningState;
 
     /*
      * Status of the build once it has been provisioned.
      */
-    @JsonProperty(value = "buildStatus", access = JsonProperty.Access.WRITE_ONLY)
     private BuildStatus buildStatus;
 
     /*
      * Container registry that the final image will be uploaded to.
      */
-    @JsonProperty(value = "destinationContainerRegistry")
     private ContainerRegistryWithCustomImage destinationContainerRegistry;
 
     /*
      * Configuration of the build.
      */
-    @JsonProperty(value = "configuration")
     private BuildConfiguration configuration;
 
     /*
      * Endpoint to which the source code should be uploaded.
      */
-    @JsonProperty(value = "uploadEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String uploadEndpoint;
 
     /*
      * Endpoint from which the build logs can be streamed.
      */
-    @JsonProperty(value = "logStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String logStreamEndpoint;
 
     /*
      * Endpoint to use to retrieve an authentication token for log streaming and uploading source code.
      */
-    @JsonProperty(value = "tokenEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String tokenEndpoint;
 
     /**
@@ -163,5 +160,56 @@ public final class BuildProperties {
         if (configuration() != null) {
             configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("destinationContainerRegistry", this.destinationContainerRegistry);
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildProperties.
+     */
+    public static BuildProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildProperties deserializedBuildProperties = new BuildProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedBuildProperties.provisioningState
+                        = BuildProvisioningState.fromString(reader.getString());
+                } else if ("buildStatus".equals(fieldName)) {
+                    deserializedBuildProperties.buildStatus = BuildStatus.fromString(reader.getString());
+                } else if ("destinationContainerRegistry".equals(fieldName)) {
+                    deserializedBuildProperties.destinationContainerRegistry
+                        = ContainerRegistryWithCustomImage.fromJson(reader);
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedBuildProperties.configuration = BuildConfiguration.fromJson(reader);
+                } else if ("uploadEndpoint".equals(fieldName)) {
+                    deserializedBuildProperties.uploadEndpoint = reader.getString();
+                } else if ("logStreamEndpoint".equals(fieldName)) {
+                    deserializedBuildProperties.logStreamEndpoint = reader.getString();
+                } else if ("tokenEndpoint".equals(fieldName)) {
+                    deserializedBuildProperties.tokenEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildProperties;
+        });
     }
 }

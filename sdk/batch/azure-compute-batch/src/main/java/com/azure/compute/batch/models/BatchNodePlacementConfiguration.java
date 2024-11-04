@@ -20,7 +20,8 @@ import java.io.IOException;
 public final class BatchNodePlacementConfiguration implements JsonSerializable<BatchNodePlacementConfiguration> {
 
     /*
-     * Node placement Policy type on Batch Pools. Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional policy.
+     * Node placement Policy type on Batch Pools. Allocation policy used by Batch Service to provision the nodes. If not
+     * specified, Batch will use the regional policy.
      */
     @Generated
     private BatchNodePlacementPolicyType policy;

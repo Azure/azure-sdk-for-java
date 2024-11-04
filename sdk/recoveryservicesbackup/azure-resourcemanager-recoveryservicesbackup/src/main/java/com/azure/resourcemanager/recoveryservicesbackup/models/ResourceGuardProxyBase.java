@@ -132,8 +132,9 @@ public final class ResourceGuardProxyBase {
      */
     public void validate() {
         if (resourceGuardResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceGuardResourceId in model ResourceGuardProxyBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceGuardResourceId in model ResourceGuardProxyBase"));
         }
         if (resourceGuardOperationDetails() != null) {
             resourceGuardOperationDetails().forEach(e -> e.validate());

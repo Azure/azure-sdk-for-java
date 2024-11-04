@@ -12,7 +12,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -20,21 +19,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
-import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
-import com.azure.storage.file.share.implementation.models.SharesDeleteHeaders;
-import com.azure.storage.file.share.implementation.models.SharesRestoreHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
-import com.azure.storage.file.share.models.ShareCorsRule;
-import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 
@@ -44,11 +38,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
+import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
  * This class provides a shareServiceAsyncClient that contains all the operations for interacting with a file account in
@@ -222,31 +216,20 @@ public final class ShareServiceClient {
             }
         }
 
-        BiFunction<String, Integer, PagedResponse<ShareItem>> retriever =
-            (nextMarker, pageSize) -> {
-                Callable<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
-                    .listSharesSegmentSinglePage(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
-                        include, null, finalContext);
+        BiFunction<String, Integer, PagedResponse<ShareItem>> retriever = (nextMarker, pageSize) -> {
+            Callable<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
+                .listSharesSegmentNoCustomHeadersSinglePage(prefix, nextMarker,
+                    pageSize == null ? maxResultsPerPage : pageSize, include, null, finalContext);
 
-                try {
-                    PagedResponse<ShareItemInternal> response = timeout != null
-                        ? THREAD_POOL.submit(operation).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
-                        : operation.call();
+            PagedResponse<ShareItemInternal> response = sendRequest(operation, timeout, ShareStorageException.class);
 
-                    List<ShareItem> value = response.getValue() == null ? Collections.emptyList()
-                        : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
+            List<ShareItem> value = response.getValue() == null
+                ? Collections.emptyList()
+                : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
 
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getContinuationToken(),
-                        ModelHelper.transformListSharesHeaders(response.getHeaders()));
-                } catch (Exception e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to retrieve shares with timeout.", e));
-                }
-            };
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value, response.getContinuationToken(), ModelHelper.transformListSharesHeaders(response.getHeaders()));
+        };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
@@ -309,19 +292,17 @@ public final class ShareServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>> operation = () ->
-            this.azureFileStorageClient.getServices().getPropertiesWithResponse(null, finalContext);
+        Callable<Response<ShareServiceProperties>> operation = () -> this.azureFileStorageClient.getServices()
+            .getPropertiesNoCustomHeadersWithResponse(null, finalContext);
 
-        ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties> response =
-            StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
-
+        Response<ShareServiceProperties> response = sendRequest(operation, timeout, ShareStorageException.class);
         return new SimpleResponse<>(response, response.getValue());
     }
 
     /**
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
-     *
+     * <p>
      * To maintain the CORS in the Queue service pass a {@code null} value for {@link ShareServiceProperties#getCors()
      * CORS}. To disable all CORS in the Queue service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.
@@ -444,10 +425,10 @@ public final class ShareServiceClient {
     public Response<Void> setPropertiesWithResponse(ShareServiceProperties properties, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<ServicesSetPropertiesHeaders, Void>> operation = () ->
-            this.azureFileStorageClient.getServices().setPropertiesWithResponse(properties, null, finalContext);
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getServices()
+            .setPropertiesNoCustomHeadersWithResponse(properties, null, finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -496,10 +477,13 @@ public final class ShareServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
+     * <p>For more information on updated max file share size values, see the
+     * <a href="https://learn.microsoft.com/azure/storage/files/storage-files-scale-targets#azure-file-share-scale-targets">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @param metadata Optional metadata to associate with the share
-     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
-     * less than or equal to 5120. The default value is 5120.
+     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. The default value is 5120.
+     * Refer to the Azure Docs for updated values.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -544,8 +528,8 @@ public final class ShareServiceClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareClient> createShareWithResponse(String shareName, ShareCreateOptions options,
-        Duration timeout, Context context) {
+    public Response<ShareClient> createShareWithResponse(String shareName, ShareCreateOptions options, Duration timeout,
+        Context context) {
         ShareClient shareClient = getShareClient(shareName);
         return new SimpleResponse<>(shareClient.createWithResponse(options, timeout, context), shareClient);
     }
@@ -607,14 +591,13 @@ public final class ShareServiceClient {
     public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        DeleteSnapshotsOptionType deleteSnapshots = CoreUtils.isNullOrEmpty(snapshot)
-            ? DeleteSnapshotsOptionType.INCLUDE : null;
-        Callable<ResponseBase<SharesDeleteHeaders, Void>> operation = () -> this.azureFileStorageClient.getShares()
-            .deleteWithResponse(shareName, snapshot, null, deleteSnapshots, null, finalContext);
+        DeleteSnapshotsOptionType deleteSnapshots
+            = CoreUtils.isNullOrEmpty(snapshot) ? DeleteSnapshotsOptionType.INCLUDE : null;
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
+            .deleteNoCustomHeadersWithResponse(shareName, snapshot, null, deleteSnapshots, null, finalContext);
 
-        return StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
-
 
     /**
      * Get associated account name.
@@ -697,8 +680,25 @@ public final class ShareServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return generateAccountSas(accountSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
     /**
@@ -739,8 +739,7 @@ public final class ShareServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareClient undeleteShare(String deletedShareName, String deletedShareVersion) {
-        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE)
-            .getValue();
+        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE).getValue();
     }
 
     /**
@@ -786,11 +785,11 @@ public final class ShareServiceClient {
     public Response<ShareClient> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<SharesRestoreHeaders, Void>> operation = () -> this.azureFileStorageClient.getShares()
-            .restoreWithResponse(deletedShareName, null, null, deletedShareName, deletedShareVersion, finalContext);
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
+            .restoreNoCustomHeadersWithResponse(deletedShareName, null, null, deletedShareName, deletedShareVersion,
+                finalContext);
 
-        ResponseBase<SharesRestoreHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
-
-        return new SimpleResponse<>(response, getShareClient(deletedShareName));
+        return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
+            getShareClient(deletedShareName));
     }
 }

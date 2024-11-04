@@ -19,7 +19,11 @@ public final class AgentPoolsGetQueueStatusSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void agentPoolsGetQueueStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getAgentPools().getQueueStatusWithResponse(
-            "myResourceGroup", "myRegistry", "myAgentPool", com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .getQueueStatusWithResponse("myResourceGroup", "myRegistry", "myAgentPool",
+                com.azure.core.util.Context.NONE);
     }
 }

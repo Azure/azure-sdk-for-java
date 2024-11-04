@@ -8,17 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.fluent.models.VirtualMachineTemplateInner;
-import com.azure.resourcemanager.scvmm.models.DynamicMemoryEnabled;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.IsCustomizable;
-import com.azure.resourcemanager.scvmm.models.LimitCpuForMigration;
-import com.azure.resourcemanager.scvmm.models.NetworkInterfaces;
-import com.azure.resourcemanager.scvmm.models.OsType;
-import com.azure.resourcemanager.scvmm.models.ResourcePatch;
-import com.azure.resourcemanager.scvmm.models.VirtualDisk;
 import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplate;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplateProperties;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplateTagsUpdate;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class VirtualMachineTemplateImpl
@@ -52,94 +46,16 @@ public final class VirtualMachineTemplateImpl
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public VirtualMachineTemplateProperties properties() {
+        return this.innerModel().properties();
     }
 
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
 
-    public String inventoryItemId() {
-        return this.innerModel().inventoryItemId();
-    }
-
-    public String uuid() {
-        return this.innerModel().uuid();
-    }
-
-    public String vmmServerId() {
-        return this.innerModel().vmmServerId();
-    }
-
-    public OsType osType() {
-        return this.innerModel().osType();
-    }
-
-    public String osName() {
-        return this.innerModel().osName();
-    }
-
-    public String computerName() {
-        return this.innerModel().computerName();
-    }
-
-    public Integer memoryMB() {
-        return this.innerModel().memoryMB();
-    }
-
-    public Integer cpuCount() {
-        return this.innerModel().cpuCount();
-    }
-
-    public LimitCpuForMigration limitCpuForMigration() {
-        return this.innerModel().limitCpuForMigration();
-    }
-
-    public DynamicMemoryEnabled dynamicMemoryEnabled() {
-        return this.innerModel().dynamicMemoryEnabled();
-    }
-
-    public IsCustomizable isCustomizable() {
-        return this.innerModel().isCustomizable();
-    }
-
-    public Integer dynamicMemoryMaxMB() {
-        return this.innerModel().dynamicMemoryMaxMB();
-    }
-
-    public Integer dynamicMemoryMinMB() {
-        return this.innerModel().dynamicMemoryMinMB();
-    }
-
-    public String isHighlyAvailable() {
-        return this.innerModel().isHighlyAvailable();
-    }
-
-    public Integer generation() {
-        return this.innerModel().generation();
-    }
-
-    public List<NetworkInterfaces> networkInterfaces() {
-        List<NetworkInterfaces> inner = this.innerModel().networkInterfaces();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<VirtualDisk> disks() {
-        List<VirtualDisk> inner = this.innerModel().disks();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -148,6 +64,10 @@ public final class VirtualMachineTemplateImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public VirtualMachineTemplateInner innerModel() {
@@ -162,7 +82,7 @@ public final class VirtualMachineTemplateImpl
 
     private String virtualMachineTemplateName;
 
-    private ResourcePatch updateBody;
+    private VirtualMachineTemplateTagsUpdate updateProperties;
 
     public VirtualMachineTemplateImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -170,20 +90,16 @@ public final class VirtualMachineTemplateImpl
     }
 
     public VirtualMachineTemplate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .createOrUpdate(resourceGroupName, virtualMachineTemplateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .createOrUpdate(resourceGroupName, virtualMachineTemplateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualMachineTemplate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .createOrUpdate(resourceGroupName, virtualMachineTemplateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .createOrUpdate(resourceGroupName, virtualMachineTemplateName, this.innerModel(), context);
         return this;
     }
 
@@ -194,53 +110,46 @@ public final class VirtualMachineTemplateImpl
     }
 
     public VirtualMachineTemplateImpl update() {
-        this.updateBody = new ResourcePatch();
+        this.updateProperties = new VirtualMachineTemplateTagsUpdate();
         return this;
     }
 
     public VirtualMachineTemplate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .update(resourceGroupName, virtualMachineTemplateName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .update(resourceGroupName, virtualMachineTemplateName, updateProperties, Context.NONE);
         return this;
     }
 
     public VirtualMachineTemplate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .update(resourceGroupName, virtualMachineTemplateName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .update(resourceGroupName, virtualMachineTemplateName, updateProperties, context);
         return this;
     }
 
-    VirtualMachineTemplateImpl(
-        VirtualMachineTemplateInner innerObject, com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
+    VirtualMachineTemplateImpl(VirtualMachineTemplateInner innerObject,
+        com.azure.resourcemanager.scvmm.ScvmmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualMachineTemplateName = Utils.getValueFromIdByName(innerObject.id(), "virtualMachineTemplates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.virtualMachineTemplateName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualMachineTemplates");
     }
 
     public VirtualMachineTemplate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualMachineTemplate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachineTemplates()
-                .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachineTemplates()
+            .getByResourceGroupWithResponse(resourceGroupName, virtualMachineTemplateName, context)
+            .getValue();
         return this;
     }
 
@@ -264,23 +173,13 @@ public final class VirtualMachineTemplateImpl
             this.innerModel().withTags(tags);
             return this;
         } else {
-            this.updateBody.withTags(tags);
+            this.updateProperties.withTags(tags);
             return this;
         }
     }
 
-    public VirtualMachineTemplateImpl withInventoryItemId(String inventoryItemId) {
-        this.innerModel().withInventoryItemId(inventoryItemId);
-        return this;
-    }
-
-    public VirtualMachineTemplateImpl withUuid(String uuid) {
-        this.innerModel().withUuid(uuid);
-        return this;
-    }
-
-    public VirtualMachineTemplateImpl withVmmServerId(String vmmServerId) {
-        this.innerModel().withVmmServerId(vmmServerId);
+    public VirtualMachineTemplateImpl withProperties(VirtualMachineTemplateProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

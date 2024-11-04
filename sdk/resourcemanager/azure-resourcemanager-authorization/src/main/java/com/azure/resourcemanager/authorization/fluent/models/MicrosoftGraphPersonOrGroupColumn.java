@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** personOrGroupColumn. */
+/**
+ * personOrGroupColumn.
+ */
 @Fluent
-public final class MicrosoftGraphPersonOrGroupColumn {
+public final class MicrosoftGraphPersonOrGroupColumn implements JsonSerializable<MicrosoftGraphPersonOrGroupColumn> {
     /*
      * Indicates whether multiple values can be selected from the source.
      */
-    @JsonProperty(value = "allowMultipleSelection")
     private Boolean allowMultipleSelection;
 
     /*
      * Whether to allow selection of people only, or people and groups. Must be one of peopleAndGroups or peopleOnly.
      */
-    @JsonProperty(value = "chooseFromType")
     private String chooseFromType;
 
     /*
      * How to display the information about the person or group chosen. See below.
      */
-    @JsonProperty(value = "displayAs")
     private String displayAs;
 
     /*
      * personOrGroupColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPersonOrGroupColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphPersonOrGroupColumn class.
+     */
     public MicrosoftGraphPersonOrGroupColumn() {
     }
 
     /**
      * Get the allowMultipleSelection property: Indicates whether multiple values can be selected from the source.
-     *
+     * 
      * @return the allowMultipleSelection value.
      */
     public Boolean allowMultipleSelection() {
@@ -53,7 +55,7 @@ public final class MicrosoftGraphPersonOrGroupColumn {
 
     /**
      * Set the allowMultipleSelection property: Indicates whether multiple values can be selected from the source.
-     *
+     * 
      * @param allowMultipleSelection the allowMultipleSelection value to set.
      * @return the MicrosoftGraphPersonOrGroupColumn object itself.
      */
@@ -65,7 +67,7 @@ public final class MicrosoftGraphPersonOrGroupColumn {
     /**
      * Get the chooseFromType property: Whether to allow selection of people only, or people and groups. Must be one of
      * peopleAndGroups or peopleOnly.
-     *
+     * 
      * @return the chooseFromType value.
      */
     public String chooseFromType() {
@@ -75,7 +77,7 @@ public final class MicrosoftGraphPersonOrGroupColumn {
     /**
      * Set the chooseFromType property: Whether to allow selection of people only, or people and groups. Must be one of
      * peopleAndGroups or peopleOnly.
-     *
+     * 
      * @param chooseFromType the chooseFromType value to set.
      * @return the MicrosoftGraphPersonOrGroupColumn object itself.
      */
@@ -86,7 +88,7 @@ public final class MicrosoftGraphPersonOrGroupColumn {
 
     /**
      * Get the displayAs property: How to display the information about the person or group chosen. See below.
-     *
+     * 
      * @return the displayAs value.
      */
     public String displayAs() {
@@ -95,7 +97,7 @@ public final class MicrosoftGraphPersonOrGroupColumn {
 
     /**
      * Set the displayAs property: How to display the information about the person or group chosen. See below.
-     *
+     * 
      * @param displayAs the displayAs value to set.
      * @return the MicrosoftGraphPersonOrGroupColumn object itself.
      */
@@ -106,17 +108,16 @@ public final class MicrosoftGraphPersonOrGroupColumn {
 
     /**
      * Get the additionalProperties property: personOrGroupColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: personOrGroupColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPersonOrGroupColumn object itself.
      */
@@ -125,19 +126,66 @@ public final class MicrosoftGraphPersonOrGroupColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowMultipleSelection", this.allowMultipleSelection);
+        jsonWriter.writeStringField("chooseFromType", this.chooseFromType);
+        jsonWriter.writeStringField("displayAs", this.displayAs);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPersonOrGroupColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPersonOrGroupColumn if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPersonOrGroupColumn.
+     */
+    public static MicrosoftGraphPersonOrGroupColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPersonOrGroupColumn deserializedMicrosoftGraphPersonOrGroupColumn
+                = new MicrosoftGraphPersonOrGroupColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowMultipleSelection".equals(fieldName)) {
+                    deserializedMicrosoftGraphPersonOrGroupColumn.allowMultipleSelection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("chooseFromType".equals(fieldName)) {
+                    deserializedMicrosoftGraphPersonOrGroupColumn.chooseFromType = reader.getString();
+                } else if ("displayAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphPersonOrGroupColumn.displayAs = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPersonOrGroupColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPersonOrGroupColumn;
+        });
     }
 }

@@ -13,7 +13,8 @@ import java.util.Arrays;
  */
 public final class ExposureControlQueryFeatureValuesByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ExposureControl_QueryFeatureValuesByFactory.json
      */
     /**
      * Sample code: ExposureControl_QueryFeatureValuesByFactory.

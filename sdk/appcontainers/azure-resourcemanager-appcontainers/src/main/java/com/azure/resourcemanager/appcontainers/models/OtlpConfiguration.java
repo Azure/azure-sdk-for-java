@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration of otlp.
  */
 @Fluent
-public final class OtlpConfiguration {
+public final class OtlpConfiguration implements JsonSerializable<OtlpConfiguration> {
     /*
      * The name of otlp configuration
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The endpoint of otlp configuration
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
      * Boolean indicating if otlp configuration is insecure
      */
-    @JsonProperty(value = "insecure")
     private Boolean insecure;
 
     /*
      * Headers of otlp configurations
      */
-    @JsonProperty(value = "headers")
     private List<Header> headers;
 
     /**
@@ -132,5 +132,51 @@ public final class OtlpConfiguration {
         if (headers() != null) {
             headers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeBooleanField("insecure", this.insecure);
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OtlpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OtlpConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OtlpConfiguration.
+     */
+    public static OtlpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OtlpConfiguration deserializedOtlpConfiguration = new OtlpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOtlpConfiguration.name = reader.getString();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedOtlpConfiguration.endpoint = reader.getString();
+                } else if ("insecure".equals(fieldName)) {
+                    deserializedOtlpConfiguration.insecure = reader.getNullable(JsonReader::getBoolean);
+                } else if ("headers".equals(fieldName)) {
+                    List<Header> headers = reader.readArray(reader1 -> Header.fromJson(reader1));
+                    deserializedOtlpConfiguration.headers = headers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOtlpConfiguration;
+        });
     }
 }

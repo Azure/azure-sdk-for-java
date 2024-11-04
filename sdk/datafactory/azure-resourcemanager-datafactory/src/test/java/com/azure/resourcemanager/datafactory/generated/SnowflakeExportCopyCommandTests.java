@@ -13,16 +13,17 @@ public final class SnowflakeExportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeExportCopyCommand model = BinaryData.fromString(
-            "{\"type\":\"mfom\",\"additionalCopyOptions\":{\"tabgejopvegmtgoe\":\"datayphdkxw\",\"bdjzcfdpxbwqgkfx\":\"datayhojdgwezcrss\",\"yevvuddnwj\":\"datadtj\",\"flemxbmaiiv\":\"databc\"},\"additionalFormatOptions\":{\"o\":\"datatzbkevh\",\"sis\":\"datajpumpqlugzydylf\"},\"\":{\"htkprbmcazrfh\":\"datavfnxxkmrf\",\"akjxduhqilv\":\"datajwik\",\"lfrfardjqwd\":\"datajctp\"}}")
+            "{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"ajb\":\"datathnndfplksdieh\",\"sn\":\"datatgmxkol\"},\"additionalFormatOptions\":{\"yow\":\"datamkpxbckjrfkwclq\",\"cvrdjpvsc\":\"datadhtwaxobdzatq\",\"hocyvymvnla\":\"datawpsteuvjd\",\"bfomo\":\"datahitxo\"},\"storageIntegration\":\"dataynorhhbvbqxtk\",\"\":{\"pomoofbnbhptral\":\"datau\",\"ydmkyvsxcdivghaj\":\"datacqpupmath\",\"nmfmkpj\":\"dataddgfo\",\"zbmwptdr\":\"dataesozcuhunm\"}}")
             .toObject(SnowflakeExportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnowflakeExportCopyCommand model = new SnowflakeExportCopyCommand()
-            .withAdditionalCopyOptions(mapOf("tabgejopvegmtgoe", "datayphdkxw", "bdjzcfdpxbwqgkfx", "datayhojdgwezcrss",
-                "yevvuddnwj", "datadtj", "flemxbmaiiv", "databc"))
-            .withAdditionalFormatOptions(mapOf("o", "datatzbkevh", "sis", "datajpumpqlugzydylf"));
+            .withAdditionalCopyOptions(mapOf("ajb", "datathnndfplksdieh", "sn", "datatgmxkol"))
+            .withAdditionalFormatOptions(mapOf("yow", "datamkpxbckjrfkwclq", "cvrdjpvsc", "datadhtwaxobdzatq",
+                "hocyvymvnla", "datawpsteuvjd", "bfomo", "datahitxo"))
+            .withStorageIntegration("dataynorhhbvbqxtk");
         model = BinaryData.fromObject(model).toObject(SnowflakeExportCopyCommand.class);
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -30,6 +29,11 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
     public static final NodeOSUpgradeChannel NODE_IMAGE = fromString("NodeImage");
 
     /**
+     * Static value SecurityPatch for NodeOSUpgradeChannel.
+     */
+    public static final NodeOSUpgradeChannel SECURITY_PATCH = fromString("SecurityPatch");
+
+    /**
      * Creates a new instance of NodeOSUpgradeChannel value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -44,7 +48,6 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
      * @param name a name to look for.
      * @return the corresponding NodeOSUpgradeChannel.
      */
-    @JsonCreator
     public static NodeOSUpgradeChannel fromString(String name) {
         return fromString(name, NodeOSUpgradeChannel.class);
     }

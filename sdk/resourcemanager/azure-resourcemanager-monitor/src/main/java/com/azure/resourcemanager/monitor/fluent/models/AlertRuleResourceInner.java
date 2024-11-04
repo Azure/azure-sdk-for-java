@@ -7,9 +7,12 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.RuleAction;
 import com.azure.resourcemanager.monitor.models.RuleCondition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +25,22 @@ public final class AlertRuleResourceInner extends Resource {
     /*
      * The alert rule properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private AlertRule innerProperties = new AlertRule();
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of AlertRuleResourceInner class.
@@ -38,6 +55,36 @@ public final class AlertRuleResourceInner extends Resource {
      */
     private AlertRule innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -174,8 +221,8 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the action property: action that is performed when the alert rule becomes active, and when an alert
-     * condition is resolved.
+     * Get the action property: action that is performed when the alert rule becomes active, and when an alert condition
+     * is resolved.
      * 
      * @return the action value.
      */
@@ -184,8 +231,8 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the action property: action that is performed when the alert rule becomes active, and when an alert
-     * condition is resolved.
+     * Set the action property: action that is performed when the alert rule becomes active, and when an alert condition
+     * is resolved.
      * 
      * @param action the action value to set.
      * @return the AlertRuleResourceInner object itself.
@@ -199,8 +246,8 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
-     * an alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
      * 
      * @return the actions value.
      */
@@ -209,8 +256,8 @@ public final class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
-     * an alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
      * 
      * @param actions the actions value to set.
      * @return the AlertRuleResourceInner object itself.
@@ -239,12 +286,63 @@ public final class AlertRuleResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model AlertRuleResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AlertRuleResourceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AlertRuleResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRuleResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRuleResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertRuleResourceInner.
+     */
+    public static AlertRuleResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRuleResourceInner deserializedAlertRuleResourceInner = new AlertRuleResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertRuleResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertRuleResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertRuleResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAlertRuleResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAlertRuleResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlertRuleResourceInner.innerProperties = AlertRule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRuleResourceInner;
+        });
+    }
 }

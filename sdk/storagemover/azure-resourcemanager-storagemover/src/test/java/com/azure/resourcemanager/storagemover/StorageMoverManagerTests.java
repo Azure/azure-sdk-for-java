@@ -9,11 +9,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storagemover.models.StorageMover;
 import org.junit.jupiter.api.Assertions;
@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class StorageMoverManagerTests extends TestBase {
+public class StorageMoverManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST2;
+    private static final Region REGION = Region.create("eastus2euap", "East US 2 EUAP");
     private String resourceGroupName = "rg" + randomPadding();
     private StorageMoverManager storageMoverManager;
     private ResourceManager resourceManager;
@@ -31,16 +31,14 @@ public class StorageMoverManagerTests extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        storageMoverManager = StorageMoverManager
-            .configure()
+        storageMoverManager = StorageMoverManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class StorageMoverManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -66,7 +61,7 @@ public class StorageMoverManagerTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateStorageMover() {
         StorageMover storageMover = null;
         try {
@@ -80,7 +75,8 @@ public class StorageMoverManagerTests extends TestBase {
             // @embedmeEnd
             storageMover.refresh();
             Assertions.assertEquals(storageMover.name(), moveName);
-            Assertions.assertEquals(storageMover.name(), storageMoverManager.storageMovers().getById(storageMover.id()).name());
+            Assertions.assertEquals(storageMover.name(),
+                storageMoverManager.storageMovers().getById(storageMover.id()).name());
             Assertions.assertTrue(storageMoverManager.storageMovers().list().stream().count() > 0);
         } finally {
             if (storageMover != null) {

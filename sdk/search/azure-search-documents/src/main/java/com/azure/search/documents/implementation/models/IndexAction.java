@@ -77,6 +77,9 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

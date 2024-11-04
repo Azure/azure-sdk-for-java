@@ -37,7 +37,11 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -498,7 +502,7 @@ public class StoreReaderTest {
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
         Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
-              Mockito.eq(request) , Mockito.eq(false));
+              Mockito.eq(request) , Mockito.eq(false), Mockito.any());
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
@@ -529,7 +533,7 @@ public class StoreReaderTest {
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
         Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
-                Mockito.eq(request) , Mockito.eq(false));
+                Mockito.eq(request) , Mockito.eq(false), Mockito.any());
 
         Mockito.doReturn(Mono.error(ExceptionBuilder.create().asGoneException())).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
@@ -586,7 +590,7 @@ public class StoreReaderTest {
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
         Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
-            Mockito.eq(request) , Mockito.eq(false));
+            Mockito.eq(request) , Mockito.eq(false), Mockito.any());
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
@@ -636,13 +640,15 @@ public class StoreReaderTest {
                 .withGlobalCommittedLsn(bigLsn)
                 .build();
 
+        Map<String, Set<String>> replicaStatusList = new HashMap<>();
+        replicaStatusList.put(Uri.ATTEMPTING, new HashSet<>(Arrays.asList(primaryURI.getHealthStatusDiagnosticString())));
         StoreResult result = storeReader.createStoreResult(
                 storeResponse,
                 null,
                 false,
                 false,
                 null,
-                Arrays.asList(primaryURI.getHealthStatusDiagnosticString()));
+                 replicaStatusList);
         assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
         assertThat(result.lsn).isEqualTo(bigLsn);
     }

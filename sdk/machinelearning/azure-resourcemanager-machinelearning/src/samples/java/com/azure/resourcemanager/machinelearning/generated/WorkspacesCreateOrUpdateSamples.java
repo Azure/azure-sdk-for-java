@@ -17,29 +17,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces CreateOrUpdate. */
+/**
+ * Samples for Workspaces CreateOrUpdate.
+ */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/create.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/create.json
      */
     /**
      * Sample code: Create Workspace.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void createWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("testworkspace")
             .withExistingResourceGroup("workspace-1234")
             .withRegion("eastus2euap")
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai",
-                            new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai",
+                    new UserAssignedIdentity())))
             .withDescription("test description")
             .withFriendlyName("HelloName")
             .withKeyVault(
@@ -50,32 +51,23 @@ public final class WorkspacesCreateOrUpdateSamples {
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry")
             .withStorageAccount(
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount")
-            .withEncryption(
-                new EncryptionProperty()
-                    .withStatus(EncryptionStatus.ENABLED)
-                    .withIdentity(
-                        new IdentityForCmk()
-                            .withUserAssignedIdentity(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"))
-                    .withKeyVaultProperties(
-                        new EncryptionKeyVaultProperties()
-                            .withKeyVaultArmId("fakeTokenPlaceholder")
-                            .withKeyIdentifier("fakeTokenPlaceholder")
-                            .withIdentityClientId("")))
+            .withEncryption(new EncryptionProperty().withStatus(EncryptionStatus.ENABLED)
+                .withIdentity(new IdentityForCmk().withUserAssignedIdentity(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"))
+                .withKeyVaultProperties(new EncryptionKeyVaultProperties().withKeyVaultArmId("fakeTokenPlaceholder")
+                    .withKeyIdentifier("fakeTokenPlaceholder")
+                    .withIdentityClientId("")))
             .withHbiWorkspace(false)
-            .withSharedPrivateLinkResources(
-                Arrays
-                    .asList(
-                        new SharedPrivateLinkResource()
-                            .withName("testdbresource")
-                            .withPrivateLinkResourceId(
-                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql")
-                            .withGroupId("Sql")
-                            .withRequestMessage("Please approve")
-                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
+            .withSharedPrivateLinkResources(Arrays.asList(new SharedPrivateLinkResource().withName("testdbresource")
+                .withPrivateLinkResourceId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql")
+                .withGroupId("Sql")
+                .withRequestMessage("Please approve")
+                .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

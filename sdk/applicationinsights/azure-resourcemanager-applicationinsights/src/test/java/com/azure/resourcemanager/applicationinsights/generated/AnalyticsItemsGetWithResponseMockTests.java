@@ -33,46 +33,29 @@ public final class AnalyticsItemsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"Id\":\"hheioqaqhvseuf\",\"Name\":\"yrxpdlcgqls\",\"Content\":\"mjqfrddgamquhio\",\"Version\":\"sjuivfcdisyir\",\"Scope\":\"user\",\"Type\":\"function\",\"TimeCreated\":\"exrxzbujrtrhq\",\"TimeModified\":\"revkhgnlnzo\",\"Properties\":{\"functionAlias\":\"rpiqywncv\"}}";
+        String responseStr
+            = "{\"Id\":\"hheioqaqhvseuf\",\"Name\":\"yrxpdlcgqls\",\"Content\":\"mjqfrddgamquhio\",\"Version\":\"sjuivfcdisyir\",\"Scope\":\"user\",\"Type\":\"function\",\"TimeCreated\":\"exrxzbujrtrhq\",\"TimeModified\":\"revkhgnlnzo\",\"Properties\":{\"functionAlias\":\"rpiqywncv\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicationInsightsComponentAnalyticsItem response =
-            manager
-                .analyticsItems()
-                .getWithResponse(
-                    "sieekpndzaapm",
-                    "dqmeqwigpibudq",
-                    ItemScopePath.ANALYTICS_ITEMS,
-                    "xebeybpmz",
-                    "nrtffyaqi",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        ApplicationInsightsComponentAnalyticsItem response = manager.analyticsItems()
+            .getWithResponse("sieekpndzaapm", "dqmeqwigpibudq", ItemScopePath.ANALYTICS_ITEMS, "xebeybpmz", "nrtffyaqi",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("hheioqaqhvseuf", response.id());
         Assertions.assertEquals("yrxpdlcgqls", response.name());

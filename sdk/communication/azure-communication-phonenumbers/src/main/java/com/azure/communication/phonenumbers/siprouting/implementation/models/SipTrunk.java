@@ -5,20 +5,31 @@
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a SIP trunk for routing calls. See RFC 4904. */
+/**
+ * Represents a SIP trunk for routing calls. See RFC 4904.
+ */
 @Fluent
-public final class SipTrunk {
+public final class SipTrunk implements JsonSerializable<SipTrunk> {
     /*
      * Gets or sets SIP signaling port of the trunk.
      */
-    @JsonProperty(value = "sipSignalingPort", required = true)
     private int sipSignalingPort;
 
     /**
+     * Creates an instance of SipTrunk class.
+     */
+    public SipTrunk() {
+    }
+
+    /**
      * Get the sipSignalingPort property: Gets or sets SIP signaling port of the trunk.
-     *
+     * 
      * @return the sipSignalingPort value.
      */
     public int getSipSignalingPort() {
@@ -27,12 +38,49 @@ public final class SipTrunk {
 
     /**
      * Set the sipSignalingPort property: Gets or sets SIP signaling port of the trunk.
-     *
+     * 
      * @param sipSignalingPort the sipSignalingPort value to set.
      * @return the SipTrunk object itself.
      */
     public SipTrunk setSipSignalingPort(int sipSignalingPort) {
         this.sipSignalingPort = sipSignalingPort;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("sipSignalingPort", this.sipSignalingPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SipTrunk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SipTrunk if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SipTrunk.
+     */
+    public static SipTrunk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SipTrunk deserializedSipTrunk = new SipTrunk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sipSignalingPort".equals(fieldName)) {
+                    deserializedSipTrunk.sipSignalingPort = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSipTrunk;
+        });
     }
 }

@@ -44,12 +44,14 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GroupInformation response = manager.privateLinkResources()
-            .getWithResponse("totxhojujb", "pelmcuvhixbjxyf", "n", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("totxhojujb", "pelmcuvhixbjxyf", "n", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("iithtywu", response.requiredZoneNames().get(0));
     }

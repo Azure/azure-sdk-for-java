@@ -17,7 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,21 +42,17 @@ public final class ManageSimpleTrafficManager {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOPD", 24);
         final String userName = "tirekicker";
-        final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String sshKey
+            = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         final int vmCountPerRegion = 2;
-        Set<Region> regions = new HashSet<>(Arrays.asList(
-                Region.US_EAST2,
-                Region.ASIA_SOUTHEAST
-        ));
+        Set<Region> regions = new HashSet<>(Arrays.asList(Region.US_EAST2, Region.ASIA_SOUTHEAST));
 
         try {
             //=============================================================
             // Create a shared resource group for all the resources so they can all be deleted together
             //
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups()
-                    .define(rgName)
-                    .withRegion(Region.US_EAST2)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST2).create();
 
             System.out.println("Created a new resource group - " + resourceGroup.id());
 
@@ -70,20 +66,20 @@ public final class ManageSimpleTrafficManager {
                     //=============================================================
                     // Create a virtual machine in its own virtual network
                     String vmName = String.format("%s-%d", linuxVMNamePrefix, i);
-                    Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines().define(vmName)
-                            .withRegion(region)
-                            .withExistingResourceGroup(resourceGroup)
-                            .withNewPrimaryNetwork("10.0.0.0/29")
-                            .withPrimaryPrivateIPAddressDynamic()
-                            .withNewPrimaryPublicIPAddress(vmName)
-                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUsername(userName)
-                            .withSsh(sshKey)
-                            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
+                    Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines()
+                        .define(vmName)
+                        .withRegion(region)
+                        .withExistingResourceGroup(resourceGroup)
+                        .withNewPrimaryNetwork("10.0.0.0/29")
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(vmName)
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(userName)
+                        .withSsh(sshKey)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
                     creatableVirtualMachines.add(vmDefinition);
                 }
             }
-
 
             //=============================================================
             // Create the VMs !!
@@ -92,7 +88,8 @@ public final class ManageSimpleTrafficManager {
             System.out.println("Creating the virtual machines...");
             stopwatch.start();
 
-            Collection<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(creatableVirtualMachines).values();
+            Collection<VirtualMachine> virtualMachines
+                = azureResourceManager.virtualMachines().create(creatableVirtualMachines).values();
 
             stopwatch.stop();
             System.out.println(String.format("Created virtual machines in %d seconds.", stopwatch.getTime() / 1000));
@@ -101,20 +98,21 @@ public final class ManageSimpleTrafficManager {
             // Create 1 traffic manager profile
             //
             String trafficManagerName = Utils.randomResourceName(azureResourceManager, "tra", 15);
-            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint = azureResourceManager.trafficManagerProfiles()
+            TrafficManagerProfile.DefinitionStages.WithEndpoint profileWithEndpoint
+                = azureResourceManager.trafficManagerProfiles()
                     .define(trafficManagerName)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withLeafDomainLabel(trafficManagerName)
-                        .withPerformanceBasedRouting();
+                    .withExistingResourceGroup(resourceGroup)
+                    .withLeafDomainLabel(trafficManagerName)
+                    .withPerformanceBasedRouting();
 
             TrafficManagerProfile.DefinitionStages.WithCreate profileWithCreate = null;
             int routingPriority = 1;
             for (VirtualMachine vm : virtualMachines) {
                 String endpointName = Utils.randomResourceName(azureResourceManager, "ep", 15);
                 profileWithCreate = profileWithEndpoint.defineAzureTargetEndpoint(endpointName)
-                        .toResourceId(vm.getPrimaryPublicIPAddressId())
-                        .withRoutingPriority(routingPriority++)
-                        .attach();
+                    .toResourceId(vm.getPrimaryPublicIPAddressId())
+                    .withRoutingPriority(routingPriority++)
+                    .attach();
             }
 
             stopwatch.reset();
@@ -123,15 +121,14 @@ public final class ManageSimpleTrafficManager {
             TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
 
             stopwatch.stop();
-            System.out.printf("Created a traffic manager profile %s in %d seconds.%n", trafficManagerProfile.id(), stopwatch.getTime() / 1000);
+            System.out.printf("Created a traffic manager profile %s in %d seconds.%n", trafficManagerProfile.id(),
+                stopwatch.getTime() / 1000);
 
             //=============================================================
             // Modify the traffic manager to use priority based routing
             //
 
-            trafficManagerProfile.update()
-                    .withPriorityBasedRouting()
-                    .apply();
+            trafficManagerProfile.update().withPriorityBasedRouting().apply();
 
             System.out.println("Modified the traffic manager to use priority-based routing.");
             return true;
@@ -148,6 +145,7 @@ public final class ManageSimpleTrafficManager {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -162,8 +160,7 @@ public final class ManageSimpleTrafficManager {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

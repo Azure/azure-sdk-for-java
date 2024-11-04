@@ -78,14 +78,18 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy create() {
-        this.innerObject = serviceManager.serviceClient().getFleetUpdateStrategies().createOrUpdate(resourceGroupName,
-            fleetName, updateStrategyName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public FleetUpdateStrategy create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleetUpdateStrategies().createOrUpdate(resourceGroupName,
-            fleetName, updateStrategyName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -105,14 +109,18 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy apply() {
-        this.innerObject = serviceManager.serviceClient().getFleetUpdateStrategies().createOrUpdate(resourceGroupName,
-            fleetName, updateStrategyName, this.innerModel(), updateIfMatch, updateIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), updateIfMatch,
+                updateIfNoneMatch, Context.NONE);
         return this;
     }
 
     public FleetUpdateStrategy apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleetUpdateStrategies().createOrUpdate(resourceGroupName,
-            fleetName, updateStrategyName, this.innerModel(), updateIfMatch, updateIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), updateIfMatch,
+                updateIfNoneMatch, context);
         return this;
     }
 
@@ -126,14 +134,18 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy refresh() {
-        this.innerObject = serviceManager.serviceClient().getFleetUpdateStrategies()
-            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FleetUpdateStrategy refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleetUpdateStrategies()
-            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, context)
+            .getValue();
         return this;
     }
 

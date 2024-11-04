@@ -15,48 +15,37 @@ import java.util.List;
 @Fluent
 public final class DataNetworkConfiguration {
     /*
-     * A reference to the data network that these settings apply to. The data network must be in the same location as
-     * the SIM policy.
+     * A reference to the data network that these settings apply to. The data network must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "dataNetwork", required = true)
     private DataNetworkResourceId dataNetwork;
 
     /*
-     * Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section
-     * 5.7.2.6 for a full description of the Session-AMBR.
+     * Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
      */
     @JsonProperty(value = "sessionAmbr", required = true)
     private Ambr sessionAmbr;
 
     /*
-     * Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a
-     * flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the
-     * definition the 5QI values.
+     * Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition the 5QI values.
      */
     @JsonProperty(value = "5qi")
     private Integer fiveQi;
 
     /*
-     * Default QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with
-     * lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the
-     * highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP
-     * TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+     * Default QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
      */
     @JsonProperty(value = "allocationAndRetentionPriorityLevel")
     private Integer allocationAndRetentionPriorityLevel;
 
     /*
-     * Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt
-     * another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the
-     * ARP parameters.
+     * Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
      */
     @JsonProperty(value = "preemptionCapability")
     private PreemptionCapability preemptionCapability;
 
     /*
-     * Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be
-     * preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
-     * of the ARP parameters.
+     * Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
      */
     @JsonProperty(value = "preemptionVulnerability")
     private PreemptionVulnerability preemptionVulnerability;
@@ -74,16 +63,13 @@ public final class DataNetworkConfiguration {
     private List<PduSessionType> additionalAllowedSessionTypes;
 
     /*
-     * List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must
-     * contain at least one item. The services must be in the same location as the SIM policy.
+     * List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must contain at least one item. The services must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "allowedServices", required = true)
     private List<ServiceResourceId> allowedServices;
 
     /*
-     * The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended
-     * Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum is not guaranteed
-     * because there is a internal limit on buffered packets across all PDU sessions.
+     * The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum is not guaranteed because there is a internal limit on buffered packets across all PDU sessions.
      */
     @JsonProperty(value = "maximumNumberOfBufferedPackets")
     private Integer maximumNumberOfBufferedPackets;
@@ -95,8 +81,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the dataNetwork property: A reference to the data network that these settings apply to. The data network
-     * must be in the same location as the SIM policy.
+     * Get the dataNetwork property: A reference to the data network that these settings apply to. The data network must
+     * be in the same location as the SIM policy.
      * 
      * @return the dataNetwork value.
      */
@@ -105,8 +91,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the dataNetwork property: A reference to the data network that these settings apply to. The data network
-     * must be in the same location as the SIM policy.
+     * Set the dataNetwork property: A reference to the data network that these settings apply to. The data network must
+     * be in the same location as the SIM policy.
      * 
      * @param dataNetwork the dataNetwork value to set.
      * @return the DataNetworkConfiguration object itself.
@@ -117,8 +103,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the sessionAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session.
-     * See 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
+     * Get the sessionAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See
+     * 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
      * 
      * @return the sessionAmbr value.
      */
@@ -127,8 +113,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the sessionAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session.
-     * See 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
+     * Set the sessionAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See
+     * 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
      * 
      * @param sessionAmbr the sessionAmbr value to set.
      * @return the DataNetworkConfiguration object itself.
@@ -192,8 +178,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a
-     * QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
+     * Get the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a QoS
+     * Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
      * 5.7.2.2 for a full description of the ARP parameters.
      * 
      * @return the preemptionCapability value.
@@ -203,8 +189,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a
-     * QoS Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
+     * Set the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a QoS
+     * Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
      * 5.7.2.2 for a full description of the ARP parameters.
      * 
      * @param preemptionCapability the preemptionCapability value to set.
@@ -216,9 +202,9 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption
-     * vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See
-     * 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+     * Get the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption vulnerability
+     * of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501
+     * section 5.7.2.2 for a full description of the ARP parameters.
      * 
      * @return the preemptionVulnerability value.
      */
@@ -227,9 +213,9 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption
-     * vulnerability of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See
-     * 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
+     * Set the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption vulnerability
+     * of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501
+     * section 5.7.2.2 for a full description of the ARP parameters.
      * 
      * @param preemptionVulnerability the preemptionVulnerability value to set.
      * @return the DataNetworkConfiguration object itself.
@@ -285,9 +271,9 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the allowedServices property: List of services that can be used as part of this SIM policy. The list must
-     * not contain duplicate items and must contain at least one item. The services must be in the same location as the
-     * SIM policy.
+     * Get the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
+     * contain duplicate items and must contain at least one item. The services must be in the same location as the SIM
+     * policy.
      * 
      * @return the allowedServices value.
      */
@@ -296,9 +282,9 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the allowedServices property: List of services that can be used as part of this SIM policy. The list must
-     * not contain duplicate items and must contain at least one item. The services must be in the same location as the
-     * SIM policy.
+     * Set the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
+     * contain duplicate items and must contain at least one item. The services must be in the same location as the SIM
+     * policy.
      * 
      * @param allowedServices the allowedServices value to set.
      * @return the DataNetworkConfiguration object itself.
@@ -341,20 +327,23 @@ public final class DataNetworkConfiguration {
      */
     public void validate() {
         if (dataNetwork() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataNetwork in model DataNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataNetwork in model DataNetworkConfiguration"));
         } else {
             dataNetwork().validate();
         }
         if (sessionAmbr() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sessionAmbr in model DataNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sessionAmbr in model DataNetworkConfiguration"));
         } else {
             sessionAmbr().validate();
         }
         if (allowedServices() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property allowedServices in model DataNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowedServices in model DataNetworkConfiguration"));
         } else {
             allowedServices().forEach(e -> e.validate());
         }

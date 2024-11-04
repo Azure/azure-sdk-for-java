@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class LastAttemptStatusEnum extends ExpandableStringEnum<LastAttemp
      * @param name a name to look for.
      * @return the corresponding LastAttemptStatusEnum.
      */
-    @JsonCreator
     public static LastAttemptStatusEnum fromString(String name) {
         return fromString(name, LastAttemptStatusEnum.class);
     }

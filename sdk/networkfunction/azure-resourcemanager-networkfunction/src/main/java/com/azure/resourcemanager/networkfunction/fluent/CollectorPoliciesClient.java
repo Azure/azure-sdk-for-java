@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
 import com.azure.resourcemanager.networkfunction.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in CollectorPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CollectorPoliciesClient.
+ */
 public interface CollectorPoliciesClient {
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface CollectorPoliciesClient {
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -41,12 +43,12 @@ public interface CollectorPoliciesClient {
      * @return response for the ListCollectorPolicies API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CollectorPolicyInner> list(
-        String resourceGroupName, String azureTrafficCollectorName, Context context);
+    PagedIterable<CollectorPolicyInner> list(String resourceGroupName, String azureTrafficCollectorName,
+        Context context);
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -57,12 +59,12 @@ public interface CollectorPoliciesClient {
      * @return the collector policy in a specified Traffic Collector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CollectorPolicyInner> getWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+    Response<CollectorPolicyInner> getWithResponse(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context);
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -76,7 +78,7 @@ public interface CollectorPoliciesClient {
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -87,15 +89,12 @@ public interface CollectorPoliciesClient {
      * @return the {@link SyncPoller} for polling of collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters);
+    SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, CollectorPolicyInner parameters);
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -107,16 +106,12 @@ public interface CollectorPoliciesClient {
      * @return the {@link SyncPoller} for polling of collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
-        Context context);
+    SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, CollectorPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -127,15 +122,12 @@ public interface CollectorPoliciesClient {
      * @return collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CollectorPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters);
+    CollectorPolicyInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, CollectorPolicyInner parameters);
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -147,16 +139,12 @@ public interface CollectorPoliciesClient {
      * @return collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CollectorPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
-        Context context);
+    CollectorPolicyInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, CollectorPolicyInner parameters, Context context);
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -166,12 +154,12 @@ public interface CollectorPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName);
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -182,12 +170,12 @@ public interface CollectorPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context);
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -200,7 +188,7 @@ public interface CollectorPoliciesClient {
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -210,12 +198,12 @@ public interface CollectorPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+    void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        Context context);
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -227,16 +215,12 @@ public interface CollectorPoliciesClient {
      * @return collector policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CollectorPolicyInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        TagsObject parameters,
-        Context context);
+    Response<CollectorPolicyInner> updateTagsWithResponse(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, TagsObject parameters, Context context);
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -247,6 +231,6 @@ public interface CollectorPoliciesClient {
      * @return collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CollectorPolicyInner updateTags(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters);
+    CollectorPolicyInner updateTags(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, TagsObject parameters);
 }

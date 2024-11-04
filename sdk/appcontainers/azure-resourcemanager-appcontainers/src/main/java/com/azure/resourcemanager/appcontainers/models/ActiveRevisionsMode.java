@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -40,7 +39,6 @@ public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisi
      * @param name a name to look for.
      * @return the corresponding ActiveRevisionsMode.
      */
-    @JsonCreator
     public static ActiveRevisionsMode fromString(String name) {
         return fromString(name, ActiveRevisionsMode.class);
     }

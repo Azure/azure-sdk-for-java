@@ -2,6 +2,8 @@
 // val cosmosEndpoint = "<inserted by environment>"
 // val cosmosMasterKey = "<inserted by environment>"
 
+println("SCENARIO: basicScenario")
+
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
 val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")

@@ -44,15 +44,8 @@ public interface Apis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String tags,
-        Boolean expandApiVersionSet,
-        Context context);
+    PagedIterable<ApiContract> listByService(String resourceGroupName, String serviceName, String filter, Integer top,
+        Integer skip, String tags, Boolean expandApiVersionSet, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
@@ -67,8 +60,8 @@ public interface Apis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API specified by its identifier.
      */
-    ApisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context);
+    ApisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
@@ -128,13 +121,8 @@ public interface Apis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String ifMatch,
-        Boolean deleteRevisions,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Boolean deleteRevisions, Context context);
 
     /**
      * Deletes the specified API of the API Management service instance.
@@ -185,14 +173,8 @@ public interface Apis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagResourceContract> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedApis,
-        Context context);
+    PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean includeNotTaggedApis, Context context);
 
     /**
      * Gets the details of the API specified by its identifier.

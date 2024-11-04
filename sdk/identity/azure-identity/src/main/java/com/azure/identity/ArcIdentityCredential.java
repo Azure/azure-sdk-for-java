@@ -43,12 +43,13 @@ class ArcIdentityCredential extends ManagedIdentityServiceCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        if  (getClientId() != null) {
+        if (getClientId() != null) {
             return Mono.error(LOGGER.logExceptionAsError(new ClientAuthenticationException(
                 "User assigned identity is not supported by the Azure Arc Managed Identity Endpoint. To authenticate "
                     + "with the system assigned identity omit the client id when constructing the"
-                    + " ManagedIdentityCredential.", null)));
+                    + " ManagedIdentityCredential.",
+                null)));
         }
-        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
+        return identityClient.authenticateWithManagedIdentityMsalClient(request);
     }
 }

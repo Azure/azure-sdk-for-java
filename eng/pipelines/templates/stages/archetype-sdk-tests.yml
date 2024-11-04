@@ -60,16 +60,12 @@ parameters:
     type: object
     default:
       Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       Preview:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-      Canary:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
+      # Canary regions are currently not supported in TME so disabling for now
+      # Canary:
+      #   Location: 'centraluseuap'
       UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
       China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
   - name: MatrixConfigs
     type: object
     default:
@@ -107,6 +103,9 @@ parameters:
   - name: AdditionalVariables
     type: object
     default: []
+  - name: UseFederatedAuth
+    type: boolean
+    default: true
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml

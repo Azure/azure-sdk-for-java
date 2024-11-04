@@ -23,7 +23,7 @@ public final class DatasetsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"fvevsqvk\",\"description\":\"ytkluewthydgz\",\"structure\":\"databbfun\",\"schema\":\"dataywlvkpxz\",\"linkedServiceName\":{\"referenceName\":\"ioxarwxhpufvuc\",\"parameters\":{\"wyiyqmrcsekhuzi\":\"datamjbzekrw\",\"udmpsuqpraqjscni\":\"datae\",\"kpewtbyciedxs\":\"datapvx\",\"qoaxieu\":\"datayjjhrvembi\"}},\"parameters\":{\"pwbfb\":{\"type\":\"Float\",\"defaultValue\":\"datakhjxgukzz\"},\"sxuzda\":{\"type\":\"SecureString\",\"defaultValue\":\"datarqsipqbyv\"}},\"annotations\":[\"datamilpztwzjkbaudtp\"],\"folder\":{\"name\":\"qkntnvgwgtgxggm\"},\"\":{\"bkazv\":\"dataulqpzqxcygevgjzr\",\"pcleniozqruq\":\"databsbkyfbmwzb\",\"pyymlwallde\":\"datarpwz\"}},\"name\":\"rhgohdv\",\"type\":\"svrpnoxbokmqviv\",\"etag\":\"fbzrfmfadvfkjdwu\",\"id\":\"o\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"zflydywbn\",\"structure\":\"dataygsifsahkc\",\"schema\":\"datavajnsu\",\"linkedServiceName\":{\"referenceName\":\"xbyrvguojkysol\",\"parameters\":{\"qfhnqxqtemvqxxuw\":\"datafhlynkiusbyysbjt\",\"ylkdbyo\":\"dataatuiqc\"}},\"parameters\":{\"imtouclsabjzh\":{\"type\":\"Bool\",\"defaultValue\":\"dataavppos\"},\"bhnuujk\":{\"type\":\"String\",\"defaultValue\":\"datavuvjs\"},\"thduactizzhln\":{\"type\":\"Bool\",\"defaultValue\":\"datayewtlomagxaqvra\"},\"djdptruiegrauy\":{\"type\":\"SecureString\",\"defaultValue\":\"datagqciiopoamgheamx\"}},\"annotations\":[\"datagwauipatodfyrf\",\"datapmcjrfj\",\"dataisypkif\",\"datatynhulefltub\"],\"folder\":{\"name\":\"bbl\"},\"\":{\"hfoephiphoygmc\":\"dataahrdxytk\",\"oukimvhqis\":\"dataq\",\"cf\":\"datavologfxbvl\"}},\"name\":\"ajncefqnhr\",\"type\":\"mu\",\"etag\":\"de\",\"id\":\"uohtnjtahdtdc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class DatasetsListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatasetResource> response
-            = manager.datasets().listByFactory("aqjpsjrpkgvs", "wdcz", com.azure.core.util.Context.NONE);
+            = manager.datasets().listByFactory("zxtrjruwljfdcy", "p", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.iterator().next().id());
-        Assertions.assertEquals("ytkluewthydgz", response.iterator().next().properties().description());
-        Assertions.assertEquals("ioxarwxhpufvuc",
+        Assertions.assertEquals("uohtnjtahdtdc", response.iterator().next().id());
+        Assertions.assertEquals("zflydywbn", response.iterator().next().properties().description());
+        Assertions.assertEquals("xbyrvguojkysol",
             response.iterator().next().properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT,
-            response.iterator().next().properties().parameters().get("pwbfb").type());
-        Assertions.assertEquals("qkntnvgwgtgxggm", response.iterator().next().properties().folder().name());
+        Assertions.assertEquals(ParameterType.BOOL,
+            response.iterator().next().properties().parameters().get("imtouclsabjzh").type());
+        Assertions.assertEquals("bbl", response.iterator().next().properties().folder().name());
     }
 }

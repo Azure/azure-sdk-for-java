@@ -6,32 +6,33 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.BuilderProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ContainerRegistry;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The builder properties.
  */
 @Fluent
-public final class BuilderProperties {
+public final class BuilderProperties implements JsonSerializable<BuilderProperties> {
     /*
      * Provisioning state of a builder resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private BuilderProvisioningState provisioningState;
 
     /*
      * Resource ID of the container apps environment that the builder is associated with.
      */
-    @JsonProperty(value = "environmentId", required = true)
     private String environmentId;
 
     /*
      * List of mappings of container registries and the managed identity used to connect to it.
      */
-    @JsonProperty(value = "containerRegistries")
     private List<ContainerRegistry> containerRegistries;
 
     /**
@@ -100,8 +101,9 @@ public final class BuilderProperties {
      */
     public void validate() {
         if (environmentId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property environmentId in model BuilderProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property environmentId in model BuilderProperties"));
         }
         if (containerRegistries() != null) {
             containerRegistries().forEach(e -> e.validate());
@@ -109,4 +111,50 @@ public final class BuilderProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BuilderProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeArrayField("containerRegistries", this.containerRegistries,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuilderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuilderProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BuilderProperties.
+     */
+    public static BuilderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuilderProperties deserializedBuilderProperties = new BuilderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentId".equals(fieldName)) {
+                    deserializedBuilderProperties.environmentId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBuilderProperties.provisioningState
+                        = BuilderProvisioningState.fromString(reader.getString());
+                } else if ("containerRegistries".equals(fieldName)) {
+                    List<ContainerRegistry> containerRegistries
+                        = reader.readArray(reader1 -> ContainerRegistry.fromJson(reader1));
+                    deserializedBuilderProperties.containerRegistries = containerRegistries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuilderProperties;
+        });
+    }
 }

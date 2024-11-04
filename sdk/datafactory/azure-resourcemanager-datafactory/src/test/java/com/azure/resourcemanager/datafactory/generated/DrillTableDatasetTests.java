@@ -19,33 +19,43 @@ public final class DrillTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillTableDataset model = BinaryData.fromString(
-            "{\"type\":\"dz\",\"typeProperties\":{\"tableName\":\"datav\",\"table\":\"dataxlffqgdodnkqyip\",\"schema\":\"datamjtda\"},\"description\":\"imeftgdrf\",\"structure\":\"datalflz\",\"schema\":\"datavdava\",\"linkedServiceName\":{\"referenceName\":\"xiefcorzbidaeb\",\"parameters\":{\"fajw\":\"dataicew\",\"wwsr\":\"dataylciobb\"}},\"parameters\":{\"mnteevfg\":{\"type\":\"Object\",\"defaultValue\":\"dataecuuuex\"}},\"annotations\":[\"dataezraqsddkod\",\"datagxqfkyr\"],\"folder\":{\"name\":\"zzeglwdzfss\"},\"\":{\"ddkkraj\":\"datagaok\"}}")
+            "{\"type\":\"DrillTable\",\"typeProperties\":{\"tableName\":\"dataugdcr\",\"table\":\"databplvhmhur\",\"schema\":\"datadjlz\"},\"description\":\"m\",\"structure\":\"dataghqeuyaorservpv\",\"schema\":\"dataorsbeg\",\"linkedServiceName\":{\"referenceName\":\"lmexafjqzyhz\",\"parameters\":{\"nsskydigt\":\"datavtuqvirl\",\"ocsvjekejchxzj\":\"datajx\",\"yfyixecmasjnfgng\":\"datacwuzs\"}},\"parameters\":{\"wxtxuzhvojyf\":{\"type\":\"String\",\"defaultValue\":\"dataeyvfxbfckmoaljax\"},\"jef\":{\"type\":\"Float\",\"defaultValue\":\"datalbkjcdzuiygtcyz\"},\"lrlkbh\":{\"type\":\"Int\",\"defaultValue\":\"dataaldjcgldry\"},\"xefppq\":{\"type\":\"String\",\"defaultValue\":\"datamxcaujbfomfbozpj\"}},\"annotations\":[\"datannjjthpsnxebycy\",\"datapohxubn\"],\"folder\":{\"name\":\"sebcxno\"},\"\":{\"gspjlf\":\"datadyzssjlmykdygj\",\"ngwqxcrbcrgyoim\":\"datah\",\"z\":\"datas\",\"htvagwnnw\":\"datacctvkog\"}}")
             .toObject(DrillTableDataset.class);
-        Assertions.assertEquals("imeftgdrf", model.description());
-        Assertions.assertEquals("xiefcorzbidaeb", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("mnteevfg").type());
-        Assertions.assertEquals("zzeglwdzfss", model.folder().name());
+        Assertions.assertEquals("m", model.description());
+        Assertions.assertEquals("lmexafjqzyhz", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("wxtxuzhvojyf").type());
+        Assertions.assertEquals("sebcxno", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillTableDataset model = new DrillTableDataset().withDescription("imeftgdrf")
-            .withStructure("datalflz")
-            .withSchema("datavdava")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xiefcorzbidaeb")
-                .withParameters(mapOf("fajw", "dataicew", "wwsr", "dataylciobb")))
-            .withParameters(mapOf("mnteevfg",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataecuuuex")))
-            .withAnnotations(Arrays.asList("dataezraqsddkod", "datagxqfkyr"))
-            .withFolder(new DatasetFolder().withName("zzeglwdzfss"))
-            .withTableName("datav")
-            .withTable("dataxlffqgdodnkqyip")
-            .withSchemaTypePropertiesSchema("datamjtda");
+        DrillTableDataset model
+            = new DrillTableDataset().withDescription("m")
+                .withStructure("dataghqeuyaorservpv")
+                .withSchema("dataorsbeg")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("lmexafjqzyhz")
+                    .withParameters(mapOf("nsskydigt", "datavtuqvirl", "ocsvjekejchxzj", "datajx", "yfyixecmasjnfgng",
+                        "datacwuzs")))
+                .withParameters(mapOf("wxtxuzhvojyf",
+                    new ParameterSpecification().withType(ParameterType.STRING)
+                        .withDefaultValue("dataeyvfxbfckmoaljax"),
+                    "jef",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datalbkjcdzuiygtcyz"),
+                    "lrlkbh",
+                    new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataaldjcgldry"),
+                    "xefppq",
+                    new ParameterSpecification().withType(ParameterType.STRING)
+                        .withDefaultValue("datamxcaujbfomfbozpj")))
+                .withAnnotations(Arrays.asList("datannjjthpsnxebycy", "datapohxubn"))
+                .withFolder(new DatasetFolder().withName("sebcxno"))
+                .withTableName("dataugdcr")
+                .withTable("databplvhmhur")
+                .withSchemaTypePropertiesSchema("datadjlz");
         model = BinaryData.fromObject(model).toObject(DrillTableDataset.class);
-        Assertions.assertEquals("imeftgdrf", model.description());
-        Assertions.assertEquals("xiefcorzbidaeb", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("mnteevfg").type());
-        Assertions.assertEquals("zzeglwdzfss", model.folder().name());
+        Assertions.assertEquals("m", model.description());
+        Assertions.assertEquals("lmexafjqzyhz", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("wxtxuzhvojyf").type());
+        Assertions.assertEquals("sebcxno", model.folder().name());
     }
 
     // Use "Map.of" if available

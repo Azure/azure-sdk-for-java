@@ -5,66 +5,61 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Metadata of the diagnostics response.
  */
 @Fluent
-public final class DiagnosticsDefinition {
+public final class DiagnosticsDefinition implements JsonSerializable<DiagnosticsDefinition> {
     /*
      * Unique detector name
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Display Name of the detector
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Details of the diagnostics info
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Authors' names of the detector
      */
-    @JsonProperty(value = "author", access = JsonProperty.Access.WRITE_ONLY)
     private String author;
 
     /*
      * Category of the detector
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private String category;
 
     /*
      * List of support topics
      */
-    @JsonProperty(value = "supportTopicList")
     private List<DiagnosticSupportTopic> supportTopicList;
 
     /*
      * List of analysis types
      */
-    @JsonProperty(value = "analysisTypes")
     private List<String> analysisTypes;
 
     /*
      * Authors' names of the detector
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Authors' names of the detector
      */
-    @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Float score;
 
     /**
@@ -185,5 +180,63 @@ public final class DiagnosticsDefinition {
         if (supportTopicList() != null) {
             supportTopicList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("supportTopicList", this.supportTopicList,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("analysisTypes", this.analysisTypes,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticsDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticsDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticsDefinition.
+     */
+    public static DiagnosticsDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticsDefinition deserializedDiagnosticsDefinition = new DiagnosticsDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.description = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.author = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.category = reader.getString();
+                } else if ("supportTopicList".equals(fieldName)) {
+                    List<DiagnosticSupportTopic> supportTopicList
+                        = reader.readArray(reader1 -> DiagnosticSupportTopic.fromJson(reader1));
+                    deserializedDiagnosticsDefinition.supportTopicList = supportTopicList;
+                } else if ("analysisTypes".equals(fieldName)) {
+                    List<String> analysisTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiagnosticsDefinition.analysisTypes = analysisTypes;
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.type = reader.getString();
+                } else if ("score".equals(fieldName)) {
+                    deserializedDiagnosticsDefinition.score = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticsDefinition;
+        });
     }
 }

@@ -6,32 +6,34 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ModelInner;
 
-/** An immutable client-side representation of Model. */
+/**
+ * An immutable client-side representation of Model.
+ */
 public interface Model {
     /**
      * Gets the model property: Model Metadata.
-     *
+     * 
      * @return the model value.
      */
     AccountModel model();
 
     /**
      * Gets the kind property: The Kind of the Model.
-     *
+     * 
      * @return the kind value.
      */
     String kind();
 
     /**
      * Gets the skuName property: The SKU of the Model.
-     *
+     * 
      * @return the skuName value.
      */
     String skuName();
 
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.ModelInner object.
-     *
+     * 
      * @return the inner object.
      */
     ModelInner innerModel();

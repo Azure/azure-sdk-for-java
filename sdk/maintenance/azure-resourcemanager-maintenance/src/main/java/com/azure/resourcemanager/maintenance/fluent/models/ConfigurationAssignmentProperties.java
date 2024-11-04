@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for configuration assignment. */
+/**
+ * Properties for configuration assignment.
+ */
 @Fluent
 public final class ConfigurationAssignmentProperties {
     /*
@@ -29,13 +31,15 @@ public final class ConfigurationAssignmentProperties {
     @JsonProperty(value = "filter")
     private ConfigurationAssignmentFilterProperties filter;
 
-    /** Creates an instance of ConfigurationAssignmentProperties class. */
+    /**
+     * Creates an instance of ConfigurationAssignmentProperties class.
+     */
     public ConfigurationAssignmentProperties() {
     }
 
     /**
      * Get the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -44,7 +48,7 @@ public final class ConfigurationAssignmentProperties {
 
     /**
      * Set the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ConfigurationAssignmentProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class ConfigurationAssignmentProperties {
 
     /**
      * Get the resourceId property: The unique resourceId.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -64,7 +68,7 @@ public final class ConfigurationAssignmentProperties {
 
     /**
      * Set the resourceId property: The unique resourceId.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConfigurationAssignmentProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class ConfigurationAssignmentProperties {
 
     /**
      * Get the filter property: Properties of the configuration assignment.
-     *
+     * 
      * @return the filter value.
      */
     public ConfigurationAssignmentFilterProperties filter() {
@@ -84,7 +88,7 @@ public final class ConfigurationAssignmentProperties {
 
     /**
      * Set the filter property: Properties of the configuration assignment.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the ConfigurationAssignmentProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class ConfigurationAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

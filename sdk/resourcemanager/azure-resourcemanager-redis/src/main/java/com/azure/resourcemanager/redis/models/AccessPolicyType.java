@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Built-In or Custom access policy. */
+/**
+ * Built-In or Custom access policy.
+ */
 public final class AccessPolicyType extends ExpandableStringEnum<AccessPolicyType> {
-    /** Static value Custom for AccessPolicyType. */
+    /**
+     * Static value Custom for AccessPolicyType.
+     */
     public static final AccessPolicyType CUSTOM = fromString("Custom");
 
-    /** Static value BuiltIn for AccessPolicyType. */
+    /**
+     * Static value BuiltIn for AccessPolicyType.
+     */
     public static final AccessPolicyType BUILT_IN = fromString("BuiltIn");
 
     /**
      * Creates a new instance of AccessPolicyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AccessPolicyType extends ExpandableStringEnum<AccessPolicyTyp
 
     /**
      * Creates or finds a AccessPolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccessPolicyType.
      */
-    @JsonCreator
     public static AccessPolicyType fromString(String name) {
         return fromString(name, AccessPolicyType.class);
     }
 
     /**
      * Gets known AccessPolicyType values.
-     *
+     * 
      * @return known AccessPolicyType values.
      */
     public static Collection<AccessPolicyType> values() {

@@ -11,20 +11,20 @@ public final class AzureTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureTableSource model = BinaryData.fromString(
-            "{\"type\":\"bii\",\"azureTableSourceQuery\":\"dataqeply\",\"azureTableSourceIgnoreTableNotFound\":\"dataad\",\"queryTimeout\":\"datajvyintgkve\",\"additionalColumns\":\"dataeldnmb\",\"sourceRetryCount\":\"databkxiujaagfeiwuux\",\"sourceRetryWait\":\"datamzmsivqeg\",\"maxConcurrentConnections\":\"datafzbrha\",\"disableMetricsCollection\":\"dataptkr\",\"\":{\"yxyoyjasqdhbftt\":\"datapziievcttszca\"}}")
+            "{\"type\":\"AzureTableSource\",\"azureTableSourceQuery\":\"datans\",\"azureTableSourceIgnoreTableNotFound\":\"dataqtmhff\",\"queryTimeout\":\"datanvrdtdl\",\"additionalColumns\":\"datamgghutl\",\"sourceRetryCount\":\"datazzljyog\",\"sourceRetryWait\":\"datawnegpbiuwnxhqelj\",\"maxConcurrentConnections\":\"dataolqdiku\",\"disableMetricsCollection\":\"datacl\",\"\":{\"wnlpbawtp\":\"datahghkf\"}}")
             .toObject(AzureTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureTableSource model = new AzureTableSource().withSourceRetryCount("databkxiujaagfeiwuux")
-            .withSourceRetryWait("datamzmsivqeg")
-            .withMaxConcurrentConnections("datafzbrha")
-            .withDisableMetricsCollection("dataptkr")
-            .withQueryTimeout("datajvyintgkve")
-            .withAdditionalColumns("dataeldnmb")
-            .withAzureTableSourceQuery("dataqeply")
-            .withAzureTableSourceIgnoreTableNotFound("dataad");
+        AzureTableSource model = new AzureTableSource().withSourceRetryCount("datazzljyog")
+            .withSourceRetryWait("datawnegpbiuwnxhqelj")
+            .withMaxConcurrentConnections("dataolqdiku")
+            .withDisableMetricsCollection("datacl")
+            .withQueryTimeout("datanvrdtdl")
+            .withAdditionalColumns("datamgghutl")
+            .withAzureTableSourceQuery("datans")
+            .withAzureTableSourceIgnoreTableNotFound("dataqtmhff");
         model = BinaryData.fromObject(model).toObject(AzureTableSource.class);
     }
 }

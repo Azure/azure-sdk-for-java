@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for HcxEnterpriseSites List. */
+/**
+ * Samples for HcxEnterpriseSites List.
+ */
 public final class HcxEnterpriseSitesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/HcxEnterpriseSites_List.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/HcxEnterpriseSites_List.json
      */
     /**
      * Sample code: HcxEnterpriseSites_List.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void hcxEnterpriseSitesList(com.azure.resourcemanager.avs.AvsManager manager) {

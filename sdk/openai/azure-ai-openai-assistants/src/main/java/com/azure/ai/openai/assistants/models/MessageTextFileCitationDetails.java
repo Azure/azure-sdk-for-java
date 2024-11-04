@@ -36,7 +36,7 @@ public final class MessageTextFileCitationDetails implements JsonSerializable<Me
      * @param quote the quote value to set.
      */
     @Generated
-    private MessageTextFileCitationDetails(String fileId, String quote) {
+    public MessageTextFileCitationDetails(String fileId, String quote) {
         this.fileId = fileId;
         this.quote = quote;
     }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInfoResourceInner;
 
-/** Resource collection API of VaultExtendedInfoes. */
+/**
+ * Resource collection API of VaultExtendedInfoes.
+ */
 public interface VaultExtendedInfoes {
     /**
      * Get the vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface VaultExtendedInfoes {
 
     /**
      * Get the vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface VaultExtendedInfoes {
 
     /**
      * Create vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -47,15 +49,12 @@ public interface VaultExtendedInfoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault extended information along with {@link Response}.
      */
-    Response<VaultExtendedInfoResource> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
-        Context context);
+    Response<VaultExtendedInfoResource> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails, Context context);
 
     /**
      * Create vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -64,12 +63,12 @@ public interface VaultExtendedInfoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault extended information.
      */
-    VaultExtendedInfoResource createOrUpdate(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
+    VaultExtendedInfoResource createOrUpdate(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
 
     /**
      * Update vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -79,15 +78,12 @@ public interface VaultExtendedInfoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault extended information along with {@link Response}.
      */
-    Response<VaultExtendedInfoResource> updateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
-        Context context);
+    Response<VaultExtendedInfoResource> updateWithResponse(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails, Context context);
 
     /**
      * Update vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -96,6 +92,6 @@ public interface VaultExtendedInfoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault extended information.
      */
-    VaultExtendedInfoResource update(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
+    VaultExtendedInfoResource update(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
 }

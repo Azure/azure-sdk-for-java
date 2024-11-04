@@ -5,21 +5,22 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The cost analysis configuration for the cluster.
  */
 @Fluent
-public final class ManagedClusterCostAnalysis {
+public final class ManagedClusterCostAnalysis implements JsonSerializable<ManagedClusterCostAnalysis> {
     /*
-     * Whether to enable cost analysis
-     * 
      * The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will
-     * add Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. If not
-     * specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+     * add Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. If not specified,
+     * the default is false. For more information see aka.ms/aks/docs/cost-analysis.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -29,11 +30,9 @@ public final class ManagedClusterCostAnalysis {
     }
 
     /**
-     * Get the enabled property: Whether to enable cost analysis
-     * 
-     * The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will
-     * add Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. If not
-     * specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+     * Get the enabled property: The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this
+     * feature. Enabling this will add Kubernetes Namespace and Deployment details to the Cost Analysis views in the
+     * Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
      * 
      * @return the enabled value.
      */
@@ -42,11 +41,9 @@ public final class ManagedClusterCostAnalysis {
     }
 
     /**
-     * Set the enabled property: Whether to enable cost analysis
-     * 
-     * The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will
-     * add Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. If not
-     * specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+     * Set the enabled property: The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this
+     * feature. Enabling this will add Kubernetes Namespace and Deployment details to the Cost Analysis views in the
+     * Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterCostAnalysis object itself.
@@ -62,5 +59,41 @@ public final class ManagedClusterCostAnalysis {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterCostAnalysis from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterCostAnalysis if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterCostAnalysis.
+     */
+    public static ManagedClusterCostAnalysis fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterCostAnalysis deserializedManagedClusterCostAnalysis = new ManagedClusterCostAnalysis();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterCostAnalysis.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterCostAnalysis;
+        });
     }
 }

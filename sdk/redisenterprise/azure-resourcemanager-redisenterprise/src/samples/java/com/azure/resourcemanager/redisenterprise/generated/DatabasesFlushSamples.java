@@ -12,7 +12,8 @@ import java.util.Arrays;
  */
 public final class DatabasesFlushSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
      * RedisEnterpriseDatabasesFlush.json
      */
     /**
@@ -22,8 +23,9 @@ public final class DatabasesFlushSamples {
      */
     public static void
         howToFlushAllTheKeysInTheDatabase(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.databases().flush("rg1", "cache1", "default", new FlushParameters().withIds(Arrays.asList(
-            "/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
-            com.azure.core.util.Context.NONE);
+        manager.databases()
+            .flush("rg1", "cache1", "default", new FlushParameters().withIds(Arrays.asList(
+                "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")),
+                com.azure.core.util.Context.NONE);
     }
 }

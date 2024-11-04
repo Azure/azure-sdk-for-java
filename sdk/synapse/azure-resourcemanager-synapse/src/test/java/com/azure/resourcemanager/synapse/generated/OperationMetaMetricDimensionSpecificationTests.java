@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaMetricDimensionSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaMetricDimensionSpecification model =
-            BinaryData
-                .fromString("{\"displayName\":\"cpc\",\"name\":\"hurzafblj\",\"toBeExportedForShoebox\":true}")
+        OperationMetaMetricDimensionSpecification model
+            = BinaryData.fromString("{\"displayName\":\"nj\",\"name\":\"lwtgrhpdj\",\"toBeExportedForShoebox\":true}")
                 .toObject(OperationMetaMetricDimensionSpecification.class);
-        Assertions.assertEquals("cpc", model.displayName());
-        Assertions.assertEquals("hurzafblj", model.name());
+        Assertions.assertEquals("nj", model.displayName());
+        Assertions.assertEquals("lwtgrhpdj", model.name());
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaMetricDimensionSpecification model =
-            new OperationMetaMetricDimensionSpecification()
-                .withDisplayName("cpc")
-                .withName("hurzafblj")
+        OperationMetaMetricDimensionSpecification model
+            = new OperationMetaMetricDimensionSpecification().withDisplayName("nj")
+                .withName("lwtgrhpdj")
                 .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(OperationMetaMetricDimensionSpecification.class);
-        Assertions.assertEquals("cpc", model.displayName());
-        Assertions.assertEquals("hurzafblj", model.name());
+        Assertions.assertEquals("nj", model.displayName());
+        Assertions.assertEquals("lwtgrhpdj", model.name());
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 }

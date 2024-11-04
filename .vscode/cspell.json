@@ -61,7 +61,6 @@
     "**/resourcemanager/**",
     "**/azure-resourcemanager*/**",
     "**/microsoft-azure-*/**",
-    "**/azure-core-jackson-tests/**",
     "**/src/test/**",
     "**src/**/samples/**/*.json",
     "**/src/**/samples/**/*.ipynb",
@@ -77,7 +76,6 @@
     "sdk/appconfiguration/azure-spring-cloud-feature-management-web/**",
     "sdk/appconfiguration/azure-spring-cloud-feature-management/**",
     "sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/**",
-    "sdk/appconfiguration/azure-data-appconfiguration/**",
     "sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/**",
     "sdk/boms/azure-sdk-bom/**",
     "sdk/boms/azure-sdk-template-bom/**",
@@ -117,20 +115,7 @@
     "sdk/confidentialledger/azure-security-confidentialledger/**",
     "sdk/core/.idea/**",
     "sdk/containerregistry/azure-containers-containerregistry/**",
-    "sdk/core/azure-core-experimental/**",
-    "sdk/core/azure-core-http-jdk-httpclient/**",
-    "sdk/core/azure-core-http-netty/**",
-    "sdk/core/azure-core-http-okhttp/**",
-    "sdk/core/azure-core-serializer-avro-jackson/**",
-    "sdk/core/azure-core-metrics-opentelemetry/**",
-    "sdk/core/azure-core-serializer-avro-apache/**",
-    "sdk/core/azure-core-http-vertx/**",
-    "sdk/core/azure-core-serializer-json-gson/**",
-    "sdk/core/azure-core-serializer-json-jackson/**",
-    "sdk/core/azure-core-management/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
-    "sdk/core/azure-core-tracing-opentelemetry/**",
-    "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
@@ -138,7 +123,6 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
-    "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -161,9 +145,9 @@
     "sdk/keyvault/azure-security-keyvault-keys/**",
     "sdk/keyvault/azure-security-keyvault-secrets/**",
     "sdk/keyvault/azure-security-test-keyvault-jca/**",
-    "sdk/keyvault/test-resources.json",
+    "sdk/keyvault/test-resources/test-resources.json",
+    "sdk/keyvault/test-resources-jca/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
-    "sdk/core/azure-core/**",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
@@ -243,6 +227,7 @@
     "autoscale",
     "autodetection",
     "awps",
+    "azconfig",
     "azsdk",
     "azsynapse",
     "azurecr",
@@ -274,6 +259,12 @@
     "databind",
     "databricks",
     "DAZURE",
+    "deidentification",
+    "deidentificationclient",
+    "deidentified",
+    "deid",
+    "deidservices",
+    "deidentify",
     "ddos",
     "dcis",
     "deallocate",
@@ -300,6 +291,7 @@
     "Entra",
     "Esto",
     "etag",
+    "euap",
     "eventhub",
     "eventhubs",
     "failondeprecatedstatus",
@@ -315,10 +307,12 @@
     "hanaonazure",
     "hdfs",
     "hdinsight",
+    "healthdataaiservices",
     "hudha",
     "hvac",
     "hybridkubernetes",
     "hyunwoongko",
+    "idnum",
     "insights",
     "intellij",
     "Intellij",
@@ -390,6 +384,9 @@
     "reimaging",
     "Remediations",
     "requireReleaseDeps",
+    "rerank",
+    "Rerank",
+    "RERANK",
     "resourcemanager",
     "Retriable",
     "revapi",
@@ -410,6 +407,7 @@
     "ssis",
     "substringof",
     "Sybase",
+    "tcnative",
     "testdb",
     "TFVC",
     "timeframe",
@@ -419,6 +417,7 @@
     "undelete",
     "unmanaged",
     "unmutated",
+    "vectorizer",
     "versionid",
     "vertx",
     "Vertx",
@@ -445,7 +444,8 @@
         "VMSS",
         "reimaged",
         "isdirectory",
-        "SSDLRS"
+        "SSDLRS",
+        "VMGUEST"
       ]
     },
     {
@@ -480,7 +480,10 @@
         "AICLIP",
         "TLARGE",
         "TBASE",
-        "TGIANT"
+        "TGIANT",
+        "tiktoken",
+        "AITOKENS",
+        "Matryoshka"
       ]
     },
     {
@@ -574,6 +577,14 @@
         "authorid",
         "encounterid",
         "docid"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/azure-health-insights-radiologyinsights/**",
+      "words": [
+        "pericholecystic",
+        "craniocaudally",
+        "angiomyolipomas"
       ]
     },
     {
@@ -824,6 +835,13 @@
       ]
     },
     {
+      "filename": "/sdk/ai/**",
+      "words": [
+        "ubinary",
+        "UBINARY"
+      ]
+    },
+    {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
         "adal",
@@ -965,11 +983,13 @@
         "Milli",
         "qpid",
         "unretriable"
-        ]
+      ]
     },
     {
       "filename": "sdk/spring/scripts/**",
       "words": [
+        "agroal",
+        "alluxio",
         "antlr",
         "arquillian",
         "aspectj",
@@ -978,18 +998,28 @@
         "aspectjweaver",
         "assertj",
         "astbuilder",
+        "asyncer",
+        "athenz",
         "atomikos",
         "awaitility",
         "awspring",
+        "bcfips",
         "Borca",
         "brotli",
         "bson",
         "cbor",
+        "chromadb",
+        "cockroachdb",
         "codehaus",
         "collectd",
+        "crac",
+        "cratedb",
+        "cyclonedx",
         "datastax",
         "dbcp",
+        "debezium",
         "deser",
+        "dynalite",
         "dynatrace",
         "ecwid",
         "ehcache",
@@ -997,18 +1027,26 @@
         "fcgi",
         "flywaydb",
         "gcloud",
+        "gimap",
+        "ginq",
         "groovysh",
         "guice",
         "Hikari",
         "hikaricp",
+        "hivemq",
+        "hocon",
+        "hornetq",
         "hppc",
+        "hqclient",
         "hsqldb",
         "humio",
         "hystrix",
         "inmemory",
         "infinispan",
+        "informix",
         "integ",
         "iostreams",
+        "istack",
         "istio",
         "itest",
         "itests",
@@ -1020,6 +1058,8 @@
         "jaxrs",
         "jaxws",
         "jcache",
+        "jcloud",
+        "jclouds",
         "jdbi",
         "jdom",
         "jgit",
@@ -1029,8 +1069,10 @@
         "johnzon",
         "jooq",
         "jpamodelgen",
+        "jspc",
         "jstl",
         "jtds",
+        "jvnet",
         "kahadb",
         "kairos",
         "karaf",
@@ -1038,28 +1080,43 @@
         "kotlinx",
         "kqueue",
         "kryo",
+        "kustomize",
         "ldif",
         "leveldb",
         "liquibase",
+        "milvus",
+        "minio",
         "mockmvc",
+        "moshi",
         "moxy",
         "mqtt",
         "mrbean",
         "mssql",
+        "mssqlserver",
         "mxab",
         "nekohtml",
         "nosql",
         "ocsp",
         "ojdbc",
         "okcurl",
+        "okio",
+        "ollama",
+        "openfga",
+        "openmldb",
         "opentsdb",
         "orai",
+        "orientdb",
         "osdt",
         "osgi",
         "otel",
         "otlp",
         "pcollections",
         "proxool",
+        "qdrant",
+        "qpack",
+        "quarkus",
+        "questdb",
+        "quic",
         "rabbitmq",
         "reactivex",
         "remoting",
@@ -1077,24 +1134,61 @@
         "specto",
         "squareup",
         "statsd",
+        "stax",
+        "staxex",
         "stree",
-        "tcnative",
+        "sybasease",
         "tekton",
         "testng",
+        "tidb",
         "tmatesoft",
+        "toxiproxy",
+        "trino",
         "trogdor",
         "txwc",
         "uberjar",
         "ultraq",
         "unboundid",
+        "vavr",
         "vertx",
         "vibur",
         "wadl",
+        "weaviate",
         "webmvc",
         "xerial",
         "xmpp",
         "xsom",
-        "zaxxer"
+        "yasson",
+        "yugabytedb",
+        "zaxxer",
+        "LINUXVMIMAGE",
+        "LINUXPOOL",
+        "OSVmImage"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**.md",
+      "words": [
+        "Dcheckstyle",
+        "Dcodesnippet",
+        "Djacoco",
+        "Dparallel",
+        "Drevapi",
+        "Dskip",
+        "Dspotbugs",
+        "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**/*.xml",
+      "words": [
+        "failondeprecatedstatus"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**.yml",
+      "words": [
+        "failondeprecatedstatus"
       ]
     },
     {
@@ -1106,6 +1200,7 @@
         "Authoritys",
         "autoconfiguation",
         "Conditonal",
+        "DCOSMOS",
         "documentdb",
         "DOCUMENTDB",
         "DOWHILE",
@@ -1115,6 +1210,7 @@
         "Jndi",
         "JPMS",
         "JWKS",
+        "LINUXVMIMAGE",
         "myproject",
         "MYPROJECT",
         "namesapce",
@@ -1139,21 +1235,32 @@
         "VCAP",
         "xiada",
         "yiliu",
-        "usgovcloudapi"
+        "usgovcloudapi",
+        "Pnative",
+        "Djava",
+        "sbmvn"
       ]
     },
     {
-      "filename": "sdk/spring/**.md",
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
       "words": [
-        "Dcheckstyle",
-        "Dcodesnippet",
-        "Djacoco",
-        "Dparallel",
-        "Drevapi",
-        "Dskip",
-        "Dspotbugs",
-        "Pdev",
-	"Djava"
+        "Djava"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-testcontainers/src/main/java/com/azure/spring/testcontainers/service/connection/storage/StorageBlobContainerConnectionDetailsFactory.java",
+      "words": [
+        "CDXJ",
+        "SZFPT",
+        "Bekso"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-testcontainers/src/main/java/com/azure/spring/testcontainers/service/connection/storage/StorageQueueContainerConnectionDetailsFactory.java",
+      "words": [
+        "CDXJ",
+        "SZFPT",
+        "Bekso"
       ]
     },
     {
@@ -1170,6 +1277,69 @@
       ],
       "ignoreRegExpList": [
         "/\/\/\\s*(BEGIN:|END:).*/"
+      ]
+    },
+    {
+      "filename": "sdk/tables/azure-data-tables/**",
+      "words": [
+        "upserts",
+        "upserted",
+        "raud"
+      ]
+    },
+    {
+      "filename": "sdk/core/**",
+      "words": [
+        "reta",
+        "tozsvath",
+        "ueisele",
+        "Thowable",
+        "Dtest",
+        "azyncoperation",
+        "Referer",
+        "limolkova",
+        "sess",
+        "cnonce",
+        "mvnrepository",
+        "IMDS",
+        "Doesnt",
+        "xffffffffffff",
+        "imgur",
+        "Bufs",
+        "Unpooled",
+        "okio",
+        "usgovcloudapi",
+        "southcentralus",
+        "centralus",
+        "northcentralus",
+        "uksouth",
+        "ukwest",
+        "usgovvirginia",
+        "usgoviowa",
+        "usgovarizona",
+        "usgovtexas",
+        "usdodeast",
+        "usdodcentral",
+        "junitextensions",
+        "urllistofbytes",
+        "urllistoflistofbytes",
+        "urlmapofbytes",
+        "inproc",
+        "otel",
+        "tmpdir",
+        "aarch",
+        "CNCF"
+        ]
+    },
+    {
+      "filename": "sdk/translation/azure-ai-translation-document/**",
+      "words": [
+        "cancelacurrentlyprocessingorqueuedtranslation",
+        "returnsalistofbatchrequestssubmittedandthestatusforeachrequest",
+        "returnsalistofsupporteddocumentformats",
+        "returnsthestatusofasingledocumentinabatchtranslationrequest",
+        "submitadocumenttranslationrequesttothedocumenttranslationservice",
+        "translateasingledocument"
       ]
     }
   ],

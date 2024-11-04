@@ -6,6 +6,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -20,68 +25,60 @@ import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of a Virtual Machine.
  */
 @Fluent
-public final class VirtualMachinePropertiesInner {
+public final class VirtualMachinePropertiesInner implements JsonSerializable<VirtualMachinePropertiesInner> {
     /*
      * Specifies the hardware settings for the virtual machine.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations
      * for the virtual machine.
      */
-    @JsonProperty(value = "scheduledEventsPolicy")
     private ScheduledEventsPolicy scheduledEventsPolicy;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * Specifies additional capabilities enabled or disabled on the virtual machine.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
 
     /*
      * Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be
      * changed once VM is provisioned.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * Specifies the network interfaces of the virtual machine.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Specifies the Security related profile settings for the virtual machine.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
      */
-    @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
-     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual
-     * machines specified in the same availability set are allocated to different nodes to maximize availability. For
-     * more information about availability sets, see [Availability sets
+     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines
+     * specified in the same availability set are allocated to different nodes to maximize availability. For more
+     * information about availability sets, see [Availability sets
      * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
      * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
      * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
@@ -89,91 +86,78 @@ public final class VirtualMachinePropertiesInner {
      * the same resource group as the availability set resource. An existing VM cannot be added to an availability set.
      * This property cannot exist along with a non-null properties.virtualMachineScaleSet reference.
      */
-    @JsonProperty(value = "availabilitySet")
     private SubResource availabilitySet;
 
     /*
-     * Specifies information about the virtual machine scale set that the virtual machine should be assigned to.
-     * Virtual machines specified in the same virtual machine scale set are allocated to different nodes to maximize
+     * Specifies information about the virtual machine scale set that the virtual machine should be assigned to. Virtual
+     * machines specified in the same virtual machine scale set are allocated to different nodes to maximize
      * availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing VM
      * cannot be added to a virtual machine scale set. This property cannot exist along with a non-null
      * properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      */
-    @JsonProperty(value = "virtualMachineScaleSet")
     private SubResource virtualMachineScaleSet;
 
     /*
-     * Specifies information about the proximity placement group that the virtual machine should be assigned to.
-     * Minimum api-version: 2018-04-01.
+     * Specifies information about the proximity placement group that the virtual machine should be assigned to. Minimum
+     * api-version: 2018-04-01.
      */
-    @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
 
     /*
      * Specifies the priority for the virtual machine. Minimum api-version: 2019-03-01
      */
-    @JsonProperty(value = "priority")
     private VirtualMachinePriorityTypes priority;
 
     /*
-     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot
-     * virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For
-     * Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is
-     * 2017-10-30-preview.
+     * Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. For Azure Spot virtual
+     * machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. For Azure Spot
+     * scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
      */
-    @JsonProperty(value = "evictionPolicy")
     private VirtualMachineEvictionPolicyTypes evictionPolicy;
 
     /*
      * Specifies the billing related details of a Azure Spot virtual machine. Minimum api-version: 2019-03-01.
      */
-    @JsonProperty(value = "billingProfile")
     private BillingProfile billingProfile;
 
     /*
      * Specifies information about the dedicated host that the virtual machine resides in. Minimum api-version:
      * 2018-10-01.
      */
-    @JsonProperty(value = "host")
     private SubResource host;
 
     /*
      * Specifies information about the dedicated host group that the virtual machine resides in. **Note:** User cannot
      * specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      */
-    @JsonProperty(value = "hostGroup")
     private SubResource hostGroup;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The virtual machine instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineInstanceViewInner instanceView;
 
     /*
      * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for
-     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values
-     * for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For
-     * more information, see [Azure Hybrid Use Benefit for Windows
+     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for
+     * Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure
      * Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
      * api-version: 2015-06-15
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
-     * Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs
-     * SMBIOS and can be read using platform BIOS commands.
+     * Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS
+     * and can be read using platform BIOS commands.
      */
-    @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
@@ -181,7 +165,6 @@ public final class VirtualMachinePropertiesInner {
      * minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
      * Minimum api-version: 2020-06-01.
      */
-    @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
 
     /*
@@ -192,39 +175,33 @@ public final class VirtualMachinePropertiesInner {
      * property cannot be updated once the Virtual Machine is created. Fault domain assignment can be viewed in the
      * Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
      */
-    @JsonProperty(value = "platformFaultDomain")
     private Integer platformFaultDomain;
 
     /*
      * Specifies Scheduled Event related configurations.
      */
-    @JsonProperty(value = "scheduledEventsProfile")
     private ScheduledEventsProfile scheduledEventsProfile;
 
     /*
      * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum
      * api-version: 2021-03-01.
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
     /*
      * Specifies information about the capacity reservation that is used to allocate virtual machine. Minimum
      * api-version: 2021-04-01.
      */
-    @JsonProperty(value = "capacityReservation")
     private CapacityReservationProfile capacityReservation;
 
     /*
      * Specifies the gallery applications that should be made available to the VM/VMSS.
      */
-    @JsonProperty(value = "applicationProfile")
     private ApplicationProfile applicationProfile;
 
     /*
      * Specifies the time at which the Virtual Machine resource was created. Minimum api-version: 2021-11-01.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /**
@@ -254,8 +231,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and
-     * ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
      * 
      * @return the scheduledEventsPolicy value.
      */
@@ -264,8 +241,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and
-     * ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the virtual machine.
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the virtual machine.
      * 
      * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -318,8 +295,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @return the osProfile value.
      */
@@ -328,8 +305,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine.
-     * Some of the settings cannot be changed once VM is provisioned.
+     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
+     * of the settings cannot be changed once VM is provisioned.
      * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -440,9 +417,9 @@ public final class VirtualMachinePropertiesInner {
     /**
      * Get the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @return the virtualMachineScaleSet value.
      */
@@ -453,9 +430,9 @@ public final class VirtualMachinePropertiesInner {
     /**
      * Set the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
      * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine
-     * scale set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot
-     * exist along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
+     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
+     * set at creation time. An existing VM cannot be added to a virtual machine scale set. This property cannot exist
+     * along with a non-null properties.availabilitySet reference. Minimum api‐version: 2019‐03‐01.
      * 
      * @param virtualMachineScaleSet the virtualMachineScaleSet value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -578,8 +555,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @return the hostGroup value.
      */
@@ -588,8 +565,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine
-     * resides in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
+     * in. **Note:** User cannot specify both host and hostGroup properties. Minimum api-version: 2020-06-01.
      * 
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachinePropertiesInner object itself.
@@ -619,10 +596,10 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -636,10 +613,10 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
-     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server
-     * operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE)
-     * &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
@@ -688,9 +665,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
@@ -702,9 +679,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that
-     * best maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains. This is applicable only if the 'virtualMachineScaleSet'
      * property of this Virtual Machine is set. The Virtual Machine Scale Set that is referenced, must have
      * 'platformFaultDomainCount' greater than 1. This property cannot be updated once the Virtual Machine is created.
      * Fault domain assignment can be viewed in the Virtual Machine Instance View. Minimum api‐version: 2020‐12‐01.
@@ -858,5 +835,126 @@ public final class VirtualMachinePropertiesInner {
         if (applicationProfile() != null) {
             applicationProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("scheduledEventsPolicy", this.scheduledEventsPolicy);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("diagnosticsProfile", this.diagnosticsProfile);
+        jsonWriter.writeJsonField("availabilitySet", this.availabilitySet);
+        jsonWriter.writeJsonField("virtualMachineScaleSet", this.virtualMachineScaleSet);
+        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
+        jsonWriter.writeStringField("evictionPolicy",
+            this.evictionPolicy == null ? null : this.evictionPolicy.toString());
+        jsonWriter.writeJsonField("billingProfile", this.billingProfile);
+        jsonWriter.writeJsonField("host", this.host);
+        jsonWriter.writeJsonField("hostGroup", this.hostGroup);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeStringField("extensionsTimeBudget", this.extensionsTimeBudget);
+        jsonWriter.writeNumberField("platformFaultDomain", this.platformFaultDomain);
+        jsonWriter.writeJsonField("scheduledEventsProfile", this.scheduledEventsProfile);
+        jsonWriter.writeStringField("userData", this.userData);
+        jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
+        jsonWriter.writeJsonField("applicationProfile", this.applicationProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinePropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachinePropertiesInner.
+     */
+    public static VirtualMachinePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinePropertiesInner deserializedVirtualMachinePropertiesInner
+                = new VirtualMachinePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("scheduledEventsPolicy".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.scheduledEventsPolicy
+                        = ScheduledEventsPolicy.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.additionalCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.osProfile = OSProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("diagnosticsProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.diagnosticsProfile = DiagnosticsProfile.fromJson(reader);
+                } else if ("availabilitySet".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.availabilitySet = SubResource.fromJson(reader);
+                } else if ("virtualMachineScaleSet".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.virtualMachineScaleSet = SubResource.fromJson(reader);
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.proximityPlacementGroup = SubResource.fromJson(reader);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.priority
+                        = VirtualMachinePriorityTypes.fromString(reader.getString());
+                } else if ("evictionPolicy".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.evictionPolicy
+                        = VirtualMachineEvictionPolicyTypes.fromString(reader.getString());
+                } else if ("billingProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.billingProfile = BillingProfile.fromJson(reader);
+                } else if ("host".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.host = SubResource.fromJson(reader);
+                } else if ("hostGroup".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.hostGroup = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.instanceView
+                        = VirtualMachineInstanceViewInner.fromJson(reader);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.licenseType = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.vmId = reader.getString();
+                } else if ("extensionsTimeBudget".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.extensionsTimeBudget = reader.getString();
+                } else if ("platformFaultDomain".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.platformFaultDomain
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("scheduledEventsProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.scheduledEventsProfile
+                        = ScheduledEventsProfile.fromJson(reader);
+                } else if ("userData".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.userData = reader.getString();
+                } else if ("capacityReservation".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.capacityReservation
+                        = CapacityReservationProfile.fromJson(reader);
+                } else if ("applicationProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.applicationProfile = ApplicationProfile.fromJson(reader);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinePropertiesInner;
+        });
     }
 }

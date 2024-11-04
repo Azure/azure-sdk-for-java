@@ -17,8 +17,7 @@ public final class ReservationTransactionImpl implements ReservationTransaction 
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    ReservationTransactionImpl(
-        ReservationTransactionInner innerObject,
+    ReservationTransactionImpl(ReservationTransactionInner innerObject,
         com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

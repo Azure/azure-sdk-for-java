@@ -11,19 +11,19 @@ public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataSource model = BinaryData.fromString(
-            "{\"type\":\"gd\",\"query\":\"datajjprd\",\"httpRequestTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datat\",\"sourceRetryWait\":\"datadxlfn\",\"maxConcurrentConnections\":\"dataclkmggnzlfyxaiaf\",\"disableMetricsCollection\":\"datamxekfvycvhwduo\",\"\":{\"sbahcassqeybd\":\"datapzzcxku\",\"cxtumqinawctaarb\":\"datazeyakgrkohfqmxzk\"}}")
+            "{\"type\":\"ODataSource\",\"query\":\"datadgem\",\"httpRequestTimeout\":\"datayddzjtxlvgsl\",\"additionalColumns\":\"datalys\",\"sourceRetryCount\":\"datav\",\"sourceRetryWait\":\"dataak\",\"maxConcurrentConnections\":\"datapaexllt\",\"disableMetricsCollection\":\"datakkaei\",\"\":{\"vsrtqltawjkra\":\"datardns\"}}")
             .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model = new ODataSource().withSourceRetryCount("datat")
-            .withSourceRetryWait("datadxlfn")
-            .withMaxConcurrentConnections("dataclkmggnzlfyxaiaf")
-            .withDisableMetricsCollection("datamxekfvycvhwduo")
-            .withQuery("datajjprd")
-            .withHttpRequestTimeout("datablonlhtgexwjhicu")
-            .withAdditionalColumns("dataavimxnhylwogtvl");
+        ODataSource model = new ODataSource().withSourceRetryCount("datav")
+            .withSourceRetryWait("dataak")
+            .withMaxConcurrentConnections("datapaexllt")
+            .withDisableMetricsCollection("datakkaei")
+            .withQuery("datadgem")
+            .withHttpRequestTimeout("datayddzjtxlvgsl")
+            .withAdditionalColumns("datalys");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }

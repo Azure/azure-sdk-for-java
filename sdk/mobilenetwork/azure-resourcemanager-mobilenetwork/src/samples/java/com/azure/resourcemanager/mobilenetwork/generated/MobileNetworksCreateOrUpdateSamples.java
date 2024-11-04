@@ -15,9 +15,7 @@ import java.util.Arrays;
  */
 public final class MobileNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * MobileNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkCreate.json
      */
     /**
      * Sample code: Create mobile network.
@@ -25,15 +23,20 @@ public final class MobileNetworksCreateOrUpdateSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createMobileNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.mobileNetworks().define("testMobileNetwork").withRegion("eastus").withExistingResourceGroup("rg1")
+        manager.mobileNetworks()
+            .define("testMobileNetwork")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg1")
             .withPublicLandMobileNetworkIdentifier(new PlmnId().withMcc("001").withMnc("01"))
-            .withPublicLandMobileNetworks(Arrays.asList(new PublicLandMobileNetwork().withMcc("001").withMnc("01")
+            .withPublicLandMobileNetworks(Arrays.asList(new PublicLandMobileNetwork().withMcc("001")
+                .withMnc("01")
                 .withHomeNetworkPublicKeys(new PublicLandMobileNetworkHomeNetworkPublicKeys()
                     .withProfileA(Arrays.asList(
                         new HomeNetworkPublicKey().withId(1)
                             .withUrl("https://contosovault.vault.azure.net/secrets/exampleHnpk"),
-                        new HomeNetworkPublicKey().withId(2).withUrl(
-                            "https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2")))
+                        new HomeNetworkPublicKey().withId(2)
+                            .withUrl(
+                                "https://contosovault.vault.azure.net/secrets/exampleHnpk2/5e4876e9140e4e16bfe6e2cf92e0cbd2")))
                     .withProfileB(Arrays.asList(new HomeNetworkPublicKey().withId(1)
                         .withUrl("https://contosovault.vault.azure.net/secrets/exampleHnpkProfileB"))))))
             .create();

@@ -14,29 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class PartialBatchDeploymentPartialMinimalTrackedResourceWithPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"frvtpuqu\"},\"tags\":{\"doaon\":\"lgkfbt\",\"ed\":\"bjcntujitc\"}}")
-                .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
-        Assertions.assertEquals("frvtpuqu", model.properties().description());
-        Assertions.assertEquals("lgkfbt", model.tags().get("doaon"));
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model = BinaryData
+            .fromString("{\"properties\":{\"description\":\"yxrxmunj\"},\"tags\":{\"ivbgkcv\":\"glnkvxlxpagl\"}}")
+            .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
+        Assertions.assertEquals("yxrxmunj", model.properties().description());
+        Assertions.assertEquals("glnkvxlxpagl", model.tags().get("ivbgkcv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model =
-            new PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties()
-                .withProperties(new PartialBatchDeployment().withDescription("frvtpuqu"))
-                .withTags(mapOf("doaon", "lgkfbt", "ed", "bjcntujitc"));
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
-        Assertions.assertEquals("frvtpuqu", model.properties().description());
-        Assertions.assertEquals("lgkfbt", model.tags().get("doaon"));
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model
+            = new PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties()
+                .withProperties(new PartialBatchDeployment().withDescription("yxrxmunj"))
+                .withTags(mapOf("ivbgkcv", "glnkvxlxpagl"));
+        model = BinaryData.fromObject(model)
+            .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
+        Assertions.assertEquals("yxrxmunj", model.properties().description());
+        Assertions.assertEquals("glnkvxlxpagl", model.tags().get("ivbgkcv"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

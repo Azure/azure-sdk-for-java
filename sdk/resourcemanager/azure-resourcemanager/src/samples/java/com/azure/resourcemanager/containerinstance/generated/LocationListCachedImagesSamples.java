@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-/** Samples for Location ListCachedImages. */
+/**
+ * Samples for Location ListCachedImages.
+ */
 public final class LocationListCachedImagesSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/CachedImagesList.json
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/
+     * CachedImagesList.json
      */
     /**
      * Sample code: CachedImages.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cachedImages(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerGroups()
+        azure.containerGroups()
             .manager()
             .serviceClient()
             .getLocations()

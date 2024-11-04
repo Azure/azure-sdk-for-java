@@ -18,7 +18,10 @@ public final class ConfigurationServicesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configurationServicesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getConfigurationServices().list("myResourceGroup", "myservice",
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getConfigurationServices()
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,19 +6,24 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.DaprConfig;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
+import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.ResourceConfig;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
+import com.azure.resourcemanager.appservice.models.SiteDnsConfig;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -32,26 +37,37 @@ public final class SiteInner extends Resource {
     /*
      * Site resource specific properties
      */
-    @JsonProperty(value = "properties")
     private SitePropertiesInner innerProperties;
 
     /*
      * Managed service identity.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Extended Location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Kind of resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of SiteInner class.
@@ -126,6 +142,36 @@ public final class SiteInner extends Resource {
     public SiteInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -354,8 +400,31 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Get the dnsConfiguration property: Property to configure various DNS related settings for a site.
+     * 
+     * @return the dnsConfiguration value.
+     */
+    public SiteDnsConfig dnsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsConfiguration();
+    }
+
+    /**
+     * Set the dnsConfiguration property: Property to configure various DNS related settings for a site.
+     * 
+     * @param dnsConfiguration the dnsConfiguration value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withDnsConfiguration(SiteDnsConfig dnsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withDnsConfiguration(dnsConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @return the vnetRouteAllEnabled value.
      */
@@ -364,8 +433,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteInner object itself.
@@ -425,6 +494,29 @@ public final class SiteInner extends Resource {
     }
 
     /**
+     * Get the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
+     * 
+     * @return the vnetBackupRestoreEnabled value.
+     */
+    public Boolean vnetBackupRestoreEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetBackupRestoreEnabled();
+    }
+
+    /**
+     * Set the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
+     * 
+     * @param vnetBackupRestoreEnabled the vnetBackupRestoreEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetBackupRestoreEnabled(Boolean vnetBackupRestoreEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetBackupRestoreEnabled(vnetBackupRestoreEnabled);
+        return this;
+    }
+
+    /**
      * Get the siteConfig property: Configuration of the app.
      * 
      * @return the siteConfig value.
@@ -444,6 +536,29 @@ public final class SiteInner extends Resource {
             this.innerProperties = new SitePropertiesInner();
         }
         this.innerProperties().withSiteConfig(siteConfig);
+        return this;
+    }
+
+    /**
+     * Get the functionAppConfig property: Configuration specific of the Azure Function app.
+     * 
+     * @return the functionAppConfig value.
+     */
+    public FunctionAppConfig functionAppConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().functionAppConfig();
+    }
+
+    /**
+     * Set the functionAppConfig property: Configuration specific of the Azure Function app.
+     * 
+     * @param functionAppConfig the functionAppConfig value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withFunctionAppConfig(FunctionAppConfig functionAppConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withFunctionAppConfig(functionAppConfig);
         return this;
     }
 
@@ -784,8 +899,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      * 
      * @return the dailyMemoryTimeQuota value.
      */
@@ -794,8 +908,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      * 
      * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set.
      * @return the SiteInner object itself.
@@ -1016,8 +1129,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
-     * joined by Regional VNET Integration.
+     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
+     * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      * 
@@ -1028,8 +1141,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
-     * joined by Regional VNET Integration.
+     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
+     * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      * 
@@ -1086,5 +1199,64 @@ public final class SiteInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteInner.
+     */
+    public static SiteInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteInner deserializedSiteInner = new SiteInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSiteInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSiteInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSiteInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSiteInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSiteInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSiteInner.innerProperties = SitePropertiesInner.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSiteInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedSiteInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteInner;
+        });
     }
 }

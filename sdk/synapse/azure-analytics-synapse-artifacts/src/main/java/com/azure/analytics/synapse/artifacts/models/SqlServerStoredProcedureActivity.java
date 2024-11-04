@@ -5,30 +5,32 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SQL stored procedure activity type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SqlServerStoredProcedure")
-@JsonFlatten
 @Fluent
 public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "SqlServerStoredProcedure";
+
+    /*
      * Stored procedure name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.storedProcedureName", required = true)
     private Object storedProcedureName;
 
     /*
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
-    @JsonProperty(value = "typeProperties.storedProcedureParameters")
     private Object storedProcedureParameters;
 
     /**
@@ -38,8 +40,17 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      * 
      * @return the storedProcedureName value.
      */
@@ -48,8 +59,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
      * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
@@ -151,5 +161,105 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     public SqlServerStoredProcedureActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (storedProcedureName != null || storedProcedureParameters != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("storedProcedureName", this.storedProcedureName);
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerStoredProcedureActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerStoredProcedureActivity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlServerStoredProcedureActivity.
+     */
+    public static SqlServerStoredProcedureActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerStoredProcedureActivity deserializedSqlServerStoredProcedureActivity
+                = new SqlServerStoredProcedureActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSqlServerStoredProcedureActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSqlServerStoredProcedureActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storedProcedureName".equals(fieldName)) {
+                            deserializedSqlServerStoredProcedureActivity.storedProcedureName = reader.readUntyped();
+                        } else if ("storedProcedureParameters".equals(fieldName)) {
+                            deserializedSqlServerStoredProcedureActivity.storedProcedureParameters
+                                = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlServerStoredProcedureActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedSqlServerStoredProcedureActivity;
+        });
     }
 }

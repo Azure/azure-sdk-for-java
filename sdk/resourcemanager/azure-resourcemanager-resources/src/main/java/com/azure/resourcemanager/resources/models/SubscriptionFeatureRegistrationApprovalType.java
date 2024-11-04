@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The feature approval type. */
+/**
+ * The feature approval type.
+ */
 public final class SubscriptionFeatureRegistrationApprovalType
     extends ExpandableStringEnum<SubscriptionFeatureRegistrationApprovalType> {
-    /** Static value NotSpecified for SubscriptionFeatureRegistrationApprovalType. */
+    /**
+     * Static value NotSpecified for SubscriptionFeatureRegistrationApprovalType.
+     */
     public static final SubscriptionFeatureRegistrationApprovalType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value ApprovalRequired for SubscriptionFeatureRegistrationApprovalType. */
+    /**
+     * Static value ApprovalRequired for SubscriptionFeatureRegistrationApprovalType.
+     */
     public static final SubscriptionFeatureRegistrationApprovalType APPROVAL_REQUIRED = fromString("ApprovalRequired");
 
-    /** Static value AutoApproval for SubscriptionFeatureRegistrationApprovalType. */
+    /**
+     * Static value AutoApproval for SubscriptionFeatureRegistrationApprovalType.
+     */
     public static final SubscriptionFeatureRegistrationApprovalType AUTO_APPROVAL = fromString("AutoApproval");
 
     /**
      * Creates a new instance of SubscriptionFeatureRegistrationApprovalType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class SubscriptionFeatureRegistrationApprovalType
 
     /**
      * Creates or finds a SubscriptionFeatureRegistrationApprovalType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionFeatureRegistrationApprovalType.
      */
-    @JsonCreator
     public static SubscriptionFeatureRegistrationApprovalType fromString(String name) {
         return fromString(name, SubscriptionFeatureRegistrationApprovalType.class);
     }
 
     /**
      * Gets known SubscriptionFeatureRegistrationApprovalType values.
-     *
+     * 
      * @return known SubscriptionFeatureRegistrationApprovalType values.
      */
     public static Collection<SubscriptionFeatureRegistrationApprovalType> values() {

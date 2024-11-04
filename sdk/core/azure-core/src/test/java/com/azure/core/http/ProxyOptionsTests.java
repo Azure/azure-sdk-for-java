@@ -162,16 +162,20 @@ public class ProxyOptionsTests {
     }
 
     @Test
-    public void envConfigurationInExplicit() {
+    public void systemPropertiesConfigurationWithPutProperty() {
         Configuration configuration = new ConfigurationBuilder().putProperty("https.proxyHost", PROXY_HOST)
             .putProperty("https.proxyPort", "8080")
-            .putProperty("http.proxy.username", FAKE_PROXY_USER_PLACEHOLDER)
-            .putProperty("http.proxy.password", FAKE_PROXY_PASSWORD_PLACEHOLDER)
+            .putProperty("https.proxyUser", FAKE_PROXY_USER_PLACEHOLDER)
+            .putProperty("https.proxyPassword", FAKE_PROXY_PASSWORD_PLACEHOLDER)
             .buildSection("foo");
 
         ProxyOptions proxyOptions = fromConfiguration(configuration, true);
 
-        assertNull(proxyOptions);
+        assertNotNull(proxyOptions);
+        assertEquals(PROXY_HOST, proxyOptions.getAddress().getHostString());
+        assertEquals(8080, proxyOptions.getAddress().getPort());
+        assertEquals(FAKE_PROXY_USER_PLACEHOLDER, proxyOptions.getUsername());
+        assertEquals(FAKE_PROXY_PASSWORD_PLACEHOLDER, proxyOptions.getPassword());
     }
 
     @ParameterizedTest

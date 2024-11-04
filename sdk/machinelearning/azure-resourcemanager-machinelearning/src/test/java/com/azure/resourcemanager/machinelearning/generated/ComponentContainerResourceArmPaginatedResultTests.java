@@ -16,44 +16,40 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentContainerResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentContainerResourceArmPaginatedResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"ho\",\"value\":[{\"properties\":{\"isArchived\":true,\"latestVersion\":\"phqamvdkfwynwcvt\",\"nextVersion\":\"kayh\",\"description\":\"nvyq\",\"properties\":{},\"tags\":{}},\"id\":\"zwpcnpwzcjaesg\",\"name\":\"v\",\"type\":\"ccyajg\"},{\"properties\":{\"isArchived\":true,\"latestVersion\":\"wygzlvdnkfxusem\",\"nextVersion\":\"zrmuhapfcqdps\",\"description\":\"qvpsvuoymg\",\"properties\":{},\"tags\":{}},\"id\":\"vezrypqlmfeo\",\"name\":\"erqwkyhkobopg\",\"type\":\"edkowepbqpcrfk\"}]}")
-                .toObject(ComponentContainerResourceArmPaginatedResult.class);
+        ComponentContainerResourceArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"mwutwbdsre\",\"nextVersion\":\"drhneuyow\",\"description\":\"d\",\"tags\":{\"ib\":\"i\"},\"properties\":{\"lfzxiavrmbzonoki\":\"gpikpzimejza\",\"rgz\":\"rjqc\"}},\"id\":\"rlazszrnw\",\"name\":\"iin\",\"type\":\"fpwpjylwbt\"},{\"properties\":{\"provisioningState\":\"Failed\",\"isArchived\":false,\"latestVersion\":\"cdhszf\",\"nextVersion\":\"fbgofeljagrqmqh\",\"description\":\"vriiio\",\"tags\":{\"fk\":\"lg\"},\"properties\":{\"ueluqhhahhxvrhmz\":\"sexso\",\"ughftqsx\":\"wpjgwws\",\"grjguufzd\":\"qxujxukndxd\"}},\"id\":\"yqtfihwh\",\"name\":\"otzi\",\"type\":\"gamv\"}],\"nextLink\":\"ho\"}")
+            .toObject(ComponentContainerResourceArmPaginatedResult.class);
+        Assertions.assertEquals("d", model.value().get(0).properties().description());
+        Assertions.assertEquals("i", model.value().get(0).properties().tags().get("ib"));
+        Assertions.assertEquals("gpikpzimejza", model.value().get(0).properties().properties().get("lfzxiavrmbzonoki"));
+        Assertions.assertEquals(false, model.value().get(0).properties().isArchived());
         Assertions.assertEquals("ho", model.nextLink());
-        Assertions.assertEquals("nvyq", model.value().get(0).properties().description());
-        Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentContainerResourceArmPaginatedResult model =
-            new ComponentContainerResourceArmPaginatedResult()
-                .withNextLink("ho")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ComponentContainerInner()
-                                .withProperties(
-                                    new ComponentContainerProperties()
-                                        .withDescription("nvyq")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withIsArchived(true)),
-                            new ComponentContainerInner()
-                                .withProperties(
-                                    new ComponentContainerProperties()
-                                        .withDescription("qvpsvuoymg")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withIsArchived(true))));
+        ComponentContainerResourceArmPaginatedResult model
+            = new ComponentContainerResourceArmPaginatedResult().withValue(Arrays.asList(
+                new ComponentContainerInner().withProperties(new ComponentContainerProperties().withDescription("d")
+                    .withTags(mapOf("ib", "i"))
+                    .withProperties(mapOf("lfzxiavrmbzonoki", "gpikpzimejza", "rgz", "rjqc"))
+                    .withIsArchived(false)),
+                new ComponentContainerInner()
+                    .withProperties(new ComponentContainerProperties().withDescription("vriiio")
+                        .withTags(mapOf("fk", "lg"))
+                        .withProperties(
+                            mapOf("ueluqhhahhxvrhmz", "sexso", "ughftqsx", "wpjgwws", "grjguufzd", "qxujxukndxd"))
+                        .withIsArchived(false))))
+                .withNextLink("ho");
         model = BinaryData.fromObject(model).toObject(ComponentContainerResourceArmPaginatedResult.class);
+        Assertions.assertEquals("d", model.value().get(0).properties().description());
+        Assertions.assertEquals("i", model.value().get(0).properties().tags().get("ib"));
+        Assertions.assertEquals("gpikpzimejza", model.value().get(0).properties().properties().get("lfzxiavrmbzonoki"));
+        Assertions.assertEquals(false, model.value().get(0).properties().isArchived());
         Assertions.assertEquals("ho", model.nextLink());
-        Assertions.assertEquals("nvyq", model.value().get(0).properties().description());
-        Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

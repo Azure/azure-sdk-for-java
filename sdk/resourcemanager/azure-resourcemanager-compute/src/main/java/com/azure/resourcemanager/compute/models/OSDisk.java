@@ -6,7 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies information about the operating system disk used by the virtual machine. For more information about disks,
@@ -14,89 +18,77 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
  */
 @Fluent
-public final class OSDisk {
+public final class OSDisk implements JsonSerializable<OSDisk> {
     /*
      * This property allows you to specify the type of the OS that is included in the disk if creating a VM from
      * user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**
      */
-    @JsonProperty(value = "osType")
     private OperatingSystemTypes osType;
 
     /*
      * Specifies the encryption settings for the OS Disk. Minimum api-version: 2015-06-15.
      */
-    @JsonProperty(value = "encryptionSettings")
     private DiskEncryptionSettings encryptionSettings;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The virtual hard disk.
      */
-    @JsonProperty(value = "vhd")
     private VirtualHardDisk vhd;
 
     /*
      * The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the
      * virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
      */
-    @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /*
      * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting
      * behavior is: **None for Standard storage. ReadOnly for Premium storage.**
      */
-    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /*
      * Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
      */
-    @JsonProperty(value = "diffDiskSettings")
     private DiffDiskSettings diffDiskSettings;
 
     /*
-     * Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used
-     * when you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you
-     * are using an image to create the virtual machine. If you are using a platform image, you should also use the
+     * Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used when
+     * you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you are
+     * using an image to create the virtual machine. If you are using a platform image, you should also use the
      * imageReference element described above. If you are using a marketplace image, you should also use the plan
      * element previously described.
      */
-    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the
-     * value cannot be larger than 1023.
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk
+     * in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * The managed disk parameters.
      */
-    @JsonProperty(value = "managedDisk")
     private ManagedDiskParameters managedDisk;
 
     /*
      * Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
      * this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this value is used, the os disk is
-     * retained after VM is deleted. The default value is set to **Detach**. For an ephemeral OS Disk, the default
-     * value is set to **Delete**. The user cannot change the delete option for an ephemeral OS Disk.
+     * retained after VM is deleted. The default value is set to **Detach**. For an ephemeral OS Disk, the default value
+     * is set to **Delete**. The user cannot change the delete option for an ephemeral OS Disk.
      */
-    @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
     /**
@@ -236,8 +228,8 @@ public final class OSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -246,8 +238,8 @@ public final class OSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the OSDisk object itself.
@@ -352,10 +344,10 @@ public final class OSDisk {
     }
 
     /**
-     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
-     * Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.**
-     * If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For
-     * an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
+     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible
+     * values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this
+     * value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an
+     * ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
      * ephemeral OS Disk.
      * 
      * @return the deleteOption value.
@@ -365,10 +357,10 @@ public final class OSDisk {
     }
 
     /**
-     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
-     * Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.**
-     * If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For
-     * an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
+     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible
+     * values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this
+     * value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an
+     * ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
      * ephemeral OS Disk.
      * 
      * @param deleteOption the deleteOption value to set.
@@ -398,8 +390,8 @@ public final class OSDisk {
             diffDiskSettings().validate();
         }
         if (createOption() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property createOption in model OSDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property createOption in model OSDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();
@@ -407,4 +399,74 @@ public final class OSDisk {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OSDisk.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createOption", this.createOption == null ? null : this.createOption.toString());
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeJsonField("encryptionSettings", this.encryptionSettings);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("vhd", this.vhd);
+        jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        jsonWriter.writeJsonField("diffDiskSettings", this.diffDiskSettings);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSDisk if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OSDisk.
+     */
+    public static OSDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSDisk deserializedOSDisk = new OSDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createOption".equals(fieldName)) {
+                    deserializedOSDisk.createOption = DiskCreateOptionTypes.fromString(reader.getString());
+                } else if ("osType".equals(fieldName)) {
+                    deserializedOSDisk.osType = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("encryptionSettings".equals(fieldName)) {
+                    deserializedOSDisk.encryptionSettings = DiskEncryptionSettings.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedOSDisk.name = reader.getString();
+                } else if ("vhd".equals(fieldName)) {
+                    deserializedOSDisk.vhd = VirtualHardDisk.fromJson(reader);
+                } else if ("image".equals(fieldName)) {
+                    deserializedOSDisk.image = VirtualHardDisk.fromJson(reader);
+                } else if ("caching".equals(fieldName)) {
+                    deserializedOSDisk.caching = CachingTypes.fromString(reader.getString());
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedOSDisk.writeAcceleratorEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diffDiskSettings".equals(fieldName)) {
+                    deserializedOSDisk.diffDiskSettings = DiffDiskSettings.fromJson(reader);
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedOSDisk.managedDisk = ManagedDiskParameters.fromJson(reader);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedOSDisk.deleteOption = DiskDeleteOptionTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSDisk;
+        });
+    }
 }

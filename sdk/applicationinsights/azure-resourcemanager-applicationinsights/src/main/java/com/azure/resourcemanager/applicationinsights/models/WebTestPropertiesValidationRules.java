@@ -60,8 +60,8 @@ public final class WebTestPropertiesValidationRules {
      * @param contentValidation the contentValidation value to set.
      * @return the WebTestPropertiesValidationRules object itself.
      */
-    public WebTestPropertiesValidationRules withContentValidation(
-        WebTestPropertiesValidationRulesContentValidation contentValidation) {
+    public WebTestPropertiesValidationRules
+        withContentValidation(WebTestPropertiesValidationRulesContentValidation contentValidation) {
         this.contentValidation = contentValidation;
         return this;
     }

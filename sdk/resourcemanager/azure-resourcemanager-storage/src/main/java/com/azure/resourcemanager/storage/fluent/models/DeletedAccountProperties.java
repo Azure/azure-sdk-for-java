@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Attributes of a deleted storage account. */
+/**
+ * Attributes of a deleted storage account.
+ */
 @Immutable
-public final class DeletedAccountProperties {
+public final class DeletedAccountProperties implements JsonSerializable<DeletedAccountProperties> {
     /*
      * Full resource id of the original storage account.
      */
-    @JsonProperty(value = "storageAccountResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountResourceId;
 
     /*
      * Location of the deleted account.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Can be used to attempt recovering this deleted account via PutStorageAccount API.
      */
-    @JsonProperty(value = "restoreReference", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreReference;
 
     /*
      * Creation time of the deleted account.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private String creationTime;
 
     /*
      * Deletion time of the deleted account.
      */
-    @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private String deletionTime;
 
-    /** Creates an instance of DeletedAccountProperties class. */
+    /**
+     * Creates an instance of DeletedAccountProperties class.
+     */
     public DeletedAccountProperties() {
     }
 
     /**
      * Get the storageAccountResourceId property: Full resource id of the original storage account.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -55,7 +58,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Get the location property: Location of the deleted account.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -65,7 +68,7 @@ public final class DeletedAccountProperties {
     /**
      * Get the restoreReference property: Can be used to attempt recovering this deleted account via PutStorageAccount
      * API.
-     *
+     * 
      * @return the restoreReference value.
      */
     public String restoreReference() {
@@ -74,7 +77,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Get the creationTime property: Creation time of the deleted account.
-     *
+     * 
      * @return the creationTime value.
      */
     public String creationTime() {
@@ -83,7 +86,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Get the deletionTime property: Deletion time of the deleted account.
-     *
+     * 
      * @return the deletionTime value.
      */
     public String deletionTime() {
@@ -92,9 +95,52 @@ public final class DeletedAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedAccountProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedAccountProperties.
+     */
+    public static DeletedAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedAccountProperties deserializedDeletedAccountProperties = new DeletedAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountResourceId".equals(fieldName)) {
+                    deserializedDeletedAccountProperties.storageAccountResourceId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeletedAccountProperties.location = reader.getString();
+                } else if ("restoreReference".equals(fieldName)) {
+                    deserializedDeletedAccountProperties.restoreReference = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedDeletedAccountProperties.creationTime = reader.getString();
+                } else if ("deletionTime".equals(fieldName)) {
+                    deserializedDeletedAccountProperties.deletionTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedAccountProperties;
+        });
     }
 }

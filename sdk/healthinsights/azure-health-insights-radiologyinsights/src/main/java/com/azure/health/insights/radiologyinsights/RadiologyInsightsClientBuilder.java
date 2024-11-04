@@ -9,9 +9,10 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.KeyCredentialTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -19,8 +20,9 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.KeyCredentialPolicy;
@@ -44,8 +46,8 @@ import java.util.Objects;
  * A builder for creating a new instance of the RadiologyInsightsClient type.
  */
 @ServiceClientBuilder(serviceClients = { RadiologyInsightsClient.class, RadiologyInsightsAsyncClient.class })
-public final class RadiologyInsightsClientBuilder
-    implements HttpTrait<RadiologyInsightsClientBuilder>, ConfigurationTrait<RadiologyInsightsClientBuilder>,
+public final class RadiologyInsightsClientBuilder implements HttpTrait<RadiologyInsightsClientBuilder>,
+    ConfigurationTrait<RadiologyInsightsClientBuilder>, TokenCredentialTrait<RadiologyInsightsClientBuilder>,
     KeyCredentialTrait<RadiologyInsightsClientBuilder>, EndpointTrait<RadiologyInsightsClientBuilder> {
 
     @Generated
@@ -254,6 +256,7 @@ public final class RadiologyInsightsClientBuilder
      */
     @Generated
     private RadiologyInsightsClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         RadiologyInsightsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : RadiologyInsightsServiceVersion.getLatest();
@@ -275,10 +278,8 @@ public final class RadiologyInsightsClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -289,6 +290,9 @@ public final class RadiologyInsightsClientBuilder
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
             policies.add(new KeyCredentialPolicy("Ocp-Apim-Subscription-Key", keyCredential));
+        }
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -323,4 +327,30 @@ public final class RadiologyInsightsClientBuilder
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RadiologyInsightsClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
+    private TokenCredential tokenCredential;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
 }

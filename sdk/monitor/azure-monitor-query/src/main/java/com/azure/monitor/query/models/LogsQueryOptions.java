@@ -23,7 +23,8 @@ public final class LogsQueryOptions {
     /**
      * Creates an instance of LogsQueryOptions.
      */
-    public LogsQueryOptions() { }
+    public LogsQueryOptions() {
+    }
 
     /**
      * Returns the server timeout for this query.

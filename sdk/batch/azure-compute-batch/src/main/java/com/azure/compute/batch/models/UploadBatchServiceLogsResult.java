@@ -18,7 +18,9 @@ import java.io.IOException;
 public final class UploadBatchServiceLogsResult implements JsonSerializable<UploadBatchServiceLogsResult> {
 
     /*
-     * The virtual directory within Azure Blob Storage container to which the Batch Service log file(s) will be uploaded. The virtual directory name is part of the blob name for each log file uploaded, and it is built based poolId, nodeId and a unique identifier.
+     * The virtual directory within Azure Blob Storage container to which the Batch Service log file(s) will be
+     * uploaded. The virtual directory name is part of the blob name for each log file uploaded, and it is built based
+     * poolId, nodeId and a unique identifier.
      */
     @Generated
     private final String virtualDirectoryName;

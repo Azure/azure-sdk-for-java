@@ -12,38 +12,34 @@ import org.junit.jupiter.api.Assertions;
 public final class X12ValidationOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12ValidationOverride model =
-            BinaryData
-                .fromString(
-                    "{\"messageId\":\"vldspa\",\"validateEDITypes\":false,\"validateXSDTypes\":true,\"allowLeadingAndTrailingSpacesAndZeroes\":false,\"validateCharacterSet\":false,\"trimLeadingAndTrailingSpacesAndZeroes\":true,\"trailingSeparatorPolicy\":\"NotAllowed\"}")
-                .toObject(X12ValidationOverride.class);
-        Assertions.assertEquals("vldspa", model.messageId());
+        X12ValidationOverride model = BinaryData.fromString(
+            "{\"messageId\":\"ujlzqnhcvsqltn\",\"validateEDITypes\":false,\"validateXSDTypes\":false,\"allowLeadingAndTrailingSpacesAndZeroes\":true,\"validateCharacterSet\":true,\"trimLeadingAndTrailingSpacesAndZeroes\":false,\"trailingSeparatorPolicy\":\"Mandatory\"}")
+            .toObject(X12ValidationOverride.class);
+        Assertions.assertEquals("ujlzqnhcvsqltn", model.messageId());
         Assertions.assertEquals(false, model.validateEdiTypes());
-        Assertions.assertEquals(true, model.validateXsdTypes());
-        Assertions.assertEquals(false, model.allowLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(false, model.validateCharacterSet());
-        Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(TrailingSeparatorPolicy.NOT_ALLOWED, model.trailingSeparatorPolicy());
+        Assertions.assertEquals(false, model.validateXsdTypes());
+        Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(true, model.validateCharacterSet());
+        Assertions.assertEquals(false, model.trimLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12ValidationOverride model =
-            new X12ValidationOverride()
-                .withMessageId("vldspa")
-                .withValidateEdiTypes(false)
-                .withValidateXsdTypes(true)
-                .withAllowLeadingAndTrailingSpacesAndZeroes(false)
-                .withValidateCharacterSet(false)
-                .withTrimLeadingAndTrailingSpacesAndZeroes(true)
-                .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.NOT_ALLOWED);
+        X12ValidationOverride model = new X12ValidationOverride().withMessageId("ujlzqnhcvsqltn")
+            .withValidateEdiTypes(false)
+            .withValidateXsdTypes(false)
+            .withAllowLeadingAndTrailingSpacesAndZeroes(true)
+            .withValidateCharacterSet(true)
+            .withTrimLeadingAndTrailingSpacesAndZeroes(false)
+            .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.MANDATORY);
         model = BinaryData.fromObject(model).toObject(X12ValidationOverride.class);
-        Assertions.assertEquals("vldspa", model.messageId());
+        Assertions.assertEquals("ujlzqnhcvsqltn", model.messageId());
         Assertions.assertEquals(false, model.validateEdiTypes());
-        Assertions.assertEquals(true, model.validateXsdTypes());
-        Assertions.assertEquals(false, model.allowLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(false, model.validateCharacterSet());
-        Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(TrailingSeparatorPolicy.NOT_ALLOWED, model.trailingSeparatorPolicy());
+        Assertions.assertEquals(false, model.validateXsdTypes());
+        Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(true, model.validateCharacterSet());
+        Assertions.assertEquals(false, model.trimLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
     }
 }

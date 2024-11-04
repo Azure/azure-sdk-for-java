@@ -6,54 +6,53 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Maintenance window used to configure scheduled auto-upgrade for a Managed Cluster.
  */
 @Fluent
-public final class MaintenanceWindow {
+public final class MaintenanceWindow implements JsonSerializable<MaintenanceWindow> {
     /*
      * Recurrence schedule for the maintenance window.
      */
-    @JsonProperty(value = "schedule", required = true)
     private Schedule schedule;
 
     /*
      * Length of maintenance window range from 4 to 24 hours.
      */
-    @JsonProperty(value = "durationHours", required = true)
     private int durationHours;
 
     /*
      * The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00' for PST. If not specified, the
      * default is '+00:00'.
      */
-    @JsonProperty(value = "utcOffset")
     private String utcOffset;
 
     /*
      * The date the maintenance window activates. If the current date is before this date, the maintenance window is
      * inactive and will not be used for upgrades. If not specified, the maintenance window will be active right away.
      */
-    @JsonProperty(value = "startDate")
     private LocalDate startDate;
 
     /*
      * The start time of the maintenance window. Accepted values are from '00:00' to '23:59'. 'utcOffset' applies to
      * this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'.
      */
-    @JsonProperty(value = "startTime", required = true)
     private String startTime;
 
     /*
      * Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field. For example, with 'utcOffset:
-     * +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be blocked from '2022-12-22 22:00'
-     * to '2023-01-03 22:00' in UTC time.
+     * +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be blocked from '2022-12-22 22:00' to
+     * '2023-01-03 22:00' in UTC time.
      */
-    @JsonProperty(value = "notAllowedDates")
     private List<DateSpan> notAllowedDates;
 
     /**
@@ -150,8 +149,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the startTime property: The start time of the maintenance window. Accepted values are from '00:00' to
-     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time
-     * '00:00'.
+     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'.
      * 
      * @return the startTime value.
      */
@@ -161,8 +159,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the startTime property: The start time of the maintenance window. Accepted values are from '00:00' to
-     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time
-     * '00:00'.
+     * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time '00:00'.
      * 
      * @param startTime the startTime value to set.
      * @return the MaintenanceWindow object itself.
@@ -173,9 +170,9 @@ public final class MaintenanceWindow {
     }
 
     /**
-     * Get the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this
-     * field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will
-     * be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
+     * Get the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field.
+     * For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be
+     * blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
      * 
      * @return the notAllowedDates value.
      */
@@ -184,9 +181,9 @@ public final class MaintenanceWindow {
     }
 
     /**
-     * Set the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this
-     * field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will
-     * be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
+     * Set the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this field.
+     * For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will be
+     * blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
      * 
      * @param notAllowedDates the notAllowedDates value to set.
      * @return the MaintenanceWindow object itself.
@@ -203,14 +200,14 @@ public final class MaintenanceWindow {
      */
     public void validate() {
         if (schedule() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property schedule in model MaintenanceWindow"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property schedule in model MaintenanceWindow"));
         } else {
             schedule().validate();
         }
         if (startTime() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property startTime in model MaintenanceWindow"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startTime in model MaintenanceWindow"));
         }
         if (notAllowedDates() != null) {
             notAllowedDates().forEach(e -> e.validate());
@@ -218,4 +215,59 @@ public final class MaintenanceWindow {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MaintenanceWindow.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeIntField("durationHours", this.durationHours);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("utcOffset", this.utcOffset);
+        jsonWriter.writeStringField("startDate", Objects.toString(this.startDate, null));
+        jsonWriter.writeArrayField("notAllowedDates", this.notAllowedDates,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindow if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MaintenanceWindow.
+     */
+    public static MaintenanceWindow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindow deserializedMaintenanceWindow = new MaintenanceWindow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schedule".equals(fieldName)) {
+                    deserializedMaintenanceWindow.schedule = Schedule.fromJson(reader);
+                } else if ("durationHours".equals(fieldName)) {
+                    deserializedMaintenanceWindow.durationHours = reader.getInt();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMaintenanceWindow.startTime = reader.getString();
+                } else if ("utcOffset".equals(fieldName)) {
+                    deserializedMaintenanceWindow.utcOffset = reader.getString();
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedMaintenanceWindow.startDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("notAllowedDates".equals(fieldName)) {
+                    List<DateSpan> notAllowedDates = reader.readArray(reader1 -> DateSpan.fromJson(reader1));
+                    deserializedMaintenanceWindow.notAllowedDates = notAllowedDates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindow;
+        });
+    }
 }

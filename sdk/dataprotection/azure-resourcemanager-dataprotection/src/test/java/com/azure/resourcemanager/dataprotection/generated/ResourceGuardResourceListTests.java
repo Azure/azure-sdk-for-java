@@ -17,29 +17,34 @@ public final class ResourceGuardResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"kghimdblxgwimfnj\",\"requestResourceType\":\"j\"}],\"vaultCriticalOperationExclusionList\":[\"szkkfoqre\",\"fkzikfj\"],\"description\":\"n\"},\"eTag\":\"ivx\",\"location\":\"zel\",\"tags\":{\"lsfeaenwabfatkld\":\"r\",\"oulpjrv\":\"xbjhwuaanozjosph\"},\"id\":\"ag\",\"name\":\"rvimjwosytxitcsk\",\"type\":\"cktqumiekkezzi\"}],\"nextLink\":\"ly\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"dtkcnqxwbpokulp\",\"requestResourceType\":\"jwaa\"},{\"vaultCriticalOperation\":\"pqiiobyuqe\",\"requestResourceType\":\"qlpqwcciuq\"},{\"vaultCriticalOperation\":\"dbutauvfbtkuwhh\",\"requestResourceType\":\"ykojoxafnndlpic\"}],\"vaultCriticalOperationExclusionList\":[\"ymkcdyhb\"],\"description\":\"kpw\"},\"eTag\":\"eqnovvqfovl\",\"location\":\"ywsuwsy\",\"tags\":{\"ea\":\"dsytgadgvr\",\"arrwlquu\":\"neqn\",\"e\":\"jfqka\"},\"id\":\"iipfpubj\",\"name\":\"bwwift\",\"type\":\"hqkvpuvksgplsak\"},{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ph\",\"requestResourceType\":\"pxodlqiyntorzih\"},{\"vaultCriticalOperation\":\"osjswsr\",\"requestResourceType\":\"lyzrpzbchckqqzqi\"},{\"vaultCriticalOperation\":\"iysui\",\"requestResourceType\":\"ynkedyatrwyhqmib\"}],\"vaultCriticalOperationExclusionList\":[\"wit\"],\"description\":\"ypyynpcdpumnzg\"},\"eTag\":\"z\",\"location\":\"abikns\",\"tags\":{\"lwwrl\":\"jhxbld\"},\"id\":\"dmtnc\",\"name\":\"ok\",\"type\":\"tllxdyhgsyocogj\"}],\"nextLink\":\"dtbnnha\"}")
             .toObject(ResourceGuardResourceList.class);
-        Assertions.assertEquals("ly", model.nextLink());
-        Assertions.assertEquals("zel", model.value().get(0).location());
-        Assertions.assertEquals("r", model.value().get(0).tags().get("lsfeaenwabfatkld"));
-        Assertions.assertEquals("ivx", model.value().get(0).etag());
-        Assertions.assertEquals("szkkfoqre",
+        Assertions.assertEquals("dtbnnha", model.nextLink());
+        Assertions.assertEquals("ywsuwsy", model.value().get(0).location());
+        Assertions.assertEquals("dsytgadgvr", model.value().get(0).tags().get("ea"));
+        Assertions.assertEquals("eqnovvqfovl", model.value().get(0).etag());
+        Assertions.assertEquals("ymkcdyhb",
             model.value().get(0).properties().vaultCriticalOperationExclusionList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardResourceList model = new ResourceGuardResourceList().withNextLink("ly")
-            .withValue(Arrays.asList(new ResourceGuardResourceInner().withLocation("zel")
-                .withTags(mapOf("lsfeaenwabfatkld", "r", "oulpjrv", "xbjhwuaanozjosph")).withEtag("ivx")
-                .withProperties(new ResourceGuard()
-                    .withVaultCriticalOperationExclusionList(Arrays.asList("szkkfoqre", "fkzikfj")))));
+        ResourceGuardResourceList model = new ResourceGuardResourceList().withNextLink("dtbnnha")
+            .withValue(Arrays.asList(new ResourceGuardResourceInner().withLocation("ywsuwsy")
+                .withTags(mapOf("ea", "dsytgadgvr", "arrwlquu", "neqn", "e", "jfqka"))
+                .withEtag("eqnovvqfovl")
+                .withProperties(new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("ymkcdyhb"))),
+                new ResourceGuardResourceInner().withLocation("abikns")
+                    .withTags(mapOf("lwwrl", "jhxbld"))
+                    .withEtag("z")
+                    .withProperties(
+                        new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("wit")))));
         model = BinaryData.fromObject(model).toObject(ResourceGuardResourceList.class);
-        Assertions.assertEquals("ly", model.nextLink());
-        Assertions.assertEquals("zel", model.value().get(0).location());
-        Assertions.assertEquals("r", model.value().get(0).tags().get("lsfeaenwabfatkld"));
-        Assertions.assertEquals("ivx", model.value().get(0).etag());
-        Assertions.assertEquals("szkkfoqre",
+        Assertions.assertEquals("dtbnnha", model.nextLink());
+        Assertions.assertEquals("ywsuwsy", model.value().get(0).location());
+        Assertions.assertEquals("dsytgadgvr", model.value().get(0).tags().get("ea"));
+        Assertions.assertEquals("eqnovvqfovl", model.value().get(0).etag());
+        Assertions.assertEquals("ymkcdyhb",
             model.value().get(0).properties().vaultCriticalOperationExclusionList().get(0));
     }
 

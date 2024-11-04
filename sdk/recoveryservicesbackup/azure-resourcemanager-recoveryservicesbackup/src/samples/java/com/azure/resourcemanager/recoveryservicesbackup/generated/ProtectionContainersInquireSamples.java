@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainersInquireSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureStorage/ProtectionContainers_Inquire.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureStorage/ProtectionContainers_Inquire.json
      */
     /**
      * Sample code: Inquire Azure Storage Protection Containers.
@@ -20,7 +18,8 @@ public final class ProtectionContainersInquireSamples {
      */
     public static void inquireAzureStorageProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionContainers().inquireWithResponse("testvault", "test-rg", "Azure",
-            "storagecontainer;Storage;test-rg;teststorage", null, com.azure.core.util.Context.NONE);
+        manager.protectionContainers()
+            .inquireWithResponse("testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", null,
+                com.azure.core.util.Context.NONE);
     }
 }

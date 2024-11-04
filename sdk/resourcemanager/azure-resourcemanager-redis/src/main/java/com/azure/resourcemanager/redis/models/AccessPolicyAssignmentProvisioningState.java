@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of an access policy assignment set. */
+/**
+ * Provisioning state of an access policy assignment set.
+ */
 public final class AccessPolicyAssignmentProvisioningState
     extends ExpandableStringEnum<AccessPolicyAssignmentProvisioningState> {
-    /** Static value Updating for AccessPolicyAssignmentProvisioningState. */
+    /**
+     * Static value Updating for AccessPolicyAssignmentProvisioningState.
+     */
     public static final AccessPolicyAssignmentProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for AccessPolicyAssignmentProvisioningState. */
+    /**
+     * Static value Succeeded for AccessPolicyAssignmentProvisioningState.
+     */
     public static final AccessPolicyAssignmentProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for AccessPolicyAssignmentProvisioningState. */
+    /**
+     * Static value Deleting for AccessPolicyAssignmentProvisioningState.
+     */
     public static final AccessPolicyAssignmentProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Deleted for AccessPolicyAssignmentProvisioningState. */
+    /**
+     * Static value Deleted for AccessPolicyAssignmentProvisioningState.
+     */
     public static final AccessPolicyAssignmentProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value Canceled for AccessPolicyAssignmentProvisioningState. */
+    /**
+     * Static value Canceled for AccessPolicyAssignmentProvisioningState.
+     */
     public static final AccessPolicyAssignmentProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for AccessPolicyAssignmentProvisioningState. */
+    /**
+     * Static value Failed for AccessPolicyAssignmentProvisioningState.
+     */
     public static final AccessPolicyAssignmentProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of AccessPolicyAssignmentProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class AccessPolicyAssignmentProvisioningState
 
     /**
      * Creates or finds a AccessPolicyAssignmentProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccessPolicyAssignmentProvisioningState.
      */
-    @JsonCreator
     public static AccessPolicyAssignmentProvisioningState fromString(String name) {
         return fromString(name, AccessPolicyAssignmentProvisioningState.class);
     }
 
     /**
      * Gets known AccessPolicyAssignmentProvisioningState values.
-     *
+     * 
      * @return known AccessPolicyAssignmentProvisioningState values.
      */
     public static Collection<AccessPolicyAssignmentProvisioningState> values() {

@@ -25,8 +25,10 @@ public final class ProtectionContainerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionContainer model = new ProtectionContainer().withFriendlyName("r")
-            .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER).withRegistrationStatus("mjsjqb")
-            .withHealthStatus("hyxxrwlycoduhpk").withProtectableObjectType("gymare");
+            .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
+            .withRegistrationStatus("mjsjqb")
+            .withHealthStatus("hyxxrwlycoduhpk")
+            .withProtectableObjectType("gymare");
         model = BinaryData.fromObject(model).toObject(ProtectionContainer.class);
         Assertions.assertEquals("r", model.friendlyName());
         Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());

@@ -82,14 +82,23 @@ public final class TextBlocklist implements JsonSerializable<TextBlocklist> {
     private final Set<String> updatedProperties = new HashSet<>();
 
     @Generated
-    void serializeAsJsonMergePatch(boolean jsonMergePatch) {
+    private void serializeAsJsonMergePatch(boolean jsonMergePatch) {
         this.jsonMergePatch = jsonMergePatch;
     }
 
     static {
-        JsonMergePatchHelper.setTextBlocklistAccessor((model, jsonMergePatchEnabled) -> {
-            model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
-            return model;
+        JsonMergePatchHelper.setTextBlocklistAccessor(new JsonMergePatchHelper.TextBlocklistAccessor() {
+
+            @Override
+            public TextBlocklist prepareModelForJsonMergePatch(TextBlocklist model, boolean jsonMergePatchEnabled) {
+                model.serializeAsJsonMergePatch(jsonMergePatchEnabled);
+                return model;
+            }
+
+            @Override
+            public boolean isJsonMergePatch(TextBlocklist model) {
+                return model.jsonMergePatch;
+            }
         });
     }
 
@@ -133,22 +142,18 @@ public final class TextBlocklist implements JsonSerializable<TextBlocklist> {
     @Generated
     public static TextBlocklist fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
-            String description = null;
+            TextBlocklist deserializedTextBlocklist = new TextBlocklist();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("blocklistName".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedTextBlocklist.name = reader.getString();
                 } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
+                    deserializedTextBlocklist.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            TextBlocklist deserializedTextBlocklist = new TextBlocklist();
-            deserializedTextBlocklist.name = name;
-            deserializedTextBlocklist.description = description;
             return deserializedTextBlocklist;
         });
     }

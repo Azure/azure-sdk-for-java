@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Backup Policies.
  */
 @Fluent
-public final class BackupPoliciesList {
+public final class BackupPoliciesList implements JsonSerializable<BackupPoliciesList> {
     /*
      * A list of backup policies
      */
-    @JsonProperty(value = "value")
     private List<BackupPolicyInner> value;
 
     /**
@@ -55,5 +58,42 @@ public final class BackupPoliciesList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPoliciesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPoliciesList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupPoliciesList.
+     */
+    public static BackupPoliciesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPoliciesList deserializedBackupPoliciesList = new BackupPoliciesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BackupPolicyInner> value = reader.readArray(reader1 -> BackupPolicyInner.fromJson(reader1));
+                    deserializedBackupPoliciesList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPoliciesList;
+        });
     }
 }

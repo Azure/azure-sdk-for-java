@@ -6,27 +6,37 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a search request for operator information for the given phone numbers. */
+/**
+ * Represents a search request for operator information for the given phone numbers.
+ */
 @Fluent
-public final class OperatorInformationRequest {
+public final class OperatorInformationRequest implements JsonSerializable<OperatorInformationRequest> {
     /*
      * Phone number(s) whose operator information is being requested
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
     private List<String> phoneNumbers;
 
     /*
      * Represents options to modify a search request for operator information
      */
-    @JsonProperty(value = "options")
     private OperatorInformationOptions options;
 
     /**
+     * Creates an instance of OperatorInformationRequest class.
+     */
+    public OperatorInformationRequest() {
+    }
+
+    /**
      * Get the phoneNumbers property: Phone number(s) whose operator information is being requested.
-     *
+     * 
      * @return the phoneNumbers value.
      */
     public List<String> getPhoneNumbers() {
@@ -35,7 +45,7 @@ public final class OperatorInformationRequest {
 
     /**
      * Set the phoneNumbers property: Phone number(s) whose operator information is being requested.
-     *
+     * 
      * @param phoneNumbers the phoneNumbers value to set.
      * @return the OperatorInformationRequest object itself.
      */
@@ -46,7 +56,7 @@ public final class OperatorInformationRequest {
 
     /**
      * Get the options property: Represents options to modify a search request for operator information.
-     *
+     * 
      * @return the options value.
      */
     public OperatorInformationOptions getOptions() {
@@ -55,12 +65,53 @@ public final class OperatorInformationRequest {
 
     /**
      * Set the options property: Represents options to modify a search request for operator information.
-     *
+     * 
      * @param options the options value to set.
      * @return the OperatorInformationRequest object itself.
      */
     public OperatorInformationRequest setOptions(OperatorInformationOptions options) {
         this.options = options;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("phoneNumbers", this.phoneNumbers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperatorInformationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperatorInformationRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperatorInformationRequest.
+     */
+    public static OperatorInformationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperatorInformationRequest deserializedOperatorInformationRequest = new OperatorInformationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("phoneNumbers".equals(fieldName)) {
+                    List<String> phoneNumbers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOperatorInformationRequest.phoneNumbers = phoneNumbers;
+                } else if ("options".equals(fieldName)) {
+                    deserializedOperatorInformationRequest.options = OperatorInformationOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperatorInformationRequest;
+        });
     }
 }

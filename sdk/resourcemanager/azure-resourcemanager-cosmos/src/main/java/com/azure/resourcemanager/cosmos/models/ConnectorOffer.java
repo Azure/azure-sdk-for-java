@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
      * @param name a name to look for.
      * @return the corresponding ConnectorOffer.
      */
-    @JsonCreator
     public static ConnectorOffer fromString(String name) {
         return fromString(name, ConnectorOffer.class);
     }

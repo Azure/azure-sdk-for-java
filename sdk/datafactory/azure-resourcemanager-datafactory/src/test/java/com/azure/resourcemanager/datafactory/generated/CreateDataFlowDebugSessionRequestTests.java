@@ -6,35 +6,50 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.CreateDataFlowDebugSessionRequest;
+import com.azure.resourcemanager.datafactory.models.IntegrationRuntime;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeDebugResource;
-import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class CreateDataFlowDebugSessionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateDataFlowDebugSessionRequest model = BinaryData.fromString(
-            "{\"computeType\":\"iwbuqny\",\"coreCount\":1310458507,\"timeToLive\":416565759,\"integrationRuntime\":{\"properties\":{\"type\":\"SelfHosted\",\"description\":\"crpfbcunez\",\"\":{\"xjwet\":\"datazelfwyfwl\"}},\"name\":\"sihclafzvaylp\"}}")
+            "{\"computeType\":\"qfrddgam\",\"coreCount\":534741289,\"timeToLive\":362279180,\"integrationRuntime\":{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"sjuivfcdisyir\",\"\":{\"xrxzbujrtr\":\"datahcz\",\"khgn\":\"dataqvwre\",\"piqywnc\":\"datanzonzl\",\"zehtdhgb\":\"datajtszcof\"}},\"name\":\"vreljea\"}}")
             .toObject(CreateDataFlowDebugSessionRequest.class);
-        Assertions.assertEquals("iwbuqny", model.computeType());
-        Assertions.assertEquals(1310458507, model.coreCount());
-        Assertions.assertEquals(416565759, model.timeToLive());
-        Assertions.assertEquals("sihclafzvaylp", model.integrationRuntime().name());
-        Assertions.assertEquals("crpfbcunez", model.integrationRuntime().properties().description());
+        Assertions.assertEquals("qfrddgam", model.computeType());
+        Assertions.assertEquals(534741289, model.coreCount());
+        Assertions.assertEquals(362279180, model.timeToLive());
+        Assertions.assertEquals("vreljea", model.integrationRuntime().name());
+        Assertions.assertEquals("sjuivfcdisyir", model.integrationRuntime().properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateDataFlowDebugSessionRequest model = new CreateDataFlowDebugSessionRequest().withComputeType("iwbuqny")
-            .withCoreCount(1310458507)
-            .withTimeToLive(416565759)
-            .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("sihclafzvaylp")
-                .withProperties(new SelfHostedIntegrationRuntime().withDescription("crpfbcunez")));
+        CreateDataFlowDebugSessionRequest model = new CreateDataFlowDebugSessionRequest().withComputeType("qfrddgam")
+            .withCoreCount(534741289)
+            .withTimeToLive(362279180)
+            .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("vreljea")
+                .withProperties(new IntegrationRuntime().withDescription("sjuivfcdisyir")
+                    .withAdditionalProperties(mapOf("type", "IntegrationRuntime"))));
         model = BinaryData.fromObject(model).toObject(CreateDataFlowDebugSessionRequest.class);
-        Assertions.assertEquals("iwbuqny", model.computeType());
-        Assertions.assertEquals(1310458507, model.coreCount());
-        Assertions.assertEquals(416565759, model.timeToLive());
-        Assertions.assertEquals("sihclafzvaylp", model.integrationRuntime().name());
-        Assertions.assertEquals("crpfbcunez", model.integrationRuntime().properties().description());
+        Assertions.assertEquals("qfrddgam", model.computeType());
+        Assertions.assertEquals(534741289, model.coreCount());
+        Assertions.assertEquals(362279180, model.timeToLive());
+        Assertions.assertEquals("vreljea", model.integrationRuntime().name());
+        Assertions.assertEquals("sjuivfcdisyir", model.integrationRuntime().properties().description());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

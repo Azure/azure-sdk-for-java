@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class HomeNetworkPublicKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HomeNetworkPublicKey model
-            = BinaryData.fromString("{\"id\":184362773,\"url\":\"ualhbxxhejj\"}").toObject(HomeNetworkPublicKey.class);
-        Assertions.assertEquals(184362773, model.id());
-        Assertions.assertEquals("ualhbxxhejj", model.url());
+        HomeNetworkPublicKey model = BinaryData.fromString("{\"id\":61185346,\"url\":\"refovgmkqsleyyvx\"}")
+            .toObject(HomeNetworkPublicKey.class);
+        Assertions.assertEquals(61185346, model.id());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.url());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HomeNetworkPublicKey model = new HomeNetworkPublicKey().withId(184362773).withUrl("ualhbxxhejj");
+        HomeNetworkPublicKey model = new HomeNetworkPublicKey().withId(61185346).withUrl("refovgmkqsleyyvx");
         model = BinaryData.fromObject(model).toObject(HomeNetworkPublicKey.class);
-        Assertions.assertEquals(184362773, model.id());
-        Assertions.assertEquals("ualhbxxhejj", model.url());
+        Assertions.assertEquals(61185346, model.id());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.url());
     }
 }

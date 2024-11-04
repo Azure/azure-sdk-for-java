@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Is this parameter required or optional. */
+/**
+ * Optional Param.
+ */
 public final class OptionalParamEnum extends ExpandableStringEnum<OptionalParamEnum> {
-    /** Static value Optional for OptionalParamEnum. */
+    /**
+     * Static value Optional for OptionalParamEnum.
+     */
     public static final OptionalParamEnum OPTIONAL = fromString("Optional");
 
-    /** Static value Required for OptionalParamEnum. */
+    /**
+     * Static value Required for OptionalParamEnum.
+     */
     public static final OptionalParamEnum REQUIRED = fromString("Required");
 
     /**
      * Creates a new instance of OptionalParamEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class OptionalParamEnum extends ExpandableStringEnum<OptionalParamE
 
     /**
      * Creates or finds a OptionalParamEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OptionalParamEnum.
      */
-    @JsonCreator
     public static OptionalParamEnum fromString(String name) {
         return fromString(name, OptionalParamEnum.class);
     }
 
     /**
      * Gets known OptionalParamEnum values.
-     *
+     * 
      * @return known OptionalParamEnum values.
      */
     public static Collection<OptionalParamEnum> values() {

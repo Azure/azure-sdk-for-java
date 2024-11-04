@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the download type. */
+/**
+ * Indicates the download type.
+ */
 public final class DownloadType extends ExpandableStringEnum<DownloadType> {
-    /** Static value ComplianceReport for DownloadType. */
+    /**
+     * Static value ComplianceReport for DownloadType.
+     */
     public static final DownloadType COMPLIANCE_REPORT = fromString("ComplianceReport");
 
-    /** Static value CompliancePdfReport for DownloadType. */
+    /**
+     * Static value CompliancePdfReport for DownloadType.
+     */
     public static final DownloadType COMPLIANCE_PDF_REPORT = fromString("CompliancePdfReport");
 
-    /** Static value ComplianceDetailedPdfReport for DownloadType. */
+    /**
+     * Static value ComplianceDetailedPdfReport for DownloadType.
+     */
     public static final DownloadType COMPLIANCE_DETAILED_PDF_REPORT = fromString("ComplianceDetailedPdfReport");
 
-    /** Static value ResourceList for DownloadType. */
+    /**
+     * Static value ResourceList for DownloadType.
+     */
     public static final DownloadType RESOURCE_LIST = fromString("ResourceList");
 
     /**
+     * Creates a new instance of DownloadType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DownloadType() {
+    }
+
+    /**
      * Creates or finds a DownloadType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DownloadType.
      */
-    @JsonCreator
     public static DownloadType fromString(String name) {
         return fromString(name, DownloadType.class);
     }
 
     /**
      * Gets known DownloadType values.
-     *
+     * 
      * @return known DownloadType values.
      */
     public static Collection<DownloadType> values() {

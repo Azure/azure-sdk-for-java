@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public final class PrivateLinkScopesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/privateLinkScope/
+     * PrivateLinkScopes_UpdateTagsOnly.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdateTagsOnly.

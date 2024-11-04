@@ -8,24 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Resource collection API of DscCompilationJobStreams. */
+/**
+ * Resource collection API of DscCompilationJobStreams.
+ */
 public interface DscCompilationJobStreams {
     /**
      * Retrieve all the job streams for the compilation Job.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job stream operation.
-     */
-    JobStreamListResult listByJob(String resourceGroupName, String automationAccountName, UUID jobId);
-
-    /**
-     * Retrieve all the job streams for the compilation Job.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -35,6 +24,19 @@ public interface DscCompilationJobStreams {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job stream operation along with {@link Response}.
      */
-    Response<JobStreamListResult> listByJobWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobId, Context context);
+    Response<JobStreamListResult> listByJobWithResponse(String resourceGroupName, String automationAccountName,
+        UUID jobId, Context context);
+
+    /**
+     * Retrieve all the job streams for the compilation Job.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the list job stream operation.
+     */
+    JobStreamListResult listByJob(String resourceGroupName, String automationAccountName, UUID jobId);
 }

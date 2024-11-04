@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RunQueryOrderByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunQueryOrderBy model = BinaryData.fromString("{\"orderBy\":\"ActivityRunStart\",\"order\":\"ASC\"}")
-            .toObject(RunQueryOrderBy.class);
-        Assertions.assertEquals(RunQueryOrderByField.ACTIVITY_RUN_START, model.orderBy());
-        Assertions.assertEquals(RunQueryOrder.ASC, model.order());
+        RunQueryOrderBy model
+            = BinaryData.fromString("{\"orderBy\":\"TriggerName\",\"order\":\"DESC\"}").toObject(RunQueryOrderBy.class);
+        Assertions.assertEquals(RunQueryOrderByField.TRIGGER_NAME, model.orderBy());
+        Assertions.assertEquals(RunQueryOrder.DESC, model.order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RunQueryOrderBy model
-            = new RunQueryOrderBy().withOrderBy(RunQueryOrderByField.ACTIVITY_RUN_START).withOrder(RunQueryOrder.ASC);
+            = new RunQueryOrderBy().withOrderBy(RunQueryOrderByField.TRIGGER_NAME).withOrder(RunQueryOrder.DESC);
         model = BinaryData.fromObject(model).toObject(RunQueryOrderBy.class);
-        Assertions.assertEquals(RunQueryOrderByField.ACTIVITY_RUN_START, model.orderBy());
-        Assertions.assertEquals(RunQueryOrder.ASC, model.order());
+        Assertions.assertEquals(RunQueryOrderByField.TRIGGER_NAME, model.orderBy());
+        Assertions.assertEquals(RunQueryOrder.DESC, model.order());
     }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource requests. */
+/**
+ * The resource requests.
+ */
 @Fluent
-public final class ResourceRequests {
+public final class ResourceRequests implements JsonSerializable<ResourceRequests> {
     /*
      * The memory request in GB of this container instance.
      */
-    @JsonProperty(value = "memoryInGB", required = true)
     private double memoryInGB;
 
     /*
      * The CPU request of this container instance.
      */
-    @JsonProperty(value = "cpu", required = true)
     private double cpu;
 
     /*
      * The GPU request of this container instance.
      */
-    @JsonProperty(value = "gpu")
     private GpuResource gpu;
 
-    /** Creates an instance of ResourceRequests class. */
+    /**
+     * Creates an instance of ResourceRequests class.
+     */
     public ResourceRequests() {
     }
 
     /**
      * Get the memoryInGB property: The memory request in GB of this container instance.
-     *
+     * 
      * @return the memoryInGB value.
      */
     public double memoryInGB() {
@@ -43,7 +48,7 @@ public final class ResourceRequests {
 
     /**
      * Set the memoryInGB property: The memory request in GB of this container instance.
-     *
+     * 
      * @param memoryInGB the memoryInGB value to set.
      * @return the ResourceRequests object itself.
      */
@@ -54,7 +59,7 @@ public final class ResourceRequests {
 
     /**
      * Get the cpu property: The CPU request of this container instance.
-     *
+     * 
      * @return the cpu value.
      */
     public double cpu() {
@@ -63,7 +68,7 @@ public final class ResourceRequests {
 
     /**
      * Set the cpu property: The CPU request of this container instance.
-     *
+     * 
      * @param cpu the cpu value to set.
      * @return the ResourceRequests object itself.
      */
@@ -74,7 +79,7 @@ public final class ResourceRequests {
 
     /**
      * Get the gpu property: The GPU request of this container instance.
-     *
+     * 
      * @return the gpu value.
      */
     public GpuResource gpu() {
@@ -83,7 +88,7 @@ public final class ResourceRequests {
 
     /**
      * Set the gpu property: The GPU request of this container instance.
-     *
+     * 
      * @param gpu the gpu value to set.
      * @return the ResourceRequests object itself.
      */
@@ -94,12 +99,55 @@ public final class ResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (gpu() != null) {
             gpu().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("memoryInGB", this.memoryInGB);
+        jsonWriter.writeDoubleField("cpu", this.cpu);
+        jsonWriter.writeJsonField("gpu", this.gpu);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceRequests from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceRequests if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceRequests.
+     */
+    public static ResourceRequests fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceRequests deserializedResourceRequests = new ResourceRequests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("memoryInGB".equals(fieldName)) {
+                    deserializedResourceRequests.memoryInGB = reader.getDouble();
+                } else if ("cpu".equals(fieldName)) {
+                    deserializedResourceRequests.cpu = reader.getDouble();
+                } else if ("gpu".equals(fieldName)) {
+                    deserializedResourceRequests.gpu = GpuResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceRequests;
+        });
     }
 }

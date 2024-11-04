@@ -29,7 +29,7 @@ public class HttpResponse<T> implements Response<T> {
 
             @Override
             public HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
-                                                       Function<BinaryData, Object> bodyDeserializer) {
+                Function<BinaryData, Object> bodyDeserializer) {
                 return httpResponse.setBodyDeserializer(bodyDeserializer);
             }
         });
@@ -115,7 +115,7 @@ public class HttpResponse<T> implements Response<T> {
     public BinaryData getBody() {
         if (body == null) {
             if (value == null) {
-                body = BinaryData.EMPTY;
+                body = BinaryData.empty();
             } else if (value instanceof BinaryData) {
                 body = (BinaryData) value;
             } else {

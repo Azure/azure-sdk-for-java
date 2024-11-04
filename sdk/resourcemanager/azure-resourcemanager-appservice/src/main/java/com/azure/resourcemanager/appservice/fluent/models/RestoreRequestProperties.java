@@ -6,46 +6,45 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BackupRestoreOperationType;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * RestoreRequest resource specific properties.
  */
 @Fluent
-public final class RestoreRequestProperties {
+public final class RestoreRequestProperties implements JsonSerializable<RestoreRequestProperties> {
     /*
      * SAS URL to the container.
      */
-    @JsonProperty(value = "storageAccountUrl", required = true)
     private String storageAccountUrl;
 
     /*
      * Name of a blob which contains the backup.
      */
-    @JsonProperty(value = "blobName")
     private String blobName;
 
     /*
      * <code>true</code> if the restore operation can overwrite target app; otherwise, <code>false</code>.
      * <code>true</code> is needed if trying to restore over an existing app.
      */
-    @JsonProperty(value = "overwrite", required = true)
     private boolean overwrite;
 
     /*
      * Name of an app.
      */
-    @JsonProperty(value = "siteName")
     private String siteName;
 
     /*
      * Collection of databases which should be restored. This list has to match the list of databases included in the
      * backup.
      */
-    @JsonProperty(value = "databases")
     private List<DatabaseBackupSetting> databases;
 
     /*
@@ -53,37 +52,31 @@ public final class RestoreRequestProperties {
      * automatically. If <code>false</code>, custom domains are added to
      * the app's object when it is being restored, but that might fail due to conflicts during the operation.
      */
-    @JsonProperty(value = "ignoreConflictingHostNames")
     private Boolean ignoreConflictingHostNames;
 
     /*
      * Ignore the databases and only restore the site content
      */
-    @JsonProperty(value = "ignoreDatabases")
     private Boolean ignoreDatabases;
 
     /*
      * Specify app service plan that will own restored site.
      */
-    @JsonProperty(value = "appServicePlan")
     private String appServicePlan;
 
     /*
      * Operation type.
      */
-    @JsonProperty(value = "operationType")
     private BackupRestoreOperationType operationType;
 
     /*
      * <code>true</code> if SiteConfig.ConnectionStrings should be set in new app; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "adjustConnectionStrings")
     private Boolean adjustConnectionStrings;
 
     /*
      * App Service Environment name, if needed (only when restoring an app to an App Service Environment).
      */
-    @JsonProperty(value = "hostingEnvironment")
     private String hostingEnvironment;
 
     /**
@@ -285,8 +278,8 @@ public final class RestoreRequestProperties {
     }
 
     /**
-     * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should
-     * be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the adjustConnectionStrings value.
      */
@@ -295,8 +288,8 @@ public final class RestoreRequestProperties {
     }
 
     /**
-     * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should
-     * be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param adjustConnectionStrings the adjustConnectionStrings value to set.
      * @return the RestoreRequestProperties object itself.
@@ -335,8 +328,9 @@ public final class RestoreRequestProperties {
      */
     public void validate() {
         if (storageAccountUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountUrl in model RestoreRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountUrl in model RestoreRequestProperties"));
         }
         if (databases() != null) {
             databases().forEach(e -> e.validate());
@@ -344,4 +338,76 @@ public final class RestoreRequestProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RestoreRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountUrl", this.storageAccountUrl);
+        jsonWriter.writeBooleanField("overwrite", this.overwrite);
+        jsonWriter.writeStringField("blobName", this.blobName);
+        jsonWriter.writeStringField("siteName", this.siteName);
+        jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("ignoreConflictingHostNames", this.ignoreConflictingHostNames);
+        jsonWriter.writeBooleanField("ignoreDatabases", this.ignoreDatabases);
+        jsonWriter.writeStringField("appServicePlan", this.appServicePlan);
+        jsonWriter.writeStringField("operationType", this.operationType == null ? null : this.operationType.toString());
+        jsonWriter.writeBooleanField("adjustConnectionStrings", this.adjustConnectionStrings);
+        jsonWriter.writeStringField("hostingEnvironment", this.hostingEnvironment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreRequestProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestoreRequestProperties.
+     */
+    public static RestoreRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreRequestProperties deserializedRestoreRequestProperties = new RestoreRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountUrl".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.storageAccountUrl = reader.getString();
+                } else if ("overwrite".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.overwrite = reader.getBoolean();
+                } else if ("blobName".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.blobName = reader.getString();
+                } else if ("siteName".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.siteName = reader.getString();
+                } else if ("databases".equals(fieldName)) {
+                    List<DatabaseBackupSetting> databases
+                        = reader.readArray(reader1 -> DatabaseBackupSetting.fromJson(reader1));
+                    deserializedRestoreRequestProperties.databases = databases;
+                } else if ("ignoreConflictingHostNames".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.ignoreConflictingHostNames
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ignoreDatabases".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.ignoreDatabases = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appServicePlan".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.appServicePlan = reader.getString();
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.operationType
+                        = BackupRestoreOperationType.fromString(reader.getString());
+                } else if ("adjustConnectionStrings".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.adjustConnectionStrings
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hostingEnvironment".equals(fieldName)) {
+                    deserializedRestoreRequestProperties.hostingEnvironment = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreRequestProperties;
+        });
+    }
 }

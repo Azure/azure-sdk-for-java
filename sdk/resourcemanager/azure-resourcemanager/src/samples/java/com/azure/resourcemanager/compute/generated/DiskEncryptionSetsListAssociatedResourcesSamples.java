@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskEncryptionSetsListAssociatedResourcesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
      * diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
      */
     /**
@@ -19,7 +19,10 @@ public final class DiskEncryptionSetsListAssociatedResourcesSamples {
      */
     public static void listAllResourcesThatAreEncryptedWithThisDiskEncryptionSet(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
             .listAssociatedResources("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 }

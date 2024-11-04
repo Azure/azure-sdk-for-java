@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = ValidateRestoreOperationRequest.class)
+    defaultImpl = ValidateRestoreOperationRequest.class,
+    visible = true)
 @JsonTypeName("ValidateRestoreOperationRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -25,6 +26,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = ValidateIaasVMRestoreOperationRequest.class) })
 @Fluent
 public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "ValidateRestoreOperationRequest";
+
     /*
      * Sets restore request to be validated
      */
@@ -35,6 +43,17 @@ public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
      * Creates an instance of ValidateRestoreOperationRequest class.
      */
     public ValidateRestoreOperationRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

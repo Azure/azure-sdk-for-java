@@ -16,31 +16,31 @@ public final class DotNetComponentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DotNetComponentProperties model = BinaryData.fromString(
-            "{\"componentType\":\"AspireResourceServerApi\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"qzasunwqrjzfrgqh\",\"value\":\"hcmbuocnjrohmbp\"},{\"propertyName\":\"yx\",\"value\":\"eblydyv\"}],\"serviceBinds\":[{\"name\":\"rocxnehvs\",\"serviceId\":\"odlfpyapucygvo\"},{\"name\":\"yunssx\",\"serviceId\":\"hi\"}]}")
+            "{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"ocxnehvsmtodl\",\"value\":\"yapucygvoa\"}],\"serviceBinds\":[{\"name\":\"ssxlghieegjlg\",\"serviceId\":\"paseksgb\"},{\"name\":\"antuygdhgaqipirp\",\"serviceId\":\"rqofulopmjnlexwh\"},{\"name\":\"jpib\",\"serviceId\":\"phuuuerctato\"},{\"name\":\"ntqpbr\",\"serviceId\":\"yrduczkgofxyfsr\"}]}")
             .toObject(DotNetComponentProperties.class);
-        Assertions.assertEquals(DotNetComponentType.ASPIRE_RESOURCE_SERVER_API, model.componentType());
-        Assertions.assertEquals("qzasunwqrjzfrgqh", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("hcmbuocnjrohmbp", model.configurations().get(0).value());
-        Assertions.assertEquals("rocxnehvs", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("odlfpyapucygvo", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, model.componentType());
+        Assertions.assertEquals("ocxnehvsmtodl", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("yapucygvoa", model.configurations().get(0).value());
+        Assertions.assertEquals("ssxlghieegjlg", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("paseksgb", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DotNetComponentProperties model = new DotNetComponentProperties()
-            .withComponentType(DotNetComponentType.ASPIRE_RESOURCE_SERVER_API)
+            .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
             .withConfigurations(Arrays.asList(
-                new DotNetComponentConfigurationProperty().withPropertyName("qzasunwqrjzfrgqh")
-                    .withValue("hcmbuocnjrohmbp"),
-                new DotNetComponentConfigurationProperty().withPropertyName("yx").withValue("eblydyv")))
+                new DotNetComponentConfigurationProperty().withPropertyName("ocxnehvsmtodl").withValue("yapucygvoa")))
             .withServiceBinds(
-                Arrays.asList(new DotNetComponentServiceBind().withName("rocxnehvs").withServiceId("odlfpyapucygvo"),
-                    new DotNetComponentServiceBind().withName("yunssx").withServiceId("hi")));
+                Arrays.asList(new DotNetComponentServiceBind().withName("ssxlghieegjlg").withServiceId("paseksgb"),
+                    new DotNetComponentServiceBind().withName("antuygdhgaqipirp").withServiceId("rqofulopmjnlexwh"),
+                    new DotNetComponentServiceBind().withName("jpib").withServiceId("phuuuerctato"),
+                    new DotNetComponentServiceBind().withName("ntqpbr").withServiceId("yrduczkgofxyfsr")));
         model = BinaryData.fromObject(model).toObject(DotNetComponentProperties.class);
-        Assertions.assertEquals(DotNetComponentType.ASPIRE_RESOURCE_SERVER_API, model.componentType());
-        Assertions.assertEquals("qzasunwqrjzfrgqh", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("hcmbuocnjrohmbp", model.configurations().get(0).value());
-        Assertions.assertEquals("rocxnehvs", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("odlfpyapucygvo", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, model.componentType());
+        Assertions.assertEquals("ocxnehvsmtodl", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("yapucygvoa", model.configurations().get(0).value());
+        Assertions.assertEquals("ssxlghieegjlg", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("paseksgb", model.serviceBinds().get(0).serviceId());
     }
 }

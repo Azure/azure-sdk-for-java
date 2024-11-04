@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters for the script actions to execute on a running cluster. */
+/**
+ * The parameters for the script actions to execute on a running cluster.
+ */
 @Fluent
-public final class ExecuteScriptActionParameters {
+public final class ExecuteScriptActionParameters implements JsonSerializable<ExecuteScriptActionParameters> {
     /*
      * The list of run time script actions.
      */
-    @JsonProperty(value = "scriptActions")
     private List<RuntimeScriptAction> scriptActions;
 
     /*
      * Gets or sets if the scripts needs to be persisted.
      */
-    @JsonProperty(value = "persistOnSuccess", required = true)
     private boolean persistOnSuccess;
 
-    /** Creates an instance of ExecuteScriptActionParameters class. */
+    /**
+     * Creates an instance of ExecuteScriptActionParameters class.
+     */
     public ExecuteScriptActionParameters() {
     }
 
     /**
      * Get the scriptActions property: The list of run time script actions.
-     *
+     * 
      * @return the scriptActions value.
      */
     public List<RuntimeScriptAction> scriptActions() {
@@ -38,7 +44,7 @@ public final class ExecuteScriptActionParameters {
 
     /**
      * Set the scriptActions property: The list of run time script actions.
-     *
+     * 
      * @param scriptActions the scriptActions value to set.
      * @return the ExecuteScriptActionParameters object itself.
      */
@@ -49,7 +55,7 @@ public final class ExecuteScriptActionParameters {
 
     /**
      * Get the persistOnSuccess property: Gets or sets if the scripts needs to be persisted.
-     *
+     * 
      * @return the persistOnSuccess value.
      */
     public boolean persistOnSuccess() {
@@ -58,7 +64,7 @@ public final class ExecuteScriptActionParameters {
 
     /**
      * Set the persistOnSuccess property: Gets or sets if the scripts needs to be persisted.
-     *
+     * 
      * @param persistOnSuccess the persistOnSuccess value to set.
      * @return the ExecuteScriptActionParameters object itself.
      */
@@ -69,12 +75,55 @@ public final class ExecuteScriptActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scriptActions() != null) {
             scriptActions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("persistOnSuccess", this.persistOnSuccess);
+        jsonWriter.writeArrayField("scriptActions", this.scriptActions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecuteScriptActionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecuteScriptActionParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecuteScriptActionParameters.
+     */
+    public static ExecuteScriptActionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecuteScriptActionParameters deserializedExecuteScriptActionParameters
+                = new ExecuteScriptActionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("persistOnSuccess".equals(fieldName)) {
+                    deserializedExecuteScriptActionParameters.persistOnSuccess = reader.getBoolean();
+                } else if ("scriptActions".equals(fieldName)) {
+                    List<RuntimeScriptAction> scriptActions
+                        = reader.readArray(reader1 -> RuntimeScriptAction.fromJson(reader1));
+                    deserializedExecuteScriptActionParameters.scriptActions = scriptActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecuteScriptActionParameters;
+        });
     }
 }

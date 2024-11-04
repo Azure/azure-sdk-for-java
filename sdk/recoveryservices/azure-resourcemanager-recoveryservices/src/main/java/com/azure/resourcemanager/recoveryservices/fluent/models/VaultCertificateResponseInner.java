@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservices.models.ResourceCertificateDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Certificate corresponding to a vault that can be used by clients to register themselves with the vault. */
+/**
+ * Certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+ */
 @Fluent
 public final class VaultCertificateResponseInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class VaultCertificateResponseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ResourceCertificateDetails properties;
 
-    /** Creates an instance of VaultCertificateResponseInner class. */
+    /**
+     * Creates an instance of VaultCertificateResponseInner class.
+     */
     public VaultCertificateResponseInner() {
     }
 
     /**
      * Get the properties property: Certificate details representing the Vault credentials.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceCertificateDetails properties() {
@@ -33,7 +37,7 @@ public final class VaultCertificateResponseInner extends ProxyResource {
 
     /**
      * Set the properties property: Certificate details representing the Vault credentials.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the VaultCertificateResponseInner object itself.
      */
@@ -44,7 +48,7 @@ public final class VaultCertificateResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

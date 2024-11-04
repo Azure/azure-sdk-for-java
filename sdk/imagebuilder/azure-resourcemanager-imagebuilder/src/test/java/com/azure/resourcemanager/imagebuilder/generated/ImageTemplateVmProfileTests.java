@@ -14,25 +14,30 @@ public final class ImageTemplateVmProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateVmProfile model = BinaryData.fromString(
-            "{\"vmSize\":\"wclxxwrl\",\"osDiskSizeGB\":1070346714,\"userAssignedIdentities\":[\"kcqvkocrc\",\"dkwt\",\"hxbnjbiksqrg\"],\"vnetConfig\":{\"subnetId\":\"ainqpjwnzlljfm\",\"proxyVmSize\":\"eebvmgxsab\"}}")
+            "{\"vmSize\":\"wclxxwrl\",\"osDiskSizeGB\":1070346714,\"userAssignedIdentities\":[\"kcqvkocrc\",\"dkwt\",\"hxbnjbiksqrg\"],\"vnetConfig\":{\"subnetId\":\"ainqpjwnzlljfm\",\"containerInstanceSubnetId\":\"eebvmgxsab\",\"proxyVmSize\":\"qduujitcjczdz\"}}")
             .toObject(ImageTemplateVmProfile.class);
         Assertions.assertEquals("wclxxwrl", model.vmSize());
         Assertions.assertEquals(1070346714, model.osDiskSizeGB());
         Assertions.assertEquals("kcqvkocrc", model.userAssignedIdentities().get(0));
         Assertions.assertEquals("ainqpjwnzlljfm", model.vnetConfig().subnetId());
-        Assertions.assertEquals("eebvmgxsab", model.vnetConfig().proxyVmSize());
+        Assertions.assertEquals("eebvmgxsab", model.vnetConfig().containerInstanceSubnetId());
+        Assertions.assertEquals("qduujitcjczdz", model.vnetConfig().proxyVmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateVmProfile model = new ImageTemplateVmProfile().withVmSize("wclxxwrl").withOsDiskSizeGB(1070346714)
+        ImageTemplateVmProfile model = new ImageTemplateVmProfile().withVmSize("wclxxwrl")
+            .withOsDiskSizeGB(1070346714)
             .withUserAssignedIdentities(Arrays.asList("kcqvkocrc", "dkwt", "hxbnjbiksqrg"))
-            .withVnetConfig(new VirtualNetworkConfig().withSubnetId("ainqpjwnzlljfm").withProxyVmSize("eebvmgxsab"));
+            .withVnetConfig(new VirtualNetworkConfig().withSubnetId("ainqpjwnzlljfm")
+                .withContainerInstanceSubnetId("eebvmgxsab")
+                .withProxyVmSize("qduujitcjczdz"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateVmProfile.class);
         Assertions.assertEquals("wclxxwrl", model.vmSize());
         Assertions.assertEquals(1070346714, model.osDiskSizeGB());
         Assertions.assertEquals("kcqvkocrc", model.userAssignedIdentities().get(0));
         Assertions.assertEquals("ainqpjwnzlljfm", model.vnetConfig().subnetId());
-        Assertions.assertEquals("eebvmgxsab", model.vnetConfig().proxyVmSize());
+        Assertions.assertEquals("eebvmgxsab", model.vnetConfig().containerInstanceSubnetId());
+        Assertions.assertEquals("qduujitcjczdz", model.vnetConfig().proxyVmSize());
     }
 }

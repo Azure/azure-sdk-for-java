@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Optimization is applied on the image for a faster VM boot.
  */
 @Fluent
-public final class ImageTemplatePropertiesOptimizeVmBoot {
+public final class ImageTemplatePropertiesOptimizeVmBoot
+    implements JsonSerializable<ImageTemplatePropertiesOptimizeVmBoot> {
     /*
      * Enabling this field will improve VM boot time by optimizing the final customized image output.
      */
-    @JsonProperty(value = "state")
     private VMBootOptimizationState state;
 
     /**
@@ -52,5 +56,43 @@ public final class ImageTemplatePropertiesOptimizeVmBoot {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplatePropertiesOptimizeVmBoot from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplatePropertiesOptimizeVmBoot if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplatePropertiesOptimizeVmBoot.
+     */
+    public static ImageTemplatePropertiesOptimizeVmBoot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplatePropertiesOptimizeVmBoot deserializedImageTemplatePropertiesOptimizeVmBoot
+                = new ImageTemplatePropertiesOptimizeVmBoot();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedImageTemplatePropertiesOptimizeVmBoot.state
+                        = VMBootOptimizationState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplatePropertiesOptimizeVmBoot;
+        });
     }
 }

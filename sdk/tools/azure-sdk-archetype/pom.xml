@@ -55,7 +55,7 @@
             <extension>
                 <groupId>org.apache.maven.archetype</groupId>
                 <artifactId>archetype-packaging</artifactId>
-                <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
+                <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
             </extension>
         </extensions>
         <pluginManagement>
@@ -63,7 +63,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
+                    <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -139,7 +139,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -155,7 +155,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>empty-javadoc-jar-with-readme</id>
@@ -177,7 +177,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <dependencies>
               <dependency>
                 <groupId>com.azure</groupId>
@@ -195,7 +195,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <dependencies>
               <dependency>
                 <groupId>com.azure</groupId>

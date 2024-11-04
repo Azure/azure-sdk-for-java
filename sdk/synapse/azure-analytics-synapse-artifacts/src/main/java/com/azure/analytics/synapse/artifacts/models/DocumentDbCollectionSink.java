@@ -5,34 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Document Database Collection sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DocumentDbCollectionSink")
 @Fluent
 public final class DocumentDbCollectionSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "DocumentDbCollectionSink";
+
+    /*
      * Nested properties separator. Default is . (dot). Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "nestingSeparator")
     private Object nestingSeparator;
 
     /*
-     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
-     * values: insert and upsert.
+     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed values: insert and upsert.
      */
-    @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
     /**
      * Creates an instance of DocumentDbCollectionSink class.
      */
     public DocumentDbCollectionSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -122,5 +135,73 @@ public final class DocumentDbCollectionSink extends CopySink {
     public DocumentDbCollectionSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentDbCollectionSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentDbCollectionSink if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DocumentDbCollectionSink.
+     */
+    public static DocumentDbCollectionSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DocumentDbCollectionSink deserializedDocumentDbCollectionSink = new DocumentDbCollectionSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.type = reader.getString();
+                } else if ("nestingSeparator".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.nestingSeparator = reader.readUntyped();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedDocumentDbCollectionSink.writeBehavior = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDocumentDbCollectionSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedDocumentDbCollectionSink;
+        });
     }
 }

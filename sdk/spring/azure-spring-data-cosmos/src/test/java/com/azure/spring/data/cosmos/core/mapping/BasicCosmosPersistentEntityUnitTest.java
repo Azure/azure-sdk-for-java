@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BasicCosmosPersistentEntityUnitTest {
 
+    @SuppressWarnings({"deprecation", "removal"})
     @Test
     public void testGetCollection() {
         final BasicCosmosPersistentEntity<Person> entity = new BasicCosmosPersistentEntity<Person>(
@@ -18,6 +19,7 @@ public class BasicCosmosPersistentEntityUnitTest {
         assertThat(entity.getContainer()).isEqualTo("");
     }
 
+    @SuppressWarnings({"deprecation", "removal"})
     @Test
     public void testGetLanguage() {
         final BasicCosmosPersistentEntity<Person> entity = new BasicCosmosPersistentEntity<Person>(

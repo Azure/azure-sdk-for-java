@@ -11,15 +11,14 @@ public final class GoogleBigQueryV2DatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQueryV2DatasetTypeProperties model
-            = BinaryData.fromString("{\"table\":\"datarvpvdrohul\",\"dataset\":\"datakabhvxjuaivxzni\"}")
+            = BinaryData.fromString("{\"table\":\"dataddpwmgw\",\"dataset\":\"dataukfjvqgl\"}")
                 .toObject(GoogleBigQueryV2DatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GoogleBigQueryV2DatasetTypeProperties model
-            = new GoogleBigQueryV2DatasetTypeProperties().withTable("datarvpvdrohul")
-                .withDataset("datakabhvxjuaivxzni");
+            = new GoogleBigQueryV2DatasetTypeProperties().withTable("dataddpwmgw").withDataset("dataukfjvqgl");
         model = BinaryData.fromObject(model).toObject(GoogleBigQueryV2DatasetTypeProperties.class);
     }
 }

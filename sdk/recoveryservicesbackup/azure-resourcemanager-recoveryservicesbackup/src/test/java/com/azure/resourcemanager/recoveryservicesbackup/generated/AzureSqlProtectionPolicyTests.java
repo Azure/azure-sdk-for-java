@@ -14,19 +14,19 @@ public final class AzureSqlProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":172770191,\"resourceGuardOperationRequests\":[\"iogsjkmnwq\",\"nobaiyhddviacegf\",\"m\",\"tfpmvmemfnczdw\"]}")
+            "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1275946087,\"resourceGuardOperationRequests\":[\"spuunnoxyhkxgq\",\"drihpfhoqcaaewda\",\"mdjvlpj\",\"xkzb\"]}")
             .toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(172770191, model.protectedItemsCount());
-        Assertions.assertEquals("iogsjkmnwq", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(1275946087, model.protectedItemsCount());
+        Assertions.assertEquals("spuunnoxyhkxgq", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlProtectionPolicy model = new AzureSqlProtectionPolicy().withProtectedItemsCount(172770191)
-            .withResourceGuardOperationRequests(Arrays.asList("iogsjkmnwq", "nobaiyhddviacegf", "m", "tfpmvmemfnczdw"))
+        AzureSqlProtectionPolicy model = new AzureSqlProtectionPolicy().withProtectedItemsCount(1275946087)
+            .withResourceGuardOperationRequests(Arrays.asList("spuunnoxyhkxgq", "drihpfhoqcaaewda", "mdjvlpj", "xkzb"))
             .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(172770191, model.protectedItemsCount());
-        Assertions.assertEquals("iogsjkmnwq", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(1275946087, model.protectedItemsCount());
+        Assertions.assertEquals("spuunnoxyhkxgq", model.resourceGuardOperationRequests().get(0));
     }
 }

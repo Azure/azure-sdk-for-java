@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cloud service properties.
  */
 @Fluent
-public final class CloudServiceProperties {
+public final class CloudServiceProperties implements JsonSerializable<CloudServiceProperties> {
     /*
      * Specifies a URL that refers to the location of the service package in the Blob service. The service package URL
      * can be Shared Access Signature (SAS) URI from any storage account.
      * This is a write-only property and is not returned in GET calls.
      */
-    @JsonProperty(value = "packageUrl")
     private String packageUrl;
 
     /*
      * Specifies the XML service configuration (.cscfg) for the cloud service.
      */
-    @JsonProperty(value = "configuration")
     private String configuration;
 
     /*
-     * Specifies a URL that refers to the location of the service configuration in the Blob service. The service
-     * package URL can be Shared Access Signature (SAS) URI from any storage account.
+     * Specifies a URL that refers to the location of the service configuration in the Blob service. The service package
+     * URL can be Shared Access Signature (SAS) URI from any storage account.
      * This is a write-only property and is not returned in GET calls.
      */
-    @JsonProperty(value = "configurationUrl")
     private String configurationUrl;
 
     /*
@@ -41,7 +42,6 @@ public final class CloudServiceProperties {
      * PoweredOff until you call Start, at which time the service will be started. A deployed service still incurs
      * charges, even if it is poweredoff.
      */
-    @JsonProperty(value = "startCloudService")
     private Boolean startCloudService;
 
     /*
@@ -49,7 +49,6 @@ public final class CloudServiceProperties {
      * should override the role instance count and vm size specified in the .cscfg and .csdef respectively.
      * The default value is `false`.
      */
-    @JsonProperty(value = "allowModelOverride")
     private Boolean allowModelOverride;
 
     /*
@@ -59,43 +58,36 @@ public final class CloudServiceProperties {
      * If not specified, the default value is Auto. If set to Manual, PUT UpdateDomain must be called to apply the
      * update. If set to Auto, the update is automatically applied to each update domain in sequence.
      */
-    @JsonProperty(value = "upgradeMode")
     private CloudServiceUpgradeMode upgradeMode;
 
     /*
      * Describes the role profile for the cloud service.
      */
-    @JsonProperty(value = "roleProfile")
     private CloudServiceRoleProfile roleProfile;
 
     /*
      * Describes the OS profile for the cloud service.
      */
-    @JsonProperty(value = "osProfile")
     private CloudServiceOsProfile osProfile;
 
     /*
      * Network Profile for the cloud service.
      */
-    @JsonProperty(value = "networkProfile")
     private CloudServiceNetworkProfile networkProfile;
 
     /*
      * Describes a cloud service extension profile.
      */
-    @JsonProperty(value = "extensionProfile")
     private CloudServiceExtensionProfile extensionProfile;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique identifier for the cloud service.
      */
-    @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
 
     /**
@@ -201,9 +193,9 @@ public final class CloudServiceProperties {
     }
 
     /**
-     * Get the allowModelOverride property: (Optional) Indicates whether the role sku properties
-     * (roleProfile.roles.sku) specified in the model/template should override the role instance count and vm size
-     * specified in the .cscfg and .csdef respectively.
+     * Get the allowModelOverride property: (Optional) Indicates whether the role sku properties (roleProfile.roles.sku)
+     * specified in the model/template should override the role instance count and vm size specified in the .cscfg and
+     * .csdef respectively.
      * The default value is `false`.
      * 
      * @return the allowModelOverride value.
@@ -213,9 +205,9 @@ public final class CloudServiceProperties {
     }
 
     /**
-     * Set the allowModelOverride property: (Optional) Indicates whether the role sku properties
-     * (roleProfile.roles.sku) specified in the model/template should override the role instance count and vm size
-     * specified in the .cscfg and .csdef respectively.
+     * Set the allowModelOverride property: (Optional) Indicates whether the role sku properties (roleProfile.roles.sku)
+     * specified in the model/template should override the role instance count and vm size specified in the .cscfg and
+     * .csdef respectively.
      * The default value is `false`.
      * 
      * @param allowModelOverride the allowModelOverride value to set.
@@ -374,5 +366,73 @@ public final class CloudServiceProperties {
         if (extensionProfile() != null) {
             extensionProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("packageUrl", this.packageUrl);
+        jsonWriter.writeStringField("configuration", this.configuration);
+        jsonWriter.writeStringField("configurationUrl", this.configurationUrl);
+        jsonWriter.writeBooleanField("startCloudService", this.startCloudService);
+        jsonWriter.writeBooleanField("allowModelOverride", this.allowModelOverride);
+        jsonWriter.writeStringField("upgradeMode", this.upgradeMode == null ? null : this.upgradeMode.toString());
+        jsonWriter.writeJsonField("roleProfile", this.roleProfile);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("extensionProfile", this.extensionProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceProperties.
+     */
+    public static CloudServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceProperties deserializedCloudServiceProperties = new CloudServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageUrl".equals(fieldName)) {
+                    deserializedCloudServiceProperties.packageUrl = reader.getString();
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedCloudServiceProperties.configuration = reader.getString();
+                } else if ("configurationUrl".equals(fieldName)) {
+                    deserializedCloudServiceProperties.configurationUrl = reader.getString();
+                } else if ("startCloudService".equals(fieldName)) {
+                    deserializedCloudServiceProperties.startCloudService = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowModelOverride".equals(fieldName)) {
+                    deserializedCloudServiceProperties.allowModelOverride = reader.getNullable(JsonReader::getBoolean);
+                } else if ("upgradeMode".equals(fieldName)) {
+                    deserializedCloudServiceProperties.upgradeMode
+                        = CloudServiceUpgradeMode.fromString(reader.getString());
+                } else if ("roleProfile".equals(fieldName)) {
+                    deserializedCloudServiceProperties.roleProfile = CloudServiceRoleProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedCloudServiceProperties.osProfile = CloudServiceOsProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedCloudServiceProperties.networkProfile = CloudServiceNetworkProfile.fromJson(reader);
+                } else if ("extensionProfile".equals(fieldName)) {
+                    deserializedCloudServiceProperties.extensionProfile = CloudServiceExtensionProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCloudServiceProperties.provisioningState = reader.getString();
+                } else if ("uniqueId".equals(fieldName)) {
+                    deserializedCloudServiceProperties.uniqueId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceProperties;
+        });
     }
 }

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB provisioned throughput settings object.
  */
 @Fluent
-public final class AutoscaleSettingsResource {
+public final class AutoscaleSettingsResource implements JsonSerializable<AutoscaleSettingsResource> {
     /*
      * Represents maximum throughput container can scale up to.
      */
-    @JsonProperty(value = "maxThroughput", required = true)
     private int maxThroughput;
 
     /*
      * Cosmos DB resource auto-upgrade policy
      */
-    @JsonProperty(value = "autoUpgradePolicy")
     private AutoUpgradePolicyResource autoUpgradePolicy;
 
     /*
      * Represents target maximum throughput container can scale up to once offer is no longer in pending state.
      */
-    @JsonProperty(value = "targetMaxThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetMaxThroughput;
 
     /**
@@ -95,5 +96,48 @@ public final class AutoscaleSettingsResource {
         if (autoUpgradePolicy() != null) {
             autoUpgradePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("maxThroughput", this.maxThroughput);
+        jsonWriter.writeJsonField("autoUpgradePolicy", this.autoUpgradePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoscaleSettingsResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoscaleSettingsResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoscaleSettingsResource.
+     */
+    public static AutoscaleSettingsResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoscaleSettingsResource deserializedAutoscaleSettingsResource = new AutoscaleSettingsResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxThroughput".equals(fieldName)) {
+                    deserializedAutoscaleSettingsResource.maxThroughput = reader.getInt();
+                } else if ("autoUpgradePolicy".equals(fieldName)) {
+                    deserializedAutoscaleSettingsResource.autoUpgradePolicy
+                        = AutoUpgradePolicyResource.fromJson(reader);
+                } else if ("targetMaxThroughput".equals(fieldName)) {
+                    deserializedAutoscaleSettingsResource.targetMaxThroughput = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoscaleSettingsResource;
+        });
     }
 }

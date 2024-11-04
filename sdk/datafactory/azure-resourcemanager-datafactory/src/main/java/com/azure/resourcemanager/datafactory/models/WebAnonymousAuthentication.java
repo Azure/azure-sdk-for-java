@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A WebLinkedService that uses anonymous authentication to communicate with an HTTP endpoint.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = WebAnonymousAuthentication.class,
-    visible = true)
-@JsonTypeName("Anonymous")
 @Fluent
 public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProperties {
     /*
      * Type of authentication used to connect to the web table source.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
     private WebAuthenticationType authenticationType = WebAuthenticationType.ANONYMOUS;
 
     /**
@@ -61,5 +53,47 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", url());
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebAnonymousAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebAnonymousAuthentication if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebAnonymousAuthentication.
+     */
+    public static WebAnonymousAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebAnonymousAuthentication deserializedWebAnonymousAuthentication = new WebAnonymousAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedWebAnonymousAuthentication.withUrl(reader.readUntyped());
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedWebAnonymousAuthentication.authenticationType
+                        = WebAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebAnonymousAuthentication;
+        });
     }
 }

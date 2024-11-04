@@ -13,6 +13,12 @@ import java.lang.annotation.Annotation;
  */
 public class ReactiveCosmosRepositoriesRegistrar extends RepositoryBeanDefinitionRegistrarSupport {
 
+    /**
+     * Creates an instance of {@link ReactiveCosmosRepositoriesRegistrar}.
+     */
+    public ReactiveCosmosRepositoriesRegistrar() {
+    }
+
     @Override
     protected Class<? extends Annotation> getAnnotation() {
         return EnableReactiveCosmosRepositories.class;

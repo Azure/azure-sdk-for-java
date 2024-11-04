@@ -751,7 +751,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeInfoInner> createAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1055,7 +1056,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeInfoInner> updateAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1620,7 +1622,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeModelInner> getMetadataAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context) {
         return beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1669,9 +1672,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1697,9 +1698,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

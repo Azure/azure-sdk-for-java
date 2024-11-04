@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response from the List Snapshots operation.
  */
 @Fluent
-public final class SnapshotListResult {
+public final class SnapshotListResult implements JsonSerializable<SnapshotListResult> {
     /*
      * The list of snapshots.
      */
-    @JsonProperty(value = "value")
     private List<SnapshotInner> value;
 
     /*
      * The URL to get the next set of snapshot results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,44 @@ public final class SnapshotListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotListResult.
+     */
+    public static SnapshotListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotListResult deserializedSnapshotListResult = new SnapshotListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SnapshotInner> value = reader.readArray(reader1 -> SnapshotInner.fromJson(reader1));
+                    deserializedSnapshotListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSnapshotListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotListResult;
+        });
     }
 }

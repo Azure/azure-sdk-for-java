@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of long term retention policies. */
+/**
+ * A list of long term retention policies.
+ */
 @Immutable
-public final class LongTermRetentionPolicyListResult {
+public final class LongTermRetentionPolicyListResult implements JsonSerializable<LongTermRetentionPolicyListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<LongTermRetentionPolicyInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LongTermRetentionPolicyListResult class. */
+    /**
+     * Creates an instance of LongTermRetentionPolicyListResult class.
+     */
     public LongTermRetentionPolicyListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<LongTermRetentionPolicyInner> value() {
@@ -39,7 +45,7 @@ public final class LongTermRetentionPolicyListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class LongTermRetentionPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermRetentionPolicyListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermRetentionPolicyListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LongTermRetentionPolicyListResult.
+     */
+    public static LongTermRetentionPolicyListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermRetentionPolicyListResult deserializedLongTermRetentionPolicyListResult
+                = new LongTermRetentionPolicyListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LongTermRetentionPolicyInner> value
+                        = reader.readArray(reader1 -> LongTermRetentionPolicyInner.fromJson(reader1));
+                    deserializedLongTermRetentionPolicyListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLongTermRetentionPolicyListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermRetentionPolicyListResult;
+        });
     }
 }

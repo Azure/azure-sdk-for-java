@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Represents the type of the Detector.
  */
@@ -66,7 +63,6 @@ public enum IssueType {
      * @param value the serialized value to parse.
      * @return the parsed IssueType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IssueType fromString(String value) {
         if (value == null) {
             return null;
@@ -83,7 +79,6 @@ public enum IssueType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

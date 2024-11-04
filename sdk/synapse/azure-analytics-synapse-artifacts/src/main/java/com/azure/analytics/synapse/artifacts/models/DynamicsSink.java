@@ -5,41 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Dynamics sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DynamicsSink")
 @Fluent
 public final class DynamicsSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "DynamicsSink";
+
+    /*
      * The write behavior for the operation.
      */
-    @JsonProperty(value = "writeBehavior", required = true)
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation.
-     * Default is false. Type: boolean (or Expression with resultType boolean).
+     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
-     * with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
     /**
      * Creates an instance of DynamicsSink class.
      */
     public DynamicsSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -149,5 +160,77 @@ public final class DynamicsSink extends CopySink {
     public DynamicsSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsSink.
+     */
+    public static DynamicsSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsSink deserializedDynamicsSink = new DynamicsSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedDynamicsSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedDynamicsSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedDynamicsSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedDynamicsSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedDynamicsSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedDynamicsSink.writeBehavior = DynamicsSinkWriteBehavior.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDynamicsSink.type = reader.getString();
+                } else if ("ignoreNullValues".equals(fieldName)) {
+                    deserializedDynamicsSink.ignoreNullValues = reader.readUntyped();
+                } else if ("alternateKeyName".equals(fieldName)) {
+                    deserializedDynamicsSink.alternateKeyName = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDynamicsSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedDynamicsSink;
+        });
     }
 }

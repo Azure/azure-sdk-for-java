@@ -5,106 +5,105 @@
 package com.azure.analytics.synapse.monitoring.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The SparkJob model. */
+/**
+ * The SparkJob model.
+ */
 @Fluent
-public final class SparkJob {
+public final class SparkJob implements JsonSerializable<SparkJob> {
     /*
      * The state property.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The submitter property.
      */
-    @JsonProperty(value = "submitter")
     private String submitter;
 
     /*
      * The compute property.
      */
-    @JsonProperty(value = "compute")
     private String compute;
 
     /*
      * The sparkApplicationId property.
      */
-    @JsonProperty(value = "sparkApplicationId")
     private String sparkApplicationId;
 
     /*
      * The livyId property.
      */
-    @JsonProperty(value = "livyId")
     private String livyId;
 
     /*
      * The timing property.
      */
-    @JsonProperty(value = "timing")
     private List<String> timing;
 
     /*
      * The sparkJobDefinition property.
      */
-    @JsonProperty(value = "sparkJobDefinition")
     private String sparkJobDefinition;
 
     /*
      * The pipeline property.
      */
-    @JsonProperty(value = "pipeline")
     private List<SparkJob> pipeline;
 
     /*
      * The jobType property.
      */
-    @JsonProperty(value = "jobType")
     private String jobType;
 
     /*
      * The submitTime property.
      */
-    @JsonProperty(value = "submitTime")
     private OffsetDateTime submitTime;
 
     /*
      * The endTime property.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The queuedDuration property.
      */
-    @JsonProperty(value = "queuedDuration")
     private String queuedDuration;
 
     /*
      * The runningDuration property.
      */
-    @JsonProperty(value = "runningDuration")
     private String runningDuration;
 
     /*
      * The totalDuration property.
      */
-    @JsonProperty(value = "totalDuration")
     private String totalDuration;
 
     /**
+     * Creates an instance of SparkJob class.
+     */
+    public SparkJob() {
+    }
+
+    /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public String getState() {
@@ -113,7 +112,7 @@ public final class SparkJob {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the SparkJob object itself.
      */
@@ -124,7 +123,7 @@ public final class SparkJob {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -133,7 +132,7 @@ public final class SparkJob {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the SparkJob object itself.
      */
@@ -144,7 +143,7 @@ public final class SparkJob {
 
     /**
      * Get the submitter property: The submitter property.
-     *
+     * 
      * @return the submitter value.
      */
     public String getSubmitter() {
@@ -153,7 +152,7 @@ public final class SparkJob {
 
     /**
      * Set the submitter property: The submitter property.
-     *
+     * 
      * @param submitter the submitter value to set.
      * @return the SparkJob object itself.
      */
@@ -164,7 +163,7 @@ public final class SparkJob {
 
     /**
      * Get the compute property: The compute property.
-     *
+     * 
      * @return the compute value.
      */
     public String getCompute() {
@@ -173,7 +172,7 @@ public final class SparkJob {
 
     /**
      * Set the compute property: The compute property.
-     *
+     * 
      * @param compute the compute value to set.
      * @return the SparkJob object itself.
      */
@@ -184,7 +183,7 @@ public final class SparkJob {
 
     /**
      * Get the sparkApplicationId property: The sparkApplicationId property.
-     *
+     * 
      * @return the sparkApplicationId value.
      */
     public String getSparkApplicationId() {
@@ -193,7 +192,7 @@ public final class SparkJob {
 
     /**
      * Set the sparkApplicationId property: The sparkApplicationId property.
-     *
+     * 
      * @param sparkApplicationId the sparkApplicationId value to set.
      * @return the SparkJob object itself.
      */
@@ -204,7 +203,7 @@ public final class SparkJob {
 
     /**
      * Get the livyId property: The livyId property.
-     *
+     * 
      * @return the livyId value.
      */
     public String getLivyId() {
@@ -213,7 +212,7 @@ public final class SparkJob {
 
     /**
      * Set the livyId property: The livyId property.
-     *
+     * 
      * @param livyId the livyId value to set.
      * @return the SparkJob object itself.
      */
@@ -224,7 +223,7 @@ public final class SparkJob {
 
     /**
      * Get the timing property: The timing property.
-     *
+     * 
      * @return the timing value.
      */
     public List<String> getTiming() {
@@ -233,7 +232,7 @@ public final class SparkJob {
 
     /**
      * Set the timing property: The timing property.
-     *
+     * 
      * @param timing the timing value to set.
      * @return the SparkJob object itself.
      */
@@ -244,7 +243,7 @@ public final class SparkJob {
 
     /**
      * Get the sparkJobDefinition property: The sparkJobDefinition property.
-     *
+     * 
      * @return the sparkJobDefinition value.
      */
     public String getSparkJobDefinition() {
@@ -253,7 +252,7 @@ public final class SparkJob {
 
     /**
      * Set the sparkJobDefinition property: The sparkJobDefinition property.
-     *
+     * 
      * @param sparkJobDefinition the sparkJobDefinition value to set.
      * @return the SparkJob object itself.
      */
@@ -264,7 +263,7 @@ public final class SparkJob {
 
     /**
      * Get the pipeline property: The pipeline property.
-     *
+     * 
      * @return the pipeline value.
      */
     public List<SparkJob> getPipeline() {
@@ -273,7 +272,7 @@ public final class SparkJob {
 
     /**
      * Set the pipeline property: The pipeline property.
-     *
+     * 
      * @param pipeline the pipeline value to set.
      * @return the SparkJob object itself.
      */
@@ -284,7 +283,7 @@ public final class SparkJob {
 
     /**
      * Get the jobType property: The jobType property.
-     *
+     * 
      * @return the jobType value.
      */
     public String getJobType() {
@@ -293,7 +292,7 @@ public final class SparkJob {
 
     /**
      * Set the jobType property: The jobType property.
-     *
+     * 
      * @param jobType the jobType value to set.
      * @return the SparkJob object itself.
      */
@@ -304,7 +303,7 @@ public final class SparkJob {
 
     /**
      * Get the submitTime property: The submitTime property.
-     *
+     * 
      * @return the submitTime value.
      */
     public OffsetDateTime getSubmitTime() {
@@ -313,7 +312,7 @@ public final class SparkJob {
 
     /**
      * Set the submitTime property: The submitTime property.
-     *
+     * 
      * @param submitTime the submitTime value to set.
      * @return the SparkJob object itself.
      */
@@ -324,7 +323,7 @@ public final class SparkJob {
 
     /**
      * Get the endTime property: The endTime property.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -333,7 +332,7 @@ public final class SparkJob {
 
     /**
      * Set the endTime property: The endTime property.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the SparkJob object itself.
      */
@@ -344,7 +343,7 @@ public final class SparkJob {
 
     /**
      * Get the queuedDuration property: The queuedDuration property.
-     *
+     * 
      * @return the queuedDuration value.
      */
     public String getQueuedDuration() {
@@ -353,7 +352,7 @@ public final class SparkJob {
 
     /**
      * Set the queuedDuration property: The queuedDuration property.
-     *
+     * 
      * @param queuedDuration the queuedDuration value to set.
      * @return the SparkJob object itself.
      */
@@ -364,7 +363,7 @@ public final class SparkJob {
 
     /**
      * Get the runningDuration property: The runningDuration property.
-     *
+     * 
      * @return the runningDuration value.
      */
     public String getRunningDuration() {
@@ -373,7 +372,7 @@ public final class SparkJob {
 
     /**
      * Set the runningDuration property: The runningDuration property.
-     *
+     * 
      * @param runningDuration the runningDuration value to set.
      * @return the SparkJob object itself.
      */
@@ -384,7 +383,7 @@ public final class SparkJob {
 
     /**
      * Get the totalDuration property: The totalDuration property.
-     *
+     * 
      * @return the totalDuration value.
      */
     public String getTotalDuration() {
@@ -393,12 +392,96 @@ public final class SparkJob {
 
     /**
      * Set the totalDuration property: The totalDuration property.
-     *
+     * 
      * @param totalDuration the totalDuration value to set.
      * @return the SparkJob object itself.
      */
     public SparkJob setTotalDuration(String totalDuration) {
         this.totalDuration = totalDuration;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("submitter", this.submitter);
+        jsonWriter.writeStringField("compute", this.compute);
+        jsonWriter.writeStringField("sparkApplicationId", this.sparkApplicationId);
+        jsonWriter.writeStringField("livyId", this.livyId);
+        jsonWriter.writeArrayField("timing", this.timing, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sparkJobDefinition", this.sparkJobDefinition);
+        jsonWriter.writeArrayField("pipeline", this.pipeline, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeStringField("submitTime",
+            this.submitTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.submitTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("queuedDuration", this.queuedDuration);
+        jsonWriter.writeStringField("runningDuration", this.runningDuration);
+        jsonWriter.writeStringField("totalDuration", this.totalDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkJob if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SparkJob.
+     */
+    public static SparkJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkJob deserializedSparkJob = new SparkJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedSparkJob.state = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSparkJob.name = reader.getString();
+                } else if ("submitter".equals(fieldName)) {
+                    deserializedSparkJob.submitter = reader.getString();
+                } else if ("compute".equals(fieldName)) {
+                    deserializedSparkJob.compute = reader.getString();
+                } else if ("sparkApplicationId".equals(fieldName)) {
+                    deserializedSparkJob.sparkApplicationId = reader.getString();
+                } else if ("livyId".equals(fieldName)) {
+                    deserializedSparkJob.livyId = reader.getString();
+                } else if ("timing".equals(fieldName)) {
+                    List<String> timing = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSparkJob.timing = timing;
+                } else if ("sparkJobDefinition".equals(fieldName)) {
+                    deserializedSparkJob.sparkJobDefinition = reader.getString();
+                } else if ("pipeline".equals(fieldName)) {
+                    List<SparkJob> pipeline = reader.readArray(reader1 -> SparkJob.fromJson(reader1));
+                    deserializedSparkJob.pipeline = pipeline;
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedSparkJob.jobType = reader.getString();
+                } else if ("submitTime".equals(fieldName)) {
+                    deserializedSparkJob.submitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedSparkJob.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("queuedDuration".equals(fieldName)) {
+                    deserializedSparkJob.queuedDuration = reader.getString();
+                } else if ("runningDuration".equals(fieldName)) {
+                    deserializedSparkJob.runningDuration = reader.getString();
+                } else if ("totalDuration".equals(fieldName)) {
+                    deserializedSparkJob.totalDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkJob;
+        });
     }
 }

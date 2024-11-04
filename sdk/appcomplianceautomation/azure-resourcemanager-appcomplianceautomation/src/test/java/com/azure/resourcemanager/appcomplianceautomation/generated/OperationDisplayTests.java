@@ -6,21 +6,12 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.OperationDisplay;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"yrtih\",\"resource\":\"tijbpzvgnwzsymgl\",\"operation\":\"fcyzkohdbihanufh\",\"description\":\"bj\"}")
-                .toObject(OperationDisplay.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        OperationDisplay model = new OperationDisplay();
-        model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"uuvmkjozkrwfnd\",\"resource\":\"djpslw\",\"operation\":\"dpvwryoqpsoaccta\",\"description\":\"kljla\"}")
+            .toObject(OperationDisplay.class);
     }
 }

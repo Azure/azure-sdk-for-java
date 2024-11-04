@@ -21,21 +21,28 @@ def change_to_repo_root_dir():
     os.chdir('../../..')
 
 
-def get_spring_cloud_version(filepath):
-    spring_boot_version = get_args().spring_boot_dependencies_version
-    spring_cloud_version = ""
+def get_spring_cloud_version(spring_boot_version):
+    spring_cloud_version = None
+    filepath = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json"
     data = requests.get(filepath).json()
+
+    # Only find the Spring Cloud Version that matches the special Spring Boot version first
     for entry in data:
         for key in entry:
             if spring_boot_version == entry[key]:
                 spring_cloud_version = entry["spring-cloud-version"]
                 break
+
+        if spring_cloud_version is not None:
+            break
     print(spring_cloud_version)
+    return spring_cloud_version
 
 
 def main():
     change_to_repo_root_dir()
-    get_spring_cloud_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json")
+    args = get_args()
+    get_spring_cloud_version(args.spring_boot_dependencies_version)
 
 
 if __name__ == '__main__':

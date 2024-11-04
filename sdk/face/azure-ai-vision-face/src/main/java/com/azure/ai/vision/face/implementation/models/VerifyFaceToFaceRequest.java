@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VerifyFaceToFaceRequest model.
  */
 @Immutable
-public final class VerifyFaceToFaceRequest {
+public final class VerifyFaceToFaceRequest implements JsonSerializable<VerifyFaceToFaceRequest> {
 
     /*
      * The faceId of one face, come from "Detect".
      */
     @Generated
-    @JsonProperty(value = "faceId1")
     private final String faceId1;
 
     /*
      * The faceId of another face, come from "Detect".
      */
     @Generated
-    @JsonProperty(value = "faceId2")
     private final String faceId2;
 
     /**
@@ -35,9 +36,7 @@ public final class VerifyFaceToFaceRequest {
      * @param faceId2 the faceId2 value to set.
      */
     @Generated
-    @JsonCreator
-    public VerifyFaceToFaceRequest(@JsonProperty(value = "faceId1") String faceId1,
-        @JsonProperty(value = "faceId2") String faceId2) {
+    public VerifyFaceToFaceRequest(String faceId1, String faceId2) {
         this.faceId1 = faceId1;
         this.faceId2 = faceId2;
     }
@@ -60,5 +59,46 @@ public final class VerifyFaceToFaceRequest {
     @Generated
     public String getFaceId2() {
         return this.faceId2;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("faceId1", this.faceId1);
+        jsonWriter.writeStringField("faceId2", this.faceId2);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VerifyFaceToFaceRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VerifyFaceToFaceRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VerifyFaceToFaceRequest.
+     */
+    @Generated
+    public static VerifyFaceToFaceRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String faceId1 = null;
+            String faceId2 = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceId1".equals(fieldName)) {
+                    faceId1 = reader.getString();
+                } else if ("faceId2".equals(fieldName)) {
+                    faceId2 = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new VerifyFaceToFaceRequest(faceId1, faceId2);
+        });
     }
 }

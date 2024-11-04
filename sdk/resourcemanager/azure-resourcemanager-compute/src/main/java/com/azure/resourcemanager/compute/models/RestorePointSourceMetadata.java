@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the properties of the Virtual Machine for which the restore point was created. The properties provided are
@@ -13,65 +17,55 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * creation.
  */
 @Fluent
-public final class RestorePointSourceMetadata {
+public final class RestorePointSourceMetadata implements JsonSerializable<RestorePointSourceMetadata> {
     /*
      * Gets the hardware profile.
      */
-    @JsonProperty(value = "hardwareProfile", access = JsonProperty.Access.WRITE_ONLY)
     private HardwareProfile hardwareProfile;
 
     /*
      * Gets the storage profile.
      */
-    @JsonProperty(value = "storageProfile")
     private RestorePointSourceVMStorageProfile storageProfile;
 
     /*
      * Gets the OS profile.
      */
-    @JsonProperty(value = "osProfile", access = JsonProperty.Access.WRITE_ONLY)
     private OSProfile osProfile;
 
     /*
      * Gets the diagnostics profile.
      */
-    @JsonProperty(value = "diagnosticsProfile", access = JsonProperty.Access.WRITE_ONLY)
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
      * Gets the license type, which is for bring your own license scenario.
      */
-    @JsonProperty(value = "licenseType", access = JsonProperty.Access.WRITE_ONLY)
     private String licenseType;
 
     /*
      * Gets the virtual machine unique id.
      */
-    @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
      * Gets the security profile.
      */
-    @JsonProperty(value = "securityProfile", access = JsonProperty.Access.WRITE_ONLY)
     private SecurityProfile securityProfile;
 
     /*
      * Location of the VM from which the restore point was created.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * UserData associated with the source VM for which restore point is captured, which is a base-64 encoded value.
      */
-    @JsonProperty(value = "userData", access = JsonProperty.Access.WRITE_ONLY)
     private String userData;
 
     /*
      * HyperVGeneration of the source VM for which restore point is captured.
      */
-    @JsonProperty(value = "hyperVGeneration", access = JsonProperty.Access.WRITE_ONLY)
     private HyperVGenerationTypes hyperVGeneration;
 
     /**
@@ -164,8 +158,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is
-     * a base-64 encoded value.
+     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is a
+     * base-64 encoded value.
      * 
      * @return the userData value.
      */
@@ -203,5 +197,61 @@ public final class RestorePointSourceMetadata {
         if (securityProfile() != null) {
             securityProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointSourceMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointSourceMetadata if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointSourceMetadata.
+     */
+    public static RestorePointSourceMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointSourceMetadata deserializedRestorePointSourceMetadata = new RestorePointSourceMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.storageProfile
+                        = RestorePointSourceVMStorageProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.osProfile = OSProfile.fromJson(reader);
+                } else if ("diagnosticsProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.diagnosticsProfile = DiagnosticsProfile.fromJson(reader);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.licenseType = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.vmId = reader.getString();
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.location = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.userData = reader.getString();
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.hyperVGeneration
+                        = HyperVGenerationTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointSourceMetadata;
+        });
     }
 }

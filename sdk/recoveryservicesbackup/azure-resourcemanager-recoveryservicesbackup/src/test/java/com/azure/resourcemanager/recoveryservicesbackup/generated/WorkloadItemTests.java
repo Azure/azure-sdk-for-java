@@ -23,8 +23,10 @@ public final class WorkloadItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadItem model = new WorkloadItem().withBackupManagementType("gxsds").withWorkloadType("e")
-            .withFriendlyName("sbzkf").withProtectionState(ProtectionStatus.PROTECTING);
+        WorkloadItem model = new WorkloadItem().withBackupManagementType("gxsds")
+            .withWorkloadType("e")
+            .withFriendlyName("sbzkf")
+            .withProtectionState(ProtectionStatus.PROTECTING);
         model = BinaryData.fromObject(model).toObject(WorkloadItem.class);
         Assertions.assertEquals("gxsds", model.backupManagementType());
         Assertions.assertEquals("e", model.workloadType());

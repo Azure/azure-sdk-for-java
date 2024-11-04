@@ -2,13 +2,28 @@
 
 ## 1.2.0-beta.2 (Unreleased)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
+- Upgraded `mysql-connector-j` from `8.0.33` to version `9.0.0`.
+
+## 1.1.17 (2024-06-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.12.1` to version `1.13.0`.
+
+
+## 1.1.16 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.12.0` to version `1.12.1`.
 
 
 ## 1.1.15 (2024-04-23)

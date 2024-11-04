@@ -6,18 +6,21 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters required for profile upgrade.
  */
 @Fluent
-public final class ProfileUpgradeParameters {
+public final class ProfileUpgradeParameters implements JsonSerializable<ProfileUpgradeParameters> {
     /*
      * Web Application Firewall (WAF) and security policy mapping for the profile upgrade
      */
-    @JsonProperty(value = "wafMappingList", required = true)
     private List<ProfileChangeSkuWafMapping> wafMappingList;
 
     /**
@@ -55,12 +58,53 @@ public final class ProfileUpgradeParameters {
      */
     public void validate() {
         if (wafMappingList() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property wafMappingList in model ProfileUpgradeParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property wafMappingList in model ProfileUpgradeParameters"));
         } else {
             wafMappingList().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProfileUpgradeParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("wafMappingList", this.wafMappingList,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileUpgradeParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileUpgradeParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileUpgradeParameters.
+     */
+    public static ProfileUpgradeParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileUpgradeParameters deserializedProfileUpgradeParameters = new ProfileUpgradeParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("wafMappingList".equals(fieldName)) {
+                    List<ProfileChangeSkuWafMapping> wafMappingList
+                        = reader.readArray(reader1 -> ProfileChangeSkuWafMapping.fromJson(reader1));
+                    deserializedProfileUpgradeParameters.wafMappingList = wafMappingList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileUpgradeParameters;
+        });
+    }
 }

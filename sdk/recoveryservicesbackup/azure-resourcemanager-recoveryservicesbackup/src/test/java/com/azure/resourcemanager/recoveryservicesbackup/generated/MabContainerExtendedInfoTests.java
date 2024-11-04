@@ -15,26 +15,28 @@ public final class MabContainerExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MabContainerExtendedInfo model = BinaryData.fromString(
-            "{\"lastRefreshedAt\":\"2021-08-17T01:08:44Z\",\"backupItemType\":\"Client\",\"backupItems\":[\"kdtaaw\",\"wfekaumrrqmb\",\"mqkra\"],\"policyName\":\"nxwbjsidbirkfp\",\"lastBackupStatus\":\"okdgoge\"}")
+            "{\"lastRefreshedAt\":\"2021-08-16T13:25:14Z\",\"backupItemType\":\"SAPHanaDatabase\",\"backupItems\":[\"hhhqxuwyv\",\"acoyvivbsizusjs\"],\"policyName\":\"bscm\",\"lastBackupStatus\":\"zijiufehgmv\"}")
             .toObject(MabContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T01:08:44Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(BackupItemType.CLIENT, model.backupItemType());
-        Assertions.assertEquals("kdtaaw", model.backupItems().get(0));
-        Assertions.assertEquals("nxwbjsidbirkfp", model.policyName());
-        Assertions.assertEquals("okdgoge", model.lastBackupStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T13:25:14Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(BackupItemType.SAPHANA_DATABASE, model.backupItemType());
+        Assertions.assertEquals("hhhqxuwyv", model.backupItems().get(0));
+        Assertions.assertEquals("bscm", model.policyName());
+        Assertions.assertEquals("zijiufehgmv", model.lastBackupStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MabContainerExtendedInfo model = new MabContainerExtendedInfo()
-            .withLastRefreshedAt(OffsetDateTime.parse("2021-08-17T01:08:44Z")).withBackupItemType(BackupItemType.CLIENT)
-            .withBackupItems(Arrays.asList("kdtaaw", "wfekaumrrqmb", "mqkra")).withPolicyName("nxwbjsidbirkfp")
-            .withLastBackupStatus("okdgoge");
+        MabContainerExtendedInfo model
+            = new MabContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-08-16T13:25:14Z"))
+                .withBackupItemType(BackupItemType.SAPHANA_DATABASE)
+                .withBackupItems(Arrays.asList("hhhqxuwyv", "acoyvivbsizusjs"))
+                .withPolicyName("bscm")
+                .withLastBackupStatus("zijiufehgmv");
         model = BinaryData.fromObject(model).toObject(MabContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T01:08:44Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(BackupItemType.CLIENT, model.backupItemType());
-        Assertions.assertEquals("kdtaaw", model.backupItems().get(0));
-        Assertions.assertEquals("nxwbjsidbirkfp", model.policyName());
-        Assertions.assertEquals("okdgoge", model.lastBackupStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T13:25:14Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(BackupItemType.SAPHANA_DATABASE, model.backupItemType());
+        Assertions.assertEquals("hhhqxuwyv", model.backupItems().get(0));
+        Assertions.assertEquals("bscm", model.policyName());
+        Assertions.assertEquals("zijiufehgmv", model.lastBackupStatus());
     }
 }

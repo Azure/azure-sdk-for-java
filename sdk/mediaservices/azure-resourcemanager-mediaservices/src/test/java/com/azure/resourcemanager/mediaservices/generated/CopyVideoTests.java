@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CopyVideoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyVideo model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.CopyVideo\",\"label\":\"vbalxlllc\"}")
-                .toObject(CopyVideo.class);
-        Assertions.assertEquals("vbalxlllc", model.label());
+        CopyVideo model = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.CopyVideo\",\"label\":\"k\"}")
+            .toObject(CopyVideo.class);
+        Assertions.assertEquals("k", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopyVideo model = new CopyVideo().withLabel("vbalxlllc");
+        CopyVideo model = new CopyVideo().withLabel("k");
         model = BinaryData.fromObject(model).toObject(CopyVideo.class);
-        Assertions.assertEquals("vbalxlllc", model.label());
+        Assertions.assertEquals("k", model.label());
     }
 }

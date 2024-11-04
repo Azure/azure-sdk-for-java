@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Size of the machines.
  */
@@ -86,7 +83,6 @@ public enum WorkerSizeOptions {
      * @param value the serialized value to parse.
      * @return the parsed WorkerSizeOptions object, or null if unable to parse.
      */
-    @JsonCreator
     public static WorkerSizeOptions fromString(String value) {
         if (value == null) {
             return null;
@@ -103,7 +99,6 @@ public enum WorkerSizeOptions {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

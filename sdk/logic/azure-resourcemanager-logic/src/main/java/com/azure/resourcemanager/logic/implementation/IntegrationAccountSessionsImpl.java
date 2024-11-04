@@ -21,34 +21,31 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationAccountSessionsImpl(
-        IntegrationAccountSessionsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public IntegrationAccountSessionsImpl(IntegrationAccountSessionsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<IntegrationAccountSession> list(String resourceGroupName, String integrationAccountName) {
-        PagedIterable<IntegrationAccountSessionInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountSessionImpl(inner1, this.manager()));
+        PagedIterable<IntegrationAccountSessionInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IntegrationAccountSessionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IntegrationAccountSession> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context) {
-        PagedIterable<IntegrationAccountSessionInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountSessionImpl(inner1, this.manager()));
+    public PagedIterable<IntegrationAccountSession> list(String resourceGroupName, String integrationAccountName,
+        Integer top, String filter, Context context) {
+        PagedIterable<IntegrationAccountSessionInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IntegrationAccountSessionImpl(inner1, this.manager()));
     }
 
-    public Response<IntegrationAccountSession> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String sessionName, Context context) {
-        Response<IntegrationAccountSessionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, integrationAccountName, sessionName, context);
+    public Response<IntegrationAccountSession> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String sessionName, Context context) {
+        Response<IntegrationAccountSessionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, integrationAccountName, sessionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationAccountSessionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,8 +53,8 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
     }
 
     public IntegrationAccountSession get(String resourceGroupName, String integrationAccountName, String sessionName) {
-        IntegrationAccountSessionInner inner =
-            this.serviceClient().get(resourceGroupName, integrationAccountName, sessionName);
+        IntegrationAccountSessionInner inner
+            = this.serviceClient().get(resourceGroupName, integrationAccountName, sessionName);
         if (inner != null) {
             return new IntegrationAccountSessionImpl(inner, this.manager());
         } else {
@@ -65,8 +62,8 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String sessionName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String sessionName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, integrationAccountName, sessionName, context);
     }
 
@@ -75,113 +72,77 @@ public final class IntegrationAccountSessionsImpl implements IntegrationAccountS
     }
 
     public IntegrationAccountSession getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String sessionName = Utils.getValueFromIdByName(id, "sessions");
+        String sessionName = ResourceManagerUtils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, integrationAccountName, sessionName, Context.NONE).getValue();
     }
 
     public Response<IntegrationAccountSession> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String sessionName = Utils.getValueFromIdByName(id, "sessions");
+        String sessionName = ResourceManagerUtils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, integrationAccountName, sessionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String sessionName = Utils.getValueFromIdByName(id, "sessions");
+        String sessionName = ResourceManagerUtils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, integrationAccountName, sessionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String sessionName = Utils.getValueFromIdByName(id, "sessions");
+        String sessionName = ResourceManagerUtils.getValueFromIdByName(id, "sessions");
         if (sessionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sessions'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, integrationAccountName, sessionName, context);
     }

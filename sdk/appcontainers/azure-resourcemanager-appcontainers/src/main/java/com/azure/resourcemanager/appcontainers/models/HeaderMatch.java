@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.fluent.models.HeaderMatchMatch;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Conditions required to match a header.
  */
 @Fluent
-public final class HeaderMatch {
+public final class HeaderMatch implements JsonSerializable<HeaderMatch> {
     /*
      * Name of the header
      */
-    @JsonProperty(value = "header")
     private String headerProperty;
 
     /*
      * Type of match to perform
      */
-    @JsonProperty(value = "match")
     private HeaderMatchMatch innerMatch;
 
     /**
@@ -161,5 +163,44 @@ public final class HeaderMatch {
         if (innerMatch() != null) {
             innerMatch().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("header", this.headerProperty);
+        jsonWriter.writeJsonField("match", this.innerMatch);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HeaderMatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HeaderMatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HeaderMatch.
+     */
+    public static HeaderMatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HeaderMatch deserializedHeaderMatch = new HeaderMatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("header".equals(fieldName)) {
+                    deserializedHeaderMatch.headerProperty = reader.getString();
+                } else if ("match".equals(fieldName)) {
+                    deserializedHeaderMatch.innerMatch = HeaderMatchMatch.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHeaderMatch;
+        });
     }
 }

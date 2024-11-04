@@ -18,45 +18,54 @@ public final class ClientDiscoveryResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryResponse model = BinaryData.fromString(
-            "{\"nextLink\":\"jfeallnwsub\",\"value\":[{\"display\":{\"description\":\"mpmngnzscxaqwoo\",\"operation\":\"cbonqvpk\",\"provider\":\"rxnjeaseipheofl\",\"resource\":\"eyy\"},\"name\":\"nj\",\"isDataAction\":true,\"origin\":\"tgrhpdjpjumas\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}]}}},{\"display\":{\"description\":\"e\",\"operation\":\"alhbx\",\"provider\":\"e\",\"resource\":\"zzvdudgwds\"},\"name\":\"hotwmcynpwlbjnp\",\"isDataAction\":false,\"origin\":\"tadehxnltyfsopp\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}]}}}]}")
+            "{\"nextLink\":\"ypl\",\"value\":[{\"display\":{\"description\":\"syyp\",\"operation\":\"dhsgcba\",\"provider\":\"hejkotynqgou\",\"resource\":\"ndlik\"},\"name\":\"qkgfgibma\",\"isDataAction\":false,\"origin\":\"eqsrxybzqqedqyt\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}]}}},{\"display\":{\"description\":\"flmmnk\",\"operation\":\"modmglougpb\",\"provider\":\"tmut\",\"resource\":\"qktapspwgcuert\"},\"name\":\"kdosvqw\",\"isDataAction\":true,\"origin\":\"gbbjfddgmbmbe\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}]}}}]}")
             .toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("jfeallnwsub", model.nextLink());
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.value().get(0).display().description());
-        Assertions.assertEquals("cbonqvpk", model.value().get(0).display().operation());
-        Assertions.assertEquals("rxnjeaseipheofl", model.value().get(0).display().provider());
-        Assertions.assertEquals("eyy", model.value().get(0).display().resource());
-        Assertions.assertEquals("nj", model.value().get(0).name());
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
-        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).origin());
+        Assertions.assertEquals("ypl", model.nextLink());
+        Assertions.assertEquals("syyp", model.value().get(0).display().description());
+        Assertions.assertEquals("dhsgcba", model.value().get(0).display().operation());
+        Assertions.assertEquals("hejkotynqgou", model.value().get(0).display().provider());
+        Assertions.assertEquals("ndlik", model.value().get(0).display().resource());
+        Assertions.assertEquals("qkgfgibma", model.value().get(0).name());
+        Assertions.assertEquals(false, model.value().get(0).isDataAction());
+        Assertions.assertEquals("eqsrxybzqqedqyt", model.value().get(0).origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryResponse model = new ClientDiscoveryResponse().withNextLink("jfeallnwsub")
+        ClientDiscoveryResponse model = new ClientDiscoveryResponse().withNextLink("ypl")
             .withValue(Arrays.asList(
                 new ClientDiscoveryValueForSingleApiInner()
-                    .withDisplay(new ClientDiscoveryDisplay().withDescription("mpmngnzscxaqwoo")
-                        .withOperation("cbonqvpk").withProvider("rxnjeaseipheofl").withResource("eyy"))
-                    .withName("nj").withIsDataAction(true).withOrigin("tgrhpdjpjumas").withProperties(
-                        new ClientDiscoveryForProperties().withServiceSpecification(
-                            new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
-                                new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification(),
-                                new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification())))),
-                new ClientDiscoveryValueForSingleApiInner()
-                    .withDisplay(new ClientDiscoveryDisplay().withDescription("e").withOperation("alhbx")
-                        .withProvider("e").withResource("zzvdudgwds"))
-                    .withName("hotwmcynpwlbjnp").withIsDataAction(false).withOrigin("tadehxnltyfsopp")
+                    .withDisplay(new ClientDiscoveryDisplay().withDescription("syyp")
+                        .withOperation("dhsgcba")
+                        .withProvider("hejkotynqgou")
+                        .withResource("ndlik"))
+                    .withName("qkgfgibma")
+                    .withIsDataAction(false)
+                    .withOrigin("eqsrxybzqqedqyt")
                     .withProperties(new ClientDiscoveryForProperties().withServiceSpecification(
                         new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
-                            new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification()))))));
+                            new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification(),
+                            new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification())))),
+                new ClientDiscoveryValueForSingleApiInner()
+                    .withDisplay(new ClientDiscoveryDisplay().withDescription("flmmnk")
+                        .withOperation("modmglougpb")
+                        .withProvider("tmut")
+                        .withResource("qktapspwgcuert"))
+                    .withName("kdosvqw")
+                    .withIsDataAction(true)
+                    .withOrigin("gbbjfddgmbmbe")
+                    .withProperties(new ClientDiscoveryForProperties().withServiceSpecification(
+                        new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList(
+                            new ClientDiscoveryForLogSpecification(), new ClientDiscoveryForLogSpecification(),
+                            new ClientDiscoveryForLogSpecification()))))));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("jfeallnwsub", model.nextLink());
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.value().get(0).display().description());
-        Assertions.assertEquals("cbonqvpk", model.value().get(0).display().operation());
-        Assertions.assertEquals("rxnjeaseipheofl", model.value().get(0).display().provider());
-        Assertions.assertEquals("eyy", model.value().get(0).display().resource());
-        Assertions.assertEquals("nj", model.value().get(0).name());
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
-        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).origin());
+        Assertions.assertEquals("ypl", model.nextLink());
+        Assertions.assertEquals("syyp", model.value().get(0).display().description());
+        Assertions.assertEquals("dhsgcba", model.value().get(0).display().operation());
+        Assertions.assertEquals("hejkotynqgou", model.value().get(0).display().provider());
+        Assertions.assertEquals("ndlik", model.value().get(0).display().resource());
+        Assertions.assertEquals("qkgfgibma", model.value().get(0).name());
+        Assertions.assertEquals(false, model.value().get(0).isDataAction());
+        Assertions.assertEquals("eqsrxybzqqedqyt", model.value().get(0).origin());
     }
 }

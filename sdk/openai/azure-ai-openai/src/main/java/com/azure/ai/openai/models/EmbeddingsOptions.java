@@ -148,7 +148,8 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
     }
 
     /*
-     * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and later models.
+     * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and
+     * later models.
      */
     @Generated
     private Integer dimensions;

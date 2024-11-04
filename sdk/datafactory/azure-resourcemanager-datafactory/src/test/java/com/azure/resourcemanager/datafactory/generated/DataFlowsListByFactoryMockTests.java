@@ -22,7 +22,7 @@ public final class DataFlowsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"zydak\",\"description\":\"fayhzfspnq\",\"annotations\":[\"datac\",\"datawzecmldjhydk\",\"dataywr\",\"datargjmcsbeozb\"],\"folder\":{\"name\":\"dqbuh\"}},\"name\":\"ghignjlfnpyxo\",\"type\":\"xmk\",\"etag\":\"fpj\",\"id\":\"lwmq\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"DataFlow\",\"description\":\"megcjsn\",\"annotations\":[\"datapqotfdbiljsid\"],\"folder\":{\"name\":\"tr\"}},\"name\":\"lauupwt\",\"type\":\"pbinabsegco\",\"etag\":\"ctekaajuwkxb\",\"id\":\"edfc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DataFlowsListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataFlowResource> response
-            = manager.dataFlows().listByFactory("lcfzrmdfehieblpc", "o", com.azure.core.util.Context.NONE);
+            = manager.dataFlows().listByFactory("rrxbeufz", "ddcxfuizo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lwmq", response.iterator().next().id());
-        Assertions.assertEquals("fayhzfspnq", response.iterator().next().properties().description());
-        Assertions.assertEquals("dqbuh", response.iterator().next().properties().folder().name());
+        Assertions.assertEquals("edfc", response.iterator().next().id());
+        Assertions.assertEquals("megcjsn", response.iterator().next().properties().description());
+        Assertions.assertEquals("tr", response.iterator().next().properties().folder().name());
     }
 }

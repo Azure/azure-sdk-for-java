@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Credentials type. */
+/**
+ * The Credentials type.
+ */
 public final class CredentialType extends ExpandableStringEnum<CredentialType> {
-    /** Static value AzureKeyVaultSmb for CredentialType. */
+    /**
+     * Static value AzureKeyVaultSmb for CredentialType.
+     */
     public static final CredentialType AZURE_KEY_VAULT_SMB = fromString("AzureKeyVaultSmb");
 
     /**
      * Creates a new instance of CredentialType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class CredentialType extends ExpandableStringEnum<CredentialType> {
 
     /**
      * Creates or finds a CredentialType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CredentialType.
      */
@@ -35,7 +39,7 @@ public final class CredentialType extends ExpandableStringEnum<CredentialType> {
 
     /**
      * Gets known CredentialType values.
-     *
+     * 
      * @return known CredentialType values.
      */
     public static Collection<CredentialType> values() {

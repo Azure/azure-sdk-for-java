@@ -22,14 +22,14 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
      */
     @Generated
     public OnYourDataVectorizationSource() {
-        this.type = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
     }
 
     /*
      * The type of vectorization source to use.
      */
     @Generated
-    private OnYourDataVectorizationSourceType type;
+    private OnYourDataVectorizationSourceType type
+        = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
 
     /**
      * Get the type property: The type of vectorization source to use.
@@ -84,6 +84,8 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
                     return OnYourDataDeploymentNameVectorizationSource.fromJson(readerToUse.reset());
                 } else if ("model_id".equals(discriminatorValue)) {
                     return OnYourDataModelIdVectorizationSource.fromJson(readerToUse.reset());
+                } else if ("integrated".equals(discriminatorValue)) {
+                    return OnYourDataIntegratedVectorizationSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

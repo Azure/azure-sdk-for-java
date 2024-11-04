@@ -20,6 +20,7 @@ have to be online at the same time.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][java_development_kit] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Maven][maven]
 - Microsoft Azure subscription
   - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
@@ -69,7 +70,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.17.0</version>
+    <version>7.17.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,7 +90,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.0</version>
+    <version>1.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -399,15 +400,15 @@ ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
 receiver.close();
 ```
 
-### When to use 'ServiceBusProcessorClient'.
+### When to use `ServiceBusProcessorClient`
 
-When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? 
+When to use `ServiceBusProcessorClient`, `ServiceBusReceiverClient` or `ServiceBusReceiverAsyncClient`? 
  
-The best option for receiving messages in most common cases is 'ServiceBusProcessorClient'. The processor can handle errors automatically and is designed to receive messages continuously. The processor has a simple API to set concurrency for processing messages in parallel.
+The best option for receiving messages in most common cases is `ServiceBusProcessorClient`. The processor can handle errors automatically and is designed to receive messages continuously. The processor has a simple API to set concurrency for processing messages in parallel.
 
-The low-level client, 'ServiceBusReceiverAsyncClient', is for advanced users who want more control and flexibility over their Reactive application at the expense of more complexity in the application. Unlike the processor, the low-level 'ServiceBusReceiverAsyncClient' does not have automatic recovery built into it. The reactive application using this client needs to deal with terminal events and choose the operators (to add recovery, manage backpressure, threading) in the Reactor chain. As stated earlier, for common asynchronous receive situations, the 'ServiceBusProcessorClient' should be the first choice.
+The low-level client, `ServiceBusReceiverAsyncClient`, is for advanced users who want more control and flexibility over their Reactive application at the expense of more complexity in the application. Unlike the processor, the low-level `ServiceBusReceiverAsyncClient` does not have automatic recovery built into it. The reactive application using this client needs to deal with terminal events and choose the operators (to add recovery, manage backpressure, threading) in the Reactor chain. As stated earlier, for common asynchronous receive situations, the `ServiceBusProcessorClient` should be the first choice.
 
-'ServiceBusReceiverClient' usage is discouraged unless you want to have pull semantics or want to migrate existing code base that uses synchronous receiver approach. For high-throughput and parallel message processing use cases, use 'ServiceBusProcessorClient'.
+`ServiceBusReceiverClient` usage is discouraged unless you want to have pull semantics or want to migrate existing code base that uses synchronous receiver approach. For high-throughput and parallel message processing use cases, use `ServiceBusProcessorClient`.
 
 ### Sharing of connection between clients
 
@@ -551,7 +552,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
-[wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 [sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock

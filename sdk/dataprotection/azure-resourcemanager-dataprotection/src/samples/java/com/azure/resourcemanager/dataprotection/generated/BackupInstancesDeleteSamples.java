@@ -10,7 +10,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 public final class BackupInstancesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * BackupInstanceOperations/DeleteBackupInstance.json
      */
     /**
@@ -19,7 +19,7 @@ public final class BackupInstancesDeleteSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void deleteBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().delete("000pikumar", "PratikPrivatePreviewVault1", "testInstance1",
-            com.azure.core.util.Context.NONE);
+        manager.backupInstances()
+            .delete("000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
     }
 }

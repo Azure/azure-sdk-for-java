@@ -14,62 +14,64 @@ import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAd
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddPasswordRequestBodyInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicePrincipalsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicePrincipalsClient.
+ */
 public interface ServicePrincipalsClient {
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return keyCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
+    Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body);
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return keyCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
+    Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body);
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return keyCredential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body, Context context);
+    Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body, Context context);
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return keyCredential.
      */
@@ -78,62 +80,62 @@ public interface ServicePrincipalsClient {
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return passwordCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
+    Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body);
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return passwordCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
+    Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body);
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return passwordCredential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body, Context context);
+    Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body, Context context);
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return passwordCredential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphPasswordCredentialInner addPassword(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
+    MicrosoftGraphPasswordCredentialInner addPassword(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body);
 }

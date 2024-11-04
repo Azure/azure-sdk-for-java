@@ -111,14 +111,16 @@ public final class ConnectedEnvironmentImpl
     }
 
     public ConnectedEnvironment create() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironments().createOrUpdate(resourceGroupName,
-            connectedEnvironmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironments()
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectedEnvironment create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironments().createOrUpdate(resourceGroupName,
-            connectedEnvironmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironments()
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, this.innerModel(), context);
         return this;
     }
 
@@ -134,14 +136,16 @@ public final class ConnectedEnvironmentImpl
     }
 
     public ConnectedEnvironment apply() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironments().createOrUpdate(resourceGroupName,
-            connectedEnvironmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironments()
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectedEnvironment apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironments().createOrUpdate(resourceGroupName,
-            connectedEnvironmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironments()
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, this.innerModel(), context);
         return this;
     }
 
@@ -155,27 +159,32 @@ public final class ConnectedEnvironmentImpl
     }
 
     public ConnectedEnvironment refresh() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironments()
-            .getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironments()
+            .getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironment refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironments()
-            .getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironments()
+            .getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context)
+            .getValue();
         return this;
     }
 
     public Response<CheckNameAvailabilityResponse>
         checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        return serviceManager.connectedEnvironments().checkNameAvailabilityWithResponse(resourceGroupName,
-            connectedEnvironmentName, checkNameAvailabilityRequest, context);
+        return serviceManager.connectedEnvironments()
+            .checkNameAvailabilityWithResponse(resourceGroupName, connectedEnvironmentName,
+                checkNameAvailabilityRequest, context);
     }
 
     public CheckNameAvailabilityResponse
         checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        return serviceManager.connectedEnvironments().checkNameAvailability(resourceGroupName, connectedEnvironmentName,
-            checkNameAvailabilityRequest);
+        return serviceManager.connectedEnvironments()
+            .checkNameAvailability(resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest);
     }
 
     public ConnectedEnvironmentImpl withRegion(Region location) {

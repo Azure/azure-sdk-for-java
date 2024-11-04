@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ObjectNodeMap;
@@ -24,6 +25,9 @@ public class PipelinedDocumentQueryExecutionContext<T>
 
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
+    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
 
     private final IDocumentQueryExecutionComponent<Document> component;
 
@@ -53,12 +57,21 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
-                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
-
-                documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
-
-                return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                if (queryInfo.hasNonStreamingOrderBy()) {
+                    if (continuationToken != null) {
+                        throw new NonStreamingOrderByBadRequestException(
+                            HttpConstants.StatusCodes.BADREQUEST,
+                            "Can not use a continuation token for a vector search query");
+                    }
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                    documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                    return NonStreamingOrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                } else {
+                    ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                    documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                    return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                }
             };
         } else {
 
@@ -189,7 +202,10 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 .FeedResponseHelper
                 .getFeedResponseAccessor().convertGenericType(
                     documentFeedResponse,
-                    (document) -> this.itemSerializer.deserialize(new ObjectNodeMap(document.getPropertyBag()), this.classOfT)
+                    (document) -> itemSerializerAccessor.deserializeSafe(
+                        this.itemSerializer,
+                        new ObjectNodeMap(document.getPropertyBag()),
+                        this.classOfT)
                 )
             );
     }

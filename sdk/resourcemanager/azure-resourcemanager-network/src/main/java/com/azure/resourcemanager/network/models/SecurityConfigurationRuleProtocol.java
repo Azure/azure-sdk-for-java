@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class SecurityConfigurationRuleProtocol extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding SecurityConfigurationRuleProtocol.
      */
-    @JsonCreator
     public static SecurityConfigurationRuleProtocol fromString(String name) {
         return fromString(name, SecurityConfigurationRuleProtocol.class);
     }

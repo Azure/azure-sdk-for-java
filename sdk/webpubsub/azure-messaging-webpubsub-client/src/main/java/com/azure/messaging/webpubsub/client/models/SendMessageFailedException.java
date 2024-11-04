@@ -34,8 +34,8 @@ public final class SendMessageFailedException extends AzureException {
      * @param ackId the "ackId" of request message.
      * @param error the "error" of response message.
      */
-    public SendMessageFailedException(String message, Throwable cause,
-                                      boolean isTransient, Long ackId, AckResponseError error) {
+    public SendMessageFailedException(String message, Throwable cause, boolean isTransient, Long ackId,
+        AckResponseError error) {
         super(message, cause);
         this.isTransient = isTransient;
         this.ackId = ackId;

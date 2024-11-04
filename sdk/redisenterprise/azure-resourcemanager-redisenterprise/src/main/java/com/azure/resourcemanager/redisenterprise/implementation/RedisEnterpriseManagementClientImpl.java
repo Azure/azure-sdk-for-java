@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -22,6 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.redisenterprise.fluent.AccessPolicyAssignmentsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.DatabasesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.OperationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.OperationsStatusClient;
@@ -184,6 +186,20 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
     }
 
     /**
+     * The AccessPolicyAssignmentsClient object to access its operations.
+     */
+    private final AccessPolicyAssignmentsClient accessPolicyAssignments;
+
+    /**
+     * Gets the AccessPolicyAssignmentsClient object to access its operations.
+     * 
+     * @return the AccessPolicyAssignmentsClient object.
+     */
+    public AccessPolicyAssignmentsClient getAccessPolicyAssignments() {
+        return this.accessPolicyAssignments;
+    }
+
+    /**
      * The PrivateEndpointConnectionsClient object to access its operations.
      */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
@@ -228,11 +244,12 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-11-01";
+        this.apiVersion = "2024-09-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationsStatus = new OperationsStatusClientImpl(this);
         this.redisEnterprises = new RedisEnterprisesClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
+        this.accessPolicyAssignments = new AccessPolicyAssignmentsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
     }
@@ -297,8 +314,8 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -339,7 +356,7 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

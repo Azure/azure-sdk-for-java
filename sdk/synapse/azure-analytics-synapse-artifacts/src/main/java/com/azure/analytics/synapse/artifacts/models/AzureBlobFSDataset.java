@@ -5,49 +5,58 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The Azure Data Lake Storage Gen2 storage.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureBlobFSFile")
-@JsonFlatten
 @Fluent
 public class AzureBlobFSDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AzureBlobFSFile";
+
+    /*
      * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
      * The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
 
     /*
      * The format of the Azure Data Lake Storage Gen2 storage.
      */
-    @JsonProperty(value = "typeProperties.format")
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the blob storage.
      */
-    @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
     /**
      * Creates an instance of AzureBlobFSDataset class.
      */
     public AzureBlobFSDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -195,5 +204,102 @@ public class AzureBlobFSDataset extends Dataset {
     public AzureBlobFSDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (folderPath != null || fileName != null || format != null || compression != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+            jsonWriter.writeUntypedField("fileName", this.fileName);
+            jsonWriter.writeJsonField("format", this.format);
+            jsonWriter.writeJsonField("compression", this.compression);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFSDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFSDataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBlobFSDataset.
+     */
+    public static AzureBlobFSDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobFSDataset deserializedAzureBlobFSDataset = new AzureBlobFSDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureBlobFSDataset.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureBlobFSDataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAzureBlobFSDataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAzureBlobFSDataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureBlobFSDataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureBlobFSDataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAzureBlobFSDataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBlobFSDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("folderPath".equals(fieldName)) {
+                            deserializedAzureBlobFSDataset.folderPath = reader.readUntyped();
+                        } else if ("fileName".equals(fieldName)) {
+                            deserializedAzureBlobFSDataset.fileName = reader.readUntyped();
+                        } else if ("format".equals(fieldName)) {
+                            deserializedAzureBlobFSDataset.format = DatasetStorageFormat.fromJson(reader);
+                        } else if ("compression".equals(fieldName)) {
+                            deserializedAzureBlobFSDataset.compression = DatasetCompression.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureBlobFSDataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureBlobFSDataset;
+        });
     }
 }

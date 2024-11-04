@@ -11,7 +11,7 @@ public final class AgentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentConfiguration model = BinaryData.fromString(
-            "{\"proxyUrl\":\"tyxolniwpwc\",\"incomingConnectionsPorts\":[\"fkgiawxk\",\"ryplwckbasyypn\",\"dhsgcba\"],\"extensionsAllowList\":[{\"publisher\":\"jkot\",\"type\":\"qgoulznd\"},{\"publisher\":\"kwy\",\"type\":\"gfgibm\"},{\"publisher\":\"gakeqsr\",\"type\":\"bzqqedqytbciq\"}],\"extensionsBlockList\":[{\"publisher\":\"lmmnkzsmodmglo\",\"type\":\"pbkwtmu\"},{\"publisher\":\"uqktap\",\"type\":\"wgcu\"}],\"proxyBypass\":[\"umkdosvqwhbmd\",\"bbjfddgmbmbexp\",\"bhtqqrolfpfpsa\",\"gbquxigj\"],\"extensionsEnabled\":\"gzjaoyfhrtxilne\",\"guestConfigurationEnabled\":\"ujysvle\",\"configMode\":\"monitor\"}")
+            "{\"proxyUrl\":\"ajrmvdjwzrlovmc\",\"incomingConnectionsPorts\":[\"ijcoejctb\",\"aqsqsycbkbfk\"],\"extensionsAllowList\":[{\"publisher\":\"kexxppof\",\"type\":\"axcfjpgddtocjjx\"},{\"publisher\":\"pmouexhdz\",\"type\":\"bqe\"}],\"extensionsBlockList\":[{\"publisher\":\"qbzvddntwnd\",\"type\":\"cbtwnpzaoqvuh\"},{\"publisher\":\"cffcyddglmj\",\"type\":\"jqkwpyeicx\"},{\"publisher\":\"ciwqvhk\",\"type\":\"xuigdtopbobj\"}],\"proxyBypass\":[\"m\"],\"extensionsEnabled\":\"u\",\"guestConfigurationEnabled\":\"a\",\"configMode\":\"full\"}")
             .toObject(AgentConfiguration.class);
     }
 

@@ -43,7 +43,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: confidentialledger
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-security-confidentialledger
         groupId: com.azure

@@ -1054,7 +1054,8 @@ public final class AppServiceCertificateOrdersClientImpl
     private Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName,
         String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1885,8 +1886,10 @@ public final class AppServiceCertificateOrdersClientImpl
     public SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name,
             AppServiceCertificateResourceInner keyVaultCertificate, Context context) {
-        return this.beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name,
-            keyVaultCertificate, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1908,7 +1911,8 @@ public final class AppServiceCertificateOrdersClientImpl
     public Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(String resourceGroupName,
         String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         return beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3444,9 +3448,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3472,9 +3474,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3502,9 +3502,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3533,9 +3531,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3563,9 +3559,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3593,9 +3587,7 @@ public final class AppServiceCertificateOrdersClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

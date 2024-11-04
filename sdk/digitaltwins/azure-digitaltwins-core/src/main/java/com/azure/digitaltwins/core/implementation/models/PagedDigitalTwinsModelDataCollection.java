@@ -5,39 +5,41 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A collection of DigitalTwinsModelData objects. */
+/**
+ * A collection of DigitalTwinsModelData objects.
+ */
 @Fluent
-public final class PagedDigitalTwinsModelDataCollection {
+public final class PagedDigitalTwinsModelDataCollection
+    implements JsonSerializable<PagedDigitalTwinsModelDataCollection> {
     /*
      * The DigitalTwinsModelData objects.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<DigitalTwinsModelData> value;
+    private final List<DigitalTwinsModelData> value;
 
     /*
      * A URI to retrieve the next page of objects.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
      * Creates an instance of PagedDigitalTwinsModelDataCollection class.
-     *
+     * 
      * @param value the value value to set.
      */
-    @JsonCreator
-    public PagedDigitalTwinsModelDataCollection(
-            @JsonProperty(value = "value", required = true) List<DigitalTwinsModelData> value) {
+    public PagedDigitalTwinsModelDataCollection(List<DigitalTwinsModelData> value) {
         this.value = value;
     }
 
     /**
      * Get the value property: The DigitalTwinsModelData objects.
-     *
+     * 
      * @return the value value.
      */
     public List<DigitalTwinsModelData> getValue() {
@@ -46,7 +48,7 @@ public final class PagedDigitalTwinsModelDataCollection {
 
     /**
      * Get the nextLink property: A URI to retrieve the next page of objects.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -55,7 +57,7 @@ public final class PagedDigitalTwinsModelDataCollection {
 
     /**
      * Set the nextLink property: A URI to retrieve the next page of objects.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PagedDigitalTwinsModelDataCollection object itself.
      */
@@ -65,16 +67,51 @@ public final class PagedDigitalTwinsModelDataCollection {
     }
 
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
-    public void validate() {
-        if (getValue() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property value in model PagedDigitalTwinsModelDataCollection");
-        } else {
-            getValue().forEach(e -> e.validate());
-        }
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PagedDigitalTwinsModelDataCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PagedDigitalTwinsModelDataCollection if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PagedDigitalTwinsModelDataCollection.
+     */
+    public static PagedDigitalTwinsModelDataCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean valueFound = false;
+            List<DigitalTwinsModelData> value = null;
+            String nextLink = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> DigitalTwinsModelData.fromJson(reader1));
+                    valueFound = true;
+                } else if ("nextLink".equals(fieldName)) {
+                    nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (valueFound) {
+                PagedDigitalTwinsModelDataCollection deserializedPagedDigitalTwinsModelDataCollection
+                    = new PagedDigitalTwinsModelDataCollection(value);
+                deserializedPagedDigitalTwinsModelDataCollection.nextLink = nextLink;
+
+                return deserializedPagedDigitalTwinsModelDataCollection;
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

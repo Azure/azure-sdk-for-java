@@ -11,47 +11,65 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The HealthcareResultDocumentsItem model. */
+/**
+ * The HealthcareResultDocumentsItem model.
+ */
 @Fluent
 public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocumentResult {
-    /** Creates an instance of HealthcareResultDocumentsItem class. */
-    public HealthcareResultDocumentsItem() {}
+    /**
+     * Creates an instance of HealthcareResultDocumentsItem class.
+     */
+    public HealthcareResultDocumentsItem() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareResultDocumentsItem setEntities(List<HealthcareEntity> entities) {
         super.setEntities(entities);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareResultDocumentsItem setRelations(List<HealthcareRelation> relations) {
         super.setRelations(relations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareResultDocumentsItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,45 +83,41 @@ public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocum
 
     /**
      * Reads an instance of HealthcareResultDocumentsItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of HealthcareResultDocumentsItem if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareResultDocumentsItem.
      */
     public static HealthcareResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HealthcareResultDocumentsItem deserializedHealthcareResultDocumentsItem =
-                            new HealthcareResultDocumentsItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            HealthcareResultDocumentsItem deserializedHealthcareResultDocumentsItem
+                = new HealthcareResultDocumentsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedHealthcareResultDocumentsItem.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedHealthcareResultDocumentsItem.setWarnings(warnings);
-                        } else if ("entities".equals(fieldName)) {
-                            List<HealthcareEntity> entities =
-                                    reader.readArray(reader1 -> HealthcareEntity.fromJson(reader1));
-                            deserializedHealthcareResultDocumentsItem.setEntities(entities);
-                        } else if ("relations".equals(fieldName)) {
-                            List<HealthcareRelation> relations =
-                                    reader.readArray(reader1 -> HealthcareRelation.fromJson(reader1));
-                            deserializedHealthcareResultDocumentsItem.setRelations(relations);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedHealthcareResultDocumentsItem.setStatistics(
-                                    DocumentStatistics.fromJson(reader));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedHealthcareResultDocumentsItem.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedHealthcareResultDocumentsItem.setWarnings(warnings);
+                } else if ("entities".equals(fieldName)) {
+                    List<HealthcareEntity> entities = reader.readArray(reader1 -> HealthcareEntity.fromJson(reader1));
+                    deserializedHealthcareResultDocumentsItem.setEntities(entities);
+                } else if ("relations".equals(fieldName)) {
+                    List<HealthcareRelation> relations
+                        = reader.readArray(reader1 -> HealthcareRelation.fromJson(reader1));
+                    deserializedHealthcareResultDocumentsItem.setRelations(relations);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedHealthcareResultDocumentsItem.setStatistics(DocumentStatistics.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHealthcareResultDocumentsItem;
-                });
+            return deserializedHealthcareResultDocumentsItem;
+        });
     }
 }

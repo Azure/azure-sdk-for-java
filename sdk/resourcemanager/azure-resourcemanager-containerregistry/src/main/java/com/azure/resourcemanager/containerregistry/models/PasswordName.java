@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The password name.
  */
@@ -36,7 +33,6 @@ public enum PasswordName {
      * @param value the serialized value to parse.
      * @return the parsed PasswordName object, or null if unable to parse.
      */
-    @JsonCreator
     public static PasswordName fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum PasswordName {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -12,9 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
  */
 public final class ResourceProviderMoveRecoveryPointSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * TriggerRecoveryPointMove_Post.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/TriggerRecoveryPointMove_Post.json
      */
     /**
      * Sample code: Trigger RP Move Operation.
@@ -23,12 +21,13 @@ public final class ResourceProviderMoveRecoveryPointSamples {
      */
     public static void
         triggerRPMoveOperation(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.resourceProviders().moveRecoveryPoint("testVault", "netsdktestrg", "Azure",
-            "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-            "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
-            new MoveRPAcrossTiersRequest().withObjectType("MoveRPAcrossTiersRequest")
-                .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .moveRecoveryPoint("testVault", "netsdktestrg", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new MoveRPAcrossTiersRequest().withObjectType("MoveRPAcrossTiersRequest")
+                    .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
+                com.azure.core.util.Context.NONE);
     }
 }

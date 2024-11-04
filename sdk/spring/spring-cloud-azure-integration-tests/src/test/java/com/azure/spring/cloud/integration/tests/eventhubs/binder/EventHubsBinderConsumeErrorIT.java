@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Mono;
@@ -63,13 +63,19 @@ class EventHubsBinderConsumeErrorIT {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                throw new RuntimeException();
+                throw new RuntimeException("Consumption exception test");
             };
         }
 
-        @ServiceActivator(inputChannel = "test-eventhub-message.$Default.errors")
-        void consumeError(Message<?> message) throws InterruptedException {
-            EXCHANGER.exchange("ERROR!");
+        @Bean
+        Consumer<ErrorMessage> consumeError() {
+            return exception -> {
+                try {
+                    EXCHANGER.exchange("ERROR!");
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            };
         }
     }
 

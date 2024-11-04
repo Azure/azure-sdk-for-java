@@ -13,24 +13,25 @@ public final class PacketCaptureInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PacketCaptureInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Unknown\",\"status\":\"Stopped\",\"reason\":\"yokacspkw\",\"captureStartTime\":\"2021-04-27T23:18:31Z\",\"networkInterfaces\":[\"pxjmflbvvnchr\",\"cciw\"],\"bytesToCapturePerPacket\":4127972279090027602,\"totalBytesPerSession\":4133391501410189772,\"timeLimitInSeconds\":330822059,\"outputFiles\":[\"iwkuofos\",\"ghsauuimjmvxied\",\"ugidyjrr\",\"byao\"]},\"id\":\"e\",\"name\":\"csonpclhoco\",\"type\":\"slkevle\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Stopped\",\"reason\":\"kpoc\",\"captureStartTime\":\"2021-05-19T00:57:25Z\",\"networkInterfaces\":[\"xoegukgjnpiucgy\",\"evqzntypmrbp\",\"zcdrqjsdpydnfyhx\"],\"bytesToCapturePerPacket\":5446401731314405625,\"totalBytesPerSession\":1641594420313598643,\"timeLimitInSeconds\":170373532,\"outputFiles\":[\"sjttgzfbish\"]},\"id\":\"khaj\",\"name\":\"eyeam\",\"type\":\"p\"}")
             .toObject(PacketCaptureInner.class);
-        Assertions.assertEquals("pxjmflbvvnchr", model.networkInterfaces().get(0));
-        Assertions.assertEquals(4127972279090027602L, model.bytesToCapturePerPacket());
-        Assertions.assertEquals(4133391501410189772L, model.totalBytesPerSession());
-        Assertions.assertEquals(330822059, model.timeLimitInSeconds());
+        Assertions.assertEquals("xoegukgjnpiucgy", model.networkInterfaces().get(0));
+        Assertions.assertEquals(5446401731314405625L, model.bytesToCapturePerPacket());
+        Assertions.assertEquals(1641594420313598643L, model.totalBytesPerSession());
+        Assertions.assertEquals(170373532, model.timeLimitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCaptureInner model
-            = new PacketCaptureInner().withNetworkInterfaces(Arrays.asList("pxjmflbvvnchr", "cciw"))
-                .withBytesToCapturePerPacket(4127972279090027602L).withTotalBytesPerSession(4133391501410189772L)
-                .withTimeLimitInSeconds(330822059);
+        PacketCaptureInner model = new PacketCaptureInner()
+            .withNetworkInterfaces(Arrays.asList("xoegukgjnpiucgy", "evqzntypmrbp", "zcdrqjsdpydnfyhx"))
+            .withBytesToCapturePerPacket(5446401731314405625L)
+            .withTotalBytesPerSession(1641594420313598643L)
+            .withTimeLimitInSeconds(170373532);
         model = BinaryData.fromObject(model).toObject(PacketCaptureInner.class);
-        Assertions.assertEquals("pxjmflbvvnchr", model.networkInterfaces().get(0));
-        Assertions.assertEquals(4127972279090027602L, model.bytesToCapturePerPacket());
-        Assertions.assertEquals(4133391501410189772L, model.totalBytesPerSession());
-        Assertions.assertEquals(330822059, model.timeLimitInSeconds());
+        Assertions.assertEquals("xoegukgjnpiucgy", model.networkInterfaces().get(0));
+        Assertions.assertEquals(5446401731314405625L, model.bytesToCapturePerPacket());
+        Assertions.assertEquals(1641594420313598643L, model.totalBytesPerSession());
+        Assertions.assertEquals(170373532, model.timeLimitInSeconds());
     }
 }

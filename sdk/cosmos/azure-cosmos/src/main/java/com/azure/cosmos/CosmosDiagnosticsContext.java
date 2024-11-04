@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollec
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
@@ -85,6 +86,9 @@ public final class CosmosDiagnosticsContext {
 
     private final Integer sequenceNumber;
 
+    private String queryStatement;
+    private OverridableRequestOptions requestOptions;
+
     CosmosDiagnosticsContext(
         String spanName,
         String accountName,
@@ -100,7 +104,9 @@ public final class CosmosDiagnosticsContext {
         String trackingId,
         String connectionMode,
         String userAgent,
-        Integer sequenceNumber) {
+        Integer sequenceNumber,
+        String queryStatement,
+        OverridableRequestOptions requestOptions) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -131,6 +137,8 @@ public final class CosmosDiagnosticsContext {
         this.connectionMode = connectionMode;
         this.sequenceNumber = sequenceNumber;
         this.isSampledOut = false;
+        this.queryStatement = queryStatement;
+        this.requestOptions = requestOptions;
     }
 
     /**
@@ -254,6 +262,14 @@ public final class CosmosDiagnosticsContext {
      */
     String getSpanName() {
         return this.spanName;
+    }
+
+    /**
+     * The query statement send by client
+     * @return the query statement
+     */
+    public String getQueryStatement() {
+        return this.queryStatement;
     }
 
     /**
@@ -602,12 +618,20 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("maxRequestSizeInBytes", this.maxRequestSize);
         ctxNode.put("maxResponseSizeInBytes", this.maxResponseSize);
 
+        if (this.requestOptions != null && this.requestOptions.getKeywordIdentifiers() != null) {
+            ctxNode.put("keywordIdentifiers", String.join(",", this.requestOptions.getKeywordIdentifiers()));
+        }
+
         if (this.maxItemCount != null) {
             ctxNode.put("maxItems", this.maxItemCount);
         }
 
         if (this.actualItemCount.get() >= 0) {
             ctxNode.put("actualItems", this.actualItemCount.get());
+        }
+
+        if (this.queryStatement != null && queryStatement.length() > 0) {
+            ctxNode.put("queryStatement", this.queryStatement);
         }
 
         if (this.finalError != null) {
@@ -895,6 +919,23 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    /**
+     * Gets the custom ids.
+     *
+     * @return the custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.requestOptions.getKeywordIdentifiers();
+    }
+
+    OverridableRequestOptions getRequestOptions() {
+        return this.requestOptions;
+    }
+
+    void setRequestOptions(OverridableRequestOptions requestOptions) {
+        this.requestOptions = requestOptions;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -914,7 +955,9 @@ public final class CosmosDiagnosticsContext {
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
                                                            CosmosDiagnosticsThresholds thresholds, String trackingId,
                                                            String connectionMode, String userAgent,
-                                                           Integer sequenceNumber) {
+                                                           Integer sequenceNumber,
+                                                           String queryStatement,
+                                                           OverridableRequestOptions requestOptions) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -931,7 +974,22 @@ public final class CosmosDiagnosticsContext {
                             trackingId,
                             connectionMode,
                             userAgent,
-                            sequenceNumber);
+                            sequenceNumber,
+                            queryStatement,
+                            requestOptions
+                            );
+                    }
+
+                    @Override
+                    public OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getRequestOptions();
+                    }
+
+                    @Override
+                    public void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        ctx.setRequestOptions(requestOptions);
                     }
 
                     @Override
@@ -1042,6 +1100,12 @@ public final class CosmosDiagnosticsContext {
                         }
 
                         return true;
+                    }
+
+                    @Override
+                    public String getQueryStatement(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getQueryStatement();
                     }
                 });
     }

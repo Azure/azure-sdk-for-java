@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AvailableServiceAliasInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An array of available service aliases.
  */
 @Fluent
-public final class AvailableServiceAliasesResult {
+public final class AvailableServiceAliasesResult implements JsonSerializable<AvailableServiceAliasesResult> {
     /*
      * An array of available service aliases.
      */
-    @JsonProperty(value = "value")
     private List<AvailableServiceAliasInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,46 @@ public final class AvailableServiceAliasesResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableServiceAliasesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableServiceAliasesResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableServiceAliasesResult.
+     */
+    public static AvailableServiceAliasesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableServiceAliasesResult deserializedAvailableServiceAliasesResult
+                = new AvailableServiceAliasesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AvailableServiceAliasInner> value
+                        = reader.readArray(reader1 -> AvailableServiceAliasInner.fromJson(reader1));
+                    deserializedAvailableServiceAliasesResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAvailableServiceAliasesResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableServiceAliasesResult;
+        });
     }
 }

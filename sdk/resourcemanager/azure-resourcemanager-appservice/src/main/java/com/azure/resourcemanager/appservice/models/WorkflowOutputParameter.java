@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The workflow output parameter.
@@ -15,7 +18,6 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
     /*
      * Gets the error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
     /**
@@ -77,5 +79,52 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeUntypedField("value", value());
+        jsonWriter.writeUntypedField("metadata", metadata());
+        jsonWriter.writeStringField("description", description());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowOutputParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowOutputParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowOutputParameter.
+     */
+    public static WorkflowOutputParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowOutputParameter deserializedWorkflowOutputParameter = new WorkflowOutputParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withType(ParameterType.fromString(reader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withValue(reader.readUntyped());
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withMetadata(reader.readUntyped());
+                } else if ("description".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.withDescription(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowOutputParameter.error = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowOutputParameter;
+        });
     }
 }

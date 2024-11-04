@@ -19,7 +19,11 @@ public final class GalleryImageVersionsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().delete("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                com.azure.core.util.Context.NONE);
     }
 }

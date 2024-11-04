@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -20,7 +19,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
@@ -63,7 +61,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,17 +95,18 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
     protected static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
-    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-        HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
     protected static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
-    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
-        HttpHeaderName.fromString("x-ms-encryption-key-sha256");
-    protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH =
-        HttpHeaderName.fromString("x-ms-blob-content-length");
+    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+    protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH
+        = HttpHeaderName.fromString("x-ms-blob-content-length");
 
     protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
 
     protected static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+    protected static final HttpHeaderName X_MS_BLOB_SEALED = HttpHeaderName.fromString("x-ms-blob-sealed");
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -124,8 +123,6 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final String RECEIVED_LEASE_ID = "received";
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
-
-    private static final Pattern URL_SANITIZER = Pattern.compile("(?<=http://|https://)([^/?]+)");
 
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
@@ -149,18 +146,20 @@ public class BlobTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".+", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-encryption-key", ".+", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-copy-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
+                        TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
-        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-            .setComparingBodies(false)
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
                 "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
@@ -195,11 +194,11 @@ public class BlobTestBase extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-            .httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .buildClient();
+        BlobServiceClient cleanupClient
+            = new BlobServiceClientBuilder().httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .buildClient();
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setPrefix(prefix);
         for (BlobContainerItem container : cleanupClient.listBlobContainers(options, null)) {
@@ -217,14 +216,15 @@ public class BlobTestBase extends TestProxyTestBase {
         return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
     }
 
-    protected static String getAuthToken() {
+    protected String getAuthToken() {
         if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        return new EnvironmentCredentialBuilder().build().getToken(new TokenRequestContext()
-                .setScopes(Collections.singletonList("https://storage.azure.com/.default")))
-            .map(AccessToken::getToken).block();
+        return StorageCommonTestUtils.getTokenCredential(interceptorManager)
+            .getTokenSync(
+                new TokenRequestContext().setScopes(Collections.singletonList("https://storage.azure.com/.default")))
+            .getToken();
     }
 
     protected String generateContainerName() {
@@ -261,11 +261,21 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
+    protected static List<String> convertNulls(String... conditions) {
+        return Arrays.stream(conditions)
+            .map(condition -> "null".equals(condition) ? null : condition)
+            .collect(Collectors.toList());
+    }
+
+    protected static String convertNull(String condition) {
+        return "null".equals(condition) ? null : condition;
+    }
+
+    protected Mono<String> setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
         if (Objects.equals(match, RECEIVED_ETAG)) {
-            return Objects.requireNonNull(bac.getProperties().block()).getETag();
+            return bac.getProperties().map(BlobProperties::getETag);
         } else {
-            return match;
+            return Mono.justOrEmpty(match).defaultIfEmpty("null");
         }
     }
 
@@ -293,20 +303,19 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
-        String responseLeaseId = null;
+    protected Mono<String> setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
+        Mono<String> responseLeaseId = null;
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
-            responseLeaseId = new BlobLeaseClientBuilder()
-                .blobAsyncClient(bac)
-                .buildAsyncClient()
-                .acquireLease(-1)
-                .block();
+            responseLeaseId = new BlobLeaseClientBuilder().blobAsyncClient(bac).buildAsyncClient().acquireLease(-1);
         }
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return responseLeaseId;
-        } else {
-            return leaseID;
+
+        if (responseLeaseId == null) {
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
+
+        return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
+            ? returnedLeaseId
+            : (leaseID == null ? "null" : leaseID));
     }
 
     protected String setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
@@ -317,40 +326,30 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
+    protected Mono<String> setupContainerLeaseConditionAsync(BlobContainerAsyncClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseAsyncClient(cu).acquireLease(-1).block();
+            return createLeaseAsyncClient(cu).acquireLease(-1);
         } else {
-            return leaseID;
+            return Mono.justOrEmpty(leaseID).defaultIfEmpty("null");
         }
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildAsyncClient();
-    }
-
-    protected BlobServiceClientBuilder setOauthCredentials(BlobServiceClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {
@@ -367,8 +366,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies)
-            .buildClient();
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient();
     }
 
     protected BlobServiceClient getServiceClient(String sasToken, String endpoint) {
@@ -388,15 +386,13 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
-                                                 HttpPipelinePolicy... policies) {
-        return getServiceClientBuilder(credential, endpoint, policies)
-            .buildAsyncClient();
+        HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildAsyncClient();
     }
 
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             if (policy != null) {
@@ -415,20 +411,13 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceClientBuilder getServiceClientBuilderWithTokenCredential(String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -439,10 +428,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobClient(blobClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new BlobLeaseClientBuilder().blobClient(blobClient).leaseId(leaseId).buildClient();
     }
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient) {
@@ -450,10 +436,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobAsyncClient(blobAsyncClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
+        return new BlobLeaseClientBuilder().blobAsyncClient(blobAsyncClient).leaseId(leaseId).buildAsyncClient();
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
@@ -461,10 +444,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerClient(containerClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new BlobLeaseClientBuilder().containerClient(containerClient).leaseId(leaseId).buildClient();
     }
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient) {
@@ -473,8 +453,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient,
         String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerAsyncClient(containerAsyncClient)
+        return new BlobLeaseClientBuilder().containerAsyncClient(containerAsyncClient)
             .leaseId(leaseId)
             .buildAsyncClient();
     }
@@ -495,7 +474,8 @@ public class BlobTestBase extends TestProxyTestBase {
      * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
      * long. The value is going to be a best guess and should be played with to allow test passes to succeed
      * <p>
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations">
+     * Timeouts</a>
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
      * timeout value--about 20s/MB. Won't be less than 1 minute.
@@ -505,8 +485,8 @@ public class BlobTestBase extends TestProxyTestBase {
         retryTimeout = Math.max(60, retryTimeout);
         return getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
-            .buildAsyncClient();
+                .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+                .buildAsyncClient();
     }
 
     protected BlobContainerClient getContainerClient(String sasToken, String endpoint) {
@@ -523,30 +503,23 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
-        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
-            .endpoint(endpoint);
+    protected BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
     }
 
-    protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName);
+    protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+        String blobName) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName);
 
         instrument(builder);
 
@@ -554,10 +527,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobAsyncClient getBlobAsyncClient(String sasToken, String endpoint, String blobName, String snapshotId) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .snapshot(snapshotId);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName).snapshot(snapshotId);
 
         instrument(builder);
 
@@ -569,19 +539,16 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClient getBlobClient(String sasToken, String endpoint, String blobName, String snapshotId) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .snapshot(snapshotId);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName).snapshot(snapshotId);
 
         instrument(builder);
 
         return builder.sasToken(sasToken).buildClient();
     }
 
-    protected BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+    protected BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -592,21 +559,15 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder.credential(credential).buildClient();
     }
 
-    protected BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+    protected BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint,
+        HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -614,8 +575,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -625,9 +585,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint).blobName(blobName);
 
         instrument(builder);
 
@@ -635,8 +593,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClient getBlobClient(String endpoint, String sasToken) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
         instrument(builder);
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -646,8 +603,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobAsyncClient getBlobAsyncClient(String endpoint, String sasToken) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
         instrument(builder);
 
         if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -657,8 +613,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobClientBuilder getBlobClientBuilder(String endpoint) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         return instrument(builder);
@@ -666,8 +621,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected SpecializedBlobClientBuilder getSpecializedBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint);
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -678,34 +632,28 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected SpecializedBlobClientBuilder getSpecializedBuilder(String endpoint) {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint);
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().endpoint(endpoint);
 
         builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         return instrument(builder);
     }
 
-    protected SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint);
+    protected SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint,
+        HttpPipelinePolicy... policies) {
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
         }
 
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
     }
 
-    protected HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
+    protected HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body,
+        HttpHeaders headers) {
         return new HttpResponse(response.getRequest()) {
 
             @Override
@@ -761,7 +709,7 @@ public class BlobTestBase extends TestProxyTestBase {
             && headers.getValue(HttpHeaderName.DATE) != null;
     }
 
-    protected static boolean validateBlobProperties(Response< BlobProperties > response, String cacheControl,
+    protected static boolean validateBlobProperties(Response<BlobProperties> response, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, byte[] contentMD5,
         String contentType) {
         return Objects.equals(response.getValue().getCacheControl(), cacheControl)
@@ -824,8 +772,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static Stream<Arguments> allConditionsSupplier() {
         return Stream.of(Arguments.of(null, null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null), Arguments.of(null, NEW_DATE, null, null, null, null),
             Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
             Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
@@ -833,8 +780,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> allConditionsFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null),
             Arguments.of(null, OLD_DATE, null, null, null, null),
             Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
             Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
@@ -843,21 +789,9 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected static Stream<Arguments> fileACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID)
-        );
-    }
-
-    protected static String redactUrl(String url) {
-        if (url == null) {
-            return null;
-        }
-
-        return URL_SANITIZER.matcher(url).replaceAll("REDACTED");
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null), Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null), Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID));
     }
 
     protected HttpClient getHttpClient() {
@@ -868,7 +802,7 @@ public class BlobTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getHttpClient(playbackClientSupplier);
     }
 
-    protected  <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
+    protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
         return StorageCommonTestUtils.instrument(builder, BlobServiceClientBuilder.getDefaultHttpLogOptions(),
             interceptorManager);
     }
@@ -897,14 +831,18 @@ public class BlobTestBase extends TestProxyTestBase {
     Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
     */
     protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
+        List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers);
         sleepIfRunningAgainstService(30 * 1000);
     }
 
-    protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers) {
-        cc.setAccessPolicy(access, identifiers).block();
-        sleepIfRunningAgainstService(30 * 1000);
+    protected Mono<?> setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
+        List<BlobSignedIdentifier> identifiers) {
+        Mono<?> setPolicyMono = cc.setAccessPolicy(access, identifiers);
+        if (!interceptorManager.isPlaybackMode()) {
+            setPolicyMono = setPolicyMono.then(Mono.delay(Duration.ofSeconds(30)));
+        }
+
+        return setPolicyMono;
     }
 }

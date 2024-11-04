@@ -2,22 +2,46 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.models.BatchApplicationPackageReference;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.compute.batch.models.BatchJobCreateContent;
+import com.azure.compute.batch.models.BatchPoolInfo;
+import com.azure.compute.batch.models.BatchTask;
+import com.azure.compute.batch.models.BatchTaskConstraints;
+import com.azure.compute.batch.models.BatchTaskCounts;
+import com.azure.compute.batch.models.BatchTaskCountsResult;
+import com.azure.compute.batch.models.BatchTaskCreateContent;
+import com.azure.compute.batch.models.BatchTaskExecutionResult;
+import com.azure.compute.batch.models.BatchTaskSlotCounts;
+import com.azure.compute.batch.models.BatchTaskStatistics;
+import com.azure.compute.batch.models.ErrorCategory;
+import com.azure.compute.batch.models.OutputFile;
+import com.azure.compute.batch.models.OutputFileBlobContainerDestination;
+import com.azure.compute.batch.models.OutputFileDestination;
+import com.azure.compute.batch.models.OutputFileUploadCondition;
+import com.azure.compute.batch.models.OutputFileUploadConfig;
+import com.azure.compute.batch.models.ResourceFile;
+import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
+import com.azure.compute.batch.models.UserIdentity;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.compute.batch.models.*;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerClient;
-import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
-import com.azure.core.test.TestMode;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -48,7 +72,7 @@ public class TaskTests extends BatchClientTestBase {
      * Test TypeSpec Shared model among GET-PUT Roundtrip operation
      * */
     @Test
-    public void testTaskUnifiedModel() throws Exception {
+    public void testTaskUnifiedModel() {
         String taskId = "task-canPut";
         String jobId = getStringIdWithUserNamePrefix("-SampleJob");
         try {
@@ -68,7 +92,8 @@ public class TaskTests extends BatchClientTestBase {
             //UPDATE
             Integer maxRetrycount = 5;
             Duration retentionPeriod = Duration.ofDays(5);
-            task.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
+            task.setConstraints(
+                new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
             batchClient.replaceTask(jobId, taskId, task);
 
             //GET After UPDATE
@@ -82,7 +107,7 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testJobUser() throws Exception {
+    public void testJobUser() {
         String jobId = getStringIdWithUserNamePrefix("-testJobUser");
         String taskId = "mytask";
 
@@ -112,7 +137,6 @@ public class TaskTests extends BatchClientTestBase {
             if (getTestMode() == TestMode.RECORD) {
                 Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
             }
-
 
         } finally {
             try {
@@ -165,7 +189,8 @@ public class TaskTests extends BatchClientTestBase {
             files.add(file);
 
             // CREATE
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", blobFileName)).setResourceFiles(files);
+            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId,
+                String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", blobFileName)).setResourceFiles(files);
             batchClient.createTask(jobId, taskToCreate);
 
             // GET
@@ -216,12 +241,16 @@ public class TaskTests extends BatchClientTestBase {
                     outputSas = redacted;
                 }
                 // UPLOAD LOG
-                UploadBatchServiceLogsContent logsContent = new UploadBatchServiceLogsContent(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.uploadNodeLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsContent);
+                UploadBatchServiceLogsContent logsContent
+                    = new UploadBatchServiceLogsContent(outputSas, OffsetDateTime.now().minusMinutes(-10));
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult
+                    = batchClient.uploadNodeLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsContent);
 
                 Assertions.assertNotNull(uploadBatchServiceLogsResult);
                 Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
-                Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
+                Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName()
+                    .toLowerCase()
+                    .contains(liveIaasPoolId.toLowerCase()));
             }
 
             // DELETE
@@ -249,7 +278,7 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testAddMultiTasks() throws Exception {
+    public void testAddMultiTasks() {
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -262,7 +291,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
+                    String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -271,12 +301,12 @@ public class TaskTests extends BatchClientTestBase {
 
             // LIST
             PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
-            Assert.assertNotNull(tasks);
+            Assertions.assertNotNull(tasks);
             int taskListCount = 0;
             for (BatchTask task : tasks) {
                 ++taskListCount;
             }
-            Assert.assertTrue(taskListCount == taskCount);
+            Assertions.assertEquals(taskListCount, taskCount);
         } finally {
             try {
                 batchClient.deleteJob(jobId);
@@ -287,13 +317,11 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testAddMultiTasksWithError() throws Exception {
+    public void testAddMultiTasksWithError() {
         String accessKey = Configuration.getGlobalConfiguration().get("AZURE_BATCH_ACCESS_KEY");
-        accessKey = (accessKey == null || accessKey.length() == 0) ? "RANDOM_KEY" : accessKey;
+        accessKey = (accessKey == null || accessKey.isEmpty()) ? "RANDOM_KEY" : accessKey;
 
-        AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential(
-            "noexistaccount", accessKey
-        );
+        AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential("noexistaccount", accessKey);
         batchClientBuilder.credential(noExistCredentials1);
 
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError");
@@ -303,14 +331,15 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
+                    String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
             option.setMaxDegreeOfParallelism(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
             // batchClient.createTaskCollection(jobId, new BatchTaskCollection(tasksToAdd));
-            Assert.assertTrue("Should not here", true);
+            Assertions.assertTrue(true, "Should not here");
         } catch (RuntimeException ex) {
             System.out.printf("Expect exception %s", ex.toString());
         }
@@ -320,7 +349,7 @@ public class TaskTests extends BatchClientTestBase {
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
-        Assume.assumeFalse("This Test only runs in Live/Record mode", getTestMode() == TestMode.PLAYBACK);
+        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge");
         String taskId = "mytask";
@@ -336,7 +365,9 @@ public class TaskTests extends BatchClientTestBase {
 
         // If this test fails try increasing the size of the Task in case maximum size increase
         for (int i = 0; i < 10000; i++) {
-            resourceFile = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i).setFilePath("resourceFile" + i);
+            resourceFile
+                = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
+                    .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         taskToAdd.setResourceFiles(resourceFiles);
@@ -349,30 +380,30 @@ public class TaskTests extends BatchClientTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.fail("Expected RequestBodyTooLarge error");
+            Assertions.fail("Expected RequestBodyTooLarge error");
         } catch (HttpResponseException err) {
             try {
                 batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.assertEquals(err.getResponse().getStatusCode(), 413);
+            Assertions.assertEquals(413, err.getResponse().getStatusCode());
         } catch (Exception err) {
             try {
                 batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.fail("Expected RequestBodyTooLarge error");
+            Assertions.fail("Expected RequestBodyTooLarge error");
         }
     }
 
     @Test
-    public void succeedWithRetry() throws Exception {
+    public void succeedWithRetry() {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
-        Assume.assumeFalse("This Test only runs in Live/Record mode", getTestMode() == TestMode.PLAYBACK);
+        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry");
         String taskId = "mytask";
@@ -391,7 +422,9 @@ public class TaskTests extends BatchClientTestBase {
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for (int i = 0; i < 100; i++) {
-            resourceFile = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i).setFilePath("resourceFile" + i);
+            resourceFile
+                = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
+                    .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         // Num tasks to add
@@ -414,12 +447,12 @@ public class TaskTests extends BatchClientTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.fail("Expected Success");
+            Assertions.fail("Expected Success");
         }
     }
 
     @Test
-    public void testGetTaskCounts() throws Exception {
+    public void testGetTaskCounts() {
         String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts");
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -434,16 +467,17 @@ public class TaskTests extends BatchClientTestBase {
 
             BatchTaskCounts counts = countResult.getTaskCounts();
             int all = counts.getActive() + counts.getCompleted() + counts.getRunning();
-            Assert.assertEquals(0, all);
+            Assertions.assertEquals(0, all);
 
             BatchTaskSlotCounts slotCounts = countResult.getTaskSlotCounts();
             int allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
-            Assert.assertEquals(0, allSlots);
+            Assertions.assertEquals(0, allSlots);
 
             // CREATE
             List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
+                    String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -451,18 +485,18 @@ public class TaskTests extends BatchClientTestBase {
             batchClient.createTasks(jobId, tasksToAdd, option);
 
             //The Waiting period is only needed in record mode.
-            threadSleepInRecordMode(30 * 1000);
+            sleepIfRunningAgainstService(30 * 1000);
 
             // Test Job count
             countResult = batchClient.getJobTaskCounts(jobId);
             counts = countResult.getTaskCounts();
             all = counts.getActive() + counts.getCompleted() + counts.getRunning();
-            Assert.assertEquals(taskCount, all);
+            Assertions.assertEquals(taskCount, all);
 
             slotCounts = countResult.getTaskSlotCounts();
             allSlots = slotCounts.getActive() + slotCounts.getCompleted() + slotCounts.getRunning();
             // One slot per task
-            Assert.assertEquals(taskCount, allSlots);
+            Assertions.assertEquals(taskCount, allSlots);
         } finally {
             try {
                 batchClient.deleteJob(jobId);
@@ -473,7 +507,7 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testOutputFiles() throws Exception {
+    public void testOutputFiles() {
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
         String jobId = getStringIdWithUserNamePrefix("-testOutputFiles");
         String taskId = "mytask";
@@ -497,18 +531,23 @@ public class TaskTests extends BatchClientTestBase {
         try {
             // CREATE
             List<OutputFile> outputs = new ArrayList<>();
-            OutputFileBlobContainerDestination fileBlobContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            OutputFileBlobContainerDestination fileBlobContainerDestination
+                = new OutputFileBlobContainerDestination(containerUrl);
             fileBlobContainerDestination.setPath("taskLogs/output.txt");
 
             OutputFileDestination fileDestination = new OutputFileDestination();
             fileDestination.setContainer(fileBlobContainerDestination);
 
-            outputs.add(new OutputFile("../stdout.txt", fileDestination, new OutputFileUploadConfig(OutputFileUploadCondition.TASK_COMPLETION)));
+            outputs.add(new OutputFile("../stdout.txt", fileDestination,
+                new OutputFileUploadConfig(OutputFileUploadCondition.TASK_COMPLETION)));
 
-            OutputFileBlobContainerDestination fileBlobErrContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            OutputFileBlobContainerDestination fileBlobErrContainerDestination
+                = new OutputFileBlobContainerDestination(containerUrl);
             fileBlobErrContainerDestination.setPath("taskLogs/err.txt");
 
-            outputs.add(new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination), new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
+            outputs.add(new OutputFile("../stderr.txt",
+                new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
+                new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
 
             BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "bash -c \"echo hello\"");
             taskToCreate.setOutputFiles(outputs);
@@ -517,36 +556,36 @@ public class TaskTests extends BatchClientTestBase {
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 BatchTask task = batchClient.getTask(jobId, taskId);
-                Assert.assertNotNull(task);
-                Assert.assertEquals(BatchTaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
-                Assert.assertNull(task.getExecutionInfo().getFailureInfo());
+                Assertions.assertNotNull(task);
+                Assertions.assertEquals(BatchTaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
+                Assertions.assertNull(task.getExecutionInfo().getFailureInfo());
 
                 if (getTestMode() == TestMode.RECORD) {
                     // Get the task command output file
                     String result = getContentFromContainer(containerClient, "taskLogs/output.txt");
-                    Assert.assertEquals("hello\n", result);
+                    Assertions.assertEquals("hello\n", result);
                 }
             }
 
-            taskToCreate = new BatchTaskCreateContent(badTaskId, "bash -c \"bad command\"")
-                .setOutputFiles(outputs);
+            taskToCreate = new BatchTaskCreateContent(badTaskId, "bash -c \"bad command\"").setOutputFiles(outputs);
 
             batchClient.createTask(jobId, taskToCreate);
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 BatchTask task = batchClient.getTask(jobId, badTaskId);
-                Assert.assertNotNull(task);
-                Assert.assertEquals(BatchTaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
-                Assert.assertNotNull(task.getExecutionInfo().getFailureInfo());
-                Assert.assertEquals(ErrorCategory.USER_ERROR.toString().toLowerCase(), task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
-                Assert.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
+                Assertions.assertNotNull(task);
+                Assertions.assertEquals(BatchTaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
+                Assertions.assertNotNull(task.getExecutionInfo().getFailureInfo());
+                Assertions.assertEquals(ErrorCategory.USER_ERROR.toString().toLowerCase(),
+                    task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
+                Assertions.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
 
                 //The Storage operations run only in Record mode.
                 // Playback mode is configured to test Batch operations only.
                 if (getTestMode() == TestMode.RECORD) {
                     // Get the task command output file
                     String result = getContentFromContainer(containerClient, "taskLogs/err.txt");
-                    Assert.assertEquals("bash: bad: command not found\n", result);
+                    Assertions.assertEquals("bash: bad: command not found\n", result);
                 }
             }
 
@@ -563,7 +602,7 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testCreateTasks() throws Exception {
+    public void testCreateTasks() {
         String jobId = getStringIdWithUserNamePrefix("-testCreateTasks");
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
@@ -596,4 +635,34 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
+    @Test
+    public void testDeserializationOfBatchTaskStatistics() {
+        // Simulated JSON response with numbers as strings
+        String jsonResponse = "{" + "\"url\":\"http://example.com/statistics\","
+            + "\"startTime\":\"2022-01-01T00:00:00Z\"," + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
+            + "\"userCPUTime\":\"PT1H\"," + "\"kernelCPUTime\":\"PT2H\"," + "\"wallClockTime\":\"PT3H\","
+            + "\"readIOps\":\"1000\"," + "\"writeIOps\":\"500\"," + "\"readIOGiB\":0.5," + "\"writeIOGiB\":0.25,"
+            + "\"waitTime\":\"PT30M\"" + "}";
+
+        // Deserialize JSON response using JsonReader from JsonProviders
+        try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {
+            BatchTaskStatistics stats = BatchTaskStatistics.fromJson(jsonReader);
+
+            // Assertions
+            Assertions.assertNotNull(stats);
+            Assertions.assertEquals("http://example.com/statistics", stats.getUrl());
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T00:00:00Z"), stats.getStartTime());
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T01:00:00Z"), stats.getLastUpdateTime());
+            Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
+            Assertions.assertEquals(Duration.parse("PT2H"), stats.getKernelCpuTime());
+            Assertions.assertEquals(Duration.parse("PT3H"), stats.getWallClockTime());
+            Assertions.assertEquals(1000, stats.getReadIOps());
+            Assertions.assertEquals(500, stats.getWriteIOps());
+            Assertions.assertEquals(0.5, stats.getReadIOGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
+            Assertions.assertEquals(Duration.parse("PT30M"), stats.getWaitTime());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

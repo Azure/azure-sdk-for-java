@@ -7,7 +7,9 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for update. */
+/**
+ * Properties for update.
+ */
 @Fluent
 public final class UpdateProperties {
     /*
@@ -16,13 +18,15 @@ public final class UpdateProperties {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of UpdateProperties class. */
+    /**
+     * Creates an instance of UpdateProperties class.
+     */
     public UpdateProperties() {
     }
 
     /**
      * Get the resourceId property: The resourceId.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -31,7 +35,7 @@ public final class UpdateProperties {
 
     /**
      * Set the resourceId property: The resourceId.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the UpdateProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

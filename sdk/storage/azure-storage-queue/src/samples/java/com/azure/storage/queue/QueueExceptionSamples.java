@@ -11,8 +11,6 @@ import com.azure.storage.queue.models.QueueStorageException;
 
 import java.time.Duration;
 
-import static com.azure.storage.queue.SampleHelper.generateRandomName;
-
 public class QueueExceptionSamples {
 
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
@@ -26,13 +24,13 @@ public class QueueExceptionSamples {
      */
     public static void main(String[] args) {
         // Create a queue service client.
-        String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, SAS_TOKEN);
+        String queueServiceURL = String.format("https://%s.queue.core.windows.net/?%s", ACCOUNT_NAME, SAS_TOKEN);
         QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
 
         // Create queue client.
         Response<QueueClient> queueClientResponse;
         try {
-            queueClientResponse = queueServiceClient.createQueueWithResponse(generateRandomName("delete-not-exist",
+            queueClientResponse = queueServiceClient.createQueueWithResponse(SampleHelper.generateRandomName("delete-not-exist",
                 16), null, Duration.ofSeconds(10), new Context("key1", "value1"));
             System.out.println("Successfully create the queue! Status code: " + queueClientResponse.getStatusCode());
         } catch (QueueStorageException e) {

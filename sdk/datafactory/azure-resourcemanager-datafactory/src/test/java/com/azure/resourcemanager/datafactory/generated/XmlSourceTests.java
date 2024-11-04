@@ -16,27 +16,27 @@ public final class XmlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XmlSource model = BinaryData.fromString(
-            "{\"type\":\"bijoehhqwwsgqzi\",\"storeSettings\":{\"type\":\"awectzjjgvcbtq\",\"maxConcurrentConnections\":\"datapnkyvujhejy\",\"disableMetricsCollection\":\"datavlguysbrn\",\"\":{\"jshtcfnb\":\"dataqhmuqyzxkormr\"}},\"formatSettings\":{\"type\":\"zuaxtbr\",\"compressionProperties\":{\"type\":\"hxpdqoehub\",\"\":{\"glynbqpeo\":\"datazxnuxamxikhrxi\",\"wtihtnywgtsodnx\":\"dataecbog\"}},\"validationMode\":\"datarjtwjimcfrhtz\",\"detectDataType\":\"datauvoaxqo\",\"namespaces\":\"datalp\",\"namespacePrefixes\":\"datapbzyqbggxcyra\",\"\":{\"wxslzqlgxxbnrur\":\"dataurxlp\",\"upckhfbmdemohlsh\":\"datanwbjjy\",\"mwaej\":\"dataaaoofltbsay\",\"gabsfjrjzdq\":\"datazkqcmddcftnxyrtq\"}},\"additionalColumns\":\"datagorvgdibepg\",\"sourceRetryCount\":\"dataoetwjssyazm\",\"sourceRetryWait\":\"dataux\",\"maxConcurrentConnections\":\"dataokckxfk\",\"disableMetricsCollection\":\"dataqkby\",\"\":{\"gxlyvebvxjguwts\":\"dataeawucmqfurbtb\",\"fzv\":\"dataijwiznb\",\"ljjawsaskullvt\":\"dataxtykjrdxlximvr\"}}")
+            "{\"type\":\"XmlSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datasljkaarqhpxwq\",\"disableMetricsCollection\":\"datasxgmgvygmtyw\",\"\":{\"rsxykw\":\"datauiteedjnklv\",\"dudj\":\"datahz\",\"qxpsnnn\":\"datat\",\"sdxylndbgaic\":\"datahgd\"}},\"formatSettings\":{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"mrxjdfkqlkaipf\":\"datafzkhdnp\",\"vakqaho\":\"datavquasvywkbiek\"}},\"validationMode\":\"datanapkpaied\",\"detectDataType\":\"datavoaoavezwclmzm\",\"namespaces\":\"datavlghlrcdiq\",\"namespacePrefixes\":\"datahcb\",\"\":{\"fjtockgqaawyysz\":\"datawif\",\"lwfqrfy\":\"dataoeql\"}},\"additionalColumns\":\"datazsipkhqhvktc\",\"sourceRetryCount\":\"datamqdkhoh\",\"sourceRetryWait\":\"datakgxemvlyapr\",\"maxConcurrentConnections\":\"databxxxqfrn\",\"disableMetricsCollection\":\"databhmxlpxf\",\"\":{\"vfapfbmrwh\":\"datagtoinozsmy\",\"pdd\":\"datanefcooptmd\",\"laxuybxjwny\":\"datagupiosibg\"}}")
             .toObject(XmlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XmlSource model = new XmlSource().withSourceRetryCount("dataoetwjssyazm")
-            .withSourceRetryWait("dataux")
-            .withMaxConcurrentConnections("dataokckxfk")
-            .withDisableMetricsCollection("dataqkby")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datapnkyvujhejy")
-                .withDisableMetricsCollection("datavlguysbrn")
-                .withAdditionalProperties(mapOf("type", "awectzjjgvcbtq")))
+        XmlSource model = new XmlSource().withSourceRetryCount("datamqdkhoh")
+            .withSourceRetryWait("datakgxemvlyapr")
+            .withMaxConcurrentConnections("databxxxqfrn")
+            .withDisableMetricsCollection("databhmxlpxf")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datasljkaarqhpxwq")
+                .withDisableMetricsCollection("datasxgmgvygmtyw")
+                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
             .withFormatSettings(new XmlReadSettings()
                 .withCompressionProperties(
-                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "hxpdqoehub")))
-                .withValidationMode("datarjtwjimcfrhtz")
-                .withDetectDataType("datauvoaxqo")
-                .withNamespaces("datalp")
-                .withNamespacePrefixes("datapbzyqbggxcyra"))
-            .withAdditionalColumns("datagorvgdibepg");
+                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
+                .withValidationMode("datanapkpaied")
+                .withDetectDataType("datavoaoavezwclmzm")
+                .withNamespaces("datavlghlrcdiq")
+                .withNamespacePrefixes("datahcb"))
+            .withAdditionalColumns("datazsipkhqhvktc");
         model = BinaryData.fromObject(model).toObject(XmlSource.class);
     }
 

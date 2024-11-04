@@ -20,16 +20,13 @@ public final class Restriction {
     private String type;
 
     /*
-     * The value of restrictions. If the restriction type is set to location, then this would be the different
-     * locations where the SKU is restricted.
+     * The value of restrictions. If the restriction type is set to location, then this would be the different locations where the SKU is restricted.
      */
     @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> values;
 
     /*
-     * The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId" is
-     * set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota.
-     * "NotAvailableForSubscription" is related to capacity at the datacenter.
+     * The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". "QuotaId" is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. "NotAvailableForSubscription" is related to capacity at the datacenter.
      */
     @JsonProperty(value = "reasonCode")
     private ReasonCode reasonCode;

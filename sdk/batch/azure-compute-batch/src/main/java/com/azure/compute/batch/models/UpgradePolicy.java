@@ -18,13 +18,17 @@ import java.io.IOException;
 public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
 
     /*
-     * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are automatically updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an optional pause time in between.
+     * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br
+     * /> **Manual** - You control the application of updates to virtual machines in the scale set. You do this by using
+     * the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are automatically
+     * updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an optional pause
+     * time in between.
      */
     @Generated
     private final UpgradeMode mode;
 
     /*
-     * The configuration parameters used while performing a rolling upgrade. This property is only supported on Pools with the virtualMachineConfiguration property.
+     * The configuration parameters used while performing a rolling upgrade.
      */
     @Generated
     private RollingUpgradePolicy rollingUpgradePolicy;
@@ -54,8 +58,7 @@ public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     }
 
     /**
-     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
-     * property is only supported on Pools with the virtualMachineConfiguration property.
+     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
      *
      * @return the rollingUpgradePolicy value.
      */
@@ -65,8 +68,7 @@ public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     }
 
     /**
-     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade. This
-     * property is only supported on Pools with the virtualMachineConfiguration property.
+     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
      *
      * @param rollingUpgradePolicy the rollingUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.
@@ -78,7 +80,8 @@ public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     }
 
     /*
-     * Configuration parameters used for performing automatic OS Upgrade. The configuration parameters used for performing automatic OS upgrade.
+     * Configuration parameters used for performing automatic OS Upgrade. The configuration parameters used for
+     * performing automatic OS upgrade.
      */
     @Generated
     private AutomaticOsUpgradePolicy automaticOsUpgradePolicy;

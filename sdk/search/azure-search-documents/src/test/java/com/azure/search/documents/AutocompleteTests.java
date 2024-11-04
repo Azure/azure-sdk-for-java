@@ -4,7 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -46,7 +46,7 @@ public class AutocompleteTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestBase.setupClass();
+        TestProxyTestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -72,11 +72,11 @@ public class AutocompleteTests extends SearchTestBase {
     public void canAutocompleteThrowsWhenGivenBadSuggesterNameSync() {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
-        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po",
-            "Invalid suggester", params, Context.NONE);
+        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results
+            = client.autocomplete("very po", "Invalid suggester", params, Context.NONE);
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> results.iterableByPage().iterator().next());
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> results.iterableByPage().iterator().next());
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 
@@ -109,8 +109,8 @@ public class AutocompleteTests extends SearchTestBase {
     @Test
     public void canAutocompleteOneTermWithContextSync() {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
-        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite",
-            "looking for very popular");
+        List<String> expectedQueryPlusText
+            = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
 
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
@@ -122,8 +122,8 @@ public class AutocompleteTests extends SearchTestBase {
     @Test
     public void canAutocompleteOneTermWithContextAsync() {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
-        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite",
-            "looking for very popular");
+        List<String> expectedQueryPlusText
+            = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
 
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
@@ -138,9 +138,8 @@ public class AutocompleteTests extends SearchTestBase {
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
         params.setSearchFields("HotelName");
 
-        Iterator<AutocompletePagedResponse> results = client.autocomplete("luxu", "sg", params, Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<AutocompletePagedResponse> results
+            = client.autocomplete("luxu", "sg", params, Context.NONE).iterableByPage().iterator();
 
         // One page, with 0 items
         assertEquals(0, results.next().getValue().size());
@@ -163,9 +162,8 @@ public class AutocompleteTests extends SearchTestBase {
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
-        Iterator<AutocompletePagedResponse> results = client.autocomplete("pi", "sg", params, Context.NONE)
-            .iterableByPage()
-            .iterator();
+        Iterator<AutocompletePagedResponse> results
+            = client.autocomplete("pi", "sg", params, Context.NONE).iterableByPage().iterator();
 
         // One page, with 0 items
         assertEquals(0, results.next().getValue().size());
@@ -203,12 +201,11 @@ public class AutocompleteTests extends SearchTestBase {
     @Test
     public void canAutocompleteStaticallyTypedDocumentsSync() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
-        List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool",
-            "very popular");
+        List<String> expectedQueryPlusText
+            = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setUseFuzzyMatching(false);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM).setUseFuzzyMatching(false);
 
         autocompleteAndValidateSync(client.autocomplete("very po", "sg", params, Context.NONE), expectedText,
             expectedQueryPlusText);
@@ -217,12 +214,11 @@ public class AutocompleteTests extends SearchTestBase {
     @Test
     public void canAutocompleteStaticallyTypedDocumentsAsync() {
         List<String> expectedText = Arrays.asList("point", "police", "polite", "pool", "popular");
-        List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool",
-            "very popular");
+        List<String> expectedQueryPlusText
+            = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setUseFuzzyMatching(false);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM).setUseFuzzyMatching(false);
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("very po", "sg", params), expectedText,
             expectedQueryPlusText);
@@ -232,37 +228,35 @@ public class AutocompleteTests extends SearchTestBase {
     public void canAutocompleteThrowsWhenRequestIsMalformedSync() {
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po", "");
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> results.iterableByPage().iterator().next());
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> results.iterableByPage().iterator().next());
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
     }
 
     @Test
     public void canAutocompleteThrowsWhenRequestIsMalformedAsync() {
-        StepVerifier.create(asyncClient.autocomplete("very po", ""))
-            .thenRequest(1)
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
-            });
+        StepVerifier.create(asyncClient.autocomplete("very po", "")).thenRequest(1).verifyErrorSatisfies(throwable -> {
+            HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
+        });
     }
 
     @Test
     public void canAutocompleteTwoTermsSync() {
-        List<String> expected = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
+        List<String> expected
+            = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.TWO_TERMS);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.TWO_TERMS);
 
         autocompleteAndValidateSync(client.autocomplete("po", "sg", params, Context.NONE), expected, expected);
     }
 
     @Test
     public void canAutocompleteTwoTermsAsync() {
-        List<String> expected = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
+        List<String> expected
+            = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.TWO_TERMS);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.TWO_TERMS);
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("po", "sg", params), expected, expected);
     }
@@ -272,8 +266,7 @@ public class AutocompleteTests extends SearchTestBase {
         List<String> expectedText = Arrays.asList("pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("HotelName eq 'EconoStay' or HotelName eq 'Fancy Stay'")
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>");
@@ -287,8 +280,7 @@ public class AutocompleteTests extends SearchTestBase {
         List<String> expectedText = Arrays.asList("pool", "popular");
         List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("HotelName eq 'EconoStay' or HotelName eq 'Fancy Stay'")
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>");
@@ -300,8 +292,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithMultipleSelectedFieldsSync() {
         List<String> expected = Arrays.asList("model", "modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setSearchFields("HotelName", "Description");
 
         autocompleteAndValidateSync(client.autocomplete("mod", "sg", params, Context.NONE), expected, expected);
@@ -311,8 +302,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithMultipleSelectedFieldsAsync() {
         List<String> expected = Arrays.asList("model", "modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setSearchFields("HotelName", "Description");
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("mod", "sg", params), expected, expected);
@@ -322,8 +312,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithSelectedFieldsSync() {
         List<String> expected = Collections.singletonList("modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setSearchFields("HotelName")
             .setFilter("HotelId eq '7'");
 
@@ -334,8 +323,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithSelectedFieldsAsync() {
         List<String> expected = Collections.singletonList("modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setSearchFields("HotelName")
             .setFilter("HotelId eq '7'");
 
@@ -346,9 +334,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteTopTrimsResultsSync() {
         List<String> expected = Arrays.asList("point", "police");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setTop(2);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM).setTop(2);
 
         autocompleteAndValidateSync(client.autocomplete("po", "sg", params, Context.NONE), expected, expected);
     }
@@ -357,9 +343,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteTopTrimsResultsAsync() {
         List<String> expected = Arrays.asList("point", "police");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setTop(2);
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM).setTop(2);
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("po", "sg", params), expected, expected);
     }
@@ -368,8 +352,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithFilterSync() {
         List<String> expected = Collections.singletonList("polite");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("search.in(HotelId, '6,7')");
 
         autocompleteAndValidateSync(client.autocomplete("po", "sg", params, Context.NONE), expected, expected);
@@ -379,8 +362,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithFilterAsync() {
         List<String> expected = Collections.singletonList("polite");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("search.in(HotelId, '6,7')");
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("po", "sg", params), expected, expected);
@@ -390,9 +372,9 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteOneTermWithContextWithFuzzySync() {
         List<String> expected = Collections.singletonList("very polite");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
-            .setUseFuzzyMatching(true);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
+                .setUseFuzzyMatching(true);
 
         autocompleteAndValidateSync(client.autocomplete("very polit", "sg", params, Context.NONE), expected, expected);
     }
@@ -401,9 +383,9 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteOneTermWithContextWithFuzzyAsync() {
         List<String> expected = Collections.singletonList("very polite");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
-            .setUseFuzzyMatching(true);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
+                .setUseFuzzyMatching(true);
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("very polit", "sg", params), expected, expected);
     }
@@ -412,9 +394,8 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteOneTermWithFuzzySync() {
         List<String> expected = Arrays.asList("model", "modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setUseFuzzyMatching(true);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM).setUseFuzzyMatching(true);
 
         autocompleteAndValidateSync(client.autocomplete("mod", "sg", params, Context.NONE), expected, expected);
     }
@@ -423,9 +404,8 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteOneTermWithFuzzyAsync() {
         List<String> expected = Arrays.asList("model", "modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setUseFuzzyMatching(true);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM).setUseFuzzyMatching(true);
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("mod", "sg", params), expected, expected);
     }
@@ -434,9 +414,8 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteTwoTermsWithFuzzySync() {
         List<String> expected = Arrays.asList("model suites", "modern architecture", "modern stay");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.TWO_TERMS)
-            .setUseFuzzyMatching(true);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.TWO_TERMS).setUseFuzzyMatching(true);
 
         autocompleteAndValidateSync(client.autocomplete("mod", "sg", params, Context.NONE), expected, expected);
     }
@@ -445,9 +424,8 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteTwoTermsWithFuzzyAsync() {
         List<String> expected = Arrays.asList("model suites", "modern architecture", "modern stay");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.TWO_TERMS)
-            .setUseFuzzyMatching(true);
+        AutocompleteOptions params
+            = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.TWO_TERMS).setUseFuzzyMatching(true);
 
         autocompleteAndValidateAsync(asyncClient.autocomplete("mod", "sg", params), expected, expected);
     }
@@ -456,8 +434,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithFilterAndFuzzySync() {
         List<String> expected = Collections.singletonList("modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
 
@@ -468,8 +445,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void testAutocompleteWithFilterAndFuzzyAsync() {
         List<String> expected = Collections.singletonList("modern");
 
-        AutocompleteOptions params = new AutocompleteOptions()
-            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
 

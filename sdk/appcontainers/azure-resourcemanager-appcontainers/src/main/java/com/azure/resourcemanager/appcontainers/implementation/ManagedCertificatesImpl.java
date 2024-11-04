@@ -51,8 +51,8 @@ public final class ManagedCertificatesImpl implements ManagedCertificates {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName,
         String managedCertificateName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, managedCertificateName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, environmentName, managedCertificateName, context);
     }
 
     public void delete(String resourceGroupName, String environmentName, String managedCertificateName) {

@@ -11,21 +11,21 @@ public final class CosmosDbSqlApiSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiSource model = BinaryData.fromString(
-            "{\"type\":\"mekmsn\",\"query\":\"datayrmwshrzm\",\"pageSize\":\"datacnn\",\"preferredRegions\":\"datajxvotidlwmewrgul\",\"detectDatetime\":\"datagpkunvygu\",\"additionalColumns\":\"datannvmguzqmx\",\"sourceRetryCount\":\"datajbefszfrxfywjy\",\"sourceRetryWait\":\"datacqmdeecdh\",\"maxConcurrentConnections\":\"datasiz\",\"disableMetricsCollection\":\"datappmykgr\",\"\":{\"qtfyuyg\":\"datamadhismwj\"}}")
+            "{\"type\":\"CosmosDbSqlApiSource\",\"query\":\"datamsptcesvvr\",\"pageSize\":\"databyfhzybjrxen\",\"preferredRegions\":\"dataxanlbrcydwrc\",\"detectDatetime\":\"dataanbw\",\"additionalColumns\":\"datalqioq\",\"sourceRetryCount\":\"dataxcg\",\"sourceRetryWait\":\"datazluilzgpghjakzmn\",\"maxConcurrentConnections\":\"datanqmajs\",\"disableMetricsCollection\":\"datamjlp\",\"\":{\"ojrwpoxuy\":\"datapfyup\",\"gtxwyqkkdumxdrg\":\"dataqyoyjptkyfrk\",\"ovfundk\":\"datamsioffyboon\",\"nugcbjxgjudg\":\"datadmyxmsbtqhh\"}}")
             .toObject(CosmosDbSqlApiSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSource model = new CosmosDbSqlApiSource().withSourceRetryCount("datajbefszfrxfywjy")
-            .withSourceRetryWait("datacqmdeecdh")
-            .withMaxConcurrentConnections("datasiz")
-            .withDisableMetricsCollection("datappmykgr")
-            .withQuery("datayrmwshrzm")
-            .withPageSize("datacnn")
-            .withPreferredRegions("datajxvotidlwmewrgul")
-            .withDetectDatetime("datagpkunvygu")
-            .withAdditionalColumns("datannvmguzqmx");
+        CosmosDbSqlApiSource model = new CosmosDbSqlApiSource().withSourceRetryCount("dataxcg")
+            .withSourceRetryWait("datazluilzgpghjakzmn")
+            .withMaxConcurrentConnections("datanqmajs")
+            .withDisableMetricsCollection("datamjlp")
+            .withQuery("datamsptcesvvr")
+            .withPageSize("databyfhzybjrxen")
+            .withPreferredRegions("dataxanlbrcydwrc")
+            .withDetectDatetime("dataanbw")
+            .withAdditionalColumns("datalqioq");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSource.class);
     }
 }

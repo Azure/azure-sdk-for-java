@@ -6,8 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,42 +18,35 @@ import java.util.Map;
  * Cosmos DB MongoDB collection resource object.
  */
 @Fluent
-public class MongoDBCollectionResource {
+public class MongoDBCollectionResource implements JsonSerializable<MongoDBCollectionResource> {
     /*
      * Name of the Cosmos DB MongoDB collection
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * A key-value pair of shard keys to be applied for the request.
      */
-    @JsonProperty(value = "shardKey")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> shardKey;
 
     /*
      * List of index keys
      */
-    @JsonProperty(value = "indexes")
     private List<MongoIndex> indexes;
 
     /*
      * Analytical TTL.
      */
-    @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
     /*
      * Parameters to indicate the information about the restore
      */
-    @JsonProperty(value = "restoreParameters")
     private ResourceRestoreParameters restoreParameters;
 
     /*
      * Enum to indicate the mode of resource creation.
      */
-    @JsonProperty(value = "createMode")
     private CreateMode createMode;
 
     /**
@@ -186,8 +182,8 @@ public class MongoDBCollectionResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
         }
         if (indexes() != null) {
             indexes().forEach(e -> e.validate());
@@ -198,4 +194,59 @@ public class MongoDBCollectionResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDBCollectionResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeMapField("shardKey", this.shardKey, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("indexes", this.indexes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("analyticalStorageTtl", this.analyticalStorageTtl);
+        jsonWriter.writeJsonField("restoreParameters", this.restoreParameters);
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDBCollectionResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDBCollectionResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDBCollectionResource.
+     */
+    public static MongoDBCollectionResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDBCollectionResource deserializedMongoDBCollectionResource = new MongoDBCollectionResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMongoDBCollectionResource.id = reader.getString();
+                } else if ("shardKey".equals(fieldName)) {
+                    Map<String, String> shardKey = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMongoDBCollectionResource.shardKey = shardKey;
+                } else if ("indexes".equals(fieldName)) {
+                    List<MongoIndex> indexes = reader.readArray(reader1 -> MongoIndex.fromJson(reader1));
+                    deserializedMongoDBCollectionResource.indexes = indexes;
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedMongoDBCollectionResource.analyticalStorageTtl = reader.getNullable(JsonReader::getInt);
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedMongoDBCollectionResource.restoreParameters
+                        = ResourceRestoreParameters.fromJson(reader);
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedMongoDBCollectionResource.createMode = CreateMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDBCollectionResource;
+        });
+    }
 }

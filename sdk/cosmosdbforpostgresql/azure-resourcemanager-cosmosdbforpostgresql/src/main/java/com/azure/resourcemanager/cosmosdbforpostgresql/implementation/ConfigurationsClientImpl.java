@@ -943,7 +943,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     private Mono<ServerConfigurationInner> updateOnCoordinatorAsync(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters, Context context) {
         return beginUpdateOnCoordinatorAsync(resourceGroupName, clusterName, configurationName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

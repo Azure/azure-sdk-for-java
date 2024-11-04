@@ -6,30 +6,36 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Entity representing the reference to the deployment parameters. */
+/**
+ * Entity representing the reference to the deployment parameters.
+ */
 @Fluent
-public final class ParametersLink {
+public final class ParametersLink implements JsonSerializable<ParametersLink> {
     /*
      * The URI of the parameters file.
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * If included, must match the ContentVersion in the template.
      */
-    @JsonProperty(value = "contentVersion")
     private String contentVersion;
 
-    /** Creates an instance of ParametersLink class. */
+    /**
+     * Creates an instance of ParametersLink class.
+     */
     public ParametersLink() {
     }
 
     /**
      * Get the uri property: The URI of the parameters file.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -38,7 +44,7 @@ public final class ParametersLink {
 
     /**
      * Set the uri property: The URI of the parameters file.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ParametersLink object itself.
      */
@@ -49,7 +55,7 @@ public final class ParametersLink {
 
     /**
      * Get the contentVersion property: If included, must match the ContentVersion in the template.
-     *
+     * 
      * @return the contentVersion value.
      */
     public String contentVersion() {
@@ -58,7 +64,7 @@ public final class ParametersLink {
 
     /**
      * Set the contentVersion property: If included, must match the ContentVersion in the template.
-     *
+     * 
      * @param contentVersion the contentVersion value to set.
      * @return the ParametersLink object itself.
      */
@@ -69,16 +75,55 @@ public final class ParametersLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model ParametersLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model ParametersLink"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ParametersLink.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("contentVersion", this.contentVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParametersLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParametersLink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ParametersLink.
+     */
+    public static ParametersLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParametersLink deserializedParametersLink = new ParametersLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uri".equals(fieldName)) {
+                    deserializedParametersLink.uri = reader.getString();
+                } else if ("contentVersion".equals(fieldName)) {
+                    deserializedParametersLink.contentVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParametersLink;
+        });
+    }
 }

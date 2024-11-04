@@ -6,21 +6,12 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.DownloadResponseInner;
-import org.junit.jupiter.api.Test;
 
 public final class DownloadResponseInnerTests {
-    @Test
-    public void testDeserialize() {
-        DownloadResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceList\":[{\"subscriptionId\":\"obpxjmflbvvn\",\"resourceGroup\":\"rkcciwwzjuqk\",\"resourceType\":\"sa\",\"resourceId\":\"wkuofoskghsauu\"},{\"subscriptionId\":\"jmvxie\",\"resourceGroup\":\"ugidyjrr\",\"resourceType\":\"y\",\"resourceId\":\"svexcsonpclhoco\"},{\"subscriptionId\":\"lkevle\",\"resourceGroup\":\"zfbuhf\",\"resourceType\":\"faxkffeii\",\"resourceId\":\"lvmezyvshxmzsbbz\"},{\"subscriptionId\":\"gigr\",\"resourceGroup\":\"burvjxxjnspy\",\"resourceType\":\"tko\",\"resourceId\":\"kouknvudwtiu\"}],\"complianceReport\":[{\"categoryName\":\"ngkpocipazy\",\"controlId\":\"egukgjnpiucg\",\"controlName\":\"evqzntypmrbp\",\"controlType\":\"FullyAutomated\",\"complianceState\":\"Healthy\",\"policyId\":\"j\",\"policyDisplayName\":\"pyd\",\"policyDescription\":\"yhxdeoejzicwi\",\"subscriptionId\":\"jttgzf\",\"resourceGroup\":\"shcbkhajdeyeamdp\",\"resourceType\":\"g\",\"resourceId\":\"pbuxwgipwhon\",\"statusChangeDate\":\"kgshwa\"},{\"categoryName\":\"ixzbinjeputtmryw\",\"controlId\":\"zoqftiyqzrnkcqvy\",\"controlName\":\"whzlsicohoq\",\"controlType\":\"Manual\",\"complianceState\":\"Healthy\",\"policyId\":\"yav\",\"policyDisplayName\":\"heun\",\"policyDescription\":\"qhgyxzkonocukok\",\"subscriptionId\":\"axuconuq\",\"resourceGroup\":\"fkbey\",\"resourceType\":\"wrmjmwvvjektc\",\"resourceId\":\"enhwlrs\",\"statusChangeDate\":\"rzpwvlqdqgbiq\"},{\"categoryName\":\"ihkaetcktvfc\",\"controlId\":\"fsnkymuctq\",\"controlName\":\"fbebrjcxer\",\"controlType\":\"PartiallyAutomated\",\"complianceState\":\"Unhealthy\",\"policyId\":\"txfvjrbirph\",\"policyDisplayName\":\"pcyvahfnljkyqx\",\"policyDescription\":\"uujqgidokgjljyo\",\"subscriptionId\":\"vcltbgsncgh\",\"resourceGroup\":\"esz\",\"resourceType\":\"bijhtxfvgxbf\",\"resourceId\":\"xnehmpvec\",\"statusChangeDate\":\"odebfqkkrbmpu\"}],\"compliancePdfReport\":{\"sasUri\":\"iw\"},\"complianceDetailedPdfReport\":{\"sasUri\":\"lfbxzpuzycisp\"}}")
-                .toObject(DownloadResponseInner.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        DownloadResponseInner model = new DownloadResponseInner();
-        model = BinaryData.fromObject(model).toObject(DownloadResponseInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DownloadResponseInner model = BinaryData.fromString(
+            "{\"resourceList\":[{\"subscriptionId\":\"dgszywkbirryuzh\",\"resourceGroup\":\"kj\",\"resourceType\":\"rvqqaatj\",\"resourceId\":\"rv\"},{\"subscriptionId\":\"upmfiibfg\",\"resourceGroup\":\"ioolvrwxkvtkkgll\",\"resourceType\":\"jygvjayvbl\",\"resourceId\":\"vkzuhbxvvyhgso\"},{\"subscriptionId\":\"yrqufegxuvwz\",\"resourceGroup\":\"nhlmctlpdng\",\"resourceType\":\"vgbmhr\",\"resourceId\":\"kw\"}],\"complianceReport\":[{\"categoryName\":\"ejvegrhbpnaixex\",\"controlFamilyName\":\"b\",\"controlId\":\"eaxhcexdrrvqahqk\",\"controlName\":\"tpwijnh\",\"controlStatus\":\"NotApplicable\",\"responsibilityTitle\":\"f\",\"responsibilityDescription\":\"xzb\",\"resourceId\":\"oowvrv\",\"resourceType\":\"gjqppy\",\"resourceOrigin\":\"Azure\",\"resourceStatus\":\"Healthy\",\"resourceStatusChangeDate\":\"2021-12-06T04:33:25Z\"},{\"categoryName\":\"yhgfipnsx\",\"controlFamilyName\":\"cwaekrrjre\",\"controlId\":\"xt\",\"controlName\":\"umh\",\"controlStatus\":\"Passed\",\"responsibilityTitle\":\"kkxwslol\",\"responsibilityDescription\":\"pvuzlmv\",\"resourceId\":\"lfktgplcrpwjxe\",\"resourceType\":\"oi\",\"resourceOrigin\":\"AWS\",\"resourceStatus\":\"Unhealthy\",\"resourceStatusChangeDate\":\"2021-03-28T01:41:30Z\"},{\"categoryName\":\"kpnb\",\"controlFamilyName\":\"zejjoqk\",\"controlId\":\"fhsxttaugz\",\"controlName\":\"faazpxdtnkdmkqjj\",\"controlStatus\":\"Failed\",\"responsibilityTitle\":\"nvrk\",\"responsibilityDescription\":\"ou\",\"resourceId\":\"bre\",\"resourceType\":\"aays\",\"resourceOrigin\":\"AWS\",\"resourceStatus\":\"Healthy\",\"resourceStatusChangeDate\":\"2021-12-05T00:29:49Z\"}],\"compliancePdfReport\":{\"sasUri\":\"tezlwff\"},\"complianceDetailedPdfReport\":{\"sasUri\":\"kpj\"}}")
+            .toObject(DownloadResponseInner.class);
     }
 }

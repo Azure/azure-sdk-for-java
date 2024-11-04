@@ -8,6 +8,9 @@ package com.azure.resourcemanager.deviceregistry.generated;
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2023-11-01-preview/List_Operations.json
+     */
     /**
      * Sample code: List_Operations.
      * 

@@ -7,50 +7,68 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
 import com.azure.resourcemanager.resources.models.OverrideModel;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
 import com.azure.resourcemanager.resources.models.ResourceSelector;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The policy assignment. */
+/**
+ * The policy assignment.
+ */
 @Fluent
 public final class PolicyAssignmentInner extends ProxyResource {
     /*
      * Properties for the policy assignment.
      */
-    @JsonProperty(value = "properties")
     private PolicyAssignmentProperties innerProperties;
 
     /*
      * The location of the policy assignment. Only required when utilizing managed identity.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The managed identity associated with the policy assignment.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PolicyAssignmentInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of PolicyAssignmentInner class.
+     */
     public PolicyAssignmentInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for the policy assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicyAssignmentProperties innerProperties() {
@@ -59,7 +77,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -68,7 +86,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @param location the location value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -79,7 +97,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -88,7 +106,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -99,7 +117,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -107,8 +125,38 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the displayName property: The display name of the policy assignment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -117,7 +165,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name of the policy assignment.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -131,7 +179,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -140,7 +188,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the policyDefinitionId property: The ID of the policy definition or policy set definition being assigned.
-     *
+     * 
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -154,7 +202,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the scope property: The scope for the policy assignment.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -163,7 +211,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the notScopes property: The policy's excluded scopes.
-     *
+     * 
      * @return the notScopes value.
      */
     public List<String> notScopes() {
@@ -172,7 +220,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the notScopes property: The policy's excluded scopes.
-     *
+     * 
      * @param notScopes the notScopes value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -186,7 +234,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterValuesValue> parameters() {
@@ -195,7 +243,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the parameters property: The parameter values for the assigned policy rule. The keys are the parameter names.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -209,7 +257,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the description property: This message will be part of response in case of policy violation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -218,7 +266,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the description property: This message will be part of response in case of policy violation.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -233,7 +281,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Get the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -243,7 +291,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Set the metadata property: The policy assignment metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -258,7 +306,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
      * DoNotEnforce.
-     *
+     * 
      * @return the enforcementMode value.
      */
     public EnforcementMode enforcementMode() {
@@ -268,7 +316,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
      * DoNotEnforce.
-     *
+     * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -283,7 +331,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Get the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
      * policy.
-     *
+     * 
      * @return the nonComplianceMessages value.
      */
     public List<NonComplianceMessage> nonComplianceMessages() {
@@ -293,7 +341,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
     /**
      * Set the nonComplianceMessages property: The messages that describe why a resource is non-compliant with the
      * policy.
-     *
+     * 
      * @param nonComplianceMessages the nonComplianceMessages value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -307,7 +355,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -316,7 +364,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -330,7 +378,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -339,7 +387,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentInner object itself.
      */
@@ -353,7 +401,7 @@ public final class PolicyAssignmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -363,5 +411,56 @@ public final class PolicyAssignmentInner extends ProxyResource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentInner.
+     */
+    public static PolicyAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentInner deserializedPolicyAssignmentInner = new PolicyAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.innerProperties = PolicyAssignmentProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.location = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.identity = Identity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPolicyAssignmentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentInner;
+        });
     }
 }

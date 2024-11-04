@@ -11,7 +11,7 @@ public final class AccessRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessRule model = BinaryData.fromString(
-            "{\"name\":\"rtwnawjslbi\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"yztsfmz\",\"baeqphc\",\"qnrnrpxehuwryk\",\"gaifmvik\"]}}")
+            "{\"name\":\"tcubiipuipwoqonm\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"izsh\",\"vcimpev\",\"gmblrri\"]}}")
             .toObject(AccessRule.class);
     }
 

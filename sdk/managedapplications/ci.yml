@@ -33,7 +33,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: managedapplications
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-managedapplications
         groupId: com.azure.resourcemanager

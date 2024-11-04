@@ -5,18 +5,34 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customs permissions required for the connector. */
+/**
+ * Customs permissions required for the connector.
+ */
 @Fluent
 public class Customs extends CustomsPermission {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of Customs class.
+     */
+    public Customs() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Customs withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Customs withDescription(String description) {
         super.withDescription(description);
@@ -25,11 +41,49 @@ public class Customs extends CustomsPermission {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Customs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Customs if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Customs.
+     */
+    public static Customs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Customs deserializedCustoms = new Customs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCustoms.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedCustoms.withDescription(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustoms;
+        });
     }
 }

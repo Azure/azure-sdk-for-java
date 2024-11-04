@@ -23,8 +23,8 @@ public interface NetworkStatus {
      * @return the Connectivity Status to the external resources on which the Api Management service depends from inside
      *     the Cloud Service along with {@link Response}.
      */
-    Response<List<NetworkStatusContractByLocation>> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<List<NetworkStatusContractByLocation>> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the Connectivity Status to the external resources on which the Api Management service depends from inside
@@ -55,8 +55,8 @@ public interface NetworkStatus {
      * @return the Connectivity Status to the external resources on which the Api Management service depends from inside
      *     the Cloud Service along with {@link Response}.
      */
-    Response<NetworkStatusContract> listByLocationWithResponse(
-        String resourceGroupName, String serviceName, String locationName, Context context);
+    Response<NetworkStatusContract> listByLocationWithResponse(String resourceGroupName, String serviceName,
+        String locationName, Context context);
 
     /**
      * Gets the Connectivity Status to the external resources on which the Api Management service depends from inside

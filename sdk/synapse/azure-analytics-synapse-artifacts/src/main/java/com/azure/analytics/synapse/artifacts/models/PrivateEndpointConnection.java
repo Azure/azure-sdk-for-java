@@ -5,31 +5,29 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A private endpoint connection.
  */
-@JsonFlatten
 @Fluent
 public class PrivateEndpointConnection extends ProxyResource {
     /*
      * The private endpoint which the connection belongs to.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
     private PrivateEndpoint privateEndpoint;
 
     /*
      * Connection state of the private endpoint connection.
      */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * Provisioning state of the private endpoint connection.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
@@ -86,5 +84,66 @@ public class PrivateEndpointConnection extends ProxyResource {
      */
     public String getProvisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (privateEndpoint != null || privateLinkServiceConnectionState != null || provisioningState != null) {
+            jsonWriter.writeStartObject("properties");
+            jsonWriter.writeJsonField("privateEndpoint", this.privateEndpoint);
+            jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnection.
+     */
+    public static PrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnection deserializedPrivateEndpointConnection = new PrivateEndpointConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateEndpointConnection.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnection.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateEndpointConnection.setType(reader.getString());
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("privateEndpoint".equals(fieldName)) {
+                            deserializedPrivateEndpointConnection.privateEndpoint = PrivateEndpoint.fromJson(reader);
+                        } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                            deserializedPrivateEndpointConnection.privateLinkServiceConnectionState
+                                = PrivateLinkServiceConnectionState.fromJson(reader);
+                        } else if ("provisioningState".equals(fieldName)) {
+                            deserializedPrivateEndpointConnection.provisioningState = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnection;
+        });
     }
 }

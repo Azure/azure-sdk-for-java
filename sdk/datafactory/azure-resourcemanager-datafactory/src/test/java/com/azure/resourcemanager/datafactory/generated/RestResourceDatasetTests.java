@@ -19,38 +19,36 @@ public final class RestResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"ypkcpwsrqnn\",\"typeProperties\":{\"relativeUrl\":\"datavwkryzgav\",\"requestMethod\":\"datandm\",\"requestBody\":\"dataiekkiskyyyaekn\",\"additionalHeaders\":{\"jiutfofhoajj\":\"datayshdawjlmlcufb\"},\"paginationRules\":{\"quyhbceev\":\"datayqyjnufzvl\",\"dssijuaxxf\":\"datagirrpwnqtvuxeuj\"}},\"description\":\"u\",\"structure\":\"datatl\",\"schema\":\"dataltjhb\",\"linkedServiceName\":{\"referenceName\":\"ycgqakcsihxvt\",\"parameters\":{\"pxpry\":\"datawf\",\"ahtqmmk\":\"datansbubwhzqqgugwlu\",\"qwebagm\":\"datahwq\",\"rgvypa\":\"datapkephujeucosvkke\"}},\"parameters\":{\"ezfpffbuqxkn\":{\"type\":\"SecureString\",\"defaultValue\":\"dataillgnu\"},\"bg\":{\"type\":\"Float\",\"defaultValue\":\"datag\"},\"zoksgqhb\":{\"type\":\"String\",\"defaultValue\":\"datajfchicpare\"}},\"annotations\":[\"datauxilozb\",\"datakcr\",\"datal\"],\"folder\":{\"name\":\"jw\"},\"\":{\"hfgmuxuqiagsko\":\"dataptsflotumbmwgft\"}}")
+            "{\"type\":\"RestResource\",\"typeProperties\":{\"relativeUrl\":\"databbfpxxa\",\"requestMethod\":\"dataoz\",\"requestBody\":\"datagsnuhwy\",\"additionalHeaders\":{\"axcebnbeosk\":\"dataf\",\"v\":\"datamqqerwqxpj\",\"zmhytebjkjgee\":\"datamdfkhttuobr\"},\"paginationRules\":{\"twofxfmhlvy\":\"datafmabvbmn\"}},\"description\":\"sl\",\"structure\":\"datarml\",\"schema\":\"dataiekhjgqq\",\"linkedServiceName\":{\"referenceName\":\"ugwespscvsmsp\",\"parameters\":{\"upcvq\":\"datawozfvza\",\"cgmlmpn\":\"dataxcvwioqhc\"}},\"parameters\":{\"hdqseyp\":{\"type\":\"Array\",\"defaultValue\":\"dataiarz\"}},\"annotations\":[\"dataajpuyx\",\"dataa\",\"datarmzgccynb\",\"datavmsiehedm\"],\"folder\":{\"name\":\"neeyrxparxtz\"},\"\":{\"lzdssi\":\"datawddigebls\",\"p\":\"datawveeozbjkj\",\"dyw\":\"datazdnuehxwltss\"}}")
             .toObject(RestResourceDataset.class);
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals("ycgqakcsihxvt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("ezfpffbuqxkn").type());
-        Assertions.assertEquals("jw", model.folder().name());
+        Assertions.assertEquals("sl", model.description());
+        Assertions.assertEquals("ugwespscvsmsp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("hdqseyp").type());
+        Assertions.assertEquals("neeyrxparxtz", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestResourceDataset model = new RestResourceDataset().withDescription("u")
-            .withStructure("datatl")
-            .withSchema("dataltjhb")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ycgqakcsihxvt")
-                .withParameters(mapOf("pxpry", "datawf", "ahtqmmk", "datansbubwhzqqgugwlu", "qwebagm", "datahwq",
-                    "rgvypa", "datapkephujeucosvkke")))
-            .withParameters(mapOf("ezfpffbuqxkn",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataillgnu"), "bg",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datag"), "zoksgqhb",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datajfchicpare")))
-            .withAnnotations(Arrays.asList("datauxilozb", "datakcr", "datal"))
-            .withFolder(new DatasetFolder().withName("jw"))
-            .withRelativeUrl("datavwkryzgav")
-            .withRequestMethod("datandm")
-            .withRequestBody("dataiekkiskyyyaekn")
-            .withAdditionalHeaders(mapOf("jiutfofhoajj", "datayshdawjlmlcufb"))
-            .withPaginationRules(mapOf("quyhbceev", "datayqyjnufzvl", "dssijuaxxf", "datagirrpwnqtvuxeuj"));
+        RestResourceDataset model = new RestResourceDataset().withDescription("sl")
+            .withStructure("datarml")
+            .withSchema("dataiekhjgqq")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ugwespscvsmsp")
+                .withParameters(mapOf("upcvq", "datawozfvza", "cgmlmpn", "dataxcvwioqhc")))
+            .withParameters(mapOf("hdqseyp",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataiarz")))
+            .withAnnotations(Arrays.asList("dataajpuyx", "dataa", "datarmzgccynb", "datavmsiehedm"))
+            .withFolder(new DatasetFolder().withName("neeyrxparxtz"))
+            .withRelativeUrl("databbfpxxa")
+            .withRequestMethod("dataoz")
+            .withRequestBody("datagsnuhwy")
+            .withAdditionalHeaders(
+                mapOf("axcebnbeosk", "dataf", "v", "datamqqerwqxpj", "zmhytebjkjgee", "datamdfkhttuobr"))
+            .withPaginationRules(mapOf("twofxfmhlvy", "datafmabvbmn"));
         model = BinaryData.fromObject(model).toObject(RestResourceDataset.class);
-        Assertions.assertEquals("u", model.description());
-        Assertions.assertEquals("ycgqakcsihxvt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("ezfpffbuqxkn").type());
-        Assertions.assertEquals("jw", model.folder().name());
+        Assertions.assertEquals("sl", model.description());
+        Assertions.assertEquals("ugwespscvsmsp", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("hdqseyp").type());
+        Assertions.assertEquals("neeyrxparxtz", model.folder().name());
     }
 
     // Use "Map.of" if available

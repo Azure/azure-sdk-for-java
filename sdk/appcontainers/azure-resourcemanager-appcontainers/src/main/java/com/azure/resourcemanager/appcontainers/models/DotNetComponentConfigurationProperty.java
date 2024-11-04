@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration properties for a .NET Component.
  */
 @Fluent
-public final class DotNetComponentConfigurationProperty {
+public final class DotNetComponentConfigurationProperty
+    implements JsonSerializable<DotNetComponentConfigurationProperty> {
     /*
      * The name of the property
      */
-    @JsonProperty(value = "propertyName")
     private String propertyName;
 
     /*
      * The value of the property
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -76,5 +79,45 @@ public final class DotNetComponentConfigurationProperty {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("propertyName", this.propertyName);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DotNetComponentConfigurationProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DotNetComponentConfigurationProperty if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DotNetComponentConfigurationProperty.
+     */
+    public static DotNetComponentConfigurationProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DotNetComponentConfigurationProperty deserializedDotNetComponentConfigurationProperty
+                = new DotNetComponentConfigurationProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyName".equals(fieldName)) {
+                    deserializedDotNetComponentConfigurationProperty.propertyName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedDotNetComponentConfigurationProperty.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDotNetComponentConfigurationProperty;
+        });
     }
 }

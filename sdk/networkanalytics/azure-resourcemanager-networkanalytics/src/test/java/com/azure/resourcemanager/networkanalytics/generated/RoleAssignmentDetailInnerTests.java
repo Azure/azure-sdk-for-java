@@ -27,10 +27,13 @@ public final class RoleAssignmentDetailInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleAssignmentDetailInner model
-            = new RoleAssignmentDetailInner().withRoleId("zdmohctbqvu").withPrincipalId("wxdndnvowgujjug")
-                .withUsername("dkcglhsl").withDataTypeScope(Arrays.asList("jdyggdtji")).withPrincipalType("hbkuofqwey")
-                .withRole(DataProductUserRole.SENSITIVE_READER).withRoleAssignmentId("menevfyexfwh");
+        RoleAssignmentDetailInner model = new RoleAssignmentDetailInner().withRoleId("zdmohctbqvu")
+            .withPrincipalId("wxdndnvowgujjug")
+            .withUsername("dkcglhsl")
+            .withDataTypeScope(Arrays.asList("jdyggdtji"))
+            .withPrincipalType("hbkuofqwey")
+            .withRole(DataProductUserRole.SENSITIVE_READER)
+            .withRoleAssignmentId("menevfyexfwh");
         model = BinaryData.fromObject(model).toObject(RoleAssignmentDetailInner.class);
         Assertions.assertEquals("zdmohctbqvu", model.roleId());
         Assertions.assertEquals("wxdndnvowgujjug", model.principalId());

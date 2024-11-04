@@ -27,27 +27,25 @@ public class GroupsTests extends GraphRbacManagementTest {
         ServicePrincipal servicePrincipal = null;
         ActiveDirectoryGroup group1 = null;
         ActiveDirectoryGroup group2 = null;
+
+        // Disable `$.appId` sanitizer for this test
+        interceptorManager.removeSanitizers("AZSDK3432");
         try {
-            user =
-                authorizationManager
-                    .users()
-                    .define(userName)
-                    .withEmailAlias(userName)
-                    .withPassword(password())
-                    .create();
-            servicePrincipal =
-                authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
+            user = authorizationManager.users()
+                .define(userName)
+                .withEmailAlias(userName)
+                .withPassword(password())
+                .create();
+            servicePrincipal = authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
             group1 = authorizationManager.groups().define(group1Name).withEmailAlias(group1Name).create();
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
-            group2 =
-                authorizationManager
-                    .groups()
-                    .define(group2Name)
-                    .withEmailAlias(group2Name)
-                    .withMember(user.id())
-                    .withMember(servicePrincipal.id())
-                    .withMember(group1.id())
-                    .create();
+            group2 = authorizationManager.groups()
+                .define(group2Name)
+                .withEmailAlias(group2Name)
+                .withMember(user.id())
+                .withMember(servicePrincipal.id())
+                .withMember(group1.id())
+                .create();
             Assertions.assertNotNull(group2);
             Assertions.assertNotNull(group2.id());
 
@@ -62,9 +60,9 @@ public class GroupsTests extends GraphRbacManagementTest {
                     try {
                         authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
                     } finally {
-                        authorizationManager.applications().deleteById(
-                            authorizationManager.applications().getByName(servicePrincipal.applicationId()).id()
-                        );
+                        authorizationManager.applications()
+                            .deleteById(
+                                authorizationManager.applications().getByName(servicePrincipal.applicationId()).id());
                     }
                 }
             } finally {

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RunCommandParameterDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,13 +22,11 @@ public final class RunCommandDocumentInner extends RunCommandDocumentBaseInner {
     /*
      * The script to be executed.
      */
-    @JsonProperty(value = "script", required = true)
     private List<String> script;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "parameters")
     private List<RunCommandParameterDefinition> parameters;
 
     /**
@@ -128,8 +129,8 @@ public final class RunCommandDocumentInner extends RunCommandDocumentBaseInner {
     public void validate() {
         super.validate();
         if (script() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property script in model RunCommandDocumentInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property script in model RunCommandDocumentInner"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
@@ -137,4 +138,62 @@ public final class RunCommandDocumentInner extends RunCommandDocumentBaseInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunCommandDocumentInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("$schema", schema());
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("osType", osType() == null ? null : osType().toString());
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("script", this.script, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandDocumentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandDocumentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunCommandDocumentInner.
+     */
+    public static RunCommandDocumentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandDocumentInner deserializedRunCommandDocumentInner = new RunCommandDocumentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("$schema".equals(fieldName)) {
+                    deserializedRunCommandDocumentInner.withSchema(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedRunCommandDocumentInner.withId(reader.getString());
+                } else if ("osType".equals(fieldName)) {
+                    deserializedRunCommandDocumentInner.withOsType(OperatingSystemTypes.fromString(reader.getString()));
+                } else if ("label".equals(fieldName)) {
+                    deserializedRunCommandDocumentInner.withLabel(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedRunCommandDocumentInner.withDescription(reader.getString());
+                } else if ("script".equals(fieldName)) {
+                    List<String> script = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRunCommandDocumentInner.script = script;
+                } else if ("parameters".equals(fieldName)) {
+                    List<RunCommandParameterDefinition> parameters
+                        = reader.readArray(reader1 -> RunCommandParameterDefinition.fromJson(reader1));
+                    deserializedRunCommandDocumentInner.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandDocumentInner;
+        });
+    }
 }

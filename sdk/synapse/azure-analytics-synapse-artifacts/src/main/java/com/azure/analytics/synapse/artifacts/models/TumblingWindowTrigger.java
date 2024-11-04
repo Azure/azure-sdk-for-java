@@ -5,84 +5,86 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Trigger that schedules pipeline runs for all fixed time interval windows from a start time without gaps and also
  * supports backfill scenarios (when start time is in the past).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("TumblingWindowTrigger")
-@JsonFlatten
 @Fluent
 public class TumblingWindowTrigger extends Trigger {
     /*
+     * Trigger type.
+     */
+    private String type = "TumblingWindowTrigger";
+
+    /*
      * Pipeline for which runs are created when an event is fired for trigger window that is ready.
      */
-    @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;
 
     /*
      * The frequency of the time windows.
      */
-    @JsonProperty(value = "typeProperties.frequency", required = true)
     private TumblingWindowFrequency frequency;
 
     /*
      * The interval of the time windows. The minimum interval allowed is 15 Minutes.
      */
-    @JsonProperty(value = "typeProperties.interval", required = true)
     private int interval;
 
     /*
-     * The start time for the time period for the trigger during which events are fired for windows that are ready.
-     * Only UTC time is currently supported.
+     * The start time for the time period for the trigger during which events are fired for windows that are ready. Only UTC time is currently supported.
      */
-    @JsonProperty(value = "typeProperties.startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * The end time for the time period for the trigger during which events are fired for windows that are ready. Only
-     * UTC time is currently supported.
+     * The end time for the time period for the trigger during which events are fired for windows that are ready. Only UTC time is currently supported.
      */
-    @JsonProperty(value = "typeProperties.endTime")
     private OffsetDateTime endTime;
 
     /*
-     * Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and
-     * end time. The default is 0. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "typeProperties.delay")
     private Object delay;
 
     /*
      * The max number of parallel time windows (ready for execution) for which a new run is triggered.
      */
-    @JsonProperty(value = "typeProperties.maxConcurrency", required = true)
     private int maxConcurrency;
 
     /*
      * Retry policy that will be applied for failed pipeline runs.
      */
-    @JsonProperty(value = "typeProperties.retryPolicy")
     private RetryPolicy retryPolicy;
 
     /*
      * Triggers that this trigger depends on. Only tumbling window triggers are supported.
      */
-    @JsonProperty(value = "typeProperties.dependsOn")
     private List<DependencyReference> dependsOn;
 
     /**
      * Creates an instance of TumblingWindowTrigger class.
      */
     public TumblingWindowTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -293,5 +295,108 @@ public class TumblingWindowTrigger extends Trigger {
     public TumblingWindowTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("pipeline", this.pipeline);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStartObject("typeProperties");
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeIntField("interval", this.interval);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeUntypedField("delay", this.delay);
+        jsonWriter.writeIntField("maxConcurrency", this.maxConcurrency);
+        jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
+        jsonWriter.writeArrayField("dependsOn", this.dependsOn, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeEndObject();
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TumblingWindowTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TumblingWindowTrigger if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TumblingWindowTrigger.
+     */
+    public static TumblingWindowTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TumblingWindowTrigger deserializedTumblingWindowTrigger = new TumblingWindowTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.setDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger
+                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedTumblingWindowTrigger.setAnnotations(annotations);
+                } else if ("pipeline".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.pipeline = TriggerPipelineReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("frequency".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.frequency
+                                = TumblingWindowFrequency.fromString(reader.getString());
+                        } else if ("interval".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.interval = reader.getInt();
+                        } else if ("startTime".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.startTime
+                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("endTime".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.endTime
+                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("delay".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.delay = reader.readUntyped();
+                        } else if ("maxConcurrency".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.maxConcurrency = reader.getInt();
+                        } else if ("retryPolicy".equals(fieldName)) {
+                            deserializedTumblingWindowTrigger.retryPolicy = RetryPolicy.fromJson(reader);
+                        } else if ("dependsOn".equals(fieldName)) {
+                            List<DependencyReference> dependsOn
+                                = reader.readArray(reader1 -> DependencyReference.fromJson(reader1));
+                            deserializedTumblingWindowTrigger.dependsOn = dependsOn;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTumblingWindowTrigger.setAdditionalProperties(additionalProperties);
+
+            return deserializedTumblingWindowTrigger;
+        });
     }
 }

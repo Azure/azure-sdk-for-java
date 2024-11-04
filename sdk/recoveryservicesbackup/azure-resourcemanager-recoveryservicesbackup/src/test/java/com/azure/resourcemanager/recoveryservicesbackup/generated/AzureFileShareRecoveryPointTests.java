@@ -29,7 +29,8 @@ public final class AzureFileShareRecoveryPointTests {
     public void testSerialize() throws Exception {
         AzureFileShareRecoveryPoint model = new AzureFileShareRecoveryPoint().withRecoveryPointType("h")
             .withRecoveryPointTime(OffsetDateTime.parse("2021-03-17T00:42:38Z"))
-            .withFileShareSnapshotUri("fdntwjchrdgoih").withRecoveryPointSizeInGB(1654736009)
+            .withFileShareSnapshotUri("fdntwjchrdgoih")
+            .withRecoveryPointSizeInGB(1654736009)
             .withRecoveryPointProperties(
                 new RecoveryPointProperties().withExpiryTime("ton").withRuleName("jl").withIsSoftDeleted(true));
         model = BinaryData.fromObject(model).toObject(AzureFileShareRecoveryPoint.class);

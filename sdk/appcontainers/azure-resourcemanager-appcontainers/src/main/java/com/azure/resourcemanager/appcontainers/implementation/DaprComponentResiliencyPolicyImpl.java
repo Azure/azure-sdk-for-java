@@ -69,16 +69,20 @@ public final class DaprComponentResiliencyPolicyImpl implements DaprComponentRes
     }
 
     public DaprComponentResiliencyPolicy create() {
-        this.innerObject
-            = serviceManager.serviceClient().getDaprComponentResiliencyPolicies().createOrUpdateWithResponse(
-                resourceGroupName, environmentName, componentName, name, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprComponentResiliencyPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, name, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponentResiliencyPolicy create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getDaprComponentResiliencyPolicies().createOrUpdateWithResponse(
-                resourceGroupName, environmentName, componentName, name, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprComponentResiliencyPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, name, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -94,16 +98,20 @@ public final class DaprComponentResiliencyPolicyImpl implements DaprComponentRes
     }
 
     public DaprComponentResiliencyPolicy apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getDaprComponentResiliencyPolicies().createOrUpdateWithResponse(
-                resourceGroupName, environmentName, componentName, name, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprComponentResiliencyPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, name, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponentResiliencyPolicy apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getDaprComponentResiliencyPolicies().createOrUpdateWithResponse(
-                resourceGroupName, environmentName, componentName, name, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprComponentResiliencyPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, name, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -118,14 +126,18 @@ public final class DaprComponentResiliencyPolicyImpl implements DaprComponentRes
     }
 
     public DaprComponentResiliencyPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient().getDaprComponentResiliencyPolicies()
-            .getWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprComponentResiliencyPolicies()
+            .getWithResponse(resourceGroupName, environmentName, componentName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponentResiliencyPolicy refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDaprComponentResiliencyPolicies()
-            .getWithResponse(resourceGroupName, environmentName, componentName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprComponentResiliencyPolicies()
+            .getWithResponse(resourceGroupName, environmentName, componentName, name, context)
+            .getValue();
         return this;
     }
 

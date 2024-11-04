@@ -15,6 +15,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -59,7 +60,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.22.0</version>
+  <version>12.25.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -551,7 +552,7 @@ When you interact with file using this Java client library, errors returned by t
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL

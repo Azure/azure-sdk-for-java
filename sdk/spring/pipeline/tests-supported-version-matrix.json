@@ -1,0 +1,11 @@
+{
+  "matrix": {
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json",
+    "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
+
+    ]
+  },
+  "displayNames": {
+    "true": "TestFromSource"
+  }
+}

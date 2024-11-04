@@ -16,20 +16,20 @@ public final class GlobalParameterResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalParameterResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"vjhvefgwbm\":{\"type\":\"Bool\",\"value\":\"dataoeoq\"}},\"name\":\"c\",\"type\":\"tasfaymxbulpzeal\",\"etag\":\"qkyojwyvf\",\"id\":\"btsuahxs\"}")
+            "{\"properties\":{\"b\":{\"type\":\"Int\",\"value\":\"dataetesypvidbztjhqt\"}},\"name\":\"nynkbwet\",\"type\":\"uhpsprkzyaupia\",\"etag\":\"xnafbw\",\"id\":\"oohtuovmaonurjtu\"}")
             .toObject(GlobalParameterResourceInner.class);
-        Assertions.assertEquals("btsuahxs", model.id());
-        Assertions.assertEquals(GlobalParameterType.BOOL, model.properties().get("vjhvefgwbm").type());
+        Assertions.assertEquals("oohtuovmaonurjtu", model.id());
+        Assertions.assertEquals(GlobalParameterType.INT, model.properties().get("b").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalParameterResourceInner model = new GlobalParameterResourceInner().withId("btsuahxs")
-            .withProperties(mapOf("vjhvefgwbm",
-                new GlobalParameterSpecification().withType(GlobalParameterType.BOOL).withValue("dataoeoq")));
+        GlobalParameterResourceInner model = new GlobalParameterResourceInner().withId("oohtuovmaonurjtu")
+            .withProperties(mapOf("b", new GlobalParameterSpecification().withType(GlobalParameterType.INT)
+                .withValue("dataetesypvidbztjhqt")));
         model = BinaryData.fromObject(model).toObject(GlobalParameterResourceInner.class);
-        Assertions.assertEquals("btsuahxs", model.id());
-        Assertions.assertEquals(GlobalParameterType.BOOL, model.properties().get("vjhvefgwbm").type());
+        Assertions.assertEquals("oohtuovmaonurjtu", model.id());
+        Assertions.assertEquals(GlobalParameterType.INT, model.properties().get("b").type());
     }
 
     // Use "Map.of" if available

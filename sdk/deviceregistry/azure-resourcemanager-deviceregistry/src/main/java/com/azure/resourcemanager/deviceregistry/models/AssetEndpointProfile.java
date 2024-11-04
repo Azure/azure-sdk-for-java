@@ -259,9 +259,9 @@ public interface AssetEndpointProfile {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The properties property..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties The properties property.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             Update withProperties(AssetEndpointProfileUpdateProperties properties);

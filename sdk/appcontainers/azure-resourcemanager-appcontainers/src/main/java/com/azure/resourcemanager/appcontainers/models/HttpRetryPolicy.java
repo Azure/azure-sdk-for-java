@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.fluent.models.HttpRetryPolicyMatches;
 import com.azure.resourcemanager.appcontainers.fluent.models.HttpRetryPolicyRetryBackOff;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Policy that defines http request retry conditions.
  */
 @Fluent
-public final class HttpRetryPolicy {
+public final class HttpRetryPolicy implements JsonSerializable<HttpRetryPolicy> {
     /*
      * Maximum number of times a request will retry
      */
-    @JsonProperty(value = "maxRetries")
     private Integer maxRetries;
 
     /*
      * Settings for retry backoff characteristics
      */
-    @JsonProperty(value = "retryBackOff")
     private HttpRetryPolicyRetryBackOff innerRetryBackOff;
 
     /*
      * Conditions that must be met for a request to be retried
      */
-    @JsonProperty(value = "matches")
     private HttpRetryPolicyMatches innerMatches;
 
     /**
@@ -204,5 +205,47 @@ public final class HttpRetryPolicy {
         if (innerMatches() != null) {
             innerMatches().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxRetries", this.maxRetries);
+        jsonWriter.writeJsonField("retryBackOff", this.innerRetryBackOff);
+        jsonWriter.writeJsonField("matches", this.innerMatches);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpRetryPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpRetryPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpRetryPolicy.
+     */
+    public static HttpRetryPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpRetryPolicy deserializedHttpRetryPolicy = new HttpRetryPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxRetries".equals(fieldName)) {
+                    deserializedHttpRetryPolicy.maxRetries = reader.getNullable(JsonReader::getInt);
+                } else if ("retryBackOff".equals(fieldName)) {
+                    deserializedHttpRetryPolicy.innerRetryBackOff = HttpRetryPolicyRetryBackOff.fromJson(reader);
+                } else if ("matches".equals(fieldName)) {
+                    deserializedHttpRetryPolicy.innerMatches = HttpRetryPolicyMatches.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpRetryPolicy;
+        });
     }
 }

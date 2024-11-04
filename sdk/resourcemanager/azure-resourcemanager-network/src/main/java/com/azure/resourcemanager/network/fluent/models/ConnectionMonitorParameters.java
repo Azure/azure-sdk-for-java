@@ -5,72 +5,67 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
 import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters that define the operation to create a connection monitor.
  */
 @Fluent
-public class ConnectionMonitorParameters {
+public class ConnectionMonitorParameters implements JsonSerializable<ConnectionMonitorParameters> {
     /*
      * Describes the source of connection monitor.
      */
-    @JsonProperty(value = "source")
     private ConnectionMonitorSource source;
 
     /*
      * Describes the destination of connection monitor.
      */
-    @JsonProperty(value = "destination")
     private ConnectionMonitorDestination destination;
 
     /*
      * Determines if the connection monitor will start automatically once created.
      */
-    @JsonProperty(value = "autoStart")
     private Boolean autoStart;
 
     /*
      * Monitoring interval in seconds.
      */
-    @JsonProperty(value = "monitoringIntervalInSeconds")
     private Integer monitoringIntervalInSeconds;
 
     /*
      * List of connection monitor endpoints.
      */
-    @JsonProperty(value = "endpoints")
     private List<ConnectionMonitorEndpoint> endpoints;
 
     /*
      * List of connection monitor test configurations.
      */
-    @JsonProperty(value = "testConfigurations")
     private List<ConnectionMonitorTestConfiguration> testConfigurations;
 
     /*
      * List of connection monitor test groups.
      */
-    @JsonProperty(value = "testGroups")
     private List<ConnectionMonitorTestGroup> testGroups;
 
     /*
      * List of connection monitor outputs.
      */
-    @JsonProperty(value = "outputs")
     private List<ConnectionMonitorOutput> outputs;
 
     /*
      * Optional notes to be associated with the connection monitor.
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
     /**
@@ -284,5 +279,75 @@ public class ConnectionMonitorParameters {
         if (outputs() != null) {
             outputs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("destination", this.destination);
+        jsonWriter.writeBooleanField("autoStart", this.autoStart);
+        jsonWriter.writeNumberField("monitoringIntervalInSeconds", this.monitoringIntervalInSeconds);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("testConfigurations", this.testConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("testGroups", this.testGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("notes", this.notes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorParameters.
+     */
+    public static ConnectionMonitorParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorParameters deserializedConnectionMonitorParameters = new ConnectionMonitorParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedConnectionMonitorParameters.source = ConnectionMonitorSource.fromJson(reader);
+                } else if ("destination".equals(fieldName)) {
+                    deserializedConnectionMonitorParameters.destination = ConnectionMonitorDestination.fromJson(reader);
+                } else if ("autoStart".equals(fieldName)) {
+                    deserializedConnectionMonitorParameters.autoStart = reader.getNullable(JsonReader::getBoolean);
+                } else if ("monitoringIntervalInSeconds".equals(fieldName)) {
+                    deserializedConnectionMonitorParameters.monitoringIntervalInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("endpoints".equals(fieldName)) {
+                    List<ConnectionMonitorEndpoint> endpoints
+                        = reader.readArray(reader1 -> ConnectionMonitorEndpoint.fromJson(reader1));
+                    deserializedConnectionMonitorParameters.endpoints = endpoints;
+                } else if ("testConfigurations".equals(fieldName)) {
+                    List<ConnectionMonitorTestConfiguration> testConfigurations
+                        = reader.readArray(reader1 -> ConnectionMonitorTestConfiguration.fromJson(reader1));
+                    deserializedConnectionMonitorParameters.testConfigurations = testConfigurations;
+                } else if ("testGroups".equals(fieldName)) {
+                    List<ConnectionMonitorTestGroup> testGroups
+                        = reader.readArray(reader1 -> ConnectionMonitorTestGroup.fromJson(reader1));
+                    deserializedConnectionMonitorParameters.testGroups = testGroups;
+                } else if ("outputs".equals(fieldName)) {
+                    List<ConnectionMonitorOutput> outputs
+                        = reader.readArray(reader1 -> ConnectionMonitorOutput.fromJson(reader1));
+                    deserializedConnectionMonitorParameters.outputs = outputs;
+                } else if ("notes".equals(fieldName)) {
+                    deserializedConnectionMonitorParameters.notes = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorParameters;
+        });
     }
 }

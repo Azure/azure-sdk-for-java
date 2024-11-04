@@ -5,26 +5,36 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Optimized way point object. */
+/**
+ * Optimized way point object.
+ */
 @Immutable
-public final class RouteOptimizedWaypoint {
+public final class RouteOptimizedWaypoint implements JsonSerializable<RouteOptimizedWaypoint> {
     /*
      * Way point index provided by the user.
      */
-    @JsonProperty(value = "providedIndex", access = JsonProperty.Access.WRITE_ONLY)
     private Integer providedIndex;
 
     /*
      * Optimized way point index from the system.
      */
-    @JsonProperty(value = "optimizedIndex", access = JsonProperty.Access.WRITE_ONLY)
     private Integer optimizedIndex;
 
     /**
+     * Creates an instance of RouteOptimizedWaypoint class.
+     */
+    public RouteOptimizedWaypoint() {
+    }
+
+    /**
      * Get the providedIndex property: Way point index provided by the user.
-     *
+     * 
      * @return the providedIndex value.
      */
     public Integer getProvidedIndex() {
@@ -33,10 +43,47 @@ public final class RouteOptimizedWaypoint {
 
     /**
      * Get the optimizedIndex property: Optimized way point index from the system.
-     *
+     * 
      * @return the optimizedIndex value.
      */
     public Integer getOptimizedIndex() {
         return this.optimizedIndex;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteOptimizedWaypoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteOptimizedWaypoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteOptimizedWaypoint.
+     */
+    public static RouteOptimizedWaypoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteOptimizedWaypoint deserializedRouteOptimizedWaypoint = new RouteOptimizedWaypoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providedIndex".equals(fieldName)) {
+                    deserializedRouteOptimizedWaypoint.providedIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("optimizedIndex".equals(fieldName)) {
+                    deserializedRouteOptimizedWaypoint.optimizedIndex = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteOptimizedWaypoint;
+        });
     }
 }

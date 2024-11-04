@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class DataNetworksGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/DataNetworkGet.
-     * json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/DataNetworkGet.json
      */
     /**
      * Sample code: Get data network.
@@ -19,7 +17,7 @@ public final class DataNetworksGetSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void getDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.dataNetworks().getWithResponse("rg1", "testMobileNetwork", "testDataNetwork",
-            com.azure.core.util.Context.NONE);
+        manager.dataNetworks()
+            .getWithResponse("rg1", "testMobileNetwork", "testDataNetwork", com.azure.core.util.Context.NONE);
     }
 }

@@ -13,30 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryPacksResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryPacksResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"lokjyemkk\",\"tags\":{\"ejspodmail\":\"pjoxzjnch\",\"yahux\":\"ydehoj\",\"vcputegj\":\"npmqnjaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"}")
-                .toObject(QueryPacksResource.class);
+        QueryPacksResource model = BinaryData.fromString(
+            "{\"location\":\"lokjyemkk\",\"tags\":{\"ejspodmail\":\"pjoxzjnch\",\"yahux\":\"ydehoj\",\"vcputegj\":\"npmqnjaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"}")
+            .toObject(QueryPacksResource.class);
         Assertions.assertEquals("lokjyemkk", model.location());
         Assertions.assertEquals("pjoxzjnch", model.tags().get("ejspodmail"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryPacksResource model =
-            new QueryPacksResource()
-                .withLocation("lokjyemkk")
-                .withTags(
-                    mapOf(
-                        "ejspodmail",
-                        "pjoxzjnch",
-                        "yahux",
-                        "ydehoj",
-                        "vcputegj",
-                        "npmqnjaqwixjspro",
-                        "uuvmkjozkrwfnd",
-                        "wmfdatscmdvpjhul"));
+        QueryPacksResource model = new QueryPacksResource().withLocation("lokjyemkk")
+            .withTags(mapOf("ejspodmail", "pjoxzjnch", "yahux", "ydehoj", "vcputegj", "npmqnjaqwixjspro",
+                "uuvmkjozkrwfnd", "wmfdatscmdvpjhul"));
         model = BinaryData.fromObject(model).toObject(QueryPacksResource.class);
         Assertions.assertEquals("lokjyemkk", model.location());
         Assertions.assertEquals("pjoxzjnch", model.tags().get("ejspodmail"));

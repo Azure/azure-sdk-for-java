@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackageInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * MsixPackageList
- *
- * <p>List of MSIX Package definitions.
+ * 
+ * List of MSIX Package definitions.
  */
 @Fluent
-public final class MsixPackageList {
+public final class MsixPackageList implements JsonSerializable<MsixPackageList> {
     /*
      * List of MSIX Package definitions.
      */
-    @JsonProperty(value = "value")
     private List<MsixPackageInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MsixPackageList class. */
+    /**
+     * Creates an instance of MsixPackageList class.
+     */
     public MsixPackageList() {
     }
 
     /**
      * Get the value property: List of MSIX Package definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<MsixPackageInner> value() {
@@ -43,7 +47,7 @@ public final class MsixPackageList {
 
     /**
      * Set the value property: List of MSIX Package definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the MsixPackageList object itself.
      */
@@ -54,7 +58,7 @@ public final class MsixPackageList {
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +67,51 @@ public final class MsixPackageList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsixPackageList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsixPackageList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MsixPackageList.
+     */
+    public static MsixPackageList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsixPackageList deserializedMsixPackageList = new MsixPackageList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MsixPackageInner> value = reader.readArray(reader1 -> MsixPackageInner.fromJson(reader1));
+                    deserializedMsixPackageList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedMsixPackageList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsixPackageList;
+        });
     }
 }

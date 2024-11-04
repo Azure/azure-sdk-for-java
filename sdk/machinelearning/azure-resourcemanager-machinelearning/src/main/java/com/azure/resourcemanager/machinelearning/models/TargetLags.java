@@ -5,32 +5,105 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The number of past periods to lag from the target column. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "mode",
-    defaultImpl = TargetLags.class)
-@JsonTypeName("TargetLags")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Auto", value = AutoTargetLags.class),
-    @JsonSubTypes.Type(name = "Custom", value = CustomTargetLags.class)
-})
+/**
+ * The number of past periods to lag from the target column.
+ */
 @Immutable
-public class TargetLags {
-    /** Creates an instance of TargetLags class. */
+public class TargetLags implements JsonSerializable<TargetLags> {
+    /*
+     * [Required] Set target lags mode - Auto/Custom
+     */
+    private TargetLagsMode mode = TargetLagsMode.fromString("TargetLags");
+
+    /**
+     * Creates an instance of TargetLags class.
+     */
     public TargetLags() {
     }
 
     /**
+     * Get the mode property: [Required] Set target lags mode - Auto/Custom.
+     * 
+     * @return the mode value.
+     */
+    public TargetLagsMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetLags from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetLags if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TargetLags.
+     */
+    public static TargetLags fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("mode".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Auto".equals(discriminatorValue)) {
+                    return AutoTargetLags.fromJson(readerToUse.reset());
+                } else if ("Custom".equals(discriminatorValue)) {
+                    return CustomTargetLags.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TargetLags fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetLags deserializedTargetLags = new TargetLags();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedTargetLags.mode = TargetLagsMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetLags;
+        });
     }
 }

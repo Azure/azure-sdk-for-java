@@ -5,13 +5,19 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appservice.models.ContentLink;
 import com.azure.resourcemanager.appservice.models.OperationResult;
 import com.azure.resourcemanager.appservice.models.RepetitionIndex;
 import com.azure.resourcemanager.appservice.models.RetryHistory;
 import com.azure.resourcemanager.appservice.models.RunActionCorrelation;
 import com.azure.resourcemanager.appservice.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -22,8 +28,37 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     /*
      * The repetition indexes.
      */
-    @JsonProperty(value = "repetitionIndexes")
     private List<RepetitionIndex> repetitionIndexes;
+
+    /*
+     * Gets the tracking id.
+     */
+    private String trackingId;
+
+    /*
+     * Gets the inputs.
+     */
+    private Object inputs;
+
+    /*
+     * Gets the link to inputs.
+     */
+    private ContentLink inputsLink;
+
+    /*
+     * Gets the outputs.
+     */
+    private Object outputs;
+
+    /*
+     * Gets the link to outputs.
+     */
+    private ContentLink outputsLink;
+
+    /*
+     * Gets the tracked properties.
+     */
+    private Object trackedProperties;
 
     /**
      * Creates an instance of WorkflowRunActionRepetitionProperties class.
@@ -49,6 +84,66 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
     public WorkflowRunActionRepetitionProperties withRepetitionIndexes(List<RepetitionIndex> repetitionIndexes) {
         this.repetitionIndexes = repetitionIndexes;
         return this;
+    }
+
+    /**
+     * Get the trackingId property: Gets the tracking id.
+     * 
+     * @return the trackingId value.
+     */
+    @Override
+    public String trackingId() {
+        return this.trackingId;
+    }
+
+    /**
+     * Get the inputs property: Gets the inputs.
+     * 
+     * @return the inputs value.
+     */
+    @Override
+    public Object inputs() {
+        return this.inputs;
+    }
+
+    /**
+     * Get the inputsLink property: Gets the link to inputs.
+     * 
+     * @return the inputsLink value.
+     */
+    @Override
+    public ContentLink inputsLink() {
+        return this.inputsLink;
+    }
+
+    /**
+     * Get the outputs property: Gets the outputs.
+     * 
+     * @return the outputs value.
+     */
+    @Override
+    public Object outputs() {
+        return this.outputs;
+    }
+
+    /**
+     * Get the outputsLink property: Gets the link to outputs.
+     * 
+     * @return the outputsLink value.
+     */
+    @Override
+    public ContentLink outputsLink() {
+        return this.outputsLink;
+    }
+
+    /**
+     * Get the trackedProperties property: Gets the tracked properties.
+     * 
+     * @return the trackedProperties value.
+     */
+    @Override
+    public Object trackedProperties() {
+        return this.trackedProperties;
     }
 
     /**
@@ -134,5 +229,89 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
         if (repetitionIndexes() != null) {
             repetitionIndexes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeJsonField("correlation", correlation());
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeStringField("code", code());
+        jsonWriter.writeUntypedField("error", error());
+        jsonWriter.writeArrayField("retryHistory", retryHistory(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("iterationCount", iterationCount());
+        jsonWriter.writeArrayField("repetitionIndexes", this.repetitionIndexes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunActionRepetitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunActionRepetitionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowRunActionRepetitionProperties.
+     */
+    public static WorkflowRunActionRepetitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunActionRepetitionProperties deserializedWorkflowRunActionRepetitionProperties
+                = new WorkflowRunActionRepetitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties
+                        .withCorrelation(RunActionCorrelation.fromJson(reader));
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties
+                        .withStatus(WorkflowStatus.fromString(reader.getString()));
+                } else if ("code".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.withCode(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.withError(reader.readUntyped());
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.trackingId = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.inputs = reader.readUntyped();
+                } else if ("inputsLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.inputsLink = ContentLink.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.outputs = reader.readUntyped();
+                } else if ("outputsLink".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.outputsLink = ContentLink.fromJson(reader);
+                } else if ("trackedProperties".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties.trackedProperties = reader.readUntyped();
+                } else if ("retryHistory".equals(fieldName)) {
+                    List<RetryHistory> retryHistory = reader.readArray(reader1 -> RetryHistory.fromJson(reader1));
+                    deserializedWorkflowRunActionRepetitionProperties.withRetryHistory(retryHistory);
+                } else if ("iterationCount".equals(fieldName)) {
+                    deserializedWorkflowRunActionRepetitionProperties
+                        .withIterationCount(reader.getNullable(JsonReader::getInt));
+                } else if ("repetitionIndexes".equals(fieldName)) {
+                    List<RepetitionIndex> repetitionIndexes
+                        = reader.readArray(reader1 -> RepetitionIndex.fromJson(reader1));
+                    deserializedWorkflowRunActionRepetitionProperties.repetitionIndexes = repetitionIndexes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunActionRepetitionProperties;
+        });
     }
 }

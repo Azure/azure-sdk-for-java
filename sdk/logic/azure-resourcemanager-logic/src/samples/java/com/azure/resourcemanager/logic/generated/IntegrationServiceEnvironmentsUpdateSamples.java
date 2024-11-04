@@ -10,33 +10,32 @@ import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuNa
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IntegrationServiceEnvironments Update. */
+/**
+ * Samples for IntegrationServiceEnvironments Update.
+ */
 public final class IntegrationServiceEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationServiceEnvironments_Patch.json
+     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/
+     * IntegrationServiceEnvironments_Patch.json
      */
     /**
      * Sample code: Patch an integration service environment.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void patchAnIntegrationServiceEnvironment(com.azure.resourcemanager.logic.LogicManager manager) {
-        IntegrationServiceEnvironment resource =
-            manager
-                .integrationServiceEnvironments()
-                .getByResourceGroupWithResponse(
-                    "testResourceGroup", "testIntegrationServiceEnvironment", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        IntegrationServiceEnvironment resource = manager.integrationServiceEnvironments()
+            .getByResourceGroupWithResponse("testResourceGroup", "testIntegrationServiceEnvironment",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag1", "value1"))
-            .withSku(
-                new IntegrationServiceEnvironmentSku()
-                    .withName(IntegrationServiceEnvironmentSkuName.DEVELOPER)
-                    .withCapacity(0))
+            .withSku(new IntegrationServiceEnvironmentSku().withName(IntegrationServiceEnvironmentSkuName.DEVELOPER)
+                .withCapacity(0))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

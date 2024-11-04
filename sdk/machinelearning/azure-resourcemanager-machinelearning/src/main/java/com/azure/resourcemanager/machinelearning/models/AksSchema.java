@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AksSchema model. */
+/**
+ * The AksSchema model.
+ */
 @Fluent
-public class AksSchema {
+public class AksSchema implements JsonSerializable<AksSchema> {
     /*
      * AKS properties
      */
-    @JsonProperty(value = "properties")
     private AksSchemaProperties properties;
 
-    /** Creates an instance of AksSchema class. */
+    /**
+     * Creates an instance of AksSchema class.
+     */
     public AksSchema() {
     }
 
     /**
      * Get the properties property: AKS properties.
-     *
+     * 
      * @return the properties value.
      */
     public AksSchemaProperties properties() {
@@ -31,7 +38,7 @@ public class AksSchema {
 
     /**
      * Set the properties property: AKS properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AksSchema object itself.
      */
@@ -42,12 +49,48 @@ public class AksSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AksSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AksSchema if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AksSchema.
+     */
+    public static AksSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AksSchema deserializedAksSchema = new AksSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAksSchema.properties = AksSchemaProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAksSchema;
+        });
     }
 }

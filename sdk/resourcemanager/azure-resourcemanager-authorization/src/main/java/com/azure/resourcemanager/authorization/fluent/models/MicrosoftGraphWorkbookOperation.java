@@ -5,46 +5,47 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookOperation. */
+/**
+ * workbookOperation.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity {
     /*
      * workbookOperationError
      */
-    @JsonProperty(value = "error")
     private MicrosoftGraphWorkbookOperationError error;
 
     /*
      * The resource URI for the result.
      */
-    @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
 
     /*
      * workbookOperationStatus
      */
-    @JsonProperty(value = "status")
     private MicrosoftGraphWorkbookOperationStatus status;
 
     /*
      * workbookOperation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookOperation class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookOperation class.
+     */
     public MicrosoftGraphWorkbookOperation() {
     }
 
     /**
      * Get the error property: workbookOperationError.
-     *
+     * 
      * @return the error value.
      */
     public MicrosoftGraphWorkbookOperationError error() {
@@ -53,7 +54,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Set the error property: workbookOperationError.
-     *
+     * 
      * @param error the error value to set.
      * @return the MicrosoftGraphWorkbookOperation object itself.
      */
@@ -64,7 +65,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Get the resourceLocation property: The resource URI for the result.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -73,7 +74,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Set the resourceLocation property: The resource URI for the result.
-     *
+     * 
      * @param resourceLocation the resourceLocation value to set.
      * @return the MicrosoftGraphWorkbookOperation object itself.
      */
@@ -84,7 +85,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Get the status property: workbookOperationStatus.
-     *
+     * 
      * @return the status value.
      */
     public MicrosoftGraphWorkbookOperationStatus status() {
@@ -93,7 +94,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Set the status property: workbookOperationStatus.
-     *
+     * 
      * @param status the status value to set.
      * @return the MicrosoftGraphWorkbookOperation object itself.
      */
@@ -104,17 +105,16 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Get the additionalProperties property: workbookOperation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookOperation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookOperation object itself.
      */
@@ -123,15 +123,9 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookOperation withId(String id) {
         super.withId(id);
@@ -140,7 +134,7 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -149,5 +143,64 @@ public final class MicrosoftGraphWorkbookOperation extends MicrosoftGraphEntity 
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookOperation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookOperation.
+     */
+    public static MicrosoftGraphWorkbookOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookOperation deserializedMicrosoftGraphWorkbookOperation
+                = new MicrosoftGraphWorkbookOperation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookOperation.withId(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookOperation.error
+                        = MicrosoftGraphWorkbookOperationError.fromJson(reader);
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookOperation.resourceLocation = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookOperation.status
+                        = MicrosoftGraphWorkbookOperationStatus.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookOperation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookOperation;
+        });
     }
 }

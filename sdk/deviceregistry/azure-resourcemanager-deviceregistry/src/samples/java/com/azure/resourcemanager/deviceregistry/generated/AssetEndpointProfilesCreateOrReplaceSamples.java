@@ -15,6 +15,9 @@ import java.util.Map;
  * Samples for AssetEndpointProfiles CreateOrReplace.
  */
 public final class AssetEndpointProfilesCreateOrReplaceSamples {
+    /*
+     * x-ms-original-file: 2023-11-01-preview/Create_AssetEndpointProfile.json
+     */
     /**
      * Sample code: Create_AssetEndpointProfile.
      * 

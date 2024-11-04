@@ -9,11 +9,13 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** An instance of this class provides access to all the operations defined in RegisteredIdentitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RegisteredIdentitiesClient.
+ */
 public interface RegisteredIdentitiesClient {
     /**
      * Unregisters the given container from your Recovery Services vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param identityName Name of the protection container to unregister.
@@ -28,7 +30,7 @@ public interface RegisteredIdentitiesClient {
 
     /**
      * Unregisters the given container from your Recovery Services vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param identityName Name of the protection container to unregister.

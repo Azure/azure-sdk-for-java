@@ -47,11 +47,25 @@ public interface HybridComputeManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the LicensesClient object to access its operations.
+     * 
+     * @return the LicensesClient object.
+     */
+    LicensesClient getLicenses();
+
+    /**
      * Gets the MachinesClient object to access its operations.
      * 
      * @return the MachinesClient object.
      */
     MachinesClient getMachines();
+
+    /**
+     * Gets the LicenseProfilesClient object to access its operations.
+     * 
+     * @return the LicenseProfilesClient object.
+     */
+    LicenseProfilesClient getLicenseProfiles();
 
     /**
      * Gets the MachineExtensionsClient object to access its operations.
@@ -89,13 +103,6 @@ public interface HybridComputeManagementClient {
     NetworkProfilesClient getNetworkProfiles();
 
     /**
-     * Gets the MachineRunCommandsClient object to access its operations.
-     * 
-     * @return the MachineRunCommandsClient object.
-     */
-    MachineRunCommandsClient getMachineRunCommands();
-
-    /**
      * Gets the PrivateLinkScopesClient object to access its operations.
      * 
      * @return the PrivateLinkScopesClient object.
@@ -115,4 +122,11 @@ public interface HybridComputeManagementClient {
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 }

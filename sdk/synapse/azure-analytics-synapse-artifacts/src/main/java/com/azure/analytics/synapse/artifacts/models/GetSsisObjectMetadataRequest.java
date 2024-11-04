@@ -5,17 +5,20 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The request payload of get SSIS object metadata.
  */
 @Fluent
-public final class GetSsisObjectMetadataRequest {
+public final class GetSsisObjectMetadataRequest implements JsonSerializable<GetSsisObjectMetadataRequest> {
     /*
      * Metadata path.
      */
-    @JsonProperty(value = "metadataPath")
     private String metadataPath;
 
     /**
@@ -42,5 +45,41 @@ public final class GetSsisObjectMetadataRequest {
     public GetSsisObjectMetadataRequest setMetadataPath(String metadataPath) {
         this.metadataPath = metadataPath;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metadataPath", this.metadataPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetSsisObjectMetadataRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetSsisObjectMetadataRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetSsisObjectMetadataRequest.
+     */
+    public static GetSsisObjectMetadataRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetSsisObjectMetadataRequest deserializedGetSsisObjectMetadataRequest = new GetSsisObjectMetadataRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadataPath".equals(fieldName)) {
+                    deserializedGetSsisObjectMetadataRequest.metadataPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetSsisObjectMetadataRequest;
+        });
     }
 }

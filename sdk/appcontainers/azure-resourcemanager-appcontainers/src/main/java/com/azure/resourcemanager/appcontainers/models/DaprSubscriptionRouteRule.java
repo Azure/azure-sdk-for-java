@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Dapr Pubsub Event Subscription Route Rule is used to specify the condition for sending a message to a specific path.
  */
 @Fluent
-public final class DaprSubscriptionRouteRule {
+public final class DaprSubscriptionRouteRule implements JsonSerializable<DaprSubscriptionRouteRule> {
     /*
      * The optional CEL expression used to match the event. If the match is not specified, then the route is considered
      * the default. The rules are tested in the order specified, so they should be define from most-to-least specific.
      * The default route should appear last in the list.
      */
-    @JsonProperty(value = "match")
     private String match;
 
     /*
      * The path for events that match this rule
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
@@ -82,5 +84,44 @@ public final class DaprSubscriptionRouteRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("match", this.match);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DaprSubscriptionRouteRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DaprSubscriptionRouteRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DaprSubscriptionRouteRule.
+     */
+    public static DaprSubscriptionRouteRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DaprSubscriptionRouteRule deserializedDaprSubscriptionRouteRule = new DaprSubscriptionRouteRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("match".equals(fieldName)) {
+                    deserializedDaprSubscriptionRouteRule.match = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedDaprSubscriptionRouteRule.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDaprSubscriptionRouteRule;
+        });
     }
 }

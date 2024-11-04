@@ -5,34 +5,35 @@ package com.azure.ai.vision.face.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VerifyFromLargePersonGroupRequest model.
  */
 @Immutable
-public final class VerifyFromLargePersonGroupRequest {
+public final class VerifyFromLargePersonGroupRequest implements JsonSerializable<VerifyFromLargePersonGroupRequest> {
 
     /*
      * The faceId of the face, come from "Detect".
      */
     @Generated
-    @JsonProperty(value = "faceId")
     private final String faceId;
 
     /*
-     * Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in "Create Large Person Group".
+     * Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created
+     * in "Create Large Person Group".
      */
     @Generated
-    @JsonProperty(value = "largePersonGroupId")
     private final String largePersonGroupId;
 
     /*
      * Specify a certain person in Large Person Group.
      */
     @Generated
-    @JsonProperty(value = "personId")
     private final String personId;
 
     /**
@@ -43,10 +44,7 @@ public final class VerifyFromLargePersonGroupRequest {
      * @param personId the personId value to set.
      */
     @Generated
-    @JsonCreator
-    public VerifyFromLargePersonGroupRequest(@JsonProperty(value = "faceId") String faceId,
-        @JsonProperty(value = "largePersonGroupId") String largePersonGroupId,
-        @JsonProperty(value = "personId") String personId) {
+    public VerifyFromLargePersonGroupRequest(String faceId, String largePersonGroupId, String personId) {
         this.faceId = faceId;
         this.largePersonGroupId = largePersonGroupId;
         this.personId = personId;
@@ -81,5 +79,50 @@ public final class VerifyFromLargePersonGroupRequest {
     @Generated
     public String getPersonId() {
         return this.personId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("faceId", this.faceId);
+        jsonWriter.writeStringField("largePersonGroupId", this.largePersonGroupId);
+        jsonWriter.writeStringField("personId", this.personId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VerifyFromLargePersonGroupRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VerifyFromLargePersonGroupRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VerifyFromLargePersonGroupRequest.
+     */
+    @Generated
+    public static VerifyFromLargePersonGroupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String faceId = null;
+            String largePersonGroupId = null;
+            String personId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceId".equals(fieldName)) {
+                    faceId = reader.getString();
+                } else if ("largePersonGroupId".equals(fieldName)) {
+                    largePersonGroupId = reader.getString();
+                } else if ("personId".equals(fieldName)) {
+                    personId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new VerifyFromLargePersonGroupRequest(faceId, largePersonGroupId, personId);
+        });
     }
 }

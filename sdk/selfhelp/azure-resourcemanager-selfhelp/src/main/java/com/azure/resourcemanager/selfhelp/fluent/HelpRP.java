@@ -12,13 +12,6 @@ import java.time.Duration;
  */
 public interface HelpRP {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
-     * 
-     * @return the subscriptionId value.
-     */
-    String getSubscriptionId();
-
-    /**
      * Gets server parameter.
      * 
      * @return the endpoint value.
@@ -103,16 +96,9 @@ public interface HelpRP {
     SolutionSelfHelpsClient getSolutionSelfHelps();
 
     /**
-     * Gets the DiscoverySolutionNlpTenantScopesClient object to access its operations.
+     * Gets the DiscoverySolutionNlpsClient object to access its operations.
      * 
-     * @return the DiscoverySolutionNlpTenantScopesClient object.
+     * @return the DiscoverySolutionNlpsClient object.
      */
-    DiscoverySolutionNlpTenantScopesClient getDiscoverySolutionNlpTenantScopes();
-
-    /**
-     * Gets the DiscoverySolutionNlpSubscriptionScopesClient object to access its operations.
-     * 
-     * @return the DiscoverySolutionNlpSubscriptionScopesClient object.
-     */
-    DiscoverySolutionNlpSubscriptionScopesClient getDiscoverySolutionNlpSubscriptionScopes();
+    DiscoverySolutionNlpsClient getDiscoverySolutionNlps();
 }

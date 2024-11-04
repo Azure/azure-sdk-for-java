@@ -21,8 +21,8 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the DelegationSettings.
      */
-    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
@@ -74,12 +74,8 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalDelegationSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalDelegationSettingsInner parameters, Context context);
 
     /**
      * Update Delegation settings.
@@ -108,12 +104,8 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delegation settings for a developer portal along with {@link Response}.
      */
-    Response<PortalDelegationSettings> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalDelegationSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalDelegationSettings> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Delegation settings.
@@ -126,8 +118,8 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delegation settings for a developer portal.
      */
-    PortalDelegationSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalDelegationSettingsInner parameters);
+    PortalDelegationSettings createOrUpdate(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters);
 
     /**
      * Gets the secret validation key of the DelegationSettings.
@@ -140,8 +132,8 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret validation key of the DelegationSettings along with {@link Response}.
      */
-    Response<PortalSettingValidationKeyContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalSettingValidationKeyContract> listSecretsWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the secret validation key of the DelegationSettings.

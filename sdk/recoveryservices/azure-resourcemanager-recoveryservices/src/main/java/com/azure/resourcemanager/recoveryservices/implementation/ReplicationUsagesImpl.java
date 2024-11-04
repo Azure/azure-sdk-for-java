@@ -19,8 +19,7 @@ public final class ReplicationUsagesImpl implements ReplicationUsages {
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public ReplicationUsagesImpl(
-        ReplicationUsagesClient innerClient,
+    public ReplicationUsagesImpl(ReplicationUsagesClient innerClient,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class ReplicationUsagesImpl implements ReplicationUsages {
 
     public PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName) {
         PagedIterable<ReplicationUsageInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName, Context context) {
         PagedIterable<ReplicationUsageInner> inner = this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
     }
 
     private ReplicationUsagesClient serviceClient() {

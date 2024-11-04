@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The parameters for updating a cache rule.
  */
 @Fluent
-public final class CacheRuleUpdateParameters {
+public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRuleUpdateParameters> {
     /*
      * The properties of the cache rule update parameters.
      */
-    @JsonProperty(value = "properties")
     private CacheRuleUpdateProperties innerProperties;
 
     /**
@@ -68,5 +71,41 @@ public final class CacheRuleUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheRuleUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheRuleUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheRuleUpdateParameters.
+     */
+    public static CacheRuleUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheRuleUpdateParameters deserializedCacheRuleUpdateParameters = new CacheRuleUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCacheRuleUpdateParameters.innerProperties = CacheRuleUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheRuleUpdateParameters;
+        });
     }
 }

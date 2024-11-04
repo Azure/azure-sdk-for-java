@@ -14,7 +14,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
 import java.util.Set;
 
-
 /**
  * Parameters when calling readToFile() on {@link DataLakeFileClient}
  */

@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
@@ -11,6 +12,7 @@ import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosContainerI
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
+import com.azure.cosmos.spark.CosmosConfig.{getClientBuilderInterceptor, getClientInterceptor, getRetryCommitInterceptor}
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNullOrEmpty, requireNotNullOrEmpty}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
@@ -34,15 +36,12 @@ import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, List, Map}
 import scala.collection.mutable
 
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
-
 // scalastyle:off multiple.string.literals
 // scalastyle:off file.size.limit
 // scalastyle:off number.of.types
 
 private[spark] object CosmosConfigNames {
+  val AccountDataResolverServiceName = "spark.cosmos.accountDataResolverServiceName"
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
   val AccountKey = "spark.cosmos.accountKey"
   val SubscriptionId = "spark.cosmos.account.subscriptionId"
@@ -53,6 +52,8 @@ private[spark] object CosmosConfigNames {
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
+  val ClientCertPemBase64 = "spark.cosmos.auth.aad.clientCertPemBase64"
+  val ClientCertSendChain = "spark.cosmos.auth.aad.clientCertSendChain"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -98,6 +99,9 @@ private[spark] object CosmosConfigNames {
   val WriteBulkUpdateColumnConfigs = "spark.cosmos.write.bulkUpdate.columnConfigs"
   val WriteStrategy = "spark.cosmos.write.strategy"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
+  val WriteFlushCloseIntervalInSeconds = "spark.cosmos.write.flush.intervalInSeconds"
+  val WriteMaxNoProgressIntervalInSeconds = "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds"
+  val WriteMaxRetryNoProgressIntervalInSeconds = "spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds"
   val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
   val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
@@ -129,6 +133,9 @@ private[spark] object CosmosConfigNames {
   val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
   val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
   val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
+  val ClientBuilderInterceptors = "spark.cosmos.account.clientBuilderInterceptors"
+  val ClientInterceptors = "spark.cosmos.account.clientInterceptors"
+  val WriteOnRetryCommitInterceptor = "spark.cosmos.write.onRetryCommitInterceptor"
 
   // Only meant to be used when throughput control is configured without using dedicated containers
   // Then in this case, we are going to allocate the throughput budget equally across all executors
@@ -137,6 +144,7 @@ private[spark] object CosmosConfigNames {
   private val cosmosPrefix = "spark.cosmos."
 
   private val validConfigNames: Set[String] = HashSet[String](
+    AccountDataResolverServiceName,
     AccountEndpoint,
     AccountKey,
     AuthType,
@@ -146,6 +154,8 @@ private[spark] object CosmosConfigNames {
     ResourceGroupName,
     ClientId,
     ClientSecret,
+    ClientCertPemBase64,
+    ClientCertSendChain,
     AzureEnvironment,
     Database,
     Container,
@@ -217,7 +227,13 @@ private[spark] object CosmosConfigNames {
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
     MetricsIntervalInSeconds,
-    MetricsAzureMonitorConnectionString
+    MetricsAzureMonitorConnectionString,
+    ClientBuilderInterceptors,
+    ClientInterceptors,
+    WriteOnRetryCommitInterceptor,
+    WriteFlushCloseIntervalInSeconds,
+    WriteMaxNoProgressIntervalInSeconds,
+    WriteMaxRetryNoProgressIntervalInSeconds
   )
 
   def validateConfigName(name: String): Unit = {
@@ -225,7 +241,7 @@ private[spark] object CosmosConfigNames {
       name.length > cosmosPrefix.length &&
       cosmosPrefix.equalsIgnoreCase(name.substring(0, cosmosPrefix.length))) {
 
-      if (validConfigNames.find(n => name.equalsIgnoreCase(n)).isEmpty) {
+      if (!validConfigNames.exists(n => name.equalsIgnoreCase(n))) {
         throw new IllegalArgumentException(
           s"The config property '$name' is invalid. No config setting with this name exists.")
       }
@@ -234,19 +250,119 @@ private[spark] object CosmosConfigNames {
 }
 
 private object CosmosConfig  extends BasicLoggingTrait {
-  lazy val accountDataResolverCls = getAccountDataResolver
-  def getAccountDataResolver(): Option[AccountDataResolver] = {
-    logInfo("Checking for account resolvers")
+
+  private val accountDataResolvers: TrieMap[Option[String], Option[AccountDataResolver]] =
+    new TrieMap[Option[String], Option[AccountDataResolver]]()
+
+  private val retryCommitInterceptors: TrieMap[String, Option[WriteOnRetryCommitInterceptor]] =
+    new TrieMap[String, Option[WriteOnRetryCommitInterceptor]]()
+
+  private val clientBuilderInterceptors: TrieMap[Option[String], Option[CosmosClientBuilderInterceptor]] =
+    new TrieMap[Option[String], Option[CosmosClientBuilderInterceptor]]()
+
+  private val clientInterceptors: TrieMap[Option[String], Option[CosmosClientInterceptor]] =
+    new TrieMap[Option[String], Option[CosmosClientInterceptor]]()
+
+  def getAccountDataResolver(accountDataResolverServiceName : Option[String]): Option[AccountDataResolver] = {
+     accountDataResolvers.getOrElseUpdate(
+      accountDataResolverServiceName,
+       getAccountDataResolverImpl(accountDataResolverServiceName))
+  }
+
+  private def getAccountDataResolverImpl(accountDataResolverServiceName : Option[String]): Option[AccountDataResolver] = {
+    logInfo(s"Checking for account resolvers - requested service name '${accountDataResolverServiceName.getOrElse("n/a")}'")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()
-    if (iterator.hasNext()) {
+    while (accountDataResolverCls.isEmpty && iterator.hasNext()) {
       val resolver = iterator.next()
-      logInfo(s"Found account resolver ${resolver.getClass.getName}")
-      accountDataResolverCls = Some(resolver)
+      if (accountDataResolverServiceName.isEmpty
+        || accountDataResolverServiceName.get.equalsIgnoreCase(resolver.getClass.getName)) {
+        logInfo(s"Found account resolver ${resolver.getClass.getName}")
+        accountDataResolverCls = Some(resolver)
+      } else {
+        logInfo(
+          s"Ignoring account resolver ${resolver.getClass.getName} because name is different " +
+            s"than requested ${accountDataResolverServiceName.get}")
+      }
     }
 
     accountDataResolverCls
+  }
+
+  def getClientBuilderInterceptor(serviceName: Option[String]): Option[CosmosClientBuilderInterceptor] = {
+    clientBuilderInterceptors.getOrElseUpdate(serviceName, getClientBuilderInterceptorImpl(serviceName))
+  }
+
+  private def getClientBuilderInterceptorImpl(serviceName: Option[String]): Option[CosmosClientBuilderInterceptor] = {
+    logInfo(s"Checking for client builder interceptors - requested service name '${serviceName.getOrElse("n/a")}'")
+    var cls = None: Option[CosmosClientBuilderInterceptor]
+    val serviceLoader = ServiceLoader.load(classOf[CosmosClientBuilderInterceptor])
+    val iterator = serviceLoader.iterator()
+    while (cls.isEmpty && iterator.hasNext()) {
+      val resolver = iterator.next()
+      if (serviceName.isEmpty || serviceName.get.equalsIgnoreCase(resolver.getClass.getName)) {
+        logInfo(s"Found client builder interceptor ${resolver.getClass.getName}")
+        cls = Some(resolver)
+      } else {
+        logInfo(
+          s"Ignoring client builder interceptor ${resolver.getClass.getName} because name is different " +
+            s"than requested ${serviceName.get}")
+      }
+    }
+
+    cls
+  }
+
+  def getClientInterceptor(serviceName: Option[String]): Option[CosmosClientInterceptor] = {
+    clientInterceptors.getOrElseUpdate(serviceName, getClientInterceptorImpl(serviceName))
+  }
+
+  private def getClientInterceptorImpl(serviceName: Option[String]): Option[CosmosClientInterceptor] = {
+    logInfo(s"Checking for client interceptors - requested service name '${serviceName.getOrElse("n/a")}'")
+    var cls = None: Option[CosmosClientInterceptor]
+    val serviceLoader = ServiceLoader.load(classOf[CosmosClientInterceptor])
+    val iterator = serviceLoader.iterator()
+    while (cls.isEmpty && iterator.hasNext()) {
+      val resolver = iterator.next()
+      if (serviceName.isEmpty || serviceName.get.equalsIgnoreCase(resolver.getClass.getName)) {
+        logInfo(s"Found client interceptor ${resolver.getClass.getName}")
+        cls = Some(resolver)
+      } else {
+        logInfo(
+          s"Ignoring client interceptor ${resolver.getClass.getName} because name is different " +
+            s"than requested ${serviceName.get}")
+      }
+    }
+
+    cls
+  }
+
+  def getRetryCommitInterceptor(serviceName: String): Option[WriteOnRetryCommitInterceptor] = {
+    retryCommitInterceptors.getOrElseUpdate(
+      serviceName,
+      getRetryCommitInterceptorImpl(serviceName))
+  }
+
+  private def getRetryCommitInterceptorImpl(serviceName: String): Option[WriteOnRetryCommitInterceptor] = {
+    logInfo(
+      s"Checking for WriteOnRetryCommitInterceptor - requested service name '$serviceName'")
+    var cls = None: Option[WriteOnRetryCommitInterceptor]
+    val serviceLoader = ServiceLoader.load(classOf[WriteOnRetryCommitInterceptor])
+    val iterator = serviceLoader.iterator()
+    while (cls.isEmpty && iterator.hasNext()) {
+      val resolver = iterator.next()
+      if (serviceName.equalsIgnoreCase(resolver.getClass.getName)) {
+        logInfo(s"Found WriteOnRetryCommitInterceptor ${resolver.getClass.getName}")
+        cls = Some(resolver)
+      } else {
+        logInfo(
+          s"Ignoring WriteOnRetryCommitInterceptor ${resolver.getClass.getName} because name is different " +
+            s"than requested $serviceName")
+      }
+    }
+
+    cls
   }
 
   def getEffectiveConfig
@@ -259,6 +375,15 @@ private object CosmosConfig  extends BasicLoggingTrait {
     executorCount: Option[Int] // total executor count
   ) : Map[String, String] = {
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
+    val mergedConfig = sparkConf match {
+      case Some(sparkConfig) =>
+        val conf = sparkConfig.clone()
+        conf.setAll(effectiveUserConfig.toMap).getAll.toMap
+      case None => effectiveUserConfig.toMap
+    }
+
+    val accountDataResolverServiceName : Option[String] = mergedConfig.get(CosmosConfigNames.AccountDataResolverServiceName)
+    val accountDataResolverCls = getAccountDataResolver(accountDataResolverServiceName)
     if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
         effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
@@ -277,14 +402,13 @@ private object CosmosConfig  extends BasicLoggingTrait {
     }
 
     val returnValue = sparkConf match {
-      case Some(sparkConfig) => {
+      case Some(sparkConfig) =>
         val conf = sparkConfig.clone()
         conf.setAll(effectiveUserConfig.toMap).getAll.toMap
-      }
       case None => effectiveUserConfig.toMap
     }
 
-    returnValue.foreach((configProperty) => CosmosConfigNames.validateConfigName(configProperty._1))
+    returnValue.foreach(configProperty => CosmosConfigNames.validateConfigName(configProperty._1))
 
     returnValue
   }
@@ -310,7 +434,7 @@ private object CosmosConfig  extends BasicLoggingTrait {
       Some(executorCount)) // user provided config
   }
 
-  def getExecutorCount(sparkSession: SparkSession): Int = {
+  private def getExecutorCount(sparkSession: SparkSession): Int = {
       val sparkContext = sparkSession.sparkContext
       // The getExecutorInfos will return information for both the driver and executors
       // We only want the total executor count
@@ -349,9 +473,12 @@ private case class CosmosAccountConfig(endpoint: String,
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironmentEndpoints: java.util.Map[String, String])
+                                       azureEnvironmentEndpoints: java.util.Map[String, String],
+                                       clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                      )
 
-private object CosmosAccountConfig {
+private object CosmosAccountConfig extends BasicLoggingTrait {
   private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
 
   private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
@@ -400,7 +527,7 @@ private object CosmosAccountConfig {
           .toStream
           .map(preferredRegion => preferredRegion.toLowerCase(Locale.ROOT).trim)
           .map(preferredRegion => {
-            if (!PreferredRegionRegex.findFirstIn(preferredRegion).isDefined) {
+            if (PreferredRegionRegex.findFirstIn(preferredRegion).isEmpty) {
               throw new IllegalArgumentException(s"$preferredRegionsListAsString is invalid")
             }
             preferredRegion
@@ -492,10 +619,20 @@ private object CosmosAccountConfig {
               case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA.getEndpoints
               case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY.getEndpoints
               case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT.getEndpoints
-              case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType} is not supported")
+              case _ => throw new IllegalArgumentException(s"Azure environment type $azureEnvironmentType is not supported")
           }
       },
       helpMessage = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.")
+
+  private val ClientBuilderInterceptors = CosmosConfigEntry[String](key = CosmosConfigNames.ClientBuilderInterceptors,
+    mandatory = false,
+    parseFromStringFunction = clientBuilderInterceptorFQDN => clientBuilderInterceptorFQDN,
+    helpMessage = "CosmosClientBuilder interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientBuilderInterceptor' trait.")
+
+  private val ClientInterceptors = CosmosConfigEntry[String](key = CosmosConfigNames.ClientInterceptors,
+    mandatory = false,
+    parseFromStringFunction = clientInterceptorFQDN => clientInterceptorFQDN,
+    helpMessage = "CosmosAsyncClient interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientInterceptor' trait.")
 
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
@@ -511,7 +648,7 @@ private object CosmosAccountConfig {
     catch {
       case e: Exception => throw new IllegalArgumentException(
         s"Invalid proactive connection initialization config $config. The string must be a list of containers to "
-          + "be warmed-up in the format of `DBName1/ContainerName1;DBName2/ContainerName2;DBName1/ContainerName3`")
+          + "be warmed-up in the format of `DBName1/ContainerName1;DBName2/ContainerName2;DBName1/ContainerName3`", e)
     }
   }
 
@@ -529,6 +666,8 @@ private object CosmosAccountConfig {
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
     val azureEnvironmentOpt = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
+    val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
+    val clientInterceptors = CosmosConfigEntry.parse(cfg, ClientInterceptors)
 
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
@@ -569,9 +708,39 @@ private object CosmosAccountConfig {
           // validates each preferred region
           LocationHelper.getLocationEndpoint(uri, preferredRegion)
         } catch {
-          case e: Exception => throw new IllegalArgumentException(s"Invalid preferred region $preferredRegion")
+          case e: Exception => throw new IllegalArgumentException(s"Invalid preferred region $preferredRegion", e)
         }
       })
+    }
+
+    val clientBuilderInterceptorsList = mutable.ListBuffer[CosmosClientBuilder => CosmosClientBuilder]()
+    if (clientBuilderInterceptors.isDefined) {
+      logInfo(s"CosmosClientBuilder interceptors specified: ${clientBuilderInterceptors.get}")
+      val requestedInterceptors = clientBuilderInterceptors.get.split(',')
+      for (requestedInterceptorName <- requestedInterceptors) {
+        val foundInterceptorCandidate = getClientBuilderInterceptor(Some(requestedInterceptorName))
+        if (foundInterceptorCandidate.isDefined) {
+          foundInterceptorCandidate.get.getClientBuilderInterceptor(cfg) match {
+            case Some(interceptor) => clientBuilderInterceptorsList += interceptor
+            case None =>
+          }
+        }
+      }
+    }
+
+    val clientInterceptorsList = mutable.ListBuffer[CosmosAsyncClient => CosmosAsyncClient]()
+    if (clientInterceptors.isDefined) {
+      logInfo(s"CosmosAsyncClient interceptors specified: ${clientInterceptors.get}")
+      val requestedInterceptors = clientInterceptors.get.split(',')
+      for (requestedInterceptorName <- requestedInterceptors) {
+        val foundInterceptorCandidate = getClientInterceptor(Some(requestedInterceptorName))
+        if (foundInterceptorCandidate.isDefined) {
+          foundInterceptorCandidate.get.getClientInterceptor(cfg) match {
+            case Some(interceptor) => clientInterceptorsList += interceptor
+            case None =>
+          }
+        }
+      }
     }
 
     CosmosAccountConfig(
@@ -589,7 +758,9 @@ private object CosmosAccountConfig {
       subscriptionIdOpt,
       tenantIdOpt,
       resourceGroupNameOpt,
-      azureEnvironmentOpt.get)
+      azureEnvironmentOpt.get,
+      if (clientBuilderInterceptorsList.nonEmpty) { Some(clientBuilderInterceptorsList.toList) } else { None },
+      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None })
   }
 }
 
@@ -609,7 +780,9 @@ private case class CosmosMasterKeyAuthConfig(accountKey: String) extends CosmosA
 private case class CosmosServicePrincipalAuthConfig(
                                        clientId: String,
                                        tenantId: String,
-                                       clientSecret: String) extends CosmosAuthConfig
+                                       sendChain: Boolean,
+                                       clientSecret: Option[String],
+                                       clientCertPemBase64: Option[String]) extends CosmosAuthConfig
 private case class CosmosManagedIdentityAuthConfig( tenantId: String,
                                                      clientId: Option[String],
                                                      resourceId: Option[String]) extends CosmosAuthConfig
@@ -658,7 +831,23 @@ private object CosmosAuthConfig {
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientSecret => clientSecret,
-        helpMessage = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication. ")
+        helpMessage = "The client secret/password of the service principal. " +
+          "Either client secret or certificate are required for `ServicePrincipal` authentication.")
+
+    private val ClientCertPemBase64 = CosmosConfigEntry[String](key = CosmosConfigNames.ClientCertPemBase64,
+      defaultValue = None,
+      mandatory = false,
+      parseFromStringFunction = base64 => base64,
+      helpMessage = "The base64 encoded PEM client certificate to be used to authenticate the service principal. " +
+        "Either client secret or certificate are required for `ServicePrincipal` authentication.")
+
+    private val ClientCertSendChain = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ClientCertSendChain,
+      defaultValue = Some(false),
+      mandatory = false,
+      parseFromStringFunction = booleanAsText => booleanAsText.toBoolean,
+      helpMessage = "A flag indicating whether the client certificate chain (public keys only) is sent to AAD " +
+        "when authenticating the service principal. This is required for SNI (relevant for 1st party only). " +
+        "The default value is `false`.")
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
@@ -667,6 +856,8 @@ private object CosmosAuthConfig {
         val resourceId = CosmosConfigEntry.parse(cfg, ResourceId)
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
+        val clientCert = CosmosConfigEntry.parse(cfg, ClientCertPemBase64)
+        val sendChain = CosmosConfigEntry.parse(cfg, ClientCertSendChain)
 
         assert(authType.isDefined,s"Parameter '${CosmosConfigNames.AuthType}' is missing.")
 
@@ -679,23 +870,28 @@ private object CosmosAuthConfig {
         } else if (authType.get == CosmosAuthType.ServicePrincipal || authType.get == CosmosAuthType.ServicePrinciple) {
             assert(clientId.isDefined, s"Parameter '${CosmosConfigNames.ClientId}' is missing.")
             assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-            assert(clientSecret.isDefined, s"Parameter '${CosmosConfigNames.ClientSecret}' is missing.")
+            assert(
+              clientSecret.isDefined || clientCert.isDefined,
+              s"Parameter '${CosmosConfigNames.ClientSecret}' or '${CosmosConfigNames.ClientCertPemBase64}' must be defined.")
 
             CosmosServicePrincipalAuthConfig(
                 clientId.get,
                 tenantId.get,
-                clientSecret.get)
+                sendChain.getOrElse(false),
+                clientSecret,
+                clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
           assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-          val accountDataResolver = CosmosConfig.getAccountDataResolver()
-          if (!accountDataResolver.isDefined) {
+          val accountDataResolverServiceName : Option[String] = CaseInsensitiveMap(cfg).get(CosmosConfigNames.AccountDataResolverServiceName)
+          val accountDataResolver = CosmosConfig.getAccountDataResolver(accountDataResolverServiceName)
+          if (accountDataResolver.isEmpty) {
             throw new IllegalArgumentException(
               s"For auth type '${authType.get}' you have to provide an implementation of the " +
                 "'com.azure.cosmos.spark.AccountDataResolver' trait on the class path.")
           }
 
           val accessTokenProvider = accountDataResolver.get.getAccessTokenProvider(cfg)
-          if (!accessTokenProvider.isDefined) {
+          if (accessTokenProvider.isEmpty) {
             throw new IllegalArgumentException(
               s"For auth type '${authType.get}' you have to provide an implementation of the " +
                 "'com.azure.cosmos.spark.AccountDataResolver' trait on the class path, which " +
@@ -843,8 +1039,8 @@ private object CosmosReadConfig {
 private case class CosmosViewRepositoryConfig(metaDataPath: Option[String])
 
 private object CosmosViewRepositoryConfig {
-  val MetaDataPathKeyName = CosmosConfigNames.ViewsRepositoryPath
-  val IsCosmosViewKeyName = "isCosmosView"
+  val MetaDataPathKeyName: String = CosmosConfigNames.ViewsRepositoryPath
+  private val IsCosmosViewKeyName = "isCosmosView"
   private val MetaDataPath = CosmosConfigEntry[String](key = MetaDataPathKeyName,
     mandatory = false,
     defaultValue = None,
@@ -939,12 +1135,12 @@ private object ItemWriteStrategy extends Enumeration {
 private object CosmosPatchOperationTypes extends Enumeration {
   type CosmosPatchOperationTypes = Value
 
-  val None = Value("none")
-  val Add = Value("add")
-  val Set = Value("set")
-  val Replace = Value("replace")
-  val Remove = Value("remove")
-  val Increment = Value("increment")
+  val None: spark.CosmosPatchOperationTypes.Value = Value("none")
+  val Add: spark.CosmosPatchOperationTypes.Value = Value("add")
+  val Set: spark.CosmosPatchOperationTypes.Value = Value("set")
+  val Replace: spark.CosmosPatchOperationTypes.Value = Value("replace")
+  val Remove: spark.CosmosPatchOperationTypes.Value = Value("remove")
+  val Increment: spark.CosmosPatchOperationTypes.Value = Value("increment")
 }
 
 private case class CosmosPatchColumnConfig(columnName: String,
@@ -965,7 +1161,11 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                      maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
                                      initialMicroBatchSize: Option[Int] = None,
-                                     maxMicroBatchSize: Option[Int] = None)
+                                     maxMicroBatchSize: Option[Int] = None,
+                                     flushCloseIntervalInSeconds: Int = 60,
+                                     maxNoProgressIntervalInSeconds: Int = 180,
+                                     maxRetryNoProgressIntervalInSeconds: Int = 45 * 60,
+                                     retryCommitInterceptor: Option[WriteOnRetryCommitInterceptor] = None)
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -1087,7 +1287,32 @@ private object CosmosWriteConfig {
           "2. col(column).path(patchInCosmosdb).rawJson - allows you to configure different mapping path in cosmosdb, and indicates the value of the column is in raw json format" +
           "3. col(column).rawJson - indicates the value of the column is in raw json format")
 
-  def parseUserDefinedPatchColumnConfigs(patchColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
+  private val writeOnRetryCommitInterceptor = CosmosConfigEntry[Option[WriteOnRetryCommitInterceptor]](key = CosmosConfigNames.WriteOnRetryCommitInterceptor,
+    mandatory = false,
+    parseFromStringFunction = serviceName => getRetryCommitInterceptor(serviceName),
+    helpMessage = "Name of the service to be invoked when retrying write commits (currently only implemented for bulk).")
+
+  val key = "COSMOS.FLUSH_CLOSE_INTERVAL_SEC"
+
+  private val flushCloseIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteFlushCloseIntervalInSeconds,
+    defaultValue = Some(sys.props.get(key).getOrElse(sys.env.getOrElse(key, "60")).toInt),
+    mandatory = false,
+    parseFromStringFunction = intAsString => intAsString.toInt,
+    helpMessage = s"Interval of checks whether any progress has been made when flushing write operations.")
+
+  private val maxNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
+    defaultValue = Some(45 * 60),
+    mandatory = false,
+    parseFromStringFunction = intAsString => intAsString.toInt,
+    helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations.")
+
+  private val maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryNoProgressIntervalInSeconds,
+    defaultValue = Some(3 * 60),
+    mandatory = false,
+    parseFromStringFunction = intAsString => intAsString.toInt,
+    helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations in the second commit.")
+
+  private def parseUserDefinedPatchColumnConfigs(patchColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
     val columnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
 
     if (patchColumnConfigsString.isEmpty) {
@@ -1105,7 +1330,7 @@ private object CosmosWriteConfig {
          .foreach(item => {
            val columnConfigString = item.trim
 
-           if (!columnConfigString.isEmpty) {
+           if (columnConfigString.nonEmpty) {
              // Currently there are two patterns which are valid
              // 1. col(column).op(operationType)
              // 2. col(column).path(mappedPath).op(operationType)
@@ -1128,7 +1353,7 @@ private object CosmosWriteConfig {
                    mappingPath = s"/$columnName"
                  }
 
-                 val isRawJson = !rawJsonSuffix.isEmpty
+                 val isRawJson = rawJsonSuffix.nonEmpty
                  val columnConfig =
                    CosmosPatchColumnConfig(
                      columnName = columnName,
@@ -1150,7 +1375,7 @@ private object CosmosWriteConfig {
     }
   }
 
-  def parsePatchBulkUpdateColumnConfigs(patchBulkUpdateColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
+  private def parsePatchBulkUpdateColumnConfigs(patchBulkUpdateColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
       val columnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
 
       if (patchBulkUpdateColumnConfigsString.isEmpty) {
@@ -1167,7 +1392,7 @@ private object CosmosWriteConfig {
               trimmedInput.split(",")
                   .foreach(item => {
                       val columnConfigString = item.trim
-                      if (!columnConfigString.isEmpty) {
+                      if (columnConfigString.nonEmpty) {
                           // Currently there are three patterns which are valid
                           // 1. col(column).path(mappedPath)
                           // 2. col(column).path(mappingPath).rawJson
@@ -1189,7 +1414,7 @@ private object CosmosWriteConfig {
                                       mappingPath = s"/$columnName"
                                   }
 
-                                  val isRawJson = !rawJsonSuffix.isEmpty
+                                  val isRawJson = rawJsonSuffix.nonEmpty
                                   val columnConfig =
                                       CosmosPatchColumnConfig(
                                           columnName = columnName,
@@ -1220,6 +1445,8 @@ private object CosmosWriteConfig {
     val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
     val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
     val maxBatchSizeOpt = CosmosConfigEntry.parse(cfg, maxMicroBatchSize)
+    val writeRetryCommitInterceptor = CosmosConfigEntry
+      .parse(cfg, writeOnRetryCommitInterceptor).flatten
 
     assert(bulkEnabledOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteBulkEnabled}' is missing.")
 
@@ -1249,10 +1476,14 @@ private object CosmosWriteConfig {
       throughputControlConfig = throughputControlConfigOpt,
       maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt,
       initialMicroBatchSize = initialBatchSizeOpt,
-      maxMicroBatchSize = maxBatchSizeOpt)
+      maxMicroBatchSize = maxBatchSizeOpt,
+      flushCloseIntervalInSeconds = CosmosConfigEntry.parse(cfg, flushCloseIntervalInSeconds).get,
+      maxNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxNoProgressIntervalInSeconds).get,
+      maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxRetryNoProgressIntervalInSeconds).get,
+      retryCommitInterceptor = writeRetryCommitInterceptor)
   }
 
-  def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
+  private def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
     val defaultPatchOperationType = CosmosConfigEntry.parse(cfg, patchDefaultOperationType)
 
     // Parse customer specified column configs, which will override the default config
@@ -1268,7 +1499,7 @@ private object CosmosWriteConfig {
           userDefinedPatchColumnConfigMap.remove(schemaField.name)
         case None =>
           // There is no customer specified column config, create one based on the default config
-          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}", false)
+          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}", isRawJson = false)
           aggregatedPatchColumnConfigMap += schemaField.name -> validatePatchColumnConfig(newColumnConfig, schemaField.dataType)
       }
     })
@@ -1288,7 +1519,7 @@ private object CosmosWriteConfig {
     aggregatedPatchColumnConfigMap
   }
 
-  def validatePatchColumnConfig(cosmosPatchColumnConfig: CosmosPatchColumnConfig, dataType: DataType): CosmosPatchColumnConfig = {
+  private def validatePatchColumnConfig(cosmosPatchColumnConfig: CosmosPatchColumnConfig, dataType: DataType): CosmosPatchColumnConfig = {
     cosmosPatchColumnConfig.operationType match {
       case CosmosPatchOperationTypes.Increment =>
         dataType match {
@@ -1382,7 +1613,7 @@ private object CosmosContainerConfig {
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
-  val optionalContainerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
+  val optionalContainerNameSupplier: CosmosConfigEntry[String] = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
     mandatory = false,
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
@@ -1554,7 +1785,7 @@ private object CosmosPartitioningConfig {
       val fragments = filter.split(",")
       for (fragment <- fragments) {
         val minAndMax = fragment.trim.split("-")
-        epkRanges += (NormalizedRange(minAndMax(0), minAndMax(1)))
+        epkRanges += NormalizedRange(minAndMax(0), minAndMax(1))
       }
 
       epkRanges.toArray
@@ -1893,7 +2124,7 @@ private object CosmosThroughputControlConfig {
         }
     }
 
-  def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+  private def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
     val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
     assert(
@@ -1942,7 +2173,7 @@ private object CosmosThroughputControlConfig {
     CosmosAccountConfig.parseCosmosAccountConfig(throughputControlAccountConfigMap.toMap)
   }
 
-  def addNonNullConfig(
+  private def addNonNullConfig(
                        originalLowercaseCfg: Map[String, String],
                        newCfg: mutable.Map[String, String],
                        originalConfigName: String,
@@ -1952,8 +2183,8 @@ private object CosmosThroughputControlConfig {
     val originalLowercaseCfgName = originalConfigName.toLowerCase(Locale.ROOT)
     val newLowercaseCfgName = newConfigName.toLowerCase(Locale.ROOT)
 
-    if (originalLowercaseCfg.get(originalLowercaseCfgName).isDefined) {
-      newCfg += (newLowercaseCfgName -> originalLowercaseCfg.get(originalLowercaseCfgName).get)
+    if (originalLowercaseCfg.contains(originalLowercaseCfgName)) {
+      newCfg += (newLowercaseCfgName -> originalLowercaseCfg(originalLowercaseCfgName))
     }
   }
 }
@@ -1979,19 +2210,14 @@ private case class CosmosConfigEntry[T](key: String,
   }
 }
 
-// TODO: moderakh how to merge user config with SparkConf application config?
 private object CosmosConfigEntry {
   def parseEnumeration[T <: Enumeration](enumValueAsString: String, enumeration: T): T#Value = {
     require(enumValueAsString != null)
     enumeration.values.find(_.toString.toLowerCase == enumValueAsString.toLowerCase()).getOrElse(
-      throw new IllegalArgumentException(s"$enumValueAsString valid value, valid values are ${values}"))
+      throw new IllegalArgumentException(s"$enumValueAsString valid value, valid values are $values"))
   }
 
   private val configEntriesDefinitions = new java.util.HashMap[String, CosmosConfigEntry[_]]()
-
-  def allConfigNames(): Seq[String] = {
-    configEntriesDefinitions.keySet().asScala.toSeq
-  }
 
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
     // we are doing this here per config parsing for now

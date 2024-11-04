@@ -5,20 +5,31 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The response payload for transferring the call. */
+/**
+ * The response payload for transferring the call.
+ */
 @Fluent
-public final class TransferCallResponseInternal {
+public final class TransferCallResponseInternal implements JsonSerializable<TransferCallResponseInternal> {
     /*
      * The operation context provided by client.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of TransferCallResponseInternal class.
+     */
+    public TransferCallResponseInternal() {
+    }
+
+    /**
      * Get the operationContext property: The operation context provided by client.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -27,12 +38,48 @@ public final class TransferCallResponseInternal {
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the TransferCallResponseInternal object itself.
      */
     public TransferCallResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransferCallResponseInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransferCallResponseInternal if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TransferCallResponseInternal.
+     */
+    public static TransferCallResponseInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransferCallResponseInternal deserializedTransferCallResponseInternal = new TransferCallResponseInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationContext".equals(fieldName)) {
+                    deserializedTransferCallResponseInternal.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransferCallResponseInternal;
+        });
     }
 }

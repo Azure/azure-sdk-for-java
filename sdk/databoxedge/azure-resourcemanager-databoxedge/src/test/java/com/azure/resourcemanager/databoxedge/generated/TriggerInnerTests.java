@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 public final class TriggerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Trigger\",\"id\":\"vnhdldwmgxcxr\",\"name\":\"lpmutwuoegrpkhj\",\"type\":\"niyqslui\"}")
-                .toObject(TriggerInner.class);
+        TriggerInner model = BinaryData
+            .fromString("{\"kind\":\"Trigger\",\"id\":\"wggxkallat\",\"name\":\"elwuipi\",\"type\":\"cjzkzivgvvcna\"}")
+            .toObject(TriggerInner.class);
     }
 
     @org.junit.jupiter.api.Test

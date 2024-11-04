@@ -4,33 +4,40 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of NSX Port Mirroring. */
-@Immutable
-public final class WorkloadNetworkPortMirroringList {
+/**
+ * The response of a WorkloadNetworkPortMirroring list operation.
+ */
+@Fluent
+public final class WorkloadNetworkPortMirroringList implements JsonSerializable<WorkloadNetworkPortMirroringList> {
     /*
-     * The items on the page
+     * The WorkloadNetworkPortMirroring items on this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkloadNetworkPortMirroringInner> value;
 
     /*
-     * URL to get the next page if any
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkloadNetworkPortMirroringList class. */
+    /**
+     * Creates an instance of WorkloadNetworkPortMirroringList class.
+     */
     public WorkloadNetworkPortMirroringList() {
     }
 
     /**
-     * Get the value property: The items on the page.
-     *
+     * Get the value property: The WorkloadNetworkPortMirroring items on this page.
+     * 
      * @return the value value.
      */
     public List<WorkloadNetworkPortMirroringInner> value() {
@@ -38,8 +45,19 @@ public final class WorkloadNetworkPortMirroringList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Set the value property: The WorkloadNetworkPortMirroring items on this page.
+     * 
+     * @param value the value value to set.
+     * @return the WorkloadNetworkPortMirroringList object itself.
+     */
+    public WorkloadNetworkPortMirroringList withValue(List<WorkloadNetworkPortMirroringInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +65,73 @@ public final class WorkloadNetworkPortMirroringList {
     }
 
     /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the WorkloadNetworkPortMirroringList object itself.
+     */
+    public WorkloadNetworkPortMirroringList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model WorkloadNetworkPortMirroringList"));
+        } else {
             value().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkloadNetworkPortMirroringList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkPortMirroringList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkPortMirroringList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkPortMirroringList.
+     */
+    public static WorkloadNetworkPortMirroringList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkPortMirroringList deserializedWorkloadNetworkPortMirroringList
+                = new WorkloadNetworkPortMirroringList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WorkloadNetworkPortMirroringInner> value
+                        = reader.readArray(reader1 -> WorkloadNetworkPortMirroringInner.fromJson(reader1));
+                    deserializedWorkloadNetworkPortMirroringList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkloadNetworkPortMirroringList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkPortMirroringList;
+        });
     }
 }

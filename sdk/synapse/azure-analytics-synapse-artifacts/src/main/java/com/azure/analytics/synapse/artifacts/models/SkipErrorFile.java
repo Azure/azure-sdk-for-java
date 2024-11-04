@@ -5,25 +5,25 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Skip error file.
  */
 @Fluent
-public final class SkipErrorFile {
+public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
     /*
-     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "fileMissing")
     private Object fileMissing;
 
     /*
-     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "dataInconsistency")
     private Object dataInconsistency;
 
     /**
@@ -33,8 +33,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
+     * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
+     * (or Expression with resultType boolean).
      * 
      * @return the fileMissing value.
      */
@@ -43,8 +43,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Set the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
+     * Set the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
+     * (or Expression with resultType boolean).
      * 
      * @param fileMissing the fileMissing value to set.
      * @return the SkipErrorFile object itself.
@@ -55,8 +55,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Get the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Get the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @return the dataInconsistency value.
      */
@@ -65,8 +65,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Set the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Set the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @param dataInconsistency the dataInconsistency value to set.
      * @return the SkipErrorFile object itself.
@@ -74,5 +74,44 @@ public final class SkipErrorFile {
     public SkipErrorFile setDataInconsistency(Object dataInconsistency) {
         this.dataInconsistency = dataInconsistency;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("fileMissing", this.fileMissing);
+        jsonWriter.writeUntypedField("dataInconsistency", this.dataInconsistency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkipErrorFile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkipErrorFile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkipErrorFile.
+     */
+    public static SkipErrorFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkipErrorFile deserializedSkipErrorFile = new SkipErrorFile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileMissing".equals(fieldName)) {
+                    deserializedSkipErrorFile.fileMissing = reader.readUntyped();
+                } else if ("dataInconsistency".equals(fieldName)) {
+                    deserializedSkipErrorFile.dataInconsistency = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkipErrorFile;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SyncType extends ExpandableStringEnum<SyncType> {
      * @param name a name to look for.
      * @return the corresponding SyncType.
      */
-    @JsonCreator
     public static SyncType fromString(String name) {
         return fromString(name, SyncType.class);
     }

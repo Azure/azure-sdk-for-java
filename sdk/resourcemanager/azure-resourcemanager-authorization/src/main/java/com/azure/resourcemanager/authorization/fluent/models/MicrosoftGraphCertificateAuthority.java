@@ -7,68 +7,68 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-/** certificateAuthority. */
+/**
+ * certificateAuthority.
+ */
 @Fluent
-public final class MicrosoftGraphCertificateAuthority {
+public final class MicrosoftGraphCertificateAuthority implements JsonSerializable<MicrosoftGraphCertificateAuthority> {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * Required. The base64 encoded string representing the public certificate.
      */
-    @JsonProperty(value = "certificate")
     private Base64Url certificate;
 
     /*
      * The URL of the certificate revocation list.
      */
-    @JsonProperty(value = "certificateRevocationListUrl")
     private String certificateRevocationListUrl;
 
     /*
      * The URL contains the list of all revoked certificates since the last time a full certificate revocaton list was
      * created.
      */
-    @JsonProperty(value = "deltaCertificateRevocationListUrl")
     private String deltaCertificateRevocationListUrl;
 
     /*
      * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an
      * intermediate authority.
      */
-    @JsonProperty(value = "isRootAuthority")
     private Boolean isRootAuthority;
 
     /*
      * The issuer of the certificate, calculated from the certificate value. Read-only.
      */
-    @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
      * The subject key identifier of the certificate, calculated from the certificate value. Read-only.
      */
-    @JsonProperty(value = "issuerSki")
     private String issuerSki;
 
     /*
      * certificateAuthority
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCertificateAuthority class. */
+    /**
+     * Creates an instance of MicrosoftGraphCertificateAuthority class.
+     */
     public MicrosoftGraphCertificateAuthority() {
     }
 
     /**
      * Get the certificate property: Required. The base64 encoded string representing the public certificate.
-     *
+     * 
      * @return the certificate value.
      */
     public byte[] certificate() {
@@ -80,7 +80,7 @@ public final class MicrosoftGraphCertificateAuthority {
 
     /**
      * Set the certificate property: Required. The base64 encoded string representing the public certificate.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
@@ -95,7 +95,7 @@ public final class MicrosoftGraphCertificateAuthority {
 
     /**
      * Get the certificateRevocationListUrl property: The URL of the certificate revocation list.
-     *
+     * 
      * @return the certificateRevocationListUrl value.
      */
     public String certificateRevocationListUrl() {
@@ -104,7 +104,7 @@ public final class MicrosoftGraphCertificateAuthority {
 
     /**
      * Set the certificateRevocationListUrl property: The URL of the certificate revocation list.
-     *
+     * 
      * @param certificateRevocationListUrl the certificateRevocationListUrl value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
@@ -116,7 +116,7 @@ public final class MicrosoftGraphCertificateAuthority {
     /**
      * Get the deltaCertificateRevocationListUrl property: The URL contains the list of all revoked certificates since
      * the last time a full certificate revocaton list was created.
-     *
+     * 
      * @return the deltaCertificateRevocationListUrl value.
      */
     public String deltaCertificateRevocationListUrl() {
@@ -126,12 +126,12 @@ public final class MicrosoftGraphCertificateAuthority {
     /**
      * Set the deltaCertificateRevocationListUrl property: The URL contains the list of all revoked certificates since
      * the last time a full certificate revocaton list was created.
-     *
+     * 
      * @param deltaCertificateRevocationListUrl the deltaCertificateRevocationListUrl value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
-    public MicrosoftGraphCertificateAuthority withDeltaCertificateRevocationListUrl(
-        String deltaCertificateRevocationListUrl) {
+    public MicrosoftGraphCertificateAuthority
+        withDeltaCertificateRevocationListUrl(String deltaCertificateRevocationListUrl) {
         this.deltaCertificateRevocationListUrl = deltaCertificateRevocationListUrl;
         return this;
     }
@@ -139,7 +139,7 @@ public final class MicrosoftGraphCertificateAuthority {
     /**
      * Get the isRootAuthority property: Required. true if the trusted certificate is a root authority, false if the
      * trusted certificate is an intermediate authority.
-     *
+     * 
      * @return the isRootAuthority value.
      */
     public Boolean isRootAuthority() {
@@ -149,7 +149,7 @@ public final class MicrosoftGraphCertificateAuthority {
     /**
      * Set the isRootAuthority property: Required. true if the trusted certificate is a root authority, false if the
      * trusted certificate is an intermediate authority.
-     *
+     * 
      * @param isRootAuthority the isRootAuthority value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
@@ -160,7 +160,7 @@ public final class MicrosoftGraphCertificateAuthority {
 
     /**
      * Get the issuer property: The issuer of the certificate, calculated from the certificate value. Read-only.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -169,7 +169,7 @@ public final class MicrosoftGraphCertificateAuthority {
 
     /**
      * Set the issuer property: The issuer of the certificate, calculated from the certificate value. Read-only.
-     *
+     * 
      * @param issuer the issuer value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
@@ -181,7 +181,7 @@ public final class MicrosoftGraphCertificateAuthority {
     /**
      * Get the issuerSki property: The subject key identifier of the certificate, calculated from the certificate value.
      * Read-only.
-     *
+     * 
      * @return the issuerSki value.
      */
     public String issuerSki() {
@@ -191,7 +191,7 @@ public final class MicrosoftGraphCertificateAuthority {
     /**
      * Set the issuerSki property: The subject key identifier of the certificate, calculated from the certificate value.
      * Read-only.
-     *
+     * 
      * @param issuerSki the issuerSki value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
@@ -202,17 +202,16 @@ public final class MicrosoftGraphCertificateAuthority {
 
     /**
      * Get the additionalProperties property: certificateAuthority.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: certificateAuthority.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCertificateAuthority object itself.
      */
@@ -221,19 +220,77 @@ public final class MicrosoftGraphCertificateAuthority {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificate", Objects.toString(this.certificate, null));
+        jsonWriter.writeStringField("certificateRevocationListUrl", this.certificateRevocationListUrl);
+        jsonWriter.writeStringField("deltaCertificateRevocationListUrl", this.deltaCertificateRevocationListUrl);
+        jsonWriter.writeBooleanField("isRootAuthority", this.isRootAuthority);
+        jsonWriter.writeStringField("issuer", this.issuer);
+        jsonWriter.writeStringField("issuerSki", this.issuerSki);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCertificateAuthority from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCertificateAuthority if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCertificateAuthority.
+     */
+    public static MicrosoftGraphCertificateAuthority fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCertificateAuthority deserializedMicrosoftGraphCertificateAuthority
+                = new MicrosoftGraphCertificateAuthority();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateAuthority.certificate
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("certificateRevocationListUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateAuthority.certificateRevocationListUrl = reader.getString();
+                } else if ("deltaCertificateRevocationListUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateAuthority.deltaCertificateRevocationListUrl
+                        = reader.getString();
+                } else if ("isRootAuthority".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateAuthority.isRootAuthority
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateAuthority.issuer = reader.getString();
+                } else if ("issuerSki".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateAuthority.issuerSki = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCertificateAuthority.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCertificateAuthority;
+        });
     }
 }

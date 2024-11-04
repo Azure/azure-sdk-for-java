@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -197,6 +198,41 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
+    public void testHierarchicalPartitionKeyPathsGetPartitionKeyPath() {
+        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
+
+        final String partitionKeyPath = entityInformation.getPartitionKeyPath();
+        assertThat(partitionKeyPath).isEqualTo("/id, /firstName, /lastName");
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testHierarchicalPartitionKeyPathsGetPartitionKeyFieldValue() {
+        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
+
+        VolunteerWithHierarchicalPartitionKeyPaths entity = new VolunteerWithHierarchicalPartitionKeyPaths("id_1",
+            "John", "Smith", "12345");
+        final Object partitionKeyFieldValue = entityInformation.getPartitionKeyFieldValue(entity);
+        assertThat(partitionKeyFieldValue).isInstanceOf(ArrayList.class);
+        ArrayList<Object> pkValues = (ArrayList<Object>)partitionKeyFieldValue;
+        assertThat(pkValues.size()).isEqualTo(3);
+        assertThat(pkValues.get(0)).isEqualTo("id_1");
+        assertThat(pkValues.get(1)).isEqualTo("John");
+        assertThat(pkValues.get(2)).isEqualTo("Smith");
+    }
+
+    @Test
+    public void testHierarchicalPartitionKeyPathsGetPartitionKeyFieldName() {
+        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
+            new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
+
+        final String partitionKeyPath = entityInformation.getPartitionKeyFieldName();
+        assertThat(partitionKeyPath).isEqualTo("id, firstName, lastName");
+    }
+
+    @Test
     public void testVersionedEntity() {
         final CosmosEntityInformation<VersionedVolunteer, String> entityInformation =
                 new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
@@ -307,6 +343,21 @@ public class CosmosEntityInformationUnitTest {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    @Container(hierarchicalPartitionKeyPaths = {"/id", "/firstName", "/lastName"})
+    private static class VolunteerWithHierarchicalPartitionKeyPaths {
+        private String id;
+        private String firstName;
+        private String lastName;
+        private String zipcode;
+
+        VolunteerWithHierarchicalPartitionKeyPaths(String id, String firstName, String lastName, String zipcode) {
+            this.id = id;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.zipcode = zipcode;
         }
     }
 

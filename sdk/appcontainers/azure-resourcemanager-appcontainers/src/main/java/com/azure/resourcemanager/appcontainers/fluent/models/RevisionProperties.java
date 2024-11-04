@@ -5,35 +5,37 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.RevisionHealthState;
 import com.azure.resourcemanager.appcontainers.models.RevisionProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Revision resource specific properties.
  */
 @Immutable
-public final class RevisionProperties {
+public final class RevisionProperties implements JsonSerializable<RevisionProperties> {
     /*
      * Timestamp describing when the revision was created
      * by controller
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Timestamp describing when the revision was last active. Only meaningful when revision is inactive
      */
-    @JsonProperty(value = "lastActiveTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActiveTime;
 
     /*
      * Fully qualified domain name of the revision
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
@@ -41,49 +43,41 @@ public final class RevisionProperties {
      * defaults if user did not provide them. The defaults are populated
      * as they were at the creation time
      */
-    @JsonProperty(value = "template", access = JsonProperty.Access.WRITE_ONLY)
     private Template template;
 
     /*
      * Boolean describing if the Revision is Active
      */
-    @JsonProperty(value = "active", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean active;
 
     /*
      * Number of pods currently running for this revision
      */
-    @JsonProperty(value = "replicas", access = JsonProperty.Access.WRITE_ONLY)
     private Integer replicas;
 
     /*
      * Traffic weight assigned to this revision
      */
-    @JsonProperty(value = "trafficWeight", access = JsonProperty.Access.WRITE_ONLY)
     private Integer trafficWeight;
 
     /*
      * Optional Field - Platform Error Message
      */
-    @JsonProperty(value = "provisioningError", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningError;
 
     /*
      * Current health State of the revision
      */
-    @JsonProperty(value = "healthState", access = JsonProperty.Access.WRITE_ONLY)
     private RevisionHealthState healthState;
 
     /*
      * Current provisioning State of the revision
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RevisionProvisioningState provisioningState;
 
     /*
      * Current running state of the revision
      */
-    @JsonProperty(value = "runningState", access = JsonProperty.Access.WRITE_ONLY)
     private RevisionRunningState runningState;
 
     /**
@@ -204,5 +198,63 @@ public final class RevisionProperties {
         if (template() != null) {
             template().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RevisionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RevisionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RevisionProperties.
+     */
+    public static RevisionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RevisionProperties deserializedRevisionProperties = new RevisionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedRevisionProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastActiveTime".equals(fieldName)) {
+                    deserializedRevisionProperties.lastActiveTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedRevisionProperties.fqdn = reader.getString();
+                } else if ("template".equals(fieldName)) {
+                    deserializedRevisionProperties.template = Template.fromJson(reader);
+                } else if ("active".equals(fieldName)) {
+                    deserializedRevisionProperties.active = reader.getNullable(JsonReader::getBoolean);
+                } else if ("replicas".equals(fieldName)) {
+                    deserializedRevisionProperties.replicas = reader.getNullable(JsonReader::getInt);
+                } else if ("trafficWeight".equals(fieldName)) {
+                    deserializedRevisionProperties.trafficWeight = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningError".equals(fieldName)) {
+                    deserializedRevisionProperties.provisioningError = reader.getString();
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedRevisionProperties.healthState = RevisionHealthState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRevisionProperties.provisioningState
+                        = RevisionProvisioningState.fromString(reader.getString());
+                } else if ("runningState".equals(fieldName)) {
+                    deserializedRevisionProperties.runningState = RevisionRunningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRevisionProperties;
+        });
     }
 }

@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -14,6 +15,7 @@ import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -59,11 +61,11 @@ public final class CryptographyUtils {
             String keyVersion = (tokens.length >= 4 ? tokens[3] : null);
 
             if (CoreUtils.isNullOrEmpty(vaultUrl)) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Key endpoint in key identifier is invalid."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("Key endpoint in key identifier is invalid."));
             } else if (CoreUtils.isNullOrEmpty(keyName)) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Key name in key identifier is invalid."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("Key name in key identifier is invalid."));
             }
 
             return Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
@@ -72,11 +74,59 @@ public final class CryptographyUtils {
         }
     }
 
-    public static LocalKeyCryptographyClient initializeLocalClient(JsonWebKey jsonWebKey,
-                                                                   CryptographyClientImpl implClient) {
+    public static LocalKeyCryptographyClient retrieveJwkAndCreateLocalClient(CryptographyClientImpl implClient) {
+        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
+        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
+            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
+            // default to using service-side cryptography.
+            JsonWebKey jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                ? implClient.getSecretKey()
+                : implClient.getKey(Context.NONE).getValue().getKey();
+
+            if (jsonWebKey == null) {
+                throw new IllegalStateException(
+                    "Could not retrieve JSON Web Key to perform local cryptographic operations.");
+            } else if (!jsonWebKey.isValid()) {
+                throw new IllegalStateException("The retrieved JSON Web Key is not valid.");
+            } else {
+                return createLocalClient(jsonWebKey, implClient);
+            }
+        } else {
+            // Couldn't/didn't create a local cryptography client.
+            throw new IllegalStateException("Could not create a local cryptography client.");
+        }
+    }
+
+    public static Mono<LocalKeyCryptographyClient>
+        retrieveJwkAndCreateLocalAsyncClient(CryptographyClientImpl implClient) {
+        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
+        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
+            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
+            // default to using service-side cryptography.
+            Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                ? implClient.getSecretKeyAsync()
+                : implClient.getKeyAsync().map(keyVaultKeyResponse -> keyVaultKeyResponse.getValue().getKey());
+
+            return jsonWebKeyMono.handle((jsonWebKey, sink) -> {
+                if (!jsonWebKey.isValid()) {
+                    sink.error(new IllegalStateException("The retrieved JSON Web Key is not valid."));
+                } else {
+                    sink.next(createLocalClient(jsonWebKey, implClient));
+                }
+            });
+        } else {
+            // Couldn't/didn't create a local cryptography client.
+            return Mono.error(new IllegalStateException(
+                "Could not create a local cryptography client. Key collection is null or empty."));
+        }
+    }
+
+    public static LocalKeyCryptographyClient createLocalClient(JsonWebKey jsonWebKey,
+        CryptographyClientImpl implClient) {
+
         if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
-            throw new IllegalArgumentException(String.format(
-                "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));
+            throw new IllegalArgumentException(
+                String.format("The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));
         }
 
         if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
@@ -93,9 +143,8 @@ public final class CryptographyUtils {
 
     public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
         if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
-            throw new UnsupportedOperationException(
-                String.format("The %s operation is not allowed for key with id: %s",
-                    keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
+            throw new UnsupportedOperationException(String.format("The %s operation is not allowed for key with id: %s",
+                keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
         }
     }
 
@@ -104,7 +153,8 @@ public final class CryptographyUtils {
             int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
 
             // Not a retriable error code.
-            return statusCode != 501 && statusCode != 505
+            return statusCode != 501
+                && statusCode != 505
                 && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
         } else {
             // Not a service-related transient error.

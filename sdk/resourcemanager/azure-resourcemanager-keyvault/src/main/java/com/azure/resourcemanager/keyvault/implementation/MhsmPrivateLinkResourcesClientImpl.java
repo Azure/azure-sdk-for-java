@@ -25,23 +25,28 @@ import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateLinkResourcesClient;
 import com.azure.resourcemanager.keyvault.fluent.models.MhsmPrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MhsmPrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MhsmPrivateLinkResourcesClient.
+ */
 public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MhsmPrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KeyVaultManagementClientImpl client;
 
     /**
      * Initializes an instance of MhsmPrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MhsmPrivateLinkResourcesClientImpl(KeyVaultManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(MhsmPrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(MhsmPrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,46 +57,37 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
     @Host("{$host}")
     @ServiceInterface(name = "KeyVaultManagementCl")
     public interface MhsmPrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MhsmPrivateLinkResourceListResultInner>> listByMhsmResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MhsmPrivateLinkResourceListResultInner>> listByMhsmResource(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources supported for the managed hsm pool along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MhsmPrivateLinkResourceListResultInner>> listByMhsmResourceWithResponseAsync(
-        String resourceGroupName, String name) {
+    public Mono<Response<MhsmPrivateLinkResourceListResultInner>>
+        listByMhsmResourceWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -102,23 +98,14 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByMhsmResource(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByMhsmResource(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param context The context to associate with this operation.
@@ -126,22 +113,18 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources supported for the managed hsm pool along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MhsmPrivateLinkResourceListResultInner>> listByMhsmResourceWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<MhsmPrivateLinkResourceListResultInner>>
+        listByMhsmResourceWithResponseAsync(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -152,20 +135,13 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByMhsmResource(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByMhsmResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            name, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +157,7 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param context The context to associate with this operation.
@@ -191,14 +167,14 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
      * @return the private link resources supported for the managed hsm pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceWithResponse(String resourceGroupName,
+        String name, Context context) {
         return listByMhsmResourceWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
      * Gets the private link resources supported for the managed hsm pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

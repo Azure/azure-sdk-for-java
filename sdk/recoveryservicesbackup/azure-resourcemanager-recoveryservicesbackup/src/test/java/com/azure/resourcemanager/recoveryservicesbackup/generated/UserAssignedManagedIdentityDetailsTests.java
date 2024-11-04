@@ -13,23 +13,24 @@ public final class UserAssignedManagedIdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedManagedIdentityDetails model = BinaryData.fromString(
-            "{\"identityArmId\":\"eydbsd\",\"identityName\":\"m\",\"userAssignedIdentityProperties\":{\"clientId\":\"aehvbbxuri\",\"principalId\":\"tfnhtbaxkgxywr\"}}")
+            "{\"identityArmId\":\"vleo\",\"identityName\":\"ml\",\"userAssignedIdentityProperties\":{\"clientId\":\"tqzfavyv\",\"principalId\":\"qybaryeua\"}}")
             .toObject(UserAssignedManagedIdentityDetails.class);
-        Assertions.assertEquals("eydbsd", model.identityArmId());
-        Assertions.assertEquals("m", model.identityName());
-        Assertions.assertEquals("aehvbbxuri", model.userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("tfnhtbaxkgxywr", model.userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals("vleo", model.identityArmId());
+        Assertions.assertEquals("ml", model.identityName());
+        Assertions.assertEquals("tqzfavyv", model.userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("qybaryeua", model.userAssignedIdentityProperties().principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedManagedIdentityDetails model = new UserAssignedManagedIdentityDetails().withIdentityArmId("eydbsd")
-            .withIdentityName("m").withUserAssignedIdentityProperties(
-                new UserAssignedIdentityProperties().withClientId("aehvbbxuri").withPrincipalId("tfnhtbaxkgxywr"));
+        UserAssignedManagedIdentityDetails model = new UserAssignedManagedIdentityDetails().withIdentityArmId("vleo")
+            .withIdentityName("ml")
+            .withUserAssignedIdentityProperties(
+                new UserAssignedIdentityProperties().withClientId("tqzfavyv").withPrincipalId("qybaryeua"));
         model = BinaryData.fromObject(model).toObject(UserAssignedManagedIdentityDetails.class);
-        Assertions.assertEquals("eydbsd", model.identityArmId());
-        Assertions.assertEquals("m", model.identityName());
-        Assertions.assertEquals("aehvbbxuri", model.userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("tfnhtbaxkgxywr", model.userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals("vleo", model.identityArmId());
+        Assertions.assertEquals("ml", model.identityName());
+        Assertions.assertEquals("tqzfavyv", model.userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("qybaryeua", model.userAssignedIdentityProperties().principalId());
     }
 }

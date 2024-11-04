@@ -11,7 +11,8 @@ import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest
  */
 public final class IntegrationRuntimeObjectMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Get.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimeObjectMetadata_Get.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Get.

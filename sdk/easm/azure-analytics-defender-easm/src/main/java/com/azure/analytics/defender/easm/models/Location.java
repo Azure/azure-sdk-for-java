@@ -5,89 +5,82 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Location model.
  */
 @Immutable
-public final class Location {
+public final class Location implements JsonSerializable<Location> {
 
     /*
      * The countryCode property.
      */
     @Generated
-    @JsonProperty(value = "countryCode")
     private String countryCode;
 
     /*
      * The countryName property.
      */
     @Generated
-    @JsonProperty(value = "countryName")
     private String countryName;
 
     /*
      * The region property.
      */
     @Generated
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The regionName property.
      */
     @Generated
-    @JsonProperty(value = "regionName")
     private String regionName;
 
     /*
      * The city property.
      */
     @Generated
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The areaCode property.
      */
     @Generated
-    @JsonProperty(value = "areaCode")
     private Integer areaCode;
 
     /*
      * The postalCode property.
      */
     @Generated
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * The latitude property.
      */
     @Generated
-    @JsonProperty(value = "latitude")
     private Double latitude;
 
     /*
      * The longitude property.
      */
     @Generated
-    @JsonProperty(value = "longitude")
     private Double longitude;
 
     /*
      * The dmaCode property.
      */
     @Generated
-    @JsonProperty(value = "dmaCode")
     private Integer dmaCode;
 
     /*
      * The metroCodeId property.
      */
     @Generated
-    @JsonProperty(value = "metroCodeId")
     private Integer metroCodeId;
 
     /**
@@ -205,5 +198,71 @@ public final class Location {
     @Generated
     public Integer getMetroCodeId() {
         return this.metroCodeId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("countryCode", this.countryCode);
+        jsonWriter.writeStringField("countryName", this.countryName);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("regionName", this.regionName);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeNumberField("areaCode", this.areaCode);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeNumberField("latitude", this.latitude);
+        jsonWriter.writeNumberField("longitude", this.longitude);
+        jsonWriter.writeNumberField("dmaCode", this.dmaCode);
+        jsonWriter.writeNumberField("metroCodeId", this.metroCodeId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Location from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Location if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Location.
+     */
+    @Generated
+    public static Location fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Location deserializedLocation = new Location();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("countryCode".equals(fieldName)) {
+                    deserializedLocation.countryCode = reader.getString();
+                } else if ("countryName".equals(fieldName)) {
+                    deserializedLocation.countryName = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedLocation.region = reader.getString();
+                } else if ("regionName".equals(fieldName)) {
+                    deserializedLocation.regionName = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedLocation.city = reader.getString();
+                } else if ("areaCode".equals(fieldName)) {
+                    deserializedLocation.areaCode = reader.getNullable(JsonReader::getInt);
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedLocation.postalCode = reader.getString();
+                } else if ("latitude".equals(fieldName)) {
+                    deserializedLocation.latitude = reader.getNullable(JsonReader::getDouble);
+                } else if ("longitude".equals(fieldName)) {
+                    deserializedLocation.longitude = reader.getNullable(JsonReader::getDouble);
+                } else if ("dmaCode".equals(fieldName)) {
+                    deserializedLocation.dmaCode = reader.getNullable(JsonReader::getInt);
+                } else if ("metroCodeId".equals(fieldName)) {
+                    deserializedLocation.metroCodeId = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedLocation;
+        });
     }
 }

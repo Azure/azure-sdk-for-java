@@ -5,63 +5,49 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Services response resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "serviceType",
-    defaultImpl = ServiceResourceProperties.class)
-@JsonTypeName("ServiceResourceProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DataTransfer", value = DataTransferServiceResourceProperties.class),
-    @JsonSubTypes.Type(name = "SqlDedicatedGateway", value = SqlDedicatedGatewayServiceResourceProperties.class),
-    @JsonSubTypes.Type(name = "GraphAPICompute", value = GraphApiComputeServiceResourceProperties.class),
-    @JsonSubTypes.Type(
-        name = "MaterializedViewsBuilder",
-        value = MaterializedViewsBuilderServiceResourceProperties.class) })
 @Fluent
-public class ServiceResourceProperties {
+public class ServiceResourceProperties implements JsonSerializable<ServiceResourceProperties> {
+    /*
+     * ServiceType for the service.
+     */
+    private ServiceType serviceType = ServiceType.fromString("ServiceResourceProperties");
+
     /*
      * Time of the last state change (ISO-8601 format).
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Instance type for the service.
      */
-    @JsonProperty(value = "instanceSize")
     private ServiceSize instanceSize;
 
     /*
      * Instance count for the service.
      */
-    @JsonProperty(value = "instanceCount")
     private Integer instanceCount;
 
     /*
      * Describes the status of a service.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceStatus status;
 
     /*
      * Services response resource.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -71,12 +57,32 @@ public class ServiceResourceProperties {
     }
 
     /**
+     * Get the serviceType property: ServiceType for the service.
+     * 
+     * @return the serviceType value.
+     */
+    public ServiceType serviceType() {
+        return this.serviceType;
+    }
+
+    /**
      * Get the creationTime property: Time of the last state change (ISO-8601 format).
      * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
         return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: Time of the last state change (ISO-8601 format).
+     * 
+     * @param creationTime the creationTime value to set.
+     * @return the ServiceResourceProperties object itself.
+     */
+    ServiceResourceProperties withCreationTime(OffsetDateTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
     }
 
     /**
@@ -129,11 +135,21 @@ public class ServiceResourceProperties {
     }
 
     /**
+     * Set the status property: Describes the status of a service.
+     * 
+     * @param status the status value to set.
+     * @return the ServiceResourceProperties object itself.
+     */
+    ServiceResourceProperties withStatus(ServiceStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Services response resource.
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -149,19 +165,100 @@ public class ServiceResourceProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceType", this.serviceType == null ? null : this.serviceType.toString());
+        jsonWriter.writeStringField("instanceSize", this.instanceSize == null ? null : this.instanceSize.toString());
+        jsonWriter.writeNumberField("instanceCount", this.instanceCount);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceResourceProperties.
+     */
+    public static ServiceResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("serviceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DataTransfer".equals(discriminatorValue)) {
+                    return DataTransferServiceResourceProperties.fromJson(readerToUse.reset());
+                } else if ("SqlDedicatedGateway".equals(discriminatorValue)) {
+                    return SqlDedicatedGatewayServiceResourceProperties.fromJson(readerToUse.reset());
+                } else if ("GraphAPICompute".equals(discriminatorValue)) {
+                    return GraphApiComputeServiceResourceProperties.fromJson(readerToUse.reset());
+                } else if ("MaterializedViewsBuilder".equals(discriminatorValue)) {
+                    return MaterializedViewsBuilderServiceResourceProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ServiceResourceProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourceProperties deserializedServiceResourceProperties = new ServiceResourceProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceType".equals(fieldName)) {
+                    deserializedServiceResourceProperties.serviceType = ServiceType.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedServiceResourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("instanceSize".equals(fieldName)) {
+                    deserializedServiceResourceProperties.instanceSize = ServiceSize.fromString(reader.getString());
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedServiceResourceProperties.instanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedServiceResourceProperties.status = ServiceStatus.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedServiceResourceProperties.additionalProperties = additionalProperties;
+
+            return deserializedServiceResourceProperties;
+        });
     }
 }

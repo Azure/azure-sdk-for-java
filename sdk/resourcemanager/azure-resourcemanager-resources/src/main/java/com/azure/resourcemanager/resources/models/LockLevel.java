@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,18 +13,24 @@ import java.util.Collection;
  * resource, but they can't modify or delete it.
  */
 public final class LockLevel extends ExpandableStringEnum<LockLevel> {
-    /** Static value NotSpecified for LockLevel. */
+    /**
+     * Static value NotSpecified for LockLevel.
+     */
     public static final LockLevel NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value CanNotDelete for LockLevel. */
+    /**
+     * Static value CanNotDelete for LockLevel.
+     */
     public static final LockLevel CAN_NOT_DELETE = fromString("CanNotDelete");
 
-    /** Static value ReadOnly for LockLevel. */
+    /**
+     * Static value ReadOnly for LockLevel.
+     */
     public static final LockLevel READ_ONLY = fromString("ReadOnly");
 
     /**
      * Creates a new instance of LockLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +39,17 @@ public final class LockLevel extends ExpandableStringEnum<LockLevel> {
 
     /**
      * Creates or finds a LockLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LockLevel.
      */
-    @JsonCreator
     public static LockLevel fromString(String name) {
         return fromString(name, LockLevel.class);
     }
 
     /**
      * Gets known LockLevel values.
-     *
+     * 
      * @return known LockLevel values.
      */
     public static Collection<LockLevel> values() {

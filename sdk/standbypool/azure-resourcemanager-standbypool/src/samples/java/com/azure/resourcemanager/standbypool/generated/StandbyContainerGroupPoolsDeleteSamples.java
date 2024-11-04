@@ -8,6 +8,9 @@ package com.azure.resourcemanager.standbypool.generated;
  * Samples for StandbyContainerGroupPools Delete.
  */
 public final class StandbyContainerGroupPoolsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_Delete.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Delete.
      * 

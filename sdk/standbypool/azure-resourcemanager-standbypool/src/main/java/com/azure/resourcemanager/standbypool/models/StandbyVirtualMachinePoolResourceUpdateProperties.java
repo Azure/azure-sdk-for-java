@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The updatable properties of the StandbyVirtualMachinePoolResource.
  */
 @Fluent
-public final class StandbyVirtualMachinePoolResourceUpdateProperties {
+public final class StandbyVirtualMachinePoolResourceUpdateProperties
+    implements JsonSerializable<StandbyVirtualMachinePoolResourceUpdateProperties> {
     /*
      * Specifies the elasticity profile of the standby virtual machine pools.
      */
-    @JsonProperty(value = "elasticityProfile")
     private StandbyVirtualMachinePoolElasticityProfile elasticityProfile;
 
     /*
      * Specifies the desired state of virtual machines in the pool.
      */
-    @JsonProperty(value = "virtualMachineState")
     private VirtualMachineState virtualMachineState;
 
     /*
      * Specifies the fully qualified resource ID of a virtual machine scale set the pool is attached to.
      */
-    @JsonProperty(value = "attachedVirtualMachineScaleSetId")
     private String attachedVirtualMachineScaleSetId;
 
     /**
@@ -110,5 +112,52 @@ public final class StandbyVirtualMachinePoolResourceUpdateProperties {
         if (elasticityProfile() != null) {
             elasticityProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("elasticityProfile", this.elasticityProfile);
+        jsonWriter.writeStringField("virtualMachineState",
+            this.virtualMachineState == null ? null : this.virtualMachineState.toString());
+        jsonWriter.writeStringField("attachedVirtualMachineScaleSetId", this.attachedVirtualMachineScaleSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StandbyVirtualMachinePoolResourceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StandbyVirtualMachinePoolResourceUpdateProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StandbyVirtualMachinePoolResourceUpdateProperties.
+     */
+    public static StandbyVirtualMachinePoolResourceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StandbyVirtualMachinePoolResourceUpdateProperties deserializedStandbyVirtualMachinePoolResourceUpdateProperties
+                = new StandbyVirtualMachinePoolResourceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("elasticityProfile".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceUpdateProperties.elasticityProfile
+                        = StandbyVirtualMachinePoolElasticityProfile.fromJson(reader);
+                } else if ("virtualMachineState".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceUpdateProperties.virtualMachineState
+                        = VirtualMachineState.fromString(reader.getString());
+                } else if ("attachedVirtualMachineScaleSetId".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceUpdateProperties.attachedVirtualMachineScaleSetId
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStandbyVirtualMachinePoolResourceUpdateProperties;
+        });
     }
 }

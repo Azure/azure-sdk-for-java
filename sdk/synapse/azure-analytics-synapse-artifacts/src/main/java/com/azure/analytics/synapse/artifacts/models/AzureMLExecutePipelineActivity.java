@@ -5,54 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Azure ML Execute Pipeline activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureMLExecutePipeline")
-@JsonFlatten
 @Fluent
 public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "AzureMLExecutePipeline";
+
+    /*
      * ID of the published Azure ML pipeline. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.mlPipelineId", required = true)
     private Object mlPipelineId;
 
     /*
-     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property
-     * of the published pipeline execution request. Type: string (or Expression with resultType string).
+     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.experimentName")
     private Object experimentName;
 
     /*
-     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline
-     * parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the
-     * published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
+     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
      */
-    @JsonProperty(value = "typeProperties.mlPipelineParameters")
     private Object mlPipelineParameters;
 
     /*
-     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the
-     * published pipeline execution request. Type: string (or Expression with resultType string).
+     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.mlParentRunId")
     private Object mlParentRunId;
 
     /*
-     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed
-     * in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression
-     * with resultType boolean).
+     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.continueOnStepFailure")
     private Object continueOnStepFailure;
 
     /**
@@ -62,8 +55,18 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with
-     * resultType string).
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the mlPipelineId value.
      */
@@ -72,8 +75,8 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with
-     * resultType string).
+     * Set the mlPipelineId property: ID of the published Azure ML pipeline. Type: string (or Expression with resultType
+     * string).
      * 
      * @param mlPipelineId the mlPipelineId value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
@@ -84,9 +87,9 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the experimentName property: Run history experiment name of the pipeline run. This information will be
-     * passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression
-     * with resultType string).
+     * Get the experimentName property: Run history experiment name of the pipeline run. This information will be passed
+     * in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the experimentName value.
      */
@@ -95,9 +98,9 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the experimentName property: Run history experiment name of the pipeline run. This information will be
-     * passed in the ExperimentName property of the published pipeline execution request. Type: string (or Expression
-     * with resultType string).
+     * Set the experimentName property: Run history experiment name of the pipeline run. This information will be passed
+     * in the ExperimentName property of the published pipeline execution request. Type: string (or Expression with
+     * resultType string).
      * 
      * @param experimentName the experimentName value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
@@ -135,8 +138,8 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
 
     /**
      * Get the mlParentRunId property: The parent Azure ML Service pipeline run id. This information will be passed in
-     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with
-     * resultType string).
+     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the mlParentRunId value.
      */
@@ -146,8 +149,8 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
 
     /**
      * Set the mlParentRunId property: The parent Azure ML Service pipeline run id. This information will be passed in
-     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with
-     * resultType string).
+     * the ParentRunId property of the published pipeline execution request. Type: string (or Expression with resultType
+     * string).
      * 
      * @param mlParentRunId the mlParentRunId value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
@@ -158,9 +161,9 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a
-     * step fails. This information will be passed in the continueOnStepFailure property of the published pipeline
-     * execution request. Type: boolean (or Expression with resultType boolean).
+     * Get the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a step
+     * fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution
+     * request. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the continueOnStepFailure value.
      */
@@ -169,9 +172,9 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a
-     * step fails. This information will be passed in the continueOnStepFailure property of the published pipeline
-     * execution request. Type: boolean (or Expression with resultType boolean).
+     * Set the continueOnStepFailure property: Whether to continue execution of other steps in the PipelineRun if a step
+     * fails. This information will be passed in the continueOnStepFailure property of the published pipeline execution
+     * request. Type: boolean (or Expression with resultType boolean).
      * 
      * @param continueOnStepFailure the continueOnStepFailure value to set.
      * @return the AzureMLExecutePipelineActivity object itself.
@@ -251,5 +254,117 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
     public AzureMLExecutePipelineActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (mlPipelineId != null
+            || experimentName != null
+            || mlPipelineParameters != null
+            || mlParentRunId != null
+            || continueOnStepFailure != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("mlPipelineId", this.mlPipelineId);
+            jsonWriter.writeUntypedField("experimentName", this.experimentName);
+            jsonWriter.writeUntypedField("mlPipelineParameters", this.mlPipelineParameters);
+            jsonWriter.writeUntypedField("mlParentRunId", this.mlParentRunId);
+            jsonWriter.writeUntypedField("continueOnStepFailure", this.continueOnStepFailure);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMLExecutePipelineActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMLExecutePipelineActivity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureMLExecutePipelineActivity.
+     */
+    public static AzureMLExecutePipelineActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMLExecutePipelineActivity deserializedAzureMLExecutePipelineActivity
+                = new AzureMLExecutePipelineActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedAzureMLExecutePipelineActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedAzureMLExecutePipelineActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureMLExecutePipelineActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("mlPipelineId".equals(fieldName)) {
+                            deserializedAzureMLExecutePipelineActivity.mlPipelineId = reader.readUntyped();
+                        } else if ("experimentName".equals(fieldName)) {
+                            deserializedAzureMLExecutePipelineActivity.experimentName = reader.readUntyped();
+                        } else if ("mlPipelineParameters".equals(fieldName)) {
+                            deserializedAzureMLExecutePipelineActivity.mlPipelineParameters = reader.readUntyped();
+                        } else if ("mlParentRunId".equals(fieldName)) {
+                            deserializedAzureMLExecutePipelineActivity.mlParentRunId = reader.readUntyped();
+                        } else if ("continueOnStepFailure".equals(fieldName)) {
+                            deserializedAzureMLExecutePipelineActivity.continueOnStepFailure = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureMLExecutePipelineActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureMLExecutePipelineActivity;
+        });
     }
 }

@@ -10,10 +10,9 @@ import com.azure.resourcemanager.avs.models.Endpoints;
 public final class EndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Endpoints model =
-            BinaryData
-                .fromString("{\"nsxtManager\":\"rsyn\",\"vcsa\":\"idybyxczf\",\"hcxCloudManager\":\"haaxdbabphl\"}")
-                .toObject(Endpoints.class);
+        Endpoints model = BinaryData.fromString(
+            "{\"nsxtManager\":\"tmut\",\"vcsa\":\"qktapspwgcuert\",\"hcxCloudManager\":\"kdosvqw\",\"nsxtManagerIp\":\"mdgbbjfdd\",\"vcenterIp\":\"bmbexppbhtqqro\",\"hcxCloudManagerIp\":\"p\"}")
+            .toObject(Endpoints.class);
     }
 
     @org.junit.jupiter.api.Test

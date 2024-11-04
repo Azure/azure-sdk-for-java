@@ -31,23 +31,28 @@ import com.azure.resourcemanager.search.models.PrivateLinkResourcesResult;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(SearchManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,50 +63,42 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "SearchManagementClie")
     public interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourcesResult>> listSupported(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<PrivateLinkResourcesResult>> listSupported(@HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("searchServiceName") String searchServiceName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported private link resource types for the given service along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all supported private link resource types for the given service along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSupportedSinglePageAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSupportedSinglePageAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,54 +110,39 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSupported(
-                            this.client.getEndpoint(),
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            searchServiceName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listSupported(this.client.getEndpoint(), clientRequestId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, searchServiceName,
+                accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported private link resource types for the given service along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of all supported private link resource types for the given service along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSupportedSinglePageAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSupportedSinglePageAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,53 +155,44 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSupported(
-                this.client.getEndpoint(),
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                searchServiceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listSupported(this.client.getEndpoint(), clientRequestId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, searchServiceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all supported private link resource types for the given service as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PrivateLinkResourceInner> listSupportedAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    public PagedFlux<PrivateLinkResourceInner> listSupportedAsync(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId) {
         return new PagedFlux<>(
             () -> listSupportedSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId));
     }
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all supported private link resource types for the given service as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateLinkResourceInner> listSupportedAsync(String resourceGroupName, String searchServiceName) {
@@ -230,37 +203,37 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all supported private link resource types for the given service as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listSupportedAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private PagedFlux<PrivateLinkResourceInner> listSupportedAsync(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId, Context context) {
         return new PagedFlux<>(
             () -> listSupportedSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId, context));
     }
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all supported private link resource types for the given service as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listSupported(String resourceGroupName, String searchServiceName) {
@@ -270,22 +243,22 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets a list of all supported private link resource types for the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all supported private link resource types for the given service as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listSupported(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    public PagedIterable<PrivateLinkResourceInner> listSupported(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId, Context context) {
         return new PagedIterable<>(listSupportedAsync(resourceGroupName, searchServiceName, clientRequestId, context));
     }
 }

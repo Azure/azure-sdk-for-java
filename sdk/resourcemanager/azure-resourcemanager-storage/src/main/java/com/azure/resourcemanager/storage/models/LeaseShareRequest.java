@@ -6,50 +6,53 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Lease Share request schema. */
+/**
+ * Lease Share request schema.
+ */
 @Fluent
-public final class LeaseShareRequest {
+public final class LeaseShareRequest implements JsonSerializable<LeaseShareRequest> {
     /*
      * Specifies the lease action. Can be one of the available actions.
      */
-    @JsonProperty(value = "action", required = true)
     private LeaseShareAction action;
 
     /*
      * Identifies the lease. Can be specified in any valid GUID string format.
      */
-    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /*
      * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds,
      * between 0 and 60.
      */
-    @JsonProperty(value = "breakPeriod")
     private Integer breakPeriod;
 
     /*
      * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that
      * never expires.
      */
-    @JsonProperty(value = "leaseDuration")
     private Integer leaseDuration;
 
     /*
      * Optional for acquire, required for change. Proposed lease ID, in a GUID string format.
      */
-    @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
 
-    /** Creates an instance of LeaseShareRequest class. */
+    /**
+     * Creates an instance of LeaseShareRequest class.
+     */
     public LeaseShareRequest() {
     }
 
     /**
      * Get the action property: Specifies the lease action. Can be one of the available actions.
-     *
+     * 
      * @return the action value.
      */
     public LeaseShareAction action() {
@@ -58,7 +61,7 @@ public final class LeaseShareRequest {
 
     /**
      * Set the action property: Specifies the lease action. Can be one of the available actions.
-     *
+     * 
      * @param action the action value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -69,7 +72,7 @@ public final class LeaseShareRequest {
 
     /**
      * Get the leaseId property: Identifies the lease. Can be specified in any valid GUID string format.
-     *
+     * 
      * @return the leaseId value.
      */
     public String leaseId() {
@@ -78,7 +81,7 @@ public final class LeaseShareRequest {
 
     /**
      * Set the leaseId property: Identifies the lease. Can be specified in any valid GUID string format.
-     *
+     * 
      * @param leaseId the leaseId value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -90,7 +93,7 @@ public final class LeaseShareRequest {
     /**
      * Get the breakPeriod property: Optional. For a break action, proposed duration the lease should continue before it
      * is broken, in seconds, between 0 and 60.
-     *
+     * 
      * @return the breakPeriod value.
      */
     public Integer breakPeriod() {
@@ -100,7 +103,7 @@ public final class LeaseShareRequest {
     /**
      * Set the breakPeriod property: Optional. For a break action, proposed duration the lease should continue before it
      * is broken, in seconds, between 0 and 60.
-     *
+     * 
      * @param breakPeriod the breakPeriod value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -112,7 +115,7 @@ public final class LeaseShareRequest {
     /**
      * Get the leaseDuration property: Required for acquire. Specifies the duration of the lease, in seconds, or
      * negative one (-1) for a lease that never expires.
-     *
+     * 
      * @return the leaseDuration value.
      */
     public Integer leaseDuration() {
@@ -122,7 +125,7 @@ public final class LeaseShareRequest {
     /**
      * Set the leaseDuration property: Required for acquire. Specifies the duration of the lease, in seconds, or
      * negative one (-1) for a lease that never expires.
-     *
+     * 
      * @param leaseDuration the leaseDuration value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -134,7 +137,7 @@ public final class LeaseShareRequest {
     /**
      * Get the proposedLeaseId property: Optional for acquire, required for change. Proposed lease ID, in a GUID string
      * format.
-     *
+     * 
      * @return the proposedLeaseId value.
      */
     public String proposedLeaseId() {
@@ -144,7 +147,7 @@ public final class LeaseShareRequest {
     /**
      * Set the proposedLeaseId property: Optional for acquire, required for change. Proposed lease ID, in a GUID string
      * format.
-     *
+     * 
      * @param proposedLeaseId the proposedLeaseId value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -155,16 +158,64 @@ public final class LeaseShareRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model LeaseShareRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model LeaseShareRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LeaseShareRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("leaseId", this.leaseId);
+        jsonWriter.writeNumberField("breakPeriod", this.breakPeriod);
+        jsonWriter.writeNumberField("leaseDuration", this.leaseDuration);
+        jsonWriter.writeStringField("proposedLeaseId", this.proposedLeaseId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LeaseShareRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LeaseShareRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LeaseShareRequest.
+     */
+    public static LeaseShareRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LeaseShareRequest deserializedLeaseShareRequest = new LeaseShareRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedLeaseShareRequest.action = LeaseShareAction.fromString(reader.getString());
+                } else if ("leaseId".equals(fieldName)) {
+                    deserializedLeaseShareRequest.leaseId = reader.getString();
+                } else if ("breakPeriod".equals(fieldName)) {
+                    deserializedLeaseShareRequest.breakPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("leaseDuration".equals(fieldName)) {
+                    deserializedLeaseShareRequest.leaseDuration = reader.getNullable(JsonReader::getInt);
+                } else if ("proposedLeaseId".equals(fieldName)) {
+                    deserializedLeaseShareRequest.proposedLeaseId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLeaseShareRequest;
+        });
+    }
 }

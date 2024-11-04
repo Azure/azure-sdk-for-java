@@ -62,7 +62,9 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None,
+          clientInterceptors = None)
       ),
       (
         "StandardCtorWithEmptyPreferredRegions",
@@ -86,7 +88,9 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None,
+          clientInterceptors = None)
       ),
       (
         "StandardCtorWithOnePreferredRegion",
@@ -110,7 +114,9 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None,
+          clientInterceptors = None)
       ),
       (
         "StandardCtorWithTwoPreferredRegions",
@@ -134,7 +140,9 @@ class CosmosClientCacheITest
           tenantId = None,
           resourceGroupName = None,
           azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
-          sparkEnvironmentInfo = "")
+          sparkEnvironmentInfo = "",
+          clientBuilderInterceptors = None,
+          clientInterceptors = None)
       )
     )
 
@@ -165,7 +173,9 @@ class CosmosClientCacheITest
         userConfig.tenantId,
         userConfig.resourceGroupName,
         userConfig.azureEnvironmentEndpoints,
-        sparkEnvironmentInfo = ""
+        sparkEnvironmentInfo = "",
+        clientBuilderInterceptors = None,
+        clientInterceptors = None
       )
 
       logInfo(s"TestCase: {$testCaseName}")
@@ -180,9 +190,9 @@ class CosmosClientCacheITest
             Some(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
            ))
            .to(clients2 => {
-             clients2(0).get.cosmosClient should be theSameInstanceAs clients(0).get.cosmosClient
-             clients2(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
-             clients(0).get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
+             clients2.head.get.cosmosClient should be theSameInstanceAs clients.head.get.cosmosClient
+             clients2.head.get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
+             clients.head.get.sparkCatalogClient.isInstanceOf[CosmosCatalogCosmosSDKClient] should be
 
                val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
@@ -213,7 +223,7 @@ class CosmosClientCacheITest
         ))
         .to(clients2 => {
 
-         clients2(0).get shouldNot be theSameInstanceAs clients(0).get
+         clients2.head.get shouldNot be theSameInstanceAs clients.head.get
           CosmosClientCache.purge(userConfig)
         })
      })
@@ -231,8 +241,8 @@ class CosmosClientCacheITest
       Some(CosmosClientCache(userConfig, Option(cosmosClientCacheSnapshot), "CosmosClientCacheITest-05"))
      ))
      .to(clients => {
-       clients(0).get shouldBe a[CosmosClientCacheItem]
-       clients(0).get.cosmosClient shouldBe a[CosmosAsyncClient]
+       clients.head.get shouldBe a[CosmosClientCacheItem]
+       clients.head.get.cosmosClient shouldBe a[CosmosAsyncClient]
        CosmosClientCache.purge(userConfig)
      })
   }

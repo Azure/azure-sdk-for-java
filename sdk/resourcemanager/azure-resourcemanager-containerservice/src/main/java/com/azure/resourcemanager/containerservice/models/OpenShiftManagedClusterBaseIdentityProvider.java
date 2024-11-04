@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Structure for any Identity provider.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = OpenShiftManagedClusterBaseIdentityProvider.class)
-@JsonTypeName("OpenShiftManagedClusterBaseIdentityProvider")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AADIdentityProvider", value = OpenShiftManagedClusterAadIdentityProvider.class) })
 @Immutable
-public class OpenShiftManagedClusterBaseIdentityProvider {
+public class OpenShiftManagedClusterBaseIdentityProvider
+    implements JsonSerializable<OpenShiftManagedClusterBaseIdentityProvider> {
+    /*
+     * The kind of the provider.
+     */
+    private String kind = "OpenShiftManagedClusterBaseIdentityProvider";
+
     /**
      * Creates an instance of OpenShiftManagedClusterBaseIdentityProvider class.
      */
     public OpenShiftManagedClusterBaseIdentityProvider() {
+    }
+
+    /**
+     * Get the kind property: The kind of the provider.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
     }
 
     /**
@@ -34,5 +43,68 @@ public class OpenShiftManagedClusterBaseIdentityProvider {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenShiftManagedClusterBaseIdentityProvider from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenShiftManagedClusterBaseIdentityProvider if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenShiftManagedClusterBaseIdentityProvider.
+     */
+    public static OpenShiftManagedClusterBaseIdentityProvider fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AADIdentityProvider".equals(discriminatorValue)) {
+                    return OpenShiftManagedClusterAadIdentityProvider.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static OpenShiftManagedClusterBaseIdentityProvider fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenShiftManagedClusterBaseIdentityProvider deserializedOpenShiftManagedClusterBaseIdentityProvider
+                = new OpenShiftManagedClusterBaseIdentityProvider();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterBaseIdentityProvider.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenShiftManagedClusterBaseIdentityProvider;
+        });
     }
 }

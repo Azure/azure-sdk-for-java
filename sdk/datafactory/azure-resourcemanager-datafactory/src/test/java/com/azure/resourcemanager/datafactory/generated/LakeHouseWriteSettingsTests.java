@@ -13,19 +13,18 @@ public final class LakeHouseWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"kwwdkkvdevdvkey\",\"maxConcurrentConnections\":\"datajchd\",\"disableMetricsCollection\":\"dataxeiluexvmlg\",\"copyBehavior\":\"datapsqpfxjwta\",\"metadata\":[{\"name\":\"datagu\",\"value\":\"datadyxrjjdjiki\"},{\"name\":\"datazubgddk\",\"value\":\"datavq\"},{\"name\":\"datauq\",\"value\":\"datalwnxryyqtjcrpax\"},{\"name\":\"datalfxse\",\"value\":\"datad\"}],\"\":{\"zhdciuxotb\":\"dataldmxfqftywbba\"}}")
+            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"datac\",\"disableMetricsCollection\":\"datamjkydhbe\",\"copyBehavior\":\"datavozrdzrik\",\"metadata\":[{\"name\":\"datavvrkxpbjgozoel\",\"value\":\"dataerpbct\"},{\"name\":\"datarvns\",\"value\":\"dataacbrywqqeztlf\"},{\"name\":\"datalgxrsn\",\"value\":\"datarooaahhvsf\"}],\"\":{\"vtx\":\"datakink\",\"njhdkvkqjjouho\":\"datagmebvn\",\"khvcrjqzbmyftz\":\"datakcttpcctvcjdrmkn\",\"fzsegu\":\"dataxfgosrbullq\"}}")
             .toObject(LakeHouseWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datajchd")
-            .withDisableMetricsCollection("dataxeiluexvmlg")
-            .withCopyBehavior("datapsqpfxjwta")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datagu").withValue("datadyxrjjdjiki"),
-                new MetadataItem().withName("datazubgddk").withValue("datavq"),
-                new MetadataItem().withName("datauq").withValue("datalwnxryyqtjcrpax"),
-                new MetadataItem().withName("datalfxse").withValue("datad")));
+        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datac")
+            .withDisableMetricsCollection("datamjkydhbe")
+            .withCopyBehavior("datavozrdzrik")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datavvrkxpbjgozoel").withValue("dataerpbct"),
+                new MetadataItem().withName("datarvns").withValue("dataacbrywqqeztlf"),
+                new MetadataItem().withName("datalgxrsn").withValue("datarooaahhvsf")));
         model = BinaryData.fromObject(model).toObject(LakeHouseWriteSettings.class);
     }
 }

@@ -809,8 +809,10 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     public SyncPoller<PollResult<ManagedPrivateEndpointModelInner>, ManagedPrivateEndpointModelInner> beginCreate(
         String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
         ManagedPrivateEndpointModelInner requestBodyParameters, Context context) {
-        return this.beginCreateAsync(resourceGroupName, workspaceName, managedPrivateEndpointName,
-            requestBodyParameters, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -829,7 +831,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     private Mono<ManagedPrivateEndpointModelInner> createAsync(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointModelInner requestBodyParameters) {
         return beginCreateAsync(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1075,8 +1078,10 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     public SyncPoller<PollResult<ManagedPrivateEndpointModelInner>, ManagedPrivateEndpointModelInner> beginUpdate(
         String resourceGroupName, String workspaceName, String managedPrivateEndpointName,
         ManagedPrivateEndpointUpdateParameters requestBodyParameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, workspaceName, managedPrivateEndpointName,
-            requestBodyParameters, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1095,7 +1100,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     private Mono<ManagedPrivateEndpointModelInner> updateAsync(String resourceGroupName, String workspaceName,
         String managedPrivateEndpointName, ManagedPrivateEndpointUpdateParameters requestBodyParameters) {
         return beginUpdateAsync(resourceGroupName, workspaceName, managedPrivateEndpointName, requestBodyParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

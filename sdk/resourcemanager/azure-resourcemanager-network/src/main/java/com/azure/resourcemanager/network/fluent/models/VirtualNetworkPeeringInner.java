@@ -6,13 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Peerings in a virtual network resource.
@@ -22,25 +26,21 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /*
      * Properties of the virtual network peering.
      */
-    @JsonProperty(value = "properties")
     private VirtualNetworkPeeringPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
@@ -194,10 +194,10 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set
-     * to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote
-     * virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual
-     * network already has a gateway.
+     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
+     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
+     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
+     * already has a gateway.
      * 
      * @return the useRemoteGateways value.
      */
@@ -206,10 +206,10 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set
-     * to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote
-     * virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual
-     * network already has a gateway.
+     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
+     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
+     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
+     * already has a gateway.
      * 
      * @param useRemoteGateways the useRemoteGateways value to set.
      * @return the VirtualNetworkPeeringInner object itself.
@@ -246,6 +246,55 @@ public final class VirtualNetworkPeeringInner extends SubResource {
             this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
         }
         this.innerProperties().withRemoteVirtualNetwork(remoteVirtualNetwork);
+        return this;
+    }
+
+    /**
+     * Get the localAddressSpace property: The local address space of the local virtual network that is peered.
+     * 
+     * @return the localAddressSpace value.
+     */
+    public AddressSpace localAddressSpace() {
+        return this.innerProperties() == null ? null : this.innerProperties().localAddressSpace();
+    }
+
+    /**
+     * Set the localAddressSpace property: The local address space of the local virtual network that is peered.
+     * 
+     * @param localAddressSpace the localAddressSpace value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withLocalAddressSpace(AddressSpace localAddressSpace) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withLocalAddressSpace(localAddressSpace);
+        return this;
+    }
+
+    /**
+     * Get the localVirtualNetworkAddressSpace property: The current local address space of the local virtual network
+     * that is peered.
+     * 
+     * @return the localVirtualNetworkAddressSpace value.
+     */
+    public AddressSpace localVirtualNetworkAddressSpace() {
+        return this.innerProperties() == null ? null : this.innerProperties().localVirtualNetworkAddressSpace();
+    }
+
+    /**
+     * Set the localVirtualNetworkAddressSpace property: The current local address space of the local virtual network
+     * that is peered.
+     * 
+     * @param localVirtualNetworkAddressSpace the localVirtualNetworkAddressSpace value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner
+        withLocalVirtualNetworkAddressSpace(AddressSpace localVirtualNetworkAddressSpace) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withLocalVirtualNetworkAddressSpace(localVirtualNetworkAddressSpace);
         return this;
     }
 
@@ -418,6 +467,100 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
+     * Get the peerCompleteVnets property: Whether complete virtual network address space is peered.
+     * 
+     * @return the peerCompleteVnets value.
+     */
+    public Boolean peerCompleteVnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().peerCompleteVnets();
+    }
+
+    /**
+     * Set the peerCompleteVnets property: Whether complete virtual network address space is peered.
+     * 
+     * @param peerCompleteVnets the peerCompleteVnets value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withPeerCompleteVnets(Boolean peerCompleteVnets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withPeerCompleteVnets(peerCompleteVnets);
+        return this;
+    }
+
+    /**
+     * Get the enableOnlyIPv6Peering property: Whether only Ipv6 address space is peered for subnet peering.
+     * 
+     * @return the enableOnlyIPv6Peering value.
+     */
+    public Boolean enableOnlyIPv6Peering() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableOnlyIPv6Peering();
+    }
+
+    /**
+     * Set the enableOnlyIPv6Peering property: Whether only Ipv6 address space is peered for subnet peering.
+     * 
+     * @param enableOnlyIPv6Peering the enableOnlyIPv6Peering value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withEnableOnlyIPv6Peering(Boolean enableOnlyIPv6Peering) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withEnableOnlyIPv6Peering(enableOnlyIPv6Peering);
+        return this;
+    }
+
+    /**
+     * Get the localSubnetNames property: List of local subnet names that are subnet peered with remote virtual network.
+     * 
+     * @return the localSubnetNames value.
+     */
+    public List<String> localSubnetNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().localSubnetNames();
+    }
+
+    /**
+     * Set the localSubnetNames property: List of local subnet names that are subnet peered with remote virtual network.
+     * 
+     * @param localSubnetNames the localSubnetNames value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withLocalSubnetNames(List<String> localSubnetNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withLocalSubnetNames(localSubnetNames);
+        return this;
+    }
+
+    /**
+     * Get the remoteSubnetNames property: List of remote subnet names from remote virtual network that are subnet
+     * peered.
+     * 
+     * @return the remoteSubnetNames value.
+     */
+    public List<String> remoteSubnetNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().remoteSubnetNames();
+    }
+
+    /**
+     * Set the remoteSubnetNames property: List of remote subnet names from remote virtual network that are subnet
+     * peered.
+     * 
+     * @param remoteSubnetNames the remoteSubnetNames value to set.
+     * @return the VirtualNetworkPeeringInner object itself.
+     */
+    public VirtualNetworkPeeringInner withRemoteSubnetNames(List<String> remoteSubnetNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
+        }
+        this.innerProperties().withRemoteSubnetNames(remoteSubnetNames);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -426,5 +569,53 @@ public final class VirtualNetworkPeeringInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPeeringInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPeeringInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPeeringInner.
+     */
+    public static VirtualNetworkPeeringInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPeeringInner deserializedVirtualNetworkPeeringInner = new VirtualNetworkPeeringInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringInner.innerProperties
+                        = VirtualNetworkPeeringPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPeeringInner;
+        });
     }
 }

@@ -4,6 +4,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: eventgrid
+    Location: eastus
     TimeoutInMinutes: 60
     MaxParallel: 7
     Artifacts:

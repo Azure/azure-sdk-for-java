@@ -6,8 +6,12 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.TimeSeriesBaseline;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -15,29 +19,25 @@ import java.util.List;
  * The baseline results of a single metric.
  */
 @Fluent
-public final class SingleMetricBaselineInner {
+public final class SingleMetricBaselineInner implements JsonSerializable<SingleMetricBaselineInner> {
     /*
      * The metric baseline Id.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The resource type of the metric baseline resource.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * The name of the metric for which the baselines were retrieved.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The metric baseline properties of the metric.
      */
-    @JsonProperty(value = "properties", required = true)
     private MetricBaselinesProperties innerProperties = new MetricBaselinesProperties();
 
     /**
@@ -222,24 +222,71 @@ public final class SingleMetricBaselineInner {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model SingleMetricBaselineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SingleMetricBaselineInner"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model SingleMetricBaselineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model SingleMetricBaselineInner"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SingleMetricBaselineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SingleMetricBaselineInner"));
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model SingleMetricBaselineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SingleMetricBaselineInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SingleMetricBaselineInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SingleMetricBaselineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SingleMetricBaselineInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SingleMetricBaselineInner.
+     */
+    public static SingleMetricBaselineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SingleMetricBaselineInner deserializedSingleMetricBaselineInner = new SingleMetricBaselineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSingleMetricBaselineInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSingleMetricBaselineInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSingleMetricBaselineInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSingleMetricBaselineInner.innerProperties = MetricBaselinesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSingleMetricBaselineInner;
+        });
+    }
 }

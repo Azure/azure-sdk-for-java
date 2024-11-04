@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ServiceNowAuthenticationType extends ExpandableStringEnum<Ser
      * @param name a name to look for.
      * @return the corresponding ServiceNowAuthenticationType.
      */
-    @JsonCreator
     public static ServiceNowAuthenticationType fromString(String name) {
         return fromString(name, ServiceNowAuthenticationType.class);
     }

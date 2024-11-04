@@ -10,8 +10,5 @@ extends:
         groupId: com.azure
         safeName: azureaipersonalizer
     EnvVars:
-        AZURE_TENANT_ID: $(PERSONALIZER_TENANT_ID)
-        AZURE_CLIENT_ID: $(PERSONALIZER_CLIENT_ID)
-        AZURE_CLIENT_SECRET: $(PERSONALIZER_CLIENT_SECRET)
         PERSONALIZER_ENDPOINT_STATIC: $(java-personalizer-test-singleslot-endpoint)
         PERSONALIZER_API_KEY_STATIC: $(java-personalizer-test-singleslot-api-key)

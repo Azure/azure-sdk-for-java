@@ -238,7 +238,7 @@ public final class TableServiceAsyncClient {
     private final HttpPipeline pipeline;
 
     TableServiceAsyncClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
-                            SerializerAdapter serializerAdapter) {
+        SerializerAdapter serializerAdapter) {
 
         try {
             final URI uri = URI.create(url);
@@ -249,8 +249,7 @@ public final class TableServiceAsyncClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.implementation = new AzureTableImplBuilder()
-            .serializerAdapter(serializerAdapter)
+        this.implementation = new AzureTableImplBuilder().serializerAdapter(serializerAdapter)
             .url(url)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
@@ -349,8 +348,7 @@ public final class TableServiceAsyncClient {
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     public TableAsyncClient getTableClient(String tableName) {
-        return new TableClientBuilder()
-            .pipeline(this.implementation.getHttpPipeline())
+        return new TableClientBuilder().pipeline(this.implementation.getHttpPipeline())
             .serviceVersion(this.getServiceVersion())
             .endpoint(this.getServiceEndpoint())
             .tableName(tableName)
@@ -412,7 +410,6 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<TableAsyncClient>> createTableWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
@@ -426,7 +423,8 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableAsyncClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
@@ -451,7 +449,8 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableAsyncClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
@@ -479,12 +478,11 @@ public final class TableServiceAsyncClient {
 
     Mono<Response<TableAsyncClient>> createTableIfNotExistsWithResponse(String tableName, Context context) {
         return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceException
-                && ((TableServiceException) e).getResponse() != null
-                && ((TableServiceException) e).getResponse().getStatusCode() == 409,
-            e -> {
+            && ((TableServiceException) e).getResponse() != null
+            && ((TableServiceException) e).getResponse().getStatusCode() == 409, e -> {
                 HttpResponse response = ((TableServiceException) e).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
+                    response.getHeaders(), getTableClient(tableName)));
             });
     }
 
@@ -542,10 +540,9 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteTableWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context);
-
         try {
-            return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            return implementation.getTables()
+                .deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -599,14 +596,12 @@ public final class TableServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableItem> listTables(ListTablesOptions options) {
-        return new PagedFlux<>(
-            () -> withContext(context -> listTablesFirstPage(context, options)),
+        return new PagedFlux<>(() -> withContext(context -> listTablesFirstPage(context, options)),
             token -> withContext(context -> listTablesNextPage(token, context, options)));
     }
 
     PagedFlux<TableItem> listTables(ListTablesOptions options, Context context, Duration timeout) {
-        return new PagedFlux<>(
-            () -> applyOptionalTimeout(listTablesFirstPage(context, options), timeout),
+        return new PagedFlux<>(() -> applyOptionalTimeout(listTablesFirstPage(context, options), timeout),
             token -> applyOptionalTimeout(listTablesNextPage(token, context, options), timeout));
     }
 
@@ -619,7 +614,7 @@ public final class TableServiceAsyncClient {
     }
 
     private Mono<PagedResponse<TableItem>> listTablesNextPage(String token, Context context,
-                                                              ListTablesOptions options) {
+        ListTablesOptions options) {
         try {
             return listTables(token, context, options);
         } catch (RuntimeException e) {
@@ -628,15 +623,14 @@ public final class TableServiceAsyncClient {
     }
 
     private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
-                                                      ListTablesOptions options) {
-        context = TableUtils.setContext(context);
-        QueryOptions queryOptions = new QueryOptions()
-            .setFilter(options.getFilter())
+        ListTablesOptions options) {
+        QueryOptions queryOptions = new QueryOptions().setFilter(options.getFilter())
             .setTop(options.getTop())
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         try {
-            return implementation.getTables().queryWithResponseAsync(null, nextTableName, queryOptions, context)
+            return implementation.getTables()
+                .queryWithResponseAsync(null, nextTableName, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
                     TableQueryResponse tableQueryResponse = response.getValue();
@@ -652,7 +646,8 @@ public final class TableServiceAsyncClient {
                     }
 
                     final List<TableItem> tables = tableResponsePropertiesList.stream()
-                        .map(TableItemAccessHelper::createItem).collect(Collectors.toList());
+                        .map(TableItemAccessHelper::createItem)
+                        .collect(Collectors.toList());
 
                     return Mono.just(new TablePaged(response, tables,
                         response.getDeserializedHeaders().getXMsContinuationNextTableName()));
@@ -718,12 +713,11 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<TableServiceProperties>> getPropertiesWithResponse(Context context) {
-        context = TableUtils.setContext(context);
-
         try {
-            return this.implementation.getServices().getPropertiesWithResponseAsync(null, null, context)
+            return this.implementation.getServices()
+                .getPropertiesWithResponseAsync(null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response -> new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -809,20 +803,15 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        context = TableUtils.setContext(context);
-
         try {
-            return
-                this.implementation.getServices()
-                    .setPropertiesWithResponseAsync(TableUtils.toImplTableServiceProperties(tableServiceProperties), null, null,
-                        context)
-                    .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                    .map(response -> new SimpleResponse<>(response, null));
+            return this.implementation.getServices()
+                .setPropertiesWithResponseAsync(tableServiceProperties, null, null, context)
+                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
+                .map(response -> new SimpleResponse<>(response, null));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
-
 
     /**
      * Retrieves statistics related to replication for the account's Table service. It is only available on the
@@ -879,12 +868,11 @@ public final class TableServiceAsyncClient {
     }
 
     Mono<Response<TableServiceStatistics>> getStatisticsWithResponse(Context context) {
-        context = TableUtils.setContext(context);
-
         try {
-            return this.implementation.getServices().getStatisticsWithResponseAsync(null, null, context)
+            return this.implementation.getServices()
+                .getStatisticsWithResponseAsync(null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response -> new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

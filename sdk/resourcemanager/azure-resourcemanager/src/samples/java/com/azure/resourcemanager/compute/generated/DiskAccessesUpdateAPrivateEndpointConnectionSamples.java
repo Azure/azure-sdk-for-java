@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionStat
 public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
      * DiskAccessPrivateEndpointConnection_Approve.json
      */
     /**
@@ -24,11 +24,14 @@ public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
      */
     public static void approveAPrivateEndpointConnectionUnderADiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().updateAPrivateEndpointConnection(
-            "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("Approving myPrivateEndpointConnection")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .updateAPrivateEndpointConnection("myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Approving myPrivateEndpointConnection")),
+                com.azure.core.util.Context.NONE);
     }
 }

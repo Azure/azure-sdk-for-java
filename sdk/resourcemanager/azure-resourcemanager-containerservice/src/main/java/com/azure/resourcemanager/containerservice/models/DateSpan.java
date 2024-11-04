@@ -6,8 +6,13 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A date range.
@@ -15,17 +20,15 @@ import java.time.LocalDate;
  * For example, between '2022-12-23' and '2023-01-05'.
  */
 @Fluent
-public final class DateSpan {
+public final class DateSpan implements JsonSerializable<DateSpan> {
     /*
      * The start date of the date span.
      */
-    @JsonProperty(value = "start", required = true)
     private LocalDate start;
 
     /*
      * The end date of the date span.
      */
-    @JsonProperty(value = "end", required = true)
     private LocalDate end;
 
     /**
@@ -81,14 +84,55 @@ public final class DateSpan {
      */
     public void validate() {
         if (start() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property start in model DateSpan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property start in model DateSpan"));
         }
         if (end() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property end in model DateSpan"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property end in model DateSpan"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DateSpan.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("start", Objects.toString(this.start, null));
+        jsonWriter.writeStringField("end", Objects.toString(this.end, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DateSpan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DateSpan if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DateSpan.
+     */
+    public static DateSpan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DateSpan deserializedDateSpan = new DateSpan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("start".equals(fieldName)) {
+                    deserializedDateSpan.start
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("end".equals(fieldName)) {
+                    deserializedDateSpan.end
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDateSpan;
+        });
+    }
 }

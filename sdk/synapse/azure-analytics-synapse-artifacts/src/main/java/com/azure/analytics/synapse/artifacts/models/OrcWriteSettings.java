@@ -5,35 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Orc write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("OrcWriteSettings")
 @Fluent
 public final class OrcWriteSettings extends FormatWriteSettings {
     /*
-     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
-     * Expression with resultType integer).
+     * The write setting type.
      */
-    @JsonProperty(value = "maxRowsPerFile")
+    private String type = "OrcWriteSettings";
+
+    /*
+     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with resultType integer).
+     */
     private Object maxRowsPerFile;
 
     /*
-     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
-     * without partitionOptions. Type: string (or Expression with resultType string).
+     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store without partitionOptions. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
     /**
      * Creates an instance of OrcWriteSettings class.
      */
     public OrcWriteSettings() {
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -80,5 +92,58 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     public OrcWriteSettings setFileNamePrefix(Object fileNamePrefix) {
         this.fileNamePrefix = fileNamePrefix;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrcWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrcWriteSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrcWriteSettings.
+     */
+    public static OrcWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrcWriteSettings deserializedOrcWriteSettings = new OrcWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedOrcWriteSettings.type = reader.getString();
+                } else if ("maxRowsPerFile".equals(fieldName)) {
+                    deserializedOrcWriteSettings.maxRowsPerFile = reader.readUntyped();
+                } else if ("fileNamePrefix".equals(fieldName)) {
+                    deserializedOrcWriteSettings.fileNamePrefix = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOrcWriteSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedOrcWriteSettings;
+        });
     }
 }

@@ -8,20 +8,22 @@ import com.azure.resourcemanager.synapse.models.DefaultPrincipalsModificationKin
 import com.azure.resourcemanager.synapse.models.TableLevelSharingProperties;
 import java.util.Arrays;
 
-/** Samples for KustoPoolAttachedDatabaseConfigurations CreateOrUpdate. */
+/**
+ * Samples for KustoPoolAttachedDatabaseConfigurations CreateOrUpdate.
+ */
 public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolAttachedDatabaseConfigurationsCreateOrUpdate(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolAttachedDatabaseConfigurations()
+        manager.kustoPoolAttachedDatabaseConfigurations()
             .define("attachedDatabaseConfigurations1")
             .withExistingKustoPool("kustorptest", "kustoclusterrptest4", "kustorptest")
             .withRegion("westus")
@@ -30,8 +32,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateSamples 
                 "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Synapse/Workspaces/kustorptest/KustoPools/kustoclusterrptest4")
             .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
             .withTableLevelSharingProperties(
-                new TableLevelSharingProperties()
-                    .withTablesToInclude(Arrays.asList("Table1"))
+                new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("Table1"))
                     .withTablesToExclude(Arrays.asList("Table2"))
                     .withExternalTablesToInclude(Arrays.asList("ExternalTable1"))
                     .withExternalTablesToExclude(Arrays.asList("ExternalTable2"))

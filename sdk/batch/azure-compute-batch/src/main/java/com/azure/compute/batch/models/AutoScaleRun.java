@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,13 +27,15 @@ public final class AutoScaleRun implements JsonSerializable<AutoScaleRun> {
     private final OffsetDateTime timestamp;
 
     /*
-     * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is
+     * returned in the form $variable=value, and variables are separated by semicolons.
      */
     @Generated
     private String results;
 
     /*
-     * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was unsuccessful.
+     * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was
+     * unsuccessful.
      */
     @Generated
     private AutoScaleRunError error;
@@ -112,7 +115,8 @@ public final class AutoScaleRun implements JsonSerializable<AutoScaleRun> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("timestamp".equals(fieldName)) {
-                    timestamp = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("results".equals(fieldName)) {
                     results = reader.getString();
                 } else if ("error".equals(fieldName)) {

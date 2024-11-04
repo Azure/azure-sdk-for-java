@@ -49,8 +49,7 @@ import reactor.core.publisher.Mono;
  *
  * <!-- src_embed com.azure.identity.credential.azuredeveloperclicredential.construct -->
  * <pre>
- * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azuredeveloperclicredential.construct -->
  *
@@ -70,9 +69,8 @@ public class AzureDeveloperCliCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     AzureDeveloperCliCredential(String tenantId, IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
-            .identityClientOptions(identityClientOptions);
+        IdentityClientBuilder builder
+            = new IdentityClientBuilder().tenantId(tenantId).identityClientOptions(identityClientOptions);
 
         identityClient = builder.build();
         identitySyncClient = builder.buildSyncClient();
@@ -82,8 +80,8 @@ public class AzureDeveloperCliCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureDeveloperCli(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error))
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
             .onErrorMap(error -> {
                 if (identityClient.getIdentityClientOptions().isChained()) {
                     return new CredentialUnavailableException(error.getMessage(), error);

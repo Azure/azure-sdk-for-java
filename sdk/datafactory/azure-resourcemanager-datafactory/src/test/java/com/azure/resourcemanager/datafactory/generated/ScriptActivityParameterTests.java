@@ -14,23 +14,23 @@ public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityParameter model = BinaryData.fromString(
-            "{\"name\":\"datattoplx\",\"type\":\"Timespan\",\"value\":\"dataliyikcnlb\",\"direction\":\"InputOutput\",\"size\":401356233}")
+            "{\"name\":\"datawtxtetwqklz\",\"type\":\"Boolean\",\"value\":\"datazwlrhrvkneozpl\",\"direction\":\"InputOutput\",\"size\":1399462246}")
             .toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.TIMESPAN, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.BOOLEAN, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.direction());
-        Assertions.assertEquals(401356233, model.size());
+        Assertions.assertEquals(1399462246, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model = new ScriptActivityParameter().withName("datattoplx")
-            .withType(ScriptActivityParameterType.TIMESPAN)
-            .withValue("dataliyikcnlb")
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("datawtxtetwqklz")
+            .withType(ScriptActivityParameterType.BOOLEAN)
+            .withValue("datazwlrhrvkneozpl")
             .withDirection(ScriptActivityParameterDirection.INPUT_OUTPUT)
-            .withSize(401356233);
+            .withSize(1399462246);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.TIMESPAN, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.BOOLEAN, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.INPUT_OUTPUT, model.direction());
-        Assertions.assertEquals(401356233, model.size());
+        Assertions.assertEquals(1399462246, model.size());
     }
 }

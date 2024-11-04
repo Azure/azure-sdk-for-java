@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ProvisioningIssueSeverity extends ExpandableStringEnum<Provis
      * @param name a name to look for.
      * @return the corresponding ProvisioningIssueSeverity.
      */
-    @JsonCreator
     public static ProvisioningIssueSeverity fromString(String name) {
         return fromString(name, ProvisioningIssueSeverity.class);
     }

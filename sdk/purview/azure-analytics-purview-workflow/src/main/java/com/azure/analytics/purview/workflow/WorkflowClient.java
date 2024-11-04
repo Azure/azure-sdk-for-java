@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowClientBuilder.class)
 public final class WorkflowClient {
-    @Generated private final WorkflowsOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowsOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowClient class.
@@ -130,10 +131,10 @@ public final class WorkflowClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceWithResponse(
-            String workflowId, BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceWithResponse(
-                workflowId, workflowCreateOrUpdateCommand, requestOptions);
+    public Response<BinaryData> createOrReplaceWithResponse(String workflowId, BinaryData workflowCreateOrUpdateCommand,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceWithResponse(workflowId, workflowCreateOrUpdateCommand,
+            requestOptions);
     }
 
     /**
@@ -204,8 +205,8 @@ public final class WorkflowClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateWithResponse(
-            String workflowId, BinaryData workflowValidateQuery, RequestOptions requestOptions) {
+    public Response<BinaryData> validateWithResponse(String workflowId, BinaryData workflowValidateQuery,
+        RequestOptions requestOptions) {
         return this.serviceClient.validateWithResponse(workflowId, workflowValidateQuery, requestOptions);
     }
 }

@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
-
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -22,43 +22,38 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
 
     private final String snapshotName;
 
+    private final FeatureFlagClient featureFlagClient;
+
+    private List<ConfigurationSetting> featureFlagsList = new ArrayList<>();
+
     AppConfigurationSnapshotPropertySource(String name, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName,
+        FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        // super(snapshotName + originEndpoint + "/", replicaClient, maxRetryTime);
         super(name, replicaClient, keyVaultClientFactory, null, null);
         this.snapshotName = snapshotName;
+        this.featureFlagClient = featureFlagClient;
     }
 
     /**
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * 
+     *
      * @param trim prefix to trim
-     * @throws JsonProcessingException thrown if fails to parse Json content type
+     * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws JsonProcessingException {
+    public void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException {
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
+
+        FeatureFlags featureFlags = new FeatureFlags(null, featureFlagsList);
+        featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
     @Override
-    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
-        throws JsonProcessingException {
+    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
         // Feature Flags are only part of this if they come from a snapshot
-        processFeatureFlag(key, setting, trimStrings);
-    }
-    
-    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
-        TracingInfo tracing = replicaClient.getTracingInfo();
-        featureConfigurationSettings.add(setting);
-        FeatureFlagConfigurationSetting featureFlag = setting;
-
-        String configName = FEATURE_MANAGEMENT_KEY + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
-
-        AppConfigurationFeatureManagementPropertySource.updateTelemetry(featureFlag, tracing);
-
-        properties.put(configName, AppConfigurationFeatureManagementPropertySource.createFeature(featureFlag));
+        featureFlagsList.add(setting);
     }
 }

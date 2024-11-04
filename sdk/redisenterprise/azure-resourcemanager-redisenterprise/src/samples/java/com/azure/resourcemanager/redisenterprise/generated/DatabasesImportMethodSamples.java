@@ -12,7 +12,8 @@ import java.util.Arrays;
  */
 public final class DatabasesImportMethodSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
      * RedisEnterpriseDatabasesImport.json
      */
     /**
@@ -22,10 +23,11 @@ public final class DatabasesImportMethodSamples {
      */
     public static void
         redisEnterpriseDatabasesImport(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.databases().importMethod("rg1", "cache1", "default",
-            new ImportClusterParameters().withSasUris(
-                Arrays.asList("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters",
-                    "https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")),
-            com.azure.core.util.Context.NONE);
+        manager.databases()
+            .importMethod("rg1", "cache1", "default",
+                new ImportClusterParameters().withSasUris(
+                    Arrays.asList("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters",
+                        "https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")),
+                com.azure.core.util.Context.NONE);
     }
 }

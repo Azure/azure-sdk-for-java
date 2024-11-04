@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -27,7 +28,9 @@ private[spark] case class CosmosClientConfiguration (
                                                       tenantId: Option[String],
                                                       resourceGroupName: Option[String],
                                                       azureEnvironmentEndpoints: java.util.Map[String, String],
-                                                      sparkEnvironmentInfo: String)
+                                                      sparkEnvironmentInfo: String,
+                                                      clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+                                                      clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -49,7 +52,7 @@ private[spark] object CosmosClientConfiguration {
 
     var applicationName = CosmosConstants.userAgentSuffix
 
-    if (!sparkEnvironmentInfo.isEmpty) {
+    if (sparkEnvironmentInfo.nonEmpty) {
       applicationName = s"$applicationName|$sparkEnvironmentInfo"
     }
 
@@ -83,7 +86,9 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.tenantId,
       cosmosAccountConfig.resourceGroupName,
       cosmosAccountConfig.azureEnvironmentEndpoints,
-      sparkEnvironmentInfo)
+      sparkEnvironmentInfo,
+      cosmosAccountConfig.clientBuilderInterceptors,
+      cosmosAccountConfig.clientInterceptors)
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {

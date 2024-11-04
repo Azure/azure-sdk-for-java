@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
+import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Persistence;
@@ -15,7 +16,8 @@ import com.azure.resourcemanager.redisenterprise.models.RdbFrequency;
  */
 public final class DatabasesUpdateSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
      * RedisEnterpriseDatabasesUpdate.json
      */
     /**
@@ -26,8 +28,13 @@ public final class DatabasesUpdateSamples {
     public static void
         redisEnterpriseDatabasesUpdate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         Database resource = manager.databases()
-            .getWithResponse("rg1", "cache1", "default", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withClientProtocol(Protocol.ENCRYPTED).withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
-            .withPersistence(new Persistence().withRdbEnabled(true).withRdbFrequency(RdbFrequency.ONE_TWOH)).apply();
+            .getWithResponse("rg1", "cache1", "default", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withClientProtocol(Protocol.ENCRYPTED)
+            .withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
+            .withPersistence(new Persistence().withRdbEnabled(true).withRdbFrequency(RdbFrequency.ONE_TWOH))
+            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
+            .apply();
     }
 }

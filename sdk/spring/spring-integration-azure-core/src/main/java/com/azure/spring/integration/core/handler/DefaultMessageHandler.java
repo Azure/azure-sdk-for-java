@@ -48,6 +48,8 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final String destination;
     private final SendOperation sendOperation;
     private boolean sync = false;
+
+    @SuppressWarnings("deprecation")
     private ListenableFutureCallback<Void> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
@@ -248,6 +250,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      *
      * @param callback the call back
      */
+    @SuppressWarnings("deprecation")
     public void setSendCallback(ListenableFutureCallback<Void> callback) {
         this.sendCallback = callback;
     }

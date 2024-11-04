@@ -5,32 +5,263 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import java.time.LocalDate;
 
-/** Resource collection API of Transactions. */
+/**
+ * Resource collection API of Transactions.
+ */
 public interface Transactions {
     /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByCustomer(String billingAccountName, String billingProfileName, String customerName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type);
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByCustomer(String billingAccountName, String billingProfileName, String customerName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context);
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type);
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context);
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByBillingProfile(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type);
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByBillingProfile(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context);
+
+    /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName);
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context);
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a URL to download the transactions document for an invoice.
+     */
+    DocumentDownloadResult transactionsDownloadByInvoice(String billingAccountName, String invoiceName);
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions as paginated response with {@link PagedIterable}.
+     * @return a URL to download the transactions document for an invoice.
      */
-    PagedIterable<Transaction> listByInvoice(String billingAccountName, String invoiceName, Context context);
+    DocumentDownloadResult transactionsDownloadByInvoice(String billingAccountName, String invoiceName,
+        Context context);
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param search The search query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice along with {@link Response}.
+     */
+    Response<TransactionSummary> getTransactionSummaryByInvoiceWithResponse(String billingAccountName,
+        String invoiceName, String filter, String search, Context context);
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice.
+     */
+    TransactionSummary getTransactionSummaryByInvoice(String billingAccountName, String invoiceName);
 }

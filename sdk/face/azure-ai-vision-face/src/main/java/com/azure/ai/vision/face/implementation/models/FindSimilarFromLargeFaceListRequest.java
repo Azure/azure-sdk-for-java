@@ -6,41 +6,43 @@ package com.azure.ai.vision.face.implementation.models;
 import com.azure.ai.vision.face.models.FindSimilarMatchMode;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The FindSimilarFromLargeFaceListRequest model.
  */
 @Fluent
-public final class FindSimilarFromLargeFaceListRequest {
+public final class FindSimilarFromLargeFaceListRequest
+    implements JsonSerializable<FindSimilarFromLargeFaceListRequest> {
 
     /*
-     * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not
+     * persisted and will expire 24 hours after the detection call.
      */
     @Generated
-    @JsonProperty(value = "faceId")
     private final String faceId;
 
     /*
      * The number of top similar faces returned. The valid range is [1, 1000]. Default value is 20.
      */
     @Generated
-    @JsonProperty(value = "maxNumOfCandidatesReturned")
     private Integer maxNumOfCandidatesReturned;
 
     /*
      * Similar face searching mode. It can be 'matchPerson' or 'matchFace'. Default value is 'matchPerson'.
      */
     @Generated
-    @JsonProperty(value = "mode")
     private FindSimilarMatchMode mode;
 
     /*
-     * An existing user-specified unique candidate Large Face List, created in "Create Large Face List". Large Face List contains a set of persistedFaceIds which are persisted and will never expire.
+     * An existing user-specified unique candidate Large Face List, created in "Create Large Face List". Large Face List
+     * contains a set of persistedFaceIds which are persisted and will never expire.
      */
     @Generated
-    @JsonProperty(value = "largeFaceListId")
     private final String largeFaceListId;
 
     /**
@@ -50,9 +52,7 @@ public final class FindSimilarFromLargeFaceListRequest {
      * @param largeFaceListId the largeFaceListId value to set.
      */
     @Generated
-    @JsonCreator
-    public FindSimilarFromLargeFaceListRequest(@JsonProperty(value = "faceId") String faceId,
-        @JsonProperty(value = "largeFaceListId") String largeFaceListId) {
+    public FindSimilarFromLargeFaceListRequest(String faceId, String largeFaceListId) {
         this.faceId = faceId;
         this.largeFaceListId = largeFaceListId;
     }
@@ -125,5 +125,58 @@ public final class FindSimilarFromLargeFaceListRequest {
     @Generated
     public String getLargeFaceListId() {
         return this.largeFaceListId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("faceId", this.faceId);
+        jsonWriter.writeStringField("largeFaceListId", this.largeFaceListId);
+        jsonWriter.writeNumberField("maxNumOfCandidatesReturned", this.maxNumOfCandidatesReturned);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FindSimilarFromLargeFaceListRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FindSimilarFromLargeFaceListRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FindSimilarFromLargeFaceListRequest.
+     */
+    @Generated
+    public static FindSimilarFromLargeFaceListRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String faceId = null;
+            String largeFaceListId = null;
+            Integer maxNumOfCandidatesReturned = null;
+            FindSimilarMatchMode mode = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceId".equals(fieldName)) {
+                    faceId = reader.getString();
+                } else if ("largeFaceListId".equals(fieldName)) {
+                    largeFaceListId = reader.getString();
+                } else if ("maxNumOfCandidatesReturned".equals(fieldName)) {
+                    maxNumOfCandidatesReturned = reader.getNullable(JsonReader::getInt);
+                } else if ("mode".equals(fieldName)) {
+                    mode = FindSimilarMatchMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FindSimilarFromLargeFaceListRequest deserializedFindSimilarFromLargeFaceListRequest
+                = new FindSimilarFromLargeFaceListRequest(faceId, largeFaceListId);
+            deserializedFindSimilarFromLargeFaceListRequest.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
+            deserializedFindSimilarFromLargeFaceListRequest.mode = mode;
+            return deserializedFindSimilarFromLargeFaceListRequest;
+        });
     }
 }

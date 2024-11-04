@@ -673,8 +673,10 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     public SyncPoller<PollResult<PacketCoreDataPlaneInner>, PacketCoreDataPlaneInner> beginCreateOrUpdate(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         PacketCoreDataPlaneInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -695,8 +697,10 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     public SyncPoller<PollResult<PacketCoreDataPlaneInner>, PacketCoreDataPlaneInner> beginCreateOrUpdate(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         PacketCoreDataPlaneInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName,
+                parameters, context)
+            .getSyncPoller();
     }
 
     /**

@@ -6,45 +6,44 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BackupSchedule;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * BackupRequest resource specific properties.
  */
 @Fluent
-public final class BackupRequestProperties {
+public final class BackupRequestProperties implements JsonSerializable<BackupRequestProperties> {
     /*
      * Name of the backup.
      */
-    @JsonProperty(value = "backupName")
     private String backupName;
 
     /*
      * True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be
      * disabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * SAS URL to the container.
      */
-    @JsonProperty(value = "storageAccountUrl", required = true)
     private String storageAccountUrl;
 
     /*
      * Schedule for the backup if it is executed periodically.
      */
-    @JsonProperty(value = "backupSchedule")
     private BackupSchedule backupSchedule;
 
     /*
      * Databases included in the backup.
      */
-    @JsonProperty(value = "databases")
     private List<DatabaseBackupSetting> databases;
 
     /**
@@ -162,8 +161,9 @@ public final class BackupRequestProperties {
      */
     public void validate() {
         if (storageAccountUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountUrl in model BackupRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountUrl in model BackupRequestProperties"));
         }
         if (backupSchedule() != null) {
             backupSchedule().validate();
@@ -174,4 +174,55 @@ public final class BackupRequestProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountUrl", this.storageAccountUrl);
+        jsonWriter.writeStringField("backupName", this.backupName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("backupSchedule", this.backupSchedule);
+        jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupRequestProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupRequestProperties.
+     */
+    public static BackupRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupRequestProperties deserializedBackupRequestProperties = new BackupRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountUrl".equals(fieldName)) {
+                    deserializedBackupRequestProperties.storageAccountUrl = reader.getString();
+                } else if ("backupName".equals(fieldName)) {
+                    deserializedBackupRequestProperties.backupName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedBackupRequestProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupSchedule".equals(fieldName)) {
+                    deserializedBackupRequestProperties.backupSchedule = BackupSchedule.fromJson(reader);
+                } else if ("databases".equals(fieldName)) {
+                    List<DatabaseBackupSetting> databases
+                        = reader.readArray(reader1 -> DatabaseBackupSetting.fromJson(reader1));
+                    deserializedBackupRequestProperties.databases = databases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupRequestProperties;
+        });
+    }
 }

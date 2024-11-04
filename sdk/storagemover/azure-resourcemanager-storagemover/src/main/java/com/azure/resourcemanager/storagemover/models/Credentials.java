@@ -5,27 +5,45 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Credentials. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Credentials.class)
+/**
+ * The Credentials.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Credentials.class, visible = true)
 @JsonTypeName("Credentials")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureKeyVaultSmb", value = AzureKeyVaultSmbCredentials.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureKeyVaultSmb", value = AzureKeyVaultSmbCredentials.class) })
 @Immutable
 public class Credentials {
-    /** Creates an instance of Credentials class. */
+    /*
+     * The Credentials type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private CredentialType type = CredentialType.fromString("Credentials");
+
+    /**
+     * Creates an instance of Credentials class.
+     */
     public Credentials() {
     }
 
     /**
+     * Get the type property: The Credentials type.
+     * 
+     * @return the type value.
+     */
+    public CredentialType type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

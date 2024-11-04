@@ -41,9 +41,7 @@ public interface BaseBackupPolicyResource {
     SystemData systemData();
 
     /**
-     * Gets the properties property: BaseBackupPolicy
-     * 
-     * BaseBackupPolicyResource properties.
+     * Gets the properties property: BaseBackupPolicyResource properties.
      * 
      * @return the properties value.
      */
@@ -120,13 +118,9 @@ public interface BaseBackupPolicyResource {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: BaseBackupPolicy
+             * Specifies the properties property: BaseBackupPolicyResource properties.
              * 
-             * BaseBackupPolicyResource properties.
-             * 
-             * @param properties BaseBackupPolicy
-             * 
-             * BaseBackupPolicyResource properties.
+             * @param properties BaseBackupPolicyResource properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(BaseBackupPolicy properties);
@@ -169,13 +163,9 @@ public interface BaseBackupPolicyResource {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: BaseBackupPolicy
+             * Specifies the properties property: BaseBackupPolicyResource properties.
              * 
-             * BaseBackupPolicyResource properties.
-             * 
-             * @param properties BaseBackupPolicy
-             * 
-             * BaseBackupPolicyResource properties.
+             * @param properties BaseBackupPolicyResource properties.
              * @return the next definition stage.
              */
             Update withProperties(BaseBackupPolicy properties);

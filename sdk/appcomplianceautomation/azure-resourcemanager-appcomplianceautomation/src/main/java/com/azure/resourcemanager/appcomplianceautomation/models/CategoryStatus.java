@@ -5,31 +5,54 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the category status. */
+/**
+ * Indicates the category status.
+ */
 public final class CategoryStatus extends ExpandableStringEnum<CategoryStatus> {
-    /** Static value Healthy for CategoryStatus. */
-    public static final CategoryStatus HEALTHY = fromString("Healthy");
+    /**
+     * Static value Passed for CategoryStatus.
+     */
+    public static final CategoryStatus PASSED = fromString("Passed");
 
-    /** Static value Unhealthy for CategoryStatus. */
-    public static final CategoryStatus UNHEALTHY = fromString("Unhealthy");
+    /**
+     * Static value Failed for CategoryStatus.
+     */
+    public static final CategoryStatus FAILED = fromString("Failed");
+
+    /**
+     * Static value NotApplicable for CategoryStatus.
+     */
+    public static final CategoryStatus NOT_APPLICABLE = fromString("NotApplicable");
+
+    /**
+     * Static value PendingApproval for CategoryStatus.
+     */
+    public static final CategoryStatus PENDING_APPROVAL = fromString("PendingApproval");
+
+    /**
+     * Creates a new instance of CategoryStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CategoryStatus() {
+    }
 
     /**
      * Creates or finds a CategoryStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CategoryStatus.
      */
-    @JsonCreator
     public static CategoryStatus fromString(String name) {
         return fromString(name, CategoryStatus.class);
     }
 
     /**
      * Gets known CategoryStatus values.
-     *
+     * 
      * @return known CategoryStatus values.
      */
     public static Collection<CategoryStatus> values() {

@@ -24,28 +24,30 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedHsmsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedHsmsClient.
+ */
 public interface ManagedHsmsClient
     extends InnerSupportsGet<ManagedHsmInner>, InnerSupportsListing<ManagedHsmInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters);
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -55,12 +57,12 @@ public interface ManagedHsmsClient
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters);
+    PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String name, ManagedHsmInner parameters);
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -70,12 +72,12 @@ public interface ManagedHsmsClient
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters);
+    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(String resourceGroupName, String name,
+        ManagedHsmInner parameters);
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -86,12 +88,12 @@ public interface ManagedHsmsClient
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context);
+    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginCreateOrUpdate(String resourceGroupName, String name,
+        ManagedHsmInner parameters, Context context);
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -105,7 +107,7 @@ public interface ManagedHsmsClient
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -119,7 +121,7 @@ public interface ManagedHsmsClient
 
     /**
      * Create or update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to create or update the managed HSM Pool.
@@ -134,23 +136,23 @@ public interface ManagedHsmsClient
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters);
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -160,12 +162,12 @@ public interface ManagedHsmsClient
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(
-        String resourceGroupName, String name, ManagedHsmInner parameters);
+    PollerFlux<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdateAsync(String resourceGroupName, String name,
+        ManagedHsmInner parameters);
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -175,12 +177,12 @@ public interface ManagedHsmsClient
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters);
+    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(String resourceGroupName, String name,
+        ManagedHsmInner parameters);
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -191,12 +193,12 @@ public interface ManagedHsmsClient
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(
-        String resourceGroupName, String name, ManagedHsmInner parameters, Context context);
+    SyncPoller<PollResult<ManagedHsmInner>, ManagedHsmInner> beginUpdate(String resourceGroupName, String name,
+        ManagedHsmInner parameters, Context context);
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -210,7 +212,7 @@ public interface ManagedHsmsClient
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -224,7 +226,7 @@ public interface ManagedHsmsClient
 
     /**
      * Update a managed HSM Pool in the specified subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param parameters Parameters to patch the managed HSM Pool.
@@ -239,7 +241,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +254,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +267,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +280,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -292,7 +294,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +307,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +319,7 @@ public interface ManagedHsmsClient
 
     /**
      * Deletes the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool to delete.
      * @param context The context to associate with this operation.
@@ -330,7 +332,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,7 +345,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,7 +358,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @param context The context to associate with this operation.
@@ -370,7 +372,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name The name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,7 +386,7 @@ public interface ManagedHsmsClient
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -398,7 +400,7 @@ public interface ManagedHsmsClient
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -411,7 +413,7 @@ public interface ManagedHsmsClient
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -424,7 +426,7 @@ public interface ManagedHsmsClient
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -438,7 +440,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -450,7 +452,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed HSM Pools as paginated response with {@link PagedFlux}.
@@ -460,7 +462,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed HSM Pools as paginated response with {@link PagedIterable}.
@@ -470,7 +472,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the managed HSM Pools associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +485,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deleted managed HSM Pools as paginated response with {@link PagedFlux}.
@@ -493,7 +495,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deleted managed HSM Pools as paginated response with {@link PagedIterable}.
@@ -503,7 +505,7 @@ public interface ManagedHsmsClient
 
     /**
      * The List operation gets information about the deleted managed HSMs associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.keyvault.models.ErrorException thrown if the request is rejected by server.
@@ -515,7 +517,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -528,7 +530,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,7 +543,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -555,7 +557,7 @@ public interface ManagedHsmsClient
 
     /**
      * Gets the specified deleted managed HSM.
-     *
+     * 
      * @param name The name of the deleted managed HSM.
      * @param location The location of the deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,7 +570,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,7 +583,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +596,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,7 +609,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -621,7 +623,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,7 +636,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -646,7 +648,7 @@ public interface ManagedHsmsClient
 
     /**
      * Permanently deletes the specified managed HSM.
-     *
+     * 
      * @param name The name of the soft-deleted managed HSM.
      * @param location The location of the soft-deleted managed HSM.
      * @param context The context to associate with this operation.
@@ -659,21 +661,21 @@ public interface ManagedHsmsClient
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckMhsmNameAvailability operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckMhsmNameAvailabilityResultInner>> checkMhsmNameAvailabilityWithResponseAsync(
-        CheckMhsmNameAvailabilityParameters mhsmName);
+    Mono<Response<CheckMhsmNameAvailabilityResultInner>>
+        checkMhsmNameAvailabilityWithResponseAsync(CheckMhsmNameAvailabilityParameters mhsmName);
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -681,12 +683,12 @@ public interface ManagedHsmsClient
      * @return the CheckMhsmNameAvailability operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckMhsmNameAvailabilityResultInner> checkMhsmNameAvailabilityAsync(
-        CheckMhsmNameAvailabilityParameters mhsmName);
+    Mono<CheckMhsmNameAvailabilityResultInner>
+        checkMhsmNameAvailabilityAsync(CheckMhsmNameAvailabilityParameters mhsmName);
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,12 +697,12 @@ public interface ManagedHsmsClient
      * @return the CheckMhsmNameAvailability operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckMhsmNameAvailabilityResultInner> checkMhsmNameAvailabilityWithResponse(
-        CheckMhsmNameAvailabilityParameters mhsmName, Context context);
+    Response<CheckMhsmNameAvailabilityResultInner>
+        checkMhsmNameAvailabilityWithResponse(CheckMhsmNameAvailabilityParameters mhsmName, Context context);
 
     /**
      * Checks that the managed hsm name is valid and is not already in use.
-     *
+     * 
      * @param mhsmName The name of the managed hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

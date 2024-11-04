@@ -4,19 +4,35 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworks ListByResourceGroup. */
+/**
+ * Samples for VirtualNetworks ListByResourceGroup.
+ */
 public final class VirtualNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/ListVirtualNetworksByResourceGroup.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VirtualNetworks_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
-     * Sample code: ListVirtualNetworksByResourceGroup.
-     *
+     * Sample code: VirtualNetworks_ListByResourceGroup_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void listVirtualNetworksByResourceGroup(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        manager.virtualNetworks().listByResourceGroup("testrg", Context.NONE);
+    public static void
+        virtualNetworksListByResourceGroupMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.virtualNetworks().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VirtualNetworks_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualNetworks_ListByResourceGroup_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void
+        virtualNetworksListByResourceGroupMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        manager.virtualNetworks().listByResourceGroup("rgscvmm", com.azure.core.util.Context.NONE);
     }
 }

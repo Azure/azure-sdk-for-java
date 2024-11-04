@@ -5,52 +5,80 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResponseTravelMode. */
+/**
+ * Travel mode for the calculated route. The value will be set to `other` if the requested mode of transport is not
+ * possible in this section.
+ */
 public final class RouteTravelMode extends ExpandableStringEnum<RouteTravelMode> {
-    /** Static value car for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for cars.
+     */
     public static final RouteTravelMode CAR = fromString("car");
 
-    /** Static value truck for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for commercial vehicles, like for trucks.
+     */
     public static final RouteTravelMode TRUCK = fromString("truck");
 
-    /** Static value taxi for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for taxis. BETA functionality.
+     */
     public static final RouteTravelMode TAXI = fromString("taxi");
 
-    /** Static value bus for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for buses, including the use of bus only lanes. BETA functionality.
+     */
     public static final RouteTravelMode BUS = fromString("bus");
 
-    /** Static value van for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for vans. BETA functionality.
+     */
     public static final RouteTravelMode VAN = fromString("van");
 
-    /** Static value motorcycle for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for motorcycles. BETA functionality.
+     */
     public static final RouteTravelMode MOTORCYCLE = fromString("motorcycle");
 
-    /** Static value bicycle for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for bicycles, including use of bicycle lanes.
+     */
     public static final RouteTravelMode BICYCLE = fromString("bicycle");
 
-    /** Static value pedestrian for ResponseTravelMode. */
+    /**
+     * The returned routes are optimized for pedestrians, including the use of sidewalks.
+     */
     public static final RouteTravelMode PEDESTRIAN = fromString("pedestrian");
 
-    /** Static value other for ResponseTravelMode. */
+    /**
+     * The given mode of transport is not possible in this section.
+     */
     public static final RouteTravelMode OTHER = fromString("other");
 
     /**
+     * Creates a new instance of ResponseTravelMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteTravelMode() {
+    }
+
+    /**
      * Creates or finds a ResponseTravelMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResponseTravelMode.
      */
-    @JsonCreator
     public static RouteTravelMode fromString(String name) {
         return fromString(name, RouteTravelMode.class);
     }
 
     /**
      * Gets known ResponseTravelMode values.
-     *
+     * 
      * @return known ResponseTravelMode values.
      */
     public static Collection<RouteTravelMode> values() {

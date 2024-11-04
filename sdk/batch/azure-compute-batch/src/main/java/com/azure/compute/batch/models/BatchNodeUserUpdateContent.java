@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +21,26 @@ import java.time.format.DateTimeFormatter;
 public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchNodeUserUpdateContent> {
 
     /*
-     * The password of the Account. The password is required for Windows Compute Nodes (those created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
+     * The password of the Account. The password is required for Windows Compute Nodes. For Linux Compute Nodes, the
+     * password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is
+     * removed.
      */
     @Generated
     private String password;
 
     /*
-     * The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
+     * The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux
+     * Compute Nodes, the expiryTime has a precision up to a day.
      */
     @Generated
     private OffsetDateTime expiryTime;
 
     /*
-     * The SSH public key that can be used for remote login to the Compute Node. The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux Compute Nodes. If this is specified for a Windows Compute Node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If omitted, any existing SSH public key is removed.
+     * The SSH public key that can be used for remote login to the Compute Node. The public key should be compatible
+     * with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux Compute Nodes.
+     * If this is specified for a Windows Compute Node, then the Batch service rejects the request; if you are calling
+     * the REST API directly, the HTTP status code is 400 (Bad Request). If omitted, any existing SSH public key is
+     * removed.
      */
     @Generated
     private String sshPublicKey;
@@ -45,10 +53,9 @@ public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchN
     }
 
     /**
-     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the
-     * password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is
-     * removed.
+     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes. For
+     * Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted,
+     * any existing password is removed.
      *
      * @return the password value.
      */
@@ -58,10 +65,9 @@ public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchN
     }
 
     /**
-     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the
-     * password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is
-     * removed.
+     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes. For
+     * Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted,
+     * any existing password is removed.
      *
      * @param password the password value to set.
      * @return the BatchNodeUserUpdateContent object itself.
@@ -158,8 +164,8 @@ public final class BatchNodeUserUpdateContent implements JsonSerializable<BatchN
                 if ("password".equals(fieldName)) {
                     deserializedBatchNodeUserUpdateContent.password = reader.getString();
                 } else if ("expiryTime".equals(fieldName)) {
-                    deserializedBatchNodeUserUpdateContent.expiryTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchNodeUserUpdateContent.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("sshPublicKey".equals(fieldName)) {
                     deserializedBatchNodeUserUpdateContent.sshPublicKey = reader.getString();
                 } else {

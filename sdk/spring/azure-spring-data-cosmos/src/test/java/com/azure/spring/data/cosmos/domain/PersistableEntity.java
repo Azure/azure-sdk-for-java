@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.Persistable;
 
@@ -20,6 +21,7 @@ public class PersistableEntity implements Persistable<String> {
     @PartitionKey
     private String partitionKey;
     @Version
+    @Transient
     private String version;
 
     public PersistableEntity() {

@@ -13,24 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DataControllerUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataControllerUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"dzumveekg\":\"skzbb\",\"bsjyofdx\":\"wozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"}}")
+        DataControllerUpdate model
+            = BinaryData.fromString("{\"tags\":{\"wrtz\":\"oayqc\",\"ngmtsavjcb\":\"uzgwyzmhtx\"}}")
                 .toObject(DataControllerUpdate.class);
-        Assertions.assertEquals("skzbb", model.tags().get("dzumveekg"));
+        Assertions.assertEquals("oayqc", model.tags().get("wrtz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataControllerUpdate model =
-            new DataControllerUpdate()
-                .withTags(
-                    mapOf("dzumveekg", "skzbb", "bsjyofdx", "wozuhkf", "oekqvk", "uusdttouwa", "vbxwyjsflhh", "lns"));
+        DataControllerUpdate model
+            = new DataControllerUpdate().withTags(mapOf("wrtz", "oayqc", "ngmtsavjcb", "uzgwyzmhtx"));
         model = BinaryData.fromObject(model).toObject(DataControllerUpdate.class);
-        Assertions.assertEquals("skzbb", model.tags().get("dzumveekg"));
+        Assertions.assertEquals("oayqc", model.tags().get("wrtz"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

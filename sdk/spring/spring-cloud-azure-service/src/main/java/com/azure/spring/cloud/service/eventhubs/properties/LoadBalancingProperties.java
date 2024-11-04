@@ -14,6 +14,12 @@ import java.time.Duration;
 public class LoadBalancingProperties implements EventProcessorClientProperties.LoadBalancing {
 
     /**
+     * Creates an instance of {@link LoadBalancingProperties}.
+     */
+    public LoadBalancingProperties() {
+    }
+
+    /**
      * The time interval between load balancing update cycles.
      */
     private Duration updateInterval;

@@ -343,6 +343,27 @@ public interface NetworkManagementClient {
     FirewallPolicyIdpsSignaturesFilterValuesClient getFirewallPolicyIdpsSignaturesFilterValues();
 
     /**
+     * Gets the FirewallPolicyDraftsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyDraftsClient object.
+     */
+    FirewallPolicyDraftsClient getFirewallPolicyDrafts();
+
+    /**
+     * Gets the FirewallPolicyDeploymentsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyDeploymentsClient object.
+     */
+    FirewallPolicyDeploymentsClient getFirewallPolicyDeployments();
+
+    /**
+     * Gets the FirewallPolicyRuleCollectionGroupDraftsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyRuleCollectionGroupDraftsClient object.
+     */
+    FirewallPolicyRuleCollectionGroupDraftsClient getFirewallPolicyRuleCollectionGroupDrafts();
+
+    /**
      * Gets the IpAllocationsClient object to access its operations.
      * 
      * @return the IpAllocationsClient object.
@@ -523,6 +544,48 @@ public interface NetworkManagementClient {
      * @return the AdminRulesClient object.
      */
     AdminRulesClient getAdminRules();
+
+    /**
+     * Gets the SecurityUserConfigurationsClient object to access its operations.
+     * 
+     * @return the SecurityUserConfigurationsClient object.
+     */
+    SecurityUserConfigurationsClient getSecurityUserConfigurations();
+
+    /**
+     * Gets the SecurityUserRuleCollectionsClient object to access its operations.
+     * 
+     * @return the SecurityUserRuleCollectionsClient object.
+     */
+    SecurityUserRuleCollectionsClient getSecurityUserRuleCollections();
+
+    /**
+     * Gets the SecurityUserRulesClient object to access its operations.
+     * 
+     * @return the SecurityUserRulesClient object.
+     */
+    SecurityUserRulesClient getSecurityUserRules();
+
+    /**
+     * Gets the NetworkManagerRoutingConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkManagerRoutingConfigurationsClient object.
+     */
+    NetworkManagerRoutingConfigurationsClient getNetworkManagerRoutingConfigurations();
+
+    /**
+     * Gets the RoutingRuleCollectionsClient object to access its operations.
+     * 
+     * @return the RoutingRuleCollectionsClient object.
+     */
+    RoutingRuleCollectionsClient getRoutingRuleCollections();
+
+    /**
+     * Gets the RoutingRulesClient object to access its operations.
+     * 
+     * @return the RoutingRulesClient object.
+     */
+    RoutingRulesClient getRoutingRules();
 
     /**
      * Gets the NetworkProfilesClient object to access its operations.

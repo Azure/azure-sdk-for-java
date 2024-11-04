@@ -34,30 +34,36 @@ public final class AppsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().createOrUpdate("myResourceGroup", "myservice",
-            "myapp",
-            new AppResourceInner().withProperties(new AppResourceProperties().withPublicProperty(true)
-                .withAddonConfigs(mapOf("ApplicationConfigurationService", mapOf("resourceId",
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs"),
-                    "ServiceRegistry",
-                    mapOf("resourceId",
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry")))
-                .withHttpsOnly(false)
-                .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
-                .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
-                .withCustomPersistentDisks(
-                    Arrays.asList(new CustomPersistentDiskResource().withCustomPersistentDiskProperties(
-                        new AzureFileVolume().withMountPath("/mypath1/mypath2").withEnableSubPath(true)
-                            .withMountOptions(Arrays.asList("uid=0", "gid=0", "dir_mode=0777", "file_mode=0777"))
-                            .withShareName("myFileShare"))
-                        .withStorageId("myASCStorageID")))
-                .withEnableEndToEndTls(false)
-                .withLoadedCertificates(Arrays.asList(new LoadedCertificate().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert1")
-                    .withLoadTrustStore(false),
-                    new LoadedCertificate().withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert2")
-                        .withLoadTrustStore(true))))
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .createOrUpdate("myResourceGroup", "myservice", "myapp", new AppResourceInner()
+                .withProperties(new AppResourceProperties().withPublicProperty(true)
+                    .withAddonConfigs(mapOf("ApplicationConfigurationService", mapOf("resourceId",
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs"),
+                        "ServiceRegistry",
+                        mapOf("resourceId",
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry")))
+                    .withHttpsOnly(false)
+                    .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
+                    .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
+                    .withCustomPersistentDisks(Arrays
+                        .asList(new CustomPersistentDiskResource()
+                            .withCustomPersistentDiskProperties(
+                                new AzureFileVolume().withMountPath("/mypath1/mypath2")
+                                    .withEnableSubPath(true)
+                                    .withMountOptions(
+                                        Arrays.asList("uid=0", "gid=0", "dir_mode=0777", "file_mode=0777"))
+                                    .withShareName("myFileShare"))
+                            .withStorageId("myASCStorageID")))
+                    .withEnableEndToEndTls(false)
+                    .withLoadedCertificates(Arrays.asList(new LoadedCertificate().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert1")
+                        .withLoadTrustStore(false),
+                        new LoadedCertificate().withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert2")
+                            .withLoadTrustStore(true))))
                 .withIdentity(new ManagedIdentityProperties()
                     .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
@@ -65,8 +71,7 @@ public final class AppsCreateOrUpdateSamples {
                         new UserAssignedManagedIdentity(),
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
                         new UserAssignedManagedIdentity())))
-                .withLocation("eastus"),
-            com.azure.core.util.Context.NONE);
+                .withLocation("eastus"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -79,32 +84,36 @@ public final class AppsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsCreateOrUpdateVNetInjection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().createOrUpdate("myResourceGroup", "myservice",
-            "myapp",
-            new AppResourceInner().withProperties(new AppResourceProperties().withPublicProperty(true)
-                .withAddonConfigs(mapOf("ApplicationConfigurationService", mapOf("resourceId",
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs"),
-                    "ServiceRegistry",
-                    mapOf("resourceId",
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry")))
-                .withHttpsOnly(false).withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath(
-                    "/mytemporarydisk"))
-                .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
-                .withCustomPersistentDisks(Arrays.asList(
-                    new CustomPersistentDiskResource()
-                        .withCustomPersistentDiskProperties(new AzureFileVolume().withMountPath("/mypath1/mypath2")
-                            .withMountOptions(Arrays.asList(
-                                "uid=0", "gid=0", "dir_mode=0777", "file_mode=0777"))
-                            .withShareName("myFileShare"))
-                        .withStorageId("myASCStorageID")))
-                .withEnableEndToEndTls(false)
-                .withLoadedCertificates(Arrays.asList(new LoadedCertificate().withResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert1")
-                    .withLoadTrustStore(false),
-                    new LoadedCertificate().withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert2")
-                        .withLoadTrustStore(true)))
-                .withVnetAddons(new AppVNetAddons().withPublicEndpoint(true)))
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .createOrUpdate("myResourceGroup", "myservice", "myapp", new AppResourceInner()
+                .withProperties(new AppResourceProperties().withPublicProperty(true)
+                    .withAddonConfigs(mapOf("ApplicationConfigurationService", mapOf("resourceId",
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/configurationServices/myacs"),
+                        "ServiceRegistry",
+                        mapOf("resourceId",
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry")))
+                    .withHttpsOnly(false)
+                    .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
+                    .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
+                    .withCustomPersistentDisks(Arrays
+                        .asList(new CustomPersistentDiskResource()
+                            .withCustomPersistentDiskProperties(
+                                new AzureFileVolume().withMountPath("/mypath1/mypath2")
+                                    .withMountOptions(
+                                        Arrays.asList("uid=0", "gid=0", "dir_mode=0777", "file_mode=0777"))
+                                    .withShareName("myFileShare"))
+                            .withStorageId("myASCStorageID")))
+                    .withEnableEndToEndTls(false)
+                    .withLoadedCertificates(Arrays.asList(new LoadedCertificate().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert1")
+                        .withLoadTrustStore(false),
+                        new LoadedCertificate().withResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert2")
+                            .withLoadTrustStore(true)))
+                    .withVnetAddons(new AppVNetAddons().withPublicEndpoint(true)))
                 .withIdentity(new ManagedIdentityProperties()
                     .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
@@ -112,8 +121,7 @@ public final class AppsCreateOrUpdateSamples {
                         new UserAssignedManagedIdentity(),
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
                         new UserAssignedManagedIdentity())))
-                .withLocation("eastus"),
-            com.azure.core.util.Context.NONE);
+                .withLocation("eastus"), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

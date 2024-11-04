@@ -25,10 +25,7 @@ import java.io.IOException;
  * @param <ResourceT> Top level resource type
  * @param <CollectionT> Type representing the collection of the top level resources
  */
-public abstract class TestTemplate<ResourceT extends GroupableResource<? extends Manager<?>, ?>,
-    CollectionT extends
-        SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
-            & SupportsGettingById<ResourceT> & HasManager<?>> {
+public abstract class TestTemplate<ResourceT extends GroupableResource<? extends Manager<?>, ?>, CollectionT extends SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById & SupportsGettingById<ResourceT> & HasManager<?>> {
 
     private static final ClientLogger LOGGER = new ClientLogger(TestTemplate.class);
 
@@ -80,8 +77,8 @@ public abstract class TestTemplate<ResourceT extends GroupableResource<? extends
      * @throws IOException if anything goes wrong
      */
     public ResourceT verifyGetting() throws ManagementException, IOException {
-        ResourceT resourceByGroup =
-            this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
+        ResourceT resourceByGroup
+            = this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
         ResourceT resourceById = this.collection.getById(resourceByGroup.id());
         Assertions.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
         return resourceById;

@@ -5,21 +5,24 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * SiteAuthSettings resource specific properties.
  */
 @Fluent
-public final class SiteAuthSettingsProperties {
+public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAuthSettingsProperties> {
     /*
      * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise,
      * <code>false</code>.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
@@ -27,13 +30,11 @@ public final class SiteAuthSettingsProperties {
      * The setting in this value can control the behavior of certain features in the Authentication / Authorization
      * module.
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /*
      * The action to take when an unauthenticated client attempts to access the app.
      */
-    @JsonProperty(value = "unauthenticatedClientAction")
     private UnauthenticatedClientAction unauthenticatedClientAction;
 
     /*
@@ -41,7 +42,6 @@ public final class SiteAuthSettingsProperties {
      * otherwise, <code>false</code>.
      * The default is <code>false</code>.
      */
-    @JsonProperty(value = "tokenStoreEnabled")
     private Boolean tokenStoreEnabled;
 
     /*
@@ -50,7 +50,6 @@ public final class SiteAuthSettingsProperties {
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
-    @JsonProperty(value = "allowedExternalRedirectUrls")
     private List<String> allowedExternalRedirectUrls;
 
     /*
@@ -58,14 +57,12 @@ public final class SiteAuthSettingsProperties {
      * This setting is only needed if multiple providers are configured and the unauthenticated client
      * action is set to "RedirectToLoginPage".
      */
-    @JsonProperty(value = "defaultProvider")
     private BuiltInAuthenticationProvider defaultProvider;
 
     /*
      * The number of hours after session token expiration that a session token can be used to
      * call the token refresh API. The default is 72 hours.
      */
-    @JsonProperty(value = "tokenRefreshExtensionHours")
     private Double tokenRefreshExtensionHours;
 
     /*
@@ -74,7 +71,6 @@ public final class SiteAuthSettingsProperties {
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
@@ -85,13 +81,11 @@ public final class SiteAuthSettingsProperties {
      * Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * The app setting name that contains the client secret of the relying party application.
      */
-    @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
     /*
@@ -99,7 +93,6 @@ public final class SiteAuthSettingsProperties {
      * property acts as
      * a replacement for the Client Secret. It is also optional.
      */
-    @JsonProperty(value = "clientSecretCertificateThumbprint")
     private String clientSecretCertificateThumbprint;
 
     /*
@@ -109,13 +102,11 @@ public final class SiteAuthSettingsProperties {
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
      */
-    @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
      * Gets a value indicating whether the issuer should be a valid HTTPS url and be validated as such.
      */
-    @JsonProperty(value = "validateIssuer")
     private Boolean validateIssuer;
 
     /*
@@ -123,20 +114,17 @@ public final class SiteAuthSettingsProperties {
      * Azure Active Directory. Note that the <code>ClientID</code> value is always considered an
      * allowed audience, regardless of this setting.
      */
-    @JsonProperty(value = "allowedAudiences")
     private List<String> allowedAudiences;
 
     /*
      * Login parameters to send to the OpenID Connect authorization endpoint when
      * a user logs in. Each parameter must be in the form "key=value".
      */
-    @JsonProperty(value = "additionalLoginParams")
     private List<String> additionalLoginParams;
 
     /*
      * Gets a JSON string containing the Azure AD Acl settings.
      */
-    @JsonProperty(value = "aadClaimsAuthorization")
     private String aadClaimsAuthorization;
 
     /*
@@ -144,7 +132,6 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/
      */
-    @JsonProperty(value = "googleClientId")
     private String googleClientId;
 
     /*
@@ -152,14 +139,12 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Google Sign-In.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/
      */
-    @JsonProperty(value = "googleClientSecret")
     private String googleClientSecret;
 
     /*
      * The app setting name that contains the client secret associated with
      * the Google web application.
      */
-    @JsonProperty(value = "googleClientSecretSettingName")
     private String googleClientSecretSettingName;
 
     /*
@@ -167,7 +152,6 @@ public final class SiteAuthSettingsProperties {
      * This setting is optional. If not specified, "openid", "profile", and "email" are used as default scopes.
      * Google Sign-In documentation: https://developers.google.com/identity/sign-in/web/
      */
-    @JsonProperty(value = "googleOAuthScopes")
     private List<String> googleOAuthScopes;
 
     /*
@@ -175,7 +159,6 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Facebook Login.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login
      */
-    @JsonProperty(value = "facebookAppId")
     private String facebookAppId;
 
     /*
@@ -183,13 +166,11 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Facebook Login.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login
      */
-    @JsonProperty(value = "facebookAppSecret")
     private String facebookAppSecret;
 
     /*
      * The app setting name that contains the app secret used for Facebook Login.
      */
-    @JsonProperty(value = "facebookAppSecretSettingName")
     private String facebookAppSecretSettingName;
 
     /*
@@ -197,35 +178,30 @@ public final class SiteAuthSettingsProperties {
      * This setting is optional.
      * Facebook Login documentation: https://developers.facebook.com/docs/facebook-login
      */
-    @JsonProperty(value = "facebookOAuthScopes")
     private List<String> facebookOAuthScopes;
 
     /*
      * The Client Id of the GitHub app used for login.
      * This setting is required for enabling Github login
      */
-    @JsonProperty(value = "gitHubClientId")
     private String gitHubClientId;
 
     /*
      * The Client Secret of the GitHub app used for Github Login.
      * This setting is required for enabling Github login.
      */
-    @JsonProperty(value = "gitHubClientSecret")
     private String gitHubClientSecret;
 
     /*
      * The app setting name that contains the client secret of the Github
      * app used for GitHub Login.
      */
-    @JsonProperty(value = "gitHubClientSecretSettingName")
     private String gitHubClientSecretSettingName;
 
     /*
      * The OAuth 2.0 scopes that will be requested as part of GitHub Login authentication.
      * This setting is optional
      */
-    @JsonProperty(value = "gitHubOAuthScopes")
     private List<String> gitHubOAuthScopes;
 
     /*
@@ -233,7 +209,6 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
      */
-    @JsonProperty(value = "twitterConsumerKey")
     private String twitterConsumerKey;
 
     /*
@@ -241,14 +216,12 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Twitter Sign-In.
      * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
      */
-    @JsonProperty(value = "twitterConsumerSecret")
     private String twitterConsumerSecret;
 
     /*
      * The app setting name that contains the OAuth 1.0a consumer secret of the Twitter
      * application used for sign-in.
      */
-    @JsonProperty(value = "twitterConsumerSecretSettingName")
     private String twitterConsumerSecretSettingName;
 
     /*
@@ -256,7 +229,6 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Microsoft Account authentication.
      * Microsoft Account OAuth documentation: https://dev.onedrive.com/auth/msa_oauth.htm
      */
-    @JsonProperty(value = "microsoftAccountClientId")
     private String microsoftAccountClientId;
 
     /*
@@ -264,14 +236,12 @@ public final class SiteAuthSettingsProperties {
      * This setting is required for enabling Microsoft Account authentication.
      * Microsoft Account OAuth documentation: https://dev.onedrive.com/auth/msa_oauth.htm
      */
-    @JsonProperty(value = "microsoftAccountClientSecret")
     private String microsoftAccountClientSecret;
 
     /*
      * The app setting name containing the OAuth 2.0 client secret that was created for the
      * app used for authentication.
      */
-    @JsonProperty(value = "microsoftAccountClientSecretSettingName")
     private String microsoftAccountClientSecretSettingName;
 
     /*
@@ -279,28 +249,24 @@ public final class SiteAuthSettingsProperties {
      * This setting is optional. If not specified, "wl.basic" is used as the default scope.
      * Microsoft Account Scopes and permissions documentation: https://msdn.microsoft.com/en-us/library/dn631845.aspx
      */
-    @JsonProperty(value = "microsoftAccountOAuthScopes")
     private List<String> microsoftAccountOAuthScopes;
 
     /*
      * "true" if the auth config settings should be read from a file,
      * "false" otherwise
      */
-    @JsonProperty(value = "isAuthFromFile")
     private String isAuthFromFile;
 
     /*
      * The path of the config file containing auth settings.
      * If the path is relative, base will the site's root directory.
      */
-    @JsonProperty(value = "authFilePath")
     private String authFilePath;
 
     /*
      * The ConfigVersion of the Authentication / Authorization feature in use for the current app.
      * The setting in this value can control the behavior of the control plane for Authentication / Authorization.
      */
-    @JsonProperty(value = "configVersion")
     private String configVersion;
 
     /**
@@ -1239,5 +1205,173 @@ public final class SiteAuthSettingsProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        jsonWriter.writeStringField("unauthenticatedClientAction",
+            this.unauthenticatedClientAction == null ? null : this.unauthenticatedClientAction.toString());
+        jsonWriter.writeBooleanField("tokenStoreEnabled", this.tokenStoreEnabled);
+        jsonWriter.writeArrayField("allowedExternalRedirectUrls", this.allowedExternalRedirectUrls,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("defaultProvider",
+            this.defaultProvider == null ? null : this.defaultProvider.toString());
+        jsonWriter.writeNumberField("tokenRefreshExtensionHours", this.tokenRefreshExtensionHours);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("clientSecretSettingName", this.clientSecretSettingName);
+        jsonWriter.writeStringField("clientSecretCertificateThumbprint", this.clientSecretCertificateThumbprint);
+        jsonWriter.writeStringField("issuer", this.issuer);
+        jsonWriter.writeBooleanField("validateIssuer", this.validateIssuer);
+        jsonWriter.writeArrayField("allowedAudiences", this.allowedAudiences,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("additionalLoginParams", this.additionalLoginParams,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("aadClaimsAuthorization", this.aadClaimsAuthorization);
+        jsonWriter.writeStringField("googleClientId", this.googleClientId);
+        jsonWriter.writeStringField("googleClientSecret", this.googleClientSecret);
+        jsonWriter.writeStringField("googleClientSecretSettingName", this.googleClientSecretSettingName);
+        jsonWriter.writeArrayField("googleOAuthScopes", this.googleOAuthScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("facebookAppId", this.facebookAppId);
+        jsonWriter.writeStringField("facebookAppSecret", this.facebookAppSecret);
+        jsonWriter.writeStringField("facebookAppSecretSettingName", this.facebookAppSecretSettingName);
+        jsonWriter.writeArrayField("facebookOAuthScopes", this.facebookOAuthScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("gitHubClientId", this.gitHubClientId);
+        jsonWriter.writeStringField("gitHubClientSecret", this.gitHubClientSecret);
+        jsonWriter.writeStringField("gitHubClientSecretSettingName", this.gitHubClientSecretSettingName);
+        jsonWriter.writeArrayField("gitHubOAuthScopes", this.gitHubOAuthScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("twitterConsumerKey", this.twitterConsumerKey);
+        jsonWriter.writeStringField("twitterConsumerSecret", this.twitterConsumerSecret);
+        jsonWriter.writeStringField("twitterConsumerSecretSettingName", this.twitterConsumerSecretSettingName);
+        jsonWriter.writeStringField("microsoftAccountClientId", this.microsoftAccountClientId);
+        jsonWriter.writeStringField("microsoftAccountClientSecret", this.microsoftAccountClientSecret);
+        jsonWriter.writeStringField("microsoftAccountClientSecretSettingName",
+            this.microsoftAccountClientSecretSettingName);
+        jsonWriter.writeArrayField("microsoftAccountOAuthScopes", this.microsoftAccountOAuthScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("isAuthFromFile", this.isAuthFromFile);
+        jsonWriter.writeStringField("authFilePath", this.authFilePath);
+        jsonWriter.writeStringField("configVersion", this.configVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteAuthSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteAuthSettingsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteAuthSettingsProperties.
+     */
+    public static SiteAuthSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteAuthSettingsProperties deserializedSiteAuthSettingsProperties = new SiteAuthSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.runtimeVersion = reader.getString();
+                } else if ("unauthenticatedClientAction".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.unauthenticatedClientAction
+                        = UnauthenticatedClientAction.fromString(reader.getString());
+                } else if ("tokenStoreEnabled".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.tokenStoreEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowedExternalRedirectUrls".equals(fieldName)) {
+                    List<String> allowedExternalRedirectUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.allowedExternalRedirectUrls = allowedExternalRedirectUrls;
+                } else if ("defaultProvider".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.defaultProvider
+                        = BuiltInAuthenticationProvider.fromString(reader.getString());
+                } else if ("tokenRefreshExtensionHours".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.tokenRefreshExtensionHours
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.clientSecret = reader.getString();
+                } else if ("clientSecretSettingName".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.clientSecretSettingName = reader.getString();
+                } else if ("clientSecretCertificateThumbprint".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.clientSecretCertificateThumbprint = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.issuer = reader.getString();
+                } else if ("validateIssuer".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.validateIssuer = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowedAudiences".equals(fieldName)) {
+                    List<String> allowedAudiences = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.allowedAudiences = allowedAudiences;
+                } else if ("additionalLoginParams".equals(fieldName)) {
+                    List<String> additionalLoginParams = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.additionalLoginParams = additionalLoginParams;
+                } else if ("aadClaimsAuthorization".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.aadClaimsAuthorization = reader.getString();
+                } else if ("googleClientId".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.googleClientId = reader.getString();
+                } else if ("googleClientSecret".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.googleClientSecret = reader.getString();
+                } else if ("googleClientSecretSettingName".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.googleClientSecretSettingName = reader.getString();
+                } else if ("googleOAuthScopes".equals(fieldName)) {
+                    List<String> googleOAuthScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.googleOAuthScopes = googleOAuthScopes;
+                } else if ("facebookAppId".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.facebookAppId = reader.getString();
+                } else if ("facebookAppSecret".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.facebookAppSecret = reader.getString();
+                } else if ("facebookAppSecretSettingName".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.facebookAppSecretSettingName = reader.getString();
+                } else if ("facebookOAuthScopes".equals(fieldName)) {
+                    List<String> facebookOAuthScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.facebookOAuthScopes = facebookOAuthScopes;
+                } else if ("gitHubClientId".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.gitHubClientId = reader.getString();
+                } else if ("gitHubClientSecret".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.gitHubClientSecret = reader.getString();
+                } else if ("gitHubClientSecretSettingName".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.gitHubClientSecretSettingName = reader.getString();
+                } else if ("gitHubOAuthScopes".equals(fieldName)) {
+                    List<String> gitHubOAuthScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.gitHubOAuthScopes = gitHubOAuthScopes;
+                } else if ("twitterConsumerKey".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.twitterConsumerKey = reader.getString();
+                } else if ("twitterConsumerSecret".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.twitterConsumerSecret = reader.getString();
+                } else if ("twitterConsumerSecretSettingName".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.twitterConsumerSecretSettingName = reader.getString();
+                } else if ("microsoftAccountClientId".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.microsoftAccountClientId = reader.getString();
+                } else if ("microsoftAccountClientSecret".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.microsoftAccountClientSecret = reader.getString();
+                } else if ("microsoftAccountClientSecretSettingName".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.microsoftAccountClientSecretSettingName = reader.getString();
+                } else if ("microsoftAccountOAuthScopes".equals(fieldName)) {
+                    List<String> microsoftAccountOAuthScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteAuthSettingsProperties.microsoftAccountOAuthScopes = microsoftAccountOAuthScopes;
+                } else if ("isAuthFromFile".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.isAuthFromFile = reader.getString();
+                } else if ("authFilePath".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.authFilePath = reader.getString();
+                } else if ("configVersion".equals(fieldName)) {
+                    deserializedSiteAuthSettingsProperties.configVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteAuthSettingsProperties;
+        });
     }
 }

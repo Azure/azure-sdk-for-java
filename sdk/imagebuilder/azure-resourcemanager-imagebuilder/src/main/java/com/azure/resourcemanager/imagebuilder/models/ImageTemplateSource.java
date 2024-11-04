@@ -5,29 +5,35 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a virtual machine image source for building, customizing and distributing.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ImageTemplateSource.class)
-@JsonTypeName("ImageTemplateSource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "PlatformImage", value = ImageTemplatePlatformImageSource.class),
-    @JsonSubTypes.Type(name = "ManagedImage", value = ImageTemplateManagedImageSource.class),
-    @JsonSubTypes.Type(name = "SharedImageVersion", value = ImageTemplateSharedImageVersionSource.class) })
 @Immutable
-public class ImageTemplateSource {
+public class ImageTemplateSource implements JsonSerializable<ImageTemplateSource> {
+    /*
+     * Specifies the type of source image you want to start with.
+     */
+    private String type = "ImageTemplateSource";
+
     /**
      * Creates an instance of ImageTemplateSource class.
      */
     public ImageTemplateSource() {
+    }
+
+    /**
+     * Get the type property: Specifies the type of source image you want to start with.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -36,5 +42,70 @@ public class ImageTemplateSource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateSource.
+     */
+    public static ImageTemplateSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("PlatformImage".equals(discriminatorValue)) {
+                    return ImageTemplatePlatformImageSource.fromJson(readerToUse.reset());
+                } else if ("ManagedImage".equals(discriminatorValue)) {
+                    return ImageTemplateManagedImageSource.fromJson(readerToUse.reset());
+                } else if ("SharedImageVersion".equals(discriminatorValue)) {
+                    return ImageTemplateSharedImageVersionSource.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ImageTemplateSource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateSource deserializedImageTemplateSource = new ImageTemplateSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedImageTemplateSource.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateSource;
+        });
     }
 }

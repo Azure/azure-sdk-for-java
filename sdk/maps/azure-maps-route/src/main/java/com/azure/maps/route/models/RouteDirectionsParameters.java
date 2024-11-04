@@ -3,12 +3,11 @@
 
 package com.azure.maps.route.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoCollection;
 import com.azure.core.models.GeoPolygonCollection;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 /** Post body parameters for Route directions. */
 @Fluent
@@ -35,7 +34,6 @@ public final class RouteDirectionsParameters {
      * Points](https://docs.microsoft.com/azure/azure-maps/how-to-use-best-practices-for-routing#calculate-and-bias-alternative-routes-using-supporting-points)
      * for details.
      */
-    @JsonProperty(value = "supportingPoints")
     private GeoCollection supportingPoints;
 
     /*
@@ -45,7 +43,6 @@ public final class RouteDirectionsParameters {
      * unaffected. Note: It is an error to specify both **avoidVignette** and
      * **allowVignette**.
      */
-    @JsonProperty(value = "avoidVignette")
     private List<String> avoidVignette;
 
     /*
@@ -57,7 +54,6 @@ public final class RouteDirectionsParameters {
      * all toll roads with vignettes. Note: It is an error to specify both
      * **avoidVignette** and **allowVignette**.
      */
-    @JsonProperty(value = "allowVignette")
     private List<String> allowVignette;
 
     /*
@@ -67,8 +63,13 @@ public final class RouteDirectionsParameters {
      * cross the 180th meridian. It must be between -80 and +80 degrees of
      * latitude.
      */
-    @JsonProperty(value = "avoidAreas")
     private GeoPolygonCollection avoidAreas;
+
+    /**
+     * Creates a new instance of {@link RouteDirectionsParameters}.
+     */
+    public RouteDirectionsParameters() {
+    }
 
     /**
      * Get the supportingPoints property: A GeoJSON Geometry collection representing sequence of coordinates used as

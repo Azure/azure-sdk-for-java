@@ -18,13 +18,18 @@ import java.io.IOException;
 public final class BatchApplicationPackageReference implements JsonSerializable<BatchApplicationPackageReference> {
 
     /*
-     * The ID of the application to deploy. When creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
+     * The ID of the application to deploy. When creating a pool, the package's application ID must be fully qualified
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
+     * accountName}/applications/{applicationName}).
      */
     @Generated
     private final String applicationId;
 
     /*
-     * The version of the application to deploy. If omitted, the default version is deployed. If this is omitted on a Pool, and no default version is specified for this application, the request fails with the error code InvalidApplicationPackageReferences and HTTP status code 409. If this is omitted on a Task, and no default version is specified for this application, the Task fails with a pre-processing error.
+     * The version of the application to deploy. If omitted, the default version is deployed. If this is omitted on a
+     * Pool, and no default version is specified for this application, the request fails with the error code
+     * InvalidApplicationPackageReferences and HTTP status code 409. If this is omitted on a Task, and no default
+     * version is specified for this application, the Task fails with a pre-processing error.
      */
     @Generated
     private String version;

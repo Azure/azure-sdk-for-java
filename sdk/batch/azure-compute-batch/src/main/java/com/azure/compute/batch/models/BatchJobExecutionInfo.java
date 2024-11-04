@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,13 +33,18 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
     private OffsetDateTime endTime;
 
     /*
-     * The ID of the Pool to which this Job is assigned. This element contains the actual Pool where the Job is assigned. When you get Job details from the service, they also contain a poolInfo element, which contains the Pool configuration data from when the Job was added or updated. That poolInfo element may also contain a poolId element. If it does, the two IDs are the same. If it does not, it means the Job ran on an auto Pool, and this property contains the ID of that auto Pool.
+     * The ID of the Pool to which this Job is assigned. This element contains the actual Pool where the Job is
+     * assigned. When you get Job details from the service, they also contain a poolInfo element, which contains the
+     * Pool configuration data from when the Job was added or updated. That poolInfo element may also contain a poolId
+     * element. If it does, the two IDs are the same. If it does not, it means the Job ran on an auto Pool, and this
+     * property contains the ID of that auto Pool.
      */
     @Generated
     private String poolId;
 
     /*
-     * Details of any error encountered by the service in starting the Job. This property is not set if there was no error starting the Job.
+     * Details of any error encountered by the service in starting the Job. This property is not set if there was no
+     * error starting the Job.
      */
     @Generated
     private BatchJobSchedulingError schedulingError;
@@ -100,7 +106,14 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
     }
 
     /*
-     * A string describing the reason the Job ended. This property is set only if the Job is in the completed state. If the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task completed, and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its maxWallClockTime constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule terminated. AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in the Job are complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and a Task in the Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is a user-defined reason specified in a call to the 'Terminate a Job' operation.
+     * A string describing the reason the Job ended. This property is set only if the Job is in the completed state. If
+     * the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task completed,
+     * and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its maxWallClockTime
+     * constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule terminated.
+     * AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in the Job are
+     * complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and a Task in the
+     * Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is a user-defined
+     * reason specified in a call to the 'Terminate a Job' operation.
      */
     @Generated
     private String terminationReason;
@@ -160,9 +173,11 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("poolId".equals(fieldName)) {
                     poolId = reader.getString();
                 } else if ("schedulingError".equals(fieldName)) {

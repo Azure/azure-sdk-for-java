@@ -6,6 +6,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
@@ -16,7 +19,7 @@ import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +32,22 @@ public final class GalleryImageInner extends Resource {
     /*
      * Describes the properties of a gallery image definition.
      */
-    @JsonProperty(value = "properties")
     private GalleryImageProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of GalleryImageInner class.
@@ -45,6 +62,36 @@ public final class GalleryImageInner extends Resource {
      */
     private GalleryImageProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -160,8 +207,8 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @return the osType value.
      */
@@ -170,8 +217,8 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @param osType the osType value to set.
      * @return the GalleryImageInner object itself.
@@ -210,8 +257,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -220,8 +266,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the GalleryImageInner object itself.
@@ -356,9 +401,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     * 
-     * The provisioning state, which only appears in the response.
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */
@@ -421,5 +464,55 @@ public final class GalleryImageInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryImageInner.
+     */
+    public static GalleryImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageInner deserializedGalleryImageInner = new GalleryImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGalleryImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGalleryImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGalleryImageInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGalleryImageInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGalleryImageInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGalleryImageInner.innerProperties = GalleryImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageInner;
+        });
     }
 }

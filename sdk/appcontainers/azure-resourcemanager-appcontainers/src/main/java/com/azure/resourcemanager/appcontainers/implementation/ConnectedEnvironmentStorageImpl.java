@@ -62,14 +62,20 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage create() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsStorages().createOrUpdateWithResponse(
-            resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironmentStorage create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsStorages().createOrUpdateWithResponse(
-            resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -85,14 +91,20 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage apply() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsStorages().createOrUpdateWithResponse(
-            resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironmentStorage apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsStorages().createOrUpdateWithResponse(
-            resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -107,14 +119,18 @@ public final class ConnectedEnvironmentStorageImpl
     }
 
     public ConnectedEnvironmentStorage refresh() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsStorages()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironmentStorage refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsStorages()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsStorages()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context)
+            .getValue();
         return this;
     }
 

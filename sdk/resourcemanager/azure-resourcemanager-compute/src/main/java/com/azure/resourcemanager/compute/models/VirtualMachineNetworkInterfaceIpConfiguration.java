@@ -7,25 +7,28 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineNetworkInterfaceIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine network profile's IP configuration.
  */
 @Fluent
-public final class VirtualMachineNetworkInterfaceIpConfiguration {
+public final class VirtualMachineNetworkInterfaceIpConfiguration
+    implements JsonSerializable<VirtualMachineNetworkInterfaceIpConfiguration> {
     /*
      * The IP configuration name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Describes a virtual machine network interface IP configuration properties.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties;
 
     /**
@@ -186,9 +189,9 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
-     * pools of application gateways. A virtual machine can reference backend address pools of multiple application
-     * gateways. Multiple virtual machines cannot use the same application gateway.
+     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
+     * of application gateways. A virtual machine can reference backend address pools of multiple application gateways.
+     * Multiple virtual machines cannot use the same application gateway.
      * 
      * @return the applicationGatewayBackendAddressPools value.
      */
@@ -197,9 +200,9 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
-     * pools of application gateways. A virtual machine can reference backend address pools of multiple application
-     * gateways. Multiple virtual machines cannot use the same application gateway.
+     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
+     * of application gateways. A virtual machine can reference backend address pools of multiple application gateways.
+     * Multiple virtual machines cannot use the same application gateway.
      * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
@@ -248,8 +251,9 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model VirtualMachineNetworkInterfaceIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VirtualMachineNetworkInterfaceIpConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -257,4 +261,46 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineNetworkInterfaceIpConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineNetworkInterfaceIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineNetworkInterfaceIpConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineNetworkInterfaceIpConfiguration.
+     */
+    public static VirtualMachineNetworkInterfaceIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineNetworkInterfaceIpConfiguration deserializedVirtualMachineNetworkInterfaceIpConfiguration
+                = new VirtualMachineNetworkInterfaceIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineNetworkInterfaceIpConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineNetworkInterfaceIpConfiguration.innerProperties
+                        = VirtualMachineNetworkInterfaceIpConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineNetworkInterfaceIpConfiguration;
+        });
+    }
 }

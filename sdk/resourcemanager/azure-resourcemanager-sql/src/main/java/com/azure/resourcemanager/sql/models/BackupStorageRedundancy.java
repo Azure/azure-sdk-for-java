@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The storage account type used to store backups for this database. */
+/**
+ * The storage account type used to store backups for this database.
+ */
 public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupStorageRedundancy> {
-    /** Static value Geo for BackupStorageRedundancy. */
+    /**
+     * Static value Geo for BackupStorageRedundancy.
+     */
     public static final BackupStorageRedundancy GEO = fromString("Geo");
 
-    /** Static value Local for BackupStorageRedundancy. */
+    /**
+     * Static value Local for BackupStorageRedundancy.
+     */
     public static final BackupStorageRedundancy LOCAL = fromString("Local");
 
-    /** Static value Zone for BackupStorageRedundancy. */
+    /**
+     * Static value Zone for BackupStorageRedundancy.
+     */
     public static final BackupStorageRedundancy ZONE = fromString("Zone");
 
-    /** Static value GeoZone for BackupStorageRedundancy. */
+    /**
+     * Static value GeoZone for BackupStorageRedundancy.
+     */
     public static final BackupStorageRedundancy GEO_ZONE = fromString("GeoZone");
 
     /**
+     * Creates a new instance of BackupStorageRedundancy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupStorageRedundancy() {
+    }
+
+    /**
      * Creates or finds a BackupStorageRedundancy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupStorageRedundancy.
      */
-    @JsonCreator
     public static BackupStorageRedundancy fromString(String name) {
         return fromString(name, BackupStorageRedundancy.class);
     }
 
     /**
      * Gets known BackupStorageRedundancy values.
-     *
+     * 
      * @return known BackupStorageRedundancy values.
      */
     public static Collection<BackupStorageRedundancy> values() {

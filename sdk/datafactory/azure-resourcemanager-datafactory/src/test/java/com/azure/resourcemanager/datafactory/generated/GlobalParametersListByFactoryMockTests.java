@@ -23,7 +23,7 @@ public final class GlobalParametersListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hhatpnl\":{\"type\":\"Object\",\"value\":\"datafcltojppxiqvsu\"}},\"name\":\"ryhxp\",\"type\":\"rnggqhysia\",\"etag\":\"k\",\"id\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"cwngg\":{\"type\":\"Int\",\"value\":\"datamjxxov\"},\"papzb\":{\"type\":\"Int\",\"value\":\"datajbgy\"},\"izoamttxyddkvi\":{\"type\":\"Float\",\"value\":\"datafuac\"}},\"name\":\"bbn\",\"type\":\"gzlicytfpy\",\"etag\":\"ednous\",\"id\":\"ljl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,9 @@ public final class GlobalParametersListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GlobalParameterResource> response
-            = manager.globalParameters().listByFactory("omrmxtuw", "rksyunxk", com.azure.core.util.Context.NONE);
+            = manager.globalParameters().listByFactory("ukveknwldqjlgzc", "rh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("x", response.iterator().next().id());
-        Assertions.assertEquals(GlobalParameterType.OBJECT,
-            response.iterator().next().properties().get("hhatpnl").type());
+        Assertions.assertEquals("ljl", response.iterator().next().id());
+        Assertions.assertEquals(GlobalParameterType.INT, response.iterator().next().properties().get("cwngg").type());
     }
 }

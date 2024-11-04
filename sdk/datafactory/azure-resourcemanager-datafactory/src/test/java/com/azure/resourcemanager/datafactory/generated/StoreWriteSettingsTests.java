@@ -15,20 +15,18 @@ public final class StoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"wwsioozrugbdkxl\",\"maxConcurrentConnections\":\"datakuvlzkzjjtapv\",\"disableMetricsCollection\":\"dataebtdpsgkeexso\",\"copyBehavior\":\"datakvy\",\"metadata\":[{\"name\":\"datatwtfqpmpyw\",\"value\":\"databuk\"},{\"name\":\"datajcwdoecdqu\",\"value\":\"datauqco\"},{\"name\":\"datahdxjrrbyrbn\",\"value\":\"datapsquouppzgdtu\"},{\"name\":\"dataoimojcm\",\"value\":\"datacd\"}],\"\":{\"nvb\":\"dataorzhzfocgfylto\",\"lwifbdwy\":\"datauy\",\"bbvkthre\":\"datavcy\"}}")
+            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datafdxauihnb\",\"disableMetricsCollection\":\"datahkdwyehqnxuffgj\",\"copyBehavior\":\"dataminhvdkqigppdqsq\",\"metadata\":[{\"name\":\"dataeaxthuhuruouqy\",\"value\":\"dataapstkdbnqjpcu\"}],\"\":{\"mfkumbysgsqzpgr\":\"datao\",\"phlfrxrpahptv\":\"datafag\",\"qllolnxhsupilhx\":\"datakfenmiflky\",\"y\":\"dataabli\"}}")
             .toObject(StoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("datakuvlzkzjjtapv")
-            .withDisableMetricsCollection("dataebtdpsgkeexso")
-            .withCopyBehavior("datakvy")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datatwtfqpmpyw").withValue("databuk"),
-                new MetadataItem().withName("datajcwdoecdqu").withValue("datauqco"),
-                new MetadataItem().withName("datahdxjrrbyrbn").withValue("datapsquouppzgdtu"),
-                new MetadataItem().withName("dataoimojcm").withValue("datacd")))
-            .withAdditionalProperties(mapOf("type", "wwsioozrugbdkxl"));
+        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("datafdxauihnb")
+            .withDisableMetricsCollection("datahkdwyehqnxuffgj")
+            .withCopyBehavior("dataminhvdkqigppdqsq")
+            .withMetadata(
+                Arrays.asList(new MetadataItem().withName("dataeaxthuhuruouqy").withValue("dataapstkdbnqjpcu")))
+            .withAdditionalProperties(mapOf("type", "StoreWriteSettings"));
         model = BinaryData.fromObject(model).toObject(StoreWriteSettings.class);
     }
 

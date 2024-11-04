@@ -69,8 +69,7 @@ class OkHttpHttpClient implements HttpClient {
      * @return The OkHttp request.
      */
     private okhttp3.Request toOkHttpRequest(HttpRequest request) {
-        Request.Builder requestBuilder = new Request.Builder()
-            .url(request.getUrl());
+        Request.Builder requestBuilder = new Request.Builder().url(request.getUri().toString());
 
         if (request.getHeaders() != null) {
             for (HttpHeader hdr : request.getHeaders()) {
@@ -100,7 +99,7 @@ class OkHttpHttpClient implements HttpClient {
      * @return The Mono emitting okhttp request
      */
     private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
-        if (bodyContent == null || bodyContent == BinaryData.EMPTY) {
+        if (bodyContent == null || bodyContent == BinaryData.empty()) {
             return EMPTY_REQUEST_BODY;
         }
 
@@ -166,7 +165,8 @@ class OkHttpHttpClient implements HttpClient {
         return processResponse(request, response, serverSentResult);
     }
 
-    private Response<?> processResponse(HttpRequest request, okhttp3.Response response, ServerSentResult serverSentResult) throws IOException {
+    private Response<?> processResponse(HttpRequest request, okhttp3.Response response,
+        ServerSentResult serverSentResult) throws IOException {
         RequestOptions options = request.getRequestOptions();
         ResponseBodyMode responseBodyMode = null;
         Headers responseHeaders = response.headers();
@@ -188,6 +188,7 @@ class OkHttpHttpClient implements HttpClient {
                 }
 
                 break;
+
             case STREAM:
                 if (isTextEventStream(responseHeaders)) {
                     body = createBodyFromServerSentResult(serverSentResult);
@@ -205,12 +206,13 @@ class OkHttpHttpClient implements HttpClient {
                     body = createBodyFromResponseBody(response.body());
                 }
                 break;
+
             default:
                 body = createBodyFromResponseBody(response.body());
                 break;
         }
 
-        return new OkHttpResponse(response, request, body == null ? BinaryData.EMPTY : body);
+        return new OkHttpResponse(response, request, body == null ? BinaryData.empty() : body);
     }
 
     private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {
@@ -232,8 +234,8 @@ class OkHttpHttpClient implements HttpClient {
 
         if (request.getHttpMethod() == HEAD) {
             return IGNORE;
-        } else if (contentType != null && (APPLICATION_OCTET_STREAM
-            .regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length()))) {
+        } else if (contentType != null
+            && (APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length()))) {
 
             return STREAM;
         } else {

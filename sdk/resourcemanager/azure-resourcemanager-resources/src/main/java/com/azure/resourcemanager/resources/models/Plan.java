@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Plan for the resource. */
+/**
+ * Plan for the resource.
+ */
 @Fluent
-public final class Plan {
+public final class Plan implements JsonSerializable<Plan> {
     /*
      * The plan ID.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The publisher ID.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * The offer ID.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * The promotion code.
      */
-    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /*
      * The plan's version.
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of Plan class. */
+    /**
+     * Creates an instance of Plan class.
+     */
     public Plan() {
     }
 
     /**
      * Get the name property: The plan ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +58,7 @@ public final class Plan {
 
     /**
      * Set the name property: The plan ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the Plan object itself.
      */
@@ -66,7 +69,7 @@ public final class Plan {
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +78,7 @@ public final class Plan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
@@ -86,7 +89,7 @@ public final class Plan {
 
     /**
      * Get the product property: The offer ID.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -95,7 +98,7 @@ public final class Plan {
 
     /**
      * Set the product property: The offer ID.
-     *
+     * 
      * @param product the product value to set.
      * @return the Plan object itself.
      */
@@ -106,7 +109,7 @@ public final class Plan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     *
+     * 
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -115,7 +118,7 @@ public final class Plan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     *
+     * 
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
@@ -126,7 +129,7 @@ public final class Plan {
 
     /**
      * Get the version property: The plan's version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -135,7 +138,7 @@ public final class Plan {
 
     /**
      * Set the version property: The plan's version.
-     *
+     * 
      * @param version the version value to set.
      * @return the Plan object itself.
      */
@@ -146,9 +149,57 @@ public final class Plan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("promotionCode", this.promotionCode);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Plan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Plan if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Plan.
+     */
+    public static Plan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Plan deserializedPlan = new Plan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPlan.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedPlan.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPlan.product = reader.getString();
+                } else if ("promotionCode".equals(fieldName)) {
+                    deserializedPlan.promotionCode = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedPlan.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlan;
+        });
     }
 }

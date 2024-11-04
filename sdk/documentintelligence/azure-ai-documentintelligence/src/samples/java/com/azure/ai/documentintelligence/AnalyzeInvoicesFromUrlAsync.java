@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found invoice fields from a file source URL of an invoice document.
- * See fields found on an invoice <a href=https://aka.ms/documentintelligence/invoicefields>here</a>
+ * See fields found on an invoice <a href=https://aka.ms/formrecognizer/invoicefields>here</a>
  */
 public class AnalyzeInvoicesFromUrlAsync {
     /**
@@ -41,13 +41,14 @@ public class AnalyzeInvoicesFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeInvoicePoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicePoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
             null,
             null,
             null,
             null,
             null,
+                null,
             null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
 
         Mono<AnalyzeResult> analyzeInvoiceResultMono = analyzeInvoicePoller
@@ -60,7 +61,7 @@ public class AnalyzeInvoicesFromUrlAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         analyzeInvoiceResultMono.subscribe(analyzeInvoiceResult -> {
             for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
@@ -140,7 +141,7 @@ public class AnalyzeInvoicesFromUrlAsync {
                             .map(documentField -> documentField.getValueObject())
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 // See a full list of fields found on an invoice here:
-                                // https://aka.ms/documentintelligence/invoicefields
+                                // https://aka.ms/formrecognizer/invoicefields
                                 if ("Description".equals(key)) {
                                     if (DocumentFieldType.STRING == documentField.getType()) {
                                         String name = documentField.getValueString();

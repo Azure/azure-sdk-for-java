@@ -13,16 +13,16 @@ public final class ResourceGuardTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuard model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"uqlcvydy\",\"requestResourceType\":\"tdooaoj\"},{\"vaultCriticalOperation\":\"iodkooebwnujhem\",\"requestResourceType\":\"bvdkcrodtjin\"},{\"vaultCriticalOperation\":\"jlfltkacjvefkdlf\",\"requestResourceType\":\"kggkfpa\"},{\"vaultCriticalOperation\":\"owpulpq\",\"requestResourceType\":\"ylsyxkqjnsje\"}],\"vaultCriticalOperationExclusionList\":[\"iagxsdszuempsbz\",\"f\"],\"description\":\"eyvpnqicvinvkj\"}")
+            "{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"wneaiv\",\"requestResourceType\":\"czelpcirel\"},{\"vaultCriticalOperation\":\"eae\",\"requestResourceType\":\"abfatkl\"}],\"vaultCriticalOperationExclusionList\":[\"bjhwuaan\",\"zjosp\",\"youlp\",\"rvxaglrvimjwosy\"],\"description\":\"itc\"}")
             .toObject(ResourceGuard.class);
-        Assertions.assertEquals("iagxsdszuempsbz", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("bjhwuaan", model.vaultCriticalOperationExclusionList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuard model
-            = new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList("iagxsdszuempsbz", "f"));
+        ResourceGuard model = new ResourceGuard()
+            .withVaultCriticalOperationExclusionList(Arrays.asList("bjhwuaan", "zjosp", "youlp", "rvxaglrvimjwosy"));
         model = BinaryData.fromObject(model).toObject(ResourceGuard.class);
-        Assertions.assertEquals("iagxsdszuempsbz", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("bjhwuaan", model.vaultCriticalOperationExclusionList().get(0));
     }
 }

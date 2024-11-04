@@ -1,9 +1,11 @@
 matrix:
+  imageBuildDir: ..\..\..\
+  useV2: [ true, false ]
   scenarios:
     processor:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 15
       senderTestClass: EventSender
+      testDurationMin: 15
+      messageSizeInBytes: 1024
       sendRate: 38500
       sendBatchSize: 385
       sendConcurrency: 15
@@ -11,11 +13,10 @@ matrix:
       processorBatchSize: 128
       processorInstancesCount: 1
       processorFailureRatio: 0
-      messageSizeInBytes: 1024
     forwarder:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 15
       senderTestClass: EventSender
+      testDurationMin: 15
+      messageSizeInBytes: 1024
       sendRate: 20000
       sendBatchSize: 50
       sendConcurrency: 10
@@ -23,4 +24,15 @@ matrix:
       processorBatchSize: 128
       processorInstancesCount: 2
       processorFailureRatio: 0.000003125
+    idleSender:
+      senderTestClass: EventSender
+      testDurationMin: 1440
       messageSizeInBytes: 1024
+      sendRate: 5000
+      sendBatchSize: 25
+      sendConcurrency: 5
+      receiverTestClass: EventProcessor
+      processorBatchSize: 32
+      processorInstancesCount: 1
+      processorFailureRatio: 0
+      idleDurationMinutes: 40

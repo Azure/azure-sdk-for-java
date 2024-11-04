@@ -9,22 +9,41 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The EntityLinkingTaskResult model. */
+/**
+ * The EntityLinkingTaskResult model.
+ */
 @Fluent
 public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
+    /*
+     * Enumeration of supported Text Analysis task results.
+     */
+    private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.ENTITY_LINKING_RESULTS;
+
     /*
      * The results property.
      */
     private EntityLinkingResult results;
 
-    /** Creates an instance of EntityLinkingTaskResult class. */
-    public EntityLinkingTaskResult() {}
+    /**
+     * Creates an instance of EntityLinkingTaskResult class.
+     */
+    public EntityLinkingTaskResult() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis task results.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextTaskResultsKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the results property: The results property.
-     *
+     * 
      * @return the results value.
      */
     public EntityLinkingResult getResults() {
@@ -33,7 +52,7 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
 
     /**
      * Set the results property: The results property.
-     *
+     * 
      * @param results the results value to set.
      * @return the EntityLinkingTaskResult object itself.
      */
@@ -42,48 +61,44 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextTaskResultsKind.ENTITY_LINKING_RESULTS, null));
         jsonWriter.writeJsonField("results", this.results);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of EntityLinkingTaskResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of EntityLinkingTaskResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingTaskResult.
      */
     public static EntityLinkingTaskResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    EntityLinkingTaskResult deserializedEntityLinkingTaskResult = new EntityLinkingTaskResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            EntityLinkingTaskResult deserializedEntityLinkingTaskResult = new EntityLinkingTaskResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"EntityLinkingResults".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'EntityLinkingResults'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("results".equals(fieldName)) {
-                            deserializedEntityLinkingTaskResult.results = EntityLinkingResult.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("results".equals(fieldName)) {
+                    deserializedEntityLinkingTaskResult.results = EntityLinkingResult.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEntityLinkingTaskResult.kind
+                        = AnalyzeTextTaskResultsKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedEntityLinkingTaskResult;
-                });
+            return deserializedEntityLinkingTaskResult;
+        });
     }
 }

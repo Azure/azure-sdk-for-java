@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.recoveryservices.models.EnhancedSecurityState;
 import com.azure.resourcemanager.recoveryservices.models.SoftDeleteSettings;
 import com.azure.resourcemanager.recoveryservices.models.SoftDeleteState;
 import org.junit.jupiter.api.Assertions;
@@ -12,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SoftDeleteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SoftDeleteSettings model =
-            BinaryData
-                .fromString("{\"softDeleteState\":\"Disabled\",\"softDeleteRetentionPeriodInDays\":1785684937}")
-                .toObject(SoftDeleteSettings.class);
+        SoftDeleteSettings model = BinaryData.fromString(
+            "{\"softDeleteState\":\"Disabled\",\"softDeleteRetentionPeriodInDays\":1272670546,\"enhancedSecurityState\":\"Disabled\"}")
+            .toObject(SoftDeleteSettings.class);
         Assertions.assertEquals(SoftDeleteState.DISABLED, model.softDeleteState());
-        Assertions.assertEquals(1785684937, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(1272670546, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(EnhancedSecurityState.DISABLED, model.enhancedSecurityState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SoftDeleteSettings model =
-            new SoftDeleteSettings()
-                .withSoftDeleteState(SoftDeleteState.DISABLED)
-                .withSoftDeleteRetentionPeriodInDays(1785684937);
+        SoftDeleteSettings model = new SoftDeleteSettings().withSoftDeleteState(SoftDeleteState.DISABLED)
+            .withSoftDeleteRetentionPeriodInDays(1272670546)
+            .withEnhancedSecurityState(EnhancedSecurityState.DISABLED);
         model = BinaryData.fromObject(model).toObject(SoftDeleteSettings.class);
         Assertions.assertEquals(SoftDeleteState.DISABLED, model.softDeleteState());
-        Assertions.assertEquals(1785684937, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(1272670546, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(EnhancedSecurityState.DISABLED, model.enhancedSecurityState());
     }
 }

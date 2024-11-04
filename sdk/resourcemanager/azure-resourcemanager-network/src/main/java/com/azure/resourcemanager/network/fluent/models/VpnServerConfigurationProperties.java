@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AadAuthenticationParameters;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.RadiusServer;
@@ -14,109 +18,93 @@ import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootC
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusServerRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCertificate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for VpnServerConfiguration.
  */
 @Fluent
-public final class VpnServerConfigurationProperties {
+public final class VpnServerConfigurationProperties implements JsonSerializable<VpnServerConfigurationProperties> {
     /*
      * The name of the VpnServerConfiguration that is unique within a resource group.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * VPN protocols for the VpnServerConfiguration.
      */
-    @JsonProperty(value = "vpnProtocols")
     private List<VpnGatewayTunnelingProtocol> vpnProtocols;
 
     /*
      * VPN authentication types for the VpnServerConfiguration.
      */
-    @JsonProperty(value = "vpnAuthenticationTypes")
     private List<VpnAuthenticationType> vpnAuthenticationTypes;
 
     /*
      * VPN client root certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "vpnClientRootCertificates")
     private List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates;
 
     /*
      * VPN client revoked certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "vpnClientRevokedCertificates")
     private List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates;
 
     /*
      * Radius Server root certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "radiusServerRootCertificates")
     private List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates;
 
     /*
      * Radius client root certificate of VpnServerConfiguration.
      */
-    @JsonProperty(value = "radiusClientRootCertificates")
     private List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates;
 
     /*
      * VpnClientIpsecPolicies for VpnServerConfiguration.
      */
-    @JsonProperty(value = "vpnClientIpsecPolicies")
     private List<IpsecPolicy> vpnClientIpsecPolicies;
 
     /*
      * The radius server address property of the VpnServerConfiguration resource for point to site client connection.
      */
-    @JsonProperty(value = "radiusServerAddress")
     private String radiusServerAddress;
 
     /*
      * The radius secret property of the VpnServerConfiguration resource for point to site client connection.
      */
-    @JsonProperty(value = "radiusServerSecret")
     private String radiusServerSecret;
 
     /*
      * Multiple Radius Server configuration for VpnServerConfiguration.
      */
-    @JsonProperty(value = "radiusServers")
     private List<RadiusServer> radiusServers;
 
     /*
      * The set of aad vpn authentication parameters.
      */
-    @JsonProperty(value = "aadAuthenticationParameters")
     private AadAuthenticationParameters aadAuthenticationParameters;
 
     /*
      * The provisioning state of the VpnServerConfiguration resource. Possible values are: 'Updating', 'Deleting', and
      * 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * List of references to P2SVpnGateways.
      */
-    @JsonProperty(value = "p2SVpnGateways", access = JsonProperty.Access.WRITE_ONLY)
     private List<P2SVpnGatewayInner> p2SVpnGateways;
 
     /*
      * List of all VpnServerConfigurationPolicyGroups.
      */
-    @JsonProperty(value = "configurationPolicyGroups")
     private List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -457,5 +445,115 @@ public final class VpnServerConfigurationProperties {
         if (configurationPolicyGroups() != null) {
             configurationPolicyGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("vpnProtocols", this.vpnProtocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("vpnAuthenticationTypes", this.vpnAuthenticationTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("vpnClientRootCertificates", this.vpnClientRootCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vpnClientRevokedCertificates", this.vpnClientRevokedCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("radiusServerRootCertificates", this.radiusServerRootCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("radiusClientRootCertificates", this.radiusClientRootCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vpnClientIpsecPolicies", this.vpnClientIpsecPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("radiusServerAddress", this.radiusServerAddress);
+        jsonWriter.writeStringField("radiusServerSecret", this.radiusServerSecret);
+        jsonWriter.writeArrayField("radiusServers", this.radiusServers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("aadAuthenticationParameters", this.aadAuthenticationParameters);
+        jsonWriter.writeArrayField("configurationPolicyGroups", this.configurationPolicyGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnServerConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnServerConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnServerConfigurationProperties.
+     */
+    public static VpnServerConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnServerConfigurationProperties deserializedVpnServerConfigurationProperties
+                = new VpnServerConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVpnServerConfigurationProperties.name = reader.getString();
+                } else if ("vpnProtocols".equals(fieldName)) {
+                    List<VpnGatewayTunnelingProtocol> vpnProtocols
+                        = reader.readArray(reader1 -> VpnGatewayTunnelingProtocol.fromString(reader1.getString()));
+                    deserializedVpnServerConfigurationProperties.vpnProtocols = vpnProtocols;
+                } else if ("vpnAuthenticationTypes".equals(fieldName)) {
+                    List<VpnAuthenticationType> vpnAuthenticationTypes
+                        = reader.readArray(reader1 -> VpnAuthenticationType.fromString(reader1.getString()));
+                    deserializedVpnServerConfigurationProperties.vpnAuthenticationTypes = vpnAuthenticationTypes;
+                } else if ("vpnClientRootCertificates".equals(fieldName)) {
+                    List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates
+                        = reader.readArray(reader1 -> VpnServerConfigVpnClientRootCertificate.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.vpnClientRootCertificates = vpnClientRootCertificates;
+                } else if ("vpnClientRevokedCertificates".equals(fieldName)) {
+                    List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates
+                        = reader.readArray(reader1 -> VpnServerConfigVpnClientRevokedCertificate.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.vpnClientRevokedCertificates
+                        = vpnClientRevokedCertificates;
+                } else if ("radiusServerRootCertificates".equals(fieldName)) {
+                    List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates
+                        = reader.readArray(reader1 -> VpnServerConfigRadiusServerRootCertificate.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.radiusServerRootCertificates
+                        = radiusServerRootCertificates;
+                } else if ("radiusClientRootCertificates".equals(fieldName)) {
+                    List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates
+                        = reader.readArray(reader1 -> VpnServerConfigRadiusClientRootCertificate.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.radiusClientRootCertificates
+                        = radiusClientRootCertificates;
+                } else if ("vpnClientIpsecPolicies".equals(fieldName)) {
+                    List<IpsecPolicy> vpnClientIpsecPolicies
+                        = reader.readArray(reader1 -> IpsecPolicy.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.vpnClientIpsecPolicies = vpnClientIpsecPolicies;
+                } else if ("radiusServerAddress".equals(fieldName)) {
+                    deserializedVpnServerConfigurationProperties.radiusServerAddress = reader.getString();
+                } else if ("radiusServerSecret".equals(fieldName)) {
+                    deserializedVpnServerConfigurationProperties.radiusServerSecret = reader.getString();
+                } else if ("radiusServers".equals(fieldName)) {
+                    List<RadiusServer> radiusServers = reader.readArray(reader1 -> RadiusServer.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.radiusServers = radiusServers;
+                } else if ("aadAuthenticationParameters".equals(fieldName)) {
+                    deserializedVpnServerConfigurationProperties.aadAuthenticationParameters
+                        = AadAuthenticationParameters.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVpnServerConfigurationProperties.provisioningState = reader.getString();
+                } else if ("p2SVpnGateways".equals(fieldName)) {
+                    List<P2SVpnGatewayInner> p2SVpnGateways
+                        = reader.readArray(reader1 -> P2SVpnGatewayInner.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.p2SVpnGateways = p2SVpnGateways;
+                } else if ("configurationPolicyGroups".equals(fieldName)) {
+                    List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups
+                        = reader.readArray(reader1 -> VpnServerConfigurationPolicyGroupInner.fromJson(reader1));
+                    deserializedVpnServerConfigurationProperties.configurationPolicyGroups = configurationPolicyGroups;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVpnServerConfigurationProperties.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnServerConfigurationProperties;
+        });
     }
 }

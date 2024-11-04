@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Redis cache access keys. */
+/**
+ * Redis cache access keys.
+ */
 @Immutable
-public final class RedisAccessKeysInner {
+public final class RedisAccessKeysInner implements JsonSerializable<RedisAccessKeysInner> {
     /*
      * The current primary key that clients can use to authenticate with Redis cache.
      */
-    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
      * The current secondary key that clients can use to authenticate with Redis cache.
      */
-    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
-    /** Creates an instance of RedisAccessKeysInner class. */
+    /**
+     * Creates an instance of RedisAccessKeysInner class.
+     */
     public RedisAccessKeysInner() {
     }
 
     /**
      * Get the primaryKey property: The current primary key that clients can use to authenticate with Redis cache.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -37,7 +43,7 @@ public final class RedisAccessKeysInner {
 
     /**
      * Get the secondaryKey property: The current secondary key that clients can use to authenticate with Redis cache.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -46,9 +52,46 @@ public final class RedisAccessKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisAccessKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisAccessKeysInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisAccessKeysInner.
+     */
+    public static RedisAccessKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisAccessKeysInner deserializedRedisAccessKeysInner = new RedisAccessKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKey".equals(fieldName)) {
+                    deserializedRedisAccessKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedRedisAccessKeysInner.secondaryKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisAccessKeysInner;
+        });
     }
 }

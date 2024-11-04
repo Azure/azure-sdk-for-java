@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GitHub action code configuration.
  */
 @Fluent
-public final class GitHubActionCodeConfiguration {
+public final class GitHubActionCodeConfiguration implements JsonSerializable<GitHubActionCodeConfiguration> {
     /*
      * Runtime stack is used to determine the workflow file content for code base apps.
      */
-    @JsonProperty(value = "runtimeStack")
     private String runtimeStack;
 
     /*
      * Runtime version is used to determine what build version to set in the workflow file.
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /**
@@ -78,5 +80,45 @@ public final class GitHubActionCodeConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runtimeStack", this.runtimeStack);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubActionCodeConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubActionCodeConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitHubActionCodeConfiguration.
+     */
+    public static GitHubActionCodeConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubActionCodeConfiguration deserializedGitHubActionCodeConfiguration
+                = new GitHubActionCodeConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runtimeStack".equals(fieldName)) {
+                    deserializedGitHubActionCodeConfiguration.runtimeStack = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedGitHubActionCodeConfiguration.runtimeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubActionCodeConfiguration;
+        });
     }
 }

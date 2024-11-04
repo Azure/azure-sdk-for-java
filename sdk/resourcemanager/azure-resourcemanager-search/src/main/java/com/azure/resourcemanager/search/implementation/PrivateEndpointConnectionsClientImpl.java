@@ -34,24 +34,28 @@ import com.azure.resourcemanager.search.models.PrivateEndpointConnectionListResu
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(SearchManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,111 +66,86 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @Host("{$host}")
     @ServiceInterface(name = "SearchManagementClie")
     public interface PrivateEndpointConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PrivateEndpointConnectionInner privateEndpointConnection,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 404})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionInner>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResult>> listByService(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<PrivateEndpointConnectionListResult>> listByService(@HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("searchServiceName") String searchServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionListResult>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        UUID clientRequestId) {
+    public Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,75 +156,52 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            privateEndpointConnectionName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            privateEndpointConnection,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                privateEndpointConnectionName, clientRequestId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), privateEndpointConnection, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -256,83 +212,60 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                privateEndpointConnectionName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                privateEndpointConnection,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+            privateEndpointConnectionName, clientRequestId, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), privateEndpointConnection, accept, context);
     }
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
+    public Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
         final UUID clientRequestId = null;
-        return updateWithResponseAsync(
-                resourceGroupName,
-                searchServiceName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateWithResponseAsync(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            privateEndpointConnection, clientRequestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -340,31 +273,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return describes an existing private endpoint connection to the search service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> updateWithResponse(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        UUID clientRequestId,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName,
-                searchServiceName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                clientRequestId,
-                context)
-            .block();
+    public Response<PrivateEndpointConnectionInner> updateWithResponse(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, UUID clientRequestId, Context context) {
+        return updateWithResponseAsync(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            privateEndpointConnection, clientRequestId, context).block();
     }
 
     /**
      * Updates a Private Endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param privateEndpointConnection The definition of the private endpoint connection to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -372,49 +295,35 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return describes an existing private endpoint connection to the search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
+    public PrivateEndpointConnectionInner update(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
         final UUID clientRequestId = null;
-        return updateWithResponse(
-                resourceGroupName,
-                searchServiceName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                clientRequestId,
-                Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            privateEndpointConnection, clientRequestId, Context.NONE).getValue();
     }
 
     /**
      * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the private endpoint connection to the search service in the given resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        UUID clientRequestId) {
+    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -425,64 +334,44 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            privateEndpointConnectionName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                privateEndpointConnectionName, clientRequestId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the private endpoint connection to the search service in the given resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -493,133 +382,109 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                privateEndpointConnectionName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+            privateEndpointConnectionName, clientRequestId, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the private endpoint connection to the search service in the given resource group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName) {
+    public Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName) {
         final UUID clientRequestId = null;
-        return getWithResponseAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getWithResponseAsync(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            clientRequestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the private endpoint connection to the search service in the given resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        UUID clientRequestId,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, context)
-            .block();
+    public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName, UUID clientRequestId, Context context) {
+        return getWithResponseAsync(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            clientRequestId, context).block();
     }
 
     /**
      * Gets the details of the private endpoint connection to the search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the private endpoint connection to the search service in the given resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName) {
+    public PrivateEndpointConnectionInner get(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName) {
         final UUID clientRequestId = null;
-        return getWithResponse(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, Context.NONE)
-            .getValue();
+        return getWithResponse(resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId,
+            Context.NONE).getValue();
     }
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        UUID clientRequestId) {
+    public Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -630,64 +495,44 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            privateEndpointConnectionName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                privateEndpointConnectionName, clientRequestId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> deleteWithResponseAsync(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -698,65 +543,52 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                privateEndpointConnectionName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+            privateEndpointConnectionName, clientRequestId, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> deleteAsync(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName) {
+    public Mono<PrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName) {
         final UUID clientRequestId = null;
-        return deleteWithResponseAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return deleteWithResponseAsync(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            clientRequestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -764,67 +596,57 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return describes an existing private endpoint connection to the search service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> deleteWithResponse(
-        String resourceGroupName,
-        String searchServiceName,
-        String privateEndpointConnectionName,
-        UUID clientRequestId,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, context)
-            .block();
+    public Response<PrivateEndpointConnectionInner> deleteWithResponse(String resourceGroupName,
+        String searchServiceName, String privateEndpointConnectionName, UUID clientRequestId, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, searchServiceName, privateEndpointConnectionName,
+            clientRequestId, context).block();
     }
 
     /**
      * Disconnects the private endpoint connection and deletes it from the search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection to the search service with the
-     *     specified resource group.
+     * specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes an existing private endpoint connection to the search service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner delete(
-        String resourceGroupName, String searchServiceName, String privateEndpointConnectionName) {
+    public PrivateEndpointConnectionInner delete(String resourceGroupName, String searchServiceName,
+        String privateEndpointConnectionName) {
         final UUID clientRequestId = null;
-        return deleteWithResponse(
-                resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId, Context.NONE)
-            .getValue();
+        return deleteWithResponse(resourceGroupName, searchServiceName, privateEndpointConnectionName, clientRequestId,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all private endpoint connections in the given service along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -836,59 +658,39 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            searchServiceName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), clientRequestId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, searchServiceName,
+                accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all private endpoint connections in the given service along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -901,43 +703,29 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                searchServiceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), clientRequestId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, searchServiceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of all private endpoint connections in the given service as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, clientRequestId));
@@ -945,19 +733,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of all private endpoint connections in the given service as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
-        String resourceGroupName, String searchServiceName) {
+    public PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(String resourceGroupName,
+        String searchServiceName) {
         final UUID clientRequestId = null;
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId),
@@ -966,22 +754,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of all private endpoint connections in the given service as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private PagedFlux<PrivateEndpointConnectionInner> listByServiceAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, clientRequestId, context));
@@ -989,124 +777,101 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all private endpoint connections in the given service as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionInner> listByService(
-        String resourceGroupName, String searchServiceName) {
+    public PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName,
+        String searchServiceName) {
         final UUID clientRequestId = null;
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, searchServiceName, clientRequestId));
     }
 
     /**
      * Gets a list of all private endpoint connections in the given service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all private endpoint connections in the given service as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all private endpoint connections in the given service as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionInner> listByService(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    public PagedIterable<PrivateEndpointConnectionInner> listByService(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId, Context context) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, searchServiceName, clientRequestId, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing a list of Private Endpoint connections along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceNextSinglePageAsync(
-        String nextLink, UUID clientRequestId) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceNextSinglePageAsync(String nextLink,
+        UUID clientRequestId) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listByServiceNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
-            .<PagedResponse<PrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing a list of Private Endpoint connections along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceNextSinglePageAsync(
-        String nextLink, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByServiceNextSinglePageAsync(String nextLink,
+        UUID clientRequestId, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

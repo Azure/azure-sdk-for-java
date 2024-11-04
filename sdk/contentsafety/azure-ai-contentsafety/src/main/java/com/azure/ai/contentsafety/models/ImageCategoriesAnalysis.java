@@ -24,7 +24,9 @@ public final class ImageCategoriesAnalysis implements JsonSerializable<ImageCate
     private final ImageCategory category;
 
     /*
-     * The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the output value can be 0, 2, 4, 6.
+     * The value increases with the severity of the input content. The value of this field is determined by the output
+     * type specified in the request. The output type could be ‘FourSeverityLevels’, and the output value can be 0, 2,
+     * 4, 6.
      */
     @Generated
     private Integer severity;

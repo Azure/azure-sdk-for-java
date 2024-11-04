@@ -7,14 +7,21 @@ package com.azure.resourcemanager.appcomplianceautomation.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.DownloadResponseInner;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.SnapshotResourceInner;
+import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotDownloadRequest;
 
-/** An instance of this class provides access to all the operations defined in SnapshotsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SnapshotsClient.
+ */
 public interface SnapshotsClient {
     /**
      * Get the AppComplianceAutomation snapshot list.
-     *
+     * 
      * @param reportName Report Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,14 +33,16 @@ public interface SnapshotsClient {
 
     /**
      * Get the AppComplianceAutomation snapshot list.
-     *
+     * 
      * @param reportName Report Name.
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     ?$select=reportName,id.
-     * @param reportCreatorTenantId The tenant id of the report creator.
+     * ?$select=reportName,id.
+     * @param filter The filter to apply on the operation.
+     * @param orderby OData order by query option.
      * @param offerGuid The offerGuid which mapping to the reports.
+     * @param reportCreatorTenantId The tenant id of the report creator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,12 +50,96 @@ public interface SnapshotsClient {
      * @return the AppComplianceAutomation snapshot list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SnapshotResourceInner> list(
-        String reportName,
-        String skipToken,
-        Integer top,
-        String select,
-        String reportCreatorTenantId,
-        String offerGuid,
+    PagedIterable<SnapshotResourceInner> list(String reportName, String skipToken, Integer top, String select,
+        String filter, String orderby, String offerGuid, String reportCreatorTenantId, Context context);
+
+    /**
+     * Get the AppComplianceAutomation snapshot and its properties.
+     * 
+     * @param reportName Report Name.
+     * @param snapshotName Snapshot Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AppComplianceAutomation snapshot and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SnapshotResourceInner> getWithResponse(String reportName, String snapshotName, Context context);
+
+    /**
+     * Get the AppComplianceAutomation snapshot and its properties.
+     * 
+     * @param reportName Report Name.
+     * @param snapshotName Snapshot Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AppComplianceAutomation snapshot and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotResourceInner get(String reportName, String snapshotName);
+
+    /**
+     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
+     * 
+     * @param reportName Report Name.
+     * @param snapshotName Snapshot Name.
+     * @param body Parameters for the query operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of object that includes all the possible response for the download
+     * operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DownloadResponseInner>, DownloadResponseInner> beginDownload(String reportName,
+        String snapshotName, SnapshotDownloadRequest body);
+
+    /**
+     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
+     * 
+     * @param reportName Report Name.
+     * @param snapshotName Snapshot Name.
+     * @param body Parameters for the query operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of object that includes all the possible response for the download
+     * operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DownloadResponseInner>, DownloadResponseInner> beginDownload(String reportName,
+        String snapshotName, SnapshotDownloadRequest body, Context context);
+
+    /**
+     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
+     * 
+     * @param reportName Report Name.
+     * @param snapshotName Snapshot Name.
+     * @param body Parameters for the query operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes all the possible response for the download operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DownloadResponseInner download(String reportName, String snapshotName, SnapshotDownloadRequest body);
+
+    /**
+     * Download compliance needs from snapshot, like: Compliance Report, Resource List.
+     * 
+     * @param reportName Report Name.
+     * @param snapshotName Snapshot Name.
+     * @param body Parameters for the query operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes all the possible response for the download operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DownloadResponseInner download(String reportName, String snapshotName, SnapshotDownloadRequest body,
         Context context);
 }

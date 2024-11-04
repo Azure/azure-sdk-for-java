@@ -6,10 +6,13 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,16 +26,29 @@ public final class DedicatedHostGroupInner extends Resource {
     /*
      * Dedicated Host Group Properties.
      */
-    @JsonProperty(value = "properties")
     private DedicatedHostGroupProperties innerProperties;
 
     /*
-     * Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only
-     * during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in
-     * the group to be in the same zone.
+     * Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during
+     * creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the
+     * group to be in the same zone.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of DedicatedHostGroupInner class.
@@ -50,8 +66,8 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone
-     * can be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
+     * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
+     * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
      * enforces each host in the group to be in the same zone.
      * 
      * @return the zones value.
@@ -61,8 +77,8 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Set the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone
-     * can be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
+     * Set the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
+     * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
      * enforces each host in the group to be in the same zone.
      * 
      * @param zones the zones value to set.
@@ -71,6 +87,36 @@ public final class DedicatedHostGroupInner extends Resource {
     public DedicatedHostGroupInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -124,8 +170,8 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of
-     * the dedicated hosts under the dedicated host group.
+     * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of the
+     * dedicated hosts under the dedicated host group.
      * 
      * @return the instanceView value.
      */
@@ -136,8 +182,8 @@ public final class DedicatedHostGroupInner extends Resource {
     /**
      * Get the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
-     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false'
-     * when not provided. Minimum api-version: 2020-06-01.
+     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
+     * not provided. Minimum api-version: 2020-06-01.
      * 
      * @return the supportAutomaticPlacement value.
      */
@@ -148,8 +194,8 @@ public final class DedicatedHostGroupInner extends Resource {
     /**
      * Set the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
-     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false'
-     * when not provided. Minimum api-version: 2020-06-01.
+     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
+     * not provided. Minimum api-version: 2020-06-01.
      * 
      * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
      * @return the DedicatedHostGroupInner object itself.
@@ -197,5 +243,59 @@ public final class DedicatedHostGroupInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostGroupInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedHostGroupInner.
+     */
+    public static DedicatedHostGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostGroupInner deserializedDedicatedHostGroupInner = new DedicatedHostGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDedicatedHostGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedHostGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDedicatedHostGroupInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDedicatedHostGroupInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedHostGroupInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedHostGroupInner.innerProperties = DedicatedHostGroupProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDedicatedHostGroupInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostGroupInner;
+        });
     }
 }

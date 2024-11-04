@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 
 import java.util.List;
@@ -18,9 +19,10 @@ import java.util.Objects;
 public class Person {
     private String id;
     private String firstName;
-
     @PartitionKey
     private String lastName;
+    @Transient
+    private String transientProperty;
     private List<String> hobbies;
     private List<Address> shippingAddresses;
     private Integer age;
@@ -41,6 +43,18 @@ public class Person {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.hobbies = hobbies;
+        this.shippingAddresses = shippingAddresses;
+        this.age = age;
+        this.passportIdsByCountry = passportIDsByCountry;
+    }
+
+    public Person(String id, String firstName, String lastName, String transientProperty, List<String> hobbies, List<Address> shippingAddresses,
+                  Integer age, Map<String, String> passportIDsByCountry) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.transientProperty = transientProperty;
         this.hobbies = hobbies;
         this.shippingAddresses = shippingAddresses;
         this.age = age;
@@ -72,6 +86,14 @@ public class Person {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getTransientProperty() {
+        return transientProperty;
+    }
+
+    public void setTransientProperty(String transientProperty) {
+        this.transientProperty = transientProperty;
     }
 
     public List<String> getHobbies() {
@@ -126,6 +148,7 @@ public class Person {
         return Objects.equals(id, person.id)
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
+            && Objects.equals(transientProperty,person.transientProperty)
             && Objects.equals(hobbies, person.hobbies)
             && Objects.equals(shippingAddresses, person.shippingAddresses)
             && Objects.equals(age, person.age)
@@ -134,7 +157,7 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, hobbies, shippingAddresses, age, passportIdsByCountry);
+        return Objects.hash(id, firstName, lastName, transientProperty, hobbies, shippingAddresses, age, passportIdsByCountry);
     }
 
     @Override
@@ -148,6 +171,9 @@ public class Person {
             + '\''
             + ", lastName='"
             + lastName
+            + '\''
+            + ", transientProperty='"
+            + transientProperty
             + '\''
             + ", age="
             + age

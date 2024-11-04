@@ -5,7 +5,10 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trigger resource type.
@@ -15,7 +18,6 @@ public final class TriggerResource extends SubResource {
     /*
      * Properties of the trigger.
      */
-    @JsonProperty(value = "properties", required = true)
     private Trigger properties;
 
     /**
@@ -42,5 +44,50 @@ public final class TriggerResource extends SubResource {
     public TriggerResource setProperties(Trigger properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TriggerResource.
+     */
+    public static TriggerResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerResource deserializedTriggerResource = new TriggerResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTriggerResource.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedTriggerResource.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedTriggerResource.setType(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedTriggerResource.setEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTriggerResource.properties = Trigger.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerResource;
+        });
     }
 }

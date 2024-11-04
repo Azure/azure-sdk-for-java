@@ -6,20 +6,49 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.fluent.models.AgentUpdateProperties;
+import com.azure.resourcemanager.storagemover.models.DayOfWeek;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.Time;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
+import com.azure.resourcemanager.storagemover.models.UploadLimitWeeklyRecurrence;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AgentUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentUpdateProperties model =
-            BinaryData.fromString("{\"description\":\"yhxhu\"}").toObject(AgentUpdateProperties.class);
-        Assertions.assertEquals("yhxhu", model.description());
+        AgentUpdateProperties model = BinaryData.fromString(
+            "{\"description\":\"q\",\"uploadLimitSchedule\":{\"weeklyRecurrences\":[{\"limitInMbps\":1825167031,\"days\":[\"Saturday\"],\"startTime\":{\"hour\":191482446,\"minute\":30},\"endTime\":{\"hour\":2108030600,\"minute\":0}}]}}")
+            .toObject(AgentUpdateProperties.class);
+        Assertions.assertEquals("q", model.description());
+        Assertions.assertEquals(191482446, model.uploadLimitSchedule().weeklyRecurrences().get(0).startTime().hour());
+        Assertions.assertEquals(Minute.THREE_ZERO,
+            model.uploadLimitSchedule().weeklyRecurrences().get(0).startTime().minute());
+        Assertions.assertEquals(2108030600, model.uploadLimitSchedule().weeklyRecurrences().get(0).endTime().hour());
+        Assertions.assertEquals(Minute.ZERO, model.uploadLimitSchedule().weeklyRecurrences().get(0).endTime().minute());
+        Assertions.assertEquals(DayOfWeek.SATURDAY,
+            model.uploadLimitSchedule().weeklyRecurrences().get(0).days().get(0));
+        Assertions.assertEquals(1825167031, model.uploadLimitSchedule().weeklyRecurrences().get(0).limitInMbps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentUpdateProperties model = new AgentUpdateProperties().withDescription("yhxhu");
+        AgentUpdateProperties model = new AgentUpdateProperties().withDescription("q")
+            .withUploadLimitSchedule(
+                new UploadLimitSchedule().withWeeklyRecurrences(Arrays.asList(new UploadLimitWeeklyRecurrence()
+                    .withStartTime(new Time().withHour(191482446).withMinute(Minute.THREE_ZERO))
+                    .withEndTime(new Time().withHour(2108030600).withMinute(Minute.ZERO))
+                    .withDays(Arrays.asList(DayOfWeek.SATURDAY))
+                    .withLimitInMbps(1825167031))));
         model = BinaryData.fromObject(model).toObject(AgentUpdateProperties.class);
-        Assertions.assertEquals("yhxhu", model.description());
+        Assertions.assertEquals("q", model.description());
+        Assertions.assertEquals(191482446, model.uploadLimitSchedule().weeklyRecurrences().get(0).startTime().hour());
+        Assertions.assertEquals(Minute.THREE_ZERO,
+            model.uploadLimitSchedule().weeklyRecurrences().get(0).startTime().minute());
+        Assertions.assertEquals(2108030600, model.uploadLimitSchedule().weeklyRecurrences().get(0).endTime().hour());
+        Assertions.assertEquals(Minute.ZERO, model.uploadLimitSchedule().weeklyRecurrences().get(0).endTime().minute());
+        Assertions.assertEquals(DayOfWeek.SATURDAY,
+            model.uploadLimitSchedule().weeklyRecurrences().get(0).days().get(0));
+        Assertions.assertEquals(1825167031, model.uploadLimitSchedule().weeklyRecurrences().get(0).limitInMbps());
     }
 }

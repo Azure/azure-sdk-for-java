@@ -6,61 +6,33 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager;
 import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SnapshotsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"snapshotName\":\"tmcg\",\"createdAt\":\"2021-04-24T18:57:19Z\",\"provisioningState\":\"Succeeded\",\"reportProperties\":{\"triggerTime\":\"2021-01-11T18:38:59Z\",\"timeZone\":\"lnd\",\"resources\":[{\"resourceId\":\"tutmzl\",\"resourceType\":\"ojlvfhrbbpneqvc\",\"resourceKind\":\"yyurmochpprprsnm\",\"resourceOrigin\":\"AWS\",\"accountId\":\"zejnhl\"},{\"resourceId\":\"kpbz\",\"resourceType\":\"piljhahzvech\",\"resourceKind\":\"bnwieholew\",\"resourceOrigin\":\"Azure\",\"accountId\":\"ubwefqs\"},{\"resourceId\":\"ap\",\"resourceType\":\"tf\",\"resourceKind\":\"rqwexjkmfxapjwog\",\"resourceOrigin\":\"AWS\",\"accountId\":\"bpudcdab\"},{\"resourceId\":\"qwpwyawbzasqbuc\",\"resourceType\":\"gkyexaoguy\",\"resourceKind\":\"p\",\"resourceOrigin\":\"GCP\",\"accountId\":\"ault\"}],\"status\":\"Active\",\"errors\":[\"mfqwa\"],\"tenantId\":\"nqnm\",\"offerGuid\":\"ngz\",\"nextTriggerTime\":\"2021-03-07T06:59:29Z\",\"lastTriggerTime\":\"2021-06-22T01:10:17Z\",\"subscriptions\":[\"wgnyfusfzsvtui\"],\"complianceStatus\":{\"m365\":{\"passedCount\":566108141,\"failedCount\":1502257649,\"manualCount\":961484418,\"notApplicableCount\":388714674,\"pendingCount\":32509021}},\"storageInfo\":{\"subscriptionId\":\"ryxynqnzrd\",\"resourceGroup\":\"ovw\",\"accountName\":\"nptgoeiybba\",\"location\":\"fhvfsl\"},\"certRecords\":[{\"offerGuid\":\"jlrigjkskyrioovz\",\"certificationStatus\":\"sxwaabzm\",\"ingestionStatus\":\"rygznmmaxriz\",\"controls\":[{},{}]},{\"offerGuid\":\"gopxlhslnelxie\",\"certificationStatus\":\"ynllxe\",\"ingestionStatus\":\"crojp\",\"controls\":[{}]}],\"provisioningState\":\"Verifying\"},\"complianceResults\":[{\"complianceName\":\"tifdwfmvi\",\"categories\":[{}]},{\"complianceName\":\"jbt\",\"categories\":[{}]},{\"complianceName\":\"aglkafhon\",\"categories\":[{},{}]},{\"complianceName\":\"eickpz\",\"categories\":[{}]}]},\"id\":\"pmxelnwcltyje\",\"name\":\"ex\",\"type\":\"mlfmkqs\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"id\":\"vawjvzunlu\",\"snapshotName\":\"nnprn\",\"createdAt\":\"2021-11-18T19:16:34Z\",\"provisioningState\":\"Canceled\",\"reportProperties\":{\"id\":\"jzuaejxdultskzbb\",\"status\":\"Failed\",\"tenantId\":\"mv\",\"reportName\":\"kgpwoz\",\"offerGuid\":\"kfpbs\",\"timeZone\":\"yofd\",\"triggerTime\":\"2021-03-14T10:54:45Z\",\"nextTriggerTime\":\"2021-11-05T14:56:24Z\",\"lastTriggerTime\":\"2021-01-22T23:23:23Z\",\"subscriptions\":[],\"resources\":[],\"provisioningState\":\"Succeeded\"},\"complianceResults\":[]},\"id\":\"kqvkelnsmvbxwyjs\",\"name\":\"lh\",\"type\":\"caalnjixisxyaw\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AppComplianceAutomationManager manager = AppComplianceAutomationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<SnapshotResource> response = manager.snapshots()
+            .list("owxeqocljmy", "vkzqk", 1858033886, "eokbze", "ezrxcczurtleipqx", "kwv", "gnzvdfbzdixzm",
+                "pnodawopqhe", com.azure.core.util.Context.NONE);
 
-        AppComplianceAutomationManager manager =
-            AppComplianceAutomationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SnapshotResource> response =
-            manager.snapshots().list("e", "qsgzvahapj", 1125430045, "hpvgqz", "j", "vxdjzlmwlxkvugf", Context.NONE);
     }
 }

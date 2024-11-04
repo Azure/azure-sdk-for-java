@@ -4,8 +4,11 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 import com.azure.resourcemanager.avs.models.ScriptCmdlet;
+import com.azure.resourcemanager.avs.models.ScriptCmdletAudience;
+import com.azure.resourcemanager.avs.models.ScriptCmdletProvisioningState;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
 import java.util.Collections;
 import java.util.List;
@@ -32,12 +35,24 @@ public final class ScriptCmdletImpl implements ScriptCmdlet {
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public ScriptCmdletProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
 
     public String timeout() {
         return this.innerModel().timeout();
+    }
+
+    public ScriptCmdletAudience audience() {
+        return this.innerModel().audience();
     }
 
     public List<ScriptParameter> parameters() {

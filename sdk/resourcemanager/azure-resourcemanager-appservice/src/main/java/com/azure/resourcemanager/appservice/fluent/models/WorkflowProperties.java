@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.appservice.models.FlowEndpointsConfiguration;
 import com.azure.resourcemanager.appservice.models.Kind;
@@ -13,8 +18,7 @@ import com.azure.resourcemanager.appservice.models.WorkflowParameter;
 import com.azure.resourcemanager.appservice.models.WorkflowProvisioningState;
 import com.azure.resourcemanager.appservice.models.WorkflowSku;
 import com.azure.resourcemanager.appservice.models.WorkflowState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -22,90 +26,75 @@ import java.util.Map;
  * The workflow properties.
  */
 @Fluent
-public final class WorkflowProperties {
+public final class WorkflowProperties implements JsonSerializable<WorkflowProperties> {
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowProvisioningState provisioningState;
 
     /*
      * Gets the created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Gets the changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The state.
      */
-    @JsonProperty(value = "state")
     private WorkflowState state;
 
     /*
      * Gets the version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Gets the access endpoint.
      */
-    @JsonProperty(value = "accessEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String accessEndpoint;
 
     /*
      * The endpoints configuration.
      */
-    @JsonProperty(value = "endpointsConfiguration")
     private FlowEndpointsConfiguration endpointsConfiguration;
 
     /*
      * The access control configuration.
      */
-    @JsonProperty(value = "accessControl")
     private FlowAccessControlConfiguration accessControl;
 
     /*
      * The sku.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowSku sku;
 
     /*
      * The integration account.
      */
-    @JsonProperty(value = "integrationAccount")
     private ResourceReference integrationAccount;
 
     /*
      * The integration service environment.
      */
-    @JsonProperty(value = "integrationServiceEnvironment")
     private ResourceReference integrationServiceEnvironment;
 
     /*
      * The definition.
      */
-    @JsonProperty(value = "definition")
     private Object definition;
 
     /*
      * The parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WorkflowParameter> parameters;
 
     /*
      * The workflow kind.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /**
@@ -356,5 +345,79 @@ public final class WorkflowProperties {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("endpointsConfiguration", this.endpointsConfiguration);
+        jsonWriter.writeJsonField("accessControl", this.accessControl);
+        jsonWriter.writeJsonField("integrationAccount", this.integrationAccount);
+        jsonWriter.writeJsonField("integrationServiceEnvironment", this.integrationServiceEnvironment);
+        jsonWriter.writeUntypedField("definition", this.definition);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowProperties.
+     */
+    public static WorkflowProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowProperties deserializedWorkflowProperties = new WorkflowProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkflowProperties.provisioningState
+                        = WorkflowProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedWorkflowProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedWorkflowProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedWorkflowProperties.state = WorkflowState.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedWorkflowProperties.version = reader.getString();
+                } else if ("accessEndpoint".equals(fieldName)) {
+                    deserializedWorkflowProperties.accessEndpoint = reader.getString();
+                } else if ("endpointsConfiguration".equals(fieldName)) {
+                    deserializedWorkflowProperties.endpointsConfiguration = FlowEndpointsConfiguration.fromJson(reader);
+                } else if ("accessControl".equals(fieldName)) {
+                    deserializedWorkflowProperties.accessControl = FlowAccessControlConfiguration.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWorkflowProperties.sku = WorkflowSku.fromJson(reader);
+                } else if ("integrationAccount".equals(fieldName)) {
+                    deserializedWorkflowProperties.integrationAccount = ResourceReference.fromJson(reader);
+                } else if ("integrationServiceEnvironment".equals(fieldName)) {
+                    deserializedWorkflowProperties.integrationServiceEnvironment = ResourceReference.fromJson(reader);
+                } else if ("definition".equals(fieldName)) {
+                    deserializedWorkflowProperties.definition = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, WorkflowParameter> parameters
+                        = reader.readMap(reader1 -> WorkflowParameter.fromJson(reader1));
+                    deserializedWorkflowProperties.parameters = parameters;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWorkflowProperties.kind = Kind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowProperties;
+        });
     }
 }

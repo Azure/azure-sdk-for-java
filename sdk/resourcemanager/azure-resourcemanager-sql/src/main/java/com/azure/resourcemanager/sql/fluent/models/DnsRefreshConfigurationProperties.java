@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DnsRefreshConfigurationPropertiesStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** DNS refresh configuration properties. */
+/**
+ * DNS refresh configuration properties.
+ */
 @Immutable
-public final class DnsRefreshConfigurationProperties {
+public final class DnsRefreshConfigurationProperties implements JsonSerializable<DnsRefreshConfigurationProperties> {
     /*
      * The status of the DNS refresh operation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DnsRefreshConfigurationPropertiesStatus status;
 
-    /** Creates an instance of DnsRefreshConfigurationProperties class. */
+    /**
+     * Creates an instance of DnsRefreshConfigurationProperties class.
+     */
     public DnsRefreshConfigurationProperties() {
     }
 
     /**
      * Get the status property: The status of the DNS refresh operation.
-     *
+     * 
      * @return the status value.
      */
     public DnsRefreshConfigurationPropertiesStatus status() {
@@ -32,9 +39,46 @@ public final class DnsRefreshConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsRefreshConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsRefreshConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsRefreshConfigurationProperties.
+     */
+    public static DnsRefreshConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsRefreshConfigurationProperties deserializedDnsRefreshConfigurationProperties
+                = new DnsRefreshConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedDnsRefreshConfigurationProperties.status
+                        = DnsRefreshConfigurationPropertiesStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsRefreshConfigurationProperties;
+        });
     }
 }

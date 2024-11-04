@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RevisionHealthState extends ExpandableStringEnum<RevisionHeal
      * @param name a name to look for.
      * @return the corresponding RevisionHealthState.
      */
-    @JsonCreator
     public static RevisionHealthState fromString(String name) {
         return fromString(name, RevisionHealthState.class);
     }

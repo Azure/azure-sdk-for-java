@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Object to define the base blob action conditions. Properties daysAfterModificationGreaterThan,
@@ -15,18 +19,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * daysAfterLastAccessTimeGreaterThan or daysAfterCreationGreaterThan.
  */
 @Fluent
-public final class DateAfterModification {
+public final class DateAfterModification implements JsonSerializable<DateAfterModification> {
     /*
      * Value indicating the age in days after last modification
      */
-    @JsonProperty(value = "daysAfterModificationGreaterThan")
     private Float daysAfterModificationGreaterThan;
 
     /*
      * Value indicating the age in days after last blob access. This property can only be used in conjunction with last
      * access time tracking policy
      */
-    @JsonProperty(value = "daysAfterLastAccessTimeGreaterThan")
     private Float daysAfterLastAccessTimeGreaterThan;
 
     /*
@@ -34,22 +36,22 @@ public final class DateAfterModification {
      * tierToArchive actions and requires daysAfterModificationGreaterThan to be set for baseBlobs based actions. The
      * blob will be archived if both the conditions are satisfied.
      */
-    @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
     private Float daysAfterLastTierChangeGreaterThan;
 
     /*
      * Value indicating the age in days after blob creation.
      */
-    @JsonProperty(value = "daysAfterCreationGreaterThan")
     private Float daysAfterCreationGreaterThan;
 
-    /** Creates an instance of DateAfterModification class. */
+    /**
+     * Creates an instance of DateAfterModification class.
+     */
     public DateAfterModification() {
     }
 
     /**
      * Get the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
-     *
+     * 
      * @return the daysAfterModificationGreaterThan value.
      */
     public Float daysAfterModificationGreaterThan() {
@@ -58,7 +60,7 @@ public final class DateAfterModification {
 
     /**
      * Set the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
-     *
+     * 
      * @param daysAfterModificationGreaterThan the daysAfterModificationGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
@@ -70,7 +72,7 @@ public final class DateAfterModification {
     /**
      * Get the daysAfterLastAccessTimeGreaterThan property: Value indicating the age in days after last blob access.
      * This property can only be used in conjunction with last access time tracking policy.
-     *
+     * 
      * @return the daysAfterLastAccessTimeGreaterThan value.
      */
     public Float daysAfterLastAccessTimeGreaterThan() {
@@ -80,7 +82,7 @@ public final class DateAfterModification {
     /**
      * Set the daysAfterLastAccessTimeGreaterThan property: Value indicating the age in days after last blob access.
      * This property can only be used in conjunction with last access time tracking policy.
-     *
+     * 
      * @param daysAfterLastAccessTimeGreaterThan the daysAfterLastAccessTimeGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
@@ -93,7 +95,7 @@ public final class DateAfterModification {
      * Get the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
      * time. This property is only applicable for tierToArchive actions and requires daysAfterModificationGreaterThan to
      * be set for baseBlobs based actions. The blob will be archived if both the conditions are satisfied.
-     *
+     * 
      * @return the daysAfterLastTierChangeGreaterThan value.
      */
     public Float daysAfterLastTierChangeGreaterThan() {
@@ -104,7 +106,7 @@ public final class DateAfterModification {
      * Set the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
      * time. This property is only applicable for tierToArchive actions and requires daysAfterModificationGreaterThan to
      * be set for baseBlobs based actions. The blob will be archived if both the conditions are satisfied.
-     *
+     * 
      * @param daysAfterLastTierChangeGreaterThan the daysAfterLastTierChangeGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
@@ -115,7 +117,7 @@ public final class DateAfterModification {
 
     /**
      * Get the daysAfterCreationGreaterThan property: Value indicating the age in days after blob creation.
-     *
+     * 
      * @return the daysAfterCreationGreaterThan value.
      */
     public Float daysAfterCreationGreaterThan() {
@@ -124,7 +126,7 @@ public final class DateAfterModification {
 
     /**
      * Set the daysAfterCreationGreaterThan property: Value indicating the age in days after blob creation.
-     *
+     * 
      * @param daysAfterCreationGreaterThan the daysAfterCreationGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
@@ -135,9 +137,58 @@ public final class DateAfterModification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("daysAfterModificationGreaterThan", this.daysAfterModificationGreaterThan);
+        jsonWriter.writeNumberField("daysAfterLastAccessTimeGreaterThan", this.daysAfterLastAccessTimeGreaterThan);
+        jsonWriter.writeNumberField("daysAfterLastTierChangeGreaterThan", this.daysAfterLastTierChangeGreaterThan);
+        jsonWriter.writeNumberField("daysAfterCreationGreaterThan", this.daysAfterCreationGreaterThan);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DateAfterModification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DateAfterModification if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DateAfterModification.
+     */
+    public static DateAfterModification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DateAfterModification deserializedDateAfterModification = new DateAfterModification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("daysAfterModificationGreaterThan".equals(fieldName)) {
+                    deserializedDateAfterModification.daysAfterModificationGreaterThan
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("daysAfterLastAccessTimeGreaterThan".equals(fieldName)) {
+                    deserializedDateAfterModification.daysAfterLastAccessTimeGreaterThan
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("daysAfterLastTierChangeGreaterThan".equals(fieldName)) {
+                    deserializedDateAfterModification.daysAfterLastTierChangeGreaterThan
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("daysAfterCreationGreaterThan".equals(fieldName)) {
+                    deserializedDateAfterModification.daysAfterCreationGreaterThan
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDateAfterModification;
+        });
     }
 }

@@ -162,20 +162,16 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
     }
 
     public ApiContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApis()
-                .createOrUpdate(resourceGroupName, serviceName, apiId, createParameters, createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, createParameters, createIfMatch, Context.NONE);
         return this;
     }
 
     public ApiContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApis()
-                .createOrUpdate(resourceGroupName, serviceName, apiId, createParameters, createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, createParameters, createIfMatch, context);
         return this;
     }
 
@@ -194,28 +190,23 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
     }
 
     public ApiContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApis()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApis()
-                .updateWithResponse(resourceGroupName, serviceName, apiId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ApiContractImpl(
-        ApiContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    ApiContractImpl(ApiContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -224,22 +215,18 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
     }
 
     public ApiContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApis()
-                .getWithResponse(resourceGroupName, serviceName, apiId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .getWithResponse(resourceGroupName, serviceName, apiId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApis()
-                .getWithResponse(resourceGroupName, serviceName, apiId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApis()
+            .getWithResponse(resourceGroupName, serviceName, apiId, context)
+            .getValue();
         return this;
     }
 
@@ -339,8 +326,8 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
         }
     }
 
-    public ApiContractImpl withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiContractImpl
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         if (isInCreateMode()) {
             this.createParameters.withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
             return this;

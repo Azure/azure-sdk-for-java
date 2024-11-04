@@ -8,6 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateAutoRun;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
@@ -19,7 +23,7 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningError;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,20 +35,32 @@ public final class ImageTemplateInner extends Resource {
     /*
      * The properties of the image template
      */
-    @JsonProperty(value = "properties")
     private ImageTemplateProperties innerProperties;
 
     /*
      * The identity of the image template, if configured.
      */
-    @JsonProperty(value = "identity", required = true)
     private ImageTemplateIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of ImageTemplateInner class.
@@ -88,6 +104,36 @@ public final class ImageTemplateInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -372,6 +418,56 @@ public final class ImageTemplateInner extends Resource {
     }
 
     /**
+     * Get the autoRun property: Indicates whether or not to automatically run the image template build on template
+     * creation or update.
+     * 
+     * @return the autoRun value.
+     */
+    public ImageTemplateAutoRun autoRun() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoRun();
+    }
+
+    /**
+     * Set the autoRun property: Indicates whether or not to automatically run the image template build on template
+     * creation or update.
+     * 
+     * @param autoRun the autoRun value to set.
+     * @return the ImageTemplateInner object itself.
+     */
+    public ImageTemplateInner withAutoRun(ImageTemplateAutoRun autoRun) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageTemplateProperties();
+        }
+        this.innerProperties().withAutoRun(autoRun);
+        return this;
+    }
+
+    /**
+     * Get the managedResourceTags property: Tags that will be applied to the resource group and/or resources created by
+     * the service.
+     * 
+     * @return the managedResourceTags value.
+     */
+    public Map<String, String> managedResourceTags() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedResourceTags();
+    }
+
+    /**
+     * Set the managedResourceTags property: Tags that will be applied to the resource group and/or resources created by
+     * the service.
+     * 
+     * @param managedResourceTags the managedResourceTags value to set.
+     * @return the ImageTemplateInner object itself.
+     */
+    public ImageTemplateInner withManagedResourceTags(Map<String, String> managedResourceTags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageTemplateProperties();
+        }
+        this.innerProperties().withManagedResourceTags(managedResourceTags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -381,12 +477,67 @@ public final class ImageTemplateInner extends Resource {
             innerProperties().validate();
         }
         if (identity() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property identity in model ImageTemplateInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property identity in model ImageTemplateInner"));
         } else {
             identity().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateInner.
+     */
+    public static ImageTemplateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateInner deserializedImageTemplateInner = new ImageTemplateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImageTemplateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedImageTemplateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedImageTemplateInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageTemplateInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedImageTemplateInner.identity = ImageTemplateIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImageTemplateInner.innerProperties = ImageTemplateProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedImageTemplateInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateInner;
+        });
+    }
 }

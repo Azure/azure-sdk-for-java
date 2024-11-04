@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** MUA Settings of vault. */
+/**
+ * MUA Settings of vault.
+ */
 public final class MultiUserAuthorization extends ExpandableStringEnum<MultiUserAuthorization> {
-    /** Static value Invalid for MultiUserAuthorization. */
+    /**
+     * Static value Invalid for MultiUserAuthorization.
+     */
     public static final MultiUserAuthorization INVALID = fromString("Invalid");
 
-    /** Static value Enabled for MultiUserAuthorization. */
+    /**
+     * Static value Enabled for MultiUserAuthorization.
+     */
     public static final MultiUserAuthorization ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for MultiUserAuthorization. */
+    /**
+     * Static value Disabled for MultiUserAuthorization.
+     */
     public static final MultiUserAuthorization DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of MultiUserAuthorization value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class MultiUserAuthorization extends ExpandableStringEnum<MultiUser
 
     /**
      * Creates or finds a MultiUserAuthorization from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MultiUserAuthorization.
      */
@@ -41,7 +49,7 @@ public final class MultiUserAuthorization extends ExpandableStringEnum<MultiUser
 
     /**
      * Gets known MultiUserAuthorization values.
-     *
+     * 
      * @return known MultiUserAuthorization values.
      */
     public static Collection<MultiUserAuthorization> values() {

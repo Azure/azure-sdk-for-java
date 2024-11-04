@@ -6,35 +6,37 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Information from validate template deployment response. */
+/**
+ * Information from validate template deployment response.
+ */
 @Fluent
-public final class DeploymentValidateResultInner {
+public final class DeploymentValidateResultInner implements JsonSerializable<DeploymentValidateResultInner> {
     /*
-     * Error Response
-     *
      * The deployment validation error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
     /*
      * The template deployment properties.
      */
-    @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
-    /** Creates an instance of DeploymentValidateResultInner class. */
+    /**
+     * Creates an instance of DeploymentValidateResultInner class.
+     */
     public DeploymentValidateResultInner() {
     }
 
     /**
-     * Get the error property: Error Response
-     *
-     * <p>The deployment validation error.
-     *
+     * Get the error property: The deployment validation error.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -43,7 +45,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Get the properties property: The template deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentPropertiesExtended properties() {
@@ -52,7 +54,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Set the properties property: The template deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
@@ -63,12 +65,52 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentValidateResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentValidateResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentValidateResultInner.
+     */
+    public static DeploymentValidateResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentValidateResultInner deserializedDeploymentValidateResultInner
+                = new DeploymentValidateResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedDeploymentValidateResultInner.error = ManagementError.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeploymentValidateResultInner.properties
+                        = DeploymentPropertiesExtended.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentValidateResultInner;
+        });
     }
 }

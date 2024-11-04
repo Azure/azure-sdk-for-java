@@ -11,19 +11,20 @@ public final class SalesforceServiceCloudV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudV2Source model = BinaryData.fromString(
-            "{\"type\":\"mvpsvwwtn\",\"SOQLQuery\":\"datazdecgiomdcolwq\",\"includeDeletedObjects\":\"datarrjudgnph\",\"additionalColumns\":\"datadqt\",\"sourceRetryCount\":\"datanoq\",\"sourceRetryWait\":\"datanllicovvdc\",\"maxConcurrentConnections\":\"datafnbdpaoijx\",\"disableMetricsCollection\":\"datafm\",\"\":{\"xjfkpuszsjay\":\"datavv\"}}")
+            "{\"type\":\"SalesforceServiceCloudV2Source\",\"SOQLQuery\":\"dataaqb\",\"query\":\"datacnbnlpp\",\"includeDeletedObjects\":\"databipfazsayrk\",\"additionalColumns\":\"datapnobcqnym\",\"sourceRetryCount\":\"datawr\",\"sourceRetryWait\":\"dataf\",\"maxConcurrentConnections\":\"datahu\",\"disableMetricsCollection\":\"datakxcnovkwvzrxaix\",\"\":{\"eivpuuvzyf\":\"dataes\",\"rrphtjljfmhgd\":\"datamorehpjaktszrc\"}}")
             .toObject(SalesforceServiceCloudV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudV2Source model = new SalesforceServiceCloudV2Source().withSourceRetryCount("datanoq")
-            .withSourceRetryWait("datanllicovvdc")
-            .withMaxConcurrentConnections("datafnbdpaoijx")
-            .withDisableMetricsCollection("datafm")
-            .withSoqlQuery("datazdecgiomdcolwq")
-            .withIncludeDeletedObjects("datarrjudgnph")
-            .withAdditionalColumns("datadqt");
+        SalesforceServiceCloudV2Source model = new SalesforceServiceCloudV2Source().withSourceRetryCount("datawr")
+            .withSourceRetryWait("dataf")
+            .withMaxConcurrentConnections("datahu")
+            .withDisableMetricsCollection("datakxcnovkwvzrxaix")
+            .withSoqlQuery("dataaqb")
+            .withQuery("datacnbnlpp")
+            .withIncludeDeletedObjects("databipfazsayrk")
+            .withAdditionalColumns("datapnobcqnym");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudV2Source.class);
     }
 }

@@ -6,59 +6,42 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.BuilderResource;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BuildersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"environmentId\":\"hvmblcouqehbhbc\",\"containerRegistries\":[{\"containerRegistryServer\":\"iryr\",\"identityResourceId\":\"ndo\"},{\"containerRegistryServer\":\"pmbltoormkfql\",\"identityResourceId\":\"xldykalsygaolnjp\"},{\"containerRegistryServer\":\"nbmjksibjgsjjxxa\",\"identityResourceId\":\"mr\"}]},\"identity\":{\"principalId\":\"1c0c7461-3309-4da8-9a13-57a29f20a97a\",\"tenantId\":\"f4d0c201-f27f-4a61-9ce1-ee809d63cbc9\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yi\":{\"principalId\":\"8c44f5f7-1e24-45c6-8ed8-7777f6b38434\",\"clientId\":\"996c6a94-136d-48bd-826a-dfa5b00f46e1\"},\"nbm\":{\"principalId\":\"15efa945-7dba-47ff-9a63-7af495e5bce0\",\"clientId\":\"87bb6b63-12d1-4dc5-9198-4d1337032c68\"},\"jijkgqxnhmbke\":{\"principalId\":\"c3b09876-f7ea-4464-8c81-489961014d00\",\"clientId\":\"f3afd130-f471-4f6e-bccb-6be5ee9517d3\"},\"aujvaa\":{\"principalId\":\"aea57d92-76b1-4aa4-95da-0a7b69363c60\",\"clientId\":\"58f73390-0e22-4fce-a34a-5b5e0fbf1c13\"}}},\"location\":\"ggiycwkdtaawxwf\",\"tags\":{\"kratbnxwbj\":\"umrrqmbzm\",\"dgo\":\"idbirkfpkso\",\"zkye\":\"ewijymrhbguz\",\"o\":\"nfnzhhh\"},\"id\":\"mffjkutycyarn\",\"name\":\"oohguabzoghkt\",\"type\":\"pyc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"tmujdtvmc\",\"containerRegistries\":[{\"containerRegistryServer\":\"mffhmjpddnyxfzuv\",\"identityResourceId\":\"zmzqmzjqrb\"},{\"containerRegistryServer\":\"pv\",\"identityResourceId\":\"mdyfoebojtj\"},{\"containerRegistryServer\":\"pglaoh\",\"identityResourceId\":\"qk\"},{\"containerRegistryServer\":\"jtnqjil\",\"identityResourceId\":\"ywkdcwmqsy\"}]},\"identity\":{\"principalId\":\"a6c4dba2-7077-46c7-a447-22dfdb374749\",\"tenantId\":\"f2b99858-5986-4633-b851-3c9ec92b6cc5\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"olfylnkk\":{\"principalId\":\"596b75fa-9014-4fc6-b75a-6c5e936eb1c0\",\"clientId\":\"7a73b4fb-49aa-4b27-abd6-d00f8c1657ad\"},\"jvlywl\":{\"principalId\":\"6ad6ea75-0980-4e32-b8a3-b2f780cad67a\",\"clientId\":\"ce40fed6-f1e0-4839-9b38-d55f4e1a1d12\"},\"wob\":{\"principalId\":\"1c971f5b-1ac9-4c6e-a61c-463113d7fb8b\",\"clientId\":\"2c199dfe-7ccd-4b28-9911-babc45923327\"}}},\"location\":\"whlwy\",\"tags\":{\"zgczeu\":\"qzocr\",\"iekoif\":\"tgxdncaqt\",\"gyrihlgm\":\"vnyttzgi\"},\"id\":\"behlqtxnr\",\"name\":\"lkndrndpgfjodh\",\"type\":\"aqotwfhipxwgsabv\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BuilderResource> response = manager.builders().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggiycwkdtaawxwf", response.iterator().next().location());
-        Assertions.assertEquals("umrrqmbzm", response.iterator().next().tags().get("kratbnxwbj"));
+        Assertions.assertEquals("whlwy", response.iterator().next().location());
+        Assertions.assertEquals("qzocr", response.iterator().next().tags().get("zgczeu"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("hvmblcouqehbhbc", response.iterator().next().environmentId());
-        Assertions.assertEquals("iryr",
+        Assertions.assertEquals("tmujdtvmc", response.iterator().next().environmentId());
+        Assertions.assertEquals("mffhmjpddnyxfzuv",
             response.iterator().next().containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("ndo", response.iterator().next().containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("zmzqmzjqrb",
+            response.iterator().next().containerRegistries().get(0).identityResourceId());
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 public final class SnapshotsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Update_WithAcceleratedNetwork.json
      */
     /**
@@ -24,16 +24,20 @@ public final class SnapshotsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateASnapshotWithAcceleratedNetworking(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSnapshots().update("myResourceGroup", "mySnapshot",
-            new SnapshotUpdate().withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
-                .withDiskSizeGB(20).withSupportedCapabilities(
-                    new SupportedCapabilities().withAcceleratedNetwork(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .update("myResourceGroup", "mySnapshot",
+                new SnapshotUpdate().withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
+                    .withDiskSizeGB(20)
+                    .withSupportedCapabilities(new SupportedCapabilities().withAcceleratedNetwork(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/snapshotExamples/
      * Snapshot_Update.json
      */
     /**
@@ -42,10 +46,14 @@ public final class SnapshotsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateASnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSnapshots().update(
-            "myResourceGroup", "mySnapshot", new SnapshotUpdate()
-                .withTags(mapOf("department", "Development", "project", "UpdateSnapshots")).withDiskSizeGB(20),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .update("myResourceGroup", "mySnapshot",
+                new SnapshotUpdate().withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
+                    .withDiskSizeGB(20),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

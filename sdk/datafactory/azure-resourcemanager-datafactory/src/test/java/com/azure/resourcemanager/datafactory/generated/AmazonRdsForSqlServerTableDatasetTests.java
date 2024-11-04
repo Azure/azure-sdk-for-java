@@ -19,33 +19,36 @@ public final class AmazonRdsForSqlServerTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForSqlServerTableDataset model = BinaryData.fromString(
-            "{\"type\":\"vlqcwyzhndqk\",\"typeProperties\":{\"schema\":\"dataauimnntf\",\"table\":\"datapwqcnbn\"},\"description\":\"tzpze\",\"structure\":\"datalce\",\"schema\":\"datat\",\"linkedServiceName\":{\"referenceName\":\"htuwc\",\"parameters\":{\"lujm\":\"datacaumviudzpsjqr\",\"mpjbh\":\"dataunlofwuzebfq\",\"wkhdlckdoxocj\":\"datayenfspetxeu\"}},\"parameters\":{\"eortwwyjmgvr\":{\"type\":\"Object\",\"defaultValue\":\"datapf\"}},\"annotations\":[\"datax\"],\"folder\":{\"name\":\"jnnhbcjywkdywks\"},\"\":{\"plkossjbzvxp\":\"datauafanefictp\",\"aczhfjdccjn\":\"datawdqzuhfgt\",\"g\":\"datauvbtcuhj\",\"bszsbzrrxey\":\"datatjkntomnlzthc\"}}")
+            "{\"type\":\"AmazonRdsForSqlServerTable\",\"typeProperties\":{\"schema\":\"dataumtcqxmyvkxixypa\",\"table\":\"datafjczgohvpsuwi\"},\"description\":\"m\",\"structure\":\"datazbyfkoc\",\"schema\":\"datazdct\",\"linkedServiceName\":{\"referenceName\":\"nlwsc\",\"parameters\":{\"lks\":\"datatwgxrolwv\"}},\"parameters\":{\"hbvjhxvpmq\":{\"type\":\"Object\",\"defaultValue\":\"dataacuctihavi\"},\"phngr\":{\"type\":\"SecureString\",\"defaultValue\":\"dataux\"},\"icgym\":{\"type\":\"Float\",\"defaultValue\":\"dataxoweorocr\"},\"vhtvijvwmrg\":{\"type\":\"String\",\"defaultValue\":\"dataqpfy\"}},\"annotations\":[\"datahrplcxfmbzquuutq\",\"datahbtqyzy\",\"datag\",\"datambky\"],\"folder\":{\"name\":\"jdqosxzmdzlybqfu\"},\"\":{\"fkicxhsevmnkggh\":\"datak\",\"vbjsarxsvmfp\":\"datasryjokvl\"}}")
             .toObject(AmazonRdsForSqlServerTableDataset.class);
-        Assertions.assertEquals("tzpze", model.description());
-        Assertions.assertEquals("htuwc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("eortwwyjmgvr").type());
-        Assertions.assertEquals("jnnhbcjywkdywks", model.folder().name());
+        Assertions.assertEquals("m", model.description());
+        Assertions.assertEquals("nlwsc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("hbvjhxvpmq").type());
+        Assertions.assertEquals("jdqosxzmdzlybqfu", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForSqlServerTableDataset model = new AmazonRdsForSqlServerTableDataset().withDescription("tzpze")
-            .withStructure("datalce")
-            .withSchema("datat")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("htuwc")
-                .withParameters(mapOf("lujm", "datacaumviudzpsjqr", "mpjbh", "dataunlofwuzebfq", "wkhdlckdoxocj",
-                    "datayenfspetxeu")))
-            .withParameters(mapOf("eortwwyjmgvr",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datapf")))
-            .withAnnotations(Arrays.asList("datax"))
-            .withFolder(new DatasetFolder().withName("jnnhbcjywkdywks"))
-            .withSchemaTypePropertiesSchema("dataauimnntf")
-            .withTable("datapwqcnbn");
+        AmazonRdsForSqlServerTableDataset model = new AmazonRdsForSqlServerTableDataset().withDescription("m")
+            .withStructure("datazbyfkoc")
+            .withSchema("datazdct")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("nlwsc").withParameters(mapOf("lks", "datatwgxrolwv")))
+            .withParameters(mapOf("hbvjhxvpmq",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataacuctihavi"), "phngr",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataux"), "icgym",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataxoweorocr"),
+                "vhtvijvwmrg",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataqpfy")))
+            .withAnnotations(Arrays.asList("datahrplcxfmbzquuutq", "datahbtqyzy", "datag", "datambky"))
+            .withFolder(new DatasetFolder().withName("jdqosxzmdzlybqfu"))
+            .withSchemaTypePropertiesSchema("dataumtcqxmyvkxixypa")
+            .withTable("datafjczgohvpsuwi");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForSqlServerTableDataset.class);
-        Assertions.assertEquals("tzpze", model.description());
-        Assertions.assertEquals("htuwc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("eortwwyjmgvr").type());
-        Assertions.assertEquals("jnnhbcjywkdywks", model.folder().name());
+        Assertions.assertEquals("m", model.description());
+        Assertions.assertEquals("nlwsc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("hbvjhxvpmq").type());
+        Assertions.assertEquals("jdqosxzmdzlybqfu", model.folder().name());
     }
 
     // Use "Map.of" if available

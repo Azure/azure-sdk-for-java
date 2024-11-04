@@ -5,49 +5,75 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Keyword for the latest status of the alert. */
+/**
+ * Keyword for the latest status of the alert.
+ */
 public final class LatestStatusKeyword extends ExpandableStringEnum<LatestStatusKeyword> {
-    /** Static value New for LatestStatusKeyword. */
+    /**
+     * "New" - the status of an alert upon initial issuance.
+     */
     public static final LatestStatusKeyword NEW = fromString("New");
 
-    /** Static value Extend for LatestStatusKeyword. */
+    /**
+     * "Extend" - the alert has been extended in time, in area, or both since its initial issuance.
+     */
     public static final LatestStatusKeyword EXTEND = fromString("Extend");
 
-    /** Static value Cancel for LatestStatusKeyword. */
+    /**
+     * "Cancel" - the alert has been canceled prior to its original expiration time.
+     */
     public static final LatestStatusKeyword CANCEL = fromString("Cancel");
 
-    /** Static value Correct for LatestStatusKeyword. */
+    /**
+     * "Correct" - the alert has been modified to correct a previous error.
+     */
     public static final LatestStatusKeyword CORRECT = fromString("Correct");
 
-    /** Static value Expire for LatestStatusKeyword. */
+    /**
+     * "Expire" - the alert has expired and is no longer active.
+     */
     public static final LatestStatusKeyword EXPIRE = fromString("Expire");
 
-    /** Static value Upgrade for LatestStatusKeyword. */
+    /**
+     * "Upgrade" - the alert has been upgraded to a higher class or category since its initial issuance.
+     */
     public static final LatestStatusKeyword UPGRADE = fromString("Upgrade");
 
-    /** Static value Continue for LatestStatusKeyword. */
+    /**
+     * "Continue" - the alert has been updated since its initial issuance, but no changes were made to `alertDetails`,
+     * `startTime`, `endTime`, or `class`.
+     */
     public static final LatestStatusKeyword CONTINUE = fromString("Continue");
 
-    /** Static value Update for LatestStatusKeyword. */
+    /**
+     * "Update" - the alert has been updated since its initial issuance.
+     */
     public static final LatestStatusKeyword UPDATE = fromString("Update");
 
     /**
+     * Creates a new instance of LatestStatusKeyword value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LatestStatusKeyword() {
+    }
+
+    /**
      * Creates or finds a LatestStatusKeyword from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LatestStatusKeyword.
      */
-    @JsonCreator
     public static LatestStatusKeyword fromString(String name) {
         return fromString(name, LatestStatusKeyword.class);
     }
 
     /**
      * Gets known LatestStatusKeyword values.
-     *
+     * 
      * @return known LatestStatusKeyword values.
      */
     public static Collection<LatestStatusKeyword> values() {

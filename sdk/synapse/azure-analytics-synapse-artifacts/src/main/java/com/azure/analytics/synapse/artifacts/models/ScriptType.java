@@ -5,11 +5,10 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The type of the query. Type: string.
+ * The type of the ScriptActivityScriptBlock.
  */
 public final class ScriptType extends ExpandableStringEnum<ScriptType> {
     /**
@@ -37,7 +36,6 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
      * @param name a name to look for.
      * @return the corresponding ScriptType.
      */
-    @JsonCreator
     public static ScriptType fromString(String name) {
         return fromString(name, ScriptType.class);
     }

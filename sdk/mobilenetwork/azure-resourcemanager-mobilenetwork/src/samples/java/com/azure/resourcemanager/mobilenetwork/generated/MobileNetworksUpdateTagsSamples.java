@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class MobileNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * MobileNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/MobileNetworkUpdateTags.json
      */
     /**
      * Sample code: Update mobile network tags.
@@ -24,7 +22,8 @@ public final class MobileNetworksUpdateTagsSamples {
      */
     public static void updateMobileNetworkTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         MobileNetwork resource = manager.mobileNetworks()
-            .getByResourceGroupWithResponse("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg1", "testMobileNetwork", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

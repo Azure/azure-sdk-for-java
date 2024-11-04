@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Describes the ServerVersion of an a MongoDB account.
+ * Describes the version of the MongoDB account.
  */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     /**
@@ -33,6 +32,21 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     public static final ServerVersion FOUR_TWO = fromString("4.2");
 
     /**
+     * Static value 5.0 for ServerVersion.
+     */
+    public static final ServerVersion FIVE_ZERO = fromString("5.0");
+
+    /**
+     * Static value 6.0 for ServerVersion.
+     */
+    public static final ServerVersion SIX_ZERO = fromString("6.0");
+
+    /**
+     * Static value 7.0 for ServerVersion.
+     */
+    public static final ServerVersion SEVEN_ZERO = fromString("7.0");
+
+    /**
      * Creates a new instance of ServerVersion value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -47,7 +61,6 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
      * @param name a name to look for.
      * @return the corresponding ServerVersion.
      */
-    @JsonCreator
     public static ServerVersion fromString(String name) {
         return fromString(name, ServerVersion.class);
     }

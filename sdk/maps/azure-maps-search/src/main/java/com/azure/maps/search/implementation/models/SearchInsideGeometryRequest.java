@@ -5,24 +5,32 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This type represents the request body for the Search Inside Geometry service. */
+/**
+ * This type represents the request body for the Search Inside Geometry service.
+ */
 @Fluent
-public final class SearchInsideGeometryRequest {
+public final class SearchInsideGeometryRequest implements JsonSerializable<SearchInsideGeometryRequest> {
     /*
      * A valid `GeoJSON` object. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
      */
-    @JsonProperty(value = "geometry")
     private GeoJsonObject geometry;
 
-    /** Creates an instance of SearchInsideGeometryRequest class. */
-    public SearchInsideGeometryRequest() {}
+    /**
+     * Creates an instance of SearchInsideGeometryRequest class.
+     */
+    public SearchInsideGeometryRequest() {
+    }
 
     /**
      * Get the geometry property: A valid `GeoJSON` object. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
-     *
+     * 
      * @return the geometry value.
      */
     public GeoJsonObject getGeometry() {
@@ -32,12 +40,48 @@ public final class SearchInsideGeometryRequest {
     /**
      * Set the geometry property: A valid `GeoJSON` object. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
-     *
+     * 
      * @param geometry the geometry value to set.
      * @return the SearchInsideGeometryRequest object itself.
      */
     public SearchInsideGeometryRequest setGeometry(GeoJsonObject geometry) {
         this.geometry = geometry;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("geometry", this.geometry);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchInsideGeometryRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchInsideGeometryRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchInsideGeometryRequest.
+     */
+    public static SearchInsideGeometryRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchInsideGeometryRequest deserializedSearchInsideGeometryRequest = new SearchInsideGeometryRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("geometry".equals(fieldName)) {
+                    deserializedSearchInsideGeometryRequest.geometry = GeoJsonObject.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchInsideGeometryRequest;
+        });
     }
 }

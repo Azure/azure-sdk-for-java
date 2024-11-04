@@ -31,40 +31,28 @@ public final class LinkedServicesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"resourceId\":\"denxau\",\"writeAccessResourceId\":\"pakdkifmjnnawt\",\"provisioningState\":\"Updating\"},\"tags\":{\"hlisngw\":\"uckpggqoweyir\",\"uwnpqxpxiwfcng\":\"lqqmpiz\",\"kv\":\"saasiixtmkzj\",\"ra\":\"irhgfgrwsdp\"},\"id\":\"zvzbglbyv\",\"name\":\"ctctbrxkjz\",\"type\":\"rgxffmshkw\"}";
+        String responseStr
+            = "{\"properties\":{\"resourceId\":\"denxau\",\"writeAccessResourceId\":\"pakdkifmjnnawt\",\"provisioningState\":\"Updating\"},\"tags\":{\"hlisngw\":\"uckpggqoweyir\",\"uwnpqxpxiwfcng\":\"lqqmpiz\",\"kv\":\"saasiixtmkzj\",\"ra\":\"irhgfgrwsdp\"},\"id\":\"zvzbglbyv\",\"name\":\"ctctbrxkjz\",\"type\":\"rgxffmshkw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LinkedService response =
-            manager
-                .linkedServices()
-                .getWithResponse("nlb", "jkwrusnkq", "hsyrqunj", com.azure.core.util.Context.NONE)
-                .getValue();
+        LinkedService response = manager.linkedServices()
+            .getWithResponse("nlb", "jkwrusnkq", "hsyrqunj", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("uckpggqoweyir", response.tags().get("hlisngw"));
         Assertions.assertEquals("denxau", response.resourceId());

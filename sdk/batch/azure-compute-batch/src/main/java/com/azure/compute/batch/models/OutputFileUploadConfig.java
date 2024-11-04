@@ -19,7 +19,8 @@ import java.io.IOException;
 public final class OutputFileUploadConfig implements JsonSerializable<OutputFileUploadConfig> {
 
     /*
-     * The conditions under which the Task output file or set of files should be uploaded. The default is taskcompletion.
+     * The conditions under which the Task output file or set of files should be uploaded. The default is
+     * taskcompletion.
      */
     @Generated
     private final OutputFileUploadCondition uploadCondition;

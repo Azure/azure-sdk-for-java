@@ -8,35 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current status of the Job Run in a non-terminal state, if exists. */
+/**
+ * The current status of the Job Run in a non-terminal state, if exists.
+ */
 public final class JobRunStatus extends ExpandableStringEnum<JobRunStatus> {
-    /** Static value Queued for JobRunStatus. */
+    /**
+     * Static value Queued for JobRunStatus.
+     */
     public static final JobRunStatus QUEUED = fromString("Queued");
 
-    /** Static value Started for JobRunStatus. */
+    /**
+     * Static value Started for JobRunStatus.
+     */
     public static final JobRunStatus STARTED = fromString("Started");
 
-    /** Static value Running for JobRunStatus. */
+    /**
+     * Static value Running for JobRunStatus.
+     */
     public static final JobRunStatus RUNNING = fromString("Running");
 
-    /** Static value CancelRequested for JobRunStatus. */
+    /**
+     * Static value CancelRequested for JobRunStatus.
+     */
     public static final JobRunStatus CANCEL_REQUESTED = fromString("CancelRequested");
 
-    /** Static value Canceling for JobRunStatus. */
+    /**
+     * Static value Canceling for JobRunStatus.
+     */
     public static final JobRunStatus CANCELING = fromString("Canceling");
 
-    /** Static value Canceled for JobRunStatus. */
+    /**
+     * Static value Canceled for JobRunStatus.
+     */
     public static final JobRunStatus CANCELED = fromString("Canceled");
 
-    /** Static value Failed for JobRunStatus. */
+    /**
+     * Static value Failed for JobRunStatus.
+     */
     public static final JobRunStatus FAILED = fromString("Failed");
 
-    /** Static value Succeeded for JobRunStatus. */
+    /**
+     * Static value Succeeded for JobRunStatus.
+     */
     public static final JobRunStatus SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Static value PausedByBandwidthManagement for JobRunStatus.
+     */
+    public static final JobRunStatus PAUSED_BY_BANDWIDTH_MANAGEMENT = fromString("PausedByBandwidthManagement");
+
+    /**
      * Creates a new instance of JobRunStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +68,7 @@ public final class JobRunStatus extends ExpandableStringEnum<JobRunStatus> {
 
     /**
      * Creates or finds a JobRunStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobRunStatus.
      */
@@ -56,7 +79,7 @@ public final class JobRunStatus extends ExpandableStringEnum<JobRunStatus> {
 
     /**
      * Gets known JobRunStatus values.
-     *
+     * 
      * @return known JobRunStatus values.
      */
     public static Collection<JobRunStatus> values() {

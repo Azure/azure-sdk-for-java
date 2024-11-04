@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the lease action. Can be one of the available actions. */
+/**
+ * Specifies the lease action. Can be one of the available actions.
+ */
 public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareAction> {
-    /** Static value Acquire for LeaseShareAction. */
+    /**
+     * Static value Acquire for LeaseShareAction.
+     */
     public static final LeaseShareAction ACQUIRE = fromString("Acquire");
 
-    /** Static value Renew for LeaseShareAction. */
+    /**
+     * Static value Renew for LeaseShareAction.
+     */
     public static final LeaseShareAction RENEW = fromString("Renew");
 
-    /** Static value Change for LeaseShareAction. */
+    /**
+     * Static value Change for LeaseShareAction.
+     */
     public static final LeaseShareAction CHANGE = fromString("Change");
 
-    /** Static value Release for LeaseShareAction. */
+    /**
+     * Static value Release for LeaseShareAction.
+     */
     public static final LeaseShareAction RELEASE = fromString("Release");
 
-    /** Static value Break for LeaseShareAction. */
+    /**
+     * Static value Break for LeaseShareAction.
+     */
     public static final LeaseShareAction BREAK = fromString("Break");
 
     /**
      * Creates a new instance of LeaseShareAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareActio
 
     /**
      * Creates or finds a LeaseShareAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseShareAction.
      */
-    @JsonCreator
     public static LeaseShareAction fromString(String name) {
         return fromString(name, LeaseShareAction.class);
     }
 
     /**
      * Gets known LeaseShareAction values.
-     *
+     * 
      * @return known LeaseShareAction values.
      */
     public static Collection<LeaseShareAction> values() {

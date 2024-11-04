@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.azurearcdata.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.azurearcdata.models.K8SResourceRequirements;
 import com.azure.resourcemanager.azurearcdata.models.K8SScheduling;
+import com.azure.resourcemanager.azurearcdata.models.K8SSchedulingOptions;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceK8SRaw;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceK8SSpec;
 import java.util.HashMap;
@@ -15,28 +17,42 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlManagedInstanceK8SRawTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlManagedInstanceK8SRaw model =
-            BinaryData
-                .fromString(
-                    "{\"spec\":{\"scheduling\":{\"\":{\"jtjaodxobnbdxkq\":\"dataerhhbcsglumm\",\"ajionpimexgstxg\":\"dataxo\",\"gmaajrm\":\"datapo\",\"clwhijcoejctbz\":\"datadjwzrlov\"}},\"replicas\":21849341,\"\":{\"bkbfkgukdkex\":\"datay\",\"ocjjxhvpmouexh\":\"datappofmxaxcfjpgdd\"}},\"\":{\"qeojnxqbzvddntw\":\"datai\",\"vuhrhcffcyddgl\":\"datadeicbtwnpzao\",\"xmqci\":\"datajthjqkwpyei\"}}")
-                .toObject(SqlManagedInstanceK8SRaw.class);
-        Assertions.assertEquals(21849341, model.spec().replicas());
+        SqlManagedInstanceK8SRaw model = BinaryData.fromString(
+            "{\"spec\":{\"scheduling\":{\"default\":{\"resources\":{\"requests\":{\"gr\":\"soifiyipjxsqw\",\"qabnmoc\":\"bznorcjxvsnby\",\"toqcjmklja\":\"cyshurzafbljjgp\"},\"limits\":{\"pku\":\"idtqajzyu\",\"gqexzlocxs\":\"jkrlkhbzhfepg\",\"bcsglumma\":\"paierh\"},\"\":{\"nbdxk\":\"dataaodxo\"}},\"\":{\"onpimexgstxg\":\"dataokaj\"}},\"\":{\"aajrm\":\"datadg\",\"clwhijcoejctbz\":\"datadjwzrlov\",\"bkbfkgukdkex\":\"dataqsqsy\",\"ocjjxhvpmouexh\":\"datappofmxaxcfjpgdd\"}},\"replicas\":9507758,\"\":{\"deicbtwnpzao\":\"dataqeojnxqbzvddntw\"}},\"\":{\"qkwpyeicxmqc\":\"datahrhcffcyddglmjth\",\"pbobjo\":\"datawqvhkhixuigdt\",\"w\":\"datahm\",\"a\":\"dataa\"}}")
+            .toObject(SqlManagedInstanceK8SRaw.class);
+        Assertions.assertEquals("soifiyipjxsqw",
+            model.spec().scheduling().defaultProperty().resources().requests().get("gr"));
+        Assertions.assertEquals("idtqajzyu",
+            model.spec().scheduling().defaultProperty().resources().limits().get("pku"));
+        Assertions.assertEquals(9507758, model.spec().replicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlManagedInstanceK8SRaw model =
-            new SqlManagedInstanceK8SRaw()
+        SqlManagedInstanceK8SRaw model
+            = new SqlManagedInstanceK8SRaw()
                 .withSpec(
                     new SqlManagedInstanceK8SSpec()
-                        .withScheduling(new K8SScheduling().withAdditionalProperties(mapOf()))
-                        .withReplicas(21849341)
+                        .withScheduling(new K8SScheduling().withDefaultProperty(new K8SSchedulingOptions()
+                            .withResources(new K8SResourceRequirements()
+                                .withRequests(mapOf("gr", "soifiyipjxsqw", "qabnmoc", "bznorcjxvsnby", "toqcjmklja",
+                                    "cyshurzafbljjgp"))
+                                .withLimits(
+                                    mapOf("pku", "idtqajzyu", "gqexzlocxs", "jkrlkhbzhfepg", "bcsglumma", "paierh"))
+                                .withAdditionalProperties(mapOf()))
+                            .withAdditionalProperties(mapOf())).withAdditionalProperties(mapOf()))
+                        .withReplicas(9507758)
                         .withAdditionalProperties(mapOf()))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(SqlManagedInstanceK8SRaw.class);
-        Assertions.assertEquals(21849341, model.spec().replicas());
+        Assertions.assertEquals("soifiyipjxsqw",
+            model.spec().scheduling().defaultProperty().resources().requests().get("gr"));
+        Assertions.assertEquals("idtqajzyu",
+            model.spec().scheduling().defaultProperty().resources().limits().get("pku"));
+        Assertions.assertEquals(9507758, model.spec().replicas());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

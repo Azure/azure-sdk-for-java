@@ -6,48 +6,51 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The policy definition group. */
+/**
+ * The policy definition group.
+ */
 @Fluent
-public final class PolicyDefinitionGroup {
+public final class PolicyDefinitionGroup implements JsonSerializable<PolicyDefinitionGroup> {
     /*
      * The name of the group.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The group's display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The group's category.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The group's description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * A resource ID of a resource that contains additional metadata about the group.
      */
-    @JsonProperty(value = "additionalMetadataId")
     private String additionalMetadataId;
 
-    /** Creates an instance of PolicyDefinitionGroup class. */
+    /**
+     * Creates an instance of PolicyDefinitionGroup class.
+     */
     public PolicyDefinitionGroup() {
     }
 
     /**
      * Get the name property: The name of the group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the name property: The name of the group.
-     *
+     * 
      * @param name the name value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -67,7 +70,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Get the displayName property: The group's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -76,7 +79,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the displayName property: The group's display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -87,7 +90,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Get the category property: The group's category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -96,7 +99,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the category property: The group's category.
-     *
+     * 
      * @param category the category value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -107,7 +110,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Get the description property: The group's description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -116,7 +119,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the description property: The group's description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -128,7 +131,7 @@ public final class PolicyDefinitionGroup {
     /**
      * Get the additionalMetadataId property: A resource ID of a resource that contains additional metadata about the
      * group.
-     *
+     * 
      * @return the additionalMetadataId value.
      */
     public String additionalMetadataId() {
@@ -138,7 +141,7 @@ public final class PolicyDefinitionGroup {
     /**
      * Set the additionalMetadataId property: A resource ID of a resource that contains additional metadata about the
      * group.
-     *
+     * 
      * @param additionalMetadataId the additionalMetadataId value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -149,16 +152,64 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PolicyDefinitionGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PolicyDefinitionGroup"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PolicyDefinitionGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("additionalMetadataId", this.additionalMetadataId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyDefinitionGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyDefinitionGroup if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicyDefinitionGroup.
+     */
+    public static PolicyDefinitionGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyDefinitionGroup deserializedPolicyDefinitionGroup = new PolicyDefinitionGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPolicyDefinitionGroup.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPolicyDefinitionGroup.displayName = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedPolicyDefinitionGroup.category = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicyDefinitionGroup.description = reader.getString();
+                } else if ("additionalMetadataId".equals(fieldName)) {
+                    deserializedPolicyDefinitionGroup.additionalMetadataId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyDefinitionGroup;
+        });
+    }
 }

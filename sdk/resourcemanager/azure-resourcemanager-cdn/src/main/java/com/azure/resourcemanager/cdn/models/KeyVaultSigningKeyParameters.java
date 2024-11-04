@@ -6,47 +6,45 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the parameters for using a user's KeyVault for URL Signing Key.
  */
 @Fluent
-public final class KeyVaultSigningKeyParameters {
+public final class KeyVaultSigningKeyParameters implements JsonSerializable<KeyVaultSigningKeyParameters> {
     /*
      * The typeName property.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName = "KeyVaultSigningKeyParameters";
 
     /*
      * Subscription Id of the user's Key Vault containing the secret
      */
-    @JsonProperty(value = "subscriptionId", required = true)
     private String subscriptionId;
 
     /*
      * Resource group of the user's Key Vault containing the secret
      */
-    @JsonProperty(value = "resourceGroupName", required = true)
     private String resourceGroupName;
 
     /*
      * The name of the user's Key Vault containing the secret
      */
-    @JsonProperty(value = "vaultName", required = true)
     private String vaultName;
 
     /*
      * The name of secret in Key Vault.
      */
-    @JsonProperty(value = "secretName", required = true)
     private String secretName;
 
     /*
      * The version(GUID) of secret in Key Vault.
      */
-    @JsonProperty(value = "secretVersion", required = true)
     private String secretVersion;
 
     /**
@@ -182,26 +180,81 @@ public final class KeyVaultSigningKeyParameters {
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subscriptionId in model KeyVaultSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subscriptionId in model KeyVaultSigningKeyParameters"));
         }
         if (resourceGroupName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceGroupName in model KeyVaultSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceGroupName in model KeyVaultSigningKeyParameters"));
         }
         if (vaultName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vaultName in model KeyVaultSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vaultName in model KeyVaultSigningKeyParameters"));
         }
         if (secretName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretName in model KeyVaultSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretName in model KeyVaultSigningKeyParameters"));
         }
         if (secretVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secretVersion in model KeyVaultSigningKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretVersion in model KeyVaultSigningKeyParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSigningKeyParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroupName", this.resourceGroupName);
+        jsonWriter.writeStringField("vaultName", this.vaultName);
+        jsonWriter.writeStringField("secretName", this.secretName);
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultSigningKeyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultSigningKeyParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultSigningKeyParameters.
+     */
+    public static KeyVaultSigningKeyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultSigningKeyParameters deserializedKeyVaultSigningKeyParameters = new KeyVaultSigningKeyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedKeyVaultSigningKeyParameters.subscriptionId = reader.getString();
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedKeyVaultSigningKeyParameters.resourceGroupName = reader.getString();
+                } else if ("vaultName".equals(fieldName)) {
+                    deserializedKeyVaultSigningKeyParameters.vaultName = reader.getString();
+                } else if ("secretName".equals(fieldName)) {
+                    deserializedKeyVaultSigningKeyParameters.secretName = reader.getString();
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedKeyVaultSigningKeyParameters.secretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultSigningKeyParameters;
+        });
+    }
 }

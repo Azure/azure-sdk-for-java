@@ -170,7 +170,8 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
     }
 
     /*
-     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
+     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will
+     * be
      * inferred as a default.
      */
     @Generated

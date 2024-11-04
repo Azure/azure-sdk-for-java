@@ -27,26 +27,29 @@ public final class ItemLevelRecoveryConnectionsImpl implements ItemLevelRecovery
     public Response<Void> provisionWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId, IlrRequestResource parameters,
         Context context) {
-        return this.serviceClient().provisionWithResponse(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, parameters, context);
+        return this.serviceClient()
+            .provisionWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, context);
     }
 
     public void provision(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, IlrRequestResource parameters) {
-        this.serviceClient().provision(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters);
+        this.serviceClient()
+            .provision(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+                parameters);
     }
 
     public Response<Void> revokeWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId, Context context) {
-        return this.serviceClient().revokeWithResponse(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, context);
+        return this.serviceClient()
+            .revokeWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, context);
     }
 
     public void revoke(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId) {
-        this.serviceClient().revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId);
+        this.serviceClient()
+            .revoke(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
     }
 
     private ItemLevelRecoveryConnectionsClient serviceClient() {

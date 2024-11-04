@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,665 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-10-10)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-2024-07. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.MachineRunCommandsListResult` was removed
+
+* `models.Gateway$DefinitionStages` was removed
+
+* `models.GatewaysListResult` was removed
+
+* `models.MachineRunCommand$UpdateStages` was removed
+
+* `models.Settings` was removed
+
+* `models.MachineRunCommand` was removed
+
+* `models.Gateway$Definition` was removed
+
+* `models.SettingsOperations` was removed
+
+* `models.MachineRunCommandUpdate` was removed
+
+* `models.MachineRunCommand$Update` was removed
+
+* `models.GatewayUpdate` was removed
+
+* `models.MachineRunCommand$Definition` was removed
+
+* `models.Gateway$Update` was removed
+
+* `models.ExtensionsStatusLevelTypes` was removed
+
+* `models.Gateway` was removed
+
+* `models.ExtensionsResourceStatus` was removed
+
+* `models.GatewayType` was removed
+
+* `models.MachineRunCommandInstanceView` was removed
+
+* `models.RunCommandManagedIdentity` was removed
+
+* `models.MachineRunCommands` was removed
+
+* `models.Gateways` was removed
+
+* `models.Gateway$UpdateStages` was removed
+
+* `models.MachineRunCommandScriptSource` was removed
+
+* `models.RunCommandInputParameter` was removed
+
+* `models.MachineRunCommand$DefinitionStages` was removed
+
+* `models.ExecutionState` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurations` was modified
+
+* `void reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String)` -> `models.NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String)`
+* `void reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.NetworkSecurityPerimeterConfigurationReconcileResult reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Machines` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `HybridComputeManager` was modified
+
+* `machineRunCommands()` was removed
+* `gateways()` was removed
+* `settingsOperations()` was removed
+
+### Features Added
+
+* `models.LicenseProfile$DefinitionStages` was added
+
+* `models.LicenseProfiles` was added
+
+* `models.NetworkSecurityPerimeterConfigurationReconcileResult` was added
+
+* `models.LicenseProfilesListResult` was added
+
+* `models.LicenseProfile` was added
+
+* `models.LicenseProfile$Definition` was added
+
+* `models.LicenseProfile$UpdateStages` was added
+
+* `models.LicenseProfile$Update` was added
+
+* `models.InstanceViewTypes` was added
+
+#### `models.Licenses` was modified
+
+* `validateLicense(fluent.models.LicenseInner)` was added
+* `validateLicense(fluent.models.LicenseInner,com.azure.core.util.Context)` was added
+
+#### `models.Machines` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,models.InstanceViewTypes,com.azure.core.util.Context)` was added
+
+#### `HybridComputeManager` was modified
+
+* `licenseProfiles()` was added
+
+## 1.0.0-beta.6 (2024-07-22)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-preview-2024-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.HotpatchEnablementStatus` was added
+
+* `models.PatchSettingsStatus` was added
+
+#### `models.MachineRunCommandsListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationValueDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AgentUpgrade` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.GatewaysListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AgentConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineExtensionUpgrade` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ExtensionValueListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NetworkSecurityPerimeterConfigurations` was modified
+
+* `reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `reconcileForPrivateLinkScope(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.MachineExtensionInstanceView` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateLinkScopesResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `type()` was added
+* `name()` was added
+* `id()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineExtensionProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Identity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OSProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceStatuses` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.HybridComputePrivateLinkScopeListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PrivateLinkResourceListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ProvisioningIssue` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LicenseProfileUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LocationData` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineRunCommandUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AccessRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ProductFeature` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `billingEndDate()` was added
+* `error()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Subnet` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EsuKey` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineExtensionUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateLinkServiceConnectionStateProperty` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LicenseProfileStorageModelEsuProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineRunCommand$Update` was modified
+
+* `withSource(models.MachineRunCommandScriptSource)` was added
+* `withTimeoutInSeconds(java.lang.Integer)` was added
+* `withOutputBlobManagedIdentity(models.RunCommandManagedIdentity)` was added
+* `withAsyncExecution(java.lang.Boolean)` was added
+* `withErrorBlobManagedIdentity(models.RunCommandManagedIdentity)` was added
+* `withProtectedParameters(java.util.List)` was added
+* `withRunAsPassword(java.lang.String)` was added
+* `withRunAsUser(java.lang.String)` was added
+* `withParameters(java.util.List)` was added
+* `withErrorBlobUri(java.lang.String)` was added
+* `withOutputBlobUri(java.lang.String)` was added
+
+#### `models.GatewayUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LinuxParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateEndpointProperty` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `billingEndDate()` was added
+* `error()` was added
+
+#### `models.MachineExtensionsListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ExtensionTargetProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.HybridComputePrivateLinkScopeProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ConfigurationExtension` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.NetworkInterface` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceAssociation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VolumeLicenseDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.IpAddress` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LicenseProfileArmEsuPropertiesWithoutAssignedLicense` was modified
+
+* `assignedLicenseImmutableId()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `esuKeys()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CloudMetadata` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.NetworkSecurityPerimeterProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ConnectionDetail` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PrivateEndpointConnectionDataModel` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PrivateEndpointConnectionListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OSProfileLinuxConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `enableHotpatching()` was added
+* `withEnableHotpatching(java.lang.Boolean)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `status()` was added
+
+#### `models.TagsResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineInstallPatchesParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ExtensionsResourceStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LicenseUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MachineRunCommandInstanceView` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RunCommandManagedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OSProfileWindowsConfiguration` was modified
+
+* `enableHotpatching()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `status()` was added
+* `withEnableHotpatching(java.lang.Boolean)` was added
+
+#### `models.AvailablePatchCountByClassification` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LicenseDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NetworkSecurityPerimeterConfigurationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ProductFeatureUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LicensesListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MachineRunCommandScriptSource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RunCommandInputParameter` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineExtensionInstanceViewStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.NetworkSecurityPerimeter` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.WindowsParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+## 1.0.0-beta.5 (2024-06-04)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-preview-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.LicenseProfileMachineInstanceViewEsuProperties` was modified
+
+* `withAssignedLicense(models.License)` was removed
+* `models.LicenseAssignmentState licenseAssignmentState()` -> `models.LicenseAssignmentState licenseAssignmentState()`
+* `validate()` was removed
+* `models.License assignedLicense()` -> `models.License assignedLicense()`
+* `withLicenseAssignmentState(models.LicenseAssignmentState)` was removed
+
+#### `models.EsuKey` was modified
+
+* `java.lang.String licenseStatus()` -> `java.lang.Integer licenseStatus()`
+* `withLicenseStatus(java.lang.String)` was removed
+
+#### `models.MachineRunCommand$Update` was modified
+
+* `withParameters(java.util.List)` was removed
+* `withTimeoutInSeconds(java.lang.Integer)` was removed
+* `withSource(models.MachineRunCommandScriptSource)` was removed
+* `withAsyncExecution(java.lang.Boolean)` was removed
+* `withOutputBlobUri(java.lang.String)` was removed
+* `withErrorBlobManagedIdentity(models.RunCommandManagedIdentity)` was removed
+* `withOutputBlobManagedIdentity(models.RunCommandManagedIdentity)` was removed
+* `withProtectedParameters(java.util.List)` was removed
+* `withRunAsUser(java.lang.String)` was removed
+* `withRunAsPassword(java.lang.String)` was removed
+* `withErrorBlobUri(java.lang.String)` was removed
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `validate()` was removed
+* `java.util.List productFeatures()` -> `java.util.List productFeatures()`
+* `java.lang.Boolean softwareAssuranceCustomer()` -> `java.lang.Boolean softwareAssuranceCustomer()`
+* `withProductType(models.LicenseProfileProductType)` was removed
+* `withProductFeatures(java.util.List)` was removed
+* `java.time.OffsetDateTime disenrollmentDate()` -> `java.time.OffsetDateTime disenrollmentDate()`
+* `models.LicenseProfileProductType productType()` -> `models.LicenseProfileProductType productType()`
+* `models.LicenseProfileMachineInstanceViewEsuProperties esuProfile()` -> `models.LicenseProfileMachineInstanceViewEsuProperties esuProfile()`
+* `models.LicenseProfileSubscriptionStatus subscriptionStatus()` -> `models.LicenseProfileSubscriptionStatus subscriptionStatus()`
+* `java.time.OffsetDateTime enrollmentDate()` -> `java.time.OffsetDateTime enrollmentDate()`
+* `withSoftwareAssuranceCustomer(java.lang.Boolean)` was removed
+* `withSubscriptionStatus(models.LicenseProfileSubscriptionStatus)` was removed
+* `withEsuProfile(models.LicenseProfileMachineInstanceViewEsuProperties)` was removed
+* `java.time.OffsetDateTime billingStartDate()` -> `java.time.OffsetDateTime billingStartDate()`
+* `models.LicenseStatus licenseStatus()` -> `models.LicenseStatus licenseStatus()`
+* `java.lang.String licenseChannel()` -> `java.lang.String licenseChannel()`
+
+#### `models.License` was modified
+
+* `withLicenseType(models.LicenseType)` was removed
+* `models.LicenseType licenseType()` -> `models.LicenseType licenseType()`
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `models.ProvisioningState provisioningState()` -> `models.ProvisioningState provisioningState()`
+* `models.LicenseDetails licenseDetails()` -> `models.LicenseDetails licenseDetails()`
+* `withTags(java.util.Map)` was removed
+* `com.azure.core.management.SystemData systemData()` -> `com.azure.core.management.SystemData systemData()`
+* `withLicenseDetails(models.LicenseDetails)` was removed
+* `withTenantId(java.lang.String)` was removed
+* `java.lang.String tenantId()` -> `java.lang.String tenantId()`
+
+### Features Added
+
+* `models.Gateway$DefinitionStages` was added
+
+* `models.GatewaysListResult` was added
+
+* `models.NetworkSecurityPerimeterConfiguration` was added
+
+* `models.AccessMode` was added
+
+* `models.NetworkSecurityPerimeterConfigurations` was added
+
+* `models.Settings` was added
+
+* `models.Licenses` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.Gateway$Definition` was added
+
+* `models.SettingsOperations` was added
+
+* `models.License$Definition` was added
+
+* `models.GatewayUpdate` was added
+
+* `models.Gateway$Update` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.VolumeLicenseDetails` was added
+
+* `models.Gateway` was added
+
+* `models.NetworkSecurityPerimeterProfile` was added
+
+* `models.License$UpdateStages` was added
+
+* `models.GatewayType` was added
+
+* `models.Gateways` was added
+
+* `models.NetworkSecurityPerimeterConfigurationListResult` was added
+
+* `models.Gateway$UpdateStages` was added
+
+* `models.License$Update` was added
+
+* `models.LicensesListResult` was added
+
+* `models.License$DefinitionStages` was added
+
+* `models.ProgramYear` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+#### `models.LicenseProfileMachineInstanceViewEsuProperties` was modified
+
+* `esuKeys()` was added
+* `serverType()` was added
+* `assignedLicenseImmutableId()` was added
+* `esuEligibility()` was added
+* `innerModel()` was added
+* `esuKeyState()` was added
+
+#### `models.EsuKey` was modified
+
+* `withLicenseStatus(java.lang.Integer)` was added
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `innerModel()` was added
+
+#### `models.License` was modified
+
+* `innerModel()` was added
+* `resourceGroupName()` was added
+* `location()` was added
+* `tags()` was added
+* `update()` was added
+* `id()` was added
+* `regionName()` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `name()` was added
+* `region()` was added
+* `refresh()` was added
+* `type()` was added
+
+#### `models.LicenseDetails` was modified
+
+* `withVolumeLicenseDetails(java.util.List)` was added
+* `volumeLicenseDetails()` was added
+
+#### `HybridComputeManager` was modified
+
+* `gateways()` was added
+* `licenses()` was added
+* `networkSecurityPerimeterConfigurations()` was added
+* `settingsOperations()` was added
 
 ## 1.0.0-beta.4 (2024-04-23)
 

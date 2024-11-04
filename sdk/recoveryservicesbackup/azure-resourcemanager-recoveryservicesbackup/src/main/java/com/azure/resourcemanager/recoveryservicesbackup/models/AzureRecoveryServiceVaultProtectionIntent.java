@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,18 +16,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "protectionIntentItemType",
-    defaultImpl = AzureRecoveryServiceVaultProtectionIntent.class)
+    defaultImpl = AzureRecoveryServiceVaultProtectionIntent.class,
+    visible = true)
 @JsonTypeName("RecoveryServiceVaultItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureWorkloadAutoProtectionIntent", value = AzureWorkloadAutoProtectionIntent.class) })
 @Fluent
 public class AzureRecoveryServiceVaultProtectionIntent extends ProtectionIntent {
+    /*
+     * backup protectionIntent type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectionIntentItemType", required = true)
+    private ProtectionIntentItemType protectionIntentItemType = ProtectionIntentItemType.RECOVERY_SERVICE_VAULT_ITEM;
+
     /**
      * Creates an instance of AzureRecoveryServiceVaultProtectionIntent class.
      */
     public AzureRecoveryServiceVaultProtectionIntent() {
+    }
+
+    /**
+     * Get the protectionIntentItemType property: backup protectionIntent type.
+     * 
+     * @return the protectionIntentItemType value.
+     */
+    @Override
+    public ProtectionIntentItemType protectionIntentItemType() {
+        return this.protectionIntentItemType;
     }
 
     /**

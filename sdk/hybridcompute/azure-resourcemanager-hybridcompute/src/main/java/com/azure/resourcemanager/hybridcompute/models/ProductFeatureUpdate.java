@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Product Feature.
  */
 @Fluent
-public final class ProductFeatureUpdate {
+public final class ProductFeatureUpdate implements JsonSerializable<ProductFeatureUpdate> {
     /*
      * Product feature name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Indicates the new status of the product feature.
      */
-    @JsonProperty(value = "subscriptionStatus")
     private LicenseProfileSubscriptionStatusUpdate subscriptionStatus;
 
     /**
@@ -76,5 +78,46 @@ public final class ProductFeatureUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("subscriptionStatus",
+            this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductFeatureUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductFeatureUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductFeatureUpdate.
+     */
+    public static ProductFeatureUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductFeatureUpdate deserializedProductFeatureUpdate = new ProductFeatureUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedProductFeatureUpdate.name = reader.getString();
+                } else if ("subscriptionStatus".equals(fieldName)) {
+                    deserializedProductFeatureUpdate.subscriptionStatus
+                        = LicenseProfileSubscriptionStatusUpdate.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductFeatureUpdate;
+        });
     }
 }

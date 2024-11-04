@@ -4,18 +4,23 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PathRenameMode. */
+/**
+ * Defines values for PathRenameMode.
+ */
 public enum PathRenameMode {
-    /** Enum value legacy. */
+    /**
+     * Enum value legacy.
+     */
     LEGACY("legacy"),
 
-    /** Enum value posix. */
+    /**
+     * Enum value posix.
+     */
     POSIX("posix");
 
-    /** The actual serialized value for a PathRenameMode instance. */
+    /**
+     * The actual serialized value for a PathRenameMode instance.
+     */
     private final String value;
 
     PathRenameMode(String value) {
@@ -24,11 +29,10 @@ public enum PathRenameMode {
 
     /**
      * Parses a serialized value to a PathRenameMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PathRenameMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static PathRenameMode fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum PathRenameMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

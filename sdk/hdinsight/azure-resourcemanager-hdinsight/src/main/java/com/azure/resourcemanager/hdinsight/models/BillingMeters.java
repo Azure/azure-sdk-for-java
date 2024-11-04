@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The billing meters. */
+/**
+ * The billing meters.
+ */
 @Fluent
-public final class BillingMeters {
+public final class BillingMeters implements JsonSerializable<BillingMeters> {
     /*
      * The virtual machine sizes.
      */
-    @JsonProperty(value = "meterParameter")
     private String meterParameter;
 
     /*
      * The HDInsight meter guid.
      */
-    @JsonProperty(value = "meter")
     private String meter;
 
     /*
      * The unit of meter, VMHours or CoreHours.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
-    /** Creates an instance of BillingMeters class. */
+    /**
+     * Creates an instance of BillingMeters class.
+     */
     public BillingMeters() {
     }
 
     /**
      * Get the meterParameter property: The virtual machine sizes.
-     *
+     * 
      * @return the meterParameter value.
      */
     public String meterParameter() {
@@ -43,7 +48,7 @@ public final class BillingMeters {
 
     /**
      * Set the meterParameter property: The virtual machine sizes.
-     *
+     * 
      * @param meterParameter the meterParameter value to set.
      * @return the BillingMeters object itself.
      */
@@ -54,7 +59,7 @@ public final class BillingMeters {
 
     /**
      * Get the meter property: The HDInsight meter guid.
-     *
+     * 
      * @return the meter value.
      */
     public String meter() {
@@ -63,7 +68,7 @@ public final class BillingMeters {
 
     /**
      * Set the meter property: The HDInsight meter guid.
-     *
+     * 
      * @param meter the meter value to set.
      * @return the BillingMeters object itself.
      */
@@ -74,7 +79,7 @@ public final class BillingMeters {
 
     /**
      * Get the unit property: The unit of meter, VMHours or CoreHours.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -83,7 +88,7 @@ public final class BillingMeters {
 
     /**
      * Set the unit property: The unit of meter, VMHours or CoreHours.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the BillingMeters object itself.
      */
@@ -94,9 +99,51 @@ public final class BillingMeters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("meterParameter", this.meterParameter);
+        jsonWriter.writeStringField("meter", this.meter);
+        jsonWriter.writeStringField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingMeters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingMeters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingMeters.
+     */
+    public static BillingMeters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingMeters deserializedBillingMeters = new BillingMeters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("meterParameter".equals(fieldName)) {
+                    deserializedBillingMeters.meterParameter = reader.getString();
+                } else if ("meter".equals(fieldName)) {
+                    deserializedBillingMeters.meter = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedBillingMeters.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingMeters;
+        });
     }
 }

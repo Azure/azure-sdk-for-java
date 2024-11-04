@@ -15,20 +15,21 @@ public final class OperationStatusJobsExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationStatusJobsExtendedInfo model = BinaryData.fromString(
-            "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"nzhhhqos\"],\"failedJobsError\":{\"ohguabz\":\"jkutycyarnr\",\"z\":\"ghktdpy\",\"cnhz\":\"coe\",\"lohap\":\"rottjzcfyjzptw\"}}")
+            "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"niylyly\",\"wxzut\",\"qztw\"],\"failedJobsError\":{\"tcdxabbujftaben\":\"mupgxy\",\"cafeddw\":\"bklqpxz\",\"ookrtalvnbw\":\"nlzafwxudgnh\",\"uclvdjj\":\"pbeme\"}}")
             .toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("nzhhhqos", model.jobIds().get(0));
-        Assertions.assertEquals("jkutycyarnr", model.failedJobsError().get("ohguabz"));
+        Assertions.assertEquals("niylyly", model.jobIds().get(0));
+        Assertions.assertEquals("mupgxy", model.failedJobsError().get("tcdxabbujftaben"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationStatusJobsExtendedInfo model
-            = new OperationStatusJobsExtendedInfo().withJobIds(Arrays.asList("nzhhhqos")).withFailedJobsError(
-                mapOf("ohguabz", "jkutycyarnr", "z", "ghktdpy", "cnhz", "coe", "lohap", "rottjzcfyjzptw"));
+            = new OperationStatusJobsExtendedInfo().withJobIds(Arrays.asList("niylyly", "wxzut", "qztw"))
+                .withFailedJobsError(mapOf("tcdxabbujftaben", "mupgxy", "cafeddw", "bklqpxz", "ookrtalvnbw",
+                    "nlzafwxudgnh", "uclvdjj", "pbeme"));
         model = BinaryData.fromObject(model).toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("nzhhhqos", model.jobIds().get(0));
-        Assertions.assertEquals("jkutycyarnr", model.failedJobsError().get("ohguabz"));
+        Assertions.assertEquals("niylyly", model.jobIds().get(0));
+        Assertions.assertEquals("mupgxy", model.failedJobsError().get("tcdxabbujftaben"));
     }
 
     // Use "Map.of" if available

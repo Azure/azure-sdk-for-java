@@ -5,42 +5,46 @@ package com.azure.ai.vision.face.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The IdentifyFromLargePersonGroupRequest model.
  */
 @Fluent
-public final class IdentifyFromLargePersonGroupRequest {
+public final class IdentifyFromLargePersonGroupRequest
+    implements JsonSerializable<IdentifyFromLargePersonGroupRequest> {
 
     /*
-     * Array of query faces faceIds, created by the "Detect". Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * Array of query faces faceIds, created by the "Detect". Each of the faces are identified independently. The valid
+     * number of faceIds is between [1, 10].
      */
     @Generated
-    @JsonProperty(value = "faceIds")
     private final List<String> faceIds;
 
     /*
-     * largePersonGroupId of the target Large Person Group, created by "Create Large Person Group". Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * largePersonGroupId of the target Large Person Group, created by "Create Large Person Group". Parameter
+     * personGroupId and largePersonGroupId should not be provided at the same time.
      */
     @Generated
-    @JsonProperty(value = "largePersonGroupId")
     private final String largePersonGroupId;
 
     /*
      * The range of maxNumOfCandidatesReturned is between 1 and 100. Default value is 10.
      */
     @Generated
-    @JsonProperty(value = "maxNumOfCandidatesReturned")
     private Integer maxNumOfCandidatesReturned;
 
     /*
-     * Customized identification confidence threshold, in the range of [0, 1]. Advanced user can tweak this value to override default internal threshold for better precision on their scenario data. Note there is no guarantee of this threshold value working on other data and after algorithm updates.
+     * Customized identification confidence threshold, in the range of [0, 1]. Advanced user can tweak this value to
+     * override default internal threshold for better precision on their scenario data. Note there is no guarantee of
+     * this threshold value working on other data and after algorithm updates.
      */
     @Generated
-    @JsonProperty(value = "confidenceThreshold")
     private Double confidenceThreshold;
 
     /**
@@ -50,9 +54,7 @@ public final class IdentifyFromLargePersonGroupRequest {
      * @param largePersonGroupId the largePersonGroupId value to set.
      */
     @Generated
-    @JsonCreator
-    public IdentifyFromLargePersonGroupRequest(@JsonProperty(value = "faceIds") List<String> faceIds,
-        @JsonProperty(value = "largePersonGroupId") String largePersonGroupId) {
+    public IdentifyFromLargePersonGroupRequest(List<String> faceIds, String largePersonGroupId) {
         this.faceIds = faceIds;
         this.largePersonGroupId = largePersonGroupId;
     }
@@ -127,5 +129,58 @@ public final class IdentifyFromLargePersonGroupRequest {
     public IdentifyFromLargePersonGroupRequest setConfidenceThreshold(Double confidenceThreshold) {
         this.confidenceThreshold = confidenceThreshold;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("faceIds", this.faceIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("largePersonGroupId", this.largePersonGroupId);
+        jsonWriter.writeNumberField("maxNumOfCandidatesReturned", this.maxNumOfCandidatesReturned);
+        jsonWriter.writeNumberField("confidenceThreshold", this.confidenceThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentifyFromLargePersonGroupRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentifyFromLargePersonGroupRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IdentifyFromLargePersonGroupRequest.
+     */
+    @Generated
+    public static IdentifyFromLargePersonGroupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<String> faceIds = null;
+            String largePersonGroupId = null;
+            Integer maxNumOfCandidatesReturned = null;
+            Double confidenceThreshold = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceIds".equals(fieldName)) {
+                    faceIds = reader.readArray(reader1 -> reader1.getString());
+                } else if ("largePersonGroupId".equals(fieldName)) {
+                    largePersonGroupId = reader.getString();
+                } else if ("maxNumOfCandidatesReturned".equals(fieldName)) {
+                    maxNumOfCandidatesReturned = reader.getNullable(JsonReader::getInt);
+                } else if ("confidenceThreshold".equals(fieldName)) {
+                    confidenceThreshold = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            IdentifyFromLargePersonGroupRequest deserializedIdentifyFromLargePersonGroupRequest
+                = new IdentifyFromLargePersonGroupRequest(faceIds, largePersonGroupId);
+            deserializedIdentifyFromLargePersonGroupRequest.maxNumOfCandidatesReturned = maxNumOfCandidatesReturned;
+            deserializedIdentifyFromLargePersonGroupRequest.confidenceThreshold = confidenceThreshold;
+            return deserializedIdentifyFromLargePersonGroupRequest;
+        });
     }
 }

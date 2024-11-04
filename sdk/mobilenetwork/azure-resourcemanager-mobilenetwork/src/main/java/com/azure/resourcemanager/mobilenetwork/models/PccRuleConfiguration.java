@@ -15,23 +15,19 @@ import java.util.List;
 @Fluent
 public final class PccRuleConfiguration {
     /*
-     * The name of the rule. This must be unique within the parent service. You must not use any of the following
-     * reserved strings - `default`, `requested` or `service`.
+     * The name of the rule. This must be unique within the parent service. You must not use any of the following reserved strings - `default`, `requested` or `service`.
      */
     @JsonProperty(value = "ruleName", required = true)
     private String ruleName;
 
     /*
-     * A precedence value that is used to decide between data flow policy rules when identifying the QoS values to use
-     * for a particular SIM. A lower value means a higher priority. This value should be unique among all data flow
-     * policy rules configured in the mobile network.
+     * A precedence value that is used to decide between data flow policy rules when identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique among all data flow policy rules configured in the mobile network.
      */
     @JsonProperty(value = "rulePrecedence", required = true)
     private int rulePrecedence;
 
     /*
-     * The QoS policy to use for packets matching this rule. If this field is null then the parent service will define
-     * the QoS settings.
+     * The QoS policy to use for packets matching this rule. If this field is null then the parent service will define the QoS settings.
      */
     @JsonProperty(value = "ruleQosPolicy")
     private PccRuleQosPolicy ruleQosPolicy;
@@ -169,15 +165,16 @@ public final class PccRuleConfiguration {
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
         }
         if (ruleQosPolicy() != null) {
             ruleQosPolicy().validate();
         }
         if (serviceDataFlowTemplates() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
         } else {
             serviceDataFlowTemplates().forEach(e -> e.validate());
         }

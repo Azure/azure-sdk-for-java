@@ -22,14 +22,13 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
      */
     @Generated
     public ChatMessageContentItem() {
-        this.type = "ChatMessageContentItem";
     }
 
     /*
      * The discriminated object type.
      */
     @Generated
-    private String type;
+    private String type = "ChatMessageContentItem";
 
     /**
      * Get the type property: The discriminated object type.
@@ -78,10 +77,12 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("text".equals(discriminatorValue)) {
-                    return ChatMessageTextContentItem.fromJson(readerToUse.reset());
+                if ("refusal".equals(discriminatorValue)) {
+                    return ChatMessageRefusalContentItem.fromJson(readerToUse.reset());
                 } else if ("image_url".equals(discriminatorValue)) {
                     return ChatMessageImageContentItem.fromJson(readerToUse.reset());
+                } else if ("text".equals(discriminatorValue)) {
+                    return ChatMessageTextContentItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

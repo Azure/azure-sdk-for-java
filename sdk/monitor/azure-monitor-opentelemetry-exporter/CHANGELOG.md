@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.23 (Unreleased)
+## 1.0.0-beta.32 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,82 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.31 (2024-10-23)
+
+### Bugs Fixed
+- [Restore missing diagnostic logging of telemetry payload](https://github.com/Azure/azure-sdk-for-java/pull/42451)
+
+### Other Changes
+- [Update OpenTelemetry SDK to 1.43.0](https://github.com/Azure/azure-sdk-for-java/pull/42493)
+
+## 1.0.0-beta.30 (2024-10-09)
+
+### Bugs Fixed
+
+- [Fixed a regression in 1.0.0-beta.29 where exception type name was not exported](https://github.com/Azure/azure-sdk-for-java/pull/42241)
+
+## 1.0.0-beta.29 (2024-10-02)
+
+### Breaking Changes
+
+⚠️⚠️ The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)):
+
+```java
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+AzureMonitorExporter.customize(sdkBuilder);
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+```
+
+See the [Readme](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter) for more details
+
+### Bugs Fixed
+- [Fix a race condition RejectedExecutionException](https://github.com/Azure/azure-sdk-for-java/pull/41927)
+- [Fix a bug where post requests to Live Metrics returned http 400 due to malformed json](https://github.com/Azure/azure-sdk-for-java/pull/42147)
+
+### Other Changes
+- [Better populate exception type name and message from span events](https://github.com/Azure/azure-sdk-for-java/pull/41397)
+- [Update OpenTelemetry SDK to 1.42.1](https://github.com/Azure/azure-sdk-for-java/pull/41931))
+- [Improve the error message for null connection string](https://github.com/Azure/azure-sdk-for-java/pull/42034)
+- [Update message in case of connection failure](https://github.com/Azure/azure-sdk-for-java/pull/42103)
+
+## 1.0.0-beta.28 (2024-08-08)
+
+### Other Changes
+- [Migrate LiveMetric and VM metadata data models to azure-json](https://github.com/Azure/azure-sdk-for-java/pull/41458)
+- [Enable spotless code formatting](https://github.com/Azure/azure-sdk-for-java/pull/41462)
+
+## 1.0.0-beta.27 (2024-08-05)
+
+### Other Changes
+- [Migrate from Jackson to Azure Json](https://github.com/Azure/azure-sdk-for-java/pull/41106)
+
+## 1.0.0-beta.26 (2024-07-24)
+
+### Bugs Fixed
+- [Fix pre-aggregated standard HTTP server metric success calculation](https://github.com/Azure/azure-sdk-for-java/pull/40599)
+- [OOM error caused by AzureMonitorLogRecordExporter](https://github.com/Azure/azure-sdk-for-java/issues/40546)
+  
+### Other Changes
+- [Update OpenTelemetry to 1.40.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
+- [Improve connection string message](https://github.com/Azure/azure-sdk-for-java/pull/40922)
+
+## 1.0.0-beta.25 (2024-06-28)
+
+### Other changes
+- [ResourceAttributes has been deprecated upstream](https://github.com/Azure/azure-sdk-for-java/pull/40504)
+- [Handle 206](https://github.com/Azure/azure-sdk-for-java/pull/40416)
+
+## 1.0.0-beta.24 (2024-05-29)
+
+### Features Added
+- [Support explicit fixed sampling rate of 100% without ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/40338)
+
+## 1.0.0-beta.23 (2024-05-23)
+
+### Other Changes
+- [Only emit `_APPRESOURCEPREVIEW_` custom metric in AKS preview integration](https://github.com/Azure/azure-sdk-for-java/pull/40312)
+- [Update OpenTelemetry to 2.4.0](https://github.com/Azure/azure-sdk-for-java/pull/40289)
 
 ## 1.0.0-beta.22 (2024-05-09)
 

@@ -14,25 +14,27 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleManagementPolic
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoleManagementPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleManagementPoliciesClient.
+ */
 public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> {
     /**
      * Get the specified role management policy for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyName The name (guid) of the role management policy to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role management policy for a resource scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RoleManagementPolicyInner>> getWithResponseAsync(String scope, String roleManagementPolicyName);
 
     /**
      * Get the specified role management policy for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyName The name (guid) of the role management policy to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Get the specified role management policy for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyName The name (guid) of the role management policy to get.
      * @param context The context to associate with this operation.
@@ -59,7 +61,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Get the specified role management policy for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyName The name (guid) of the role management policy to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +74,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Update a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param parameters Parameters for the role management policy.
@@ -82,12 +84,12 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      * @return role management policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleManagementPolicyInner>> updateWithResponseAsync(
-        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters);
+    Mono<Response<RoleManagementPolicyInner>> updateWithResponseAsync(String scope, String roleManagementPolicyName,
+        RoleManagementPolicyInner parameters);
 
     /**
      * Update a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param parameters Parameters for the role management policy.
@@ -97,12 +99,12 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      * @return role management policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleManagementPolicyInner> updateAsync(
-        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters);
+    Mono<RoleManagementPolicyInner> updateAsync(String scope, String roleManagementPolicyName,
+        RoleManagementPolicyInner parameters);
 
     /**
      * Update a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param parameters Parameters for the role management policy.
@@ -113,12 +115,12 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      * @return role management policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleManagementPolicyInner> updateWithResponse(
-        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters, Context context);
+    Response<RoleManagementPolicyInner> updateWithResponse(String scope, String roleManagementPolicyName,
+        RoleManagementPolicyInner parameters, Context context);
 
     /**
      * Update a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param parameters Parameters for the role management policy.
@@ -128,12 +130,12 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      * @return role management policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleManagementPolicyInner update(
-        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters);
+    RoleManagementPolicyInner update(String scope, String roleManagementPolicyName,
+        RoleManagementPolicyInner parameters);
 
     /**
      * Delete a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +148,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Delete a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +161,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Delete a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param context The context to associate with this operation.
@@ -173,7 +175,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Delete a role management policy.
-     *
+     * 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +187,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Gets role management policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +199,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Gets role management policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -209,7 +211,7 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
 
     /**
      * Gets role management policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -6,35 +6,55 @@ package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestack.models.Compatibility;
 import com.azure.resourcemanager.azurestack.models.IconUris;
 import com.azure.resourcemanager.azurestack.models.ProductLink;
 import com.azure.resourcemanager.azurestack.models.ProductProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Product information. */
+/**
+ * Product information.
+ */
 @Fluent
 public final class ProductInner extends ProxyResource {
     /*
      * Properties of the product resource.
      */
-    @JsonProperty(value = "properties")
     private ProductNestedProperties innerProperties;
 
     /*
      * The entity tag used for optimistic concurrency when modifying the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of ProductInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProductInner class.
+     */
     public ProductInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the product resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProductNestedProperties innerProperties() {
@@ -43,7 +63,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -52,7 +72,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ProductInner object itself.
      */
@@ -62,8 +82,38 @@ public final class ProductInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: The display name of the product.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +122,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name of the product.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProductInner object itself.
      */
@@ -86,7 +136,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the description property: The description of the product.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -95,7 +145,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the description property: The description of the product.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProductInner object itself.
      */
@@ -109,7 +159,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the publisherDisplayName property: The user-friendly name of the product publisher.
-     *
+     * 
      * @return the publisherDisplayName value.
      */
     public String publisherDisplayName() {
@@ -118,7 +168,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the publisherDisplayName property: The user-friendly name of the product publisher.
-     *
+     * 
      * @param publisherDisplayName the publisherDisplayName value to set.
      * @return the ProductInner object itself.
      */
@@ -132,7 +182,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the publisherIdentifier property: Publisher identifier.
-     *
+     * 
      * @return the publisherIdentifier value.
      */
     public String publisherIdentifier() {
@@ -141,7 +191,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the publisherIdentifier property: Publisher identifier.
-     *
+     * 
      * @param publisherIdentifier the publisherIdentifier value to set.
      * @return the ProductInner object itself.
      */
@@ -155,7 +205,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the offer property: The offer representing the product.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -164,7 +214,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the offer property: The offer representing the product.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the ProductInner object itself.
      */
@@ -178,7 +228,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the offerVersion property: The version of the product offer.
-     *
+     * 
      * @return the offerVersion value.
      */
     public String offerVersion() {
@@ -187,7 +237,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the offerVersion property: The version of the product offer.
-     *
+     * 
      * @param offerVersion the offerVersion value to set.
      * @return the ProductInner object itself.
      */
@@ -201,7 +251,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the sku property: The product SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -210,7 +260,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the sku property: The product SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ProductInner object itself.
      */
@@ -224,7 +274,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the billingPartNumber property: The part number used for billing purposes.
-     *
+     * 
      * @return the billingPartNumber value.
      */
     public String billingPartNumber() {
@@ -233,7 +283,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the billingPartNumber property: The part number used for billing purposes.
-     *
+     * 
      * @param billingPartNumber the billingPartNumber value to set.
      * @return the ProductInner object itself.
      */
@@ -247,7 +297,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the vmExtensionType property: The type of the Virtual Machine Extension.
-     *
+     * 
      * @return the vmExtensionType value.
      */
     public String vmExtensionType() {
@@ -256,7 +306,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the vmExtensionType property: The type of the Virtual Machine Extension.
-     *
+     * 
      * @param vmExtensionType the vmExtensionType value to set.
      * @return the ProductInner object itself.
      */
@@ -270,7 +320,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the galleryItemIdentity property: The identifier of the gallery item corresponding to the product.
-     *
+     * 
      * @return the galleryItemIdentity value.
      */
     public String galleryItemIdentity() {
@@ -279,7 +329,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the galleryItemIdentity property: The identifier of the gallery item corresponding to the product.
-     *
+     * 
      * @param galleryItemIdentity the galleryItemIdentity value to set.
      * @return the ProductInner object itself.
      */
@@ -293,7 +343,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the iconUris property: Additional links available for this product.
-     *
+     * 
      * @return the iconUris value.
      */
     public IconUris iconUris() {
@@ -302,7 +352,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the iconUris property: Additional links available for this product.
-     *
+     * 
      * @param iconUris the iconUris value to set.
      * @return the ProductInner object itself.
      */
@@ -316,7 +366,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the links property: Additional links available for this product.
-     *
+     * 
      * @return the links value.
      */
     public List<ProductLink> links() {
@@ -325,7 +375,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the links property: Additional links available for this product.
-     *
+     * 
      * @param links the links value to set.
      * @return the ProductInner object itself.
      */
@@ -339,7 +389,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the legalTerms property: The legal terms.
-     *
+     * 
      * @return the legalTerms value.
      */
     public String legalTerms() {
@@ -348,7 +398,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the legalTerms property: The legal terms.
-     *
+     * 
      * @param legalTerms the legalTerms value to set.
      * @return the ProductInner object itself.
      */
@@ -362,7 +412,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the privacyPolicy property: The privacy policy.
-     *
+     * 
      * @return the privacyPolicy value.
      */
     public String privacyPolicy() {
@@ -371,7 +421,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the privacyPolicy property: The privacy policy.
-     *
+     * 
      * @param privacyPolicy the privacyPolicy value to set.
      * @return the ProductInner object itself.
      */
@@ -385,7 +435,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the payloadLength property: The length of product content.
-     *
+     * 
      * @return the payloadLength value.
      */
     public Long payloadLength() {
@@ -394,7 +444,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the payloadLength property: The length of product content.
-     *
+     * 
      * @param payloadLength the payloadLength value to set.
      * @return the ProductInner object itself.
      */
@@ -408,7 +458,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the productKind property: The kind of the product (virtualMachine or virtualMachineExtension).
-     *
+     * 
      * @return the productKind value.
      */
     public String productKind() {
@@ -417,7 +467,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the productKind property: The kind of the product (virtualMachine or virtualMachineExtension).
-     *
+     * 
      * @param productKind the productKind value to set.
      * @return the ProductInner object itself.
      */
@@ -431,7 +481,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the productProperties property: Additional properties for the product.
-     *
+     * 
      * @return the productProperties value.
      */
     public ProductProperties productProperties() {
@@ -440,7 +490,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the productProperties property: Additional properties for the product.
-     *
+     * 
      * @param productProperties the productProperties value to set.
      * @return the ProductInner object itself.
      */
@@ -454,7 +504,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Get the compatibility property: Product compatibility with current device.
-     *
+     * 
      * @return the compatibility value.
      */
     public Compatibility compatibility() {
@@ -463,7 +513,7 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Set the compatibility property: Product compatibility with current device.
-     *
+     * 
      * @param compatibility the compatibility value to set.
      * @return the ProductInner object itself.
      */
@@ -477,12 +527,58 @@ public final class ProductInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProductInner.
+     */
+    public static ProductInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductInner deserializedProductInner = new ProductInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProductInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProductInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProductInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProductInner.innerProperties = ProductNestedProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedProductInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductInner;
+        });
     }
 }

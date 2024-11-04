@@ -12,24 +12,24 @@ public final class CreateLinkedIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateLinkedIntegrationRuntimeRequest model = BinaryData.fromString(
-            "{\"name\":\"ashsfwxos\",\"subscriptionId\":\"z\",\"dataFactoryName\":\"ugicjooxdjebw\",\"dataFactoryLocation\":\"cwwfvovbvme\"}")
+            "{\"name\":\"ni\",\"subscriptionId\":\"x\",\"dataFactoryName\":\"kpycgklwndnhjd\",\"dataFactoryLocation\":\"whvylw\"}")
             .toObject(CreateLinkedIntegrationRuntimeRequest.class);
-        Assertions.assertEquals("ashsfwxos", model.name());
-        Assertions.assertEquals("z", model.subscriptionId());
-        Assertions.assertEquals("ugicjooxdjebw", model.dataFactoryName());
-        Assertions.assertEquals("cwwfvovbvme", model.dataFactoryLocation());
+        Assertions.assertEquals("ni", model.name());
+        Assertions.assertEquals("x", model.subscriptionId());
+        Assertions.assertEquals("kpycgklwndnhjd", model.dataFactoryName());
+        Assertions.assertEquals("whvylw", model.dataFactoryLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateLinkedIntegrationRuntimeRequest model = new CreateLinkedIntegrationRuntimeRequest().withName("ashsfwxos")
-            .withSubscriptionId("z")
-            .withDataFactoryName("ugicjooxdjebw")
-            .withDataFactoryLocation("cwwfvovbvme");
+        CreateLinkedIntegrationRuntimeRequest model = new CreateLinkedIntegrationRuntimeRequest().withName("ni")
+            .withSubscriptionId("x")
+            .withDataFactoryName("kpycgklwndnhjd")
+            .withDataFactoryLocation("whvylw");
         model = BinaryData.fromObject(model).toObject(CreateLinkedIntegrationRuntimeRequest.class);
-        Assertions.assertEquals("ashsfwxos", model.name());
-        Assertions.assertEquals("z", model.subscriptionId());
-        Assertions.assertEquals("ugicjooxdjebw", model.dataFactoryName());
-        Assertions.assertEquals("cwwfvovbvme", model.dataFactoryLocation());
+        Assertions.assertEquals("ni", model.name());
+        Assertions.assertEquals("x", model.subscriptionId());
+        Assertions.assertEquals("kpycgklwndnhjd", model.dataFactoryName());
+        Assertions.assertEquals("whvylw", model.dataFactoryLocation());
     }
 }

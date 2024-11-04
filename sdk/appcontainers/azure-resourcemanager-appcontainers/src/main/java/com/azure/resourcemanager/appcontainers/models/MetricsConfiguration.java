@@ -5,24 +5,52 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration of Open Telemetry metrics.
  */
 @Fluent
-public final class MetricsConfiguration {
+public final class MetricsConfiguration implements JsonSerializable<MetricsConfiguration> {
+    /*
+     * Boolean indicating if including keda metrics
+     */
+    private Boolean includeKeda;
+
     /*
      * Open telemetry metrics destinations
      */
-    @JsonProperty(value = "destinations")
     private List<String> destinations;
 
     /**
      * Creates an instance of MetricsConfiguration class.
      */
     public MetricsConfiguration() {
+    }
+
+    /**
+     * Get the includeKeda property: Boolean indicating if including keda metrics.
+     * 
+     * @return the includeKeda value.
+     */
+    public Boolean includeKeda() {
+        return this.includeKeda;
+    }
+
+    /**
+     * Set the includeKeda property: Boolean indicating if including keda metrics.
+     * 
+     * @param includeKeda the includeKeda value to set.
+     * @return the MetricsConfiguration object itself.
+     */
+    public MetricsConfiguration withIncludeKeda(Boolean includeKeda) {
+        this.includeKeda = includeKeda;
+        return this;
     }
 
     /**
@@ -51,5 +79,45 @@ public final class MetricsConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includeKeda", this.includeKeda);
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricsConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricsConfiguration.
+     */
+    public static MetricsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricsConfiguration deserializedMetricsConfiguration = new MetricsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("includeKeda".equals(fieldName)) {
+                    deserializedMetricsConfiguration.includeKeda = reader.getNullable(JsonReader::getBoolean);
+                } else if ("destinations".equals(fieldName)) {
+                    List<String> destinations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricsConfiguration.destinations = destinations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricsConfiguration;
+        });
     }
 }

@@ -50,14 +50,14 @@ Merging Pull Requests (for project contributors with write access)
   - add `MAVEN_HOME` to environment variables
 
 >**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
-1.- Run this as Administrator on a command prompt:<br> 
+1.- Run this as Administrator on a command prompt:<br>
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
 
 ### Building and Unit Testing
 
 Refer to the [build wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning how to build Java SDKs
-and the [unit testing wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit 
+and the [unit testing wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit
 testing.
 
 ### Live testing
@@ -93,7 +93,7 @@ When building locally you might run into a Checkstyle such as the following:
 
 ```
 Execution default of goal org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0:check failed:
-Plugin org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0 or one of its dependencies could not be resolved: 
+Plugin org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0 or one of its dependencies could not be resolved:
 Could not find artifact com.azure:sdk-build-tools:jar:1.0.0 in ossrh (https://oss.sonatype.org/content/repositories/snapshots/)
 ```
 
@@ -114,6 +114,29 @@ The dependency-version should be set to the most recent released version and the
 `com.azure:azure-identity;1.0.0-beta.4;1.0.0-beta.5`
 
 Note: In the case of a new artifact both versions will be the same. In the case of a released artifact, the dependecny version should be the latest released version.
+
+### Supported GroupIds and publishing
+
+We no longer publish directly to Maven Central, any publishing is done through ESRP. Libraries published need to conform to one of the groupIds that we can publish to. Here is the list of accepted groupdIs:
+
+- "com.microsoft"
+- "com.azure.*"
+- "com.azure"
+- "com.microsoft.azure"
+- "com.microsoft.azure.cognitiveservices"
+- "com.microsoft.azure.functions"
+- "com.microsoft.azure.kusto"
+- "com.microsoft.azure.sdk.iot"
+- "com.microsoft.azure.sdk.iot.provisioning"
+- "com.microsoft.commondatamodel"
+- "com.windowsazure"
+- "com.microsoft.sqlserver"
+- "com.microsoft.spring"
+- "com.microsoft.servicefabric"
+- "com.microsoft.rest"
+- "io.clientcore"
+
+Note: This list will be replaced with a link to a page created by ESRP providing a UI where GroupIds can be cheked and new ones requested if needed.
 
 ### Libraries vs External Dependencies
 
@@ -193,7 +216,7 @@ After the unreleased version of `com.azure:azure-core` was released but before `
 
 For general packaging versioning policies see [Package Versioning](https://azure.github.io/azure-sdk/policies_releases.html#package-versioning) and see [Java](https://azure.github.io/azure-sdk/policies_releases.html#java) for specific rules used in this repo.
 
-While some Java projects use SNAPSHOT versions for nightly builds, we have opted not to use that convention because it has proven to be very unreliable in our scenarios. For example, if we use SNAPSHOT versions in our pom.xml files that usually ends up becoming viral throughout our entire repo and we want to more tightly control our versioning, especially our dependency versioning. On top of the viral nature, we have experienced a lot of network reliability issues when consuming SNAPSHOT versions from Maven central so we want to avoid this reliability issue in our build pipelines. 
+While some Java projects use SNAPSHOT versions for nightly builds, we have opted not to use that convention because it has proven to be very unreliable in our scenarios. For example, if we use SNAPSHOT versions in our pom.xml files that usually ends up becoming viral throughout our entire repo and we want to more tightly control our versioning, especially our dependency versioning. On top of the viral nature, we have experienced a lot of network reliability issues when consuming SNAPSHOT versions from Maven central so we want to avoid this reliability issue in our build pipelines.
 
 Given we don't use SNAPSHOT versions in our pom.xml files we generally have the version currently under development committed to the repo in the pom.xml file. This means if you are looking at our active development code for the version you will see a version that is not yet published to Maven central. If you want to try out our packages under development, you should look for our latest alpha build (see Dev Feed section below).
 

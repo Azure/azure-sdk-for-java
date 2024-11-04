@@ -5,40 +5,57 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** calendarRoleType. */
+/**
+ * calendarRoleType.
+ */
 public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<MicrosoftGraphCalendarRoleType> {
-    /** Static value none for MicrosoftGraphCalendarRoleType. */
+    /**
+     * Static value none for MicrosoftGraphCalendarRoleType.
+     */
     public static final MicrosoftGraphCalendarRoleType NONE = fromString("none");
 
-    /** Static value freeBusyRead for MicrosoftGraphCalendarRoleType. */
+    /**
+     * Static value freeBusyRead for MicrosoftGraphCalendarRoleType.
+     */
     public static final MicrosoftGraphCalendarRoleType FREE_BUSY_READ = fromString("freeBusyRead");
 
-    /** Static value limitedRead for MicrosoftGraphCalendarRoleType. */
+    /**
+     * Static value limitedRead for MicrosoftGraphCalendarRoleType.
+     */
     public static final MicrosoftGraphCalendarRoleType LIMITED_READ = fromString("limitedRead");
 
-    /** Static value read for MicrosoftGraphCalendarRoleType. */
+    /**
+     * Static value read for MicrosoftGraphCalendarRoleType.
+     */
     public static final MicrosoftGraphCalendarRoleType READ = fromString("read");
 
-    /** Static value write for MicrosoftGraphCalendarRoleType. */
+    /**
+     * Static value write for MicrosoftGraphCalendarRoleType.
+     */
     public static final MicrosoftGraphCalendarRoleType WRITE = fromString("write");
 
-    /** Static value delegateWithoutPrivateEventAccess for MicrosoftGraphCalendarRoleType. */
-    public static final MicrosoftGraphCalendarRoleType DELEGATE_WITHOUT_PRIVATE_EVENT_ACCESS =
-        fromString("delegateWithoutPrivateEventAccess");
+    /**
+     * Static value delegateWithoutPrivateEventAccess for MicrosoftGraphCalendarRoleType.
+     */
+    public static final MicrosoftGraphCalendarRoleType DELEGATE_WITHOUT_PRIVATE_EVENT_ACCESS
+        = fromString("delegateWithoutPrivateEventAccess");
 
-    /** Static value delegateWithPrivateEventAccess for MicrosoftGraphCalendarRoleType. */
-    public static final MicrosoftGraphCalendarRoleType DELEGATE_WITH_PRIVATE_EVENT_ACCESS =
-        fromString("delegateWithPrivateEventAccess");
+    /**
+     * Static value delegateWithPrivateEventAccess for MicrosoftGraphCalendarRoleType.
+     */
+    public static final MicrosoftGraphCalendarRoleType DELEGATE_WITH_PRIVATE_EVENT_ACCESS
+        = fromString("delegateWithPrivateEventAccess");
 
-    /** Static value custom for MicrosoftGraphCalendarRoleType. */
+    /**
+     * Static value custom for MicrosoftGraphCalendarRoleType.
+     */
     public static final MicrosoftGraphCalendarRoleType CUSTOM = fromString("custom");
 
     /**
      * Creates a new instance of MicrosoftGraphCalendarRoleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,18 +64,17 @@ public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<M
 
     /**
      * Creates or finds a MicrosoftGraphCalendarRoleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphCalendarRoleType.
      */
-    @JsonCreator
     public static MicrosoftGraphCalendarRoleType fromString(String name) {
         return fromString(name, MicrosoftGraphCalendarRoleType.class);
     }
 
     /**
      * Gets known MicrosoftGraphCalendarRoleType values.
-     *
+     * 
      * @return known MicrosoftGraphCalendarRoleType values.
      */
     public static Collection<MicrosoftGraphCalendarRoleType> values() {

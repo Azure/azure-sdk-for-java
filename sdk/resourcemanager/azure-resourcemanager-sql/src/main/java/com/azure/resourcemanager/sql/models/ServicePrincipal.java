@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The managed instance's service principal configuration for a resource. */
+/**
+ * The managed instance's service principal configuration for a resource.
+ */
 @Fluent
-public final class ServicePrincipal {
+public final class ServicePrincipal implements JsonSerializable<ServicePrincipal> {
     /*
      * The Azure Active Directory application object id.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The Azure Active Directory application client id.
      */
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
     /*
      * The Azure Active Directory tenant id.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Service principal type.
      */
-    @JsonProperty(value = "type")
     private ServicePrincipalType type;
 
-    /** Creates an instance of ServicePrincipal class. */
+    /**
+     * Creates an instance of ServicePrincipal class.
+     */
     public ServicePrincipal() {
     }
 
     /**
      * Get the principalId property: The Azure Active Directory application object id.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -49,7 +53,7 @@ public final class ServicePrincipal {
 
     /**
      * Get the clientId property: The Azure Active Directory application client id.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -58,7 +62,7 @@ public final class ServicePrincipal {
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -67,7 +71,7 @@ public final class ServicePrincipal {
 
     /**
      * Get the type property: Service principal type.
-     *
+     * 
      * @return the type value.
      */
     public ServicePrincipalType type() {
@@ -76,7 +80,7 @@ public final class ServicePrincipal {
 
     /**
      * Set the type property: Service principal type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServicePrincipal object itself.
      */
@@ -87,9 +91,51 @@ public final class ServicePrincipal {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipal if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicePrincipal.
+     */
+    public static ServicePrincipal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipal deserializedServicePrincipal = new ServicePrincipal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedServicePrincipal.principalId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedServicePrincipal.clientId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServicePrincipal.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServicePrincipal.type = ServicePrincipalType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipal;
+        });
     }
 }

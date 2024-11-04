@@ -11,7 +11,8 @@ import com.azure.resourcemanager.selfhelp.models.SolutionResource;
  */
 public final class SolutionOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Update.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Update.json
      */
     /**
      * Sample code: Solution_Update.

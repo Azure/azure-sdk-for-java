@@ -4,11 +4,14 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.DiagnosticsProviderJvmFatalErrorMapper;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -429,6 +432,19 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
         assertThat(cosmosDiagnosticsNode.get("jvmFatalErrorMapperExecutionCount")).isNotNull();
         assertThat(cosmosDiagnosticsNode.get("jvmFatalErrorMapperExecutionCount").asLong()).isGreaterThan(0);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void validateFeedOperationStateNullCheck() {
+        CosmosAsyncClient client = this
+            .getClientBuilder()
+            .buildAsyncClient();
+        TestUtils.createDummyQueryFeedOperationStateWithoutPagedFluxOptions(
+            ResourceType.Document,
+            OperationType.Query,
+            new CosmosQueryRequestOptions(),
+            client
+        );
     }
 
     private CosmosItemResponse<ObjectNode> executeTestCase(CosmosContainer container) {

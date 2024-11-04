@@ -26,71 +26,53 @@ public final class GraphQLApiResolverPoliciesImpl implements GraphQLApiResolverP
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public GraphQLApiResolverPoliciesImpl(
-        GraphQLApiResolverPoliciesClient innerClient,
+    public GraphQLApiResolverPoliciesImpl(GraphQLApiResolverPoliciesClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PolicyContract> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId) {
-        PagedIterable<PolicyContractInner> inner =
-            this.serviceClient().listByResolver(resourceGroupName, serviceName, apiId, resolverId);
+    public PagedIterable<PolicyContract> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId) {
+        PagedIterable<PolicyContractInner> inner
+            = this.serviceClient().listByResolver(resourceGroupName, serviceName, apiId, resolverId);
         return Utils.mapPage(inner, inner1 -> new PolicyContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PolicyContract> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context) {
-        PagedIterable<PolicyContractInner> inner =
-            this.serviceClient().listByResolver(resourceGroupName, serviceName, apiId, resolverId, context);
+    public PagedIterable<PolicyContract> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context) {
+        PagedIterable<PolicyContractInner> inner
+            = this.serviceClient().listByResolver(resourceGroupName, serviceName, apiId, resolverId, context);
         return Utils.mapPage(inner, inner1 -> new PolicyContractImpl(inner1, this.manager()));
     }
 
-    public GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        Context context) {
-        return this
-            .serviceClient()
+    public GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, Context context) {
+        return this.serviceClient()
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, context);
     }
 
-    public void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId) {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, resolverId, policyId);
     }
 
-    public Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context) {
-        GraphQLApiResolverPoliciesGetResponse inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, format, context);
+    public Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, PolicyExportFormat format, Context context) {
+        GraphQLApiResolverPoliciesGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, format, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PolicyContract get(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId) {
-        PolicyContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, apiId, resolverId, policyId);
+    public PolicyContract get(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId) {
+        PolicyContractInner inner
+            = this.serviceClient().get(resourceGroupName, serviceName, apiId, resolverId, policyId);
         if (inner != null) {
             return new PolicyContractImpl(inner, this.manager());
         } else {
@@ -98,42 +80,24 @@ public final class GraphQLApiResolverPoliciesImpl implements GraphQLApiResolverP
         }
     }
 
-    public Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
+    public Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, PolicyIdName policyId, PolicyContractInner parameters, String ifMatch,
         Context context) {
-        GraphQLApiResolverPoliciesCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, resolverId, policyId, parameters, ifMatch, context);
+        GraphQLApiResolverPoliciesCreateOrUpdateResponse inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, parameters,
+                ifMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters) {
-        PolicyContractInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, serviceName, apiId, resolverId, policyId, parameters);
+    public PolicyContract createOrUpdate(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, PolicyContractInner parameters) {
+        PolicyContractInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, resolverId, policyId, parameters);
         if (inner != null) {
             return new PolicyContractImpl(inner, this.manager());
         } else {
@@ -141,26 +105,14 @@ public final class GraphQLApiResolverPoliciesImpl implements GraphQLApiResolverP
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, String ifMatch, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, resolverId, policyId, ifMatch, context);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch) {
+    public void delete(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, apiId, resolverId, policyId, ifMatch);
     }
 

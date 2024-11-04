@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a single certificate reference in a Key Vault, and where the certificate should reside on the role
  * instance.
  */
 @Fluent
-public final class CloudServiceVaultCertificate {
+public final class CloudServiceVaultCertificate implements JsonSerializable<CloudServiceVaultCertificate> {
     /*
      * This is the URL of a certificate that has been uploaded to Key Vault as a secret.
      */
-    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /**
@@ -53,5 +56,41 @@ public final class CloudServiceVaultCertificate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceVaultCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceVaultCertificate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceVaultCertificate.
+     */
+    public static CloudServiceVaultCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceVaultCertificate deserializedCloudServiceVaultCertificate = new CloudServiceVaultCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateUrl".equals(fieldName)) {
+                    deserializedCloudServiceVaultCertificate.certificateUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceVaultCertificate;
+        });
     }
 }

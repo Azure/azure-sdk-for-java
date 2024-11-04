@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 public final class HourlySchedule {
     /*
      * Interval at which backup needs to be triggered. For hourly the value
-     * can be 4/6/8/12
+     *  can be 4/6/8/12
      */
     @JsonProperty(value = "interval")
     private Integer interval;

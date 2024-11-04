@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -80,7 +79,6 @@ public final class EnvironmentProvisioningState extends ExpandableStringEnum<Env
      * @param name a name to look for.
      * @return the corresponding EnvironmentProvisioningState.
      */
-    @JsonCreator
     public static EnvironmentProvisioningState fromString(String name) {
         return fromString(name, EnvironmentProvisioningState.class);
     }

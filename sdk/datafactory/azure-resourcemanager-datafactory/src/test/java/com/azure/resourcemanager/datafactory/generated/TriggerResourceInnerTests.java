@@ -16,21 +16,21 @@ public final class TriggerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"dvetnws\",\"description\":\"utnw\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datavuzhyr\",\"dataewipm\",\"dataekdxuku\",\"datagsjj\"],\"\":{\"hvvmuvgpmun\":\"datadxgketwzhhzjhfj\"}},\"name\":\"sx\",\"type\":\"hfbuzjyihsasbhud\",\"etag\":\"ohyuemslynsq\",\"id\":\"pfoobr\"}")
+            "{\"properties\":{\"type\":\"Trigger\",\"description\":\"wn\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datau\",\"datarj\"],\"\":{\"foj\":\"dataojcmisofieyp\"}},\"name\":\"dh\",\"type\":\"plcplcwkhi\",\"etag\":\"hlhzdsqtzbsrgno\",\"id\":\"jhf\"}")
             .toObject(TriggerResourceInner.class);
-        Assertions.assertEquals("pfoobr", model.id());
-        Assertions.assertEquals("utnw", model.properties().description());
+        Assertions.assertEquals("jhf", model.id());
+        Assertions.assertEquals("wn", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerResourceInner model = new TriggerResourceInner().withId("pfoobr")
-            .withProperties(new Trigger().withDescription("utnw")
-                .withAnnotations(Arrays.asList("datavuzhyr", "dataewipm", "dataekdxuku", "datagsjj"))
-                .withAdditionalProperties(mapOf("type", "dvetnws", "runtimeState", "Stopped")));
+        TriggerResourceInner model = new TriggerResourceInner().withId("jhf")
+            .withProperties(new Trigger().withDescription("wn")
+                .withAnnotations(Arrays.asList("datau", "datarj"))
+                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")));
         model = BinaryData.fromObject(model).toObject(TriggerResourceInner.class);
-        Assertions.assertEquals("pfoobr", model.id());
-        Assertions.assertEquals("utnw", model.properties().description());
+        Assertions.assertEquals("jhf", model.id());
+        Assertions.assertEquals("wn", model.properties().description());
     }
 
     // Use "Map.of" if available

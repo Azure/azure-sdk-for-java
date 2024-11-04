@@ -34,13 +34,16 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and
+     * lastUpdateTime.
      */
     @Generated
     private final OffsetDateTime lastUpdateTime;
 
     /*
-     * The total wall clock time of all Tasks in the Job.  The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
+     * The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
+     * started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the
+     * Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
      */
     @Generated
     private final Duration wallClockTime;
@@ -70,13 +73,15 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final double writeIOGiB;
 
     /*
-     * The total number of Tasks successfully completed in the Job during the given time range. A Task completes successfully if it returns exit code 0.
+     * The total number of Tasks successfully completed in the Job during the given time range. A Task completes
+     * successfully if it returns exit code 0.
      */
     @Generated
     private final long numSucceededTasks;
 
     /*
-     * The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its maximum retry count without returning exit code 0.
+     * The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its
+     * maximum retry count without returning exit code 0.
      */
     @Generated
     private final long numFailedTasks;
@@ -88,7 +93,10 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final long numTaskRetries;
 
     /*
-     * The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it is not included in the Job statistics.
+     * The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between the
+     * creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is
+     * the time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it
+     * is not included in the Job statistics.
      */
     @Generated
     private final Duration waitTime;
@@ -331,8 +339,8 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchJobStatistics.
      */
-    @Generated
     public static BatchJobStatistics fromJson(JsonReader jsonReader) throws IOException {
+        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             String url = null;
             OffsetDateTime startTime = null;
@@ -354,10 +362,11 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
                 if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("userCPUTime".equals(fieldName)) {
                     userCpuTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("kernelCPUTime".equals(fieldName)) {
@@ -365,19 +374,78 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    readIOps = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String readIOpsStr = reader.getString();
+                        try {
+                            readIOps = Long.parseLong(readIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric readIOps, but found: " + readIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        readIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected readIOps to be a number or string, but found other type");
+                    }
                 } else if ("writeIOps".equals(fieldName)) {
-                    writeIOps = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String writeIOpsStr = reader.getString();
+                        try {
+                            writeIOps = Long.parseLong(writeIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric writeIOps, but found: " + writeIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        writeIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected writeIOps to be a number or string, but found other type");
+                    }
                 } else if ("readIOGiB".equals(fieldName)) {
                     readIOGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
                     writeIOGiB = reader.getDouble();
                 } else if ("numSucceededTasks".equals(fieldName)) {
-                    numSucceededTasks = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String numSucceededTasksStr = reader.getString();
+                        try {
+                            numSucceededTasks = Long.parseLong(numSucceededTasksStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException(
+                                "Expected numeric numSucceededTasks, but found: " + numSucceededTasksStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        numSucceededTasks = reader.getLong();
+                    } else {
+                        throw new IOException(
+                            "Expected numSucceededTasks to be a number or string, but found other type");
+                    }
                 } else if ("numFailedTasks".equals(fieldName)) {
-                    numFailedTasks = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String numFailedTasksStr = reader.getString();
+                        try {
+                            numFailedTasks = Long.parseLong(numFailedTasksStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric numFailedTasks, but found: " + numFailedTasksStr,
+                                e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        numFailedTasks = reader.getLong();
+                    } else {
+                        throw new IOException("Expected numFailedTasks to be a number or string, but found other type");
+                    }
                 } else if ("numTaskRetries".equals(fieldName)) {
-                    numTaskRetries = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String numTaskRetriesStr = reader.getString();
+                        try {
+                            numTaskRetries = Long.parseLong(numTaskRetriesStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric numTaskRetries, but found: " + numTaskRetriesStr,
+                                e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        numTaskRetries = reader.getLong();
+                    } else {
+                        throw new IOException("Expected numTaskRetries to be a number or string, but found other type");
+                    }
                 } else if ("waitTime".equals(fieldName)) {
                     waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {

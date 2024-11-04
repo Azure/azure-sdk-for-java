@@ -5,108 +5,103 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.DenyAssignmentPermission;
 import com.azure.resourcemanager.authorization.models.Principal;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Deny assignment properties. */
+/**
+ * Deny assignment properties.
+ */
 @Fluent
-public final class DenyAssignmentProperties {
+public final class DenyAssignmentProperties implements JsonSerializable<DenyAssignmentProperties> {
     /*
      * The display name of the deny assignment.
      */
-    @JsonProperty(value = "denyAssignmentName")
     private String denyAssignmentName;
 
     /*
      * The description of the deny assignment.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * An array of permissions that are denied by the deny assignment.
      */
-    @JsonProperty(value = "permissions")
     private List<DenyAssignmentPermission> permissions;
 
     /*
      * The deny assignment scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * Determines if the deny assignment applies to child scopes. Default value is false.
      */
-    @JsonProperty(value = "doNotApplyToChildScopes")
     private Boolean doNotApplyToChildScopes;
 
     /*
      * Array of principals to which the deny assignment applies.
      */
-    @JsonProperty(value = "principals")
     private List<Principal> principals;
 
     /*
      * Array of principals to which the deny assignment does not apply.
      */
-    @JsonProperty(value = "excludePrincipals")
     private List<Principal> excludePrincipals;
 
     /*
      * Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
      */
-    @JsonProperty(value = "isSystemProtected")
     private Boolean isSystemProtected;
 
     /*
-     * The conditions on the deny assignment. This limits the resources it can be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * The conditions on the deny assignment. This limits the resources it can be assigned to.
+     * e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
      * 'foo_storage_container'
      */
-    @JsonProperty(value = "condition")
     private String condition;
 
     /*
      * Version of the condition.
      */
-    @JsonProperty(value = "conditionVersion")
     private String conditionVersion;
 
     /*
      * Time it was created
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Time it was updated
      */
-    @JsonProperty(value = "updatedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedOn;
 
     /*
      * Id of the user who created the assignment
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Id of the user who updated the assignment
      */
-    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String updatedBy;
 
-    /** Creates an instance of DenyAssignmentProperties class. */
+    /**
+     * Creates an instance of DenyAssignmentProperties class.
+     */
     public DenyAssignmentProperties() {
     }
 
     /**
      * Get the denyAssignmentName property: The display name of the deny assignment.
-     *
+     * 
      * @return the denyAssignmentName value.
      */
     public String denyAssignmentName() {
@@ -115,7 +110,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the denyAssignmentName property: The display name of the deny assignment.
-     *
+     * 
      * @param denyAssignmentName the denyAssignmentName value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -126,7 +121,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the description property: The description of the deny assignment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -135,7 +130,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the description property: The description of the deny assignment.
-     *
+     * 
      * @param description the description value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -146,7 +141,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the permissions property: An array of permissions that are denied by the deny assignment.
-     *
+     * 
      * @return the permissions value.
      */
     public List<DenyAssignmentPermission> permissions() {
@@ -155,7 +150,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the permissions property: An array of permissions that are denied by the deny assignment.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -166,7 +161,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the scope property: The deny assignment scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -175,7 +170,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the scope property: The deny assignment scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -187,7 +182,7 @@ public final class DenyAssignmentProperties {
     /**
      * Get the doNotApplyToChildScopes property: Determines if the deny assignment applies to child scopes. Default
      * value is false.
-     *
+     * 
      * @return the doNotApplyToChildScopes value.
      */
     public Boolean doNotApplyToChildScopes() {
@@ -197,7 +192,7 @@ public final class DenyAssignmentProperties {
     /**
      * Set the doNotApplyToChildScopes property: Determines if the deny assignment applies to child scopes. Default
      * value is false.
-     *
+     * 
      * @param doNotApplyToChildScopes the doNotApplyToChildScopes value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -208,7 +203,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the principals property: Array of principals to which the deny assignment applies.
-     *
+     * 
      * @return the principals value.
      */
     public List<Principal> principals() {
@@ -217,7 +212,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the principals property: Array of principals to which the deny assignment applies.
-     *
+     * 
      * @param principals the principals value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -228,7 +223,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the excludePrincipals property: Array of principals to which the deny assignment does not apply.
-     *
+     * 
      * @return the excludePrincipals value.
      */
     public List<Principal> excludePrincipals() {
@@ -237,7 +232,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the excludePrincipals property: Array of principals to which the deny assignment does not apply.
-     *
+     * 
      * @param excludePrincipals the excludePrincipals value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -249,7 +244,7 @@ public final class DenyAssignmentProperties {
     /**
      * Get the isSystemProtected property: Specifies whether this deny assignment was created by Azure and cannot be
      * edited or deleted.
-     *
+     * 
      * @return the isSystemProtected value.
      */
     public Boolean isSystemProtected() {
@@ -259,7 +254,7 @@ public final class DenyAssignmentProperties {
     /**
      * Set the isSystemProtected property: Specifies whether this deny assignment was created by Azure and cannot be
      * edited or deleted.
-     *
+     * 
      * @param isSystemProtected the isSystemProtected value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -270,9 +265,9 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -281,9 +276,9 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -294,7 +289,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the conditionVersion property: Version of the condition.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -303,7 +298,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Set the conditionVersion property: Version of the condition.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the DenyAssignmentProperties object itself.
      */
@@ -314,7 +309,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the createdOn property: Time it was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -323,7 +318,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the updatedOn property: Time it was updated.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -332,7 +327,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the createdBy property: Id of the user who created the assignment.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -341,7 +336,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Get the updatedBy property: Id of the user who updated the assignment.
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -350,7 +345,7 @@ public final class DenyAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -363,5 +358,84 @@ public final class DenyAssignmentProperties {
         if (excludePrincipals() != null) {
             excludePrincipals().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("denyAssignmentName", this.denyAssignmentName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeBooleanField("doNotApplyToChildScopes", this.doNotApplyToChildScopes);
+        jsonWriter.writeArrayField("principals", this.principals, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("excludePrincipals", this.excludePrincipals,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isSystemProtected", this.isSystemProtected);
+        jsonWriter.writeStringField("condition", this.condition);
+        jsonWriter.writeStringField("conditionVersion", this.conditionVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DenyAssignmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DenyAssignmentProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DenyAssignmentProperties.
+     */
+    public static DenyAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DenyAssignmentProperties deserializedDenyAssignmentProperties = new DenyAssignmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("denyAssignmentName".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.denyAssignmentName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.description = reader.getString();
+                } else if ("permissions".equals(fieldName)) {
+                    List<DenyAssignmentPermission> permissions
+                        = reader.readArray(reader1 -> DenyAssignmentPermission.fromJson(reader1));
+                    deserializedDenyAssignmentProperties.permissions = permissions;
+                } else if ("scope".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.scope = reader.getString();
+                } else if ("doNotApplyToChildScopes".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.doNotApplyToChildScopes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("principals".equals(fieldName)) {
+                    List<Principal> principals = reader.readArray(reader1 -> Principal.fromJson(reader1));
+                    deserializedDenyAssignmentProperties.principals = principals;
+                } else if ("excludePrincipals".equals(fieldName)) {
+                    List<Principal> excludePrincipals = reader.readArray(reader1 -> Principal.fromJson(reader1));
+                    deserializedDenyAssignmentProperties.excludePrincipals = excludePrincipals;
+                } else if ("isSystemProtected".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.isSystemProtected = reader.getNullable(JsonReader::getBoolean);
+                } else if ("condition".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.condition = reader.getString();
+                } else if ("conditionVersion".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.conditionVersion = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedOn".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.createdBy = reader.getString();
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedDenyAssignmentProperties.updatedBy = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDenyAssignmentProperties;
+        });
     }
 }

@@ -5,30 +5,35 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for Backup Datasource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = BackupDatasourceParameters.class)
-@JsonTypeName("BackupDatasourceParameters")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "KubernetesClusterBackupDatasourceParameters",
-        value = KubernetesClusterBackupDatasourceParameters.class),
-    @JsonSubTypes.Type(name = "BlobBackupDatasourceParameters", value = BlobBackupDatasourceParameters.class) })
 @Immutable
-public class BackupDatasourceParameters {
+public class BackupDatasourceParameters implements JsonSerializable<BackupDatasourceParameters> {
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "BackupDatasourceParameters";
+
     /**
      * Creates an instance of BackupDatasourceParameters class.
      */
     public BackupDatasourceParameters() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -37,5 +42,68 @@ public class BackupDatasourceParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupDatasourceParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupDatasourceParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupDatasourceParameters.
+     */
+    public static BackupDatasourceParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("KubernetesClusterBackupDatasourceParameters".equals(discriminatorValue)) {
+                    return KubernetesClusterBackupDatasourceParameters.fromJson(readerToUse.reset());
+                } else if ("BlobBackupDatasourceParameters".equals(discriminatorValue)) {
+                    return BlobBackupDatasourceParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BackupDatasourceParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupDatasourceParameters deserializedBackupDatasourceParameters = new BackupDatasourceParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedBackupDatasourceParameters.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupDatasourceParameters;
+        });
     }
 }

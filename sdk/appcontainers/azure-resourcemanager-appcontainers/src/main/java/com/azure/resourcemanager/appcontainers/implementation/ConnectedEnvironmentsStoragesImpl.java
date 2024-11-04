@@ -75,8 +75,8 @@ public final class ConnectedEnvironmentsStoragesImpl implements ConnectedEnviron
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
         String storageName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context);
     }
 
     public void delete(String resourceGroupName, String connectedEnvironmentName, String storageName) {

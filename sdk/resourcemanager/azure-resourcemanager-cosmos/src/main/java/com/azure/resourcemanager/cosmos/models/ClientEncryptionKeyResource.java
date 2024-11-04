@@ -6,35 +6,35 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB client encryption key resource object.
  */
 @Fluent
-public class ClientEncryptionKeyResource {
+public class ClientEncryptionKeyResource implements JsonSerializable<ClientEncryptionKeyResource> {
     /*
      * Name of the ClientEncryptionKey
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Encryption algorithm that will be used along with this client encryption key to encrypt/decrypt data.
      */
-    @JsonProperty(value = "encryptionAlgorithm")
     private String encryptionAlgorithm;
 
     /*
      * Wrapped (encrypted) form of the key represented as a byte array.
      */
-    @JsonProperty(value = "wrappedDataEncryptionKey")
     private byte[] wrappedDataEncryptionKey;
 
     /*
      * Metadata for the wrapping provider that can be used to unwrap the wrapped client encryption key.
      */
-    @JsonProperty(value = "keyWrapMetadata")
     private KeyWrapMetadata keyWrapMetadata;
 
     /**
@@ -136,5 +136,50 @@ public class ClientEncryptionKeyResource {
         if (keyWrapMetadata() != null) {
             keyWrapMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("encryptionAlgorithm", this.encryptionAlgorithm);
+        jsonWriter.writeBinaryField("wrappedDataEncryptionKey", this.wrappedDataEncryptionKey);
+        jsonWriter.writeJsonField("keyWrapMetadata", this.keyWrapMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientEncryptionKeyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientEncryptionKeyResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientEncryptionKeyResource.
+     */
+    public static ClientEncryptionKeyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientEncryptionKeyResource deserializedClientEncryptionKeyResource = new ClientEncryptionKeyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClientEncryptionKeyResource.id = reader.getString();
+                } else if ("encryptionAlgorithm".equals(fieldName)) {
+                    deserializedClientEncryptionKeyResource.encryptionAlgorithm = reader.getString();
+                } else if ("wrappedDataEncryptionKey".equals(fieldName)) {
+                    deserializedClientEncryptionKeyResource.wrappedDataEncryptionKey = reader.getBinary();
+                } else if ("keyWrapMetadata".equals(fieldName)) {
+                    deserializedClientEncryptionKeyResource.keyWrapMetadata = KeyWrapMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientEncryptionKeyResource;
+        });
     }
 }

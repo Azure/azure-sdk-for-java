@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesMoveDeta
 public final class VaultPropertiesMoveDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultPropertiesMoveDetails model =
-            BinaryData
-                .fromString(
-                    "{\"operationId\":\"ys\",\"startTimeUtc\":\"2021-06-14T21:05:42Z\",\"completionTimeUtc\":\"2021-01-05T19:47:06Z\",\"sourceResourceId\":\"hqyudxorrqnbpoc\",\"targetResourceId\":\"yifqrvkdvjsllrmv\"}")
-                .toObject(VaultPropertiesMoveDetails.class);
+        VaultPropertiesMoveDetails model = BinaryData.fromString(
+            "{\"operationId\":\"ys\",\"startTimeUtc\":\"2021-06-14T21:05:42Z\",\"completionTimeUtc\":\"2021-01-05T19:47:06Z\",\"sourceResourceId\":\"hqyudxorrqnbpoc\",\"targetResourceId\":\"yifqrvkdvjsllrmv\"}")
+            .toObject(VaultPropertiesMoveDetails.class);
     }
 
     @org.junit.jupiter.api.Test

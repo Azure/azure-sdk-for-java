@@ -13,23 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class UeSessionInfo4GTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UeSessionInfo4G model = BinaryData.fromString(
-            "{\"ebi\":499643337,\"apn\":\"jbjsvgjrwh\",\"ueIpAddress\":{\"ipV4Addr\":\"vyc\"},\"pdnType\":\"IPV4\"}")
+        UeSessionInfo4G model = BinaryData
+            .fromString(
+                "{\"ebi\":67001708,\"apn\":\"eytu\",\"ueIpAddress\":{\"ipV4Addr\":\"bfjkw\"},\"pdnType\":\"IPV4\"}")
             .toObject(UeSessionInfo4G.class);
-        Assertions.assertEquals(499643337, model.ebi());
-        Assertions.assertEquals("jbjsvgjrwh", model.apn());
-        Assertions.assertEquals("vyc", model.ueIpAddress().ipV4Addr());
+        Assertions.assertEquals(67001708, model.ebi());
+        Assertions.assertEquals("eytu", model.apn());
+        Assertions.assertEquals("bfjkw", model.ueIpAddress().ipV4Addr());
         Assertions.assertEquals(PdnType.IPV4, model.pdnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UeSessionInfo4G model = new UeSessionInfo4G().withEbi(499643337).withApn("jbjsvgjrwh")
-            .withUeIpAddress(new UeIpAddress().withIpV4Addr("vyc")).withPdnType(PdnType.IPV4);
+        UeSessionInfo4G model = new UeSessionInfo4G().withEbi(67001708)
+            .withApn("eytu")
+            .withUeIpAddress(new UeIpAddress().withIpV4Addr("bfjkw"))
+            .withPdnType(PdnType.IPV4);
         model = BinaryData.fromObject(model).toObject(UeSessionInfo4G.class);
-        Assertions.assertEquals(499643337, model.ebi());
-        Assertions.assertEquals("jbjsvgjrwh", model.apn());
-        Assertions.assertEquals("vyc", model.ueIpAddress().ipV4Addr());
+        Assertions.assertEquals(67001708, model.ebi());
+        Assertions.assertEquals("eytu", model.apn());
+        Assertions.assertEquals("bfjkw", model.ueIpAddress().ipV4Addr());
         Assertions.assertEquals(PdnType.IPV4, model.pdnType());
     }
 }

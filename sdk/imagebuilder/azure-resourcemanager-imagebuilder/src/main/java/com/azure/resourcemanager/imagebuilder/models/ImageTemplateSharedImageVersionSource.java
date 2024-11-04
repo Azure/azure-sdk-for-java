@@ -6,35 +6,47 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes an image source that is an image version in an Azure Compute Gallery or a Direct Shared Gallery.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SharedImageVersion")
 @Fluent
 public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSource {
+    /*
+     * Specifies the type of source image you want to start with.
+     */
+    private String type = "SharedImageVersion";
+
     /*
      * ARM resource id of the image version. When image version name is 'latest', the version is evaluated when the
      * image build takes place.
      */
-    @JsonProperty(value = "imageVersionId", required = true)
     private String imageVersionId;
 
     /*
      * Exact ARM resource id of the image version. This readonly field differs from the image version Id in
      * 'imageVersionId' only if the version name specified in 'imageVersionId' field is 'latest'.
      */
-    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
     /**
      * Creates an instance of ImageTemplateSharedImageVersionSource class.
      */
     public ImageTemplateSharedImageVersionSource() {
+    }
+
+    /**
+     * Get the type property: Specifies the type of source image you want to start with.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -78,10 +90,54 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
     public void validate() {
         super.validate();
         if (imageVersionId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property imageVersionId in model ImageTemplateSharedImageVersionSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property imageVersionId in model ImageTemplateSharedImageVersionSource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateSharedImageVersionSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imageVersionId", this.imageVersionId);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateSharedImageVersionSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateSharedImageVersionSource if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateSharedImageVersionSource.
+     */
+    public static ImageTemplateSharedImageVersionSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateSharedImageVersionSource deserializedImageTemplateSharedImageVersionSource
+                = new ImageTemplateSharedImageVersionSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageVersionId".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageVersionSource.imageVersionId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageVersionSource.type = reader.getString();
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedImageTemplateSharedImageVersionSource.exactVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateSharedImageVersionSource;
+        });
+    }
 }

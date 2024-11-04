@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates result of the operation. */
+/**
+ * Indicates result of the operation.
+ */
 public final class QueryPerformanceInsightResetDataResultState
     extends ExpandableStringEnum<QueryPerformanceInsightResetDataResultState> {
-    /** Static value Succeeded for QueryPerformanceInsightResetDataResultState. */
+    /**
+     * Static value Succeeded for QueryPerformanceInsightResetDataResultState.
+     */
     public static final QueryPerformanceInsightResetDataResultState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for QueryPerformanceInsightResetDataResultState. */
+    /**
+     * Static value Failed for QueryPerformanceInsightResetDataResultState.
+     */
     public static final QueryPerformanceInsightResetDataResultState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of QueryPerformanceInsightResetDataResultState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class QueryPerformanceInsightResetDataResultState
 
     /**
      * Creates or finds a QueryPerformanceInsightResetDataResultState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryPerformanceInsightResetDataResultState.
      */
-    @JsonCreator
     public static QueryPerformanceInsightResetDataResultState fromString(String name) {
         return fromString(name, QueryPerformanceInsightResetDataResultState.class);
     }
 
     /**
      * Gets known QueryPerformanceInsightResetDataResultState values.
-     *
+     * 
      * @return known QueryPerformanceInsightResetDataResultState values.
      */
     public static Collection<QueryPerformanceInsightResetDataResultState> values() {

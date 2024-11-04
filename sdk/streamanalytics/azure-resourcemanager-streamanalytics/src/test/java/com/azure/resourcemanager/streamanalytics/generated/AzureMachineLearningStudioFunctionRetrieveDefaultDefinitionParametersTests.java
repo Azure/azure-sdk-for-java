@@ -13,9 +13,9 @@ public final class AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionPa
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters model = BinaryData.fromString(
-            "{\"bindingType\":\"Microsoft.MachineLearning/WebService\",\"bindingRetrievalProperties\":{\"executeEndpoint\":\"uoujmkcjhwqy\",\"udfType\":\"Scalar\"}}")
+            "{\"bindingType\":\"Microsoft.MachineLearning/WebService\",\"bindingRetrievalProperties\":{\"executeEndpoint\":\"tgccymvaolpss\",\"udfType\":\"Scalar\"}}")
             .toObject(AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.class);
-        Assertions.assertEquals("uoujmkcjhwqy", model.executeEndpoint());
+        Assertions.assertEquals("tgccymvaolpss", model.executeEndpoint());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 
@@ -23,10 +23,11 @@ public final class AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionPa
     public void testSerialize() throws Exception {
         AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters model
             = new AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters()
-                .withExecuteEndpoint("uoujmkcjhwqy").withUdfType(UdfType.SCALAR);
+                .withExecuteEndpoint("tgccymvaolpss")
+                .withUdfType(UdfType.SCALAR);
         model = BinaryData.fromObject(model)
             .toObject(AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.class);
-        Assertions.assertEquals("uoujmkcjhwqy", model.executeEndpoint());
+        Assertions.assertEquals("tgccymvaolpss", model.executeEndpoint());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 }

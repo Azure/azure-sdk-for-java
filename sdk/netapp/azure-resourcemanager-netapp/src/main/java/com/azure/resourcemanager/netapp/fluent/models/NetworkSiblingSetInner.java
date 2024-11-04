@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.NetworkSiblingSetProvisioningState;
 import com.azure.resourcemanager.netapp.models.NicInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,51 +21,37 @@ import java.util.List;
  * Describes the contents of a network sibling set.
  */
 @Fluent
-public final class NetworkSiblingSetInner {
+public final class NetworkSiblingSetInner implements JsonSerializable<NetworkSiblingSetInner> {
     /*
-     * Network Sibling Set ID
-     * 
      * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
      */
-    @JsonProperty(value = "networkSiblingSetId")
     private String networkSiblingSetId;
 
     /*
-     * Subnet resource Id
-     * 
      * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
      * subnets/{mySubnet}
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
-     * Network sibling set state Id
-     * 
      * Network sibling set state Id identifying the current state of the sibling set.
      */
-    @JsonProperty(value = "networkSiblingSetStateId")
     private String networkSiblingSetStateId;
 
     /*
-     * Network features
-     * 
      * Network features available to the volume, or current state of update.
      */
-    @JsonProperty(value = "networkFeatures")
     private NetworkFeatures networkFeatures;
 
     /*
      * Gets the status of the NetworkSiblingSet at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkSiblingSetProvisioningState provisioningState;
 
     /*
      * List of NIC information
      */
-    @JsonProperty(value = "nicInfoList")
     private List<NicInfo> nicInfoList;
 
     /**
@@ -71,9 +61,8 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Get the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * Get the networkSiblingSetId property: Network Sibling Set ID for a group of volumes sharing networking resources
+     * in a subnet.
      * 
      * @return the networkSiblingSetId value.
      */
@@ -82,9 +71,8 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Set the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * Set the networkSiblingSetId property: Network Sibling Set ID for a group of volumes sharing networking resources
+     * in a subnet.
      * 
      * @param networkSiblingSetId the networkSiblingSetId value to set.
      * @return the NetworkSiblingSetInner object itself.
@@ -95,9 +83,8 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Get the subnetId property: Subnet resource Id
-     * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * Get the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
+     * Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
      * 
      * @return the subnetId value.
@@ -107,9 +94,8 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Set the subnetId property: Subnet resource Id
-     * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * Set the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
+     * Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
      * 
      * @param subnetId the subnetId value to set.
@@ -121,9 +107,8 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Get the networkSiblingSetStateId property: Network sibling set state Id
-     * 
-     * Network sibling set state Id identifying the current state of the sibling set.
+     * Get the networkSiblingSetStateId property: Network sibling set state Id identifying the current state of the
+     * sibling set.
      * 
      * @return the networkSiblingSetStateId value.
      */
@@ -132,9 +117,8 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Set the networkSiblingSetStateId property: Network sibling set state Id
-     * 
-     * Network sibling set state Id identifying the current state of the sibling set.
+     * Set the networkSiblingSetStateId property: Network sibling set state Id identifying the current state of the
+     * sibling set.
      * 
      * @param networkSiblingSetStateId the networkSiblingSetStateId value to set.
      * @return the NetworkSiblingSetInner object itself.
@@ -145,9 +129,7 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Get the networkFeatures property: Network features
-     * 
-     * Network features available to the volume, or current state of update.
+     * Get the networkFeatures property: Network features available to the volume, or current state of update.
      * 
      * @return the networkFeatures value.
      */
@@ -156,9 +138,7 @@ public final class NetworkSiblingSetInner {
     }
 
     /**
-     * Set the networkFeatures property: Network features
-     * 
-     * Network features available to the volume, or current state of update.
+     * Set the networkFeatures property: Network features available to the volume, or current state of update.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the NetworkSiblingSetInner object itself.
@@ -207,5 +187,58 @@ public final class NetworkSiblingSetInner {
         if (nicInfoList() != null) {
             nicInfoList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkSiblingSetId", this.networkSiblingSetId);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("networkSiblingSetStateId", this.networkSiblingSetStateId);
+        jsonWriter.writeStringField("networkFeatures",
+            this.networkFeatures == null ? null : this.networkFeatures.toString());
+        jsonWriter.writeArrayField("nicInfoList", this.nicInfoList, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSiblingSetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSiblingSetInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSiblingSetInner.
+     */
+    public static NetworkSiblingSetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSiblingSetInner deserializedNetworkSiblingSetInner = new NetworkSiblingSetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkSiblingSetId".equals(fieldName)) {
+                    deserializedNetworkSiblingSetInner.networkSiblingSetId = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedNetworkSiblingSetInner.subnetId = reader.getString();
+                } else if ("networkSiblingSetStateId".equals(fieldName)) {
+                    deserializedNetworkSiblingSetInner.networkSiblingSetStateId = reader.getString();
+                } else if ("networkFeatures".equals(fieldName)) {
+                    deserializedNetworkSiblingSetInner.networkFeatures = NetworkFeatures.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkSiblingSetInner.provisioningState
+                        = NetworkSiblingSetProvisioningState.fromString(reader.getString());
+                } else if ("nicInfoList".equals(fieldName)) {
+                    List<NicInfo> nicInfoList = reader.readArray(reader1 -> NicInfo.fromJson(reader1));
+                    deserializedNetworkSiblingSetInner.nicInfoList = nicInfoList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSiblingSetInner;
+        });
     }
 }

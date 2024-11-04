@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class AbsoluteMarker extends ExpandableStringEnum<AbsoluteMarker> {
      * @param name a name to look for.
      * @return the corresponding AbsoluteMarker.
      */
-    @JsonCreator
     public static AbsoluteMarker fromString(String name) {
         return fromString(name, AbsoluteMarker.class);
     }

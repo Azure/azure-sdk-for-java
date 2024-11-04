@@ -87,6 +87,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
+    private volatile boolean hasFeedRangeFilteringBeenApplied = false;
+
     public boolean isReadOnlyRequest() {
         return this.operationType.isReadOnlyOperation();
     }
@@ -118,6 +120,14 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
+    }
+
+    public boolean hasFeedRangeFilteringBeenApplied() {
+        return this.hasFeedRangeFilteringBeenApplied;
+    }
+
+    public void setHasFeedRangeFilteringBeenApplied(boolean hasFeedRangeFilteringBeenApplied) {
+        this.hasFeedRangeFilteringBeenApplied = hasFeedRangeFilteringBeenApplied;
     }
 
     public boolean isReadOnly() {
@@ -389,7 +399,12 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
-            resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null), headers, AuthorizationTokenType.PrimaryMasterKey);
+            resource.serializeJsonToByteBuffer(
+                CosmosItemSerializer.DEFAULT_SERIALIZER,
+                null,
+                resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert)),
+            headers,
+            AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
@@ -574,7 +589,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   String relativePath,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -595,7 +613,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   String relativePath,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -650,7 +671,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   Resource resource,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -671,7 +695,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Resource resource,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -725,7 +752,10 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -744,7 +774,10 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -1068,6 +1101,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.feedRange = this.feedRange;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         rxDocumentServiceRequest.isFeed = this.isFeed;
+        rxDocumentServiceRequest.resourceId = this.resourceId;
+        rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         return rxDocumentServiceRequest;
     }
 

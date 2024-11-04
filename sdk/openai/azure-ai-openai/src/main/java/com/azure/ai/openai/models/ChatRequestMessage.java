@@ -22,14 +22,13 @@ public class ChatRequestMessage implements JsonSerializable<ChatRequestMessage> 
      */
     @Generated
     public ChatRequestMessage() {
-        this.role = ChatRole.fromString("ChatRequestMessage");
     }
 
     /*
      * The chat role associated with this message.
      */
     @Generated
-    private ChatRole role;
+    private ChatRole role = ChatRole.fromString("ChatRequestMessage");
 
     /**
      * Get the role property: The chat role associated with this message.

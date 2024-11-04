@@ -13,66 +13,56 @@ import org.junit.jupiter.api.Assertions;
 public final class VideoOverlayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoOverlay model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.VideoOverlay\",\"position\":{\"left\":\"zmegnitgvk\",\"top\":\"zyqdrfegcealzx\",\"width\":\"cansymoyqhlwigd\",\"height\":\"bkbxgomfa\"},\"opacity\":67.37119600885748,\"cropRectangle\":{\"left\":\"vdaeyyguxakjsq\",\"top\":\"zbezkgimsidxasic\",\"width\":\"yvvjskgfmo\",\"height\":\"ah\"},\"inputLabel\":\"qgatjeaahhvjhhn\",\"start\":\"PT193H41M36S\",\"end\":\"PT205H48M20S\",\"fadeInDuration\":\"PT38H59M39S\",\"fadeOutDuration\":\"PT83H32M15S\",\"audioGainLevel\":15.81435793256083}")
-                .toObject(VideoOverlay.class);
-        Assertions.assertEquals("qgatjeaahhvjhhn", model.inputLabel());
-        Assertions.assertEquals(Duration.parse("PT193H41M36S"), model.start());
-        Assertions.assertEquals(Duration.parse("PT205H48M20S"), model.end());
-        Assertions.assertEquals(Duration.parse("PT38H59M39S"), model.fadeInDuration());
-        Assertions.assertEquals(Duration.parse("PT83H32M15S"), model.fadeOutDuration());
-        Assertions.assertEquals(15.81435793256083D, model.audioGainLevel());
-        Assertions.assertEquals("zmegnitgvk", model.position().left());
-        Assertions.assertEquals("zyqdrfegcealzx", model.position().top());
-        Assertions.assertEquals("cansymoyqhlwigd", model.position().width());
-        Assertions.assertEquals("bkbxgomfa", model.position().height());
-        Assertions.assertEquals(67.37119600885748D, model.opacity());
-        Assertions.assertEquals("vdaeyyguxakjsq", model.cropRectangle().left());
-        Assertions.assertEquals("zbezkgimsidxasic", model.cropRectangle().top());
-        Assertions.assertEquals("yvvjskgfmo", model.cropRectangle().width());
-        Assertions.assertEquals("ah", model.cropRectangle().height());
+        VideoOverlay model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.VideoOverlay\",\"position\":{\"left\":\"spkcdqzh\",\"top\":\"tddunqnd\",\"width\":\"pchrqbn\",\"height\":\"rcgegydcwboxjum\"},\"opacity\":24.987304803220013,\"cropRectangle\":{\"left\":\"hrraiouaubrj\",\"top\":\"oq\",\"width\":\"uojrngiflr\",\"height\":\"asccbiui\"},\"inputLabel\":\"zdlyjdfqw\",\"start\":\"PT20H41M10S\",\"end\":\"PT131H7M4S\",\"fadeInDuration\":\"PT10H2M38S\",\"fadeOutDuration\":\"PT222H51M47S\",\"audioGainLevel\":99.36969049920162}")
+            .toObject(VideoOverlay.class);
+        Assertions.assertEquals("zdlyjdfqw", model.inputLabel());
+        Assertions.assertEquals(Duration.parse("PT20H41M10S"), model.start());
+        Assertions.assertEquals(Duration.parse("PT131H7M4S"), model.end());
+        Assertions.assertEquals(Duration.parse("PT10H2M38S"), model.fadeInDuration());
+        Assertions.assertEquals(Duration.parse("PT222H51M47S"), model.fadeOutDuration());
+        Assertions.assertEquals(99.36969049920162D, model.audioGainLevel());
+        Assertions.assertEquals("spkcdqzh", model.position().left());
+        Assertions.assertEquals("tddunqnd", model.position().top());
+        Assertions.assertEquals("pchrqbn", model.position().width());
+        Assertions.assertEquals("rcgegydcwboxjum", model.position().height());
+        Assertions.assertEquals(24.987304803220013D, model.opacity());
+        Assertions.assertEquals("hrraiouaubrj", model.cropRectangle().left());
+        Assertions.assertEquals("oq", model.cropRectangle().top());
+        Assertions.assertEquals("uojrngiflr", model.cropRectangle().width());
+        Assertions.assertEquals("asccbiui", model.cropRectangle().height());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VideoOverlay model =
-            new VideoOverlay()
-                .withInputLabel("qgatjeaahhvjhhn")
-                .withStart(Duration.parse("PT193H41M36S"))
-                .withEnd(Duration.parse("PT205H48M20S"))
-                .withFadeInDuration(Duration.parse("PT38H59M39S"))
-                .withFadeOutDuration(Duration.parse("PT83H32M15S"))
-                .withAudioGainLevel(15.81435793256083D)
-                .withPosition(
-                    new Rectangle()
-                        .withLeft("zmegnitgvk")
-                        .withTop("zyqdrfegcealzx")
-                        .withWidth("cansymoyqhlwigd")
-                        .withHeight("bkbxgomfa"))
-                .withOpacity(67.37119600885748D)
-                .withCropRectangle(
-                    new Rectangle()
-                        .withLeft("vdaeyyguxakjsq")
-                        .withTop("zbezkgimsidxasic")
-                        .withWidth("yvvjskgfmo")
-                        .withHeight("ah"));
+        VideoOverlay model = new VideoOverlay().withInputLabel("zdlyjdfqw")
+            .withStart(Duration.parse("PT20H41M10S"))
+            .withEnd(Duration.parse("PT131H7M4S"))
+            .withFadeInDuration(Duration.parse("PT10H2M38S"))
+            .withFadeOutDuration(Duration.parse("PT222H51M47S"))
+            .withAudioGainLevel(99.36969049920162D)
+            .withPosition(new Rectangle().withLeft("spkcdqzh")
+                .withTop("tddunqnd")
+                .withWidth("pchrqbn")
+                .withHeight("rcgegydcwboxjum"))
+            .withOpacity(24.987304803220013D)
+            .withCropRectangle(
+                new Rectangle().withLeft("hrraiouaubrj").withTop("oq").withWidth("uojrngiflr").withHeight("asccbiui"));
         model = BinaryData.fromObject(model).toObject(VideoOverlay.class);
-        Assertions.assertEquals("qgatjeaahhvjhhn", model.inputLabel());
-        Assertions.assertEquals(Duration.parse("PT193H41M36S"), model.start());
-        Assertions.assertEquals(Duration.parse("PT205H48M20S"), model.end());
-        Assertions.assertEquals(Duration.parse("PT38H59M39S"), model.fadeInDuration());
-        Assertions.assertEquals(Duration.parse("PT83H32M15S"), model.fadeOutDuration());
-        Assertions.assertEquals(15.81435793256083D, model.audioGainLevel());
-        Assertions.assertEquals("zmegnitgvk", model.position().left());
-        Assertions.assertEquals("zyqdrfegcealzx", model.position().top());
-        Assertions.assertEquals("cansymoyqhlwigd", model.position().width());
-        Assertions.assertEquals("bkbxgomfa", model.position().height());
-        Assertions.assertEquals(67.37119600885748D, model.opacity());
-        Assertions.assertEquals("vdaeyyguxakjsq", model.cropRectangle().left());
-        Assertions.assertEquals("zbezkgimsidxasic", model.cropRectangle().top());
-        Assertions.assertEquals("yvvjskgfmo", model.cropRectangle().width());
-        Assertions.assertEquals("ah", model.cropRectangle().height());
+        Assertions.assertEquals("zdlyjdfqw", model.inputLabel());
+        Assertions.assertEquals(Duration.parse("PT20H41M10S"), model.start());
+        Assertions.assertEquals(Duration.parse("PT131H7M4S"), model.end());
+        Assertions.assertEquals(Duration.parse("PT10H2M38S"), model.fadeInDuration());
+        Assertions.assertEquals(Duration.parse("PT222H51M47S"), model.fadeOutDuration());
+        Assertions.assertEquals(99.36969049920162D, model.audioGainLevel());
+        Assertions.assertEquals("spkcdqzh", model.position().left());
+        Assertions.assertEquals("tddunqnd", model.position().top());
+        Assertions.assertEquals("pchrqbn", model.position().width());
+        Assertions.assertEquals("rcgegydcwboxjum", model.position().height());
+        Assertions.assertEquals(24.987304803220013D, model.opacity());
+        Assertions.assertEquals("hrraiouaubrj", model.cropRectangle().left());
+        Assertions.assertEquals("oq", model.cropRectangle().top());
+        Assertions.assertEquals("uojrngiflr", model.cropRectangle().width());
+        Assertions.assertEquals("asccbiui", model.cropRectangle().height());
     }
 }

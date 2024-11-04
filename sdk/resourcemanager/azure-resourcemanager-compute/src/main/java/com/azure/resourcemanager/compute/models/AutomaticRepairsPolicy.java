@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the configuration parameters for automatic repairs on the virtual machine scale set.
  */
 @Fluent
-public final class AutomaticRepairsPolicy {
+public final class AutomaticRepairsPolicy implements JsonSerializable<AutomaticRepairsPolicy> {
     /*
      * Specifies whether automatic repairs should be enabled on the virtual machine scale set. The default value is
      * false.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
@@ -25,14 +28,12 @@ public final class AutomaticRepairsPolicy {
      * be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes (PT10M), which is also the
      * default value. The maximum allowed grace period is 90 minutes (PT90M).
      */
-    @JsonProperty(value = "gracePeriod")
     private String gracePeriod;
 
     /*
      * Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines in
      * the scale set. Default value is replace.
      */
-    @JsonProperty(value = "repairAction")
     private RepairAction repairAction;
 
     /**
@@ -42,8 +43,8 @@ public final class AutomaticRepairsPolicy {
     }
 
     /**
-     * Get the enabled property: Specifies whether automatic repairs should be enabled on the virtual machine scale
-     * set. The default value is false.
+     * Get the enabled property: Specifies whether automatic repairs should be enabled on the virtual machine scale set.
+     * The default value is false.
      * 
      * @return the enabled value.
      */
@@ -52,8 +53,8 @@ public final class AutomaticRepairsPolicy {
     }
 
     /**
-     * Set the enabled property: Specifies whether automatic repairs should be enabled on the virtual machine scale
-     * set. The default value is false.
+     * Set the enabled property: Specifies whether automatic repairs should be enabled on the virtual machine scale set.
+     * The default value is false.
      * 
      * @param enabled the enabled value to set.
      * @return the AutomaticRepairsPolicy object itself.
@@ -66,8 +67,8 @@ public final class AutomaticRepairsPolicy {
     /**
      * Get the gracePeriod property: The amount of time for which automatic repairs are suspended due to a state change
      * on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental
-     * repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10
-     * minutes (PT10M), which is also the default value. The maximum allowed grace period is 90 minutes (PT90M).
+     * repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes
+     * (PT10M), which is also the default value. The maximum allowed grace period is 90 minutes (PT90M).
      * 
      * @return the gracePeriod value.
      */
@@ -78,8 +79,8 @@ public final class AutomaticRepairsPolicy {
     /**
      * Set the gracePeriod property: The amount of time for which automatic repairs are suspended due to a state change
      * on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental
-     * repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10
-     * minutes (PT10M), which is also the default value. The maximum allowed grace period is 90 minutes (PT90M).
+     * repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 10 minutes
+     * (PT10M), which is also the default value. The maximum allowed grace period is 90 minutes (PT90M).
      * 
      * @param gracePeriod the gracePeriod value to set.
      * @return the AutomaticRepairsPolicy object itself.
@@ -117,5 +118,47 @@ public final class AutomaticRepairsPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("gracePeriod", this.gracePeriod);
+        jsonWriter.writeStringField("repairAction", this.repairAction == null ? null : this.repairAction.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomaticRepairsPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomaticRepairsPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomaticRepairsPolicy.
+     */
+    public static AutomaticRepairsPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomaticRepairsPolicy deserializedAutomaticRepairsPolicy = new AutomaticRepairsPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedAutomaticRepairsPolicy.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gracePeriod".equals(fieldName)) {
+                    deserializedAutomaticRepairsPolicy.gracePeriod = reader.getString();
+                } else if ("repairAction".equals(fieldName)) {
+                    deserializedAutomaticRepairsPolicy.repairAction = RepairAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomaticRepairsPolicy;
+        });
     }
 }

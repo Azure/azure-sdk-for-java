@@ -5,28 +5,39 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RasterTileFormat. */
+/**
+ * Defines values for RasterTileFormat.
+ */
 public final class RasterTileFormat extends ExpandableStringEnum<RasterTileFormat> {
-    /** Static value png for RasterTileFormat. */
+    /**
+     * An image in the png format. Supports zoom levels 0 through 18.
+     */
     public static final RasterTileFormat PNG = fromString("png");
 
     /**
+     * Creates a new instance of RasterTileFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RasterTileFormat() {
+    }
+
+    /**
      * Creates or finds a RasterTileFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RasterTileFormat.
      */
-    @JsonCreator
     public static RasterTileFormat fromString(String name) {
         return fromString(name, RasterTileFormat.class);
     }
 
     /**
      * Gets known RasterTileFormat values.
-     *
+     * 
      * @return known RasterTileFormat values.
      */
     public static Collection<RasterTileFormat> values() {

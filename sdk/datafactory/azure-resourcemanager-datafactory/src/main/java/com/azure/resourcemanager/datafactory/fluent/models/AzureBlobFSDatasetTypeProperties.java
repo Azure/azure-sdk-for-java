@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Data Lake Storage Gen2 dataset properties.
  */
 @Fluent
-public final class AzureBlobFSDatasetTypeProperties {
+public final class AzureBlobFSDatasetTypeProperties implements JsonSerializable<AzureBlobFSDatasetTypeProperties> {
     /*
      * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
      * The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
      * The format of the Azure Data Lake Storage Gen2 storage.
      */
-    @JsonProperty(value = "format")
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the blob storage.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /**
@@ -140,5 +140,51 @@ public final class AzureBlobFSDatasetTypeProperties {
         if (compression() != null) {
             compression().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        jsonWriter.writeUntypedField("fileName", this.fileName);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFSDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFSDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobFSDatasetTypeProperties.
+     */
+    public static AzureBlobFSDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobFSDatasetTypeProperties deserializedAzureBlobFSDatasetTypeProperties
+                = new AzureBlobFSDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureBlobFSDatasetTypeProperties.folderPath = reader.readUntyped();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureBlobFSDatasetTypeProperties.fileName = reader.readUntyped();
+                } else if ("format".equals(fieldName)) {
+                    deserializedAzureBlobFSDatasetTypeProperties.format = DatasetStorageFormat.fromJson(reader);
+                } else if ("compression".equals(fieldName)) {
+                    deserializedAzureBlobFSDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBlobFSDatasetTypeProperties;
+        });
     }
 }

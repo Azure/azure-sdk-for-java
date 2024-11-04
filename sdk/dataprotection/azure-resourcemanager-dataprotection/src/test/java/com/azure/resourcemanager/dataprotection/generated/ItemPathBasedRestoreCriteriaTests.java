@@ -13,21 +13,21 @@ public final class ItemPathBasedRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ItemPathBasedRestoreCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"ItemPathBasedRestoreCriteria\",\"itemPath\":\"xywr\",\"isPathRelativeToBackupItem\":false,\"subItemPathPrefix\":[\"kl\",\"hpluodpvruudlg\",\"ibthostgktstvd\",\"eclze\"]}")
+            "{\"objectType\":\"ItemPathBasedRestoreCriteria\",\"itemPath\":\"avgrvkffovjz\",\"isPathRelativeToBackupItem\":false,\"subItemPathPrefix\":[\"ibgjmfxumvfcl\",\"yo\",\"wxnb\"]}")
             .toObject(ItemPathBasedRestoreCriteria.class);
-        Assertions.assertEquals("xywr", model.itemPath());
+        Assertions.assertEquals("avgrvkffovjz", model.itemPath());
         Assertions.assertEquals(false, model.isPathRelativeToBackupItem());
-        Assertions.assertEquals("kl", model.subItemPathPrefix().get(0));
+        Assertions.assertEquals("ibgjmfxumvfcl", model.subItemPathPrefix().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ItemPathBasedRestoreCriteria model
-            = new ItemPathBasedRestoreCriteria().withItemPath("xywr").withIsPathRelativeToBackupItem(false)
-                .withSubItemPathPrefix(Arrays.asList("kl", "hpluodpvruudlg", "ibthostgktstvd", "eclze"));
+        ItemPathBasedRestoreCriteria model = new ItemPathBasedRestoreCriteria().withItemPath("avgrvkffovjz")
+            .withIsPathRelativeToBackupItem(false)
+            .withSubItemPathPrefix(Arrays.asList("ibgjmfxumvfcl", "yo", "wxnb"));
         model = BinaryData.fromObject(model).toObject(ItemPathBasedRestoreCriteria.class);
-        Assertions.assertEquals("xywr", model.itemPath());
+        Assertions.assertEquals("avgrvkffovjz", model.itemPath());
         Assertions.assertEquals(false, model.isPathRelativeToBackupItem());
-        Assertions.assertEquals("kl", model.subItemPathPrefix().get(0));
+        Assertions.assertEquals("ibgjmfxumvfcl", model.subItemPathPrefix().get(0));
     }
 }

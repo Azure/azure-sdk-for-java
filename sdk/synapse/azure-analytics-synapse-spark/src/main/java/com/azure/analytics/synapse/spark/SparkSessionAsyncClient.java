@@ -12,6 +12,7 @@ import com.azure.analytics.synapse.spark.models.SparkStatement;
 import com.azure.analytics.synapse.spark.models.SparkStatementCancellationResult;
 import com.azure.analytics.synapse.spark.models.SparkStatementCollection;
 import com.azure.analytics.synapse.spark.models.SparkStatementOptions;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -19,48 +20,56 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous SparkClient type. */
+/**
+ * Initializes a new instance of the asynchronous SparkClient type.
+ */
 @ServiceClient(builder = SparkClientBuilder.class, isAsync = true)
 public final class SparkSessionAsyncClient {
+    @Generated
     private final SparkSessionsImpl serviceClient;
 
     /**
-     * Initializes an instance of SparkSessions client.
-     *
+     * Initializes an instance of SparkSessionAsyncClient class.
+     * 
      * @param serviceClient the service client implementation.
      */
+    @Generated
     SparkSessionAsyncClient(SparkSessionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * List all spark sessions which are running under a particular spark pool.
-     *
+     * 
      * @param from Optional param specifying which index the list should begin from.
-     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param size Optional param specifying the size of the returned list.
+     * By default it is 20 and that is the maximum.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SparkSessionCollection>> getSparkSessionsWithResponse(
-            Integer from, Integer size, Boolean detailed) {
+    public Mono<Response<SparkSessionCollection>> getSparkSessionsWithResponse(Integer from, Integer size,
+        Boolean detailed) {
         return this.serviceClient.getSparkSessionsWithResponseAsync(from, size, detailed);
     }
 
     /**
      * List all spark sessions which are running under a particular spark pool.
-     *
+     * 
      * @param from Optional param specifying which index the list should begin from.
-     * @param size Optional param specifying the size of the returned list. By default it is 20 and that is the maximum.
+     * @param size Optional param specifying the size of the returned list.
+     * By default it is 20 and that is the maximum.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSessionCollection> getSparkSessions(Integer from, Integer size, Boolean detailed) {
         return this.serviceClient.getSparkSessionsAsync(from, size, detailed);
@@ -68,11 +77,12 @@ public final class SparkSessionAsyncClient {
 
     /**
      * List all spark sessions which are running under a particular spark pool.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSessionCollection> getSparkSessions() {
         return this.serviceClient.getSparkSessionsAsync();
@@ -80,30 +90,32 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Create new spark session.
-     *
+     * 
      * @param sparkSessionOptions Livy compatible batch job request payload.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SparkSession>> createSparkSessionWithResponse(
-            SparkSessionOptions sparkSessionOptions, Boolean detailed) {
+    public Mono<Response<SparkSession>> createSparkSessionWithResponse(SparkSessionOptions sparkSessionOptions,
+        Boolean detailed) {
         return this.serviceClient.createSparkSessionWithResponseAsync(sparkSessionOptions, detailed);
     }
 
     /**
      * Create new spark session.
-     *
+     * 
      * @param sparkSessionOptions Livy compatible batch job request payload.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSession> createSparkSession(SparkSessionOptions sparkSessionOptions, Boolean detailed) {
         return this.serviceClient.createSparkSessionAsync(sparkSessionOptions, detailed);
@@ -111,13 +123,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Create new spark session.
-     *
+     * 
      * @param sparkSessionOptions Livy compatible batch job request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSession> createSparkSession(SparkSessionOptions sparkSessionOptions) {
         return this.serviceClient.createSparkSessionAsync(sparkSessionOptions);
@@ -125,14 +138,15 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a single spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single spark session.
+     * @return a single spark session along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkSession>> getSparkSessionWithResponse(int sessionId, Boolean detailed) {
         return this.serviceClient.getSparkSessionWithResponseAsync(sessionId, detailed);
@@ -140,14 +154,15 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a single spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param detailed Optional query param specifying whether detailed response is returned beyond plain livy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single spark session.
+     * @return a single spark session on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSession> getSparkSession(int sessionId, Boolean detailed) {
         return this.serviceClient.getSparkSessionAsync(sessionId, detailed);
@@ -155,13 +170,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a single spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single spark session.
+     * @return a single spark session on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkSession> getSparkSession(int sessionId) {
         return this.serviceClient.getSparkSessionAsync(sessionId);
@@ -169,13 +185,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Cancels a running spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelSparkSessionWithResponse(int sessionId) {
         return this.serviceClient.cancelSparkSessionWithResponseAsync(sessionId);
@@ -183,13 +200,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Cancels a running spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelSparkSession(int sessionId) {
         return this.serviceClient.cancelSparkSessionAsync(sessionId);
@@ -197,13 +215,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Sends a keep alive call to the current session to reset the session timeout.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetSparkSessionTimeoutWithResponse(int sessionId) {
         return this.serviceClient.resetSparkSessionTimeoutWithResponseAsync(sessionId);
@@ -211,13 +230,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Sends a keep alive call to the current session to reset the session timeout.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetSparkSessionTimeout(int sessionId) {
         return this.serviceClient.resetSparkSessionTimeoutAsync(sessionId);
@@ -225,13 +245,15 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a list of statements within a spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of statements within a spark session.
+     * @return a list of statements within a spark session along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatementCollection>> getSparkStatementsWithResponse(int sessionId) {
         return this.serviceClient.getSparkStatementsWithResponseAsync(sessionId);
@@ -239,13 +261,14 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a list of statements within a spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of statements within a spark session.
+     * @return a list of statements within a spark session on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkStatementCollection> getSparkStatements(int sessionId) {
         return this.serviceClient.getSparkStatementsAsync(sessionId);
@@ -253,30 +276,32 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Create statement within a spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param sparkStatementOptions Livy compatible batch job request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SparkStatement>> createSparkStatementWithResponse(
-            int sessionId, SparkStatementOptions sparkStatementOptions) {
+    public Mono<Response<SparkStatement>> createSparkStatementWithResponse(int sessionId,
+        SparkStatementOptions sparkStatementOptions) {
         return this.serviceClient.createSparkStatementWithResponseAsync(sessionId, sparkStatementOptions);
     }
 
     /**
      * Create statement within a spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param sparkStatementOptions Livy compatible batch job request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkStatement> createSparkStatement(int sessionId, SparkStatementOptions sparkStatementOptions) {
         return this.serviceClient.createSparkStatementAsync(sessionId, sparkStatementOptions);
@@ -284,14 +309,16 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a single statement within a spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param statementId Identifier for the statement.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single statement within a spark session.
+     * @return a single statement within a spark session along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkStatement>> getSparkStatementWithResponse(int sessionId, int statementId) {
         return this.serviceClient.getSparkStatementWithResponseAsync(sessionId, statementId);
@@ -299,14 +326,15 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Gets a single statement within a spark session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param statementId Identifier for the statement.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single statement within a spark session.
+     * @return a single statement within a spark session on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkStatement> getSparkStatement(int sessionId, int statementId) {
         return this.serviceClient.getSparkStatementAsync(sessionId, statementId);
@@ -314,30 +342,32 @@ public final class SparkSessionAsyncClient {
 
     /**
      * Kill a statement within a session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param statementId Identifier for the statement.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SparkStatementCancellationResult>> cancelSparkStatementWithResponse(
-            int sessionId, int statementId) {
+    public Mono<Response<SparkStatementCancellationResult>> cancelSparkStatementWithResponse(int sessionId,
+        int statementId) {
         return this.serviceClient.cancelSparkStatementWithResponseAsync(sessionId, statementId);
     }
 
     /**
      * Kill a statement within a session.
-     *
+     * 
      * @param sessionId Identifier for the session.
      * @param statementId Identifier for the statement.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkStatementCancellationResult> cancelSparkStatement(int sessionId, int statementId) {
         return this.serviceClient.cancelSparkStatementAsync(sessionId, statementId);

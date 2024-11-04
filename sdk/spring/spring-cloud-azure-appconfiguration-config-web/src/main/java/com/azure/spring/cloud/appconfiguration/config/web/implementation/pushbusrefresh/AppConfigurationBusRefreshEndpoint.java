@@ -8,9 +8,6 @@ import static com.azure.spring.cloud.appconfiguration.config.web.implementation.
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
@@ -27,11 +24,15 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
  */
+@SuppressWarnings("removal")
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH_BUS)
-public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
+public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
 
@@ -86,12 +87,12 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
             if (!endpoint.authenticate()) {
                 return HttpStatus.UNAUTHORIZED.getReasonPhrase();
             }
-
+            
             if (endpoint.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
 
                 publish(new AppConfigurationBusRefreshEvent(endpoint.getEndpoint(), syncToken, this, getInstanceId(),
-                    new PathDestinationFactory().getDestination(null)));
+                        new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
                 LOGGER.debug("Non Refreshable notification");

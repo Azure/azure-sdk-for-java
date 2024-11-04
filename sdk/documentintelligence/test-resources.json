@@ -28,11 +28,15 @@
     },
     "trainingDataContainer": {
       "type": "string",
-      "defaultValue": "trainingdata"
+      "defaultValue": "trainingdata-v3"
+    },
+    "batchTrainingDataContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata-batch"
     },
     "selectionMarkTrainingDataContainer": {
       "type": "string",
-      "defaultValue": "selectionmark"
+      "defaultValue": "selectionmark-v3"
     },
     "blobResourceId": {
       "type": "string",
@@ -47,6 +51,15 @@
         "signedResource": "c"
       }
     },
+    "batchTrainingSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('batchTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rwl",
+        "signedResource": "c"
+      }
+    },
     "selectionMarkTrainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
@@ -56,22 +69,9 @@
         "signedResource": "c"
       }
     },
-    "testingDataContainer": {
-      "type": "string",
-      "defaultValue": "testingdata"
-    },
-    "testingDataSasProperties": {
-      "type": "object",
-      "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('testingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
-        "signedPermission": "rl",
-        "signedResource": "c"
-      }
-    },
     "multiPageTestingDataContainer": {
       "type": "string",
-      "defaultValue": "multipage-training-data"
+      "defaultValue": "multipage-training-data-v3"
     },
     "multiPageTestingDataSasProperties": {
       "type": "object",
@@ -123,17 +123,9 @@
       "type": "string",
       "value": "[concat('https://', parameters('baseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]"
     },
-    "DOCUMENTINTELLIGENCE_API_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), '2023-10-01-preview').key1]"
-    },
     "DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"
-    },
-    "DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL": {
-      "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('testingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('testingDataSasProperties')).serviceSasToken)]"
     },
     "DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL": {
       "type": "string",
@@ -142,6 +134,10 @@
     "DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('classifierTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('classifierTrainingSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('batchTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('batchTrainingSasProperties')).serviceSasToken)]"
     },
     "DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL": {
       "type": "string",

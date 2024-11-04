@@ -65,111 +65,76 @@ public final class TablesClientImpl implements TablesClient {
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface TablesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TablesListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TablesListResult>> listByWorkspace(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("tableName") String tableName,
+            @BodyParam("application/json") TableInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tableName") String tableName,
-            @BodyParam("application/json") TableInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("tableName") String tableName,
+            @BodyParam("application/json") TableInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TableInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tableName") String tableName,
-            @BodyParam("application/json") TableInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TableInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tableName") String tableName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}/migrate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> migrate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tableName") String tableName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}/migrate")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}/cancelSearch")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> migrate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> cancelSearch(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tableName") String tableName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/tables/{tableName}/cancelSearch")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancelSearch(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tableName") String tableName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -184,19 +149,15 @@ public final class TablesClientImpl implements TablesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TableInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<TableInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -208,21 +169,10 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<TableInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, accept, context))
+            .<PagedResponse<TableInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -239,19 +189,15 @@ public final class TablesClientImpl implements TablesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TableInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<TableInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -264,18 +210,10 @@ public final class TablesClientImpl implements TablesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -305,8 +243,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return all the tables for the specified Log Analytics workspace as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TableInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private PagedFlux<TableInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context));
     }
 
@@ -356,19 +294,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -388,19 +322,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            tableName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, tableName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -418,19 +341,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -450,17 +369,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                tableName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, apiVersion, tableName, parameters, accept, context);
     }
 
     /**
@@ -476,14 +386,12 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link PollerFlux} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TableInner>, TableInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters);
-        return this
-            .client
-            .<TableInner, TableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TableInner.class, TableInner.class, this.client.getContext());
+    private PollerFlux<PollResult<TableInner>, TableInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters);
+        return this.client.<TableInner, TableInner>getLroResult(mono, this.client.getHttpPipeline(), TableInner.class,
+            TableInner.class, this.client.getContext());
     }
 
     /**
@@ -500,15 +408,13 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link PollerFlux} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TableInner>, TableInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    private PollerFlux<PollResult<TableInner>, TableInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters, context);
-        return this
-            .client
-            .<TableInner, TableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TableInner.class, TableInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters, context);
+        return this.client.<TableInner, TableInner>getLroResult(mono, this.client.getHttpPipeline(), TableInner.class,
+            TableInner.class, context);
     }
 
     /**
@@ -524,8 +430,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
+    public SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters).getSyncPoller();
     }
 
@@ -543,10 +449,9 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context)
+    public SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context)
             .getSyncPoller();
     }
 
@@ -563,10 +468,9 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TableInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters)
-            .last()
+    private Mono<TableInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, String tableName,
+        TableInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -584,10 +488,9 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TableInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context)
-            .last()
+    private Mono<TableInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, String tableName,
+        TableInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -604,8 +507,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
+    public TableInner createOrUpdate(String resourceGroupName, String workspaceName, String tableName,
+        TableInner parameters) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters).block();
     }
 
@@ -623,8 +526,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    public TableInner createOrUpdate(String resourceGroupName, String workspaceName, String tableName,
+        TableInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context).block();
     }
 
@@ -641,19 +544,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -673,19 +572,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            tableName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, tableName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -703,19 +591,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -735,17 +619,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                tableName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, apiVersion, tableName, parameters, accept, context);
     }
 
     /**
@@ -761,14 +636,12 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link PollerFlux} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TableInner>, TableInner> beginUpdateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters);
-        return this
-            .client
-            .<TableInner, TableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TableInner.class, TableInner.class, this.client.getContext());
+    private PollerFlux<PollResult<TableInner>, TableInner> beginUpdateAsync(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters);
+        return this.client.<TableInner, TableInner>getLroResult(mono, this.client.getHttpPipeline(), TableInner.class,
+            TableInner.class, this.client.getContext());
     }
 
     /**
@@ -785,15 +658,13 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link PollerFlux} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TableInner>, TableInner> beginUpdateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    private PollerFlux<PollResult<TableInner>, TableInner> beginUpdateAsync(String resourceGroupName,
+        String workspaceName, String tableName, TableInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters, context);
-        return this
-            .client
-            .<TableInner, TableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TableInner.class, TableInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, tableName, parameters, context);
+        return this.client.<TableInner, TableInner>getLroResult(mono, this.client.getHttpPipeline(), TableInner.class,
+            TableInner.class, context);
     }
 
     /**
@@ -809,8 +680,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
+    public SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, workspaceName, tableName, parameters).getSyncPoller();
     }
 
@@ -828,8 +699,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    public SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context).getSyncPoller();
     }
 
@@ -846,10 +717,9 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TableInner> updateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, tableName, parameters)
-            .last()
+    private Mono<TableInner> updateAsync(String resourceGroupName, String workspaceName, String tableName,
+        TableInner parameters) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, tableName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -867,10 +737,9 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TableInner> updateAsync(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context)
-            .last()
+    private Mono<TableInner> updateAsync(String resourceGroupName, String workspaceName, String tableName,
+        TableInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, tableName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -905,8 +774,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableInner update(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context) {
+    public TableInner update(String resourceGroupName, String workspaceName, String tableName, TableInner parameters,
+        Context context) {
         return updateAsync(resourceGroupName, workspaceName, tableName, parameters, context).block();
     }
 
@@ -922,19 +791,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return a Log Analytics workspace table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TableInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName) {
+    private Mono<Response<TableInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -949,18 +814,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            tableName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, tableName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -977,19 +832,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return a Log Analytics workspace table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TableInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    private Mono<Response<TableInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1004,16 +855,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                tableName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
+            apiVersion, tableName, accept, context);
     }
 
     /**
@@ -1046,8 +889,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return a Log Analytics workspace table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    public Response<TableInner> getWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, tableName, context).block();
     }
 
@@ -1079,19 +922,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1106,18 +945,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            tableName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, tableName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1134,19 +963,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1161,16 +986,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                tableName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, apiVersion, tableName, accept, context);
     }
 
     /**
@@ -1185,13 +1002,11 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String tableName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String tableName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, tableName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1207,14 +1022,13 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String tableName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, tableName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, tableName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1229,8 +1043,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String tableName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String tableName) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, tableName).getSyncPoller();
     }
 
@@ -1247,8 +1061,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String tableName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, tableName, context).getSyncPoller();
     }
 
@@ -1265,8 +1079,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String tableName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, tableName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, tableName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1284,8 +1097,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String tableName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, tableName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, tableName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1333,19 +1145,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> migrateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName) {
+    private Mono<Response<Void>> migrateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1360,18 +1168,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .migrate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            tableName,
-                            accept,
-                            context))
+            .withContext(context -> service.migrate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, tableName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1389,19 +1187,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> migrateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    private Mono<Response<Void>> migrateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1416,16 +1210,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .migrate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                tableName,
-                accept,
-                context);
+        return service.migrate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, apiVersion, tableName, accept, context);
     }
 
     /**
@@ -1459,8 +1245,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> migrateWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    public Response<Void> migrateWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context) {
         return migrateWithResponseAsync(resourceGroupName, workspaceName, tableName, context).block();
     }
 
@@ -1492,19 +1278,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelSearchWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName) {
+    private Mono<Response<Void>> cancelSearchWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1519,18 +1301,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancelSearch(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            tableName,
-                            accept,
-                            context))
+            .withContext(context -> service.cancelSearch(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, tableName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1547,19 +1319,15 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelSearchWithResponseAsync(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    private Mono<Response<Void>> cancelSearchWithResponseAsync(String resourceGroupName, String workspaceName,
+        String tableName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1574,16 +1342,8 @@ public final class TablesClientImpl implements TablesClient {
         final String apiVersion = "2022-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancelSearch(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                tableName,
-                accept,
-                context);
+        return service.cancelSearch(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, apiVersion, tableName, accept, context);
     }
 
     /**
@@ -1616,8 +1376,8 @@ public final class TablesClientImpl implements TablesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelSearchWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context) {
+    public Response<Void> cancelSearchWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context) {
         return cancelSearchWithResponseAsync(resourceGroupName, workspaceName, tableName, context).block();
     }
 

@@ -11,8 +11,7 @@ import com.azure.resourcemanager.mobilenetwork.models.Snssai;
  */
 public final class SlicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SliceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SliceCreate.json
      */
     /**
      * Sample code: Create network slice.
@@ -20,7 +19,12 @@ public final class SlicesCreateOrUpdateSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.slices().define("testSlice").withRegion("eastus").withExistingMobileNetwork("rg1", "testMobileNetwork")
-            .withSnssai(new Snssai().withSst(1).withSd("1abcde")).withDescription("myFavouriteSlice").create();
+        manager.slices()
+            .define("testSlice")
+            .withRegion("eastus")
+            .withExistingMobileNetwork("rg1", "testMobileNetwork")
+            .withSnssai(new Snssai().withSst(1).withSd("1abcde"))
+            .withDescription("myFavouriteSlice")
+            .create();
     }
 }

@@ -28,7 +28,8 @@ public final class FleetHubProfileTests {
     public void testSerialize() throws Exception {
         FleetHubProfile model = new FleetHubProfile().withDnsPrefix("nhutjeltmrldhugj")
             .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(false)
-                .withEnableVnetIntegration(true).withSubnetId("hocdgeab"))
+                .withEnableVnetIntegration(true)
+                .withSubnetId("hocdgeab"))
             .withAgentProfile(new AgentProfile().withSubnetId("huticndvkao").withVmSize("yiftyhxhuro"));
         model = BinaryData.fromObject(model).toObject(FleetHubProfile.class);
         Assertions.assertEquals("nhutjeltmrldhugj", model.dnsPrefix());

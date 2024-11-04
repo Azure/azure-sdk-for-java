@@ -12,21 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateWorkspaceQuotasTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateWorkspaceQuotas model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"sa\",\"type\":\"wkuofoskghsauu\",\"limit\":6549860277400431394,\"unit\":\"Count\",\"status\":\"Failure\"}")
-                .toObject(UpdateWorkspaceQuotas.class);
-        Assertions.assertEquals(6549860277400431394L, model.limit());
-        Assertions.assertEquals(Status.FAILURE, model.status());
+        UpdateWorkspaceQuotas model = BinaryData.fromString(
+            "{\"id\":\"ibx\",\"type\":\"wbhqwal\",\"limit\":4821082223595321199,\"unit\":\"Count\",\"status\":\"InvalidQuotaBelowClusterMinimum\"}")
+            .toObject(UpdateWorkspaceQuotas.class);
+        Assertions.assertEquals(4821082223595321199L, model.limit());
+        Assertions.assertEquals(Status.INVALID_QUOTA_BELOW_CLUSTER_MINIMUM, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateWorkspaceQuotas model =
-            new UpdateWorkspaceQuotas().withLimit(6549860277400431394L).withStatus(Status.FAILURE);
+        UpdateWorkspaceQuotas model = new UpdateWorkspaceQuotas().withLimit(4821082223595321199L)
+            .withStatus(Status.INVALID_QUOTA_BELOW_CLUSTER_MINIMUM);
         model = BinaryData.fromObject(model).toObject(UpdateWorkspaceQuotas.class);
-        Assertions.assertEquals(6549860277400431394L, model.limit());
-        Assertions.assertEquals(Status.FAILURE, model.status());
+        Assertions.assertEquals(4821082223595321199L, model.limit());
+        Assertions.assertEquals(Status.INVALID_QUOTA_BELOW_CLUSTER_MINIMUM, model.status());
     }
 }

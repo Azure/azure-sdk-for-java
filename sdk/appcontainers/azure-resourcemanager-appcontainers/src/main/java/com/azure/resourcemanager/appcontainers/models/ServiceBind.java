@@ -5,38 +5,36 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Configuration to bind a ContainerApp to a dev ContainerApp Service.
  */
 @Fluent
-public final class ServiceBind {
+public final class ServiceBind implements JsonSerializable<ServiceBind> {
     /*
      * Resource id of the target service
      */
-    @JsonProperty(value = "serviceId")
     private String serviceId;
 
     /*
      * Name of the service bind
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Type of the client to be used to connect to the service
      */
-    @JsonProperty(value = "clientType")
     private String clientType;
 
     /*
      * Customized keys for customizing injected values to the app
      */
-    @JsonProperty(value = "customizedKeys")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customizedKeys;
 
     /**
@@ -131,5 +129,52 @@ public final class ServiceBind {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceId", this.serviceId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("clientType", this.clientType);
+        jsonWriter.writeMapField("customizedKeys", this.customizedKeys,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceBind from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBind if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceBind.
+     */
+    public static ServiceBind fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBind deserializedServiceBind = new ServiceBind();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceId".equals(fieldName)) {
+                    deserializedServiceBind.serviceId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceBind.name = reader.getString();
+                } else if ("clientType".equals(fieldName)) {
+                    deserializedServiceBind.clientType = reader.getString();
+                } else if ("customizedKeys".equals(fieldName)) {
+                    Map<String, String> customizedKeys = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceBind.customizedKeys = customizedKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceBind;
+        });
     }
 }

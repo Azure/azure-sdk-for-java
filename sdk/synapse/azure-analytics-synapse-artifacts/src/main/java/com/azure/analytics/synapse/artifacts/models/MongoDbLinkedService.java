@@ -5,89 +5,88 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Linked service for MongoDb data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MongoDb")
-@JsonFlatten
 @Fluent
 public class MongoDbLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "MongoDb";
+
+    /*
      * The IP address or server name of the MongoDB server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
      * The authentication type to be used to connect to the MongoDB database.
      */
-    @JsonProperty(value = "typeProperties.authenticationType")
     private MongoDbAuthenticationType authenticationType;
 
     /*
      * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.databaseName", required = true)
     private Object databaseName;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.username")
     private Object username;
 
     /*
      * Password for authentication.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * Database to verify the username and password. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.authSource")
     private Object authSource;
 
     /*
-     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017.
-     * Type: integer (or Expression with resultType integer), minimum: 0.
+     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.enableSsl")
     private Object enableSsl;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean
-     * (or Expression with resultType boolean).
+     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
      * Creates an instance of MongoDbLinkedService class.
      */
     public MongoDbLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -283,8 +282,8 @@ public class MongoDbLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -293,8 +292,8 @@ public class MongoDbLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MongoDbLinkedService object itself.
@@ -338,5 +337,122 @@ public class MongoDbLinkedService extends LinkedService {
     public MongoDbLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (server != null
+            || authenticationType != null
+            || databaseName != null
+            || username != null
+            || password != null
+            || authSource != null
+            || port != null
+            || enableSsl != null
+            || allowSelfSignedServerCert != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("server", this.server);
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            jsonWriter.writeUntypedField("databaseName", this.databaseName);
+            jsonWriter.writeUntypedField("username", this.username);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("authSource", this.authSource);
+            jsonWriter.writeUntypedField("port", this.port);
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDbLinkedService.
+     */
+    public static MongoDbLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbLinkedService deserializedMongoDbLinkedService = new MongoDbLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedMongoDbLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMongoDbLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedMongoDbLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedMongoDbLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoDbLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("server".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.server = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.authenticationType
+                                = MongoDbAuthenticationType.fromString(reader.getString());
+                        } else if ("databaseName".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.databaseName = reader.readUntyped();
+                        } else if ("username".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.username = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("authSource".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.authSource = reader.readUntyped();
+                        } else if ("port".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.port = reader.readUntyped();
+                        } else if ("enableSsl".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("allowSelfSignedServerCert".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.allowSelfSignedServerCert = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedMongoDbLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMongoDbLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedMongoDbLinkedService;
+        });
     }
 }

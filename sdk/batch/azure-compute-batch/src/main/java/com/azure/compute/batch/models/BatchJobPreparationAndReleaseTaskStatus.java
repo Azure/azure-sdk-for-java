@@ -43,7 +43,8 @@ public final class BatchJobPreparationAndReleaseTaskStatus
     private BatchJobPreparationTaskExecutionInfo jobPreparationTaskExecutionInfo;
 
     /*
-     * Information about the execution status of the Job Release Task on this Compute Node. This property is set only if the Job Release Task has run on the Compute Node.
+     * Information about the execution status of the Job Release Task on this Compute Node. This property is set only if
+     * the Job Release Task has run on the Compute Node.
      */
     @Generated
     private BatchJobReleaseTaskExecutionInfo jobReleaseTaskExecutionInfo;

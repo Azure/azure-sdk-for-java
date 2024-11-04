@@ -5,7 +5,6 @@ package com.azure.ai.vision.imageanalysis;
 
 import com.azure.ai.vision.imageanalysis.implementation.ImageAnalysisClientImpl;
 import com.azure.ai.vision.imageanalysis.implementation.models.ImageUrl;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.annotation.Generated;
@@ -27,21 +26,33 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
+ * 
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
  * <pre>
  * &#47;&#47;
- * &#47;&#47; Create an asynchronous Image Analysis client.
+ * &#47;&#47; Create an asynchronous Image Analysis client with API key authentication.
  * &#47;&#47;
  * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-entra-id-auth -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create an asynchronous Image Analysis client with Entra ID authentication.
+ * &#47;&#47;
+ * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client-entra-id-auth -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {
@@ -61,68 +72,43 @@ public final class ImageAnalysisAsyncClient {
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter
+     * language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     * <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral
+     * captioning for Caption and Dense Captions features.
      * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
      * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * 'child').</td></tr>
+     * <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for
+     * smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     * <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
      * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
      * 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
      * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -214,20 +200,20 @@ public final class ImageAnalysisAsyncClient {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageUrl The image to be analyzed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a> on successful
+     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageContent,
+    Mono<Response<BinaryData>> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageUrl,
         RequestOptions requestOptions) {
-        return this.serviceClient.analyzeFromUrlWithResponseAsync(visualFeatures, imageContent, requestOptions);
+        return this.serviceClient.analyzeFromUrlWithResponseAsync(visualFeatures, imageUrl, requestOptions);
     }
 
     /**
@@ -236,7 +222,7 @@ public final class ImageAnalysisAsyncClient {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageUrl The image to be analyzed.
      * @param language The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
@@ -265,8 +251,8 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageContent,
-        String language, Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
+    Mono<ImageAnalysisResult> analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageUrl, String language,
+        Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (language != null) {
@@ -283,9 +269,9 @@ public final class ImageAnalysisAsyncClient {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
         return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()),
-            BinaryData.fromObject(imageContent), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -294,7 +280,7 @@ public final class ImageAnalysisAsyncClient {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageUrl The image to be analyzed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -305,77 +291,52 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageContent) {
+    Mono<ImageAnalysisResult> analyzeFromUrl(List<VisualFeatures> visualFeatures, ImageUrl imageUrl) {
         // Generated convenience method for analyzeFromUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return analyzeFromUrlWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()),
-            BinaryData.fromObject(imageContent), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), BinaryData.fromObject(imageUrl), requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter
+     * language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     * <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral
+     * captioning for Caption and Dense Captions features.
      * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
      * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * 'child').</td></tr>
+     * <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for
+     * smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     * <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
      * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
      * 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
      * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -467,20 +428,20 @@ public final class ImageAnalysisAsyncClient {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageData The image to be analyzed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with <a href="https://learn.microsoft.com/java/api/com.azure.core.http.rest.response">Response</a> on successful
+     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageContent,
+    Mono<Response<BinaryData>> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageData,
         RequestOptions requestOptions) {
-        return this.serviceClient.analyzeFromImageDataWithResponseAsync(visualFeatures, imageContent, requestOptions);
+        return this.serviceClient.analyzeFromImageDataWithResponseAsync(visualFeatures, imageData, requestOptions);
     }
 
     /**
@@ -489,7 +450,7 @@ public final class ImageAnalysisAsyncClient {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageData The image to be analyzed.
      * @param language The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
@@ -518,7 +479,7 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageContent,
+    Mono<ImageAnalysisResult> analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageData,
         String language, Boolean genderNeutralCaption, List<Double> smartCropsAspectRatios, String modelVersion) {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -536,9 +497,9 @@ public final class ImageAnalysisAsyncClient {
             requestOptions.addQueryParam("model-version", modelVersion, false);
         }
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()), imageContent,
-            requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), imageData, requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -547,7 +508,7 @@ public final class ImageAnalysisAsyncClient {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageData The image to be analyzed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -558,13 +519,13 @@ public final class ImageAnalysisAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImageAnalysisResult> analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageContent) {
+    Mono<ImageAnalysisResult> analyzeFromImageData(List<VisualFeatures> visualFeatures, BinaryData imageData) {
         // Generated convenience method for analyzeFromImageDataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return analyzeFromImageDataWithResponse(visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList()), imageContent,
-            requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList()), imageData, requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageAnalysisResult.class));
     }
 
     /**
@@ -699,7 +660,8 @@ public final class ImageAnalysisAsyncClient {
     public Mono<Response<ImageAnalysisResult>> analyzeFromUrlWithResponse(String imageUrl,
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList());
         Mono<Response<BinaryData>> monoResponse
             = analyzeFromUrlWithResponse(visualFeaturesAsStrings, BinaryData.fromObject(new ImageUrl(imageUrl)),
                 ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
@@ -735,7 +697,8 @@ public final class ImageAnalysisAsyncClient {
     public Mono<Response<ImageAnalysisResult>> analyzeWithResponse(BinaryData imageData,
         List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, RequestOptions requestOptions) {
         List<String> visualFeaturesAsStrings = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.toList());
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.toList());
         Mono<Response<BinaryData>> monoResponse = analyzeFromImageDataWithResponse(visualFeaturesAsStrings, imageData,
             ImageAnalysisClient.updateRequestOptions(requestOptions, imageAnalysisOptions));
         return monoResponse.map(response -> {

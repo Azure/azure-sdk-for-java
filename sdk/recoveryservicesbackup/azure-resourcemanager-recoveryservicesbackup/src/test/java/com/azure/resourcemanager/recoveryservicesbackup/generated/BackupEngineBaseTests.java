@@ -41,14 +41,24 @@ public final class BackupEngineBaseTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupEngineBase model = new BackupEngineBase().withFriendlyName("d")
-            .withBackupManagementType(BackupManagementType.DPM).withRegistrationStatus("cxrslpmutwuoe")
-            .withBackupEngineState("pkhjwni").withHealthStatus("sluicpdggkzz").withCanReRegister(true)
-            .withBackupEngineId("mpaxmodfvuefywsb").withDpmVersion("vmwy").withAzureBackupAgentVersion("fouyf")
-            .withIsAzureBackupAgentUpgradeAvailable(false).withIsDpmUpgradeAvailable(false)
+            .withBackupManagementType(BackupManagementType.DPM)
+            .withRegistrationStatus("cxrslpmutwuoe")
+            .withBackupEngineState("pkhjwni")
+            .withHealthStatus("sluicpdggkzz")
+            .withCanReRegister(true)
+            .withBackupEngineId("mpaxmodfvuefywsb")
+            .withDpmVersion("vmwy")
+            .withAzureBackupAgentVersion("fouyf")
+            .withIsAzureBackupAgentUpgradeAvailable(false)
+            .withIsDpmUpgradeAvailable(false)
             .withExtendedInfo(new BackupEngineExtendedInfo().withDatabaseName("iyzvqtmnub")
-                .withProtectedItemsCount(908407782).withProtectedServersCount(1989438546).withDiskCount(1254452597)
-                .withUsedDiskSpace(36.0989535057045D).withAvailableDiskSpace(69.75703157384325D)
-                .withRefreshedAt(OffsetDateTime.parse("2021-10-31T06:50:30Z")).withAzureProtectedInstances(1083170526));
+                .withProtectedItemsCount(908407782)
+                .withProtectedServersCount(1989438546)
+                .withDiskCount(1254452597)
+                .withUsedDiskSpace(36.0989535057045D)
+                .withAvailableDiskSpace(69.75703157384325D)
+                .withRefreshedAt(OffsetDateTime.parse("2021-10-31T06:50:30Z"))
+                .withAzureProtectedInstances(1083170526));
         model = BinaryData.fromObject(model).toObject(BackupEngineBase.class);
         Assertions.assertEquals("d", model.friendlyName());
         Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());

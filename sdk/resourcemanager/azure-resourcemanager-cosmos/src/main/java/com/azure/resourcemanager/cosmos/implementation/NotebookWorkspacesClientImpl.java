@@ -593,8 +593,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
-            notebookCreateUpdateParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
+                notebookCreateUpdateParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -614,8 +616,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
-            notebookCreateUpdateParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
+                notebookCreateUpdateParameters, context)
+            .getSyncPoller();
     }
 
     /**

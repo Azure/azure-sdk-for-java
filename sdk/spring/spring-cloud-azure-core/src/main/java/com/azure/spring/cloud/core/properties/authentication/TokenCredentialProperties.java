@@ -12,6 +12,12 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 public final class TokenCredentialProperties implements TokenCredentialOptionsProvider.TokenCredentialOptions {
 
     /**
+     * Creates an instance of {@link TokenCredentialProperties}.
+     */
+    public TokenCredentialProperties() {
+    }
+
+    /**
      * Client id to use when performing service principal authentication with Azure.
      */
     private String clientId;
@@ -46,6 +52,11 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsPr
      * client id as user assigned managed identity client id.
      */
     private boolean managedIdentityEnabled;
+
+    /**
+     * Custom Get the custom {@link com.azure.core.credential.TokenCredential} bean name, it's used for Service builder factory or passwordless authentication.
+     */
+    private String tokenCredentialBeanName;
 
     @Override
     public String getClientId() {
@@ -136,5 +147,18 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsPr
      */
     public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {
         this.managedIdentityEnabled = managedIdentityEnabled;
+    }
+
+    @Override
+    public String getTokenCredentialBeanName() {
+        return tokenCredentialBeanName;
+    }
+
+    /**
+     * Set the token credential bean name.
+     * @param tokenCredentialBeanName the bean name.
+     */
+    public void setTokenCredentialBeanName(String tokenCredentialBeanName) {
+        this.tokenCredentialBeanName = tokenCredentialBeanName;
     }
 }

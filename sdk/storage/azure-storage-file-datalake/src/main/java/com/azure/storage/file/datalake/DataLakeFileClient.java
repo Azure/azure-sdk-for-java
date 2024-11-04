@@ -6,11 +6,14 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -22,14 +25,16 @@ import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult;
+import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
+import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryHeaders;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
@@ -38,7 +43,7 @@ import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
-import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
@@ -69,6 +74,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -98,13 +104,22 @@ public class DataLakeFileClient extends DataLakePathClient {
 
     private final DataLakeFileAsyncClient dataLakeFileAsyncClient;
 
-    DataLakeFileClient(DataLakeFileAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient) {
-        super(pathAsyncClient, blockBlobClient);
-        this.dataLakeFileAsyncClient = pathAsyncClient;
+    DataLakeFileClient(DataLakeFileAsyncClient fileAsyncClient, BlockBlobClient blockBlobClient, HttpPipeline pipeline,
+        String url, DataLakeServiceVersion serviceVersion, String accountName, String fileSystemName, String fileName,
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
+        super(fileAsyncClient.getPathAsyncClient(fileSystemName, fileName), blockBlobClient, pipeline, url,
+            serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE, sasToken, customerProvidedKey,
+            isTokenCredentialAuthenticated);
+        this.dataLakeFileAsyncClient = fileAsyncClient;
     }
 
-    private DataLakeFileClient(DataLakePathClient dataLakePathClient) {
-        super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.blockBlobClient);
+    DataLakeFileClient(DataLakePathClient dataLakePathClient) {
+        super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.getBlockBlobClient(),
+            dataLakePathClient.getHttpPipeline(), dataLakePathClient.getAccountUrl(),
+            dataLakePathClient.getServiceVersion(), dataLakePathClient.getAccountName(),
+            dataLakePathClient.getFileSystemName(), Utility.urlEncode(dataLakePathClient.pathName),
+            PathResourceType.FILE, dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
+            dataLakePathClient.isTokenCredentialAuthenticated());
         this.dataLakeFileAsyncClient = new DataLakeFileAsyncClient(dataLakePathClient.dataLakePathAsyncClient);
     }
 
@@ -143,8 +158,17 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return a {@link DataLakeFileClient} with the specified {@code customerProvidedKey}.
      */
     public DataLakeFileClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+
         return new DataLakeFileClient(dataLakeFileAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey),
-            blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)));
+            blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)),
+            getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(), getFileSystemName(),
+            getObjectPath(), getSasToken(), finalCustomerProvidedKey, isTokenCredentialAuthenticated());
     }
 
     /**
@@ -197,9 +221,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<Void> deleteWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
-        Mono<Response<Void>> response = dataLakePathAsyncClient.deleteWithResponse(null, requestConditions, context);
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return super.deleteWithResponse(null, requestConditions, timeout, context);
     }
 
     /**
@@ -259,10 +281,8 @@ public class DataLakeFileClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient
-            .deleteIfExistsWithResponse(options, context), timeout);
+        return super.deleteIfExistsWithResponse(options, timeout, context);
     }
-
 
     /**
      * Creates a new file. By default, this method will not overwrite an existing file.
@@ -382,8 +402,8 @@ public class DataLakeFileClient extends DataLakePathClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return uploadWithResponse(new FileParallelUploadOptions(data).setRequestConditions(requestConditions),
-            null, Context.NONE).getValue();
+        return uploadWithResponse(new FileParallelUploadOptions(data).setRequestConditions(requestConditions), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -424,11 +444,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return Information about the uploaded path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PathInfo> uploadWithResponse(FileParallelUploadOptions options, Duration timeout,
-        Context context) {
+    public Response<PathInfo> uploadWithResponse(FileParallelUploadOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options);
-        Mono<Response<PathInfo>> upload = this.dataLakeFileAsyncClient.uploadWithResponse(options)
-            .contextWrite(FluxUtil.toReactorContext(context));
+        Mono<Response<PathInfo>> upload
+            = this.dataLakeFileAsyncClient.uploadWithResponse(options).contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
@@ -543,8 +562,8 @@ public class DataLakeFileClient extends DataLakePathClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
         Duration timeout) {
-        Mono<Void> upload = this.dataLakeFileAsyncClient.uploadFromFile(
-            filePath, parallelTransferOptions, headers, metadata, requestConditions);
+        Mono<Void> upload = this.dataLakeFileAsyncClient.uploadFromFile(filePath, parallelTransferOptions, headers,
+            metadata, requestConditions);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
@@ -596,11 +615,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PathInfo> uploadFromFileWithResponse(String filePath, ParallelTransferOptions parallelTransferOptions,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-        Duration timeout, Context context) {
-        Mono<Response<PathInfo>> upload = this.dataLakeFileAsyncClient.uploadFromFileWithResponse(
-            filePath, parallelTransferOptions, headers, metadata, requestConditions)
+    public Response<PathInfo> uploadFromFileWithResponse(String filePath,
+        ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers, Map<String, String> metadata,
+        DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<Response<PathInfo>> upload = this.dataLakeFileAsyncClient
+            .uploadFromFileWithResponse(filePath, parallelTransferOptions, headers, metadata, requestConditions)
             .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
@@ -693,13 +712,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendWithResponse(InputStream data, long fileOffset, long length,
-        byte[] contentMd5, String leaseId, Duration timeout, Context context) {
+    public Response<Void> appendWithResponse(InputStream data, long fileOffset, long length, byte[] contentMd5,
+        String leaseId, Duration timeout, Context context) {
 
-        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-            .setLeaseId(leaseId)
-            .setContentHash(contentMd5)
-            .setFlush(null);
+        DataLakeFileAppendOptions appendOptions
+            = new DataLakeFileAppendOptions().setLeaseId(leaseId).setContentHash(contentMd5).setFlush(null);
 
         return appendWithResponse(data, fileOffset, length, appendOptions, timeout, context);
     }
@@ -741,10 +758,10 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeFileAppendOptions appendOptions, Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
-        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fbb, fileOffset, length,
-            appendOptions, context);
+        Flux<ByteBuffer> fbb
+            = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
+        Mono<Response<Void>> response
+            = dataLakeFileAsyncClient.appendWithResponse(fbb, fileOffset, length, appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -791,10 +808,8 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
-        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
-            .setLeaseId(leaseId)
-            .setContentHash(contentMd5)
-            .setFlush(null);
+        DataLakeFileAppendOptions appendOptions
+            = new DataLakeFileAppendOptions().setLeaseId(leaseId).setContentHash(contentMd5).setFlush(null);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(fluxData, fileOffset,
             data.getLength(), appendOptions, context);
 
@@ -838,8 +853,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendWithResponse(BinaryData data, long fileOffset,
-        DataLakeFileAppendOptions appendOptions, Duration timeout, Context context) {
+    public Response<Void> appendWithResponse(BinaryData data, long fileOffset, DataLakeFileAppendOptions appendOptions,
+        Duration timeout, Context context) {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
@@ -955,11 +970,11 @@ public class DataLakeFileClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
-            .setUncommittedDataRetained(retainUncommittedData)
-            .setClose(close)
-            .setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions);
+        DataLakeFileFlushOptions flushOptions
+            = new DataLakeFileFlushOptions().setUncommittedDataRetained(retainUncommittedData)
+                .setClose(close)
+                .setPathHttpHeaders(httpHeaders)
+                .setRequestConditions(requestConditions);
 
         return flushWithResponse(position, flushOptions, timeout, context);
     }
@@ -1145,7 +1160,6 @@ public class DataLakeFileClient extends DataLakePathClient {
             Transforms.toPathProperties(inputStream.getProperties()));
     }
 
-
     /**
      * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
      * will be overwritten.
@@ -1327,12 +1341,13 @@ public class DataLakeFileClient extends DataLakePathClient {
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                new BlobDownloadToFileOptions(filePath)
-                    .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
+                new BlobDownloadToFileOptions(filePath).setRange(Transforms.toBlobRange(range))
+                    .setParallelTransferOptions(parallelTransferOptions)
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
-                context);
+                    .setRetrieveContentRangeMd5(rangeGetContentMd5)
+                    .setOpenOptions(openOptions),
+                timeout, context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }
@@ -1369,13 +1384,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout, Context context) {
+    public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout,
+        Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
         Context finalContext = context;
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<BlobProperties> response = blockBlobClient.downloadToFileWithResponse(
-                new BlobDownloadToFileOptions(options.getFilePath())
+            Response<BlobProperties> response
+                = blockBlobClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
                     .setRange(Transforms.toBlobRange(options.getRange()))
                     .setParallelTransferOptions(options.getParallelTransferOptions())
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
@@ -1449,20 +1465,9 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<DataLakeFileClient> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
-
-        Mono<Response<DataLakeFileClient>> response =
-            dataLakeFileAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
-                    sourceRequestConditions, destinationRequestConditions, context)
-                .map(asyncResponse ->
-                    new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
-                        asyncResponse.getHeaders(),
-                        new DataLakeFileClient(new DataLakeFileAsyncClient(asyncResponse.getValue()),
-                            new SpecializedBlobClientBuilder()
-                                .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
-                                .buildBlockBlobClient())));
-
-        Response<DataLakeFileClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-        return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
+        Response<DataLakePathClient> response = renameWithResponseWithTimeout(destinationFileSystem, destinationPath,
+            sourceRequestConditions, destinationRequestConditions, timeout, context);
+        return new SimpleResponse<>(response, new DataLakeFileClient(response.getValue()));
     }
 
     /**
@@ -1529,17 +1534,9 @@ public class DataLakeFileClient extends DataLakePathClient {
      * that represents the stream to use for reading the query response.
      */
     public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
-
-        // Data to subscribe to and read from.
-        FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(queryOptions)
-            .block();
-
-        // Create input stream from the data.
-        if (response == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
-        }
-        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blockBlobClient.openQueryInputStreamWithResponse(Transforms.toBlobQueryOptions(queryOptions)),
+            LOGGER);
     }
 
     /**
@@ -1613,8 +1610,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public FileQueryResponse queryWithResponse(FileQueryOptions queryOptions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            BlobQueryResponse response = blockBlobClient.queryWithResponse(
-                Transforms.toBlobQueryOptions(queryOptions), timeout, context);
+            BlobQueryResponse response
+                = blockBlobClient.queryWithResponse(Transforms.toBlobQueryOptions(queryOptions), timeout, context);
             return Transforms.toFileQueryResponse(response);
         }, LOGGER);
     }
@@ -1662,9 +1659,31 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options,
-        Duration timeout, Context context) {
-        Mono<Response<Void>> response = this.dataLakeFileAsyncClient.scheduleDeletionWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    public Response<Void> scheduleDeletionWithResponse(FileScheduleDeletionOptions options, Duration timeout,
+        Context context) {
+        PathExpiryOptions pathExpiryOptions;
+        Context finalContext = context == null ? Context.NONE : context;
+        String expiresOn;
+        if (options != null && options.getExpiresOn() != null) {
+            pathExpiryOptions = PathExpiryOptions.ABSOLUTE;
+            expiresOn = new DateTimeRfc1123(options.getExpiresOn()).toString();
+        } else if (options != null && options.getTimeToExpire() != null) {
+            if (options.getExpiryRelativeTo() == FileExpirationOffset.CREATION_TIME) {
+                pathExpiryOptions = PathExpiryOptions.RELATIVE_TO_CREATION;
+            } else {
+                pathExpiryOptions = PathExpiryOptions.RELATIVE_TO_NOW;
+            }
+            expiresOn = Long.toString(options.getTimeToExpire().toMillis());
+        } else {
+            pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
+            expiresOn = null;
+        }
+
+        Callable<ResponseBase<PathsSetExpiryHeaders, Void>> operation = () -> this.blobDataLakeStorage.getPaths()
+            .setExpiryWithResponse(pathExpiryOptions, null, null, expiresOn, finalContext);
+
+        ResponseBase<PathsSetExpiryHeaders, Void> response
+            = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
+        return new SimpleResponse<>(response, null);
     }
 }

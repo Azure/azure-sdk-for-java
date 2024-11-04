@@ -23,7 +23,7 @@ public final class LinkedServicesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"qeywmqhnl\",\"connectVia\":{\"referenceName\":\"fqglvflxltngmulp\",\"parameters\":{\"ymybryvlhvrgjpmz\":\"dataorkzwuppvgqvfz\",\"xqwy\":\"databgitkowflc\",\"y\":\"datavuaiqqgay\"}},\"description\":\"jdvtlygwxilbaz\",\"parameters\":{\"qzwqlh\":{\"type\":\"Object\",\"defaultValue\":\"dataslbrowbfsly\"},\"wlernchdxpsonkk\":{\"type\":\"SecureString\",\"defaultValue\":\"datajzrifgubpno\"}},\"annotations\":[\"datamojz\",\"datangmkeunpb\",\"datamssnacg\",\"datawmqgya\"],\"\":{\"qyc\":\"dataxwxnnjvodqne\",\"g\":\"datanrctrpu\"}},\"name\":\"o\",\"type\":\"yvwxcerhhzjh\",\"etag\":\"ynszadgv\",\"id\":\"oxmlb\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"version\":\"ubsidwgya\",\"connectVia\":{\"referenceName\":\"pefs\",\"parameters\":{\"fhsckecume\":\"datadcmjfieydtnpqtwo\",\"koaxstqqjqliyxze\":\"datagoaxtwtkkmuir\",\"oiaotaaxluovzm\":\"dataiiudnmojjmimy\",\"ltblm\":\"datajirp\"}},\"description\":\"bafcmsotudnkr\",\"parameters\":{\"eel\":{\"type\":\"Int\",\"defaultValue\":\"dataqeiguxix\"}},\"annotations\":[\"datavinumd\"],\"\":{\"rn\":\"datayvz\",\"obagaigtpjjz\":\"datakany\",\"wd\":\"dataqolmoifxli\"}},\"name\":\"qxqjvjubjqjxobm\",\"type\":\"jtzatr\",\"etag\":\"rneugbupkjyosq\",\"id\":\"xedkkdk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class LinkedServicesListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LinkedServiceResource> response
-            = manager.linkedServices().listByFactory("h", "sbx", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByFactory("grcjoycqndgbxtz", "teszohntch", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oxmlb", response.iterator().next().id());
-        Assertions.assertEquals("fqglvflxltngmulp",
-            response.iterator().next().properties().connectVia().referenceName());
-        Assertions.assertEquals("jdvtlygwxilbaz", response.iterator().next().properties().description());
-        Assertions.assertEquals(ParameterType.OBJECT,
-            response.iterator().next().properties().parameters().get("qzwqlh").type());
+        Assertions.assertEquals("xedkkdk", response.iterator().next().id());
+        Assertions.assertEquals("ubsidwgya", response.iterator().next().properties().version());
+        Assertions.assertEquals("pefs", response.iterator().next().properties().connectVia().referenceName());
+        Assertions.assertEquals("bafcmsotudnkr", response.iterator().next().properties().description());
+        Assertions.assertEquals(ParameterType.INT,
+            response.iterator().next().properties().parameters().get("eel").type());
     }
 }

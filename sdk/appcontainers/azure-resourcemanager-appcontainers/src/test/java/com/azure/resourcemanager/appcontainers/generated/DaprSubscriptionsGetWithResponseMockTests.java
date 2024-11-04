@@ -6,61 +6,44 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscription;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DaprSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"pubsubName\":\"suaawj\",\"topic\":\"xwjnfcz\",\"deadLetterTopic\":\"nii\",\"routes\":{\"rules\":[{\"match\":\"ba\",\"path\":\"sjtgirnbgmgmddo\"},{\"match\":\"mynltwmpftmfoeaj\",\"path\":\"syxwetamfdd\"}],\"default\":\"lkpzwbhnrecchd\"},\"scopes\":[\"muhkahm\",\"edbiucvkhhwmjpjb\",\"eunxcqrrihufoi\",\"ppiybxv\"],\"metadata\":{\"zvkunhdi\":\"uzpbgkzcscpi\",\"cfqp\":\"juktirzkaugpucd\",\"rjlvzklkvbgi\":\"wgofmhx\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":86596689,\"maxAwaitDurationMs\":1162128652}},\"id\":\"bishjvpzaptuo\",\"name\":\"kaoizjixw\",\"type\":\"gcdiyk\"}";
+            = "{\"properties\":{\"pubsubName\":\"gtxdhmfppinmg\",\"topic\":\"esmkwtzgf\",\"deadLetterTopic\":\"gjhxerxl\",\"routes\":{\"rules\":[{\"match\":\"tqhvmmniiqyholhj\",\"path\":\"kb\"},{\"match\":\"icnq\",\"path\":\"ct\"},{\"match\":\"pblxkrkqgvxrkt\",\"path\":\"jigcwtspanb\"}],\"default\":\"asevc\"},\"scopes\":[\"p\"],\"metadata\":{\"ybruhola\":\"d\",\"lonbzaowcahdkmb\":\"mwcgimmrimaabsq\",\"glkvbgukbsv\":\"smihrijezbfsjwfc\",\"ygnbknhjgclxaxwc\":\"wyo\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1452046394,\"maxAwaitDurationMs\":2032469123}},\"id\":\"ucszgh\",\"name\":\"oaqipmnxclfrs\",\"type\":\"zrn\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DaprSubscription response = manager.daprSubscriptions()
-            .getWithResponse("btimpkjblor", "s", "hqhud", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("pfixoskkzd", "iv", "ujybsrwz", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("suaawj", response.pubsubName());
-        Assertions.assertEquals("xwjnfcz", response.topic());
-        Assertions.assertEquals("nii", response.deadLetterTopic());
-        Assertions.assertEquals("ba", response.routes().rules().get(0).match());
-        Assertions.assertEquals("sjtgirnbgmgmddo", response.routes().rules().get(0).path());
-        Assertions.assertEquals("lkpzwbhnrecchd", response.routes().defaultProperty());
-        Assertions.assertEquals("muhkahm", response.scopes().get(0));
-        Assertions.assertEquals("uzpbgkzcscpi", response.metadata().get("zvkunhdi"));
+        Assertions.assertEquals("gtxdhmfppinmg", response.pubsubName());
+        Assertions.assertEquals("esmkwtzgf", response.topic());
+        Assertions.assertEquals("gjhxerxl", response.deadLetterTopic());
+        Assertions.assertEquals("tqhvmmniiqyholhj", response.routes().rules().get(0).match());
+        Assertions.assertEquals("kb", response.routes().rules().get(0).path());
+        Assertions.assertEquals("asevc", response.routes().defaultProperty());
+        Assertions.assertEquals("p", response.scopes().get(0));
+        Assertions.assertEquals("d", response.metadata().get("ybruhola"));
         Assertions.assertEquals(false, response.bulkSubscribe().enabled());
-        Assertions.assertEquals(86596689, response.bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(1162128652, response.bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals(1452046394, response.bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(2032469123, response.bulkSubscribe().maxAwaitDurationMs());
     }
 }

@@ -19,36 +19,35 @@ public final class NetezzaTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetezzaTableDataset model = BinaryData.fromString(
-            "{\"type\":\"zrinlpxngzzx\",\"typeProperties\":{\"tableName\":\"datanlsyia\",\"table\":\"dataistcjhatclpp\",\"schema\":\"datastmrycpanapfa\"},\"description\":\"gqnzmzctbxzjkpif\",\"structure\":\"datacvbdozwbsk\",\"schema\":\"dataafzsq\",\"linkedServiceName\":{\"referenceName\":\"binpxmiwtkqifpv\",\"parameters\":{\"buxtwgbawshra\":\"datakcdnzoxl\",\"ugqcglmadfztof\":\"dataq\",\"ayfmcerfxfeiqbas\":\"datavqlauuag\"}},\"parameters\":{\"o\":{\"type\":\"Int\",\"defaultValue\":\"dataipssv\"},\"pdqqbtok\":{\"type\":\"Int\",\"defaultValue\":\"datacqcjozzjku\"},\"rhwetto\":{\"type\":\"SecureString\",\"defaultValue\":\"datauzxllbpw\"}},\"annotations\":[\"dataz\",\"dataxyvtkzbhizxp\"],\"folder\":{\"name\":\"dmwnfhmjusuqn\"},\"\":{\"nirmidtvhjc\":\"datahvlxudheka\"}}")
+            "{\"type\":\"NetezzaTable\",\"typeProperties\":{\"tableName\":\"datadvfjd\",\"table\":\"dataephtoshqtuar\",\"schema\":\"datagujrcnxaeypyq\"},\"description\":\"zfyasyddqbws\",\"structure\":\"datawyyeomiflrvfe\",\"schema\":\"datactshwfrhhasabvau\",\"linkedServiceName\":{\"referenceName\":\"nwwumkbpg\",\"parameters\":{\"rpdgitenyuksli\":\"databwtpwbjlpfwuq\",\"amrplanch\":\"datampnxg\",\"z\":\"dataotmmxlmxejwyv\",\"sbeqieiuxhj\":\"datajwvtuekbbypqsm\"}},\"parameters\":{\"zyxvta\":{\"type\":\"String\",\"defaultValue\":\"datalnjjhrgkjjpcpih\"},\"urdgc\":{\"type\":\"Float\",\"defaultValue\":\"dataatoidne\"}},\"annotations\":[\"datanaqve\",\"datagnpuelrnanbrpkoc\",\"dataxfbagegjtjltcki\"],\"folder\":{\"name\":\"gfagijxmdbo\"},\"\":{\"invzsod\":\"datahxhahuq\"}}")
             .toObject(NetezzaTableDataset.class);
-        Assertions.assertEquals("gqnzmzctbxzjkpif", model.description());
-        Assertions.assertEquals("binpxmiwtkqifpv", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("o").type());
-        Assertions.assertEquals("dmwnfhmjusuqn", model.folder().name());
+        Assertions.assertEquals("zfyasyddqbws", model.description());
+        Assertions.assertEquals("nwwumkbpg", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("zyxvta").type());
+        Assertions.assertEquals("gfagijxmdbo", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetezzaTableDataset model = new NetezzaTableDataset().withDescription("gqnzmzctbxzjkpif")
-            .withStructure("datacvbdozwbsk")
-            .withSchema("dataafzsq")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("binpxmiwtkqifpv")
-                .withParameters(mapOf("buxtwgbawshra", "datakcdnzoxl", "ugqcglmadfztof", "dataq", "ayfmcerfxfeiqbas",
-                    "datavqlauuag")))
-            .withParameters(mapOf("o",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataipssv"), "pdqqbtok",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datacqcjozzjku"), "rhwetto",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datauzxllbpw")))
-            .withAnnotations(Arrays.asList("dataz", "dataxyvtkzbhizxp"))
-            .withFolder(new DatasetFolder().withName("dmwnfhmjusuqn"))
-            .withTableName("datanlsyia")
-            .withTable("dataistcjhatclpp")
-            .withSchemaTypePropertiesSchema("datastmrycpanapfa");
+        NetezzaTableDataset model = new NetezzaTableDataset().withDescription("zfyasyddqbws")
+            .withStructure("datawyyeomiflrvfe")
+            .withSchema("datactshwfrhhasabvau")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("nwwumkbpg")
+                .withParameters(mapOf("rpdgitenyuksli", "databwtpwbjlpfwuq", "amrplanch", "datampnxg", "z",
+                    "dataotmmxlmxejwyv", "sbeqieiuxhj", "datajwvtuekbbypqsm")))
+            .withParameters(mapOf("zyxvta",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datalnjjhrgkjjpcpih"),
+                "urdgc", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataatoidne")))
+            .withAnnotations(Arrays.asList("datanaqve", "datagnpuelrnanbrpkoc", "dataxfbagegjtjltcki"))
+            .withFolder(new DatasetFolder().withName("gfagijxmdbo"))
+            .withTableName("datadvfjd")
+            .withTable("dataephtoshqtuar")
+            .withSchemaTypePropertiesSchema("datagujrcnxaeypyq");
         model = BinaryData.fromObject(model).toObject(NetezzaTableDataset.class);
-        Assertions.assertEquals("gqnzmzctbxzjkpif", model.description());
-        Assertions.assertEquals("binpxmiwtkqifpv", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("o").type());
-        Assertions.assertEquals("dmwnfhmjusuqn", model.folder().name());
+        Assertions.assertEquals("zfyasyddqbws", model.description());
+        Assertions.assertEquals("nwwumkbpg", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("zyxvta").type());
+        Assertions.assertEquals("gfagijxmdbo", model.folder().name());
     }
 
     // Use "Map.of" if available

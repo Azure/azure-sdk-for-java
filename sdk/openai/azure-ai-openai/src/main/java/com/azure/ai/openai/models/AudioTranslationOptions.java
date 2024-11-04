@@ -34,8 +34,10 @@ public final class AudioTranslationOptions {
 
     /*
      * The sampling temperature, between 0 and 1.
-     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-     * If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
+     * and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain
+     * thresholds are hit.
      */
     @Generated
     private Double temperature;

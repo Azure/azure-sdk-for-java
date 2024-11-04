@@ -81,6 +81,13 @@ public interface Job {
     JobProvisioningState provisioningState();
 
     /**
+     * Gets the runningState property: Current running state of the job.
+     * 
+     * @return the runningState value.
+     */
+    JobRunningState runningState();
+
+    /**
      * Gets the environmentId property: Resource ID of environment.
      * 
      * @return the environmentId value.
@@ -487,4 +494,44 @@ public interface Job {
      * @return container Apps Job Secrets Collection ARM resource.
      */
     JobSecretsCollection listSecrets();
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job resume();
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job resume(Context context);
+
+    /**
+     * Suspends a job.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job suspend();
+
+    /**
+     * Suspends a job.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job suspend(Context context);
 }

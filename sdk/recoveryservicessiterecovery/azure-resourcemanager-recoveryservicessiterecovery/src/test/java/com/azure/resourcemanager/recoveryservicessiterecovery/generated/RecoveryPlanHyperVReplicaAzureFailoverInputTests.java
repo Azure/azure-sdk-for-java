@@ -22,9 +22,10 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanHyperVReplicaAzureFailoverInput model = new RecoveryPlanHyperVReplicaAzureFailoverInput()
-            .withPrimaryKekCertificatePfx("vtzldzchubagwn").withSecondaryKekCertificatePfx("uvigv")
-            .withRecoveryPointType(HyperVReplicaAzureRpRecoveryPointType.LATEST);
+        RecoveryPlanHyperVReplicaAzureFailoverInput model
+            = new RecoveryPlanHyperVReplicaAzureFailoverInput().withPrimaryKekCertificatePfx("vtzldzchubagwn")
+                .withSecondaryKekCertificatePfx("uvigv")
+                .withRecoveryPointType(HyperVReplicaAzureRpRecoveryPointType.LATEST);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanHyperVReplicaAzureFailoverInput.class);
         Assertions.assertEquals("vtzldzchubagwn", model.primaryKekCertificatePfx());
         Assertions.assertEquals("uvigv", model.secondaryKekCertificatePfx());

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a server trust certificate. */
+/**
+ * The properties of a server trust certificate.
+ */
 @Fluent
-public final class ServerTrustCertificateProperties {
+public final class ServerTrustCertificateProperties implements JsonSerializable<ServerTrustCertificateProperties> {
     /*
      * The certificate public blob
      */
-    @JsonProperty(value = "publicBlob")
     private String publicBlob;
 
     /*
      * The certificate thumbprint
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * The certificate name
      */
-    @JsonProperty(value = "certificateName", access = JsonProperty.Access.WRITE_ONLY)
     private String certificateName;
 
-    /** Creates an instance of ServerTrustCertificateProperties class. */
+    /**
+     * Creates an instance of ServerTrustCertificateProperties class.
+     */
     public ServerTrustCertificateProperties() {
     }
 
     /**
      * Get the publicBlob property: The certificate public blob.
-     *
+     * 
      * @return the publicBlob value.
      */
     public String publicBlob() {
@@ -43,7 +48,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Set the publicBlob property: The certificate public blob.
-     *
+     * 
      * @param publicBlob the publicBlob value to set.
      * @return the ServerTrustCertificateProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Get the thumbprint property: The certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -63,7 +68,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Get the certificateName property: The certificate name.
-     *
+     * 
      * @return the certificateName value.
      */
     public String certificateName() {
@@ -72,9 +77,50 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicBlob", this.publicBlob);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerTrustCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerTrustCertificateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerTrustCertificateProperties.
+     */
+    public static ServerTrustCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerTrustCertificateProperties deserializedServerTrustCertificateProperties
+                = new ServerTrustCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicBlob".equals(fieldName)) {
+                    deserializedServerTrustCertificateProperties.publicBlob = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedServerTrustCertificateProperties.thumbprint = reader.getString();
+                } else if ("certificateName".equals(fieldName)) {
+                    deserializedServerTrustCertificateProperties.certificateName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerTrustCertificateProperties;
+        });
     }
 }

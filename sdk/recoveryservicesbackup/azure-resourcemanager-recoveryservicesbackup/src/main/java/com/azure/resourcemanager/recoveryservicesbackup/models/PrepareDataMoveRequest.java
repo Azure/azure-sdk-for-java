@@ -160,16 +160,19 @@ public final class PrepareDataMoveRequest {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model PrepareDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model PrepareDataMoveRequest"));
         }
         if (targetRegion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetRegion in model PrepareDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetRegion in model PrepareDataMoveRequest"));
         }
         if (dataMoveLevel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataMoveLevel in model PrepareDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataMoveLevel in model PrepareDataMoveRequest"));
         }
     }
 

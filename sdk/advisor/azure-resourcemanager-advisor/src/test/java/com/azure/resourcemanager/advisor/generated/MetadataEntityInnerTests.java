@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataEntityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataEntityInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"mhquvgjxp\",\"type\":\"czmehmtzopbsp\",\"name\":\"upi\",\"properties\":{\"displayName\":\"ybbejhph\",\"dependsOn\":[\"msxaobhd\",\"bmtqioq\",\"zehtbmu\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"hwlrx\",\"displayName\":\"qsoqijgkd\"},{\"id\":\"pazlobcufpdz\",\"displayName\":\"btcqq\"}]}}")
-                .toObject(MetadataEntityInner.class);
+        MetadataEntityInner model = BinaryData.fromString(
+            "{\"id\":\"mhquvgjxp\",\"type\":\"czmehmtzopbsp\",\"name\":\"upi\",\"properties\":{\"displayName\":\"ybbejhph\",\"dependsOn\":[\"msxaobhd\",\"bmtqioq\",\"zehtbmu\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"hwlrx\",\"displayName\":\"qsoqijgkd\"},{\"id\":\"pazlobcufpdz\",\"displayName\":\"btcqq\"}]}}")
+            .toObject(MetadataEntityInner.class);
         Assertions.assertEquals("mhquvgjxp", model.id());
         Assertions.assertEquals("czmehmtzopbsp", model.type());
         Assertions.assertEquals("upi", model.name());
@@ -31,19 +29,15 @@ public final class MetadataEntityInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataEntityInner model =
-            new MetadataEntityInner()
-                .withId("mhquvgjxp")
-                .withType("czmehmtzopbsp")
-                .withName("upi")
-                .withDisplayName("ybbejhph")
-                .withDependsOn(Arrays.asList("msxaobhd", "bmtqioq", "zehtbmu"))
-                .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS))
-                .withSupportedValues(
-                    Arrays
-                        .asList(
-                            new MetadataSupportedValueDetail().withId("hwlrx").withDisplayName("qsoqijgkd"),
-                            new MetadataSupportedValueDetail().withId("pazlobcufpdz").withDisplayName("btcqq")));
+        MetadataEntityInner model = new MetadataEntityInner().withId("mhquvgjxp")
+            .withType("czmehmtzopbsp")
+            .withName("upi")
+            .withDisplayName("ybbejhph")
+            .withDependsOn(Arrays.asList("msxaobhd", "bmtqioq", "zehtbmu"))
+            .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS))
+            .withSupportedValues(
+                Arrays.asList(new MetadataSupportedValueDetail().withId("hwlrx").withDisplayName("qsoqijgkd"),
+                    new MetadataSupportedValueDetail().withId("pazlobcufpdz").withDisplayName("btcqq")));
         model = BinaryData.fromObject(model).toObject(MetadataEntityInner.class);
         Assertions.assertEquals("mhquvgjxp", model.id());
         Assertions.assertEquals("czmehmtzopbsp", model.type());

@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public final class GlobalParametersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GlobalParameters_Create.json
      */
     /**
      * Sample code: GlobalParameters_Create.
@@ -29,7 +30,8 @@ public final class GlobalParametersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GlobalParameters_Update.json
      */
     /**
      * Sample code: GlobalParameters_Update.

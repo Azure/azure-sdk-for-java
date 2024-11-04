@@ -63,43 +63,54 @@ public final class BlobSasPermission {
                 case 'r':
                     permissions.readPermission = true;
                     break;
+
                 case 'a':
                     permissions.addPermission = true;
                     break;
+
                 case 'c':
                     permissions.createPermission = true;
                     break;
+
                 case 'w':
                     permissions.writePermission = true;
                     break;
+
                 case 'd':
                     permissions.deletePermission = true;
                     break;
+
                 case 'x':
                     permissions.deleteVersionPermission = true;
                     break;
+
                 case 'y':
                     permissions.permanentDeletePermission = true;
                     break;
+
                 case 't':
                     permissions.tagsPermission = true;
                     break;
+
                 case 'l':
                     permissions.listPermission = true;
                     break;
+
                 case 'm':
                     permissions.movePermission = true;
                     break;
+
                 case 'e':
                     permissions.executePermission = true;
                     break;
+
                 case 'i':
                     permissions.immutabilityPolicyPermission = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permissionString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionString, c));
             }
         }
         return permissions;

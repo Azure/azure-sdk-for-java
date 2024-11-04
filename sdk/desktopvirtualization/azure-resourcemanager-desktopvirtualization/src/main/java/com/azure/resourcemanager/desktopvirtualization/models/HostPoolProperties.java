@@ -7,109 +7,118 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPropertiesInner;
 import java.util.List;
 
-/** An immutable client-side representation of HostPoolProperties. */
+/**
+ * An immutable client-side representation of HostPoolProperties.
+ */
 public interface HostPoolProperties {
     /**
      * Gets the objectId property: ObjectId of HostPool. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     String objectId();
 
     /**
      * Gets the friendlyName property: Friendly name of HostPool.
-     *
+     * 
      * @return the friendlyName value.
      */
     String friendlyName();
 
     /**
      * Gets the description property: Description of HostPool.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the hostPoolType property: HostPool type for desktop.
-     *
+     * 
      * @return the hostPoolType value.
      */
     HostPoolType hostPoolType();
 
     /**
      * Gets the personalDesktopAssignmentType property: PersonalDesktopAssignment type for HostPool.
-     *
+     * 
      * @return the personalDesktopAssignmentType value.
      */
     PersonalDesktopAssignmentType personalDesktopAssignmentType();
 
     /**
      * Gets the customRdpProperty property: Custom rdp property of HostPool.
-     *
+     * 
      * @return the customRdpProperty value.
      */
     String customRdpProperty();
 
     /**
      * Gets the maxSessionLimit property: The max session limit of HostPool.
-     *
+     * 
      * @return the maxSessionLimit value.
      */
     Integer maxSessionLimit();
 
     /**
      * Gets the loadBalancerType property: The type of the load balancer.
-     *
+     * 
      * @return the loadBalancerType value.
      */
     LoadBalancerType loadBalancerType();
 
     /**
      * Gets the ring property: The ring number of HostPool.
-     *
+     * 
      * @return the ring value.
      */
     Integer ring();
 
     /**
      * Gets the validationEnvironment property: Is validation environment.
-     *
+     * 
      * @return the validationEnvironment value.
      */
     Boolean validationEnvironment();
 
     /**
      * Gets the registrationInfo property: The registration info of HostPool.
-     *
+     * 
      * @return the registrationInfo value.
      */
     RegistrationInfo registrationInfo();
 
     /**
      * Gets the vmTemplate property: VM template for sessionhosts configuration within hostpool.
-     *
+     * 
      * @return the vmTemplate value.
      */
     String vmTemplate();
 
     /**
      * Gets the applicationGroupReferences property: List of applicationGroup links.
-     *
+     * 
      * @return the applicationGroupReferences value.
      */
     List<String> applicationGroupReferences();
 
     /**
+     * Gets the appAttachPackageReferences property: List of App Attach Package links.
+     * 
+     * @return the appAttachPackageReferences value.
+     */
+    List<String> appAttachPackageReferences();
+
+    /**
      * Gets the ssoadfsAuthority property: URL to customer ADFS server for signing WVD SSO certificates.
-     *
+     * 
      * @return the ssoadfsAuthority value.
      */
     String ssoadfsAuthority();
 
     /**
      * Gets the ssoClientId property: ClientId for the registered Relying Party used to issue WVD SSO certificates.
-     *
+     * 
      * @return the ssoClientId value.
      */
     String ssoClientId();
@@ -117,14 +126,14 @@ public interface HostPoolProperties {
     /**
      * Gets the ssoClientSecretKeyVaultPath property: Path to Azure KeyVault storing the secret used for communication
      * to ADFS.
-     *
+     * 
      * @return the ssoClientSecretKeyVaultPath value.
      */
     String ssoClientSecretKeyVaultPath();
 
     /**
      * Gets the ssoSecretType property: The type of single sign on Secret Type.
-     *
+     * 
      * @return the ssoSecretType value.
      */
     SsoSecretType ssoSecretType();
@@ -132,21 +141,21 @@ public interface HostPoolProperties {
     /**
      * Gets the preferredAppGroupType property: The type of preferred application group type, default to Desktop
      * Application Group.
-     *
+     * 
      * @return the preferredAppGroupType value.
      */
     PreferredAppGroupType preferredAppGroupType();
 
     /**
      * Gets the startVMOnConnect property: The flag to turn on/off StartVMOnConnect feature.
-     *
+     * 
      * @return the startVMOnConnect value.
      */
     Boolean startVMOnConnect();
 
     /**
      * Gets the cloudPcResource property: Is cloud pc resource.
-     *
+     * 
      * @return the cloudPcResource value.
      */
     Boolean cloudPcResource();
@@ -154,7 +163,7 @@ public interface HostPoolProperties {
     /**
      * Gets the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
      * networks, Disabled allows this resource to only be accessed via private endpoints.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     HostpoolPublicNetworkAccess publicNetworkAccess();
@@ -162,7 +171,7 @@ public interface HostPoolProperties {
     /**
      * Gets the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
-     *
+     * 
      * @return the agentUpdate value.
      */
     AgentUpdateProperties agentUpdate();
@@ -170,14 +179,14 @@ public interface HostPoolProperties {
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connection associated with the specified
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     HostPoolPropertiesInner innerModel();

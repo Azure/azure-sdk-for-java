@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * disk encryption set resource update properties.
  */
 @Fluent
-public final class DiskEncryptionSetUpdateProperties {
+public final class DiskEncryptionSetUpdateProperties implements JsonSerializable<DiskEncryptionSetUpdateProperties> {
     /*
      * The type of key used to encrypt the data of the disk.
      */
-    @JsonProperty(value = "encryptionType")
     private DiskEncryptionSetType encryptionType;
 
     /*
      * Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots
      */
-    @JsonProperty(value = "activeKey")
     private KeyForDiskEncryptionSet activeKey;
 
     /*
      * Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
      */
-    @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
 
     /*
      * Multi-tenant application client id to access key vault in a different tenant. Setting the value to 'None' will
      * clear the property.
      */
-    @JsonProperty(value = "federatedClientId")
     private String federatedClientId;
 
     /**
@@ -111,8 +111,8 @@ public final class DiskEncryptionSetUpdateProperties {
     }
 
     /**
-     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different
-     * tenant. Setting the value to 'None' will clear the property.
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
      * 
      * @return the federatedClientId value.
      */
@@ -121,8 +121,8 @@ public final class DiskEncryptionSetUpdateProperties {
     }
 
     /**
-     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different
-     * tenant. Setting the value to 'None' will clear the property.
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
      * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the DiskEncryptionSetUpdateProperties object itself.
@@ -141,5 +141,54 @@ public final class DiskEncryptionSetUpdateProperties {
         if (activeKey() != null) {
             activeKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encryptionType",
+            this.encryptionType == null ? null : this.encryptionType.toString());
+        jsonWriter.writeJsonField("activeKey", this.activeKey);
+        jsonWriter.writeBooleanField("rotationToLatestKeyVersionEnabled", this.rotationToLatestKeyVersionEnabled);
+        jsonWriter.writeStringField("federatedClientId", this.federatedClientId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskEncryptionSetUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskEncryptionSetUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskEncryptionSetUpdateProperties.
+     */
+    public static DiskEncryptionSetUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskEncryptionSetUpdateProperties deserializedDiskEncryptionSetUpdateProperties
+                = new DiskEncryptionSetUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionType".equals(fieldName)) {
+                    deserializedDiskEncryptionSetUpdateProperties.encryptionType
+                        = DiskEncryptionSetType.fromString(reader.getString());
+                } else if ("activeKey".equals(fieldName)) {
+                    deserializedDiskEncryptionSetUpdateProperties.activeKey = KeyForDiskEncryptionSet.fromJson(reader);
+                } else if ("rotationToLatestKeyVersionEnabled".equals(fieldName)) {
+                    deserializedDiskEncryptionSetUpdateProperties.rotationToLatestKeyVersionEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("federatedClientId".equals(fieldName)) {
+                    deserializedDiskEncryptionSetUpdateProperties.federatedClientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskEncryptionSetUpdateProperties;
+        });
     }
 }

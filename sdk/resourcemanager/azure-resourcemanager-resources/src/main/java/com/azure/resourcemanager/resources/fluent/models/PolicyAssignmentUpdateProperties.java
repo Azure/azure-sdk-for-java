@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.OverrideModel;
 import com.azure.resourcemanager.resources.models.ResourceSelector;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The policy assignment properties for Patch request. */
+/**
+ * The policy assignment properties for Patch request.
+ */
 @Fluent
-public final class PolicyAssignmentUpdateProperties {
+public final class PolicyAssignmentUpdateProperties implements JsonSerializable<PolicyAssignmentUpdateProperties> {
     /*
      * The resource selector list to filter policies by resource properties.
      */
-    @JsonProperty(value = "resourceSelectors")
     private List<ResourceSelector> resourceSelectors;
 
     /*
      * The policy property value override.
      */
-    @JsonProperty(value = "overrides")
     private List<OverrideModel> overrides;
 
-    /** Creates an instance of PolicyAssignmentUpdateProperties class. */
+    /**
+     * Creates an instance of PolicyAssignmentUpdateProperties class.
+     */
     public PolicyAssignmentUpdateProperties() {
     }
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -40,7 +46,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentUpdateProperties object itself.
      */
@@ -51,7 +57,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -60,7 +66,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentUpdateProperties object itself.
      */
@@ -71,7 +77,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,5 +87,49 @@ public final class PolicyAssignmentUpdateProperties {
         if (overrides() != null) {
             overrides().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceSelectors", this.resourceSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("overrides", this.overrides, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentUpdateProperties.
+     */
+    public static PolicyAssignmentUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentUpdateProperties deserializedPolicyAssignmentUpdateProperties
+                = new PolicyAssignmentUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceSelectors".equals(fieldName)) {
+                    List<ResourceSelector> resourceSelectors
+                        = reader.readArray(reader1 -> ResourceSelector.fromJson(reader1));
+                    deserializedPolicyAssignmentUpdateProperties.resourceSelectors = resourceSelectors;
+                } else if ("overrides".equals(fieldName)) {
+                    List<OverrideModel> overrides = reader.readArray(reader1 -> OverrideModel.fromJson(reader1));
+                    deserializedPolicyAssignmentUpdateProperties.overrides = overrides;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentUpdateProperties;
+        });
     }
 }

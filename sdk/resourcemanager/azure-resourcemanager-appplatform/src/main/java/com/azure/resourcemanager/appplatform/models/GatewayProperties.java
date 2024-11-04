@@ -5,90 +5,81 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Spring Cloud Gateway properties payload.
  */
 @Fluent
-public final class GatewayProperties {
+public final class GatewayProperties implements JsonSerializable<GatewayProperties> {
     /*
      * State of the Spring Cloud Gateway.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GatewayProvisioningState provisioningState;
 
     /*
      * Indicates whether the Spring Cloud Gateway exposes endpoint.
      */
-    @JsonProperty(value = "public")
     private Boolean publicProperty;
 
     /*
      * URL of the Spring Cloud Gateway, exposed when 'public' is true.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * Indicate if only https is allowed.
      */
-    @JsonProperty(value = "httpsOnly")
     private Boolean httpsOnly;
 
     /*
      * Single sign-on related configuration
      */
-    @JsonProperty(value = "ssoProperties")
     private SsoProperties ssoProperties;
 
     /*
      * API metadata property for Spring Cloud Gateway
      */
-    @JsonProperty(value = "apiMetadataProperties")
     private GatewayApiMetadataProperties apiMetadataProperties;
 
     /*
      * Cross-Origin Resource Sharing property
      */
-    @JsonProperty(value = "corsProperties")
     private GatewayCorsProperties corsProperties;
 
     /*
      * Client-Certification Authentication.
      */
-    @JsonProperty(value = "clientAuth")
     private GatewayPropertiesClientAuth clientAuth;
 
     /*
      * Collection of ApmReferences in service level
      */
-    @JsonProperty(value = "apms")
     private List<ApmReference> apms;
 
     /*
      * Environment variables of Spring Cloud Gateway
      */
-    @JsonProperty(value = "environmentVariables")
     private GatewayPropertiesEnvironmentVariables environmentVariables;
 
     /*
      * The requested resource quantity for required CPU and Memory.
      */
-    @JsonProperty(value = "resourceRequests")
     private GatewayResourceRequests resourceRequests;
 
     /*
      * Collection of instances belong to Spring Cloud Gateway.
      */
-    @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<GatewayInstance> instances;
 
     /*
      * Properties of the Spring Cloud Gateway Operator.
      */
-    @JsonProperty(value = "operatorProperties", access = JsonProperty.Access.WRITE_ONLY)
     private GatewayOperatorProperties operatorProperties;
 
     /**
@@ -346,5 +337,77 @@ public final class GatewayProperties {
         if (operatorProperties() != null) {
             operatorProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("public", this.publicProperty);
+        jsonWriter.writeBooleanField("httpsOnly", this.httpsOnly);
+        jsonWriter.writeJsonField("ssoProperties", this.ssoProperties);
+        jsonWriter.writeJsonField("apiMetadataProperties", this.apiMetadataProperties);
+        jsonWriter.writeJsonField("corsProperties", this.corsProperties);
+        jsonWriter.writeJsonField("clientAuth", this.clientAuth);
+        jsonWriter.writeArrayField("apms", this.apms, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("environmentVariables", this.environmentVariables);
+        jsonWriter.writeJsonField("resourceRequests", this.resourceRequests);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayProperties.
+     */
+    public static GatewayProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayProperties deserializedGatewayProperties = new GatewayProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedGatewayProperties.provisioningState
+                        = GatewayProvisioningState.fromString(reader.getString());
+                } else if ("public".equals(fieldName)) {
+                    deserializedGatewayProperties.publicProperty = reader.getNullable(JsonReader::getBoolean);
+                } else if ("url".equals(fieldName)) {
+                    deserializedGatewayProperties.url = reader.getString();
+                } else if ("httpsOnly".equals(fieldName)) {
+                    deserializedGatewayProperties.httpsOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ssoProperties".equals(fieldName)) {
+                    deserializedGatewayProperties.ssoProperties = SsoProperties.fromJson(reader);
+                } else if ("apiMetadataProperties".equals(fieldName)) {
+                    deserializedGatewayProperties.apiMetadataProperties = GatewayApiMetadataProperties.fromJson(reader);
+                } else if ("corsProperties".equals(fieldName)) {
+                    deserializedGatewayProperties.corsProperties = GatewayCorsProperties.fromJson(reader);
+                } else if ("clientAuth".equals(fieldName)) {
+                    deserializedGatewayProperties.clientAuth = GatewayPropertiesClientAuth.fromJson(reader);
+                } else if ("apms".equals(fieldName)) {
+                    List<ApmReference> apms = reader.readArray(reader1 -> ApmReference.fromJson(reader1));
+                    deserializedGatewayProperties.apms = apms;
+                } else if ("environmentVariables".equals(fieldName)) {
+                    deserializedGatewayProperties.environmentVariables
+                        = GatewayPropertiesEnvironmentVariables.fromJson(reader);
+                } else if ("resourceRequests".equals(fieldName)) {
+                    deserializedGatewayProperties.resourceRequests = GatewayResourceRequests.fromJson(reader);
+                } else if ("instances".equals(fieldName)) {
+                    List<GatewayInstance> instances = reader.readArray(reader1 -> GatewayInstance.fromJson(reader1));
+                    deserializedGatewayProperties.instances = instances;
+                } else if ("operatorProperties".equals(fieldName)) {
+                    deserializedGatewayProperties.operatorProperties = GatewayOperatorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayProperties;
+        });
     }
 }

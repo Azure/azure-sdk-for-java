@@ -71,8 +71,8 @@ public interface QueryPacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
-    Response<LogAnalyticsQueryPack> createOrUpdateWithoutNameWithResponse(
-        String resourceGroupName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload, Context context);
+    Response<LogAnalyticsQueryPack> createOrUpdateWithoutNameWithResponse(String resourceGroupName,
+        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload, Context context);
 
     /**
      * Creates a Log Analytics QueryPack. Note: You cannot specify a different value for InstrumentationKey nor AppId in
@@ -86,8 +86,8 @@ public interface QueryPacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Log Analytics QueryPack definition.
      */
-    LogAnalyticsQueryPack createOrUpdateWithoutName(
-        String resourceGroupName, LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
+    LogAnalyticsQueryPack createOrUpdateWithoutName(String resourceGroupName,
+        LogAnalyticsQueryPackInner logAnalyticsQueryPackPayload);
 
     /**
      * Deletes a Log Analytics QueryPack.
@@ -124,8 +124,8 @@ public interface QueryPacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Log Analytics QueryPack definition along with {@link Response}.
      */
-    Response<LogAnalyticsQueryPack> getByResourceGroupWithResponse(
-        String resourceGroupName, String queryPackName, Context context);
+    Response<LogAnalyticsQueryPack> getByResourceGroupWithResponse(String resourceGroupName, String queryPackName,
+        Context context);
 
     /**
      * Returns a Log Analytics QueryPack.

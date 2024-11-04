@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Application accelerator properties payload.
  */
 @Immutable
-public final class ApplicationAcceleratorProperties {
+public final class ApplicationAcceleratorProperties implements JsonSerializable<ApplicationAcceleratorProperties> {
     /*
      * State of the application accelerator.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationAcceleratorProvisioningState provisioningState;
 
     /*
      * Collection of components belong to application accelerator.
      */
-    @JsonProperty(value = "components", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationAcceleratorComponent> components;
 
     /**
@@ -58,5 +60,46 @@ public final class ApplicationAcceleratorProperties {
         if (components() != null) {
             components().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationAcceleratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationAcceleratorProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationAcceleratorProperties.
+     */
+    public static ApplicationAcceleratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationAcceleratorProperties deserializedApplicationAcceleratorProperties
+                = new ApplicationAcceleratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationAcceleratorProperties.provisioningState
+                        = ApplicationAcceleratorProvisioningState.fromString(reader.getString());
+                } else if ("components".equals(fieldName)) {
+                    List<ApplicationAcceleratorComponent> components
+                        = reader.readArray(reader1 -> ApplicationAcceleratorComponent.fromJson(reader1));
+                    deserializedApplicationAcceleratorProperties.components = components;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationAcceleratorProperties;
+        });
     }
 }

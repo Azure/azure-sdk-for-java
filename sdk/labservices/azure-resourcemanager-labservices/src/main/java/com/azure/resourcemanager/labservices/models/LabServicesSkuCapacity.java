@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The scale out/in options of the SKU. */
+/**
+ * The scale out/in options of the SKU.
+ */
 @Immutable
-public final class LabServicesSkuCapacity {
+public final class LabServicesSkuCapacity implements JsonSerializable<LabServicesSkuCapacity> {
     /*
      * The default capacity for this resource.
      */
-    @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private Long defaultProperty;
 
     /*
      * The lowest permitted capacity for this resource.
      */
-    @JsonProperty(value = "minimum", access = JsonProperty.Access.WRITE_ONLY)
     private Long minimum;
 
     /*
      * The highest permitted capacity for this resource.
      */
-    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximum;
 
     /*
      * The localized name of the resource.
      */
-    @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private ScaleType scaleType;
 
     /**
+     * Creates an instance of LabServicesSkuCapacity class.
+     */
+    public LabServicesSkuCapacity() {
+    }
+
+    /**
      * Get the defaultProperty property: The default capacity for this resource.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Long defaultProperty() {
@@ -45,7 +53,7 @@ public final class LabServicesSkuCapacity {
 
     /**
      * Get the minimum property: The lowest permitted capacity for this resource.
-     *
+     * 
      * @return the minimum value.
      */
     public Long minimum() {
@@ -54,7 +62,7 @@ public final class LabServicesSkuCapacity {
 
     /**
      * Get the maximum property: The highest permitted capacity for this resource.
-     *
+     * 
      * @return the maximum value.
      */
     public Long maximum() {
@@ -63,7 +71,7 @@ public final class LabServicesSkuCapacity {
 
     /**
      * Get the scaleType property: The localized name of the resource.
-     *
+     * 
      * @return the scaleType value.
      */
     public ScaleType scaleType() {
@@ -72,9 +80,50 @@ public final class LabServicesSkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabServicesSkuCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabServicesSkuCapacity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabServicesSkuCapacity.
+     */
+    public static LabServicesSkuCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabServicesSkuCapacity deserializedLabServicesSkuCapacity = new LabServicesSkuCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("default".equals(fieldName)) {
+                    deserializedLabServicesSkuCapacity.defaultProperty = reader.getNullable(JsonReader::getLong);
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedLabServicesSkuCapacity.minimum = reader.getNullable(JsonReader::getLong);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedLabServicesSkuCapacity.maximum = reader.getNullable(JsonReader::getLong);
+                } else if ("scaleType".equals(fieldName)) {
+                    deserializedLabServicesSkuCapacity.scaleType = ScaleType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabServicesSkuCapacity;
+        });
     }
 }

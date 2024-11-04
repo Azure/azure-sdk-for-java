@@ -5,62 +5,58 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Profile of the managed cluster load balancer.
  */
 @Fluent
-public final class ManagedClusterLoadBalancerProfile {
+public final class ManagedClusterLoadBalancerProfile implements JsonSerializable<ManagedClusterLoadBalancerProfile> {
     /*
      * Desired managed outbound IPs for the cluster load balancer.
      */
-    @JsonProperty(value = "managedOutboundIPs")
     private ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs;
 
     /*
      * Desired outbound IP Prefix resources for the cluster load balancer.
      */
-    @JsonProperty(value = "outboundIPPrefixes")
     private ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes;
 
     /*
      * Desired outbound IP resources for the cluster load balancer.
      */
-    @JsonProperty(value = "outboundIPs")
     private ManagedClusterLoadBalancerProfileOutboundIPs outboundIPs;
 
     /*
      * The effective outbound IP resources of the cluster load balancer.
      */
-    @JsonProperty(value = "effectiveOutboundIPs")
     private List<ResourceReference> effectiveOutboundIPs;
 
     /*
-     * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive).
-     * The default value is 0 which results in Azure dynamically allocating ports.
+     * The desired number of allocated SNAT ports per VM. Allowed values are in the range of 0 to 64000 (inclusive). The
+     * default value is 0 which results in Azure dynamically allocating ports.
      */
-    @JsonProperty(value = "allocatedOutboundPorts")
     private Integer allocatedOutboundPorts;
 
     /*
      * Desired outbound flow idle timeout in minutes. Allowed values are in the range of 4 to 120 (inclusive). The
      * default value is 30 minutes.
      */
-    @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
      * Enable multiple standard load balancers per AKS cluster or not.
      */
-    @JsonProperty(value = "enableMultipleStandardLoadBalancers")
     private Boolean enableMultipleStandardLoadBalancers;
 
     /*
      * The type of the managed inbound Load Balancer BackendPool.
      */
-    @JsonProperty(value = "backendPoolType")
     private BackendPoolType backendPoolType;
 
     /**
@@ -152,9 +148,8 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
-     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
-     * ports.
+     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
+     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      * 
      * @return the allocatedOutboundPorts value.
      */
@@ -163,9 +158,8 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
-     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
-     * ports.
+     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
+     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      * 
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
@@ -258,5 +252,74 @@ public final class ManagedClusterLoadBalancerProfile {
         if (effectiveOutboundIPs() != null) {
             effectiveOutboundIPs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("managedOutboundIPs", this.managedOutboundIPs);
+        jsonWriter.writeJsonField("outboundIPPrefixes", this.outboundIpPrefixes);
+        jsonWriter.writeJsonField("outboundIPs", this.outboundIPs);
+        jsonWriter.writeArrayField("effectiveOutboundIPs", this.effectiveOutboundIPs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("allocatedOutboundPorts", this.allocatedOutboundPorts);
+        jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
+        jsonWriter.writeBooleanField("enableMultipleStandardLoadBalancers", this.enableMultipleStandardLoadBalancers);
+        jsonWriter.writeStringField("backendPoolType",
+            this.backendPoolType == null ? null : this.backendPoolType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterLoadBalancerProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterLoadBalancerProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterLoadBalancerProfile.
+     */
+    public static ManagedClusterLoadBalancerProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterLoadBalancerProfile deserializedManagedClusterLoadBalancerProfile
+                = new ManagedClusterLoadBalancerProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedOutboundIPs".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.managedOutboundIPs
+                        = ManagedClusterLoadBalancerProfileManagedOutboundIPs.fromJson(reader);
+                } else if ("outboundIPPrefixes".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.outboundIpPrefixes
+                        = ManagedClusterLoadBalancerProfileOutboundIpPrefixes.fromJson(reader);
+                } else if ("outboundIPs".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.outboundIPs
+                        = ManagedClusterLoadBalancerProfileOutboundIPs.fromJson(reader);
+                } else if ("effectiveOutboundIPs".equals(fieldName)) {
+                    List<ResourceReference> effectiveOutboundIPs
+                        = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedManagedClusterLoadBalancerProfile.effectiveOutboundIPs = effectiveOutboundIPs;
+                } else if ("allocatedOutboundPorts".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.allocatedOutboundPorts
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("idleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.idleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enableMultipleStandardLoadBalancers".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.enableMultipleStandardLoadBalancers
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backendPoolType".equals(fieldName)) {
+                    deserializedManagedClusterLoadBalancerProfile.backendPoolType
+                        = BackendPoolType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterLoadBalancerProfile;
+        });
     }
 }

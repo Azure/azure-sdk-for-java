@@ -5,29 +5,39 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.attestation.models.CertificateModification;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The result of a policy certificate modification. */
+/**
+ * The result of a policy certificate modification.
+ */
 @Fluent
-public final class PolicyCertificatesModificationResult {
+public final class PolicyCertificatesModificationResult
+    implements JsonSerializable<PolicyCertificatesModificationResult> {
     /*
-     * Hex encoded SHA1 Hash of the binary representation certificate which was
-     * added or removed
+     * Hex encoded SHA1 Hash of the binary representation certificate which was added or removed
      */
-    @JsonProperty(value = "x-ms-certificate-thumbprint")
     private String certificateThumbprint;
 
     /*
      * The result of the operation
      */
-    @JsonProperty(value = "x-ms-policycertificates-result")
     private CertificateModification certificateResolution;
+
+    /**
+     * Creates an instance of PolicyCertificatesModificationResult class.
+     */
+    public PolicyCertificatesModificationResult() {
+    }
 
     /**
      * Get the certificateThumbprint property: Hex encoded SHA1 Hash of the binary representation certificate which was
      * added or removed.
-     *
+     * 
      * @return the certificateThumbprint value.
      */
     public String getCertificateThumbprint() {
@@ -37,7 +47,7 @@ public final class PolicyCertificatesModificationResult {
     /**
      * Set the certificateThumbprint property: Hex encoded SHA1 Hash of the binary representation certificate which was
      * added or removed.
-     *
+     * 
      * @param certificateThumbprint the certificateThumbprint value to set.
      * @return the PolicyCertificatesModificationResult object itself.
      */
@@ -48,7 +58,7 @@ public final class PolicyCertificatesModificationResult {
 
     /**
      * Get the certificateResolution property: The result of the operation.
-     *
+     * 
      * @return the certificateResolution value.
      */
     public CertificateModification getCertificateResolution() {
@@ -57,20 +67,60 @@ public final class PolicyCertificatesModificationResult {
 
     /**
      * Set the certificateResolution property: The result of the operation.
-     *
+     * 
      * @param certificateResolution the certificateResolution value to set.
      * @return the PolicyCertificatesModificationResult object itself.
      */
-    public PolicyCertificatesModificationResult setCertificateResolution(
-            CertificateModification certificateResolution) {
+    public PolicyCertificatesModificationResult
+        setCertificateResolution(CertificateModification certificateResolution) {
         this.certificateResolution = certificateResolution;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() {
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("x-ms-certificate-thumbprint", this.certificateThumbprint);
+        jsonWriter.writeStringField("x-ms-policycertificates-result",
+            this.certificateResolution == null ? null : this.certificateResolution.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyCertificatesModificationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyCertificatesModificationResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyCertificatesModificationResult.
+     */
+    public static PolicyCertificatesModificationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyCertificatesModificationResult deserializedPolicyCertificatesModificationResult
+                = new PolicyCertificatesModificationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("x-ms-certificate-thumbprint".equals(fieldName)) {
+                    deserializedPolicyCertificatesModificationResult.certificateThumbprint = reader.getString();
+                } else if ("x-ms-policycertificates-result".equals(fieldName)) {
+                    deserializedPolicyCertificatesModificationResult.certificateResolution
+                        = CertificateModification.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyCertificatesModificationResult;
+        });
+    }
 }

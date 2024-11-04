@@ -106,14 +106,17 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     public Fleet create() {
-        this.innerObject = serviceManager.serviceClient().getFleets().createOrUpdate(resourceGroupName, fleetName,
-            this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleets()
+            .createOrUpdate(resourceGroupName, fleetName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public Fleet create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleets().createOrUpdate(resourceGroupName, fleetName,
-            this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleets()
+            .createOrUpdate(resourceGroupName, fleetName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
         return this;
     }
 
@@ -133,14 +136,16 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     public Fleet apply() {
-        this.innerObject = serviceManager.serviceClient().getFleets().update(resourceGroupName, fleetName,
-            updateProperties, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleets()
+            .update(resourceGroupName, fleetName, updateProperties, updateIfMatch, Context.NONE);
         return this;
     }
 
     public Fleet apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleets().update(resourceGroupName, fleetName,
-            updateProperties, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleets()
+            .update(resourceGroupName, fleetName, updateProperties, updateIfMatch, context);
         return this;
     }
 
@@ -153,14 +158,18 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     public Fleet refresh() {
-        this.innerObject = serviceManager.serviceClient().getFleets()
-            .getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleets()
+            .getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Fleet refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleets()
-            .getByResourceGroupWithResponse(resourceGroupName, fleetName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleets()
+            .getByResourceGroupWithResponse(resourceGroupName, fleetName, context)
+            .getValue();
         return this;
     }
 

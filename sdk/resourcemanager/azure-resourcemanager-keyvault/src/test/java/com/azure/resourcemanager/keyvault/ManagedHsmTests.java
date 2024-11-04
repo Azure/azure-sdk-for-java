@@ -52,13 +52,11 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
 
         try {
             // listByResourceGroups
-            PagedIterable<ManagedHsm> hsms = keyVaultManager.managedHsms()
-                .listByResourceGroup(rgName);
+            PagedIterable<ManagedHsm> hsms = keyVaultManager.managedHsms().listByResourceGroup(rgName);
             Assertions.assertTrue(hsms.stream().anyMatch(mhsm -> mhsm.name().equals(mhsmName)));
 
             // getByResourceGroup
-            ManagedHsm hsm = keyVaultManager.managedHsms()
-                .getByResourceGroup(rgName, managedHsm.name());
+            ManagedHsm hsm = keyVaultManager.managedHsms().getByResourceGroup(rgName, managedHsm.name());
 
             // ManagedHsm properties
             // The Azure Active Directory tenant ID that should be used for authenticating requests to the managed HSM pool.
@@ -110,34 +108,24 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
      */
     // TODO(xiaofei) support managedHsm creation
     private ManagedHsm createManagedHsm(String mhsmName) {
-        String objectId = authorizationManager
-            .servicePrincipals()
-            .getByNameAsync(clientIdFromFile())
-            .block()
-            .id();
+        String objectId = azureCliSignedInUser().id();
 
         keyVaultManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST2).create();
-        ManagedHsmInner inner = keyVaultManager.serviceClient()
-            .getManagedHsms()
-            .createOrUpdate(
-                rgName,
-                mhsmName,
-                new ManagedHsmInner()
-                    .withLocation(Region.US_EAST2.name())
+        ManagedHsmInner inner
+            = keyVaultManager.serviceClient()
+                .getManagedHsms()
+                .createOrUpdate(rgName, mhsmName, new ManagedHsmInner().withLocation(Region.US_EAST2.name())
                     .withSku(
                         new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
                     .withProperties(
-                        new ManagedHsmProperties()
-                            .withTenantId(UUID.fromString(authorizationManager.tenantId()))
+                        new ManagedHsmProperties().withTenantId(UUID.fromString(authorizationManager.tenantId()))
                             .withInitialAdminObjectIds(Arrays.asList(objectId))
                             .withEnableSoftDelete(true)
                             .withSoftDeleteRetentionInDays(7)
                             .withEnablePurgeProtection(false)), // DO NOT set it to true, otherwise you can't purge the instance
-                Context.NONE);
+                    Context.NONE);
 
-        keyVaultManager.serviceClient()
-            .getManagedHsms()
-            .createOrUpdate(rgName, inner.name(), inner);
+        keyVaultManager.serviceClient().getManagedHsms().createOrUpdate(rgName, inner.name(), inner);
 
         return keyVaultManager.managedHsms().getByResourceGroup(rgName, inner.name());
     }

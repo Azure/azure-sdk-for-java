@@ -4,62 +4,79 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner;
 
-/** An immutable client-side representation of VirtualMachine. */
+/**
+ * An immutable client-side representation of VirtualMachine.
+ */
 public interface VirtualMachine {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    VirtualMachineProvisioningState provisioningState();
+
+    /**
      * Gets the displayName property: Display name of the VM.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the moRefId property: Virtual machine managed object reference id.
-     *
+     * 
      * @return the moRefId value.
      */
     String moRefId();
 
     /**
      * Gets the folderPath property: Path to virtual machine's folder starting from datacenter virtual machine folder.
-     *
+     * 
      * @return the folderPath value.
      */
     String folderPath();
 
     /**
      * Gets the restrictMovement property: Whether VM DRS-driven movement is restricted (enabled) or not (disabled).
-     *
+     * 
      * @return the restrictMovement value.
      */
     VirtualMachineRestrictMovementState restrictMovement();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner object.
-     *
+     * 
      * @return the inner object.
      */
     VirtualMachineInner innerModel();

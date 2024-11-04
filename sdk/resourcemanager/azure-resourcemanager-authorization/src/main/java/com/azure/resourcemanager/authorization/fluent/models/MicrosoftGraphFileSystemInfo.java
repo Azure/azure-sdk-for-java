@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** fileSystemInfo. */
+/**
+ * fileSystemInfo.
+ */
 @Fluent
-public final class MicrosoftGraphFileSystemInfo {
+public final class MicrosoftGraphFileSystemInfo implements JsonSerializable<MicrosoftGraphFileSystemInfo> {
     /*
      * The UTC date and time the file was created on a client.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * The UTC date and time the file was last accessed. Available for the recent file list only.
      */
-    @JsonProperty(value = "lastAccessedDateTime")
     private OffsetDateTime lastAccessedDateTime;
 
     /*
      * The UTC date and time the file was last modified on a client.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * fileSystemInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphFileSystemInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphFileSystemInfo class.
+     */
     public MicrosoftGraphFileSystemInfo() {
     }
 
     /**
      * Get the createdDateTime property: The UTC date and time the file was created on a client.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -54,7 +58,7 @@ public final class MicrosoftGraphFileSystemInfo {
 
     /**
      * Set the createdDateTime property: The UTC date and time the file was created on a client.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphFileSystemInfo object itself.
      */
@@ -66,7 +70,7 @@ public final class MicrosoftGraphFileSystemInfo {
     /**
      * Get the lastAccessedDateTime property: The UTC date and time the file was last accessed. Available for the recent
      * file list only.
-     *
+     * 
      * @return the lastAccessedDateTime value.
      */
     public OffsetDateTime lastAccessedDateTime() {
@@ -76,7 +80,7 @@ public final class MicrosoftGraphFileSystemInfo {
     /**
      * Set the lastAccessedDateTime property: The UTC date and time the file was last accessed. Available for the recent
      * file list only.
-     *
+     * 
      * @param lastAccessedDateTime the lastAccessedDateTime value to set.
      * @return the MicrosoftGraphFileSystemInfo object itself.
      */
@@ -87,7 +91,7 @@ public final class MicrosoftGraphFileSystemInfo {
 
     /**
      * Get the lastModifiedDateTime property: The UTC date and time the file was last modified on a client.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -96,7 +100,7 @@ public final class MicrosoftGraphFileSystemInfo {
 
     /**
      * Set the lastModifiedDateTime property: The UTC date and time the file was last modified on a client.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphFileSystemInfo object itself.
      */
@@ -107,17 +111,16 @@ public final class MicrosoftGraphFileSystemInfo {
 
     /**
      * Get the additionalProperties property: fileSystemInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: fileSystemInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphFileSystemInfo object itself.
      */
@@ -126,19 +129,74 @@ public final class MicrosoftGraphFileSystemInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("lastAccessedDateTime",
+            this.lastAccessedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastAccessedDateTime));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphFileSystemInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphFileSystemInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphFileSystemInfo.
+     */
+    public static MicrosoftGraphFileSystemInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphFileSystemInfo deserializedMicrosoftGraphFileSystemInfo = new MicrosoftGraphFileSystemInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphFileSystemInfo.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastAccessedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphFileSystemInfo.lastAccessedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphFileSystemInfo.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphFileSystemInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphFileSystemInfo;
+        });
     }
 }

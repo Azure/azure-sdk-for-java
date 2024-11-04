@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -77,7 +76,6 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
      * @param name a name to look for.
      * @return the corresponding CompressionCodec.
      */
-    @JsonCreator
     public static CompressionCodec fromString(String name) {
         return fromString(name, CompressionCodec.class);
     }

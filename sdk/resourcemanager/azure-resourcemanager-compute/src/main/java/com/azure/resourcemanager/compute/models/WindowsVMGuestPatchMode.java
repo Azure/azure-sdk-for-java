@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
      * @param name a name to look for.
      * @return the corresponding WindowsVMGuestPatchMode.
      */
-    @JsonCreator
     public static WindowsVMGuestPatchMode fromString(String name) {
         return fromString(name, WindowsVMGuestPatchMode.class);
     }

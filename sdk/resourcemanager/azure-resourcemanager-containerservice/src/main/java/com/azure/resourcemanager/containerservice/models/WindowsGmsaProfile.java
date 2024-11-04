@@ -5,33 +5,32 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Windows gMSA Profile in the managed cluster.
  */
 @Fluent
-public final class WindowsGmsaProfile {
+public final class WindowsGmsaProfile implements JsonSerializable<WindowsGmsaProfile> {
     /*
-     * Whether to enable Windows gMSA.
-     * 
      * Specifies whether to enable Windows gMSA in the managed cluster.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Specifies the DNS server for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server in the
      * vnet which is used to create the managed cluster.
      */
-    @JsonProperty(value = "dnsServer")
     private String dnsServer;
 
     /*
      * Specifies the root domain name for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server
      * in the vnet which is used to create the managed cluster.
      */
-    @JsonProperty(value = "rootDomainName")
     private String rootDomainName;
 
     /**
@@ -41,9 +40,7 @@ public final class WindowsGmsaProfile {
     }
 
     /**
-     * Get the enabled property: Whether to enable Windows gMSA.
-     * 
-     * Specifies whether to enable Windows gMSA in the managed cluster.
+     * Get the enabled property: Specifies whether to enable Windows gMSA in the managed cluster.
      * 
      * @return the enabled value.
      */
@@ -52,9 +49,7 @@ public final class WindowsGmsaProfile {
     }
 
     /**
-     * Set the enabled property: Whether to enable Windows gMSA.
-     * 
-     * Specifies whether to enable Windows gMSA in the managed cluster.
+     * Set the enabled property: Specifies whether to enable Windows gMSA in the managed cluster.
      * 
      * @param enabled the enabled value to set.
      * @return the WindowsGmsaProfile object itself.
@@ -114,5 +109,47 @@ public final class WindowsGmsaProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("dnsServer", this.dnsServer);
+        jsonWriter.writeStringField("rootDomainName", this.rootDomainName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WindowsGmsaProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WindowsGmsaProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WindowsGmsaProfile.
+     */
+    public static WindowsGmsaProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WindowsGmsaProfile deserializedWindowsGmsaProfile = new WindowsGmsaProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedWindowsGmsaProfile.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dnsServer".equals(fieldName)) {
+                    deserializedWindowsGmsaProfile.dnsServer = reader.getString();
+                } else if ("rootDomainName".equals(fieldName)) {
+                    deserializedWindowsGmsaProfile.rootDomainName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWindowsGmsaProfile;
+        });
     }
 }

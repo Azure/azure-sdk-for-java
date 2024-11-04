@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Availability zone mappings for the region. */
+/**
+ * Availability zone mappings for the region.
+ */
 @Immutable
-public final class AvailabilityZoneMappings {
+public final class AvailabilityZoneMappings implements JsonSerializable<AvailabilityZoneMappings> {
     /*
      * The logical zone id for the availability zone
      */
-    @JsonProperty(value = "logicalZone", access = JsonProperty.Access.WRITE_ONLY)
     private String logicalZone;
 
     /*
      * The fully qualified physical zone id of availability zone to which logical zone id is mapped to
      */
-    @JsonProperty(value = "physicalZone", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalZone;
 
-    /** Creates an instance of AvailabilityZoneMappings class. */
+    /**
+     * Creates an instance of AvailabilityZoneMappings class.
+     */
     public AvailabilityZoneMappings() {
     }
 
     /**
      * Get the logicalZone property: The logical zone id for the availability zone.
-     *
+     * 
      * @return the logicalZone value.
      */
     public String logicalZone() {
@@ -38,7 +44,7 @@ public final class AvailabilityZoneMappings {
     /**
      * Get the physicalZone property: The fully qualified physical zone id of availability zone to which logical zone id
      * is mapped to.
-     *
+     * 
      * @return the physicalZone value.
      */
     public String physicalZone() {
@@ -47,9 +53,46 @@ public final class AvailabilityZoneMappings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilityZoneMappings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilityZoneMappings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilityZoneMappings.
+     */
+    public static AvailabilityZoneMappings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilityZoneMappings deserializedAvailabilityZoneMappings = new AvailabilityZoneMappings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logicalZone".equals(fieldName)) {
+                    deserializedAvailabilityZoneMappings.logicalZone = reader.getString();
+                } else if ("physicalZone".equals(fieldName)) {
+                    deserializedAvailabilityZoneMappings.physicalZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilityZoneMappings;
+        });
     }
 }

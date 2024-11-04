@@ -3,12 +3,6 @@
 
 package com.azure.maps.weather;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -18,6 +12,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -35,9 +30,15 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.weather.implementation.WeatherClientImpl;
 import com.azure.maps.weather.implementation.WeatherClientImplBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Builder class used to instantiate both synchronous and asynchronous {@link WeatherClient} clients.
@@ -70,25 +71,24 @@ import com.azure.maps.weather.implementation.WeatherClientImplBuilder;
  * </pre>
  * <!-- end com.azure.maps.weather.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {WeatherClient.class, WeatherAsyncClient.class})
-public final class WeatherClientBuilder implements AzureKeyCredentialTrait<WeatherClientBuilder>,
-    TokenCredentialTrait<WeatherClientBuilder>, HttpTrait<WeatherClientBuilder>,
-    ConfigurationTrait<WeatherClientBuilder>, EndpointTrait<WeatherClientBuilder> {
+@ServiceClientBuilder(serviceClients = { WeatherClient.class, WeatherAsyncClient.class })
+public final class WeatherClientBuilder
+    implements AzureKeyCredentialTrait<WeatherClientBuilder>, TokenCredentialTrait<WeatherClientBuilder>,
+    HttpTrait<WeatherClientBuilder>, ConfigurationTrait<WeatherClientBuilder>, EndpointTrait<WeatherClientBuilder> {
 
     // constants
     private static final ClientLogger LOGGER = new ClientLogger(WeatherClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+    private static final HttpHeaderName X_MS_CLIENT_ID = HttpHeaderName.fromString("x-ms-client-id");
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-maps-timezone.properties");
 
     // subscription-key
     static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     // instance fields
-    private final Map<String, String> properties = new HashMap<>();
-
     private String endpoint;
     private WeatherServiceVersion serviceVersion;
     private String weatherClientId;
@@ -111,10 +111,11 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
     public WeatherClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
+
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.
-     *
+     * <p>
      * More details: <a href="https://docs.microsoft.com/azure/azure-maps/azure-maps-authentication">Azure Maps AD Authentication</a>
      *
      * @param weatherClientId the clientId value.
@@ -259,7 +260,7 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
      * @return The updated {@link WeatherClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public WeatherClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public WeatherClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -299,13 +300,12 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
         builder.httpClient(this.httpClient);
         builder.httpLogOptions(this.httpLogOptions);
 
-        WeatherClientImpl client = builder.buildClient();
-        return client;
+        return builder.buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -315,23 +315,22 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
 
         // Configure pipelines and user agent
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "JavaWeatherSDK");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, serviceVersion.getVersion());
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "JavaWeatherSDK");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, serviceVersion.getVersion());
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
 
         // configure headers
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
 
         // Authentications
         if (tokenCredential != null) {
             if (this.weatherClientId == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Missing 'weatherClientId' parameter required for Azure AD Authentication"));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Missing 'weatherClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -350,19 +349,16 @@ public final class WeatherClientBuilder implements AzureKeyCredentialTrait<Weath
 
         // Add final policies
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
-        return httpPipeline;
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**

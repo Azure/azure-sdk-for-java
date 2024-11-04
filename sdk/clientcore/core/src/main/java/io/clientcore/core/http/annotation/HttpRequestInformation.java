@@ -30,6 +30,7 @@ public @interface HttpRequestInformation {
      * @return The HTTP method to use for the request.
      */
     HttpMethod method();
+
     /**
      * Get the relative path the request should point to.
      *
@@ -42,14 +43,14 @@ public @interface HttpRequestInformation {
      *
      * @return The list of static headers to send with the request.
      */
-    String[] requestHeaders() default {};
+    String[] headers() default { };
 
     /**
      * Get expected the status code(s) to receive with a response.
      *
      * @return The expected status code(s) to receive with a response.
      */
-    int[] expectedStatusCodes() default {};
+    int[] expectedStatusCodes() default { };
 
     /**
      * Get the type of the response body sent over the wire.
@@ -57,4 +58,12 @@ public @interface HttpRequestInformation {
      * @return The type of the response body sent over the wire.
      */
     Class<?> returnValueWireType() default Void.class;
+
+    /**
+     * Get the query parameters to be appended to the request URI. Elements in the array shall be written in the format
+     * of 'key=value'.
+     *
+     * @return The query parameters to be appended to the request URI.
+     */
+    String[] queryParams() default { };
 }

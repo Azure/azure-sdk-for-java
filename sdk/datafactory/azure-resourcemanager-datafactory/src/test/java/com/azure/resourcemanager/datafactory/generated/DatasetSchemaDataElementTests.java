@@ -12,15 +12,15 @@ import java.util.Map;
 public final class DatasetSchemaDataElementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetSchemaDataElement model = BinaryData
-            .fromString("{\"name\":\"datavbennmfkbpjnrt\",\"type\":\"dataw\",\"\":{\"syiurzt\":\"datahropmdu\"}}")
+        DatasetSchemaDataElement model = BinaryData.fromString(
+            "{\"name\":\"datadnaryyinzk\",\"type\":\"datalrndwdbvxvza\",\"\":{\"hmcxqqxmyzkl\":\"dataoyqxlunkf\",\"rqra\":\"dataoanpohrvm\"}}")
             .toObject(DatasetSchemaDataElement.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetSchemaDataElement model = new DatasetSchemaDataElement().withName("datavbennmfkbpjnrt")
-            .withType("dataw")
+        DatasetSchemaDataElement model = new DatasetSchemaDataElement().withName("datadnaryyinzk")
+            .withType("datalrndwdbvxvza")
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DatasetSchemaDataElement.class);
     }

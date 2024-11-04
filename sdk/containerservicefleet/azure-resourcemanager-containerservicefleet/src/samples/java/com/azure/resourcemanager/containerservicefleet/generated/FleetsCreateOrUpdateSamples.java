@@ -15,7 +15,7 @@ import java.util.Map;
 public final class FleetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/
      * examples/Fleets_CreateOrUpdate.json
      */
     /**
@@ -25,9 +25,13 @@ public final class FleetsCreateOrUpdateSamples {
      */
     public static void createsAFleetResourceWithALongRunningOperation(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleets().define("fleet1").withRegion("East US").withExistingResourceGroup("rg1")
-            .withTags(mapOf("archv2", "", "tier", "production")).withHubProfile(new FleetHubProfile()
-                .withDnsPrefix("dnsprefix1").withAgentProfile(new AgentProfile().withVmSize("Standard_DS1")))
+        manager.fleets()
+            .define("fleet1")
+            .withRegion("East US")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("archv2", "", "tier", "production"))
+            .withHubProfile(new FleetHubProfile().withDnsPrefix("dnsprefix1")
+                .withAgentProfile(new AgentProfile().withVmSize("Standard_DS1")))
             .create();
     }
 

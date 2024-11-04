@@ -6,50 +6,56 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Restore target info for Item level restore operation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("ItemLevelRestoreTargetInfo")
 @Fluent
 public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     /*
+     * Type of Datasource object, used to initialize the right inherited type
+     */
+    private String objectType = "ItemLevelRestoreTargetInfo";
+
+    /*
      * Restore Criteria
      */
-    @JsonProperty(value = "restoreCriteria", required = true)
     private List<ItemLevelRestoreCriteria> restoreCriteria;
 
     /*
-     * Datasource
-     * 
      * Information of target DS
      */
-    @JsonProperty(value = "datasourceInfo", required = true)
     private Datasource datasourceInfo;
 
     /*
-     * DatasourceSet
-     * 
      * Information of target DS Set
      */
-    @JsonProperty(value = "datasourceSetInfo")
     private DatasourceSet datasourceSetInfo;
 
     /*
      * Credentials to use to authenticate with data source provider.
      */
-    @JsonProperty(value = "datasourceAuthCredentials")
     private AuthCredentials datasourceAuthCredentials;
 
     /**
      * Creates an instance of ItemLevelRestoreTargetInfo class.
      */
     public ItemLevelRestoreTargetInfo() {
+    }
+
+    /**
+     * Get the objectType property: Type of Datasource object, used to initialize the right inherited type.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -73,9 +79,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Get the datasourceInfo property: Datasource
-     * 
-     * Information of target DS.
+     * Get the datasourceInfo property: Information of target DS.
      * 
      * @return the datasourceInfo value.
      */
@@ -84,9 +88,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Set the datasourceInfo property: Datasource
-     * 
-     * Information of target DS.
+     * Set the datasourceInfo property: Information of target DS.
      * 
      * @param datasourceInfo the datasourceInfo value to set.
      * @return the ItemLevelRestoreTargetInfo object itself.
@@ -97,9 +99,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Get the datasourceSetInfo property: DatasourceSet
-     * 
-     * Information of target DS Set.
+     * Get the datasourceSetInfo property: Information of target DS Set.
      * 
      * @return the datasourceSetInfo value.
      */
@@ -108,9 +108,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Set the datasourceSetInfo property: DatasourceSet
-     * 
-     * Information of target DS Set.
+     * Set the datasourceSetInfo property: Information of target DS Set.
      * 
      * @param datasourceSetInfo the datasourceSetInfo value to set.
      * @return the ItemLevelRestoreTargetInfo object itself.
@@ -167,14 +165,16 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     public void validate() {
         super.validate();
         if (restoreCriteria() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property restoreCriteria in model ItemLevelRestoreTargetInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restoreCriteria in model ItemLevelRestoreTargetInfo"));
         } else {
             restoreCriteria().forEach(e -> e.validate());
         }
         if (datasourceInfo() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property datasourceInfo in model ItemLevelRestoreTargetInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property datasourceInfo in model ItemLevelRestoreTargetInfo"));
         } else {
             datasourceInfo().validate();
         }
@@ -187,4 +187,63 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ItemLevelRestoreTargetInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryOption", recoveryOption() == null ? null : recoveryOption().toString());
+        jsonWriter.writeStringField("restoreLocation", restoreLocation());
+        jsonWriter.writeArrayField("restoreCriteria", this.restoreCriteria,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("datasourceInfo", this.datasourceInfo);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("datasourceSetInfo", this.datasourceSetInfo);
+        jsonWriter.writeJsonField("datasourceAuthCredentials", this.datasourceAuthCredentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ItemLevelRestoreTargetInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ItemLevelRestoreTargetInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ItemLevelRestoreTargetInfo.
+     */
+    public static ItemLevelRestoreTargetInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ItemLevelRestoreTargetInfo deserializedItemLevelRestoreTargetInfo = new ItemLevelRestoreTargetInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryOption".equals(fieldName)) {
+                    deserializedItemLevelRestoreTargetInfo
+                        .withRecoveryOption(RecoveryOption.fromString(reader.getString()));
+                } else if ("restoreLocation".equals(fieldName)) {
+                    deserializedItemLevelRestoreTargetInfo.withRestoreLocation(reader.getString());
+                } else if ("restoreCriteria".equals(fieldName)) {
+                    List<ItemLevelRestoreCriteria> restoreCriteria
+                        = reader.readArray(reader1 -> ItemLevelRestoreCriteria.fromJson(reader1));
+                    deserializedItemLevelRestoreTargetInfo.restoreCriteria = restoreCriteria;
+                } else if ("datasourceInfo".equals(fieldName)) {
+                    deserializedItemLevelRestoreTargetInfo.datasourceInfo = Datasource.fromJson(reader);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedItemLevelRestoreTargetInfo.objectType = reader.getString();
+                } else if ("datasourceSetInfo".equals(fieldName)) {
+                    deserializedItemLevelRestoreTargetInfo.datasourceSetInfo = DatasourceSet.fromJson(reader);
+                } else if ("datasourceAuthCredentials".equals(fieldName)) {
+                    deserializedItemLevelRestoreTargetInfo.datasourceAuthCredentials = AuthCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedItemLevelRestoreTargetInfo;
+        });
+    }
 }

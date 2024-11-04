@@ -13,9 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityS
  */
 public final class BackupResourceVaultConfigsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/BackupResourceVaultConfigs_Patch.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/BackupResourceVaultConfigs_Patch.json
      */
     /**
      * Sample code: Update Vault Security Config.
@@ -24,9 +22,10 @@ public final class BackupResourceVaultConfigsUpdateSamples {
      */
     public static void updateVaultSecurityConfig(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceVaultConfigs().updateWithResponse("SwaggerTest", "SwaggerTestRg",
-            new BackupResourceVaultConfigResourceInner().withProperties(
-                new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)),
-            com.azure.core.util.Context.NONE);
+        manager.backupResourceVaultConfigs()
+            .updateWithResponse("SwaggerTest", "SwaggerTestRg",
+                new BackupResourceVaultConfigResourceInner().withProperties(
+                    new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }

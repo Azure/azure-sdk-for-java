@@ -6,23 +6,25 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
 
-/** Samples for BlobInventoryPolicies Delete. */
+/**
+ * Samples for BlobInventoryPolicies Delete.
+ */
 public final class BlobInventoryPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeleteBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountDeleteBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteBlobInventoryPolicy.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountDeleteBlobInventoryPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getBlobInventoryPolicies()
-            .deleteWithResponse(
-                "res6977", "sto2527", BlobInventoryPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("res6977", "sto2527", BlobInventoryPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

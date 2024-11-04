@@ -12,16 +12,16 @@ public final class JobExecutionBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobExecutionBaseInner model
-            = BinaryData.fromString("{\"name\":\"olvdnd\",\"id\":\"auo\"}").toObject(JobExecutionBaseInner.class);
-        Assertions.assertEquals("olvdnd", model.name());
-        Assertions.assertEquals("auo", model.id());
+            = BinaryData.fromString("{\"name\":\"sybwptdaca\",\"id\":\"vlf\"}").toObject(JobExecutionBaseInner.class);
+        Assertions.assertEquals("sybwptdaca", model.name());
+        Assertions.assertEquals("vlf", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobExecutionBaseInner model = new JobExecutionBaseInner().withName("olvdnd").withId("auo");
+        JobExecutionBaseInner model = new JobExecutionBaseInner().withName("sybwptdaca").withId("vlf");
         model = BinaryData.fromObject(model).toObject(JobExecutionBaseInner.class);
-        Assertions.assertEquals("olvdnd", model.name());
-        Assertions.assertEquals("auo", model.id());
+        Assertions.assertEquals("sybwptdaca", model.name());
+        Assertions.assertEquals("vlf", model.id());
     }
 }

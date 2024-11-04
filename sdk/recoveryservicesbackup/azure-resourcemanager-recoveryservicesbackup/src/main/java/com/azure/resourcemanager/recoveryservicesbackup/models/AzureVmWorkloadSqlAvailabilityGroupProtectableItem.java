@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * Azure VM workload-specific protectable item representing SQL Availability Group.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectableItemType",
+    defaultImpl = AzureVmWorkloadSqlAvailabilityGroupProtectableItem.class,
+    visible = true)
 @JsonTypeName("SQLAvailabilityGroupContainer")
 @Fluent
 public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends AzureVmWorkloadProtectableItem {
+    /*
+     * Type of the backup item.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableItemType", required = true)
+    private String protectableItemType = "SQLAvailabilityGroupContainer";
+
     /*
      * List of the nodes in case of distributed container.
      */
@@ -27,6 +39,16 @@ public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends Az
      * Creates an instance of AzureVmWorkloadSqlAvailabilityGroupProtectableItem class.
      */
     public AzureVmWorkloadSqlAvailabilityGroupProtectableItem() {
+    }
+
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
     }
 
     /**

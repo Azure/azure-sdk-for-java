@@ -63,13 +63,7 @@ final class QuickPulseCoordinatorInitDataBuilder {
             throw new NullPointerException("data sender should not be null");
         }
 
-        return new QuickPulseCoordinatorInitData(
-            pingSender,
-            dataFetcher,
-            dataSender,
-            collector,
-            waitBetweenPingsInMillis,
-            waitBetweenPostsInMillis,
-            waitOnErrorInMillis);
+        return new QuickPulseCoordinatorInitData(pingSender, dataFetcher, dataSender, collector,
+            waitBetweenPingsInMillis, waitBetweenPostsInMillis, waitOnErrorInMillis);
     }
 }

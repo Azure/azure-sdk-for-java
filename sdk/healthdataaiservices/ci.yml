@@ -1,0 +1,54 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/healthdataaiservices/
+    exclude:
+      - sdk/healthdataaiservices/pom.xml
+      - sdk/healthdataaiservices/azure-health-deidentification/pom.xml
+      - sdk/healthdataaiservices/azure-resourcemanager-healthdataaiservices/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/healthdataaiservices/
+    exclude:
+      - sdk/healthdataaiservices/pom.xml
+      - sdk/healthdataaiservices/azure-health-deidentification/pom.xml
+      - sdk/healthdataaiservices/azure-resourcemanager-healthdataaiservices/pom.xml
+
+parameters:
+- name: release_azureaihealthdataaiservices
+  displayName: 'azure-health-deidentification'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerhealthdataaiservices
+  displayName: 'azure-resourcemanager-healthdataaiservices'
+  type: boolean
+  default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: healthdataaiservices
+    Artifacts:
+      - name: azure-health-deidentification
+        groupId: com.azure
+        safeName: azureaihealthdataaiservices
+        releaseInBatch: ${{ parameters.release_azureaihealthdataaiservices }}
+      - name: azure-resourcemanager-healthdataaiservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhealthdataaiservices
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhealthdataaiservices }}

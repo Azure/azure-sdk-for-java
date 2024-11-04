@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** responseType. */
+/**
+ * responseType.
+ */
 public final class MicrosoftGraphResponseType extends ExpandableStringEnum<MicrosoftGraphResponseType> {
-    /** Static value none for MicrosoftGraphResponseType. */
+    /**
+     * Static value none for MicrosoftGraphResponseType.
+     */
     public static final MicrosoftGraphResponseType NONE = fromString("none");
 
-    /** Static value organizer for MicrosoftGraphResponseType. */
+    /**
+     * Static value organizer for MicrosoftGraphResponseType.
+     */
     public static final MicrosoftGraphResponseType ORGANIZER = fromString("organizer");
 
-    /** Static value tentativelyAccepted for MicrosoftGraphResponseType. */
+    /**
+     * Static value tentativelyAccepted for MicrosoftGraphResponseType.
+     */
     public static final MicrosoftGraphResponseType TENTATIVELY_ACCEPTED = fromString("tentativelyAccepted");
 
-    /** Static value accepted for MicrosoftGraphResponseType. */
+    /**
+     * Static value accepted for MicrosoftGraphResponseType.
+     */
     public static final MicrosoftGraphResponseType ACCEPTED = fromString("accepted");
 
-    /** Static value declined for MicrosoftGraphResponseType. */
+    /**
+     * Static value declined for MicrosoftGraphResponseType.
+     */
     public static final MicrosoftGraphResponseType DECLINED = fromString("declined");
 
-    /** Static value notResponded for MicrosoftGraphResponseType. */
+    /**
+     * Static value notResponded for MicrosoftGraphResponseType.
+     */
     public static final MicrosoftGraphResponseType NOT_RESPONDED = fromString("notResponded");
 
     /**
      * Creates a new instance of MicrosoftGraphResponseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class MicrosoftGraphResponseType extends ExpandableStringEnum<Micro
 
     /**
      * Creates or finds a MicrosoftGraphResponseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphResponseType.
      */
-    @JsonCreator
     public static MicrosoftGraphResponseType fromString(String name) {
         return fromString(name, MicrosoftGraphResponseType.class);
     }
 
     /**
      * Gets known MicrosoftGraphResponseType values.
-     *
+     * 
      * @return known MicrosoftGraphResponseType values.
      */
     public static Collection<MicrosoftGraphResponseType> values() {

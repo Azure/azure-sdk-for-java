@@ -31,7 +31,7 @@ public final class JdkHttpResponse extends HttpResponse<BinaryData> {
     public BinaryData getBody() {
         if (body == null) {
             if (super.getValue() == null) {
-                return BinaryData.EMPTY;
+                return BinaryData.empty();
             } else {
                 return super.getValue();
             }

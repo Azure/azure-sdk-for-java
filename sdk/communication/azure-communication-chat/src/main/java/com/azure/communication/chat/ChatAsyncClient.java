@@ -122,15 +122,14 @@ public final class ChatAsyncClient {
     public Mono<CreateChatThreadResult> createChatThread(CreateChatThreadOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> createChatThread(options, context)
-                .flatMap(
-                    (Response<CreateChatThreadResult> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    }));
+            return withContext(
+                context -> createChatThread(options, context).flatMap((Response<CreateChatThreadResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                }));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -166,11 +165,11 @@ public final class ChatAsyncClient {
     Mono<Response<CreateChatThreadResult>> createChatThread(CreateChatThreadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         try {
-            return this.chatClient.createChatThreadWithResponseAsync(
-                CreateChatThreadOptionsConverter.convert(options), options.getIdempotencyToken(), context)
+            return this.chatClient
+                .createChatThreadWithResponseAsync(CreateChatThreadOptionsConverter.convert(options), context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                .map(result -> new SimpleResponse<CreateChatThreadResult>(
-                        result, CreateChatThreadResultConverter.convert(result.getValue())));
+                .map(result -> new SimpleResponse<CreateChatThreadResult>(result,
+                    CreateChatThreadResultConverter.convert(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -188,11 +187,11 @@ public final class ChatAsyncClient {
         ListChatThreadsOptions listThreadsOptions = new ListChatThreadsOptions();
         try {
             return new PagedFlux<>(
-                () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
-                    listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)
+                () -> withContext(context -> this.chatClient
+                    .listChatThreadsSinglePageAsync(listThreadsOptions.getMaxPageSize(),
+                        listThreadsOptions.getStartTime(), context)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
-                nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
-                    nextLink, context)
+                nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(nextLink, context)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -213,11 +212,11 @@ public final class ChatAsyncClient {
             = listThreadsOptions == null ? new ListChatThreadsOptions() : listThreadsOptions;
         try {
             return new PagedFlux<>(
-                () -> withContext(context ->  this.chatClient.listChatThreadsSinglePageAsync(
-                    serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)
+                () -> withContext(context -> this.chatClient
+                    .listChatThreadsSinglePageAsync(serviceListThreadsOptions.getMaxPageSize(),
+                        serviceListThreadsOptions.getStartTime(), context)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
-                nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(
-                    nextLink, context)
+                nextLink -> withContext(context -> this.chatClient.listChatThreadsNextSinglePageAsync(nextLink, context)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -235,8 +234,8 @@ public final class ChatAsyncClient {
         final ListChatThreadsOptions serviceListThreadsOptions
             = listThreadsOptions == null ? new ListChatThreadsOptions() : listThreadsOptions;
         try {
-            return this.chatClient.listChatThreadsAsync(
-                serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), serviceContext);
+            return this.chatClient.listChatThreadsAsync(serviceListThreadsOptions.getMaxPageSize(),
+                serviceListThreadsOptions.getStartTime(), serviceContext);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -254,10 +253,9 @@ public final class ChatAsyncClient {
     public Mono<Void> deleteChatThread(String chatThreadId) {
         try {
             Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
-            return withContext(context -> deleteChatThread(chatThreadId, context))
-                .flatMap((Response<Void> res) -> {
-                    return Mono.empty();
-                });
+            return withContext(context -> deleteChatThread(chatThreadId, context)).flatMap((Response<Void> res) -> {
+                return Mono.empty();
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -8,33 +8,53 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.ProvisioningState;
 import com.azure.resourcemanager.dynatrace.models.SingleSignOnStates;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Single sign-on configurations for a given monitor resource. */
+/**
+ * Single sign-on configurations for a given monitor resource.
+ */
 @Fluent
 public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private DynatraceSingleSignOnProperties innerProperties = new DynatraceSingleSignOnProperties();
 
     /*
      * System metadata for this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DynatraceSingleSignOnResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DynatraceSingleSignOnResourceInner class.
+     */
     public DynatraceSingleSignOnResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DynatraceSingleSignOnProperties innerProperties() {
@@ -43,7 +63,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: System metadata for this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,8 +71,38 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the singleSignOnState property: State of Single Sign On.
-     *
+     * 
      * @return the singleSignOnState value.
      */
     public SingleSignOnStates singleSignOnState() {
@@ -61,7 +111,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Set the singleSignOnState property: State of Single Sign On.
-     *
+     * 
      * @param singleSignOnState the singleSignOnState value to set.
      * @return the DynatraceSingleSignOnResourceInner object itself.
      */
@@ -75,7 +125,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Get the enterpriseAppId property: Version of the Dynatrace agent installed on the VM.
-     *
+     * 
      * @return the enterpriseAppId value.
      */
     public String enterpriseAppId() {
@@ -84,7 +134,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Set the enterpriseAppId property: Version of the Dynatrace agent installed on the VM.
-     *
+     * 
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the DynatraceSingleSignOnResourceInner object itself.
      */
@@ -98,7 +148,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Get the singleSignOnUrl property: The login URL specific to this Dynatrace Environment.
-     *
+     * 
      * @return the singleSignOnUrl value.
      */
     public String singleSignOnUrl() {
@@ -107,7 +157,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Set the singleSignOnUrl property: The login URL specific to this Dynatrace Environment.
-     *
+     * 
      * @param singleSignOnUrl the singleSignOnUrl value to set.
      * @return the DynatraceSingleSignOnResourceInner object itself.
      */
@@ -121,7 +171,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Get the aadDomains property: array of Aad(azure active directory) domains.
-     *
+     * 
      * @return the aadDomains value.
      */
     public List<String> aadDomains() {
@@ -130,7 +180,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Set the aadDomains property: array of Aad(azure active directory) domains.
-     *
+     * 
      * @param aadDomains the aadDomains value to set.
      * @return the DynatraceSingleSignOnResourceInner object itself.
      */
@@ -144,7 +194,7 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,19 +203,65 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DynatraceSingleSignOnResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model DynatraceSingleSignOnResourceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynatraceSingleSignOnResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynatraceSingleSignOnResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynatraceSingleSignOnResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynatraceSingleSignOnResourceInner.
+     */
+    public static DynatraceSingleSignOnResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynatraceSingleSignOnResourceInner deserializedDynatraceSingleSignOnResourceInner
+                = new DynatraceSingleSignOnResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDynatraceSingleSignOnResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDynatraceSingleSignOnResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDynatraceSingleSignOnResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDynatraceSingleSignOnResourceInner.innerProperties
+                        = DynatraceSingleSignOnProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDynatraceSingleSignOnResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynatraceSingleSignOnResourceInner;
+        });
+    }
 }

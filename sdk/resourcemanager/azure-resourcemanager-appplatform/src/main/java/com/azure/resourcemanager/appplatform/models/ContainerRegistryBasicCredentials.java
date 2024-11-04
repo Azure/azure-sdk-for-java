@@ -6,39 +6,50 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The basic authentication properties for the container registry resource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("BasicAuth")
 @Fluent
 public final class ContainerRegistryBasicCredentials extends ContainerRegistryCredentials {
     /*
+     * The credential type of the container registry credentials.
+     */
+    private String type = "BasicAuth";
+
+    /*
      * The login server of the Container Registry.
      */
-    @JsonProperty(value = "server", required = true)
     private String server;
 
     /*
      * The username of the Container Registry.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
      * The password of the Container Registry.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /**
      * Creates an instance of ContainerRegistryBasicCredentials class.
      */
     public ContainerRegistryBasicCredentials() {
+    }
+
+    /**
+     * Get the type property: The credential type of the container registry credentials.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -110,18 +121,68 @@ public final class ContainerRegistryBasicCredentials extends ContainerRegistryCr
     public void validate() {
         super.validate();
         if (server() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property server in model ContainerRegistryBasicCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property server in model ContainerRegistryBasicCredentials"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model ContainerRegistryBasicCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model ContainerRegistryBasicCredentials"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model ContainerRegistryBasicCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model ContainerRegistryBasicCredentials"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBasicCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistryBasicCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryBasicCredentials if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerRegistryBasicCredentials.
+     */
+    public static ContainerRegistryBasicCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryBasicCredentials deserializedContainerRegistryBasicCredentials
+                = new ContainerRegistryBasicCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedContainerRegistryBasicCredentials.server = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedContainerRegistryBasicCredentials.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedContainerRegistryBasicCredentials.password = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContainerRegistryBasicCredentials.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistryBasicCredentials;
+        });
+    }
 }

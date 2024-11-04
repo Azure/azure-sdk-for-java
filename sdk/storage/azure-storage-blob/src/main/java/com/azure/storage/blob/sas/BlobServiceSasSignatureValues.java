@@ -53,15 +53,15 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Pin down to highest version that worked with string to sign defined here.
      */
-    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN =
-        Configuration.getGlobalConfiguration()
+    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN
+        = Configuration.getGlobalConfiguration()
             .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2020_10_02.getVersion());
 
     /**
      * Pin down to highest version that worked with string to sign defined here.
      */
-    private static final String VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN =
-        Configuration.getGlobalConfiguration()
+    private static final String VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN
+        = Configuration.getGlobalConfiguration()
             .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
 
     private SasProtocol protocol;
@@ -589,8 +589,8 @@ public final class BlobServiceSasSignatureValues {
      * after initializing {@link BlobServiceSasSignatureValues}.
      */
     @Deprecated
-    public BlobServiceSasQueryParameters generateSasQueryParameters(
-        StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public BlobServiceSasQueryParameters
+        generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
@@ -649,8 +649,8 @@ public final class BlobServiceSasSignatureValues {
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        String signature = StorageImplUtils.computeHMac256(
-            delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
+        String signature
+            = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
 
         return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, this.protocol,
             this.startTime, this.expiryTime, this.sasIpRange, null /* identifier */, this.resource, this.permissions,
@@ -660,7 +660,7 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-
+    
      * 1. If there is no version, use latest.
      * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
@@ -687,9 +687,11 @@ public final class BlobServiceSasSignatureValues {
                 case SAS_BLOB_SNAPSHOT_CONSTANT:
                     permissions = BlobSasPermission.parse(permissions).toString();
                     break;
+
                 case SAS_CONTAINER_CONSTANT:
                     permissions = BlobContainerSasPermission.parse(permissions).toString();
                     break;
+
                 default:
                     // We won't reparse the permissions if we don't know the type.
                     LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
@@ -710,31 +712,23 @@ public final class BlobServiceSasSignatureValues {
     }
 
     private String stringToSign(String canonicalName) {
-        return String.join("\n",
-            this.permissions == null ? "" : permissions,
+        return String.join("\n", this.permissions == null ? "" : permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName,
-            this.identifier == null ? "" : this.identifier,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
+            this.identifier == null ? "" : this.identifier, this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, /* Pin down to version so old string to sign works. */
-            resource,
-            this.snapshotId == null ? "" : this.snapshotId,
+            resource, this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
-            this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
-        );
+            this.contentLanguage == null ? "" : this.contentLanguage, this.contentType == null ? "" : this.contentType);
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
-        return String.join("\n",
-            this.permissions == null ? "" : this.permissions,
+        return String.join("\n", this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName,
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime), canonicalName,
             key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
             key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
@@ -744,13 +738,10 @@ public final class BlobServiceSasSignatureValues {
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, /* Pin down to version so old string to sign works. */
-            resource,
-            this.snapshotId == null ? "" : this.snapshotId,
+            resource, this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
-            this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
-        );
+            this.contentLanguage == null ? "" : this.contentLanguage, this.contentType == null ? "" : this.contentType);
     }
 }

@@ -11,7 +11,7 @@ public final class PipelineRunInvokedByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PipelineRunInvokedBy model = BinaryData.fromString(
-            "{\"name\":\"lmxhomdyn\",\"id\":\"wdigumbnraauz\",\"invokedByType\":\"tj\",\"pipelineName\":\"ysdzhez\",\"pipelineRunId\":\"vaiqyuvvf\"}")
+            "{\"name\":\"lves\",\"id\":\"jlxr\",\"invokedByType\":\"lozapeewchpxlk\",\"pipelineName\":\"kuziycsle\",\"pipelineRunId\":\"f\"}")
             .toObject(PipelineRunInvokedBy.class);
     }
 

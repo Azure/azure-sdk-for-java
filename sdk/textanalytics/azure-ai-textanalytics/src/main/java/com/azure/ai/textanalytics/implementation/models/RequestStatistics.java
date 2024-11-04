@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** if showStats=true was specified in the request this field will contain information about the request payload. */
+/**
+ * if showStats=true was specified in the request this field will contain information about the request payload.
+ */
 @Fluent
 public final class RequestStatistics implements JsonSerializable<RequestStatistics> {
     /*
@@ -34,12 +36,15 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
      */
     private long transactionsCount;
 
-    /** Creates an instance of RequestStatistics class. */
-    public RequestStatistics() {}
+    /**
+     * Creates an instance of RequestStatistics class.
+     */
+    public RequestStatistics() {
+    }
 
     /**
      * Get the documentsCount property: Number of documents submitted in the request.
-     *
+     * 
      * @return the documentsCount value.
      */
     public int getDocumentsCount() {
@@ -48,7 +53,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
 
     /**
      * Set the documentsCount property: Number of documents submitted in the request.
-     *
+     * 
      * @param documentsCount the documentsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -60,7 +65,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
     /**
      * Get the validDocumentsCount property: Number of valid documents. This excludes empty, over-size limit or
      * non-supported languages documents.
-     *
+     * 
      * @return the validDocumentsCount value.
      */
     public int getValidDocumentsCount() {
@@ -70,7 +75,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
     /**
      * Set the validDocumentsCount property: Number of valid documents. This excludes empty, over-size limit or
      * non-supported languages documents.
-     *
+     * 
      * @param validDocumentsCount the validDocumentsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -82,7 +87,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
     /**
      * Get the erroneousDocumentsCount property: Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents.
-     *
+     * 
      * @return the erroneousDocumentsCount value.
      */
     public int getErroneousDocumentsCount() {
@@ -92,7 +97,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
     /**
      * Set the erroneousDocumentsCount property: Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents.
-     *
+     * 
      * @param erroneousDocumentsCount the erroneousDocumentsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -103,7 +108,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
 
     /**
      * Get the transactionsCount property: Number of transactions for the request.
-     *
+     * 
      * @return the transactionsCount value.
      */
     public long getTransactionsCount() {
@@ -112,7 +117,7 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
 
     /**
      * Set the transactionsCount property: Number of transactions for the request.
-     *
+     * 
      * @param transactionsCount the transactionsCount value to set.
      * @return the RequestStatistics object itself.
      */
@@ -121,6 +126,9 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,35 +141,34 @@ public final class RequestStatistics implements JsonSerializable<RequestStatisti
 
     /**
      * Reads an instance of RequestStatistics from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of RequestStatistics if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RequestStatistics.
      */
     public static RequestStatistics fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    RequestStatistics deserializedRequestStatistics = new RequestStatistics();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            RequestStatistics deserializedRequestStatistics = new RequestStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("documentsCount".equals(fieldName)) {
-                            deserializedRequestStatistics.documentsCount = reader.getInt();
-                        } else if ("validDocumentsCount".equals(fieldName)) {
-                            deserializedRequestStatistics.validDocumentsCount = reader.getInt();
-                        } else if ("erroneousDocumentsCount".equals(fieldName)) {
-                            deserializedRequestStatistics.erroneousDocumentsCount = reader.getInt();
-                        } else if ("transactionsCount".equals(fieldName)) {
-                            deserializedRequestStatistics.transactionsCount = reader.getLong();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("documentsCount".equals(fieldName)) {
+                    deserializedRequestStatistics.documentsCount = reader.getInt();
+                } else if ("validDocumentsCount".equals(fieldName)) {
+                    deserializedRequestStatistics.validDocumentsCount = reader.getInt();
+                } else if ("erroneousDocumentsCount".equals(fieldName)) {
+                    deserializedRequestStatistics.erroneousDocumentsCount = reader.getInt();
+                } else if ("transactionsCount".equals(fieldName)) {
+                    deserializedRequestStatistics.transactionsCount = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedRequestStatistics;
-                });
+            return deserializedRequestStatistics;
+        });
     }
 }

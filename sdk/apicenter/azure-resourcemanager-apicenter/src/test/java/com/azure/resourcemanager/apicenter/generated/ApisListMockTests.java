@@ -46,12 +46,13 @@ public final class ApisListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Api> response = manager.apis().list("syocogjltdtbnnha", "oocrkvcikhnv", "amqgxqquezikyw", "gxk",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<Api> response = manager.apis()
+            .list("syocogjltdtbnnha", "oocrkvcikhnv", "amqgxqquezikyw", "gxk", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("la", response.iterator().next().properties().title());
         Assertions.assertEquals(ApiKind.GRAPHQL, response.iterator().next().properties().kind());

@@ -45,12 +45,14 @@ public final class ApisGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Api response = manager.apis()
-            .getWithResponse("gge", "dunyg", "eqidbqfatpx", "lr", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("gge", "dunyg", "eqidbqfatpx", "lr", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("yjmoadsu", response.properties().title());
         Assertions.assertEquals(ApiKind.SOAP, response.properties().kind());

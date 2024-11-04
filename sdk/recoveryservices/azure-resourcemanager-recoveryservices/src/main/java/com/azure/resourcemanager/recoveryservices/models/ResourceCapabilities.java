@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input to get capabilities information for Microsoft.RecoveryServices. */
+/**
+ * Input to get capabilities information for Microsoft.RecoveryServices.
+ */
 @Fluent
 public final class ResourceCapabilities extends ResourceCapabilitiesBase {
     /*
@@ -16,13 +18,15 @@ public final class ResourceCapabilities extends ResourceCapabilitiesBase {
     @JsonProperty(value = "properties")
     private CapabilitiesProperties properties;
 
-    /** Creates an instance of ResourceCapabilities class. */
+    /**
+     * Creates an instance of ResourceCapabilities class.
+     */
     public ResourceCapabilities() {
     }
 
     /**
      * Get the properties property: Capabilities information.
-     *
+     * 
      * @return the properties value.
      */
     public CapabilitiesProperties properties() {
@@ -31,7 +35,7 @@ public final class ResourceCapabilities extends ResourceCapabilitiesBase {
 
     /**
      * Set the properties property: Capabilities information.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceCapabilities object itself.
      */
@@ -40,7 +44,9 @@ public final class ResourceCapabilities extends ResourceCapabilitiesBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCapabilities withType(String type) {
         super.withType(type);
@@ -49,7 +55,7 @@ public final class ResourceCapabilities extends ResourceCapabilitiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

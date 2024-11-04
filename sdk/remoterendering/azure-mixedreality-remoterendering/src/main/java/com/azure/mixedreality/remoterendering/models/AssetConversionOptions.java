@@ -19,6 +19,12 @@ public final class AssetConversionOptions {
     private String outputBlobPrefix;
     private String outputAssetFilename;
 
+    /**
+     * Creates options for a conversion.
+     */
+    public AssetConversionOptions() {
+
+    }
 
     // input setters
     /**
@@ -68,7 +74,6 @@ public final class AssetConversionOptions {
         return this;
     }
 
-
     // input getters
     /**
      * Get the inputStorageContainerUrl property: The URL of the Azure blob storage container containing the input model.
@@ -108,7 +113,6 @@ public final class AssetConversionOptions {
     public String getInputRelativeAssetPath() {
         return this.inputRelativeAssetPath;
     }
-
 
     // output setters
     /**
@@ -158,7 +162,6 @@ public final class AssetConversionOptions {
         this.outputAssetFilename = outputAssetFilename;
         return this;
     }
-
 
     // output getters
     /**

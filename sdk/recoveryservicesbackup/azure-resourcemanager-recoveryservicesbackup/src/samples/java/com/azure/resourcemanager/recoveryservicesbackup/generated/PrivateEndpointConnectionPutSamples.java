@@ -18,9 +18,7 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointConnectionPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * PrivateEndpointConnection/PutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: Update PrivateEndpointConnection.
@@ -29,17 +27,18 @@ public final class PrivateEndpointConnectionPutSamples {
      */
     public static void updatePrivateEndpointConnection(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        PrivateEndpointConnectionResource resource
-            = manager.privateEndpointConnections().getWithResponse("gaallavaultbvtd2msi", "gaallaRG",
-                "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new PrivateEndpointConnection()
-            .withProvisioningState(ProvisioningState.SUCCEEDED)
-            .withPrivateEndpoint(new PrivateEndpoint().withId(
-                "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.Network/privateEndpoints/gaallatestpe3"))
-            .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP_SECONDARY))
-            .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.APPROVED)
-                    .withDescription("Approved by johndoe@company.com")))
+        PrivateEndpointConnectionResource resource = manager.privateEndpointConnections()
+            .getWithResponse("gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new PrivateEndpointConnection().withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withPrivateEndpoint(new PrivateEndpoint().withId(
+                    "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.Network/privateEndpoints/gaallatestpe3"))
+                .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP_SECONDARY))
+                .withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.APPROVED)
+                        .withDescription("Approved by johndoe@company.com")))
             .apply();
     }
 }

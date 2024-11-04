@@ -373,13 +373,11 @@ public final class ClientTelemetryMetrics {
             ));
         }
 
-        if (contactedRegions != null &&
-            contactedRegions.size() > 0 &&
-            metricTagNames.contains(TagName.RegionName)) {
-
+        if (metricTagNames.contains(TagName.RegionName)) {
             effectiveTags.add(Tag.of(
                 TagName.RegionName.toString(),
-                String.join(", ", contactedRegions)
+                contactedRegions != null && !contactedRegions.isEmpty()
+                    ? String.join(", ", contactedRegions) : "NONE"
             ));
         }
 
@@ -761,6 +759,12 @@ public final class ClientTelemetryMetrics {
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(QUERYPLAN_TAG);
+            }
+            if (metricTagNames.contains(TagName.RequestStatusCode)) {
+                effectiveTags.add(Tag.of(TagName.RequestStatusCode.toString(),"NONE"));
+            }
+            if (metricTagNames.contains(TagName.PartitionKeyRangeId)) {
+                effectiveTags.add(Tag.of(TagName.PartitionKeyRangeId.toString(),"NONE"));
             }
 
             return Tags.of(effectiveTags);

@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class TranscriptionTransportType extends ExpandableStringEnum<Trans
      * @param name a name to look for.
      * @return the corresponding TranscriptionTransportType.
      */
-    @JsonCreator
     public static TranscriptionTransportType fromString(String name) {
         return fromString(name, TranscriptionTransportType.class);
     }

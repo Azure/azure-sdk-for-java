@@ -25,7 +25,11 @@ public final class PublicIpAddressConfiguration implements JsonSerializable<Publ
     private IpAddressProvisioningType ipAddressProvisioningType;
 
     /*
-     * The list of public IPs which the Batch service will use when provisioning Compute Nodes. The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 Spot/Low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
+     * The list of public IPs which the Batch service will use when provisioning Compute Nodes. The number of IPs
+     * specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 Spot/Low-priority nodes can be
+     * allocated for each public IP. For example, a pool needing 250 dedicated VMs would need at least 3 public IPs
+     * specified. Each element of this collection is of the form:
+     * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      */
     @Generated
     private List<String> ipAddressIds;

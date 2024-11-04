@@ -7,6 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
@@ -30,7 +33,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCer
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,32 +45,37 @@ public final class ApplicationGatewayInner extends Resource {
     /*
      * Properties of the application gateway.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
      * The identity of the application gateway, if configured.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of ApplicationGatewayInner class.
@@ -151,6 +159,26 @@ public final class ApplicationGatewayInner extends Resource {
     public ApplicationGatewayInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -255,8 +283,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the authenticationCertificates property: Authentication certificates of the application gateway resource.
-     * For default limits, see [Application Gateway
+     * Get the authenticationCertificates property: Authentication certificates of the application gateway resource. For
+     * default limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      * 
      * @return the authenticationCertificates value.
@@ -266,8 +294,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the authenticationCertificates property: Authentication certificates of the application gateway resource.
-     * For default limits, see [Application Gateway
+     * Set the authenticationCertificates property: Authentication certificates of the application gateway resource. For
+     * default limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      * 
      * @param authenticationCertificates the authenticationCertificates value to set.
@@ -366,8 +394,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource. For
-     * default limits, see [Application Gateway
+     * Get the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource. For default
+     * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      * 
      * @return the frontendIpConfigurations value.
@@ -377,8 +405,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource. For
-     * default limits, see [Application Gateway
+     * Set the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource. For default
+     * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      * 
      * @param frontendIpConfigurations the frontendIpConfigurations value to set.
@@ -704,8 +732,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the redirectConfigurations property: Redirect configurations of the application gateway resource. For
-     * default limits, see [Application Gateway
+     * Get the redirectConfigurations property: Redirect configurations of the application gateway resource. For default
+     * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      * 
      * @return the redirectConfigurations value.
@@ -715,8 +743,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the redirectConfigurations property: Redirect configurations of the application gateway resource. For
-     * default limits, see [Application Gateway
+     * Set the redirectConfigurations property: Redirect configurations of the application gateway resource. For default
+     * limits, see [Application Gateway
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      * 
      * @param redirectConfigurations the redirectConfigurations value to set.
@@ -996,8 +1024,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the defaultPredefinedSslPolicy property: The default predefined SSL Policy applied on the application
-     * gateway resource.
+     * Get the defaultPredefinedSslPolicy property: The default predefined SSL Policy applied on the application gateway
+     * resource.
      * 
      * @return the defaultPredefinedSslPolicy value.
      */
@@ -1017,5 +1045,66 @@ public final class ApplicationGatewayInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayInner.
+     */
+    public static ApplicationGatewayInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayInner deserializedApplicationGatewayInner = new ApplicationGatewayInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationGatewayInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.innerProperties
+                        = ApplicationGatewayPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.etag = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationGatewayInner.zones = zones;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayInner;
+        });
     }
 }

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.qumulo {
     exports com.azure.resourcemanager.qumulo.fluent.models;
     exports com.azure.resourcemanager.qumulo.models;
 
-    opens com.azure.resourcemanager.qumulo.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.qumulo.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.qumulo.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.qumulo.models to com.azure.core;
 }

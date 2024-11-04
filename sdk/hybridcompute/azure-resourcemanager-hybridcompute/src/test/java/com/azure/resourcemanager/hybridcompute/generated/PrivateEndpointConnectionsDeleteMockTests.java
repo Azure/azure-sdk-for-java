@@ -28,7 +28,7 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.privateEndpointConnections()
-            .delete("gnoxuztrksx", "pndfcpfnznt", "jtwkjaos", com.azure.core.util.Context.NONE);
+            .delete("ycjimryvwgcwwpbm", "gwe", "ydsx", com.azure.core.util.Context.NONE);
 
     }
 }

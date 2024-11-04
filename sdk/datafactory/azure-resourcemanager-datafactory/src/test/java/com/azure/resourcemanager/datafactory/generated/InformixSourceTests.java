@@ -11,19 +11,19 @@ public final class InformixSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InformixSource model = BinaryData.fromString(
-            "{\"type\":\"mtcljopivtwxvcfc\",\"query\":\"dataohuabduf\",\"queryTimeout\":\"datapuaptpuwek\",\"additionalColumns\":\"datal\",\"sourceRetryCount\":\"datakkcjjnq\",\"sourceRetryWait\":\"datajoayaj\",\"maxConcurrentConnections\":\"datahcxjmapgfbzbxeqz\",\"disableMetricsCollection\":\"datakfrhfafx\",\"\":{\"ulvue\":\"dataucmuax\",\"geqpa\":\"datasrxqscdbbwejrmk\",\"neteehndfpflf\":\"datallfscosfmeot\"}}")
+            "{\"type\":\"InformixSource\",\"query\":\"datakpwltozxdzold\",\"queryTimeout\":\"datafnpn\",\"additionalColumns\":\"dataterjjuzarege\",\"sourceRetryCount\":\"dataozpudal\",\"sourceRetryWait\":\"datagdhdtt\",\"maxConcurrentConnections\":\"datakeculxvkuxvccpda\",\"disableMetricsCollection\":\"dataasi\",\"\":{\"ejh\":\"datayvvg\",\"ybneuzueikadhusg\":\"dataoswjwbhtawbc\"}}")
             .toObject(InformixSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixSource model = new InformixSource().withSourceRetryCount("datakkcjjnq")
-            .withSourceRetryWait("datajoayaj")
-            .withMaxConcurrentConnections("datahcxjmapgfbzbxeqz")
-            .withDisableMetricsCollection("datakfrhfafx")
-            .withQueryTimeout("datapuaptpuwek")
-            .withAdditionalColumns("datal")
-            .withQuery("dataohuabduf");
+        InformixSource model = new InformixSource().withSourceRetryCount("dataozpudal")
+            .withSourceRetryWait("datagdhdtt")
+            .withMaxConcurrentConnections("datakeculxvkuxvccpda")
+            .withDisableMetricsCollection("dataasi")
+            .withQueryTimeout("datafnpn")
+            .withAdditionalColumns("dataterjjuzarege")
+            .withQuery("datakpwltozxdzold");
         model = BinaryData.fromObject(model).toObject(InformixSource.class);
     }
 }

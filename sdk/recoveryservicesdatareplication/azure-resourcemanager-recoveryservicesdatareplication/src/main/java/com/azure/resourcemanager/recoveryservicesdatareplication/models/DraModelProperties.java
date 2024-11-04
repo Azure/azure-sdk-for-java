@@ -244,28 +244,22 @@ public final class DraModelProperties {
      */
     public void validate() {
         if (machineId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property machineId in model DraModelProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property machineId in model DraModelProperties"));
         }
         if (machineName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property machineName in model DraModelProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property machineName in model DraModelProperties"));
         }
         if (authenticationIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationIdentity in model DraModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authenticationIdentity in model DraModelProperties"));
         } else {
             authenticationIdentity().validate();
         }
         if (resourceAccessIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceAccessIdentity in model DraModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceAccessIdentity in model DraModelProperties"));
         } else {
             resourceAccessIdentity().validate();
         }
@@ -273,10 +267,8 @@ public final class DraModelProperties {
             healthErrors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model DraModelProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property customProperties in model DraModelProperties"));
         } else {
             customProperties().validate();
         }

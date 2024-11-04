@@ -24,6 +24,9 @@ import java.util.function.Function;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CONCURRENCY_PER_CORE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CORES_VS_CONCURRENCY_MESSAGE;
+import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
 /**
  * Abstraction to pump messages using a {@link ServiceBusReceiverAsyncClient} (associated with a session unaware entity)
@@ -41,7 +44,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 final class MessagePump {
     private static final AtomicLong COUNTER = new AtomicLong();
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
-    private final long  pumpId;
+    private final long pumpId;
     private final ServiceBusReceiverAsyncClient client;
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -102,33 +105,36 @@ final class MessagePump {
      * or rejection when scheduling concurrently.
      */
     Mono<Void> begin() {
+        logCPUResourcesConcurrencyMismatch();
         final Mono<Void> terminatePumping = pollConnectionState();
         final Mono<Void> pumping = client.nonSessionProcessorReceiveV2()
-            .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
+            .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1)
+            .then();
 
         final Mono<Void> pumpingMessages = Mono.firstWithSignal(pumping, terminatePumping);
 
-        return pumpingMessages
-            .onErrorMap(e -> {
-                if (e instanceof MessagePumpTerminatedException) {
-                    // Source of 'e': pollConnectionState.
-                    return e;
-                }
-                // 'e' propagated from client.nonSessionProcessorReceiveV2.
-                return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#error-map", e);
-            })
-            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fullyQualifiedNamespace, entityPath)));
+        return pumpingMessages.onErrorMap(e -> {
+            if (e instanceof MessagePumpTerminatedException) {
+                // Source of 'e': pollConnectionState.
+                return e;
+            }
+            // 'e' propagated from client.nonSessionProcessorReceiveV2.
+            return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#error-map",
+                e);
+        })
+            .then(Mono.error(
+                () -> MessagePumpTerminatedException.forCompletion(pumpId, fullyQualifiedNamespace, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
-        return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
-            .handle((ignored, sink) -> {
-                if (client.isConnectionClosed()) {
-                    final RuntimeException e = logger.atInfo()
-                        .log(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "non-session#connection-state-poll"));
-                    sink.error(e);
-                }
-            }).then();
+        return Flux.interval(CONNECTION_STATE_POLL_INTERVAL).handle((ignored, sink) -> {
+            if (client.isConnectionClosed()) {
+                final RuntimeException e = logger.atInfo()
+                    .log(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath,
+                        "non-session#connection-state-poll"));
+                sink.error(e);
+            }
+        }).then();
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {
@@ -184,6 +190,14 @@ final class MessagePump {
             client.abandon(message).block();
         } catch (Exception e) {
             logger.atVerbose().log("Failed to abandon message", e);
+        }
+    }
+
+    private void logCPUResourcesConcurrencyMismatch() {
+        final int cores = Runtime.getRuntime().availableProcessors();
+        final int poolSize = DEFAULT_BOUNDED_ELASTIC_SIZE;
+        if (concurrency > poolSize || concurrency > CONCURRENCY_PER_CORE * cores) {
+            logger.atWarning().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, concurrency);
         }
     }
 

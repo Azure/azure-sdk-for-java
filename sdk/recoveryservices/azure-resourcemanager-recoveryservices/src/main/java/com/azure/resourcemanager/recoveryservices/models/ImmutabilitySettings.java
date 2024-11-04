@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Immutability Settings of vault. */
+/**
+ * Immutability Settings of vault.
+ */
 @Fluent
 public final class ImmutabilitySettings {
     /*
@@ -16,13 +18,15 @@ public final class ImmutabilitySettings {
     @JsonProperty(value = "state")
     private ImmutabilityState state;
 
-    /** Creates an instance of ImmutabilitySettings class. */
+    /**
+     * Creates an instance of ImmutabilitySettings class.
+     */
     public ImmutabilitySettings() {
     }
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public ImmutabilityState state() {
@@ -31,7 +35,7 @@ public final class ImmutabilitySettings {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the ImmutabilitySettings object itself.
      */
@@ -42,7 +46,7 @@ public final class ImmutabilitySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

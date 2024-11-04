@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.CommunityGalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.Disallowed;
@@ -15,9 +20,9 @@ import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -25,94 +30,79 @@ import java.util.Map;
  * Describes the properties of a gallery image definition.
  */
 @Fluent
-public final class CommunityGalleryImageProperties {
+public final class CommunityGalleryImageProperties implements JsonSerializable<CommunityGalleryImageProperties> {
     /*
      * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
      * managed image. Possible values are: **Windows,** **Linux.**
      */
-    @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
      * This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
      * or 'Specialized'.
      */
-    @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /*
      * The end of life date of the gallery image definition. This property can be used for decommissioning purposes.
      * This property is updatable.
      */
-    @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
      * This is the community gallery image definition identifier.
      */
-    @JsonProperty(value = "identifier", required = true)
     private CommunityGalleryImageIdentifier identifier;
 
     /*
      * The properties describe the recommended machine configuration for this Image Definition. These properties are
      * updatable.
      */
-    @JsonProperty(value = "recommended")
     private RecommendedMachineConfiguration recommended;
 
     /*
      * Describes the disallowed disk types.
      */
-    @JsonProperty(value = "disallowed")
     private Disallowed disallowed;
 
     /*
      * The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      */
-    @JsonProperty(value = "hyperVGeneration")
     private HyperVGeneration hyperVGeneration;
 
     /*
      * A list of gallery image features.
      */
-    @JsonProperty(value = "features")
     private List<GalleryImageFeature> features;
 
     /*
      * Describes the gallery image definition purchase plan. This is used by marketplace images.
      */
-    @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
 
     /*
      * The architecture of the image. Applicable to OS disks only.
      */
-    @JsonProperty(value = "architecture")
     private Architecture architecture;
 
     /*
      * Privacy statement URI for the current community gallery image.
      */
-    @JsonProperty(value = "privacyStatementUri")
     private String privacyStatementUri;
 
     /*
      * The end-user license agreement for the current community gallery image.
      */
-    @JsonProperty(value = "eula")
     private String eula;
 
     /*
      * The disclaimer for a community gallery resource.
      */
-    @JsonProperty(value = "disclaimer")
     private String disclaimer;
 
     /*
      * The artifact tags of a community gallery resource.
      */
-    @JsonProperty(value = "artifactTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> artifactTags;
 
     /**
@@ -122,8 +112,8 @@ public final class CommunityGalleryImageProperties {
     }
 
     /**
-     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @return the osType value.
      */
@@ -132,8 +122,8 @@ public final class CommunityGalleryImageProperties {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk
-     * when creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
+     * Set the osType property: This property allows you to specify the type of the OS that is included in the disk when
+     * creating a VM from a managed image. Possible values are: **Windows,** **Linux.**.
      * 
      * @param osType the osType value to set.
      * @return the CommunityGalleryImageProperties object itself.
@@ -250,8 +240,7 @@ public final class CommunityGalleryImageProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -260,8 +249,7 @@ public final class CommunityGalleryImageProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the CommunityGalleryImageProperties object itself.
@@ -420,16 +408,19 @@ public final class CommunityGalleryImageProperties {
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osType in model CommunityGalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model CommunityGalleryImageProperties"));
         }
         if (osState() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property osState in model CommunityGalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osState in model CommunityGalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property identifier in model CommunityGalleryImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property identifier in model CommunityGalleryImageProperties"));
         } else {
             identifier().validate();
         }
@@ -448,4 +439,93 @@ public final class CommunityGalleryImageProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommunityGalleryImageProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("osState", this.osState == null ? null : this.osState.toString());
+        jsonWriter.writeJsonField("identifier", this.identifier);
+        jsonWriter.writeStringField("endOfLifeDate",
+            this.endOfLifeDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endOfLifeDate));
+        jsonWriter.writeJsonField("recommended", this.recommended);
+        jsonWriter.writeJsonField("disallowed", this.disallowed);
+        jsonWriter.writeStringField("hyperVGeneration",
+            this.hyperVGeneration == null ? null : this.hyperVGeneration.toString());
+        jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("purchasePlan", this.purchasePlan);
+        jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeStringField("privacyStatementUri", this.privacyStatementUri);
+        jsonWriter.writeStringField("eula", this.eula);
+        jsonWriter.writeStringField("disclaimer", this.disclaimer);
+        jsonWriter.writeMapField("artifactTags", this.artifactTags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryImageProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunityGalleryImageProperties.
+     */
+    public static CommunityGalleryImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryImageProperties deserializedCommunityGalleryImageProperties
+                = new CommunityGalleryImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.osType
+                        = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("osState".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.osState
+                        = OperatingSystemStateTypes.fromString(reader.getString());
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.identifier
+                        = CommunityGalleryImageIdentifier.fromJson(reader);
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recommended".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.recommended
+                        = RecommendedMachineConfiguration.fromJson(reader);
+                } else if ("disallowed".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.disallowed = Disallowed.fromJson(reader);
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.hyperVGeneration
+                        = HyperVGeneration.fromString(reader.getString());
+                } else if ("features".equals(fieldName)) {
+                    List<GalleryImageFeature> features
+                        = reader.readArray(reader1 -> GalleryImageFeature.fromJson(reader1));
+                    deserializedCommunityGalleryImageProperties.features = features;
+                } else if ("purchasePlan".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.purchasePlan = ImagePurchasePlan.fromJson(reader);
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.architecture
+                        = Architecture.fromString(reader.getString());
+                } else if ("privacyStatementUri".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.privacyStatementUri = reader.getString();
+                } else if ("eula".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.eula = reader.getString();
+                } else if ("disclaimer".equals(fieldName)) {
+                    deserializedCommunityGalleryImageProperties.disclaimer = reader.getString();
+                } else if ("artifactTags".equals(fieldName)) {
+                    Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCommunityGalleryImageProperties.artifactTags = artifactTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryImageProperties;
+        });
+    }
 }

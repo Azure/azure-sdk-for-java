@@ -22,11 +22,15 @@ public final class ContainerRegistriesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerRegistriesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getContainerRegistries().createOrUpdate("myResourceGroup",
-            "my-service", "my-container-registry",
-            new ContainerRegistryResourceInner().withProperties(
-                new ContainerRegistryProperties().withCredentials(new ContainerRegistryBasicCredentials()
-                    .withServer("myServer").withUsername("myUsername").withPassword("fakeTokenPlaceholder"))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getContainerRegistries()
+            .createOrUpdate("myResourceGroup", "my-service", "my-container-registry",
+                new ContainerRegistryResourceInner().withProperties(new ContainerRegistryProperties()
+                    .withCredentials(new ContainerRegistryBasicCredentials().withServer("myServer")
+                        .withUsername("myUsername")
+                        .withPassword("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 }

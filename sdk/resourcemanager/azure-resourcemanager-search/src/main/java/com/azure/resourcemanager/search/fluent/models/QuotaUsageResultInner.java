@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.search.models.QuotaUsageResultName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the quota usage for a particular SKU. */
+/**
+ * Describes the quota usage for a particular SKU.
+ */
 @Fluent
-public final class QuotaUsageResultInner {
+public final class QuotaUsageResultInner implements JsonSerializable<QuotaUsageResultInner> {
     /*
      * The resource ID of the quota usage SKU endpoint for Microsoft.Search provider.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The unit of measurement for the search SKU.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The currently used up value for the particular search SKU.
      */
-    @JsonProperty(value = "currentValue")
     private Integer currentValue;
 
     /*
      * The quota limit for the particular search SKU.
      */
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
      * The name of the SKU supported by Azure AI Search.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaUsageResultName name;
 
-    /** Creates an instance of QuotaUsageResultInner class. */
+    /**
+     * Creates an instance of QuotaUsageResultInner class.
+     */
     public QuotaUsageResultInner() {
     }
 
     /**
      * Get the id property: The resource ID of the quota usage SKU endpoint for Microsoft.Search provider.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +59,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the id property: The resource ID of the quota usage SKU endpoint for Microsoft.Search provider.
-     *
+     * 
      * @param id the id value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -67,7 +70,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the unit property: The unit of measurement for the search SKU.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -76,7 +79,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the unit property: The unit of measurement for the search SKU.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -87,7 +90,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the currentValue property: The currently used up value for the particular search SKU.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -96,7 +99,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the currentValue property: The currently used up value for the particular search SKU.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -107,7 +110,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the limit property: The quota limit for the particular search SKU.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -116,7 +119,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the limit property: The quota limit for the particular search SKU.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -127,7 +130,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the name property: The name of the SKU supported by Azure AI Search.
-     *
+     * 
      * @return the name value.
      */
     public QuotaUsageResultName name() {
@@ -136,12 +139,59 @@ public final class QuotaUsageResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaUsageResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaUsageResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaUsageResultInner.
+     */
+    public static QuotaUsageResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaUsageResultInner deserializedQuotaUsageResultInner = new QuotaUsageResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQuotaUsageResultInner.id = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuotaUsageResultInner.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedQuotaUsageResultInner.currentValue = reader.getNullable(JsonReader::getInt);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQuotaUsageResultInner.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaUsageResultInner.name = QuotaUsageResultName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaUsageResultInner;
+        });
     }
 }

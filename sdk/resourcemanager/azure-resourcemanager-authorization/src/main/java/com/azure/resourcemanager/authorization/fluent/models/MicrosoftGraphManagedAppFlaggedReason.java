@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** managedAppFlaggedReason. */
+/**
+ * managedAppFlaggedReason.
+ */
 public final class MicrosoftGraphManagedAppFlaggedReason
     extends ExpandableStringEnum<MicrosoftGraphManagedAppFlaggedReason> {
-    /** Static value none for MicrosoftGraphManagedAppFlaggedReason. */
+    /**
+     * Static value none for MicrosoftGraphManagedAppFlaggedReason.
+     */
     public static final MicrosoftGraphManagedAppFlaggedReason NONE = fromString("none");
 
-    /** Static value rootedDevice for MicrosoftGraphManagedAppFlaggedReason. */
+    /**
+     * Static value rootedDevice for MicrosoftGraphManagedAppFlaggedReason.
+     */
     public static final MicrosoftGraphManagedAppFlaggedReason ROOTED_DEVICE = fromString("rootedDevice");
 
     /**
      * Creates a new instance of MicrosoftGraphManagedAppFlaggedReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class MicrosoftGraphManagedAppFlaggedReason
 
     /**
      * Creates or finds a MicrosoftGraphManagedAppFlaggedReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphManagedAppFlaggedReason.
      */
-    @JsonCreator
     public static MicrosoftGraphManagedAppFlaggedReason fromString(String name) {
         return fromString(name, MicrosoftGraphManagedAppFlaggedReason.class);
     }
 
     /**
      * Gets known MicrosoftGraphManagedAppFlaggedReason values.
-     *
+     * 
      * @return known MicrosoftGraphManagedAppFlaggedReason values.
      */
     public static Collection<MicrosoftGraphManagedAppFlaggedReason> values() {

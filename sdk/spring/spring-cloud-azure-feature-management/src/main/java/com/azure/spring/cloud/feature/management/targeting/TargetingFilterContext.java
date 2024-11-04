@@ -9,6 +9,12 @@ import java.util.List;
  */
 public final class TargetingFilterContext implements TargetingContext {
 
+    /**
+     * Creates an instance of {@link TargetingFilterContext}
+     */
+    public TargetingFilterContext() {
+    }
+
     private String userId;
 
     private List<String> groups;

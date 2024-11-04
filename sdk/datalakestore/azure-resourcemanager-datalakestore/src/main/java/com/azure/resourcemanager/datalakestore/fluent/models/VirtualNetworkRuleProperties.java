@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The virtual network rule properties. */
+/**
+ * The virtual network rule properties.
+ */
 @Immutable
-public final class VirtualNetworkRuleProperties {
+public final class VirtualNetworkRuleProperties implements JsonSerializable<VirtualNetworkRuleProperties> {
     /*
      * The resource identifier for the subnet.
      */
-    @JsonProperty(value = "subnetId", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetId;
 
-    /** Creates an instance of VirtualNetworkRuleProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkRuleProperties class.
+     */
     public VirtualNetworkRuleProperties() {
     }
 
     /**
      * Get the subnetId property: The resource identifier for the subnet.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -31,9 +38,44 @@ public final class VirtualNetworkRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkRuleProperties.
+     */
+    public static VirtualNetworkRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkRuleProperties deserializedVirtualNetworkRuleProperties = new VirtualNetworkRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedVirtualNetworkRuleProperties.subnetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkRuleProperties;
+        });
     }
 }

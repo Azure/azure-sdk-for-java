@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricType. */
+/**
+ * Defines values for MetricType.
+ */
 public final class MetricType extends ExpandableStringEnum<MetricType> {
-    /** Static value cpu for MetricType. */
+    /**
+     * Static value cpu for MetricType.
+     */
     public static final MetricType CPU = fromString("cpu");
 
-    /** Static value io for MetricType. */
+    /**
+     * Static value io for MetricType.
+     */
     public static final MetricType IO = fromString("io");
 
-    /** Static value logIo for MetricType. */
+    /**
+     * Static value logIo for MetricType.
+     */
     public static final MetricType LOG_IO = fromString("logIo");
 
-    /** Static value duration for MetricType. */
+    /**
+     * Static value duration for MetricType.
+     */
     public static final MetricType DURATION = fromString("duration");
 
-    /** Static value dtu for MetricType. */
+    /**
+     * Static value dtu for MetricType.
+     */
     public static final MetricType DTU = fromString("dtu");
 
     /**
+     * Creates a new instance of MetricType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricType() {
+    }
+
+    /**
      * Creates or finds a MetricType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricType.
      */
-    @JsonCreator
     public static MetricType fromString(String name) {
         return fromString(name, MetricType.class);
     }
 
     /**
      * Gets known MetricType values.
-     *
+     * 
      * @return known MetricType values.
      */
     public static Collection<MetricType> values() {

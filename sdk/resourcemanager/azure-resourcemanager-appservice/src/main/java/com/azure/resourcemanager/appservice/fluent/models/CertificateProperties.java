@@ -6,9 +6,13 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,132 +20,111 @@ import java.util.List;
  * Certificate resource specific properties.
  */
 @Fluent
-public final class CertificateProperties {
+public final class CertificateProperties implements JsonSerializable<CertificateProperties> {
     /*
      * Certificate password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Friendly name of the certificate.
      */
-    @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
 
     /*
      * Subject name of the certificate.
      */
-    @JsonProperty(value = "subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
 
     /*
      * Host names the certificate applies to.
      */
-    @JsonProperty(value = "hostNames")
     private List<String> hostNames;
 
     /*
      * Pfx blob.
      */
-    @JsonProperty(value = "pfxBlob")
     private byte[] pfxBlob;
 
     /*
      * App name.
      */
-    @JsonProperty(value = "siteName", access = JsonProperty.Access.WRITE_ONLY)
     private String siteName;
 
     /*
      * Self link.
      */
-    @JsonProperty(value = "selfLink", access = JsonProperty.Access.WRITE_ONLY)
     private String selfLink;
 
     /*
      * Certificate issuer.
      */
-    @JsonProperty(value = "issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /*
      * Certificate issue Date.
      */
-    @JsonProperty(value = "issueDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime issueDate;
 
     /*
      * Certificate expiration date.
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
 
     /*
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * Is the certificate valid?.
      */
-    @JsonProperty(value = "valid", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean valid;
 
     /*
      * Raw bytes of .cer file
      */
-    @JsonProperty(value = "cerBlob", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] cerBlob;
 
     /*
      * Public key hash.
      */
-    @JsonProperty(value = "publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKeyHash;
 
     /*
      * Specification for the App Service Environment to use for the certificate.
      */
-    @JsonProperty(value = "hostingEnvironmentProfile", access = JsonProperty.Access.WRITE_ONLY)
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /*
      * Key Vault Csm resource Id.
      */
-    @JsonProperty(value = "keyVaultId")
     private String keyVaultId;
 
     /*
      * Key Vault secret name.
      */
-    @JsonProperty(value = "keyVaultSecretName")
     private String keyVaultSecretName;
 
     /*
      * Status of the Key Vault secret.
      */
-    @JsonProperty(value = "keyVaultSecretStatus", access = JsonProperty.Access.WRITE_ONLY)
     private KeyVaultSecretStatus keyVaultSecretStatus;
 
     /*
      * Resource ID of the associated App Service plan, formatted as:
      * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      */
-    @JsonProperty(value = "serverFarmId")
     private String serverFarmId;
 
     /*
      * CNAME of the certificate to be issued via free certificate
      */
-    @JsonProperty(value = "canonicalName")
     private String canonicalName;
 
     /*
      * Method of domain validation for free cert
      */
-    @JsonProperty(value = "domainValidationMethod")
     private String domainValidationMethod;
 
     /**
@@ -439,5 +422,93 @@ public final class CertificateProperties {
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeArrayField("hostNames", this.hostNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBinaryField("pfxBlob", this.pfxBlob);
+        jsonWriter.writeStringField("keyVaultId", this.keyVaultId);
+        jsonWriter.writeStringField("keyVaultSecretName", this.keyVaultSecretName);
+        jsonWriter.writeStringField("serverFarmId", this.serverFarmId);
+        jsonWriter.writeStringField("canonicalName", this.canonicalName);
+        jsonWriter.writeStringField("domainValidationMethod", this.domainValidationMethod);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateProperties.
+     */
+    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateProperties deserializedCertificateProperties = new CertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("password".equals(fieldName)) {
+                    deserializedCertificateProperties.password = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedCertificateProperties.friendlyName = reader.getString();
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedCertificateProperties.subjectName = reader.getString();
+                } else if ("hostNames".equals(fieldName)) {
+                    List<String> hostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCertificateProperties.hostNames = hostNames;
+                } else if ("pfxBlob".equals(fieldName)) {
+                    deserializedCertificateProperties.pfxBlob = reader.getBinary();
+                } else if ("siteName".equals(fieldName)) {
+                    deserializedCertificateProperties.siteName = reader.getString();
+                } else if ("selfLink".equals(fieldName)) {
+                    deserializedCertificateProperties.selfLink = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateProperties.issuer = reader.getString();
+                } else if ("issueDate".equals(fieldName)) {
+                    deserializedCertificateProperties.issueDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedCertificateProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateProperties.thumbprint = reader.getString();
+                } else if ("valid".equals(fieldName)) {
+                    deserializedCertificateProperties.valid = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cerBlob".equals(fieldName)) {
+                    deserializedCertificateProperties.cerBlob = reader.getBinary();
+                } else if ("publicKeyHash".equals(fieldName)) {
+                    deserializedCertificateProperties.publicKeyHash = reader.getString();
+                } else if ("hostingEnvironmentProfile".equals(fieldName)) {
+                    deserializedCertificateProperties.hostingEnvironmentProfile
+                        = HostingEnvironmentProfile.fromJson(reader);
+                } else if ("keyVaultId".equals(fieldName)) {
+                    deserializedCertificateProperties.keyVaultId = reader.getString();
+                } else if ("keyVaultSecretName".equals(fieldName)) {
+                    deserializedCertificateProperties.keyVaultSecretName = reader.getString();
+                } else if ("keyVaultSecretStatus".equals(fieldName)) {
+                    deserializedCertificateProperties.keyVaultSecretStatus
+                        = KeyVaultSecretStatus.fromString(reader.getString());
+                } else if ("serverFarmId".equals(fieldName)) {
+                    deserializedCertificateProperties.serverFarmId = reader.getString();
+                } else if ("canonicalName".equals(fieldName)) {
+                    deserializedCertificateProperties.canonicalName = reader.getString();
+                } else if ("domainValidationMethod".equals(fieldName)) {
+                    deserializedCertificateProperties.domainValidationMethod = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateProperties;
+        });
     }
 }

@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class UpdateRunsSkipSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/
      * examples/UpdateRuns_Skip.json
      */
     /**
@@ -25,10 +25,11 @@ public final class UpdateRunsSkipSamples {
      */
     public static void skipsOneOrMoreMemberGroupStageAfterStageWaitSOfAnUpdateRun(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.updateRuns().skip("rg1", "fleet1", "run1",
-            new SkipProperties()
-                .withTargets(Arrays.asList(new SkipTarget().withType(TargetType.MEMBER).withName("member-one"),
-                    new SkipTarget().withType(TargetType.AFTER_STAGE_WAIT).withName("stage1"))),
-            null, com.azure.core.util.Context.NONE);
+        manager.updateRuns()
+            .skip("rg1", "fleet1", "run1",
+                new SkipProperties()
+                    .withTargets(Arrays.asList(new SkipTarget().withType(TargetType.MEMBER).withName("member-one"),
+                        new SkipTarget().withType(TargetType.AFTER_STAGE_WAIT).withName("stage1"))),
+                null, com.azure.core.util.Context.NONE);
     }
 }

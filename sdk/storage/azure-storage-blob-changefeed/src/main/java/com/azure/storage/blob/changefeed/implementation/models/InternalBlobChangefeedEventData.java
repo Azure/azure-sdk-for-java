@@ -38,13 +38,13 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
      * @param requestId The request id.
      * @param eTag The eTag.
      * @param contentType The content type.
-     * @param contentLength Th4e content length.
+     * @param contentLength The content length.
      * @param blobType {@link BlobType}
      * @param contentOffset The content offset.
      * @param destinationUrl The destination url.
      * @param sourceUrl The source url.
      * @param blobUrl The blob url.
-     * @param recursive Whether or not this operation was recursive.
+     * @param recursive Whether this operation was recursive.
      * @param sequencer The sequencer.
      */
     public InternalBlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
@@ -87,22 +87,21 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
         Object recursive = data.get("recursive");
         Object sequencer = data.get("sequencer");
 
-        return new InternalBlobChangefeedEventData(
-            ChangefeedTypeValidator.nullOr("api", api, String.class),
+        return new InternalBlobChangefeedEventData(ChangefeedTypeValidator.nullOr("api", api, String.class),
             ChangefeedTypeValidator.nullOr("clientRequestId", clientRequestId, String.class),
             ChangefeedTypeValidator.nullOr("requestId", requestId, String.class),
             ChangefeedTypeValidator.nullOr("etag", eTag, String.class),
             ChangefeedTypeValidator.nullOr("contentType", contentType, String.class),
             ChangefeedTypeValidator.nullOr("contentLength", contentLength, Long.class),
-            ChangefeedTypeValidator.isNull(blobType) ? null
+            ChangefeedTypeValidator.isNull(blobType)
+                ? null
                 : BlobType.fromString(ChangefeedTypeValidator.nullOr("blobType", blobType, String.class)),
             ChangefeedTypeValidator.nullOr("contentOffset", contentOffset, Long.class),
             ChangefeedTypeValidator.nullOr("destinationUrl", destinationUrl, String.class),
             ChangefeedTypeValidator.nullOr("sourceUrl", sourceUrl, String.class),
             ChangefeedTypeValidator.nullOr("url", blobUrl, String.class),
             Boolean.TRUE.equals(ChangefeedTypeValidator.nullOr("recursive", recursive, Boolean.class)),
-            ChangefeedTypeValidator.nullOr("sequencer", sequencer, String.class)
-        );
+            ChangefeedTypeValidator.nullOr("sequencer", sequencer, String.class));
     }
 
     @Override
@@ -197,26 +196,16 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
     @Override
     public int hashCode() {
         return Objects.hash(getApi(), getClientRequestId(), getRequestId(), getETag(), getContentType(),
-            getContentLength(), getBlobType(), getContentOffset(), getDestinationUrl(), getSourceUrl(),
-            getBlobUrl(), isRecursive(), getSequencer());
+            getContentLength(), getBlobType(), getContentOffset(), getDestinationUrl(), getSourceUrl(), getBlobUrl(),
+            isRecursive(), getSequencer());
     }
 
     @Override
     public String toString() {
-        return "BlobChangefeedEventData{"
-            + "api='" + api + '\''
-            + ", clientRequestId='" + clientRequestId + '\''
-            + ", requestId='" + requestId + '\''
-            + ", eTag='" + eTag + '\''
-            + ", contentType='" + contentType + '\''
-            + ", contentLength=" + contentLength
-            + ", blobType=" + blobType
-            + ", contentOffset=" + contentOffset
-            + ", destinationUrl='" + destinationUrl + '\''
-            + ", sourceUrl='" + sourceUrl + '\''
-            + ", blobUrl='" + blobUrl + '\''
-            + ", recursive=" + recursive
-            + ", sequencer='" + sequencer + '\''
-            + '}';
+        return "BlobChangefeedEventData{" + "api='" + api + '\'' + ", clientRequestId='" + clientRequestId + '\''
+            + ", requestId='" + requestId + '\'' + ", eTag='" + eTag + '\'' + ", contentType='" + contentType + '\''
+            + ", contentLength=" + contentLength + ", blobType=" + blobType + ", contentOffset=" + contentOffset
+            + ", destinationUrl='" + destinationUrl + '\'' + ", sourceUrl='" + sourceUrl + '\'' + ", blobUrl='"
+            + blobUrl + '\'' + ", recursive=" + recursive + ", sequencer='" + sequencer + '\'' + '}';
     }
 }

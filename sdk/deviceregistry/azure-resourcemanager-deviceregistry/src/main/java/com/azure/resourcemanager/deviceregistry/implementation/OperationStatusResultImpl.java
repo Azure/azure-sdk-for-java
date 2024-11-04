@@ -35,7 +35,7 @@ public final class OperationStatusResultImpl implements OperationStatusResult {
         return this.innerModel().status();
     }
 
-    public Integer percentComplete() {
+    public Double percentComplete() {
         return this.innerModel().percentComplete();
     }
 

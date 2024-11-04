@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInformationInner;
-import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TokenInformation;
 
 public final class SecurityPINsImpl implements SecurityPINs {

@@ -5,87 +5,100 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Represents anomaly timeline item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Anomaly")
+/**
+ * Represents anomaly timeline item.
+ */
 @Fluent
 public final class AnomalyTimelineItem extends EntityTimelineItem {
     /*
+     * The entity query kind type.
+     */
+    private EntityTimelineKind kind = EntityTimelineKind.ANOMALY;
+
+    /*
      * The anomaly azure resource id.
      */
-    @JsonProperty(value = "azureResourceId", required = true)
     private String azureResourceId;
 
     /*
      * The anomaly product name.
      */
-    @JsonProperty(value = "productName")
     private String productName;
 
     /*
      * The anomaly description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The anomaly name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The anomaly end time.
      */
-    @JsonProperty(value = "endTimeUtc", required = true)
     private OffsetDateTime endTimeUtc;
 
     /*
      * The anomaly start time.
      */
-    @JsonProperty(value = "startTimeUtc", required = true)
     private OffsetDateTime startTimeUtc;
 
     /*
      * The anomaly generated time.
      */
-    @JsonProperty(value = "timeGenerated", required = true)
     private OffsetDateTime timeGenerated;
 
     /*
      * The name of the anomaly vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * The intent of the anomaly.
      */
-    @JsonProperty(value = "intent")
     private String intent;
 
     /*
      * The techniques of the anomaly.
      */
-    @JsonProperty(value = "techniques")
     private List<String> techniques;
 
     /*
      * The reasons that cause the anomaly.
      */
-    @JsonProperty(value = "reasons")
     private List<String> reasons;
 
     /**
+     * Creates an instance of AnomalyTimelineItem class.
+     */
+    public AnomalyTimelineItem() {
+    }
+
+    /**
+     * Get the kind property: The entity query kind type.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityTimelineKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the azureResourceId property: The anomaly azure resource id.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -94,7 +107,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the azureResourceId property: The anomaly azure resource id.
-     *
+     * 
      * @param azureResourceId the azureResourceId value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -105,7 +118,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the productName property: The anomaly product name.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -114,7 +127,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the productName property: The anomaly product name.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -125,7 +138,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the description property: The anomaly description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -134,7 +147,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the description property: The anomaly description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -145,7 +158,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the displayName property: The anomaly name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -154,7 +167,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the displayName property: The anomaly name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -165,7 +178,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the endTimeUtc property: The anomaly end time.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -174,7 +187,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the endTimeUtc property: The anomaly end time.
-     *
+     * 
      * @param endTimeUtc the endTimeUtc value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -185,7 +198,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the startTimeUtc property: The anomaly start time.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -194,7 +207,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the startTimeUtc property: The anomaly start time.
-     *
+     * 
      * @param startTimeUtc the startTimeUtc value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -205,7 +218,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the timeGenerated property: The anomaly generated time.
-     *
+     * 
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
@@ -214,7 +227,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the timeGenerated property: The anomaly generated time.
-     *
+     * 
      * @param timeGenerated the timeGenerated value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -225,7 +238,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the vendor property: The name of the anomaly vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -234,7 +247,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the vendor property: The name of the anomaly vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -245,7 +258,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the intent property: The intent of the anomaly.
-     *
+     * 
      * @return the intent value.
      */
     public String intent() {
@@ -254,7 +267,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the intent property: The intent of the anomaly.
-     *
+     * 
      * @param intent the intent value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -265,7 +278,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the techniques property: The techniques of the anomaly.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -274,7 +287,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the techniques property: The techniques of the anomaly.
-     *
+     * 
      * @param techniques the techniques value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -285,7 +298,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Get the reasons property: The reasons that cause the anomaly.
-     *
+     * 
      * @return the reasons value.
      */
     public List<String> reasons() {
@@ -294,7 +307,7 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Set the reasons property: The reasons that cause the anomaly.
-     *
+     * 
      * @param reasons the reasons value to set.
      * @return the AnomalyTimelineItem object itself.
      */
@@ -305,41 +318,114 @@ public final class AnomalyTimelineItem extends EntityTimelineItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (azureResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureResourceId in model AnomalyTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureResourceId in model AnomalyTimelineItem"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property displayName in model AnomalyTimelineItem"));
         }
         if (endTimeUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTimeUtc in model AnomalyTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endTimeUtc in model AnomalyTimelineItem"));
         }
         if (startTimeUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTimeUtc in model AnomalyTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTimeUtc in model AnomalyTimelineItem"));
         }
         if (timeGenerated() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeGenerated in model AnomalyTimelineItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeGenerated in model AnomalyTimelineItem"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AnomalyTimelineItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("endTimeUtc",
+            this.endTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTimeUtc));
+        jsonWriter.writeStringField("startTimeUtc",
+            this.startTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimeUtc));
+        jsonWriter.writeStringField("timeGenerated",
+            this.timeGenerated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeGenerated));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("productName", this.productName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("intent", this.intent);
+        jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("reasons", this.reasons, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnomalyTimelineItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnomalyTimelineItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnomalyTimelineItem.
+     */
+    public static AnomalyTimelineItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnomalyTimelineItem deserializedAnomalyTimelineItem = new AnomalyTimelineItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureResourceId".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.azureResourceId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.displayName = reader.getString();
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGenerated".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.timeGenerated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.kind = EntityTimelineKind.fromString(reader.getString());
+                } else if ("productName".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.productName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.description = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.vendor = reader.getString();
+                } else if ("intent".equals(fieldName)) {
+                    deserializedAnomalyTimelineItem.intent = reader.getString();
+                } else if ("techniques".equals(fieldName)) {
+                    List<String> techniques = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAnomalyTimelineItem.techniques = techniques;
+                } else if ("reasons".equals(fieldName)) {
+                    List<String> reasons = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAnomalyTimelineItem.reasons = reasons;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnomalyTimelineItem;
+        });
+    }
 }

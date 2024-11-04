@@ -21,8 +21,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      * Creates an instance of MessageContent class.
      */
     @Generated
-    protected MessageContent() {
-        this.type = "MessageContent";
+    public MessageContent() {
     }
 
     /**
@@ -89,7 +88,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "MessageContent";
 
     /**
      * Get the type property: The object type.

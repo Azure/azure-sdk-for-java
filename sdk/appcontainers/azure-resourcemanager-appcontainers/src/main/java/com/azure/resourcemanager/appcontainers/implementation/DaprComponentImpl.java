@@ -119,16 +119,20 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent create() {
-        this.innerObject
-            = serviceManager.serviceClient().getConnectedEnvironmentsDaprComponents().createOrUpdateWithResponse(
-                resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponent create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getConnectedEnvironmentsDaprComponents().createOrUpdateWithResponse(
-                resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -143,16 +147,20 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getConnectedEnvironmentsDaprComponents().createOrUpdateWithResponse(
-                resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponent apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getConnectedEnvironmentsDaprComponents().createOrUpdateWithResponse(
-                resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, componentName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -167,25 +175,29 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     }
 
     public DaprComponent refresh() {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsDaprComponents()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprComponent refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConnectedEnvironmentsDaprComponents()
-            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedEnvironmentsDaprComponents()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context)
+            .getValue();
         return this;
     }
 
     public Response<DaprSecretsCollection> listSecretsWithResponse(Context context) {
-        return serviceManager.connectedEnvironmentsDaprComponents().listSecretsWithResponse(resourceGroupName,
-            connectedEnvironmentName, componentName, context);
+        return serviceManager.connectedEnvironmentsDaprComponents()
+            .listSecretsWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
     }
 
     public DaprSecretsCollection listSecrets() {
-        return serviceManager.connectedEnvironmentsDaprComponents().listSecrets(resourceGroupName,
-            connectedEnvironmentName, componentName);
+        return serviceManager.connectedEnvironmentsDaprComponents()
+            .listSecrets(resourceGroupName, connectedEnvironmentName, componentName);
     }
 
     public DaprComponentImpl withComponentType(String componentType) {

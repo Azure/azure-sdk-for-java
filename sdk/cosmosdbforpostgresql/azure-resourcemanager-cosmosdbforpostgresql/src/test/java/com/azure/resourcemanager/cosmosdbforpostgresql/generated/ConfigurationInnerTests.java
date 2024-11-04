@@ -24,9 +24,10 @@ public final class ConfigurationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model = new ConfigurationInner().withRequiresRestart(true).withServerRoleGroupConfigurations(
-            Arrays.asList(new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("yfsoppu"),
-                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("zdmohctbqvu")));
+        ConfigurationInner model = new ConfigurationInner().withRequiresRestart(true)
+            .withServerRoleGroupConfigurations(
+                Arrays.asList(new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("yfsoppu"),
+                    new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("zdmohctbqvu")));
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
         Assertions.assertEquals(true, model.requiresRestart());
         Assertions.assertEquals(ServerRole.WORKER, model.serverRoleGroupConfigurations().get(0).role());

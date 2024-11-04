@@ -18,6 +18,10 @@ public final class TieringCostInfoImpl implements TieringCostInfo {
         this.serviceManager = serviceManager;
     }
 
+    public String objectType() {
+        return this.innerModel().objectType();
+    }
+
     public TieringCostInfoInner innerModel() {
         return this.innerObject;
     }

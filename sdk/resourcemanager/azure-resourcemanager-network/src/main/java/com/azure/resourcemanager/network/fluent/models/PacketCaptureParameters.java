@@ -6,66 +6,74 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
+import com.azure.resourcemanager.network.models.PacketCaptureSettings;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters that define the create packet capture operation.
  */
 @Fluent
-public class PacketCaptureParameters {
+public class PacketCaptureParameters implements JsonSerializable<PacketCaptureParameters> {
     /*
      * The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently supported.
      */
-    @JsonProperty(value = "target", required = true)
     private String target;
 
     /*
      * A list of AzureVMSS instances which can be included or excluded to run packet capture. If both included and
      * excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      */
-    @JsonProperty(value = "scope")
     private PacketCaptureMachineScope scope;
 
     /*
      * Target type of the resource provided.
      */
-    @JsonProperty(value = "targetType")
     private PacketCaptureTargetType targetType;
 
     /*
      * Number of bytes captured per packet, the remaining bytes are truncated.
      */
-    @JsonProperty(value = "bytesToCapturePerPacket")
     private Long bytesToCapturePerPacket;
 
     /*
      * Maximum size of the capture output.
      */
-    @JsonProperty(value = "totalBytesPerSession")
     private Long totalBytesPerSession;
 
     /*
      * Maximum duration of the capture session in seconds.
      */
-    @JsonProperty(value = "timeLimitInSeconds")
     private Integer timeLimitInSeconds;
 
     /*
      * The storage location for a packet capture session.
      */
-    @JsonProperty(value = "storageLocation", required = true)
     private PacketCaptureStorageLocation storageLocation;
 
     /*
      * A list of packet capture filters.
      */
-    @JsonProperty(value = "filters")
     private List<PacketCaptureFilter> filters;
+
+    /*
+     * This continuous capture is a nullable boolean, which can hold 'null', 'true' or 'false' value. If we do not pass
+     * this parameter, it would be consider as 'null', default value is 'null'.
+     */
+    private Boolean continuousCapture;
+
+    /*
+     * The capture setting holds the 'FileCount', 'FileSizeInBytes', 'SessionTimeLimitInSeconds' values.
+     */
+    private PacketCaptureSettings captureSettings;
 
     /**
      * Creates an instance of PacketCaptureParameters class.
@@ -74,8 +82,8 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
-     * currently supported.
+     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      * 
      * @return the target value.
      */
@@ -84,8 +92,8 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
-     * currently supported.
+     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      * 
      * @param target the target value to set.
      * @return the PacketCaptureParameters object itself.
@@ -96,8 +104,8 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
-     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      * 
      * @return the scope value.
      */
@@ -106,8 +114,8 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
-     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      * 
      * @param scope the scope value to set.
      * @return the PacketCaptureParameters object itself.
@@ -138,8 +146,7 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated.
+     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * 
      * @return the bytesToCapturePerPacket value.
      */
@@ -148,8 +155,7 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated.
+     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureParameters object itself.
@@ -240,28 +246,144 @@ public class PacketCaptureParameters {
     }
 
     /**
+     * Get the continuousCapture property: This continuous capture is a nullable boolean, which can hold 'null', 'true'
+     * or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * 
+     * @return the continuousCapture value.
+     */
+    public Boolean continuousCapture() {
+        return this.continuousCapture;
+    }
+
+    /**
+     * Set the continuousCapture property: This continuous capture is a nullable boolean, which can hold 'null', 'true'
+     * or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * 
+     * @param continuousCapture the continuousCapture value to set.
+     * @return the PacketCaptureParameters object itself.
+     */
+    public PacketCaptureParameters withContinuousCapture(Boolean continuousCapture) {
+        this.continuousCapture = continuousCapture;
+        return this;
+    }
+
+    /**
+     * Get the captureSettings property: The capture setting holds the 'FileCount', 'FileSizeInBytes',
+     * 'SessionTimeLimitInSeconds' values.
+     * 
+     * @return the captureSettings value.
+     */
+    public PacketCaptureSettings captureSettings() {
+        return this.captureSettings;
+    }
+
+    /**
+     * Set the captureSettings property: The capture setting holds the 'FileCount', 'FileSizeInBytes',
+     * 'SessionTimeLimitInSeconds' values.
+     * 
+     * @param captureSettings the captureSettings value to set.
+     * @return the PacketCaptureParameters object itself.
+     */
+    public PacketCaptureParameters withCaptureSettings(PacketCaptureSettings captureSettings) {
+        this.captureSettings = captureSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (target() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
         }
         if (scope() != null) {
             scope().validate();
         }
         if (storageLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageLocation in model PacketCaptureParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageLocation in model PacketCaptureParameters"));
         } else {
             storageLocation().validate();
         }
         if (filters() != null) {
             filters().forEach(e -> e.validate());
         }
+        if (captureSettings() != null) {
+            captureSettings().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PacketCaptureParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeJsonField("storageLocation", this.storageLocation);
+        jsonWriter.writeJsonField("scope", this.scope);
+        jsonWriter.writeStringField("targetType", this.targetType == null ? null : this.targetType.toString());
+        jsonWriter.writeNumberField("bytesToCapturePerPacket", this.bytesToCapturePerPacket);
+        jsonWriter.writeNumberField("totalBytesPerSession", this.totalBytesPerSession);
+        jsonWriter.writeNumberField("timeLimitInSeconds", this.timeLimitInSeconds);
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("continuousCapture", this.continuousCapture);
+        jsonWriter.writeJsonField("captureSettings", this.captureSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PacketCaptureParameters.
+     */
+    public static PacketCaptureParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureParameters deserializedPacketCaptureParameters = new PacketCaptureParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("target".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.target = reader.getString();
+                } else if ("storageLocation".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.storageLocation = PacketCaptureStorageLocation.fromJson(reader);
+                } else if ("scope".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.scope = PacketCaptureMachineScope.fromJson(reader);
+                } else if ("targetType".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.targetType
+                        = PacketCaptureTargetType.fromString(reader.getString());
+                } else if ("bytesToCapturePerPacket".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.bytesToCapturePerPacket
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalBytesPerSession".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.totalBytesPerSession = reader.getNullable(JsonReader::getLong);
+                } else if ("timeLimitInSeconds".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.timeLimitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("filters".equals(fieldName)) {
+                    List<PacketCaptureFilter> filters
+                        = reader.readArray(reader1 -> PacketCaptureFilter.fromJson(reader1));
+                    deserializedPacketCaptureParameters.filters = filters;
+                } else if ("continuousCapture".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.continuousCapture = reader.getNullable(JsonReader::getBoolean);
+                } else if ("captureSettings".equals(fieldName)) {
+                    deserializedPacketCaptureParameters.captureSettings = PacketCaptureSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureParameters;
+        });
+    }
 }

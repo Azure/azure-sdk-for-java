@@ -9,7 +9,9 @@ import com.azure.resourcemanager.maintenance.models.UpdateStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties for apply update. */
+/**
+ * Properties for apply update.
+ */
 @Fluent
 public final class ApplyUpdateProperties {
     /*
@@ -30,13 +32,15 @@ public final class ApplyUpdateProperties {
     @JsonProperty(value = "lastUpdateTime")
     private OffsetDateTime lastUpdateTime;
 
-    /** Creates an instance of ApplyUpdateProperties class. */
+    /**
+     * Creates an instance of ApplyUpdateProperties class.
+     */
     public ApplyUpdateProperties() {
     }
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -45,7 +49,7 @@ public final class ApplyUpdateProperties {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApplyUpdateProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class ApplyUpdateProperties {
 
     /**
      * Get the resourceId property: The resourceId.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -65,7 +69,7 @@ public final class ApplyUpdateProperties {
 
     /**
      * Set the resourceId property: The resourceId.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ApplyUpdateProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class ApplyUpdateProperties {
 
     /**
      * Get the lastUpdateTime property: Last Update time.
-     *
+     * 
      * @return the lastUpdateTime value.
      */
     public OffsetDateTime lastUpdateTime() {
@@ -85,7 +89,7 @@ public final class ApplyUpdateProperties {
 
     /**
      * Set the lastUpdateTime property: Last Update time.
-     *
+     * 
      * @param lastUpdateTime the lastUpdateTime value to set.
      * @return the ApplyUpdateProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class ApplyUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

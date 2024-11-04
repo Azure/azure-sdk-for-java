@@ -10,6 +10,12 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
  */
 public class ProcessorProperties extends ConsumerProperties implements ServiceBusProcessorClientProperties {
 
+    /**
+     * Create an instance of {@link ProcessorProperties}.
+     */
+    public ProcessorProperties() {
+    }
+
     private Integer maxConcurrentCalls;
     private Integer maxConcurrentSessions;
 
@@ -20,7 +26,7 @@ public class ProcessorProperties extends ConsumerProperties implements ServiceBu
 
     /**
      * Set the max concurrent call number.
-     * @param maxConcurrentCalls the max concurrent call number.
+     * @param maxConcurrentCalls the max concurrent call number. When session enabled, it applies to each session.
      */
     public void setMaxConcurrentCalls(Integer maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;

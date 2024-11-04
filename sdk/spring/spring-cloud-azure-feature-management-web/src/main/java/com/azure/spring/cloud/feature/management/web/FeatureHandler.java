@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
@@ -17,6 +14,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.azure.spring.cloud.feature.management.FeatureManager;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import reactor.core.publisher.Mono;
 
 /**

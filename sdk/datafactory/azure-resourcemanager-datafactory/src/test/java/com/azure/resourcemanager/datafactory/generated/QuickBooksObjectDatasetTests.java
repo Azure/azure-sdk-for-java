@@ -19,34 +19,32 @@ public final class QuickBooksObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuickBooksObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"nxyksznfs\",\"typeProperties\":{\"tableName\":\"datalgdungaypxsazb\"},\"description\":\"prvgrandzkt\",\"structure\":\"datamlpczlqboomzg\",\"schema\":\"dataolhsfddkhxvevwxm\",\"linkedServiceName\":{\"referenceName\":\"bwax\",\"parameters\":{\"ld\":\"datagnpyhtuhalpq\",\"npnytkqjar\":\"dataaokex\"}},\"parameters\":{\"catrmzoujf\":{\"type\":\"Float\",\"defaultValue\":\"datagtz\"},\"vgyoggkztzttj\":{\"type\":\"Float\",\"defaultValue\":\"dataxuupczegqnaidvs\"},\"iz\":{\"type\":\"Object\",\"defaultValue\":\"datapbqgzkuobclobnaq\"}},\"annotations\":[\"dataq\",\"datayu\"],\"folder\":{\"name\":\"nhzjmkffeonmnv\"},\"\":{\"tdegcrunbkilxs\":\"datayiqywlpxmli\",\"iemorszffiukltr\":\"dataekbirhyvsyuv\",\"uoxcsd\":\"datagio\"}}")
+            "{\"type\":\"QuickBooksObject\",\"typeProperties\":{\"tableName\":\"datasyweohlmtsnvon\"},\"description\":\"ftswcd\",\"structure\":\"datanseptvdtic\",\"schema\":\"datafl\",\"linkedServiceName\":{\"referenceName\":\"zwkopxd\",\"parameters\":{\"kfzrxxf\":\"datawoqhgppwxn\",\"jzrfx\":\"dataduvqzjnnuww\"}},\"parameters\":{\"rxrjwyzrieitq\":{\"type\":\"Bool\",\"defaultValue\":\"dataqjkbkjc\"},\"pebfhlgeeh\":{\"type\":\"String\",\"defaultValue\":\"datauwtbdzqajxk\"}},\"annotations\":[\"datagplnl\",\"datarfe\",\"datazunbua\",\"datamoub\"],\"folder\":{\"name\":\"mi\"},\"\":{\"yt\":\"datarnobvvequ\"}}")
             .toObject(QuickBooksObjectDataset.class);
-        Assertions.assertEquals("prvgrandzkt", model.description());
-        Assertions.assertEquals("bwax", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("catrmzoujf").type());
-        Assertions.assertEquals("nhzjmkffeonmnv", model.folder().name());
+        Assertions.assertEquals("ftswcd", model.description());
+        Assertions.assertEquals("zwkopxd", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("rxrjwyzrieitq").type());
+        Assertions.assertEquals("mi", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuickBooksObjectDataset model = new QuickBooksObjectDataset().withDescription("prvgrandzkt")
-            .withStructure("datamlpczlqboomzg")
-            .withSchema("dataolhsfddkhxvevwxm")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bwax")
-                .withParameters(mapOf("ld", "datagnpyhtuhalpq", "npnytkqjar", "dataaokex")))
-            .withParameters(mapOf("catrmzoujf",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datagtz"), "vgyoggkztzttj",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataxuupczegqnaidvs"),
-                "iz",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datapbqgzkuobclobnaq")))
-            .withAnnotations(Arrays.asList("dataq", "datayu"))
-            .withFolder(new DatasetFolder().withName("nhzjmkffeonmnv"))
-            .withTableName("datalgdungaypxsazb");
+        QuickBooksObjectDataset model = new QuickBooksObjectDataset().withDescription("ftswcd")
+            .withStructure("datanseptvdtic")
+            .withSchema("datafl")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zwkopxd")
+                .withParameters(mapOf("kfzrxxf", "datawoqhgppwxn", "jzrfx", "dataduvqzjnnuww")))
+            .withParameters(mapOf("rxrjwyzrieitq",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataqjkbkjc"), "pebfhlgeeh",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datauwtbdzqajxk")))
+            .withAnnotations(Arrays.asList("datagplnl", "datarfe", "datazunbua", "datamoub"))
+            .withFolder(new DatasetFolder().withName("mi"))
+            .withTableName("datasyweohlmtsnvon");
         model = BinaryData.fromObject(model).toObject(QuickBooksObjectDataset.class);
-        Assertions.assertEquals("prvgrandzkt", model.description());
-        Assertions.assertEquals("bwax", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("catrmzoujf").type());
-        Assertions.assertEquals("nhzjmkffeonmnv", model.folder().name());
+        Assertions.assertEquals("ftswcd", model.description());
+        Assertions.assertEquals("zwkopxd", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("rxrjwyzrieitq").type());
+        Assertions.assertEquals("mi", model.folder().name());
     }
 
     // Use "Map.of" if available

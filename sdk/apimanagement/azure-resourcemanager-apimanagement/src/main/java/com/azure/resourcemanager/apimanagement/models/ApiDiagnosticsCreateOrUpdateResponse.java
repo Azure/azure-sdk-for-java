@@ -21,12 +21,8 @@ public final class ApiDiagnosticsCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiDiagnosticsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        DiagnosticContractInner value,
-        ApiDiagnosticsCreateOrUpdateHeaders headers) {
+    public ApiDiagnosticsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        DiagnosticContractInner value, ApiDiagnosticsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -3,13 +3,14 @@
 
 package com.azure.core.http.okhttp;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.test.HttpClientTestsServer;
-import com.azure.core.test.http.HttpClientTests;
-import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.validation.http.HttpClientTests;
+import com.azure.core.validation.http.HttpClientTestsServer;
+import com.azure.core.validation.http.LocalTestServer;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,7 +56,12 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return new OkHttpAsyncClientProvider().createInstance();
+        // For testing purposes we're using a custom Dispatcher that will swallow UnexpectedLengthException exceptions
+        // thrown during testing as these are expected. By default, the OkHttp Dispatcher will use
+        // Thread.getDefaultUncaughtExceptionHandler() to handle uncaught exceptions, which prints the exception stack
+        // trace to System.err, which is just noise during testing.
+        return new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(UnexpectedLengthException.class, ""))
+            .build();
     }
 
     @Test

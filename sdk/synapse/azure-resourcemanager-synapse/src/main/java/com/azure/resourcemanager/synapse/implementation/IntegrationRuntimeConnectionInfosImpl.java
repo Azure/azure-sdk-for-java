@@ -20,32 +20,28 @@ public final class IntegrationRuntimeConnectionInfosImpl implements IntegrationR
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public IntegrationRuntimeConnectionInfosImpl(
-        IntegrationRuntimeConnectionInfosClient innerClient,
+    public IntegrationRuntimeConnectionInfosImpl(IntegrationRuntimeConnectionInfosClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<IntegrationRuntimeConnectionInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
-        Response<IntegrationRuntimeConnectionInfoInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    public Response<IntegrationRuntimeConnectionInfo> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context) {
+        Response<IntegrationRuntimeConnectionInfoInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IntegrationRuntimeConnectionInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IntegrationRuntimeConnectionInfo get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeConnectionInfoInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+    public IntegrationRuntimeConnectionInfo get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
+        IntegrationRuntimeConnectionInfoInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
         if (inner != null) {
             return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
         } else {

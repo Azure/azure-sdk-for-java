@@ -12,21 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class NginxPrivateIpAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NginxPrivateIpAddress model = BinaryData.fromString(
-            "{\"privateIPAddress\":\"noae\",\"privateIPAllocationMethod\":\"Dynamic\",\"subnetId\":\"yhltrpmopjmcm\"}")
+        NginxPrivateIpAddress model = BinaryData
+            .fromString(
+                "{\"privateIPAddress\":\"vyvdcs\",\"privateIPAllocationMethod\":\"Static\",\"subnetId\":\"naamde\"}")
             .toObject(NginxPrivateIpAddress.class);
-        Assertions.assertEquals("noae", model.privateIpAddress());
-        Assertions.assertEquals(NginxPrivateIpAllocationMethod.DYNAMIC, model.privateIpAllocationMethod());
-        Assertions.assertEquals("yhltrpmopjmcm", model.subnetId());
+        Assertions.assertEquals("vyvdcs", model.privateIpAddress());
+        Assertions.assertEquals(NginxPrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
+        Assertions.assertEquals("naamde", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxPrivateIpAddress model = new NginxPrivateIpAddress().withPrivateIpAddress("noae")
-            .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.DYNAMIC).withSubnetId("yhltrpmopjmcm");
+        NginxPrivateIpAddress model = new NginxPrivateIpAddress().withPrivateIpAddress("vyvdcs")
+            .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.STATIC)
+            .withSubnetId("naamde");
         model = BinaryData.fromObject(model).toObject(NginxPrivateIpAddress.class);
-        Assertions.assertEquals("noae", model.privateIpAddress());
-        Assertions.assertEquals(NginxPrivateIpAllocationMethod.DYNAMIC, model.privateIpAllocationMethod());
-        Assertions.assertEquals("yhltrpmopjmcm", model.subnetId());
+        Assertions.assertEquals("vyvdcs", model.privateIpAddress());
+        Assertions.assertEquals(NginxPrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
+        Assertions.assertEquals("naamde", model.subnetId());
     }
 }

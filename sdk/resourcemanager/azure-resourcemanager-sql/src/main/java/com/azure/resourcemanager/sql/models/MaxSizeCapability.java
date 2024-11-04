@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The maximum size capability. */
+/**
+ * The maximum size capability.
+ */
 @Immutable
-public final class MaxSizeCapability {
+public final class MaxSizeCapability implements JsonSerializable<MaxSizeCapability> {
     /*
      * The maximum size limit (see 'unit' for the units).
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
 
     /*
      * The units that the limit is expressed in.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeUnit unit;
 
-    /** Creates an instance of MaxSizeCapability class. */
+    /**
+     * Creates an instance of MaxSizeCapability class.
+     */
     public MaxSizeCapability() {
     }
 
     /**
      * Get the limit property: The maximum size limit (see 'unit' for the units).
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -37,7 +43,7 @@ public final class MaxSizeCapability {
 
     /**
      * Get the unit property: The units that the limit is expressed in.
-     *
+     * 
      * @return the unit value.
      */
     public MaxSizeUnit unit() {
@@ -46,9 +52,46 @@ public final class MaxSizeCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaxSizeCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaxSizeCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaxSizeCapability.
+     */
+    public static MaxSizeCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaxSizeCapability deserializedMaxSizeCapability = new MaxSizeCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedMaxSizeCapability.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMaxSizeCapability.unit = MaxSizeUnit.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaxSizeCapability;
+        });
     }
 }

@@ -5,40 +5,60 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DelayMagnitude. */
+/**
+ * The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of the
+ * [Get Traffic Incident Detail API](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail).
+ */
 public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
-    /** Static value 0 for DelayMagnitude. */
+    /**
+     * Unknown.
+     */
     public static final DelayMagnitude UNKNOWN = fromString("0");
 
-    /** Static value 1 for DelayMagnitude. */
+    /**
+     * Minor.
+     */
     public static final DelayMagnitude MINOR = fromString("1");
 
-    /** Static value 2 for DelayMagnitude. */
+    /**
+     * Moderate.
+     */
     public static final DelayMagnitude MODERATE = fromString("2");
 
-    /** Static value 3 for DelayMagnitude. */
+    /**
+     * Major.
+     */
     public static final DelayMagnitude MAJOR = fromString("3");
 
-    /** Static value 4 for DelayMagnitude. */
+    /**
+     * Undefined, used for road closures and other indefinite delays.
+     */
     public static final DelayMagnitude UNDEFINED = fromString("4");
 
     /**
+     * Creates a new instance of DelayMagnitude value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DelayMagnitude() {
+    }
+
+    /**
      * Creates or finds a DelayMagnitude from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DelayMagnitude.
      */
-    @JsonCreator
     public static DelayMagnitude fromString(String name) {
         return fromString(name, DelayMagnitude.class);
     }
 
     /**
      * Gets known DelayMagnitude values.
-     *
+     * 
      * @return known DelayMagnitude values.
      */
     public static Collection<DelayMagnitude> values() {

@@ -6,67 +6,71 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicy;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SimPoliciesListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"siteProvisioningState\":{\"rtywi\":\"Updating\",\"mhlaku\":\"Updating\",\"gbhgau\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"cdixmx\",\"downlink\":\"f\"},\"defaultSlice\":{\"id\":\"sryjqgdkfno\"},\"rfspIndex\":2036068845,\"registrationTimer\":374644844,\"sliceConfigurations\":[{\"slice\":{\"id\":\"vjhvefgwbm\"},\"defaultDataNetwork\":{\"id\":\"jchnta\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"ay\"},\"sessionAmbr\":{\"uplink\":\"xbulpzealbmqkyo\",\"downlink\":\"wyvf\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"mbtsuahxsg\"},\"sessionAmbr\":{\"uplink\":\"jcmmzrrscub\",\"downlink\":\"wsdrnpxqwodif\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"jxcjrmmuabwib\"},\"sessionAmbr\":{\"uplink\":\"jogjonmc\",\"downlink\":\"e\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"oyzbamwineofvf\"},\"defaultDataNetwork\":{\"id\":\"akpoldtvevbo\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"zhzjknyuxg\"},\"sessionAmbr\":{\"uplink\":\"ttxpnrupza\",\"downlink\":\"mrdixtreki\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"swyskbruffg\"},\"defaultDataNetwork\":{\"id\":\"lukkutvlxhrpqhvm\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"couqehb\"},\"sessionAmbr\":{\"uplink\":\"bcdsziryrandoyp\",\"downlink\":\"blto\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"rmkfqlwxldykals\"},\"sessionAmbr\":{\"uplink\":\"g\",\"downlink\":\"olnjpnnbmjksibj\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"sjjx\"},\"sessionAmbr\":{\"uplink\":\"ahmrnadzyqegxyi\",\"downlink\":\"pinbmhwbjijkgqxn\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"mbk\"},\"sessionAmbr\":{\"uplink\":\"znj\",\"downlink\":\"ujvaannggi\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"cwkdtaaw\"},\"defaultDataNetwork\":{\"id\":\"wfekaumrrqmb\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"qkratbnxwbjsid\"},\"sessionAmbr\":{\"uplink\":\"irkfpksokdgo\",\"downlink\":\"ewijymrhbguz\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"zkye\"},\"sessionAmbr\":{\"uplink\":\"nfnzhhh\",\"downlink\":\"o\"},\"allowedServices\":[]}]}]},\"location\":\"ffjkutycyarnroo\",\"tags\":{\"ocnhzqrottjzcfyj\":\"abzoghktdpyczhco\",\"rl\":\"pt\",\"pqinf\":\"h\"},\"id\":\"zpyglqdhmrj\",\"name\":\"ralcxpjbyypsj\",\"type\":\"qcjenkyhf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"siteProvisioningState\":{\"ntrpcaqkiof\":\"Adding\",\"tfmhklbnldpvcb\":\"NotApplicable\",\"ezyquw\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"sqxutr\",\"downlink\":\"brruyuuatv\"},\"defaultSlice\":{\"id\":\"mbjwcolbmxlb\"},\"rfspIndex\":757455184,\"registrationTimer\":894228771,\"sliceConfigurations\":[{\"slice\":{\"id\":\"ahprzrvxhmtfhocn\"},\"defaultDataNetwork\":{\"id\":\"zcmjhngxnoqrxt\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"sn\"},\"sessionAmbr\":{\"uplink\":\"evhdlmydid\",\"downlink\":\"hepfwwtjfdoes\"},\"allowedServices\":[]}]}]},\"location\":\"hmwcdbck\",\"tags\":{\"jzrbhtmeplv\":\"kxkxhnegk\",\"pgsn\":\"kaobrl\",\"a\":\"agnchjhgemuowaky\"},\"id\":\"hjym\",\"name\":\"cgqtag\",\"type\":\"rclsso\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SimPolicy> response
-            = manager.simPolicies().listByMobileNetwork("upeuknijduyye", "pydjfboc", com.azure.core.util.Context.NONE);
+            = manager.simPolicies().listByMobileNetwork("xdazv", "hctmmkosz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ffjkutycyarnroo", response.iterator().next().location());
-        Assertions.assertEquals("abzoghktdpyczhco", response.iterator().next().tags().get("ocnhzqrottjzcfyj"));
-        Assertions.assertEquals("cdixmx", response.iterator().next().ueAmbr().uplink());
-        Assertions.assertEquals("f", response.iterator().next().ueAmbr().downlink());
-        Assertions.assertEquals("sryjqgdkfno", response.iterator().next().defaultSlice().id());
-        Assertions.assertEquals(2036068845, response.iterator().next().rfspIndex());
-        Assertions.assertEquals(374644844, response.iterator().next().registrationTimer());
-        Assertions.assertEquals("vjhvefgwbm", response.iterator().next().sliceConfigurations().get(0).slice().id());
-        Assertions.assertEquals("jchnta",
+        Assertions.assertEquals("hmwcdbck", response.iterator().next().location());
+        Assertions.assertEquals("kxkxhnegk", response.iterator().next().tags().get("jzrbhtmeplv"));
+        Assertions.assertEquals("sqxutr", response.iterator().next().ueAmbr().uplink());
+        Assertions.assertEquals("brruyuuatv", response.iterator().next().ueAmbr().downlink());
+        Assertions.assertEquals("mbjwcolbmxlb", response.iterator().next().defaultSlice().id());
+        Assertions.assertEquals(757455184, response.iterator().next().rfspIndex());
+        Assertions.assertEquals(894228771, response.iterator().next().registrationTimer());
+        Assertions.assertEquals("ahprzrvxhmtfhocn",
+            response.iterator().next().sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("zcmjhngxnoqrxt",
             response.iterator().next().sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions.assertEquals("ay", response.iterator().next().sliceConfigurations().get(0)
-            .dataNetworkConfigurations().get(0).dataNetwork().id());
-        Assertions.assertEquals("xbulpzealbmqkyo", response.iterator().next().sliceConfigurations().get(0)
-            .dataNetworkConfigurations().get(0).sessionAmbr().uplink());
-        Assertions.assertEquals("wyvf", response.iterator().next().sliceConfigurations().get(0)
-            .dataNetworkConfigurations().get(0).sessionAmbr().downlink());
+        Assertions.assertEquals("sn",
+            response.iterator()
+                .next()
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .dataNetwork()
+                .id());
+        Assertions.assertEquals("evhdlmydid",
+            response.iterator()
+                .next()
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .sessionAmbr()
+                .uplink());
+        Assertions.assertEquals("hepfwwtjfdoes",
+            response.iterator()
+                .next()
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .sessionAmbr()
+                .downlink());
     }
 }

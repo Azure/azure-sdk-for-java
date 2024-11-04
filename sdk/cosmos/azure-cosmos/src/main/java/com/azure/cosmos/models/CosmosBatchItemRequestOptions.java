@@ -64,7 +64,7 @@ public final class CosmosBatchItemRequestOptions {
      * Sets the throughput control group name.
      *
      * @param throughputControlGroupName the throughput control group name.
-     * @return the CosmosBulkExecutionOptions.
+     * @return the CosmosBatchItemRequestOptions.
      */
     public CosmosBatchItemRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPacketBrokerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkPacketBrokerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"networkFabricId\":\"ugejcvjkjyczcmt\",\"networkDeviceIds\":[\"lajdyoljeqyxq\",\"mzsizzhravrcjk\"],\"sourceInterfaceIds\":[\"gqb\",\"cxhnqxgzxlerm\",\"merghski\"],\"networkTapIds\":[\"pupkcbkfukd\",\"jqnvtsdyd\",\"hkpafyaloowwzizz\"],\"neighborGroupIds\":[\"f\"],\"provisioningState\":\"Accepted\"},\"location\":\"ti\",\"tags\":{\"qiyv\":\"fyjfd\"},\"id\":\"djokgwesym\",\"name\":\"qh\",\"type\":\"qpfzlpejtznxlue\"}")
-                .toObject(NetworkPacketBrokerInner.class);
+        NetworkPacketBrokerInner model = BinaryData.fromString(
+            "{\"properties\":{\"networkFabricId\":\"ugejcvjkjyczcmt\",\"networkDeviceIds\":[\"lajdyoljeqyxq\",\"mzsizzhravrcjk\"],\"sourceInterfaceIds\":[\"gqb\",\"cxhnqxgzxlerm\",\"merghski\"],\"networkTapIds\":[\"pupkcbkfukd\",\"jqnvtsdyd\",\"hkpafyaloowwzizz\"],\"neighborGroupIds\":[\"f\"],\"provisioningState\":\"Accepted\"},\"location\":\"ti\",\"tags\":{\"qiyv\":\"fyjfd\"},\"id\":\"djokgwesym\",\"name\":\"qh\",\"type\":\"qpfzlpejtznxlue\"}")
+            .toObject(NetworkPacketBrokerInner.class);
         Assertions.assertEquals("ti", model.location());
         Assertions.assertEquals("fyjfd", model.tags().get("qiyv"));
         Assertions.assertEquals("ugejcvjkjyczcmt", model.networkFabricId());
@@ -25,11 +23,9 @@ public final class NetworkPacketBrokerInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerInner model =
-            new NetworkPacketBrokerInner()
-                .withLocation("ti")
-                .withTags(mapOf("qiyv", "fyjfd"))
-                .withNetworkFabricId("ugejcvjkjyczcmt");
+        NetworkPacketBrokerInner model = new NetworkPacketBrokerInner().withLocation("ti")
+            .withTags(mapOf("qiyv", "fyjfd"))
+            .withNetworkFabricId("ugejcvjkjyczcmt");
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerInner.class);
         Assertions.assertEquals("ti", model.location());
         Assertions.assertEquals("fyjfd", model.tags().get("qiyv"));

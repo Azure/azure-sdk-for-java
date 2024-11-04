@@ -10,10 +10,6 @@ module com.azure.resourcemanager.maintenance {
     exports com.azure.resourcemanager.maintenance.fluent.models;
     exports com.azure.resourcemanager.maintenance.models;
 
-    opens com.azure.resourcemanager.maintenance.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.maintenance.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.maintenance.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.maintenance.models to com.azure.core, com.fasterxml.jackson.databind;
 }

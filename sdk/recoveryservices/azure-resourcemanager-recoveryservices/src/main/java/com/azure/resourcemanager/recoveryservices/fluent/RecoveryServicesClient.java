@@ -13,13 +13,16 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.CheckNameAvailab
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
 
-/** An instance of this class provides access to all the operations defined in RecoveryServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryServicesClient.
+ */
 public interface RecoveryServicesClient {
     /**
-     * API to check for resource name availability. A name is available if no other resource exists that has the same
-     * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
-     * their time of deletion be more than 24 Hours Ago.
-     *
+     * API to check for resource name availability.
+     * A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
+     * or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24
+     * Hours Ago.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location Location of the resource.
      * @param input Contains information about Resource type and Resource name.
@@ -30,14 +33,15 @@ public interface RecoveryServicesClient {
      * @return response for check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input, Context context);
+    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String location, CheckNameAvailabilityParameters input, Context context);
 
     /**
-     * API to check for resource name availability. A name is available if no other resource exists that has the same
-     * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
-     * their time of deletion be more than 24 Hours Ago.
-     *
+     * API to check for resource name availability.
+     * A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
+     * or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24
+     * Hours Ago.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location Location of the resource.
      * @param input Contains information about Resource type and Resource name.
@@ -47,12 +51,12 @@ public interface RecoveryServicesClient {
      * @return response for check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResultInner checkNameAvailability(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input);
+    CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String location,
+        CheckNameAvailabilityParameters input);
 
     /**
      * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
-     *
+     * 
      * @param location Location of the resource.
      * @param input Contains information about Resource type and properties to get capabilities.
      * @param context The context to associate with this operation.
@@ -62,12 +66,12 @@ public interface RecoveryServicesClient {
      * @return capabilities response for Microsoft.RecoveryServices along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CapabilitiesResponseInner> capabilitiesWithResponse(
-        String location, ResourceCapabilities input, Context context);
+    Response<CapabilitiesResponseInner> capabilitiesWithResponse(String location, ResourceCapabilities input,
+        Context context);
 
     /**
      * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
-     *
+     * 
      * @param location Location of the resource.
      * @param input Contains information about Resource type and properties to get capabilities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

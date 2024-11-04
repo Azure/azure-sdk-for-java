@@ -68,8 +68,8 @@ public final class CentralServerConfiguration {
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the CentralServerConfiguration object itself.
      */
-    public CentralServerConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public CentralServerConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
@@ -101,16 +101,12 @@ public final class CentralServerConfiguration {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model CentralServerConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subnetId in model CentralServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model CentralServerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualMachineConfiguration in model CentralServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }

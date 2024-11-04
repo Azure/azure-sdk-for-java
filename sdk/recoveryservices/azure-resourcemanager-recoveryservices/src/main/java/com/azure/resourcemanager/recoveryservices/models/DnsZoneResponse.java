@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DNSZone information for Microsoft.RecoveryServices. */
+/**
+ * DNSZone information for Microsoft.RecoveryServices.
+ */
 @Fluent
 public final class DnsZoneResponse extends DnsZone {
     /*
@@ -17,13 +19,15 @@ public final class DnsZoneResponse extends DnsZone {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
-    /** Creates an instance of DnsZoneResponse class. */
+    /**
+     * Creates an instance of DnsZoneResponse class.
+     */
     public DnsZoneResponse() {
     }
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone names.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -32,7 +36,7 @@ public final class DnsZoneResponse extends DnsZone {
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone names.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the DnsZoneResponse object itself.
      */
@@ -41,7 +45,9 @@ public final class DnsZoneResponse extends DnsZone {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DnsZoneResponse withSubResource(VaultSubResourceType subResource) {
         super.withSubResource(subResource);
@@ -50,7 +56,7 @@ public final class DnsZoneResponse extends DnsZone {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

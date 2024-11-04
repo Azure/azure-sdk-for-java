@@ -85,14 +85,18 @@ public final class AppResiliencyImpl implements AppResiliency, AppResiliency.Def
     }
 
     public AppResiliency create() {
-        this.innerObject = serviceManager.serviceClient().getAppResiliencies()
-            .createOrUpdateWithResponse(resourceGroupName, appName, name, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppResiliencies()
+            .createOrUpdateWithResponse(resourceGroupName, appName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AppResiliency create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAppResiliencies()
-            .createOrUpdateWithResponse(resourceGroupName, appName, name, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppResiliencies()
+            .createOrUpdateWithResponse(resourceGroupName, appName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -107,14 +111,18 @@ public final class AppResiliencyImpl implements AppResiliency, AppResiliency.Def
     }
 
     public AppResiliency apply() {
-        this.innerObject = serviceManager.serviceClient().getAppResiliencies()
-            .updateWithResponse(resourceGroupName, appName, name, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppResiliencies()
+            .updateWithResponse(resourceGroupName, appName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AppResiliency apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAppResiliencies()
-            .updateWithResponse(resourceGroupName, appName, name, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppResiliencies()
+            .updateWithResponse(resourceGroupName, appName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -128,14 +136,18 @@ public final class AppResiliencyImpl implements AppResiliency, AppResiliency.Def
     }
 
     public AppResiliency refresh() {
-        this.innerObject = serviceManager.serviceClient().getAppResiliencies()
-            .getWithResponse(resourceGroupName, appName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppResiliencies()
+            .getWithResponse(resourceGroupName, appName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AppResiliency refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAppResiliencies()
-            .getWithResponse(resourceGroupName, appName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppResiliencies()
+            .getWithResponse(resourceGroupName, appName, name, context)
+            .getValue();
         return this;
     }
 

@@ -30,7 +30,6 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
      */
     @Generated
     protected RunStepToolCall(String id) {
-        this.type = "RunStepToolCall";
         this.id = id;
     }
 
@@ -85,8 +84,8 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("code_interpreter".equals(discriminatorValue)) {
                     return RunStepCodeInterpreterToolCall.fromJson(readerToUse.reset());
-                } else if ("retrieval".equals(discriminatorValue)) {
-                    return RunStepRetrievalToolCall.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return RunStepFileSearchToolCall.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return RunStepFunctionToolCall.fromJson(readerToUse.reset());
                 } else {
@@ -116,7 +115,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "RunStepToolCall";
 
     /**
      * Get the type property: The object type.

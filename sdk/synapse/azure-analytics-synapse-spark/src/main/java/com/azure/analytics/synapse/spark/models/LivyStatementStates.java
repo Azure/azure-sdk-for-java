@@ -5,41 +5,66 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LivyStatementStates. */
+/**
+ * Defines values for LivyStatementStates.
+ */
 public final class LivyStatementStates extends ExpandableStringEnum<LivyStatementStates> {
-    /** Static value waiting for LivyStatementStates. */
+    /**
+     * Static value waiting for LivyStatementStates.
+     */
     public static final LivyStatementStates WAITING = fromString("waiting");
 
-    /** Static value running for LivyStatementStates. */
+    /**
+     * Static value running for LivyStatementStates.
+     */
     public static final LivyStatementStates RUNNING = fromString("running");
 
-    /** Static value available for LivyStatementStates. */
+    /**
+     * Static value available for LivyStatementStates.
+     */
     public static final LivyStatementStates AVAILABLE = fromString("available");
 
-    /** Static value error for LivyStatementStates. */
+    /**
+     * Static value error for LivyStatementStates.
+     */
     public static final LivyStatementStates ERROR = fromString("error");
 
-    /** Static value cancelling for LivyStatementStates. */
+    /**
+     * Static value cancelling for LivyStatementStates.
+     */
     public static final LivyStatementStates CANCELLING = fromString("cancelling");
 
-    /** Static value cancelled for LivyStatementStates. */
+    /**
+     * Static value cancelled for LivyStatementStates.
+     */
     public static final LivyStatementStates CANCELLED = fromString("cancelled");
 
     /**
+     * Creates a new instance of LivyStatementStates value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LivyStatementStates() {
+    }
+
+    /**
      * Creates or finds a LivyStatementStates from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LivyStatementStates.
      */
-    @JsonCreator
     public static LivyStatementStates fromString(String name) {
         return fromString(name, LivyStatementStates.class);
     }
 
-    /** @return known LivyStatementStates values. */
+    /**
+     * Gets known LivyStatementStates values.
+     * 
+     * @return known LivyStatementStates values.
+     */
     public static Collection<LivyStatementStates> values() {
         return values(LivyStatementStates.class);
     }

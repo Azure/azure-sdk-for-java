@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -23,7 +22,8 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DialogInputType() {}
+    public DialogInputType() {
+    }
 
     /**
      * Creates or finds a DialogInputType from its string representation.
@@ -31,7 +31,6 @@ public final class DialogInputType extends ExpandableStringEnum<DialogInputType>
      * @param name a name to look for.
      * @return the corresponding DialogInputType.
      */
-    @JsonCreator
     public static DialogInputType fromString(String name) {
         return fromString(name, DialogInputType.class);
     }

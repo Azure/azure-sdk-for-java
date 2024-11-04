@@ -19,35 +19,33 @@ public final class Db2TableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Db2TableDataset model = BinaryData.fromString(
-            "{\"type\":\"alknuyapvibzic\",\"typeProperties\":{\"tableName\":\"datarlcck\",\"schema\":\"datafpjmspau\",\"table\":\"dataqom\"},\"description\":\"ichca\",\"structure\":\"datakhjxnrkbn\",\"schema\":\"dataccklzhzn\",\"linkedServiceName\":{\"referenceName\":\"gvlxyx\",\"parameters\":{\"dprtqjytdcfe\":\"datatigpksywicklktg\",\"gmlamoaxc\":\"datauhbdwbvjs\"}},\"parameters\":{\"cw\":{\"type\":\"Int\",\"defaultValue\":\"datakvbpbl\"},\"vlryszfh\":{\"type\":\"Array\",\"defaultValue\":\"dataheeocnqoubve\"},\"zhh\":{\"type\":\"Float\",\"defaultValue\":\"datafhxohz\"}},\"annotations\":[\"datafuxnvkdslcofuvtf\"],\"folder\":{\"name\":\"ouisakl\"},\"\":{\"ub\":\"dataddxqfus\",\"p\":\"datasspmjvailfauyv\",\"wvoglff\":\"datawlkqdgwbztrthl\"}}")
+            "{\"type\":\"Db2Table\",\"typeProperties\":{\"tableName\":\"datarsvxphtjnhptj\",\"schema\":\"datak\",\"table\":\"datayzhimm\"},\"description\":\"tdtftmizuzjd\",\"structure\":\"datagyzcslazprkq\",\"schema\":\"dataimxpggktteagb\",\"linkedServiceName\":{\"referenceName\":\"acnq\",\"parameters\":{\"eylpby\":\"dataytvu\"}},\"parameters\":{\"glpwdjr\":{\"type\":\"Array\",\"defaultValue\":\"dataoifm\"}},\"annotations\":[\"datafshznu\",\"datattuhaaax\",\"datadcdjmdkqtxfrmbe\",\"dataxstowagehxuihwes\"],\"folder\":{\"name\":\"aqgblkkncyp\"},\"\":{\"piobnhrfbrjokjwq\":\"datavspsaneyvae\",\"zwfwlrfdjwlzseod\":\"datamraqnilppqcaig\",\"zy\":\"dataqfdrs\"}}")
             .toObject(Db2TableDataset.class);
-        Assertions.assertEquals("ichca", model.description());
-        Assertions.assertEquals("gvlxyx", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("cw").type());
-        Assertions.assertEquals("ouisakl", model.folder().name());
+        Assertions.assertEquals("tdtftmizuzjd", model.description());
+        Assertions.assertEquals("acnq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("glpwdjr").type());
+        Assertions.assertEquals("aqgblkkncyp", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Db2TableDataset model = new Db2TableDataset().withDescription("ichca")
-            .withStructure("datakhjxnrkbn")
-            .withSchema("dataccklzhzn")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("gvlxyx")
-                .withParameters(mapOf("dprtqjytdcfe", "datatigpksywicklktg", "gmlamoaxc", "datauhbdwbvjs")))
-            .withParameters(mapOf("cw",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datakvbpbl"), "vlryszfh",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataheeocnqoubve"), "zhh",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafhxohz")))
-            .withAnnotations(Arrays.asList("datafuxnvkdslcofuvtf"))
-            .withFolder(new DatasetFolder().withName("ouisakl"))
-            .withTableName("datarlcck")
-            .withSchemaTypePropertiesSchema("datafpjmspau")
-            .withTable("dataqom");
+        Db2TableDataset model = new Db2TableDataset().withDescription("tdtftmizuzjd")
+            .withStructure("datagyzcslazprkq")
+            .withSchema("dataimxpggktteagb")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("acnq").withParameters(mapOf("eylpby", "dataytvu")))
+            .withParameters(mapOf("glpwdjr",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataoifm")))
+            .withAnnotations(Arrays.asList("datafshznu", "datattuhaaax", "datadcdjmdkqtxfrmbe", "dataxstowagehxuihwes"))
+            .withFolder(new DatasetFolder().withName("aqgblkkncyp"))
+            .withTableName("datarsvxphtjnhptj")
+            .withSchemaTypePropertiesSchema("datak")
+            .withTable("datayzhimm");
         model = BinaryData.fromObject(model).toObject(Db2TableDataset.class);
-        Assertions.assertEquals("ichca", model.description());
-        Assertions.assertEquals("gvlxyx", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("cw").type());
-        Assertions.assertEquals("ouisakl", model.folder().name());
+        Assertions.assertEquals("tdtftmizuzjd", model.description());
+        Assertions.assertEquals("acnq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("glpwdjr").type());
+        Assertions.assertEquals("aqgblkkncyp", model.folder().name());
     }
 
     // Use "Map.of" if available

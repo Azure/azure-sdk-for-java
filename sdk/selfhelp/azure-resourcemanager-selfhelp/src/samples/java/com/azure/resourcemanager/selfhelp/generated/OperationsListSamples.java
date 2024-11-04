@@ -9,7 +9,8 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/ListOperations.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/ListOperations.json
      */
     /**
      * Sample code: List All Operations.

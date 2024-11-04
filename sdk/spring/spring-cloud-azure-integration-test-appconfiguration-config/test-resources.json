@@ -5,9 +5,6 @@
 		"testApplicationId": {
 			"type": "string"
 		},
-		"testApplicationSecret": {
-			"type": "String"
-		},
 		"tenantId": {
 			"type": "String"
 		},
@@ -45,7 +42,6 @@
 		"keyVaultSecretReference": "[concat('{\"uri\":\"https://',variables('keyVaultName'),parameters('keyVaultDomainSuffix'),'/secrets/',variables('secretName'),'\"}')]",
 		"featureFlagNamePrefix": ".appconfig.featureflag~2F",
 		"featureFlagName": "[concat(variables('featureFlagNamePrefix'), 'Alpha')]",
-		"randomFlagName": "[concat(variables('featureFlagNamePrefix'), 'Random')]",
 		"featureFlagContentType": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
 		"azureAppConfigurationDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b"
 	},
@@ -133,19 +129,6 @@
 				"tags": "[variables('tags')]"
 			}
 		},
-		{
-			"type": "Microsoft.AppConfiguration/configurationStores/keyValues",
-			"apiVersion": "2020-07-01-preview",
-			"name": "[concat(variables('configStoreName'), '/',variables('randomFlagName'))]",
-			"dependsOn": [
-				"[variables('configStoreName')]"
-			],
-			"properties": {
-				"value": "{\"id\":\"Random\",\"description\":\"\",\"enabled\":true,\"conditions\":{\"client_filters\":[{\"name\": \"percentageFilter\", \"parameters\": {\"Value\":50}}]}}",
-				"contentType": "[variables('featureFlagContentType')]",
-				"tags": "[variables('tags')]"
-			}
-		},
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
@@ -164,10 +147,6 @@
 		"AZURE_CLIENT_ID": {
 			"type": "string",
 			"value": "[parameters('testApplicationId')]"
-		},
-		"AZURE_CLIENT_SECRET": {
-			"type": "string",
-			"value": "[parameters('testApplicationSecret')]"
 		},
 		"STORE_NAME": {
 			"type": "string",

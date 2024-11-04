@@ -8,6 +8,9 @@ package com.azure.resourcemanager.standbypool.generated;
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/Operations_List.json
+     */
     /**
      * Sample code: Operations_List.
      * 

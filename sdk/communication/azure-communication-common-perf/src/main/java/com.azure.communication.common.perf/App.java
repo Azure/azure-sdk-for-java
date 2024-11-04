@@ -13,8 +13,6 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
-            HmacAuthenticationPolicyTest.class
-        }, args);
+        PerfStressProgram.run(new Class<?>[] { HmacAuthenticationPolicyTest.class }, args);
     }
 }

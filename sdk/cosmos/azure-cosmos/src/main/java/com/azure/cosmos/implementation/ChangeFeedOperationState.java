@@ -46,7 +46,8 @@ public class ChangeFeedOperationState extends FeedOperationState {
                 cfOptAccessor.getDiagnosticsThresholds(
                     checkNotNull(changeFeedRequestOptions, "Argument 'changeFeedRequestOptions' must not be null."))),
             fluxOptions,
-            getEffectiveMaxItemCount(fluxOptions, changeFeedRequestOptions)
+            getEffectiveMaxItemCount(fluxOptions, changeFeedRequestOptions),
+            cfOptAccessor.getImpl(checkNotNull(changeFeedRequestOptions, "Argument 'changeFeedRequestOptions' must not be null."))
         );
 
         this.options = ModelBridgeInternal

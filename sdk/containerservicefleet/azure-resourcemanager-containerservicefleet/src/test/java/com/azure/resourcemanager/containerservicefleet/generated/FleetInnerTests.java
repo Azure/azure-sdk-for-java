@@ -20,7 +20,7 @@ public final class FleetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"hubProfile\":{\"dnsPrefix\":\"trg\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"s\"},\"agentProfile\":{\"subnetId\":\"gvfcj\",\"vmSize\":\"zoxxjtf\"},\"fqdn\":\"luwfzitonpeqfpjk\",\"kubernetesVersion\":\"xofpdvhpfxxypi\",\"portalFqdn\":\"nmayhuybb\"}},\"eTag\":\"odepoogin\",\"identity\":{\"principalId\":\"dd619599-50b1-4599-9951-135b85637760\",\"tenantId\":\"1ada13d8-7087-4da7-886b-db9c2b31c446\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"narxzxtheotus\":{\"principalId\":\"32ba097b-28a1-456d-8920-8674622b1e70\",\"clientId\":\"e8d5c93a-eed5-4eb4-ad37-622bee64954c\"},\"evcciqihnhun\":{\"principalId\":\"8f1202b9-2a23-45de-99c7-6381a5cb66b6\",\"clientId\":\"dfbd6b86-be67-4b6f-bf4c-e0d33456b735\"},\"jzrnf\":{\"principalId\":\"2ad2cb6c-ce59-4a30-a4a8-a2260b32dd52\",\"clientId\":\"d8b2105e-60f1-42cc-9a18-844e946dc375\"},\"gispemvtzfkufubl\":{\"principalId\":\"f2714a3a-be33-4444-aba4-f6ef1e4aa7fb\",\"clientId\":\"be34a905-9022-450d-85aa-063e722e68ab\"}}},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"},\"id\":\"ybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"hubProfile\":{\"dnsPrefix\":\"trg\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"s\"},\"agentProfile\":{\"subnetId\":\"gvfcj\",\"vmSize\":\"zoxxjtf\"},\"fqdn\":\"luwfzitonpeqfpjk\",\"kubernetesVersion\":\"xofpdvhpfxxypi\",\"portalFqdn\":\"nmayhuybb\"}},\"eTag\":\"odepoogin\",\"identity\":{\"principalId\":\"9692346c-65ce-4176-ada3-fc04bdbfd513\",\"tenantId\":\"927043b8-de0a-4154-a6c3-227ad26fc29f\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"narxzxtheotus\":{\"principalId\":\"1dfc8253-4500-4726-bc40-556711687ed2\",\"clientId\":\"124bbb31-b14c-4b1e-8a54-9266056d532a\"},\"evcciqihnhun\":{\"principalId\":\"b21d9281-0a40-4f42-94e4-b632b7e03eef\",\"clientId\":\"e4279161-a871-453c-a8e0-20c630c74aa4\"},\"jzrnf\":{\"principalId\":\"74e7f65b-2aa8-4fae-9442-d70c72daaa1d\",\"clientId\":\"5558d8cb-8e56-4a60-8930-09aabcf57398\"},\"gispemvtzfkufubl\":{\"principalId\":\"9abd19e9-d5f3-423e-af71-33776ea7362c\",\"clientId\":\"a40e863a-b1b4-4ce7-9570-960ae9746439\"}}},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"},\"id\":\"ybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}")
             .toObject(FleetInner.class);
         Assertions.assertEquals("fxqeof", model.location());
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
@@ -36,7 +36,8 @@ public final class FleetInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetInner model
-            = new FleetInner().withLocation("fxqeof").withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
+            = new FleetInner().withLocation("fxqeof")
+                .withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
                 .withIdentity(
                     new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                         .withUserAssignedIdentities(mapOf("narxzxtheotus", new UserAssignedIdentity(), "evcciqihnhun",
@@ -44,7 +45,8 @@ public final class FleetInnerTests {
                             new UserAssignedIdentity())))
                 .withHubProfile(new FleetHubProfile().withDnsPrefix("trg")
                     .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(true)
-                        .withEnableVnetIntegration(true).withSubnetId("s"))
+                        .withEnableVnetIntegration(true)
+                        .withSubnetId("s"))
                     .withAgentProfile(new AgentProfile().withSubnetId("gvfcj").withVmSize("zoxxjtf")));
         model = BinaryData.fromObject(model).toObject(FleetInner.class);
         Assertions.assertEquals("fxqeof", model.location());

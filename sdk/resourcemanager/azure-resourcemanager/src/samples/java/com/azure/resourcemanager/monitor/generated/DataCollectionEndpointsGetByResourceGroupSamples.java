@@ -19,7 +19,10 @@ public final class DataCollectionEndpointsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionEndpoints()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionEndpoints()
             .getByResourceGroupWithResponse("myResourceGroup", "myCollectionEndpoint",
                 com.azure.core.util.Context.NONE);
     }

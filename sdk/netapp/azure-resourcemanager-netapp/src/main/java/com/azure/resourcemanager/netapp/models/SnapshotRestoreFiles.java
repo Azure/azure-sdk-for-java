@@ -6,24 +6,26 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Restore payload for Single File Snapshot Restore.
  */
 @Fluent
-public final class SnapshotRestoreFiles {
+public final class SnapshotRestoreFiles implements JsonSerializable<SnapshotRestoreFiles> {
     /*
      * List of files to be restored
      */
-    @JsonProperty(value = "filePaths", required = true)
     private List<String> filePaths;
 
     /*
      * Destination folder where the files will be restored
      */
-    @JsonProperty(value = "destinationPath")
     private String destinationPath;
 
     /**
@@ -79,10 +81,51 @@ public final class SnapshotRestoreFiles {
      */
     public void validate() {
         if (filePaths() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnapshotRestoreFiles.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("filePaths", this.filePaths, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("destinationPath", this.destinationPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotRestoreFiles from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotRestoreFiles if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotRestoreFiles.
+     */
+    public static SnapshotRestoreFiles fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotRestoreFiles deserializedSnapshotRestoreFiles = new SnapshotRestoreFiles();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filePaths".equals(fieldName)) {
+                    List<String> filePaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSnapshotRestoreFiles.filePaths = filePaths;
+                } else if ("destinationPath".equals(fieldName)) {
+                    deserializedSnapshotRestoreFiles.destinationPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotRestoreFiles;
+        });
+    }
 }

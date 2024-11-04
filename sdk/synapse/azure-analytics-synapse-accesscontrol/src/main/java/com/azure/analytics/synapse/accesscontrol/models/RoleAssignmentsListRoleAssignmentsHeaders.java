@@ -5,20 +5,34 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The RoleAssignmentsListRoleAssignmentsHeaders model. */
+/**
+ * The RoleAssignmentsListRoleAssignmentsHeaders model.
+ */
 @Fluent
 public final class RoleAssignmentsListRoleAssignmentsHeaders {
     /*
      * The x-ms-continuation property.
      */
-    @JsonProperty(value = "x-ms-continuation")
     private String xMsContinuation;
+
+    private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of RoleAssignmentsListRoleAssignmentsHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public RoleAssignmentsListRoleAssignmentsHeaders(HttpHeaders rawHeaders) {
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+    }
 
     /**
      * Get the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @return the xMsContinuation value.
      */
     public String getXMsContinuation() {
@@ -27,7 +41,7 @@ public final class RoleAssignmentsListRoleAssignmentsHeaders {
 
     /**
      * Set the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the RoleAssignmentsListRoleAssignmentsHeaders object itself.
      */

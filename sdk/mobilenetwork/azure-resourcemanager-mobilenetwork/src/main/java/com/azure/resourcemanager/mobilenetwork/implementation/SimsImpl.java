@@ -15,9 +15,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.EncryptedSimUploadList;
 import com.azure.resourcemanager.mobilenetwork.models.Sim;
+import com.azure.resourcemanager.mobilenetwork.models.SimClone;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
-import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
+import com.azure.resourcemanager.mobilenetwork.models.SimMove;
 import com.azure.resourcemanager.mobilenetwork.models.Sims;
+import com.azure.resourcemanager.mobilenetwork.models.SimUploadList;
 
 public final class SimsImpl implements Sims {
     private static final ClientLogger LOGGER = new ClientLogger(SimsImpl.class);
@@ -126,6 +128,46 @@ public final class SimsImpl implements Sims {
         EncryptedSimUploadList parameters, Context context) {
         AsyncOperationStatusInner inner
             = this.serviceClient().bulkUploadEncrypted(resourceGroupName, simGroupName, parameters, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus move(String resourceGroupName, String simGroupName, SimMove parameters) {
+        AsyncOperationStatusInner inner = this.serviceClient().move(resourceGroupName, simGroupName, parameters);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus move(String resourceGroupName, String simGroupName, SimMove parameters,
+        Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().move(resourceGroupName, simGroupName, parameters, context);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus clone(String resourceGroupName, String simGroupName, SimClone parameters) {
+        AsyncOperationStatusInner inner = this.serviceClient().clone(resourceGroupName, simGroupName, parameters);
+        if (inner != null) {
+            return new AsyncOperationStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public AsyncOperationStatus clone(String resourceGroupName, String simGroupName, SimClone parameters,
+        Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().clone(resourceGroupName, simGroupName, parameters, context);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {

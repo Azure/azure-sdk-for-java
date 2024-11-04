@@ -67,129 +67,68 @@ public final class WeathersImpl {
     @ServiceInterface(name = "FarmBeatsClientWeath")
     public interface WeathersService {
         @Get("/weather")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("partyId") String partyId,
-                @QueryParam("boundaryId") String boundaryId,
-                @QueryParam("extensionId") String extensionId,
-                @QueryParam("weatherDataType") String weatherDataType,
-                @QueryParam("granularity") String granularity,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint, @QueryParam("partyId") String partyId,
+            @QueryParam("boundaryId") String boundaryId, @QueryParam("extensionId") String extensionId,
+            @QueryParam("weatherDataType") String weatherDataType, @QueryParam("granularity") String granularity,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/weather/delete-data/{jobId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataDeleteJobDetails(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDataDeleteJobDetails(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/weather/delete-data/{jobId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createDataDeleteJob(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData job,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createDataDeleteJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData job, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/weather/ingest-data/{jobId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataIngestionJobDetails(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDataIngestionJobDetails(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/weather/ingest-data/{jobId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createDataIngestionJob(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData job,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createDataIngestionJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData job, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -267,36 +206,15 @@ public final class WeathersImpl {
      *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(
-            String partyId,
-            String boundaryId,
-            String extensionId,
-            String weatherDataType,
-            String granularity,
-            RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(String partyId, String boundaryId, String extensionId,
+        String weatherDataType, String granularity, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(
-                                        this.client.getEndpoint(),
-                                        partyId,
-                                        boundaryId,
-                                        extensionId,
-                                        weatherDataType,
-                                        granularity,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), partyId, boundaryId, extensionId, weatherDataType,
+                    granularity, this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -374,23 +292,14 @@ public final class WeathersImpl {
      *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(
-            String partyId,
-            String boundaryId,
-            String extensionId,
-            String weatherDataType,
-            String granularity,
-            RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAsync(String partyId, String boundaryId, String extensionId,
+        String weatherDataType, String granularity, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
         return new PagedFlux<>(
-                () ->
-                        listSinglePageAsync(
-                                partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions),
-                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            () -> listSinglePageAsync(partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions),
+            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -468,15 +377,10 @@ public final class WeathersImpl {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(
-            String partyId,
-            String boundaryId,
-            String extensionId,
-            String weatherDataType,
-            String granularity,
-            RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> list(String partyId, String boundaryId, String extensionId, String weatherDataType,
+        String granularity, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                listAsync(partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions));
+            listAsync(partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions));
     }
 
     /**
@@ -521,18 +425,11 @@ public final class WeathersImpl {
      * @return weather data delete job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataDeleteJobDetailsWithResponseAsync(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDataDeleteJobDetailsWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDataDeleteJobDetails(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDataDeleteJobDetails(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -654,19 +551,11 @@ public final class WeathersImpl {
      * @return schema of weather data delete job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createDataDeleteJobWithResponseAsync(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createDataDeleteJobWithResponseAsync(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createDataDeleteJob(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                job,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createDataDeleteJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), job, accept, requestOptions, context));
     }
 
     /**
@@ -742,20 +631,16 @@ public final class WeathersImpl {
      * @return the {@link PollerFlux} for polling of schema of weather data delete job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDataDeleteJobAsync(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.createDataDeleteJobWithResponseAsync(jobId, job, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCreateDataDeleteJobAsync(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createDataDeleteJobWithResponseAsync(jobId, job, requestOptions),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -831,8 +716,8 @@ public final class WeathersImpl {
      * @return the {@link SyncPoller} for polling of schema of weather data delete job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDataDeleteJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateDataDeleteJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.beginCreateDataDeleteJobAsync(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -880,18 +765,11 @@ public final class WeathersImpl {
      * @return weather ingestion job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponseAsync(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDataIngestionJobDetails(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDataIngestionJobDetails(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1019,19 +897,11 @@ public final class WeathersImpl {
      * @return schema of weather ingestion job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createDataIngestionJobWithResponseAsync(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createDataIngestionJobWithResponseAsync(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createDataIngestionJob(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                job,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createDataIngestionJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), job, accept, requestOptions, context));
     }
 
     /**
@@ -1111,20 +981,16 @@ public final class WeathersImpl {
      * @return the {@link PollerFlux} for polling of schema of weather ingestion job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJobAsync(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.createDataIngestionJobWithResponseAsync(jobId, job, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJobAsync(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createDataIngestionJobWithResponseAsync(jobId, job, requestOptions),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1204,8 +1070,8 @@ public final class WeathersImpl {
      * @return the {@link SyncPoller} for polling of schema of weather ingestion job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.beginCreateDataIngestionJobAsync(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -1269,18 +1135,11 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

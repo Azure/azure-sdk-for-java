@@ -132,12 +132,12 @@ public final class UeInfoPropertiesFormat {
      */
     public void validate() {
         if (ratType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ratType in model UeInfoPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ratType in model UeInfoPropertiesFormat"));
         }
         if (ueState() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ueState in model UeInfoPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ueState in model UeInfoPropertiesFormat"));
         }
         if (ueIpAddresses() != null) {
             ueIpAddresses().forEach(e -> e.validate());

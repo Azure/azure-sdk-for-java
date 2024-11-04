@@ -7,25 +7,29 @@ package com.azure.resourcemanager.scvmm.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
-     * Returns list of all operations.
-     *
+     * List the operations for the provider.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the request to list operations as paginated response with {@link PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<ResourceProviderOperation> list();
+    PagedIterable<Operation> list();
 
     /**
-     * Returns list of all operations.
-     *
+     * List the operations for the provider.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the request to list operations as paginated response with {@link PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<ResourceProviderOperation> list(Context context);
+    PagedIterable<Operation> list(Context context);
 }

@@ -5,64 +5,68 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * SAP Business Warehouse Linked Service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapBW")
-@JsonFlatten
 @Fluent
 public class SapBWLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "SapBW";
+
+    /*
      * Host name of the SAP BW instance. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
-     * System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or
-     * Expression with resultType string).
+     * System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.systemNumber", required = true)
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type:
-     * string (or Expression with resultType string).
+     * Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
      * Username to access the SAP BW server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
      * Password to access the SAP BW server.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SapBWLinkedService class.
      */
     public SapBWLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -86,8 +90,8 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented
-     * as a string.) Type: string (or Expression with resultType string).
+     * Get the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented as
+     * a string.) Type: string (or Expression with resultType string).
      * 
      * @return the systemNumber value.
      */
@@ -96,8 +100,8 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented
-     * as a string.) Type: string (or Expression with resultType string).
+     * Set the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented as
+     * a string.) Type: string (or Expression with resultType string).
      * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapBWLinkedService object itself.
@@ -172,8 +176,8 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -182,8 +186,8 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapBWLinkedService object itself.
@@ -227,5 +231,104 @@ public class SapBWLinkedService extends LinkedService {
     public SapBWLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (server != null
+            || systemNumber != null
+            || clientId != null
+            || userName != null
+            || password != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("server", this.server);
+            jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeUntypedField("userName", this.userName);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapBWLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapBWLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapBWLinkedService.
+     */
+    public static SapBWLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapBWLinkedService deserializedSapBWLinkedService = new SapBWLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSapBWLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSapBWLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSapBWLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSapBWLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapBWLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("server".equals(fieldName)) {
+                            deserializedSapBWLinkedService.server = reader.readUntyped();
+                        } else if ("systemNumber".equals(fieldName)) {
+                            deserializedSapBWLinkedService.systemNumber = reader.readUntyped();
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSapBWLinkedService.clientId = reader.readUntyped();
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedSapBWLinkedService.userName = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedSapBWLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSapBWLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapBWLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSapBWLinkedService;
+        });
     }
 }

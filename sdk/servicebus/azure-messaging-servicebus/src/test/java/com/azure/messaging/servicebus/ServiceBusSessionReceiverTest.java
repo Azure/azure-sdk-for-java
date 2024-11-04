@@ -104,9 +104,9 @@ public class ServiceBusSessionReceiverTest {
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
 
         // Act
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
-            messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
+        final ServiceBusSessionReceiver sessionReceiver
+            = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink, messageSerializer, retryOptions, 1, scheduler,
+                unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Assert
         assertEquals(sessionId, sessionReceiver.getSessionId());
@@ -152,27 +152,22 @@ public class ServiceBusSessionReceiverTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
-            messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
+        final ServiceBusSessionReceiver sessionReceiver
+            = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink, messageSerializer, retryOptions, 1, scheduler,
+                unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Act & Assert
         try {
-            StepVerifier.create(sessionReceiver.receive())
-                .then(() -> {
-                    messagePublisher.next(message, message2);
-                    messagePublisher.complete();
-                })
-                .assertNext(actual -> {
-                    assertEquals(receivedMessage, actual.getMessage());
-                    assertEquals(sessionId, actual.getSessionId());
-                })
-                .assertNext(actual -> {
-                    assertEquals(receivedMessage2, actual.getMessage());
-                    assertEquals(sessionId, actual.getSessionId());
-                })
-                .expectComplete()
-                .verify(Duration.ofSeconds(10));
+            StepVerifier.create(sessionReceiver.receive()).then(() -> {
+                messagePublisher.next(message, message2);
+                messagePublisher.complete();
+            }).assertNext(actual -> {
+                assertEquals(receivedMessage, actual.getMessage());
+                assertEquals(sessionId, actual.getSessionId());
+            }).assertNext(actual -> {
+                assertEquals(receivedMessage2, actual.getMessage());
+                assertEquals(sessionId, actual.getSessionId());
+            }).expectComplete().verify(Duration.ofSeconds(10));
         } finally {
             sessionReceiver.close();
         }
@@ -222,9 +217,9 @@ public class ServiceBusSessionReceiverTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(10));
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
-            messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, waitTime);
+        final ServiceBusSessionReceiver sessionReceiver
+            = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink, messageSerializer, retryOptions, 1, scheduler,
+                unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, waitTime);
 
         // Act & Assert
         try {
@@ -281,25 +276,21 @@ public class ServiceBusSessionReceiverTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
-        final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink,
-            messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
+        final ServiceBusSessionReceiver sessionReceiver
+            = new ServiceBusSessionReceiver(sessionId, amqpReceiveLink, messageSerializer, retryOptions, 1, scheduler,
+                unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Act & Assert
         try {
-            StepVerifier.create(sessionReceiver.receive())
-                .then(() -> {
-                    assertFalse(sessionReceiver.containsLockToken(lockToken));
+            StepVerifier.create(sessionReceiver.receive()).then(() -> {
+                assertFalse(sessionReceiver.containsLockToken(lockToken));
 
-                    messagePublisher.next(message);
-                })
-                .assertNext(actual -> {
-                    assertEquals(receivedMessage, actual.getMessage());
-                    assertEquals(sessionId, actual.getSessionId());
-                    assertEquals(messageLockedUntil, actual.getMessage().getLockedUntil());
-                })
-                .thenCancel()
-                .verify(Duration.ofSeconds(2));
+                messagePublisher.next(message);
+            }).assertNext(actual -> {
+                assertEquals(receivedMessage, actual.getMessage());
+                assertEquals(sessionId, actual.getSessionId());
+                assertEquals(messageLockedUntil, actual.getMessage().getLockedUntil());
+            }).thenCancel().verify(Duration.ofSeconds(2));
 
             assertTrue(sessionReceiver.containsLockToken(lockToken));
 

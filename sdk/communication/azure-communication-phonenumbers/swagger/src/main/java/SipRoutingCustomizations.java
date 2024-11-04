@@ -6,7 +6,6 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
-
 /**
  * Contains customizations for SIP routing configuration.
  */
@@ -24,12 +23,27 @@ public class SipRoutingCustomizations extends Customization {
     private void customizeSipConfiguration(LibraryCustomization customization) {
         ClassCustomization sipConfigurationClass = customization.getPackage(IMPLEMENTATION_MODELS_PACKAGE)
             .getClass(SIP_CONFIGURATION_CLASS_NAME);
-        sipConfigurationClass
-            .getProperty("trunks")
-            .addAnnotation("@JsonInclude(value = JsonInclude.Include.NON_ABSENT)");
-        sipConfigurationClass
-            .getProperty("routes")
-            .addAnnotation("@JsonInclude(value = JsonInclude.Include.NON_ABSENT)");
+
+        // azure-json doesn't write null values, by default. In the context of a collection type, null values should
+        // be included.
+        sipConfigurationClass.getMethod("toJson").replaceBody(
+            "jsonWriter.writeStartObject();                               "
+                + "jsonWriter.writeMapField(\"trunks\", this.trunks, (writer, element) -> { "
+                + "    if (element == null) {                                            "
+                + "        writer.writeNull();                                           "
+                + "    } else {                                                          "
+                + "        writer.writeJson(element);                                    "
+                + "    }                                                                 "
+                + "});                                                                   "
+                + "jsonWriter.writeArrayField(\"routes\", this.routes, (writer, element) -> {"
+                + "    if (element == null) {                                            "
+                + "        writer.writeNull();                                           "
+                + "    } else {                                                          "
+                + "        writer.writeJson(element);                                    "
+                + "    }                                                                 "
+                + "});                                                                   "
+                + "return jsonWriter.writeEndObject();                                    "
+        );
     }
 
 }

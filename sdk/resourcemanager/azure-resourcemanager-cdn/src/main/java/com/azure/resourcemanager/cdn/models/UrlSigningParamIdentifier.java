@@ -6,23 +6,25 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines how to identify a parameter for a specific purpose e.g. expires.
  */
 @Fluent
-public final class UrlSigningParamIdentifier {
+public final class UrlSigningParamIdentifier implements JsonSerializable<UrlSigningParamIdentifier> {
     /*
      * Indicates the purpose of the parameter
      */
-    @JsonProperty(value = "paramIndicator", required = true)
     private ParamIndicator paramIndicator;
 
     /*
      * Parameter name
      */
-    @JsonProperty(value = "paramName", required = true)
     private String paramName;
 
     /**
@@ -78,14 +80,58 @@ public final class UrlSigningParamIdentifier {
      */
     public void validate() {
         if (paramIndicator() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property paramIndicator in model UrlSigningParamIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property paramIndicator in model UrlSigningParamIdentifier"));
         }
         if (paramName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property paramName in model UrlSigningParamIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property paramName in model UrlSigningParamIdentifier"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UrlSigningParamIdentifier.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("paramIndicator",
+            this.paramIndicator == null ? null : this.paramIndicator.toString());
+        jsonWriter.writeStringField("paramName", this.paramName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UrlSigningParamIdentifier from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UrlSigningParamIdentifier if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UrlSigningParamIdentifier.
+     */
+    public static UrlSigningParamIdentifier fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UrlSigningParamIdentifier deserializedUrlSigningParamIdentifier = new UrlSigningParamIdentifier();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("paramIndicator".equals(fieldName)) {
+                    deserializedUrlSigningParamIdentifier.paramIndicator
+                        = ParamIndicator.fromString(reader.getString());
+                } else if ("paramName".equals(fieldName)) {
+                    deserializedUrlSigningParamIdentifier.paramName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUrlSigningParamIdentifier;
+        });
+    }
 }

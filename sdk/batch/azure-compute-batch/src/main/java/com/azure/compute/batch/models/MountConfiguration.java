@@ -18,7 +18,8 @@ import java.io.IOException;
 public final class MountConfiguration implements JsonSerializable<MountConfiguration> {
 
     /*
-     * The Azure Storage Container to mount using blob FUSE on each node. This property is mutually exclusive with all other properties.
+     * The Azure Storage Container to mount using blob FUSE on each node. This property is mutually exclusive with all
+     * other properties.
      */
     @Generated
     private AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration;

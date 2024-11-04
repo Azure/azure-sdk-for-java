@@ -16,35 +16,38 @@ public final class DaprComponentResiliencyPolicyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprComponentResiliencyPolicyConfiguration model = BinaryData.fromString(
-            "{\"httpRetryPolicy\":{\"maxRetries\":36314711,\"retryBackOff\":{\"initialDelayInMilliseconds\":715935859,\"maxIntervalInMilliseconds\":2047901283}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":1840957180},\"circuitBreakerPolicy\":{\"consecutiveErrors\":304822445,\"timeoutInSeconds\":1524765987,\"intervalInSeconds\":1267462998}}")
+            "{\"httpRetryPolicy\":{\"maxRetries\":736323206,\"retryBackOff\":{\"initialDelayInMilliseconds\":1434895356,\"maxIntervalInMilliseconds\":264085794}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":63326432},\"circuitBreakerPolicy\":{\"consecutiveErrors\":1334001807,\"timeoutInSeconds\":1126673643,\"intervalInSeconds\":1466151519}}")
             .toObject(DaprComponentResiliencyPolicyConfiguration.class);
-        Assertions.assertEquals(36314711, model.httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(715935859, model.httpRetryPolicy().retryBackOff().initialDelayInMilliseconds());
-        Assertions.assertEquals(2047901283, model.httpRetryPolicy().retryBackOff().maxIntervalInMilliseconds());
-        Assertions.assertEquals(1840957180, model.timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(304822445, model.circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(1524765987, model.circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(1267462998, model.circuitBreakerPolicy().intervalInSeconds());
+        Assertions.assertEquals(736323206, model.httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(1434895356, model.httpRetryPolicy().retryBackOff().initialDelayInMilliseconds());
+        Assertions.assertEquals(264085794, model.httpRetryPolicy().retryBackOff().maxIntervalInMilliseconds());
+        Assertions.assertEquals(63326432, model.timeoutPolicy().responseTimeoutInSeconds());
+        Assertions.assertEquals(1334001807, model.circuitBreakerPolicy().consecutiveErrors());
+        Assertions.assertEquals(1126673643, model.circuitBreakerPolicy().timeoutInSeconds());
+        Assertions.assertEquals(1466151519, model.circuitBreakerPolicy().intervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprComponentResiliencyPolicyConfiguration model = new DaprComponentResiliencyPolicyConfiguration()
             .withHttpRetryPolicy(
-                new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(36314711)
+                new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(736323206)
                     .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()
-                        .withInitialDelayInMilliseconds(715935859).withMaxIntervalInMilliseconds(2047901283)))
+                        .withInitialDelayInMilliseconds(1434895356)
+                        .withMaxIntervalInMilliseconds(264085794)))
             .withTimeoutPolicy(
-                new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration().withResponseTimeoutInSeconds(1840957180))
-            .withCircuitBreakerPolicy(new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration()
-                .withConsecutiveErrors(304822445).withTimeoutInSeconds(1524765987).withIntervalInSeconds(1267462998));
+                new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration().withResponseTimeoutInSeconds(63326432))
+            .withCircuitBreakerPolicy(
+                new DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration().withConsecutiveErrors(1334001807)
+                    .withTimeoutInSeconds(1126673643)
+                    .withIntervalInSeconds(1466151519));
         model = BinaryData.fromObject(model).toObject(DaprComponentResiliencyPolicyConfiguration.class);
-        Assertions.assertEquals(36314711, model.httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(715935859, model.httpRetryPolicy().retryBackOff().initialDelayInMilliseconds());
-        Assertions.assertEquals(2047901283, model.httpRetryPolicy().retryBackOff().maxIntervalInMilliseconds());
-        Assertions.assertEquals(1840957180, model.timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(304822445, model.circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(1524765987, model.circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(1267462998, model.circuitBreakerPolicy().intervalInSeconds());
+        Assertions.assertEquals(736323206, model.httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(1434895356, model.httpRetryPolicy().retryBackOff().initialDelayInMilliseconds());
+        Assertions.assertEquals(264085794, model.httpRetryPolicy().retryBackOff().maxIntervalInMilliseconds());
+        Assertions.assertEquals(63326432, model.timeoutPolicy().responseTimeoutInSeconds());
+        Assertions.assertEquals(1334001807, model.circuitBreakerPolicy().consecutiveErrors());
+        Assertions.assertEquals(1126673643, model.circuitBreakerPolicy().timeoutInSeconds());
+        Assertions.assertEquals(1466151519, model.circuitBreakerPolicy().intervalInSeconds());
     }
 }

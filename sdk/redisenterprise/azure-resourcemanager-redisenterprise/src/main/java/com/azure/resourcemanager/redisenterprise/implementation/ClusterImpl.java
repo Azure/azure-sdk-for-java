@@ -11,9 +11,11 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointCo
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterUpdate;
+import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
@@ -69,6 +71,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().identity();
     }
 
+    public HighAvailability highAvailability() {
+        return this.innerModel().highAvailability();
+    }
+
     public TlsVersion minimumTlsVersion() {
         return this.innerModel().minimumTlsVersion();
     }
@@ -85,6 +91,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().provisioningState();
     }
 
+    public RedundancyMode redundancyMode() {
+        return this.innerModel().redundancyMode();
+    }
+
     public ResourceState resourceState() {
         return this.innerModel().resourceState();
     }
@@ -97,7 +107,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -135,14 +146,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject = serviceManager.serviceClient().getRedisEnterprises().create(resourceGroupName, clusterName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRedisEnterprises()
+            .create(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getRedisEnterprises().create(resourceGroupName, clusterName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRedisEnterprises()
+            .create(resourceGroupName, clusterName, this.innerModel(), context);
         return this;
     }
 
@@ -158,14 +171,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject = serviceManager.serviceClient().getRedisEnterprises().update(resourceGroupName, clusterName,
-            updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRedisEnterprises()
+            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getRedisEnterprises().update(resourceGroupName, clusterName,
-            updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRedisEnterprises()
+            .update(resourceGroupName, clusterName, updateParameters, context);
         return this;
     }
 
@@ -178,14 +193,18 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster refresh() {
-        this.innerObject = serviceManager.serviceClient().getRedisEnterprises()
-            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRedisEnterprises()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cluster refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getRedisEnterprises()
-            .getByResourceGroupWithResponse(resourceGroupName, clusterName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRedisEnterprises()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
+            .getValue();
         return this;
     }
 
@@ -230,6 +249,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             return this;
         } else {
             this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public ClusterImpl withHighAvailability(HighAvailability highAvailability) {
+        if (isInCreateMode()) {
+            this.innerModel().withHighAvailability(highAvailability);
+            return this;
+        } else {
+            this.updateParameters.withHighAvailability(highAvailability);
             return this;
         }
     }

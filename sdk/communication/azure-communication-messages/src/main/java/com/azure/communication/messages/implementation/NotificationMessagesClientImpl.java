@@ -32,12 +32,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -160,9 +160,9 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> send(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData notificationContent,
+            RequestOptions requestOptions, Context context);
 
         @Post("/messages/notifications:send")
         @ExpectedResponses({ 202 })
@@ -171,9 +171,9 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData notificationContent,
+            RequestOptions requestOptions, Context context);
 
         @Get("/messages/streams/{id}")
         @ExpectedResponses({ 200 })
@@ -183,7 +183,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> downloadMedia(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String mediaId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/messages/streams/{id}")
         @ExpectedResponses({ 200 })
@@ -193,7 +193,7 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> downloadMediaSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String mediaId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -209,19 +209,22 @@ public final class NotificationMessagesClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
-     *     kind: String(text/image/template) (Required)
+     *     kind: String(text/image/image_v0/document/video/audio/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     receipts (Required): [
      *          (Required){
@@ -230,7 +233,8 @@ public final class NotificationMessagesClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -244,24 +248,24 @@ public final class NotificationMessagesClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> sendWithResponseAsync(BinaryData notificationContent,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
+                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
         return FluxUtil.withContext(context -> service.send(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, notificationContent, requestOptionsLocal, context));
+            contentType, accept, notificationContent, requestOptionsLocal, context));
     }
 
     /**
@@ -277,19 +281,22 @@ public final class NotificationMessagesClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
-     *     kind: String(text/image/template) (Required)
+     *     kind: String(text/image/image_v0/document/video/audio/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     receipts (Required): [
      *          (Required){
@@ -298,7 +305,8 @@ public final class NotificationMessagesClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -310,33 +318,35 @@ public final class NotificationMessagesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-request-id")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-request-id"), repeatabilityRequestId);
+                    .set(HttpHeaderName.fromString("repeatability-request-id"), CoreUtils.randomUuid().toString());
             }
         });
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getHeaders().get(HttpHeaderName.fromString("repeatability-first-sent")) == null) {
                 requestLocal.getHeaders()
-                    .set(HttpHeaderName.fromString("repeatability-first-sent"), repeatabilityFirstSent);
+                    .set(HttpHeaderName.fromString("repeatability-first-sent"),
+                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, notificationContent,
-            requestOptionsLocal, Context.NONE);
+        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            notificationContent, requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Download the Media payload from a User to Business message.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -348,7 +358,7 @@ public final class NotificationMessagesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> downloadMediaWithResponseAsync(String mediaId, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.downloadMedia(this.getEndpoint(),
             this.getServiceVersion().getVersion(), mediaId, accept, requestOptions, context));
     }
@@ -357,9 +367,11 @@ public final class NotificationMessagesClientImpl {
      * Download the Media payload from a User to Business message.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param mediaId The stream ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -371,7 +383,7 @@ public final class NotificationMessagesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadMediaWithResponse(String mediaId, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return service.downloadMediaSync(this.getEndpoint(), this.getServiceVersion().getVersion(), mediaId, accept,
             requestOptions, Context.NONE);
     }

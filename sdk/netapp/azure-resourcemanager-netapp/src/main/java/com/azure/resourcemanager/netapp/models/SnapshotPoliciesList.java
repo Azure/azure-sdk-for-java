@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Snapshot Policies.
  */
 @Fluent
-public final class SnapshotPoliciesList {
+public final class SnapshotPoliciesList implements JsonSerializable<SnapshotPoliciesList> {
     /*
      * A list of snapshot policies
      */
-    @JsonProperty(value = "value")
     private List<SnapshotPolicyInner> value;
 
     /**
@@ -55,5 +58,43 @@ public final class SnapshotPoliciesList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotPoliciesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotPoliciesList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotPoliciesList.
+     */
+    public static SnapshotPoliciesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotPoliciesList deserializedSnapshotPoliciesList = new SnapshotPoliciesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SnapshotPolicyInner> value
+                        = reader.readArray(reader1 -> SnapshotPolicyInner.fromJson(reader1));
+                    deserializedSnapshotPoliciesList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotPoliciesList;
+        });
     }
 }

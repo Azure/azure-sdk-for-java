@@ -19,7 +19,10 @@ public final class PrivateLinkResourcesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkResources()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkResources()
             .getWithResponse("MyResourceGroup", "MyPrivateLinkScope", "azuremonitor", com.azure.core.util.Context.NONE);
     }
 }

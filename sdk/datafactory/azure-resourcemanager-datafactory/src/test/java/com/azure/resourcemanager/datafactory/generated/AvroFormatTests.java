@@ -11,13 +11,13 @@ public final class AvroFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvroFormat model = BinaryData.fromString(
-            "{\"type\":\"kh\",\"serializer\":\"datagapvdgtfpeerscdx\",\"deserializer\":\"datarnjr\",\"\":{\"acnrgfdtncmspsan\":\"datamb\",\"b\":\"dataame\"}}")
+            "{\"type\":\"AvroFormat\",\"serializer\":\"datafcwrri\",\"deserializer\":\"dataxeezwyhjmbjiqe\",\"\":{\"ohcwhpyv\":\"datadb\",\"z\":\"datakgdet\"}}")
             .toObject(AvroFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroFormat model = new AvroFormat().withSerializer("datagapvdgtfpeerscdx").withDeserializer("datarnjr");
+        AvroFormat model = new AvroFormat().withSerializer("datafcwrri").withDeserializer("dataxeezwyhjmbjiqe");
         model = BinaryData.fromObject(model).toObject(AvroFormat.class);
     }
 }

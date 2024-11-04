@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ListEncryptionScopesInclude. */
+/**
+ * Defines values for ListEncryptionScopesInclude.
+ */
 public final class ListEncryptionScopesInclude extends ExpandableStringEnum<ListEncryptionScopesInclude> {
-    /** Static value All for ListEncryptionScopesInclude. */
+    /**
+     * Static value All for ListEncryptionScopesInclude.
+     */
     public static final ListEncryptionScopesInclude ALL = fromString("All");
 
-    /** Static value Enabled for ListEncryptionScopesInclude. */
+    /**
+     * Static value Enabled for ListEncryptionScopesInclude.
+     */
     public static final ListEncryptionScopesInclude ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ListEncryptionScopesInclude. */
+    /**
+     * Static value Disabled for ListEncryptionScopesInclude.
+     */
     public static final ListEncryptionScopesInclude DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ListEncryptionScopesInclude value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ListEncryptionScopesInclude extends ExpandableStringEnum<List
 
     /**
      * Creates or finds a ListEncryptionScopesInclude from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ListEncryptionScopesInclude.
      */
-    @JsonCreator
     public static ListEncryptionScopesInclude fromString(String name) {
         return fromString(name, ListEncryptionScopesInclude.class);
     }
 
     /**
      * Gets known ListEncryptionScopesInclude values.
-     *
+     * 
      * @return known ListEncryptionScopesInclude values.
      */
     public static Collection<ListEncryptionScopesInclude> values() {

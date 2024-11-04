@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Type of match to perform.
  */
 @Fluent
-public final class HeaderMatchMatch {
+public final class HeaderMatchMatch implements JsonSerializable<HeaderMatchMatch> {
     /*
      * Exact value of the header
      */
-    @JsonProperty(value = "exactMatch")
     private String exactMatch;
 
     /*
      * Prefix value of the header
      */
-    @JsonProperty(value = "prefixMatch")
     private String prefixMatch;
 
     /*
      * Suffix value of the header
      */
-    @JsonProperty(value = "suffixMatch")
     private String suffixMatch;
 
     /*
      * Regex value of the header
      */
-    @JsonProperty(value = "regexMatch")
     private String regexMatch;
 
     /**
@@ -128,5 +128,50 @@ public final class HeaderMatchMatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exactMatch", this.exactMatch);
+        jsonWriter.writeStringField("prefixMatch", this.prefixMatch);
+        jsonWriter.writeStringField("suffixMatch", this.suffixMatch);
+        jsonWriter.writeStringField("regexMatch", this.regexMatch);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HeaderMatchMatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HeaderMatchMatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HeaderMatchMatch.
+     */
+    public static HeaderMatchMatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HeaderMatchMatch deserializedHeaderMatchMatch = new HeaderMatchMatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exactMatch".equals(fieldName)) {
+                    deserializedHeaderMatchMatch.exactMatch = reader.getString();
+                } else if ("prefixMatch".equals(fieldName)) {
+                    deserializedHeaderMatchMatch.prefixMatch = reader.getString();
+                } else if ("suffixMatch".equals(fieldName)) {
+                    deserializedHeaderMatchMatch.suffixMatch = reader.getString();
+                } else if ("regexMatch".equals(fieldName)) {
+                    deserializedHeaderMatchMatch.regexMatch = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHeaderMatchMatch;
+        });
     }
 }

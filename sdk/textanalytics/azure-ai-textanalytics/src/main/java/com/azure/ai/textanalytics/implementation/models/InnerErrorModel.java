@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * An object containing more specific information about the error. As per Microsoft One API guidelines -
@@ -44,12 +43,15 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
      */
     private InnerErrorModel innererror;
 
-    /** Creates an instance of InnerErrorModel class. */
-    public InnerErrorModel() {}
+    /**
+     * Creates an instance of InnerErrorModel class.
+     */
+    public InnerErrorModel() {
+    }
 
     /**
      * Get the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @return the code value.
      */
     public InnerErrorCode getCode() {
@@ -58,7 +60,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Set the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @param code the code value to set.
      * @return the InnerErrorModel object itself.
      */
@@ -69,7 +71,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -78,7 +80,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Set the message property: Error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the InnerErrorModel object itself.
      */
@@ -89,7 +91,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Get the details property: Error details.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, String> getDetails() {
@@ -98,7 +100,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Set the details property: Error details.
-     *
+     * 
      * @param details the details value to set.
      * @return the InnerErrorModel object itself.
      */
@@ -109,7 +111,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Get the target property: Error target.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -118,7 +120,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Set the target property: Error target.
-     *
+     * 
      * @param target the target value to set.
      * @return the InnerErrorModel object itself.
      */
@@ -130,7 +132,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
     /**
      * Get the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @return the innererror value.
      */
     public InnerErrorModel getInnererror() {
@@ -140,7 +142,7 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
     /**
      * Set the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @param innererror the innererror value to set.
      * @return the InnerErrorModel object itself.
      */
@@ -149,10 +151,13 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", Objects.toString(this.code, null));
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeMapField("details", this.details, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("target", this.target);
@@ -162,38 +167,37 @@ public final class InnerErrorModel implements JsonSerializable<InnerErrorModel> 
 
     /**
      * Reads an instance of InnerErrorModel from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of InnerErrorModel if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the InnerErrorModel.
      */
     public static InnerErrorModel fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    InnerErrorModel deserializedInnerErrorModel = new InnerErrorModel();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            InnerErrorModel deserializedInnerErrorModel = new InnerErrorModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            deserializedInnerErrorModel.code = InnerErrorCode.fromString(reader.getString());
-                        } else if ("message".equals(fieldName)) {
-                            deserializedInnerErrorModel.message = reader.getString();
-                        } else if ("details".equals(fieldName)) {
-                            Map<String, String> details = reader.readMap(reader1 -> reader1.getString());
-                            deserializedInnerErrorModel.details = details;
-                        } else if ("target".equals(fieldName)) {
-                            deserializedInnerErrorModel.target = reader.getString();
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedInnerErrorModel.innererror = InnerErrorModel.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("code".equals(fieldName)) {
+                    deserializedInnerErrorModel.code = InnerErrorCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedInnerErrorModel.message = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    Map<String, String> details = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInnerErrorModel.details = details;
+                } else if ("target".equals(fieldName)) {
+                    deserializedInnerErrorModel.target = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedInnerErrorModel.innererror = InnerErrorModel.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedInnerErrorModel;
-                });
+            return deserializedInnerErrorModel;
+        });
     }
 }

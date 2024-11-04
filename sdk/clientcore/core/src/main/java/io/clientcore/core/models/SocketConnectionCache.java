@@ -3,7 +3,6 @@
 
 package io.clientcore.core.models;
 
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.models.SocketConnection.SocketConnectionProperties;
 import io.clientcore.core.util.ClientLogger;
 
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * Class to maintain a cache of socket connections
@@ -68,7 +69,7 @@ public final class SocketConnectionCache {
         try {
 
             List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
-            while (!CoreUtils.isNullOrEmpty(connections)) {
+            while (!isNullOrEmpty(connections)) {
                 connection = connections.remove(connections.size() - 1);
                 if (connections.isEmpty()) {
                     CONNECTION_POOL.remove(socketConnectionProperties);

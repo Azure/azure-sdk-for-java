@@ -124,8 +124,8 @@ public class BlobUploadFromUrlOptions {
      * @param destinationRequestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
-    public BlobUploadFromUrlOptions setDestinationRequestConditions(BlobRequestConditions
-        destinationRequestConditions) {
+    public BlobUploadFromUrlOptions
+        setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }

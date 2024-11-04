@@ -5,46 +5,69 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DailyDuration. */
+/**
+ * Defines values for DailyDuration.
+ */
 public final class DailyDuration extends ExpandableStringEnum<DailyDuration> {
-    /** Static value 1 for DailyDuration. */
+    /**
+     * 1 day.
+     */
     public static final DailyDuration ONE_DAY = fromInt(1);
 
-    /** Static value 2 for DailyDuration. */
+    /**
+     * 2 days.
+     */
     public static final DailyDuration TWO_DAYS = fromInt(2);
 
-    /** Static value 3 for DailyDuration. */
+    /**
+     * 3 days.
+     */
     public static final DailyDuration THREE_DAYS = fromInt(3);
 
-    /** Static value 4 for DailyDuration. */
+    /**
+     * 4 days.
+     */
     public static final DailyDuration FOUR_DAYS = fromInt(4);
 
-    /** Static value 5 for DailyDuration. */
+    /**
+     * 5 days.
+     */
     public static final DailyDuration FIVE_DAYS = fromInt(5);
 
-    /** Static value 6 for DailyDuration. */
+    /**
+     * 6 days.
+     */
     public static final DailyDuration SIX_DAYS = fromInt(6);
 
-    /** Static value 7 for DailyDuration. */
+    /**
+     * 7 days.
+     */
     public static final DailyDuration SEVEN_DAYS = fromInt(7);
 
     /**
+     * Creates a new instance of DailyDuration value.
+     * 
+     * @deprecated Use the {@link #fromInt(int)} factory method.
+     */
+    @Deprecated
+    public DailyDuration() {
+    }
+
+    /**
      * Creates or finds a DailyDuration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DailyDuration.
      */
-    @JsonCreator
     public static DailyDuration fromInt(int name) {
         return fromString(String.valueOf(name), DailyDuration.class);
     }
 
     /**
      * Gets known DailyDuration values.
-     *
+     * 
      * @return known DailyDuration values.
      */
     public static Collection<DailyDuration> values() {

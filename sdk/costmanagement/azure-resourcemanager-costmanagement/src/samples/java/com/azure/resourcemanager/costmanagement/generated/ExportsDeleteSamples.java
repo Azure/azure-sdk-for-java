@@ -4,109 +4,110 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Exports Delete. */
+/**
+ * Samples for Exports Delete.
+ */
 public final class ExportsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByBillingAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportDeleteByBillingAccount.json
      */
     /**
      * Sample code: ExportDeleteByBillingAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportDeleteByBillingAccount(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .deleteByResourceGroupWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/123456", "TestExport", com.azure.core.util.Context.NONE);
+    public static void
+        exportDeleteByBillingAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .deleteByResourceGroupWithResponse("providers/Microsoft.Billing/billingAccounts/123456", "TestExport",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByManagementGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportDeleteByManagementGroup.json
      */
     /**
      * Sample code: ExportDeleteByManagementGroup.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportDeleteByManagementGroup(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .deleteByResourceGroupWithResponse(
-                "providers/Microsoft.Management/managementGroups/TestMG",
-                "TestExport",
+    public static void
+        exportDeleteByManagementGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .deleteByResourceGroupWithResponse("providers/Microsoft.Management/managementGroups/TestMG", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportDeleteByResourceGroup.json
      */
     /**
      * Sample code: ExportDeleteByResourceGroup.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportDeleteByResourceGroup(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
+    public static void
+        exportDeleteByResourceGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
             .deleteByResourceGroupWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
-                "TestExport",
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByDepartment.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportDeleteByDepartment.json
      */
     /**
      * Sample code: ExportDeleteByDepartment.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportDeleteByDepartment(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .deleteByResourceGroupWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12/departments/1234",
-                "TestExport",
-                com.azure.core.util.Context.NONE);
+    public static void
+        exportDeleteByDepartment(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .deleteByResourceGroupWithResponse("providers/Microsoft.Billing/billingAccounts/12/departments/1234",
+                "TestExport", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteBySubscription.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportDeleteBySubscription.json
      */
     /**
      * Sample code: ExportDeleteBySubscription.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportDeleteBySubscription(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .deleteByResourceGroupWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000", "TestExport", com.azure.core.util.Context.NONE);
+    public static void
+        exportDeleteBySubscription(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .deleteByResourceGroupWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestExport",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByEnrollmentAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportDeleteByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportDeleteByEnrollmentAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportDeleteByEnrollmentAccount(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .deleteByResourceGroupWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
-                "TestExport",
-                com.azure.core.util.Context.NONE);
+    public static void
+        exportDeleteByEnrollmentAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .deleteByResourceGroupWithResponse("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
+                "TestExport", com.azure.core.util.Context.NONE);
     }
 }

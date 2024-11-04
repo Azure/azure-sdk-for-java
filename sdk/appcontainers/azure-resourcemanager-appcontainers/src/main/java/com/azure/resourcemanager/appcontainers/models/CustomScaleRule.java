@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,26 +17,28 @@ import java.util.Map;
  * Container App container Custom scaling rule.
  */
 @Fluent
-public final class CustomScaleRule {
+public final class CustomScaleRule implements JsonSerializable<CustomScaleRule> {
     /*
      * Type of the custom scale rule
      * eg: azure-servicebus, redis etc.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Metadata properties to describe custom scale rule.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * Authentication secrets for the custom scale rule.
      */
-    @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
+
+    /*
+     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
+     * system-assigned identity.
+     */
+    private String identity;
 
     /**
      * Creates an instance of CustomScaleRule class.
@@ -104,6 +109,28 @@ public final class CustomScaleRule {
     }
 
     /**
+     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
+     * App, or 'system' for system-assigned identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the CustomScaleRule object itself.
+     */
+    public CustomScaleRule withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,5 +139,52 @@ public final class CustomScaleRule {
         if (auth() != null) {
             auth().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomScaleRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomScaleRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomScaleRule.
+     */
+    public static CustomScaleRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomScaleRule deserializedCustomScaleRule = new CustomScaleRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCustomScaleRule.type = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomScaleRule.metadata = metadata;
+                } else if ("auth".equals(fieldName)) {
+                    List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
+                    deserializedCustomScaleRule.auth = auth;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCustomScaleRule.identity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomScaleRule;
+        });
     }
 }

@@ -5,64 +5,67 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a managed private endpoint. */
+/**
+ * Properties of a managed private endpoint.
+ */
 @Fluent
-public final class ManagedPrivateEndpointProperties {
+public final class ManagedPrivateEndpointProperties implements JsonSerializable<ManagedPrivateEndpointProperties> {
     /*
      * The name of managed private endpoint
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The ARM resource ID of the resource to which the managed private
-     * endpoint is created
+     * The ARM resource ID of the resource to which the managed private endpoint is created
      */
-    @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
      * The groupId to which the managed private endpoint is created
      */
-    @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
      * The managed private endpoint provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The managed private endpoint connection state
      */
-    @JsonProperty(value = "connectionState")
     private ManagedPrivateEndpointConnectionState connectionState;
 
     /*
      * Denotes whether the managed private endpoint is reserved
      */
-    @JsonProperty(value = "isReserved", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isReserved;
 
     /*
      * List of fully qualified domain names
      */
-    @JsonProperty(value = "fqdns")
     private List<String> fqdns;
 
     /*
      * Denotes whether the managed private endpoint is compliant
      */
-    @JsonProperty(value = "isCompliant")
     private Boolean isCompliant;
 
     /**
+     * Creates an instance of ManagedPrivateEndpointProperties class.
+     */
+    public ManagedPrivateEndpointProperties() {
+    }
+
+    /**
      * Get the name property: The name of managed private endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -71,7 +74,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the name property: The name of managed private endpoint.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -83,7 +86,7 @@ public final class ManagedPrivateEndpointProperties {
     /**
      * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
      * is created.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String getPrivateLinkResourceId() {
@@ -93,7 +96,7 @@ public final class ManagedPrivateEndpointProperties {
     /**
      * Set the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
      * is created.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -104,7 +107,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the groupId property: The groupId to which the managed private endpoint is created.
-     *
+     * 
      * @return the groupId value.
      */
     public String getGroupId() {
@@ -113,7 +116,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the groupId property: The groupId to which the managed private endpoint is created.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -124,7 +127,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the provisioningState property: The managed private endpoint provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String getProvisioningState() {
@@ -133,7 +136,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the connectionState property: The managed private endpoint connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ManagedPrivateEndpointConnectionState getConnectionState() {
@@ -142,7 +145,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the connectionState property: The managed private endpoint connection state.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -153,7 +156,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the isReserved property: Denotes whether the managed private endpoint is reserved.
-     *
+     * 
      * @return the isReserved value.
      */
     public Boolean isReserved() {
@@ -162,7 +165,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the fqdns property: List of fully qualified domain names.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> getFqdns() {
@@ -171,7 +174,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the fqdns property: List of fully qualified domain names.
-     *
+     * 
      * @param fqdns the fqdns value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
@@ -182,7 +185,7 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Get the isCompliant property: Denotes whether the managed private endpoint is compliant.
-     *
+     * 
      * @return the isCompliant value.
      */
     public Boolean isCompliant() {
@@ -191,12 +194,72 @@ public final class ManagedPrivateEndpointProperties {
 
     /**
      * Set the isCompliant property: Denotes whether the managed private endpoint is compliant.
-     *
+     * 
      * @param isCompliant the isCompliant value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
     public ManagedPrivateEndpointProperties setIsCompliant(Boolean isCompliant) {
         this.isCompliant = isCompliant;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        jsonWriter.writeStringField("groupId", this.groupId);
+        jsonWriter.writeJsonField("connectionState", this.connectionState);
+        jsonWriter.writeArrayField("fqdns", this.fqdns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isCompliant", this.isCompliant);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpointProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpointProperties.
+     */
+    public static ManagedPrivateEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpointProperties deserializedManagedPrivateEndpointProperties
+                = new ManagedPrivateEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.name = reader.getString();
+                } else if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.privateLinkResourceId = reader.getString();
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.groupId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.provisioningState = reader.getString();
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.connectionState
+                        = ManagedPrivateEndpointConnectionState.fromJson(reader);
+                } else if ("isReserved".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.isReserved
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fqdns".equals(fieldName)) {
+                    List<String> fqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedPrivateEndpointProperties.fqdns = fqdns;
+                } else if ("isCompliant".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointProperties.isCompliant
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpointProperties;
+        });
     }
 }

@@ -6,90 +6,81 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Git repository property payload for Application Configuration Service.
  */
 @Fluent
-public final class ConfigurationServiceGitRepository {
+public final class ConfigurationServiceGitRepository implements JsonSerializable<ConfigurationServiceGitRepository> {
     /*
      * Name of the repository
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Collection of patterns of the repository
      */
-    @JsonProperty(value = "patterns", required = true)
     private List<String> patterns;
 
     /*
      * URI of the repository
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * Label of the repository
      */
-    @JsonProperty(value = "label", required = true)
     private String label;
 
     /*
      * Searching path of the repository
      */
-    @JsonProperty(value = "searchPaths")
     private List<String> searchPaths;
 
     /*
      * Username of git repository basic auth.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Password of git repository basic auth.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Public sshKey of git repository.
      */
-    @JsonProperty(value = "hostKey")
     private String hostKey;
 
     /*
      * SshKey algorithm of git repository.
      */
-    @JsonProperty(value = "hostKeyAlgorithm")
     private String hostKeyAlgorithm;
 
     /*
      * Private sshKey algorithm of git repository.
      */
-    @JsonProperty(value = "privateKey")
     private String privateKey;
 
     /*
      * Strict host key checking or not.
      */
-    @JsonProperty(value = "strictHostKeyChecking")
     private Boolean strictHostKeyChecking;
 
     /*
      * Git libraries used to support various repository providers
      */
-    @JsonProperty(value = "gitImplementation")
     private GitImplementation gitImplementation;
 
     /*
      * Resource Id of CA certificate for https URL of Git repository.
      */
-    @JsonProperty(value = "caCertResourceId")
     private String caCertResourceId;
 
     /**
@@ -365,22 +356,105 @@ public final class ConfigurationServiceGitRepository {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property name in model ConfigurationServiceGitRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ConfigurationServiceGitRepository"));
         }
         if (patterns() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property patterns in model ConfigurationServiceGitRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property patterns in model ConfigurationServiceGitRepository"));
         }
         if (uri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property uri in model ConfigurationServiceGitRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property uri in model ConfigurationServiceGitRepository"));
         }
         if (label() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property label in model ConfigurationServiceGitRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property label in model ConfigurationServiceGitRepository"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationServiceGitRepository.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("patterns", this.patterns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeArrayField("searchPaths", this.searchPaths, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("hostKey", this.hostKey);
+        jsonWriter.writeStringField("hostKeyAlgorithm", this.hostKeyAlgorithm);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        jsonWriter.writeBooleanField("strictHostKeyChecking", this.strictHostKeyChecking);
+        jsonWriter.writeStringField("gitImplementation",
+            this.gitImplementation == null ? null : this.gitImplementation.toString());
+        jsonWriter.writeStringField("caCertResourceId", this.caCertResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationServiceGitRepository from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationServiceGitRepository if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigurationServiceGitRepository.
+     */
+    public static ConfigurationServiceGitRepository fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationServiceGitRepository deserializedConfigurationServiceGitRepository
+                = new ConfigurationServiceGitRepository();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.name = reader.getString();
+                } else if ("patterns".equals(fieldName)) {
+                    List<String> patterns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigurationServiceGitRepository.patterns = patterns;
+                } else if ("uri".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.uri = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.label = reader.getString();
+                } else if ("searchPaths".equals(fieldName)) {
+                    List<String> searchPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConfigurationServiceGitRepository.searchPaths = searchPaths;
+                } else if ("username".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.password = reader.getString();
+                } else if ("hostKey".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.hostKey = reader.getString();
+                } else if ("hostKeyAlgorithm".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.hostKeyAlgorithm = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.privateKey = reader.getString();
+                } else if ("strictHostKeyChecking".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.strictHostKeyChecking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gitImplementation".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.gitImplementation
+                        = GitImplementation.fromString(reader.getString());
+                } else if ("caCertResourceId".equals(fieldName)) {
+                    deserializedConfigurationServiceGitRepository.caCertResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationServiceGitRepository;
+        });
+    }
 }

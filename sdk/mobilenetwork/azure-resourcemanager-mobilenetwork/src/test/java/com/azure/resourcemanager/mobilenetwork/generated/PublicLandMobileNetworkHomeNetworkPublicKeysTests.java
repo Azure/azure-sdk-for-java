@@ -14,29 +14,28 @@ public final class PublicLandMobileNetworkHomeNetworkPublicKeysTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicLandMobileNetworkHomeNetworkPublicKeys model = BinaryData.fromString(
-            "{\"profileA\":[{\"id\":588288126,\"url\":\"eallnwsubisnj\"},{\"id\":1708150837,\"url\":\"mngnzscxaqw\"},{\"id\":1219986824,\"url\":\"hcbonqvpkvlr\"},{\"id\":1945684802,\"url\":\"ea\"}],\"profileB\":[{\"id\":625674029,\"url\":\"eo\"},{\"id\":1371791574,\"url\":\"keyyi\"},{\"id\":354708232,\"url\":\"bdlwtgrhpdjpj\"},{\"id\":1270874920,\"url\":\"sxazjpq\"}]}")
+            "{\"profileA\":[{\"id\":662259969,\"url\":\"yk\"},{\"id\":1047075786,\"url\":\"n\"},{\"id\":1631259925,\"url\":\"yexfwh\"}],\"profileB\":[{\"id\":148650220,\"url\":\"vyvdcs\"},{\"id\":1668619152,\"url\":\"nnaamdectehfiqsc\"},{\"id\":478088047,\"url\":\"pvhez\"},{\"id\":902064602,\"url\":\"q\"}]}")
             .toObject(PublicLandMobileNetworkHomeNetworkPublicKeys.class);
-        Assertions.assertEquals(588288126, model.profileA().get(0).id());
-        Assertions.assertEquals("eallnwsubisnj", model.profileA().get(0).url());
-        Assertions.assertEquals(625674029, model.profileB().get(0).id());
-        Assertions.assertEquals("eo", model.profileB().get(0).url());
+        Assertions.assertEquals(662259969, model.profileA().get(0).id());
+        Assertions.assertEquals("yk", model.profileA().get(0).url());
+        Assertions.assertEquals(148650220, model.profileB().get(0).id());
+        Assertions.assertEquals("vyvdcs", model.profileB().get(0).url());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicLandMobileNetworkHomeNetworkPublicKeys model = new PublicLandMobileNetworkHomeNetworkPublicKeys()
-            .withProfileA(Arrays.asList(new HomeNetworkPublicKey().withId(588288126).withUrl("eallnwsubisnj"),
-                new HomeNetworkPublicKey().withId(1708150837).withUrl("mngnzscxaqw"),
-                new HomeNetworkPublicKey().withId(1219986824).withUrl("hcbonqvpkvlr"),
-                new HomeNetworkPublicKey().withId(1945684802).withUrl("ea")))
-            .withProfileB(Arrays.asList(new HomeNetworkPublicKey().withId(625674029).withUrl("eo"),
-                new HomeNetworkPublicKey().withId(1371791574).withUrl("keyyi"),
-                new HomeNetworkPublicKey().withId(354708232).withUrl("bdlwtgrhpdjpj"),
-                new HomeNetworkPublicKey().withId(1270874920).withUrl("sxazjpq")));
+            .withProfileA(Arrays.asList(new HomeNetworkPublicKey().withId(662259969).withUrl("yk"),
+                new HomeNetworkPublicKey().withId(1047075786).withUrl("n"),
+                new HomeNetworkPublicKey().withId(1631259925).withUrl("yexfwh")))
+            .withProfileB(Arrays.asList(new HomeNetworkPublicKey().withId(148650220).withUrl("vyvdcs"),
+                new HomeNetworkPublicKey().withId(1668619152).withUrl("nnaamdectehfiqsc"),
+                new HomeNetworkPublicKey().withId(478088047).withUrl("pvhez"),
+                new HomeNetworkPublicKey().withId(902064602).withUrl("q")));
         model = BinaryData.fromObject(model).toObject(PublicLandMobileNetworkHomeNetworkPublicKeys.class);
-        Assertions.assertEquals(588288126, model.profileA().get(0).id());
-        Assertions.assertEquals("eallnwsubisnj", model.profileA().get(0).url());
-        Assertions.assertEquals(625674029, model.profileB().get(0).id());
-        Assertions.assertEquals("eo", model.profileB().get(0).url());
+        Assertions.assertEquals(662259969, model.profileA().get(0).id());
+        Assertions.assertEquals("yk", model.profileA().get(0).url());
+        Assertions.assertEquals(148650220, model.profileB().get(0).id());
+        Assertions.assertEquals("vyvdcs", model.profileB().get(0).url());
     }
 }

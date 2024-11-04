@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The AnalyzeTextJobStatistics model. */
+/**
+ * The AnalyzeTextJobStatistics model.
+ */
 @Fluent
 public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJobStatistics> {
     /*
@@ -19,13 +21,16 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
      */
     private RequestStatistics statistics;
 
-    /** Creates an instance of AnalyzeTextJobStatistics class. */
-    public AnalyzeTextJobStatistics() {}
+    /**
+     * Creates an instance of AnalyzeTextJobStatistics class.
+     */
+    public AnalyzeTextJobStatistics() {
+    }
 
     /**
      * Get the statistics property: if showStats=true was specified in the request this field will contain information
      * about the request payload.
-     *
+     * 
      * @return the statistics value.
      */
     public RequestStatistics getStatistics() {
@@ -35,7 +40,7 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
     /**
      * Set the statistics property: if showStats=true was specified in the request this field will contain information
      * about the request payload.
-     *
+     * 
      * @param statistics the statistics value to set.
      * @return the AnalyzeTextJobStatistics object itself.
      */
@@ -44,6 +49,9 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -53,28 +61,27 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
 
     /**
      * Reads an instance of AnalyzeTextJobStatistics from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeTextJobStatistics if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextJobStatistics.
      */
     public static AnalyzeTextJobStatistics fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AnalyzeTextJobStatistics deserializedAnalyzeTextJobStatistics = new AnalyzeTextJobStatistics();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AnalyzeTextJobStatistics deserializedAnalyzeTextJobStatistics = new AnalyzeTextJobStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("statistics".equals(fieldName)) {
-                            deserializedAnalyzeTextJobStatistics.statistics = RequestStatistics.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("statistics".equals(fieldName)) {
+                    deserializedAnalyzeTextJobStatistics.statistics = RequestStatistics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAnalyzeTextJobStatistics;
-                });
+            return deserializedAnalyzeTextJobStatistics;
+        });
     }
 }

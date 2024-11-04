@@ -5,81 +5,72 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartAxis. */
+/**
+ * workbookChartAxis.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity {
     /*
      * Json
      */
-    @JsonProperty(value = "majorUnit")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> majorUnit;
 
     /*
      * Json
      */
-    @JsonProperty(value = "maximum")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> maximum;
 
     /*
      * Json
      */
-    @JsonProperty(value = "minimum")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> minimum;
 
     /*
      * Json
      */
-    @JsonProperty(value = "minorUnit")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> minorUnit;
 
     /*
      * workbookChartAxisFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartAxisFormat format;
 
     /*
      * workbookChartGridlines
      */
-    @JsonProperty(value = "majorGridlines")
     private MicrosoftGraphWorkbookChartGridlines majorGridlines;
 
     /*
      * workbookChartGridlines
      */
-    @JsonProperty(value = "minorGridlines")
     private MicrosoftGraphWorkbookChartGridlines minorGridlines;
 
     /*
      * workbookChartAxisTitle
      */
-    @JsonProperty(value = "title")
     private MicrosoftGraphWorkbookChartAxisTitle title;
 
     /*
      * workbookChartAxis
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartAxis class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartAxis class.
+     */
     public MicrosoftGraphWorkbookChartAxis() {
     }
 
     /**
      * Get the majorUnit property: Json.
-     *
+     * 
      * @return the majorUnit value.
      */
     public Map<String, Object> majorUnit() {
@@ -88,7 +79,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the majorUnit property: Json.
-     *
+     * 
      * @param majorUnit the majorUnit value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -99,7 +90,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the maximum property: Json.
-     *
+     * 
      * @return the maximum value.
      */
     public Map<String, Object> maximum() {
@@ -108,7 +99,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the maximum property: Json.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -119,7 +110,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the minimum property: Json.
-     *
+     * 
      * @return the minimum value.
      */
     public Map<String, Object> minimum() {
@@ -128,7 +119,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the minimum property: Json.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -139,7 +130,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the minorUnit property: Json.
-     *
+     * 
      * @return the minorUnit value.
      */
     public Map<String, Object> minorUnit() {
@@ -148,7 +139,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the minorUnit property: Json.
-     *
+     * 
      * @param minorUnit the minorUnit value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -159,7 +150,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the format property: workbookChartAxisFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartAxisFormat format() {
@@ -168,7 +159,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the format property: workbookChartAxisFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -179,7 +170,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the majorGridlines property: workbookChartGridlines.
-     *
+     * 
      * @return the majorGridlines value.
      */
     public MicrosoftGraphWorkbookChartGridlines majorGridlines() {
@@ -188,7 +179,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the majorGridlines property: workbookChartGridlines.
-     *
+     * 
      * @param majorGridlines the majorGridlines value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -199,7 +190,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the minorGridlines property: workbookChartGridlines.
-     *
+     * 
      * @return the minorGridlines value.
      */
     public MicrosoftGraphWorkbookChartGridlines minorGridlines() {
@@ -208,7 +199,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the minorGridlines property: workbookChartGridlines.
-     *
+     * 
      * @param minorGridlines the minorGridlines value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -219,7 +210,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the title property: workbookChartAxisTitle.
-     *
+     * 
      * @return the title value.
      */
     public MicrosoftGraphWorkbookChartAxisTitle title() {
@@ -228,7 +219,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Set the title property: workbookChartAxisTitle.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -239,17 +230,16 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Get the additionalProperties property: workbookChartAxis.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartAxis.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartAxis object itself.
      */
@@ -258,15 +248,9 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartAxis withId(String id) {
         super.withId(id);
@@ -275,7 +259,7 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -293,5 +277,85 @@ public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity 
         if (title() != null) {
             title().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("majorUnit", this.majorUnit, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("maximum", this.maximum, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("minimum", this.minimum, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("minorUnit", this.minorUnit, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("majorGridlines", this.majorGridlines);
+        jsonWriter.writeJsonField("minorGridlines", this.minorGridlines);
+        jsonWriter.writeJsonField("title", this.title);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartAxis from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartAxis if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartAxis.
+     */
+    public static MicrosoftGraphWorkbookChartAxis fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartAxis deserializedMicrosoftGraphWorkbookChartAxis
+                = new MicrosoftGraphWorkbookChartAxis();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxis.withId(reader.getString());
+                } else if ("majorUnit".equals(fieldName)) {
+                    Map<String, Object> majorUnit = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookChartAxis.majorUnit = majorUnit;
+                } else if ("maximum".equals(fieldName)) {
+                    Map<String, Object> maximum = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookChartAxis.maximum = maximum;
+                } else if ("minimum".equals(fieldName)) {
+                    Map<String, Object> minimum = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookChartAxis.minimum = minimum;
+                } else if ("minorUnit".equals(fieldName)) {
+                    Map<String, Object> minorUnit = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphWorkbookChartAxis.minorUnit = minorUnit;
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxis.format
+                        = MicrosoftGraphWorkbookChartAxisFormat.fromJson(reader);
+                } else if ("majorGridlines".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxis.majorGridlines
+                        = MicrosoftGraphWorkbookChartGridlines.fromJson(reader);
+                } else if ("minorGridlines".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxis.minorGridlines
+                        = MicrosoftGraphWorkbookChartGridlines.fromJson(reader);
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxis.title
+                        = MicrosoftGraphWorkbookChartAxisTitle.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartAxis.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartAxis;
+        });
     }
 }

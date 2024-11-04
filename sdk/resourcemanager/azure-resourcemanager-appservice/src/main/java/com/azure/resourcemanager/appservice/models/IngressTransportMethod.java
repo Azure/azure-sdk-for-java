@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class IngressTransportMethod extends ExpandableStringEnum<IngressTr
      * @param name a name to look for.
      * @return the corresponding IngressTransportMethod.
      */
-    @JsonCreator
     public static IngressTransportMethod fromString(String name) {
         return fromString(name, IngressTransportMethod.class);
     }

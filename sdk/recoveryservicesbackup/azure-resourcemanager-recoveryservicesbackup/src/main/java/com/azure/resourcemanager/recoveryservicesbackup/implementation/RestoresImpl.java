@@ -25,14 +25,16 @@ public final class RestoresImpl implements Restores {
 
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
-        this.serviceClient().trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters);
+        this.serviceClient()
+            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+                parameters);
     }
 
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
-        this.serviceClient().trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters, context);
+        this.serviceClient()
+            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+                parameters, context);
     }
 
     private RestoresClient serviceClient() {

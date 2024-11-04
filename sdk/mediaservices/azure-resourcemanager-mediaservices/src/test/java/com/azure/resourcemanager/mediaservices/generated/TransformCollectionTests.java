@@ -6,32 +6,53 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.TransformInner;
+import com.azure.resourcemanager.mediaservices.models.OnErrorType;
+import com.azure.resourcemanager.mediaservices.models.Preset;
+import com.azure.resourcemanager.mediaservices.models.Priority;
 import com.azure.resourcemanager.mediaservices.models.TransformCollection;
+import com.azure.resourcemanager.mediaservices.models.TransformOutput;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class TransformCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransformCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"created\":\"2021-06-13T13:40:46Z\",\"description\":\"j\",\"lastModified\":\"2021-05-23T22:50:57Z\",\"outputs\":[]},\"id\":\"ucww\",\"name\":\"vo\",\"type\":\"bvmeuecivy\"},{\"properties\":{\"created\":\"2021-09-20T10:59:48Z\",\"description\":\"ojgjrwjueiotwmc\",\"lastModified\":\"2021-05-30T22:11:56Z\",\"outputs\":[]},\"id\":\"x\",\"name\":\"it\",\"type\":\"nrjawgqwg\"},{\"properties\":{\"created\":\"2021-12-08T22:59:31Z\",\"description\":\"kxfbkpycgklwndn\",\"lastModified\":\"2021-06-18T07:43:59Z\",\"outputs\":[]},\"id\":\"uwhvylwzbtdhxujz\",\"name\":\"bm\",\"type\":\"ow\"}],\"@odata.nextLink\":\"przqlveu\"}")
-                .toObject(TransformCollection.class);
-        Assertions.assertEquals("j", model.value().get(0).description());
+        TransformCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"created\":\"2021-03-30T01:45:45Z\",\"description\":\"yftaakcpw\",\"lastModified\":\"2021-10-11T10:17:46Z\",\"outputs\":[{\"onError\":\"ContinueJob\",\"relativePriority\":\"Normal\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\",\"preset\":{\"@odata.type\":\"Preset\"}}]},\"id\":\"pzk\",\"name\":\"mond\",\"type\":\"mquxvypo\"},{\"properties\":{\"created\":\"2021-06-05T14:00:36Z\",\"description\":\"kwhojvpaj\",\"lastModified\":\"2021-06-30T02:05:04Z\",\"outputs\":[{\"onError\":\"ContinueJob\",\"relativePriority\":\"Low\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"StopProcessingJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"StopProcessingJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}},{\"onError\":\"StopProcessingJob\",\"relativePriority\":\"High\",\"preset\":{\"@odata.type\":\"Preset\"}}]},\"id\":\"pvhelxprg\",\"name\":\"yat\",\"type\":\"dckcbc\"}],\"@odata.nextLink\":\"jrjxgciqibrhosx\"}")
+            .toObject(TransformCollection.class);
+        Assertions.assertEquals("yftaakcpw", model.value().get(0).description());
+        Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.value().get(0).outputs().get(0).onError());
+        Assertions.assertEquals(Priority.NORMAL, model.value().get(0).outputs().get(0).relativePriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransformCollection model =
-            new TransformCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TransformInner().withDescription("j").withOutputs(Arrays.asList()),
-                            new TransformInner().withDescription("ojgjrwjueiotwmc").withOutputs(Arrays.asList()),
-                            new TransformInner().withDescription("kxfbkpycgklwndn").withOutputs(Arrays.asList())));
+        TransformCollection model = new TransformCollection().withValue(Arrays.asList(
+            new TransformInner().withDescription("yftaakcpw")
+                .withOutputs(Arrays.asList(
+                    new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                        .withRelativePriority(Priority.NORMAL)
+                        .withPreset(new Preset()),
+                    new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                        .withRelativePriority(Priority.LOW)
+                        .withPreset(new Preset()))),
+            new TransformInner().withDescription("kwhojvpaj")
+                .withOutputs(Arrays.asList(
+                    new TransformOutput().withOnError(OnErrorType.CONTINUE_JOB)
+                        .withRelativePriority(Priority.LOW)
+                        .withPreset(new Preset()),
+                    new TransformOutput().withOnError(OnErrorType.STOP_PROCESSING_JOB)
+                        .withRelativePriority(Priority.HIGH)
+                        .withPreset(new Preset()),
+                    new TransformOutput().withOnError(OnErrorType.STOP_PROCESSING_JOB)
+                        .withRelativePriority(Priority.HIGH)
+                        .withPreset(new Preset()),
+                    new TransformOutput().withOnError(OnErrorType.STOP_PROCESSING_JOB)
+                        .withRelativePriority(Priority.HIGH)
+                        .withPreset(new Preset())))));
         model = BinaryData.fromObject(model).toObject(TransformCollection.class);
-        Assertions.assertEquals("j", model.value().get(0).description());
+        Assertions.assertEquals("yftaakcpw", model.value().get(0).description());
+        Assertions.assertEquals(OnErrorType.CONTINUE_JOB, model.value().get(0).outputs().get(0).onError());
+        Assertions.assertEquals(Priority.NORMAL, model.value().get(0).outputs().get(0).relativePriority());
     }
 }

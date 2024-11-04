@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface StandbyPoolClient {
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -26,7 +26,7 @@ public interface StandbyPoolClient {
     String getApiVersion();
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -68,9 +68,23 @@ public interface StandbyPoolClient {
     StandbyVirtualMachinesClient getStandbyVirtualMachines();
 
     /**
+     * Gets the StandbyVirtualMachinePoolRuntimeViewsClient object to access its operations.
+     * 
+     * @return the StandbyVirtualMachinePoolRuntimeViewsClient object.
+     */
+    StandbyVirtualMachinePoolRuntimeViewsClient getStandbyVirtualMachinePoolRuntimeViews();
+
+    /**
      * Gets the StandbyContainerGroupPoolsClient object to access its operations.
      * 
      * @return the StandbyContainerGroupPoolsClient object.
      */
     StandbyContainerGroupPoolsClient getStandbyContainerGroupPools();
+
+    /**
+     * Gets the StandbyContainerGroupPoolRuntimeViewsClient object to access its operations.
+     * 
+     * @return the StandbyContainerGroupPoolRuntimeViewsClient object.
+     */
+    StandbyContainerGroupPoolRuntimeViewsClient getStandbyContainerGroupPoolRuntimeViews();
 }

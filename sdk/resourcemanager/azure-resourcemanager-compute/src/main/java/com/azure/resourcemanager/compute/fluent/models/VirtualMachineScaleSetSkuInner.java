@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuCapacity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes an available virtual machine scale set sku.
  */
 @Immutable
-public final class VirtualMachineScaleSetSkuInner {
+public final class VirtualMachineScaleSetSkuInner implements JsonSerializable<VirtualMachineScaleSetSkuInner> {
     /*
      * The type of resource the sku applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The Sku.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * Specifies the number of virtual machines in the scale set.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetSkuCapacity capacity;
 
     /**
@@ -77,5 +78,46 @@ public final class VirtualMachineScaleSetSkuInner {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetSkuInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetSkuInner.
+     */
+    public static VirtualMachineScaleSetSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetSkuInner deserializedVirtualMachineScaleSetSkuInner
+                = new VirtualMachineScaleSetSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuInner.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuInner.sku = Sku.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuInner.capacity
+                        = VirtualMachineScaleSetSkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetSkuInner;
+        });
     }
 }

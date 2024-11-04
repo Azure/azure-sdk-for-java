@@ -8,9 +8,13 @@ import java.util.List;
 
 import com.azure.core.annotation.Fluent;
 
-/** Base Route Options */
+/**
+ * Base Route Options
+ *
+ * @param <T> the type of the derived class.
+ */
 @Fluent
-public abstract class BaseRouteOptions<T extends BaseRouteOptions<T>>  {
+public abstract class BaseRouteOptions<T extends BaseRouteOptions<T>> {
     private OffsetDateTime departAt;
     private Integer vehicleAxleWeight;
     private Double vehicleWidth;
@@ -39,6 +43,12 @@ public abstract class BaseRouteOptions<T extends BaseRouteOptions<T>>  {
     private Double currentChargeInKwH;
     private Double maxChargeInKwH;
     private Double auxiliaryPowerInKw;
+
+    /**
+     * Creates a new instance of {@link BaseRouteOptions}.
+     */
+    public BaseRouteOptions() {
+    }
 
     /**
      * Returns the constant speed fuel consumption.

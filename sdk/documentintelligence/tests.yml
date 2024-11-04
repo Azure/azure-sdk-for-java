@@ -11,6 +11,4 @@ extends:
         safeName: azureaidocumentintelligence
     CloudConfig:
       Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
-    SupportedClouds: 'Public'
+        Location: 'eastus'

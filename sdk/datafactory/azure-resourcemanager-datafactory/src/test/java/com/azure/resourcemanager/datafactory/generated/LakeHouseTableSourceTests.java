@@ -11,19 +11,19 @@ public final class LakeHouseTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableSource model = BinaryData.fromString(
-            "{\"type\":\"euphg\",\"timestampAsOf\":\"databtgm\",\"versionAsOf\":\"datadredcvwsbsdyxq\",\"additionalColumns\":\"datarqouyfcfd\",\"sourceRetryCount\":\"dataaanubjeboelk\",\"sourceRetryWait\":\"datahso\",\"maxConcurrentConnections\":\"datav\",\"disableMetricsCollection\":\"datajdhw\",\"\":{\"vlkpwavd\":\"datajhhpfjz\"}}")
+            "{\"type\":\"LakeHouseTableSource\",\"timestampAsOf\":\"dataddwgozrdglkmgc\",\"versionAsOf\":\"datakrldfoidyhcwc\",\"additionalColumns\":\"datayuusexenywwkdxq\",\"sourceRetryCount\":\"dataysxpaap\",\"sourceRetryWait\":\"datahdqvcifwk\",\"maxConcurrentConnections\":\"dataytvxrtocadtnmqr\",\"disableMetricsCollection\":\"dataecjixcy\",\"\":{\"r\":\"dataii\",\"kvluuessu\":\"databt\",\"sfbkrtpu\":\"datazfrwmctrngjqc\"}}")
             .toObject(LakeHouseTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("dataaanubjeboelk")
-            .withSourceRetryWait("datahso")
-            .withMaxConcurrentConnections("datav")
-            .withDisableMetricsCollection("datajdhw")
-            .withTimestampAsOf("databtgm")
-            .withVersionAsOf("datadredcvwsbsdyxq")
-            .withAdditionalColumns("datarqouyfcfd");
+        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("dataysxpaap")
+            .withSourceRetryWait("datahdqvcifwk")
+            .withMaxConcurrentConnections("dataytvxrtocadtnmqr")
+            .withDisableMetricsCollection("dataecjixcy")
+            .withTimestampAsOf("dataddwgozrdglkmgc")
+            .withVersionAsOf("datakrldfoidyhcwc")
+            .withAdditionalColumns("datayuusexenywwkdxq");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableSource.class);
     }
 }

@@ -15,39 +15,55 @@ public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricSpecification model = BinaryData.fromString(
-            "{\"name\":\"wgndrvynhzgpp\",\"displayName\":\"cgyncocpecf\",\"displayDescription\":\"mcoo\",\"unit\":\"xlzevgbmqjqabcy\",\"aggregationType\":\"ivkwlzuvccfwnfnb\",\"supportedAggregationTypes\":[\"None\",\"Count\"],\"metricClass\":\"l\",\"dimensions\":[{\"name\":\"tqgtzxdpnqbqq\",\"displayName\":\"rjfeallnwsubisnj\",\"internalName\":\"pmng\",\"toBeExportedForShoebox\":false}]}")
+            "{\"name\":\"obbc\",\"displayName\":\"s\",\"displayDescription\":\"jriplrbpbewtghf\",\"unit\":\"lcgwxzvlvqh\",\"aggregationType\":\"begibtnmxiebwwa\",\"supportedAggregationTypes\":[\"Average\",\"NotSpecified\"],\"metricClass\":\"gwrtzju\",\"dimensions\":[{\"name\":\"zmh\",\"displayName\":\"ongmtsa\",\"internalName\":\"cbpwxqpsrknft\",\"toBeExportedForShoebox\":true},{\"name\":\"iuhprwmdyvxqta\",\"displayName\":\"iwwroyqbexrmc\",\"internalName\":\"bycnojvkn\",\"toBeExportedForShoebox\":true},{\"name\":\"sgzvahapjyzhpv\",\"displayName\":\"zcjrvxdjzlmwlx\",\"internalName\":\"ug\",\"toBeExportedForShoebox\":false}]}")
             .toObject(MetricSpecification.class);
-        Assertions.assertEquals("wgndrvynhzgpp", model.name());
-        Assertions.assertEquals("cgyncocpecf", model.displayName());
-        Assertions.assertEquals("mcoo", model.displayDescription());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.unit());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.aggregationType());
-        Assertions.assertEquals(MetricAggregationType.NONE, model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("l", model.metricClass());
-        Assertions.assertEquals("tqgtzxdpnqbqq", model.dimensions().get(0).name());
-        Assertions.assertEquals("rjfeallnwsubisnj", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("pmng", model.dimensions().get(0).internalName());
-        Assertions.assertEquals(false, model.dimensions().get(0).toBeExportedForShoebox());
+        Assertions.assertEquals("obbc", model.name());
+        Assertions.assertEquals("s", model.displayName());
+        Assertions.assertEquals("jriplrbpbewtghf", model.displayDescription());
+        Assertions.assertEquals("lcgwxzvlvqh", model.unit());
+        Assertions.assertEquals("begibtnmxiebwwa", model.aggregationType());
+        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
+        Assertions.assertEquals("gwrtzju", model.metricClass());
+        Assertions.assertEquals("zmh", model.dimensions().get(0).name());
+        Assertions.assertEquals("ongmtsa", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("cbpwxqpsrknft", model.dimensions().get(0).internalName());
+        Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model = new MetricSpecification().withName("wgndrvynhzgpp").withDisplayName("cgyncocpecf")
-            .withDisplayDescription("mcoo").withUnit("xlzevgbmqjqabcy").withAggregationType("ivkwlzuvccfwnfnb")
-            .withSupportedAggregationTypes(Arrays.asList(MetricAggregationType.NONE, MetricAggregationType.COUNT))
-            .withMetricClass("l").withDimensions(Arrays.asList(new MetricDimension().withName("tqgtzxdpnqbqq")
-                .withDisplayName("rjfeallnwsubisnj").withInternalName("pmng").withToBeExportedForShoebox(false)));
+        MetricSpecification model = new MetricSpecification().withName("obbc")
+            .withDisplayName("s")
+            .withDisplayDescription("jriplrbpbewtghf")
+            .withUnit("lcgwxzvlvqh")
+            .withAggregationType("begibtnmxiebwwa")
+            .withSupportedAggregationTypes(
+                Arrays.asList(MetricAggregationType.AVERAGE, MetricAggregationType.NOT_SPECIFIED))
+            .withMetricClass("gwrtzju")
+            .withDimensions(Arrays.asList(
+                new MetricDimension().withName("zmh")
+                    .withDisplayName("ongmtsa")
+                    .withInternalName("cbpwxqpsrknft")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimension().withName("iuhprwmdyvxqta")
+                    .withDisplayName("iwwroyqbexrmc")
+                    .withInternalName("bycnojvkn")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimension().withName("sgzvahapjyzhpv")
+                    .withDisplayName("zcjrvxdjzlmwlx")
+                    .withInternalName("ug")
+                    .withToBeExportedForShoebox(false)));
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
-        Assertions.assertEquals("wgndrvynhzgpp", model.name());
-        Assertions.assertEquals("cgyncocpecf", model.displayName());
-        Assertions.assertEquals("mcoo", model.displayDescription());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.unit());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.aggregationType());
-        Assertions.assertEquals(MetricAggregationType.NONE, model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("l", model.metricClass());
-        Assertions.assertEquals("tqgtzxdpnqbqq", model.dimensions().get(0).name());
-        Assertions.assertEquals("rjfeallnwsubisnj", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("pmng", model.dimensions().get(0).internalName());
-        Assertions.assertEquals(false, model.dimensions().get(0).toBeExportedForShoebox());
+        Assertions.assertEquals("obbc", model.name());
+        Assertions.assertEquals("s", model.displayName());
+        Assertions.assertEquals("jriplrbpbewtghf", model.displayDescription());
+        Assertions.assertEquals("lcgwxzvlvqh", model.unit());
+        Assertions.assertEquals("begibtnmxiebwwa", model.aggregationType());
+        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
+        Assertions.assertEquals("gwrtzju", model.metricClass());
+        Assertions.assertEquals("zmh", model.dimensions().get(0).name());
+        Assertions.assertEquals("ongmtsa", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("cbpwxqpsrknft", model.dimensions().get(0).internalName());
+        Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
     }
 }

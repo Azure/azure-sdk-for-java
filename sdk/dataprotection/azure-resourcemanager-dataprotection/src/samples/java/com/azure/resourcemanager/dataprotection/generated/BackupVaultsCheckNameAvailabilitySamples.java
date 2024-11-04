@@ -12,7 +12,7 @@ import com.azure.resourcemanager.dataprotection.models.CheckNameAvailabilityRequ
 public final class BackupVaultsCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/
      * CheckBackupVaultsNameAvailability.json
      */
     /**
@@ -23,8 +23,9 @@ public final class BackupVaultsCheckNameAvailabilitySamples {
     public static void
         checkBackupVaultsNameAvailability(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
         manager.backupVaults()
-            .checkNameAvailabilityWithResponse("SampleResourceGroup", "westus", new CheckNameAvailabilityRequest()
-                .withName("swaggerExample").withType("Microsoft.DataProtection/BackupVaults"),
+            .checkNameAvailabilityWithResponse("SampleResourceGroup", "westus",
+                new CheckNameAvailabilityRequest().withName("swaggerExample")
+                    .withType("Microsoft.DataProtection/BackupVaults"),
                 com.azure.core.util.Context.NONE);
     }
 }

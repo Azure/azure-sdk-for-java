@@ -17,7 +17,7 @@ import java.util.Map;
 public final class CapacityReservationGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
      */
     /**
@@ -26,14 +26,18 @@ public final class CapacityReservationGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateACapacityReservationGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCapacityReservationGroups().createOrUpdateWithResponse(
-            "myResourceGroup", "myCapacityReservationGroup",
-            new CapacityReservationGroupInner().withLocation("westus").withTags(mapOf("department", "finance"))
-                .withZones(Arrays.asList("1", "2"))
-                .withSharingProfile(new ResourceSharingProfile()
-                    .withSubscriptionIds(Arrays.asList(new SubResource().withId("/subscriptions/{subscription-id1}"),
-                        new SubResource().withId("/subscriptions/{subscription-id2}")))),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdateWithResponse("myResourceGroup", "myCapacityReservationGroup",
+                new CapacityReservationGroupInner().withLocation("westus")
+                    .withTags(mapOf("department", "finance"))
+                    .withZones(Arrays.asList("1", "2"))
+                    .withSharingProfile(new ResourceSharingProfile().withSubscriptionIds(
+                        Arrays.asList(new SubResource().withId("/subscriptions/{subscription-id1}"),
+                            new SubResource().withId("/subscriptions/{subscription-id2}")))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -24,8 +24,8 @@ public interface GatewaysClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String gatewayId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String gatewayId,
+        Context context);
 
     /**
      * Delete a Log Analytics gateway.

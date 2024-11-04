@@ -16,65 +16,75 @@ public final class QueryDataFlowDebugSessionsResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueryDataFlowDebugSessionsResponse model = BinaryData.fromString(
-            "{\"value\":[{\"dataFlowName\":\"okffqyinljqepqwh\",\"computeType\":\"monstshiyxgve\",\"coreCount\":1153037194,\"nodeCount\":341924514,\"integrationRuntimeName\":\"ccbi\",\"sessionId\":\"svu\",\"startTime\":\"o\",\"timeToLiveInMinutes\":1462697228,\"lastActivityTime\":\"stmninwjizcilng\",\"\":{\"jjtbxqmuluxlxqz\":\"datah\",\"cucrwnamikze\":\"datanersb\",\"fuhok\":\"datarqbsmswziq\"}},{\"dataFlowName\":\"uswhvhczznvfbycj\",\"computeType\":\"jww\",\"coreCount\":184999250,\"nodeCount\":156341242,\"integrationRuntimeName\":\"wmxqhndvnoamlds\",\"sessionId\":\"aohdjh\",\"startTime\":\"lzok\",\"timeToLiveInMinutes\":434777672,\"lastActivityTime\":\"pelnjetag\",\"\":{\"tft\":\"dataxo\"}},{\"dataFlowName\":\"pnpbswveflocc\",\"computeType\":\"mozi\",\"coreCount\":1928373121,\"nodeCount\":215643303,\"integrationRuntimeName\":\"wtxxpkyjcx\",\"sessionId\":\"xgrytfmp\",\"startTime\":\"cil\",\"timeToLiveInMinutes\":735394972,\"lastActivityTime\":\"ykggnoxuztrksx\",\"\":{\"cpfnznthjtwkja\":\"datad\",\"tcqiosmg\":\"datasrxuzvoam\"}}],\"nextLink\":\"ahgx\"}")
+            "{\"value\":[{\"dataFlowName\":\"qpbtuodxes\",\"computeType\":\"bbelawumuaslzk\",\"coreCount\":602871579,\"nodeCount\":1954370073,\"integrationRuntimeName\":\"cqucwyhahnom\",\"sessionId\":\"kywuhpsvfuu\",\"startTime\":\"tlwexxwlalniexz\",\"timeToLiveInMinutes\":1922531139,\"lastActivityTime\":\"gepqtybbwwpg\",\"\":{\"xkjibnxmy\":\"datachzyvlixqnrk\"}},{\"dataFlowName\":\"xs\",\"computeType\":\"rntvlwijp\",\"coreCount\":169879542,\"nodeCount\":1924013089,\"integrationRuntimeName\":\"qqpwcyyuf\",\"sessionId\":\"runcuwmqspkcd\",\"startTime\":\"hlctddunqn\",\"timeToLiveInMinutes\":981773620,\"lastActivityTime\":\"chrqb\",\"\":{\"qqoli\":\"datarcgegydcwboxjum\"}},{\"dataFlowName\":\"raiouaubrjtl\",\"computeType\":\"xfuojrn\",\"coreCount\":1614609688,\"nodeCount\":2143335427,\"integrationRuntimeName\":\"pasccbi\",\"sessionId\":\"mzdlyjdfqwmkyo\",\"startTime\":\"fdvruz\",\"timeToLiveInMinutes\":605414939,\"lastActivityTime\":\"j\",\"\":{\"tngfdgugeyzihgr\":\"datatfnmdx\",\"absnmfpp\":\"datayui\",\"yhsgz\":\"dataojeevy\"}},{\"dataFlowName\":\"zbgomfgbeg\",\"computeType\":\"gleohi\",\"coreCount\":131865797,\"nodeCount\":974044007,\"integrationRuntimeName\":\"ankrrfxee\",\"sessionId\":\"tijv\",\"startTime\":\"vbmqzbqq\",\"timeToLiveInMinutes\":498607950,\"lastActivityTime\":\"rnwxacevehjkuyxo\",\"\":{\"inmfgvxirp\":\"dataaoqltfaey\",\"prlpy\":\"datahriypoqeyhlqhy\"}}],\"nextLink\":\"uciqdsme\"}")
             .toObject(QueryDataFlowDebugSessionsResponse.class);
-        Assertions.assertEquals("okffqyinljqepqwh", model.value().get(0).dataFlowName());
-        Assertions.assertEquals("monstshiyxgve", model.value().get(0).computeType());
-        Assertions.assertEquals(1153037194, model.value().get(0).coreCount());
-        Assertions.assertEquals(341924514, model.value().get(0).nodeCount());
-        Assertions.assertEquals("ccbi", model.value().get(0).integrationRuntimeName());
-        Assertions.assertEquals("svu", model.value().get(0).sessionId());
-        Assertions.assertEquals("o", model.value().get(0).startTime());
-        Assertions.assertEquals(1462697228, model.value().get(0).timeToLiveInMinutes());
-        Assertions.assertEquals("stmninwjizcilng", model.value().get(0).lastActivityTime());
-        Assertions.assertEquals("ahgx", model.nextLink());
+        Assertions.assertEquals("qpbtuodxes", model.value().get(0).dataFlowName());
+        Assertions.assertEquals("bbelawumuaslzk", model.value().get(0).computeType());
+        Assertions.assertEquals(602871579, model.value().get(0).coreCount());
+        Assertions.assertEquals(1954370073, model.value().get(0).nodeCount());
+        Assertions.assertEquals("cqucwyhahnom", model.value().get(0).integrationRuntimeName());
+        Assertions.assertEquals("kywuhpsvfuu", model.value().get(0).sessionId());
+        Assertions.assertEquals("tlwexxwlalniexz", model.value().get(0).startTime());
+        Assertions.assertEquals(1922531139, model.value().get(0).timeToLiveInMinutes());
+        Assertions.assertEquals("gepqtybbwwpg", model.value().get(0).lastActivityTime());
+        Assertions.assertEquals("uciqdsme", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QueryDataFlowDebugSessionsResponse model = new QueryDataFlowDebugSessionsResponse().withValue(Arrays.asList(
-            new DataFlowDebugSessionInfoInner().withDataFlowName("okffqyinljqepqwh")
-                .withComputeType("monstshiyxgve")
-                .withCoreCount(1153037194)
-                .withNodeCount(341924514)
-                .withIntegrationRuntimeName("ccbi")
-                .withSessionId("svu")
-                .withStartTime("o")
-                .withTimeToLiveInMinutes(1462697228)
-                .withLastActivityTime("stmninwjizcilng")
+            new DataFlowDebugSessionInfoInner().withDataFlowName("qpbtuodxes")
+                .withComputeType("bbelawumuaslzk")
+                .withCoreCount(602871579)
+                .withNodeCount(1954370073)
+                .withIntegrationRuntimeName("cqucwyhahnom")
+                .withSessionId("kywuhpsvfuu")
+                .withStartTime("tlwexxwlalniexz")
+                .withTimeToLiveInMinutes(1922531139)
+                .withLastActivityTime("gepqtybbwwpg")
                 .withAdditionalProperties(mapOf()),
-            new DataFlowDebugSessionInfoInner().withDataFlowName("uswhvhczznvfbycj")
-                .withComputeType("jww")
-                .withCoreCount(184999250)
-                .withNodeCount(156341242)
-                .withIntegrationRuntimeName("wmxqhndvnoamlds")
-                .withSessionId("aohdjh")
-                .withStartTime("lzok")
-                .withTimeToLiveInMinutes(434777672)
-                .withLastActivityTime("pelnjetag")
+            new DataFlowDebugSessionInfoInner().withDataFlowName("xs")
+                .withComputeType("rntvlwijp")
+                .withCoreCount(169879542)
+                .withNodeCount(1924013089)
+                .withIntegrationRuntimeName("qqpwcyyuf")
+                .withSessionId("runcuwmqspkcd")
+                .withStartTime("hlctddunqn")
+                .withTimeToLiveInMinutes(981773620)
+                .withLastActivityTime("chrqb")
                 .withAdditionalProperties(mapOf()),
-            new DataFlowDebugSessionInfoInner().withDataFlowName("pnpbswveflocc")
-                .withComputeType("mozi")
-                .withCoreCount(1928373121)
-                .withNodeCount(215643303)
-                .withIntegrationRuntimeName("wtxxpkyjcx")
-                .withSessionId("xgrytfmp")
-                .withStartTime("cil")
-                .withTimeToLiveInMinutes(735394972)
-                .withLastActivityTime("ykggnoxuztrksx")
+            new DataFlowDebugSessionInfoInner().withDataFlowName("raiouaubrjtl")
+                .withComputeType("xfuojrn")
+                .withCoreCount(1614609688)
+                .withNodeCount(2143335427)
+                .withIntegrationRuntimeName("pasccbi")
+                .withSessionId("mzdlyjdfqwmkyo")
+                .withStartTime("fdvruz")
+                .withTimeToLiveInMinutes(605414939)
+                .withLastActivityTime("j")
+                .withAdditionalProperties(mapOf()),
+            new DataFlowDebugSessionInfoInner().withDataFlowName("zbgomfgbeg")
+                .withComputeType("gleohi")
+                .withCoreCount(131865797)
+                .withNodeCount(974044007)
+                .withIntegrationRuntimeName("ankrrfxee")
+                .withSessionId("tijv")
+                .withStartTime("vbmqzbqq")
+                .withTimeToLiveInMinutes(498607950)
+                .withLastActivityTime("rnwxacevehjkuyxo")
                 .withAdditionalProperties(mapOf())))
-            .withNextLink("ahgx");
+            .withNextLink("uciqdsme");
         model = BinaryData.fromObject(model).toObject(QueryDataFlowDebugSessionsResponse.class);
-        Assertions.assertEquals("okffqyinljqepqwh", model.value().get(0).dataFlowName());
-        Assertions.assertEquals("monstshiyxgve", model.value().get(0).computeType());
-        Assertions.assertEquals(1153037194, model.value().get(0).coreCount());
-        Assertions.assertEquals(341924514, model.value().get(0).nodeCount());
-        Assertions.assertEquals("ccbi", model.value().get(0).integrationRuntimeName());
-        Assertions.assertEquals("svu", model.value().get(0).sessionId());
-        Assertions.assertEquals("o", model.value().get(0).startTime());
-        Assertions.assertEquals(1462697228, model.value().get(0).timeToLiveInMinutes());
-        Assertions.assertEquals("stmninwjizcilng", model.value().get(0).lastActivityTime());
-        Assertions.assertEquals("ahgx", model.nextLink());
+        Assertions.assertEquals("qpbtuodxes", model.value().get(0).dataFlowName());
+        Assertions.assertEquals("bbelawumuaslzk", model.value().get(0).computeType());
+        Assertions.assertEquals(602871579, model.value().get(0).coreCount());
+        Assertions.assertEquals(1954370073, model.value().get(0).nodeCount());
+        Assertions.assertEquals("cqucwyhahnom", model.value().get(0).integrationRuntimeName());
+        Assertions.assertEquals("kywuhpsvfuu", model.value().get(0).sessionId());
+        Assertions.assertEquals("tlwexxwlalniexz", model.value().get(0).startTime());
+        Assertions.assertEquals(1922531139, model.value().get(0).timeToLiveInMinutes());
+        Assertions.assertEquals("gepqtybbwwpg", model.value().get(0).lastActivityTime());
+        Assertions.assertEquals("uciqdsme", model.nextLink());
     }
 
     // Use "Map.of" if available

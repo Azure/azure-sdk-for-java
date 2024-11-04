@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** File Server mount Information. */
 @Fluent
 public final class MountSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MountSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MountSettings.class);
 
     /*
      * Path where the data disks are mounted on the File Server.

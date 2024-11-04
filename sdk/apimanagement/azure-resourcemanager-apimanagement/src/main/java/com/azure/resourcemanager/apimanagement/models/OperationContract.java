@@ -133,15 +133,9 @@ public interface OperationContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithMethod,
-                DefinitionStages.WithUrlTemplate,
-                DefinitionStages.WithTemplateParameters,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithRequest,
-                DefinitionStages.WithResponses,
-                DefinitionStages.WithPolicies,
-                DefinitionStages.WithIfMatch {
+            extends DefinitionStages.WithDisplayName, DefinitionStages.WithMethod, DefinitionStages.WithUrlTemplate,
+            DefinitionStages.WithTemplateParameters, DefinitionStages.WithDescription, DefinitionStages.WithRequest,
+            DefinitionStages.WithResponses, DefinitionStages.WithPolicies, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -272,16 +266,9 @@ public interface OperationContract {
     OperationContract.Update update();
 
     /** The template for OperationContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithMethod,
-            UpdateStages.WithUrlTemplate,
-            UpdateStages.WithTemplateParameters,
-            UpdateStages.WithDescription,
-            UpdateStages.WithRequest,
-            UpdateStages.WithResponses,
-            UpdateStages.WithPolicies,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithMethod, UpdateStages.WithUrlTemplate,
+        UpdateStages.WithTemplateParameters, UpdateStages.WithDescription, UpdateStages.WithRequest,
+        UpdateStages.WithResponses, UpdateStages.WithPolicies, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

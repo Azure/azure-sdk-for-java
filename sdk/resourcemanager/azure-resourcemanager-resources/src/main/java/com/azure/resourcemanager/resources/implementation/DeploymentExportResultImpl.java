@@ -3,25 +3,26 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.models.DeploymentExportResult;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentExportResultInner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.resources.models.DeploymentExportResult;
+
+import java.io.IOException;
 
 /**
  * Implementation for {@link DeploymentExportResult}.
  */
-final class DeploymentExportResultImpl extends
-        WrapperImpl<DeploymentExportResultInner>
-        implements
-        DeploymentExportResult {
+final class DeploymentExportResultImpl extends WrapperImpl<DeploymentExportResultInner>
+    implements DeploymentExportResult {
 
-    private ObjectMapper mapper;
+    private SerializerAdapter serializerAdapter;
 
     DeploymentExportResultImpl(DeploymentExportResultInner innerModel) {
         super(innerModel);
-        mapper = new ObjectMapper();
+        serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
     }
 
     @Override
@@ -32,8 +33,8 @@ final class DeploymentExportResultImpl extends
     @Override
     public String templateAsJson() {
         try {
-            return mapper.writeValueAsString(template());
-        } catch (JsonProcessingException e) {
+            return serializerAdapter.serialize(template(), SerializerEncoding.JSON);
+        } catch (IOException e) {
             return null;
         }
     }

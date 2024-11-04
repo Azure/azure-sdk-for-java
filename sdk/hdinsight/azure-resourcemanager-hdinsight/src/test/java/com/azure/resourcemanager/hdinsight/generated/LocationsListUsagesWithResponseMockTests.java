@@ -6,64 +6,36 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.UsagesListResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"unit\":\"uidvrmazlpdwwex\",\"currentValue\":8913959723686771783,\"limit\":3631683090324496952,\"name\":{\"value\":\"bhpwvqsgnyy\",\"localizedValue\":\"ziven\"}},{\"unit\":\"pmeyyvpkpatlbijp\",\"currentValue\":7653783145819772188,\"limit\":6070721512636115339,\"name\":{\"value\":\"v\",\"localizedValue\":\"mknbnxwcdommpv\"}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"unit\":\"fpyapucygvoavyu\",\"currentValue\":4220620654261523088,\"limit\":5180733958170755116,\"name\":{\"value\":\"egjlgvvpa\",\"localizedValue\":\"ksgbuxan\"}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightManager manager = HDInsightManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        UsagesListResult response = manager.locations()
+            .listUsagesWithResponse("vjeaqnrmvvfkoxml", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        HDInsightManager manager =
-            HDInsightManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        UsagesListResult response =
-            manager.locations().listUsagesWithResponse("sm", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("fpyapucygvoavyu", response.value().get(0).unit());
-        Assertions.assertEquals(4220620654261523088L, response.value().get(0).currentValue());
-        Assertions.assertEquals(5180733958170755116L, response.value().get(0).limit());
+        Assertions.assertEquals("uidvrmazlpdwwex", response.value().get(0).unit());
+        Assertions.assertEquals(8913959723686771783L, response.value().get(0).currentValue());
+        Assertions.assertEquals(3631683090324496952L, response.value().get(0).limit());
     }
 }

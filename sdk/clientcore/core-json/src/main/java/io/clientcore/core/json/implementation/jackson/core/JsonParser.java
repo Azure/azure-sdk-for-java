@@ -25,9 +25,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.RequestPayload;
  * @author Tatu Saloranta
  */
 @SuppressWarnings("cast")
-public abstract class JsonParser
-    implements Closeable, Versioned
-{
+public abstract class JsonParser implements Closeable, Versioned {
     private final static int MIN_BYTE_I = (int) Byte.MIN_VALUE;
     // as per [JACKSON-804], allow range up to and including 255
     private final static int MAX_BYTE_I = (int) 255;
@@ -181,7 +179,7 @@ public abstract class JsonParser
          *
          * @deprecated Since 2.10 use {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_LEADING_ZEROS_FOR_NUMBERS} instead
          */
-         @Deprecated
+        @Deprecated
         ALLOW_NUMERIC_LEADING_ZEROS(false),
 
         /**
@@ -210,124 +208,124 @@ public abstract class JsonParser
           *
           * @deprecated Since 2.10 use {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_NON_NUMERIC_NUMBERS} instead
           */
-         @Deprecated
-         ALLOW_NON_NUMERIC_NUMBERS(false),
+        @Deprecated
+        ALLOW_NON_NUMERIC_NUMBERS(false),
 
-         /**
-          * Feature allows the support for "missing" values in a JSON array: missing
-          * value meaning sequence of two commas, without value in-between but only
-          * optional white space.
-          * Enabling this feature will expose "missing" values as {@link JsonToken#VALUE_NULL}
-          * tokens, which typically become Java nulls in arrays and {@link java.util.Collection}
-          * in data-binding.
-          * <p>
-          * For example, enabling this feature will represent a JSON array <code>["value1",,"value3",]</code>
-          * as <code>["value1", null, "value3", null]</code>
-          * <p>
-          * Since the JSON specification does not allow missing values this is a non-compliant JSON
-          * feature and is disabled by default.
-          *
-          * @since 2.8
-          *
-          * @deprecated Since 2.10 use {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_MISSING_VALUES} instead
-          */
-         @Deprecated
-         ALLOW_MISSING_VALUES(false),
+        /**
+         * Feature allows the support for "missing" values in a JSON array: missing
+         * value meaning sequence of two commas, without value in-between but only
+         * optional white space.
+         * Enabling this feature will expose "missing" values as {@link JsonToken#VALUE_NULL}
+         * tokens, which typically become Java nulls in arrays and {@link java.util.Collection}
+         * in data-binding.
+         * <p>
+         * For example, enabling this feature will represent a JSON array <code>["value1",,"value3",]</code>
+         * as <code>["value1", null, "value3", null]</code>
+         * <p>
+         * Since the JSON specification does not allow missing values this is a non-compliant JSON
+         * feature and is disabled by default.
+         *
+         * @since 2.8
+         *
+         * @deprecated Since 2.10 use {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_MISSING_VALUES} instead
+         */
+        @Deprecated
+        ALLOW_MISSING_VALUES(false),
 
-         /**
-          * Feature that determines whether {@link JsonParser} will allow for a single trailing
-          * comma following the final value (in an Array) or member (in an Object). These commas
-          * will simply be ignored.
-          * <p>
-          * For example, when this feature is enabled, <code>[true,true,]</code> is equivalent to
-          * <code>[true, true]</code> and <code>{"a": true,}</code> is equivalent to
-          * <code>{"a": true}</code>.
-          * <p>
-          * When combined with <code>ALLOW_MISSING_VALUES</code>, this feature takes priority, and
-          * the final trailing comma in an array declaration does not imply a missing
-          * (<code>null</code>) value. For example, when both <code>ALLOW_MISSING_VALUES</code>
-          * and <code>ALLOW_TRAILING_COMMA</code> are enabled, <code>[true,true,]</code> is
-          * equivalent to <code>[true, true]</code>, and <code>[true,true,,]</code> is equivalent to
-          * <code>[true, true, null]</code>.
-          * <p>
-          * Since the JSON specification does not permit trailing commas, this is a non-standard
-          * feature, and as such disabled by default.
-          *
-          * @since 2.9
-          *
-          * @deprecated Since 2.10 use {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_TRAILING_COMMA} instead
-          */
-         @Deprecated
-         ALLOW_TRAILING_COMMA(false),
+        /**
+         * Feature that determines whether {@link JsonParser} will allow for a single trailing
+         * comma following the final value (in an Array) or member (in an Object). These commas
+         * will simply be ignored.
+         * <p>
+         * For example, when this feature is enabled, <code>[true,true,]</code> is equivalent to
+         * <code>[true, true]</code> and <code>{"a": true,}</code> is equivalent to
+         * <code>{"a": true}</code>.
+         * <p>
+         * When combined with <code>ALLOW_MISSING_VALUES</code>, this feature takes priority, and
+         * the final trailing comma in an array declaration does not imply a missing
+         * (<code>null</code>) value. For example, when both <code>ALLOW_MISSING_VALUES</code>
+         * and <code>ALLOW_TRAILING_COMMA</code> are enabled, <code>[true,true,]</code> is
+         * equivalent to <code>[true, true]</code>, and <code>[true,true,,]</code> is equivalent to
+         * <code>[true, true, null]</code>.
+         * <p>
+         * Since the JSON specification does not permit trailing commas, this is a non-standard
+         * feature, and as such disabled by default.
+         *
+         * @since 2.9
+         *
+         * @deprecated Since 2.10 use {@link io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_TRAILING_COMMA} instead
+         */
+        @Deprecated
+        ALLOW_TRAILING_COMMA(false),
 
-         // // // Validity checks
+        // // // Validity checks
 
-         /**
-          * Feature that determines whether {@link JsonParser} will explicitly
-          * check that no duplicate JSON Object field names are encountered.
-          * If enabled, parser will check all names within context and report
-          * duplicates by throwing a {@link JsonParseException}; if disabled,
-          * parser will not do such checking. Assumption in latter case is
-          * that caller takes care of handling duplicates at a higher level:
-          * data-binding, for example, has features to specify detection to
-          * be done there.
-          *<p>
-          * Note that enabling this feature will incur performance overhead
-          * due to having to store and check additional information: this typically
-          * adds 20-30% to execution time for basic parsing.
-          *
-          * @since 2.3
-          */
-         STRICT_DUPLICATE_DETECTION(false),
+        /**
+         * Feature that determines whether {@link JsonParser} will explicitly
+         * check that no duplicate JSON Object field names are encountered.
+         * If enabled, parser will check all names within context and report
+         * duplicates by throwing a {@link JsonParseException}; if disabled,
+         * parser will not do such checking. Assumption in latter case is
+         * that caller takes care of handling duplicates at a higher level:
+         * data-binding, for example, has features to specify detection to
+         * be done there.
+         *<p>
+         * Note that enabling this feature will incur performance overhead
+         * due to having to store and check additional information: this typically
+         * adds 20-30% to execution time for basic parsing.
+         *
+         * @since 2.3
+         */
+        STRICT_DUPLICATE_DETECTION(false),
 
-         /**
-          * Feature that determines what to do if the underlying data format requires knowledge
-          * of all properties to decode (usually via a Schema), and if no definition is
-          * found for a property that input content contains.
-          * Typically most textual data formats do NOT require schema information (although
-          * some do, such as CSV), whereas many binary data formats do require definitions
-          * (such as Avro, protobuf), although not all (Smile, CBOR, BSON and MessagePack do not).
-          * Further note that some formats that do require schema information will not be able
-          * to ignore undefined properties: for example, Avro is fully positional and there is
-          * no possibility of undefined data. This leaves formats like Protobuf that have identifiers
-          * that may or may not map; and as such Protobuf format does make use of this feature.
-          *<p>
-          * Note that support for this feature is implemented by individual data format
-          * module, if (and only if) it makes sense for the format in question. For JSON,
-          * for example, this feature has no effect as properties need not be pre-defined.
-          *<p>
-          * Feature is disabled by default, meaning that if the underlying data format
-          * requires knowledge of all properties to output, attempts to read an unknown
-          * property will result in a {@link JsonProcessingException}
-          *
-          * @since 2.6
-          */
-         IGNORE_UNDEFINED(false),
+        /**
+         * Feature that determines what to do if the underlying data format requires knowledge
+         * of all properties to decode (usually via a Schema), and if no definition is
+         * found for a property that input content contains.
+         * Typically most textual data formats do NOT require schema information (although
+         * some do, such as CSV), whereas many binary data formats do require definitions
+         * (such as Avro, protobuf), although not all (Smile, CBOR, BSON and MessagePack do not).
+         * Further note that some formats that do require schema information will not be able
+         * to ignore undefined properties: for example, Avro is fully positional and there is
+         * no possibility of undefined data. This leaves formats like Protobuf that have identifiers
+         * that may or may not map; and as such Protobuf format does make use of this feature.
+         *<p>
+         * Note that support for this feature is implemented by individual data format
+         * module, if (and only if) it makes sense for the format in question. For JSON,
+         * for example, this feature has no effect as properties need not be pre-defined.
+         *<p>
+         * Feature is disabled by default, meaning that if the underlying data format
+         * requires knowledge of all properties to output, attempts to read an unknown
+         * property will result in a {@link JsonProcessingException}
+         *
+         * @since 2.6
+         */
+        IGNORE_UNDEFINED(false),
 
-         // // // Other
+        // // // Other
 
-         /**
-          * Feature that determines whether {@link JsonLocation} instances should be constructed
-          * with reference to source or not. If source reference is included, its type and contents
-          * are included when `toString()` method is called (most notably when printing out parse
-          * exception with that location information). If feature is disabled, no source reference
-          * is passed and source is only indicated as "UNKNOWN".
-          *<p>
-          * Most common reason for disabling this feature is to avoid leaking information about
-          * internal information; this may be done for security reasons.
-          * Note that even if source reference is included, only parts of contents are usually
-          * printed, and not the whole contents. Further, many source reference types can not
-          * necessarily access contents (like streams), so only type is indicated, not contents.
-          *<p>
-          * Feature is enabled by default, meaning that "source reference" information is passed
-          * and some or all of the source content may be included in {@link JsonLocation} information
-          * constructed either when requested explicitly, or when needed for an exception.
-          *
-          * @since 2.9
-          */
-         INCLUDE_SOURCE_IN_LOCATION(true),
+        /**
+         * Feature that determines whether {@link JsonLocation} instances should be constructed
+         * with reference to source or not. If source reference is included, its type and contents
+         * are included when `toString()` method is called (most notably when printing out parse
+         * exception with that location information). If feature is disabled, no source reference
+         * is passed and source is only indicated as "UNKNOWN".
+         *<p>
+         * Most common reason for disabling this feature is to avoid leaking information about
+         * internal information; this may be done for security reasons.
+         * Note that even if source reference is included, only parts of contents are usually
+         * printed, and not the whole contents. Further, many source reference types can not
+         * necessarily access contents (like streams), so only type is indicated, not contents.
+         *<p>
+         * Feature is enabled by default, meaning that "source reference" information is passed
+         * and some or all of the source content may be included in {@link JsonLocation} information
+         * constructed either when requested explicitly, or when needed for an exception.
+         *
+         * @since 2.9
+         */
+        INCLUDE_SOURCE_IN_LOCATION(true),
 
-         ;
+        ;
 
         /**
          * Whether feature is enabled or disabled by default.
@@ -342,8 +340,7 @@ public abstract class JsonParser
          *
          * @return Bit mask of all features that are enabled by default
          */
-        public static int collectDefaults()
-        {
+        public static int collectDefaults() {
             int flags = 0;
             for (Feature f : values()) {
                 if (f.enabledByDefault()) {
@@ -358,11 +355,17 @@ public abstract class JsonParser
             _defaultState = defaultState;
         }
 
-        public boolean enabledByDefault() { return _defaultState; }
+        public boolean enabledByDefault() {
+            return _defaultState;
+        }
 
-        public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+        public boolean enabledIn(int flags) {
+            return (flags & _mask) != 0;
+        }
 
-        public int getMask() { return _mask; }
+        public int getMask() {
+            return _mask;
+        }
     }
 
     /*
@@ -391,8 +394,12 @@ public abstract class JsonParser
     /**********************************************************
      */
 
-    protected JsonParser() { }
-    protected JsonParser(int features) { _features = features; }
+    protected JsonParser() {
+    }
+
+    protected JsonParser(int features) {
+        _features = features;
+    }
 
     /**
      * Accessor for {@link ObjectCodec} associated with this
@@ -429,7 +436,9 @@ public abstract class JsonParser
      *
      * @return Input source this parser was configured with
      */
-    public Object getInputSource() { return null; }
+    public Object getInputSource() {
+        return null;
+    }
 
     /**
      * Sets the payload to be passed if {@link JsonParseException} is thrown.
@@ -450,17 +459,17 @@ public abstract class JsonParser
      *
      * @since 2.8
      */
-     public void setRequestPayloadOnError(byte[] payload, String charset) {
-         _requestPayload = (payload == null) ? null : new RequestPayload(payload, charset);
-     }
+    public void setRequestPayloadOnError(byte[] payload, String charset) {
+        _requestPayload = (payload == null) ? null : new RequestPayload(payload, charset);
+    }
 
-     /**
-      * Sets the String request payload
-      *
-      * @param payload Payload to pass
-      *
-      * @since 2.8
-      */
+    /**
+     * Sets the String request payload
+     *
+     * @param payload Payload to pass
+     *
+     * @since 2.8
+     */
     public void setRequestPayloadOnError(String payload) {
         _requestPayload = (payload == null) ? null : new RequestPayload(payload);
     }
@@ -486,8 +495,8 @@ public abstract class JsonParser
      * @throws UnsupportedOperationException if parser does not support schema
      */
     public void setSchema(FormatSchema schema) {
-        throw new UnsupportedOperationException("Parser of type "+getClass().getName()+" does not support schema of type '"
-                +schema.getSchemaType()+"'");
+        throw new UnsupportedOperationException("Parser of type " + getClass().getName()
+            + " does not support schema of type '" + schema.getSchemaType() + "'");
     }
 
     /**
@@ -498,7 +507,9 @@ public abstract class JsonParser
      *
      * @since 2.1
      */
-    public FormatSchema getSchema() { return null; }
+    public FormatSchema getSchema() {
+        return null;
+    }
 
     /**
      * Method that can be used to verify that given schema can be used with
@@ -508,7 +519,9 @@ public abstract class JsonParser
      *
      * @return True if this parser can use given schema; false if not
      */
-    public boolean canUseSchema(FormatSchema schema) { return false; }
+    public boolean canUseSchema(FormatSchema schema) {
+        return false;
+    }
 
     /*
     /**********************************************************
@@ -528,7 +541,9 @@ public abstract class JsonParser
      *
      * @since 2.1
      */
-    public boolean requiresCustomCodec() { return false;}
+    public boolean requiresCustomCodec() {
+        return false;
+    }
 
     /**
      * Method that can be called to determine if this parser instance
@@ -545,7 +560,9 @@ public abstract class JsonParser
      *
      * @since 2.9
      */
-    public boolean canParseAsync() { return false; }
+    public boolean canParseAsync() {
+        return false;
+    }
 
     /**
      * Method that will either return a feeder instance (if parser uses
@@ -808,7 +825,9 @@ public abstract class JsonParser
      *
      * @throws IOException if write using Writer threw exception
      */
-    public int releaseBuffered(Writer w) throws IOException { return -1; }
+    public int releaseBuffered(Writer w) throws IOException {
+        return -1;
+    }
 
     /*
     /***************************************************
@@ -852,7 +871,10 @@ public abstract class JsonParser
      * @return This parser, to allow call chaining
      */
     public JsonParser configure(Feature f, boolean state) {
-        if (state) enable(f); else disable(f);
+        if (state)
+            enable(f);
+        else
+            disable(f);
         return this;
     }
 
@@ -863,7 +885,9 @@ public abstract class JsonParser
      *
      * @return {@code True} if feature is enabled; {@code false} otherwise
      */
-    public boolean isEnabled(Feature f) { return f.enabledIn(_features); }
+    public boolean isEnabled(Feature f) {
+        return f.enabledIn(_features);
+    }
 
     /**
      * Method for checking whether specified {@link Feature} is enabled.
@@ -874,7 +898,9 @@ public abstract class JsonParser
      *
      * @since 2.10
      */
-    public boolean isEnabled(StreamReadFeature f) { return f.mappedFeature().enabledIn(_features); }
+    public boolean isEnabled(StreamReadFeature f) {
+        return f.mappedFeature().enabledIn(_features);
+    }
 
     /**
      * Bulk access method for getting state of all standard {@link Feature}s.
@@ -883,7 +909,9 @@ public abstract class JsonParser
      *
      * @since 2.3
      */
-    public int getFeatureMask() { return _features; }
+    public int getFeatureMask() {
+        return _features;
+    }
 
     /**
      * Bulk set method for (re)setting states of all standard {@link Feature}s
@@ -953,7 +981,7 @@ public abstract class JsonParser
     public JsonParser overrideFormatFeatures(int values, int mask) {
         // 08-Oct-2018, tatu: For 2.10 we actually do get `JsonReadFeature`s, although they
         //    are (for 2.x only, not for 3.x) mapper to legacy settings. So do not throw exception:
-//        throw new IllegalArgumentException("No FormatFeatures defined for parser of type "+getClass().getName());
+        //        throw new IllegalArgumentException("No FormatFeatures defined for parser of type "+getClass().getName());
         return this;
     }
 
@@ -1135,8 +1163,12 @@ public abstract class JsonParser
      */
     public Boolean nextBooleanValue() throws IOException {
         JsonToken t = nextToken();
-        if (t == JsonToken.VALUE_TRUE) { return Boolean.TRUE; }
-        if (t == JsonToken.VALUE_FALSE) { return Boolean.FALSE; }
+        if (t == JsonToken.VALUE_TRUE) {
+            return Boolean.TRUE;
+        }
+        if (t == JsonToken.VALUE_FALSE) {
+            return Boolean.FALSE;
+        }
         return null;
     }
 
@@ -1312,7 +1344,9 @@ public abstract class JsonParser
      *   start-array marker (such {@link JsonToken#START_ARRAY});
      *   {@code false} if not
      */
-    public boolean isExpectedStartArrayToken() { return currentToken() == JsonToken.START_ARRAY; }
+    public boolean isExpectedStartArrayToken() {
+        return currentToken() == JsonToken.START_ARRAY;
+    }
 
     /**
      * Similar to {@link #isExpectedStartArrayToken()}, but checks whether stream
@@ -1324,7 +1358,9 @@ public abstract class JsonParser
      *
      * @since 2.5
      */
-    public boolean isExpectedStartObjectToken() { return currentToken() == JsonToken.START_OBJECT; }
+    public boolean isExpectedStartObjectToken() {
+        return currentToken() == JsonToken.START_OBJECT;
+    }
 
     /**
      * Similar to {@link #isExpectedStartArrayToken()}, but checks whether stream
@@ -1339,7 +1375,9 @@ public abstract class JsonParser
      *
      * @since 2.12
      */
-    public boolean isExpectedNumberIntToken() { return currentToken() == JsonToken.VALUE_NUMBER_INT; }
+    public boolean isExpectedNumberIntToken() {
+        return currentToken() == JsonToken.VALUE_NUMBER_INT;
+    }
 
     /**
      * Access for checking whether current token is a numeric value token, but
@@ -1476,8 +1514,7 @@ public abstract class JsonParser
      *
      * @since 2.8
      */
-    public int getText(Writer writer) throws IOException, UnsupportedOperationException
-    {
+    public int getText(Writer writer) throws IOException, UnsupportedOperationException {
         String str = getText();
         if (str == null) {
             return 0;
@@ -1654,8 +1691,8 @@ public abstract class JsonParser
         //  (instead of just signed range of [-128, 127])
         if (value < MIN_BYTE_I || value > MAX_BYTE_I) {
             throw new InputCoercionException(this,
-                    String.format("Numeric value (%s) out of range of Java byte", getText()),
-                    JsonToken.VALUE_NUMBER_INT, Byte.TYPE);
+                String.format("Numeric value (%s) out of range of Java byte", getText()), JsonToken.VALUE_NUMBER_INT,
+                Byte.TYPE);
         }
         return (byte) value;
     }
@@ -1679,13 +1716,12 @@ public abstract class JsonParser
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public short getShortValue() throws IOException
-    {
+    public short getShortValue() throws IOException {
         int value = getIntValue();
         if (value < MIN_SHORT_I || value > MAX_SHORT_I) {
             throw new InputCoercionException(this,
-                    String.format("Numeric value (%s) out of range of Java short", getText()),
-                    JsonToken.VALUE_NUMBER_INT, Short.TYPE);
+                String.format("Numeric value (%s) out of range of Java short", getText()), JsonToken.VALUE_NUMBER_INT,
+                Short.TYPE);
         }
         return (short) value;
     }
@@ -1828,11 +1864,12 @@ public abstract class JsonParser
      */
     public boolean getBooleanValue() throws IOException {
         JsonToken t = currentToken();
-        if (t == JsonToken.VALUE_TRUE) return true;
-        if (t == JsonToken.VALUE_FALSE) return false;
-        throw new JsonParseException(this,
-            String.format("Current token (%s) not of boolean type", t))
-                .withRequestPayload(_requestPayload);
+        if (t == JsonToken.VALUE_TRUE)
+            return true;
+        if (t == JsonToken.VALUE_FALSE)
+            return false;
+        throw new JsonParseException(this, String.format("Current token (%s) not of boolean type", t))
+            .withRequestPayload(_requestPayload);
     }
 
     /**
@@ -1853,7 +1890,9 @@ public abstract class JsonParser
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public Object getEmbeddedObject() throws IOException { return null; }
+    public Object getEmbeddedObject() throws IOException {
+        return null;
+    }
 
     /*
     /**********************************************************
@@ -1987,7 +2026,9 @@ public abstract class JsonParser
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public int getValueAsInt(int def) throws IOException { return def; }
+    public int getValueAsInt(int def) throws IOException {
+        return def;
+    }
 
     /**
      * Method that will try to convert value of current token to a
@@ -2179,7 +2220,9 @@ public abstract class JsonParser
      *
      * @since 2.3
      */
-    public boolean canReadObjectId() { return false; }
+    public boolean canReadObjectId() {
+        return false;
+    }
 
     /**
      * Introspection method that may be called to see if the underlying
@@ -2196,7 +2239,9 @@ public abstract class JsonParser
      *
      * @since 2.3
      */
-    public boolean canReadTypeId() { return false; }
+    public boolean canReadTypeId() {
+        return false;
+    }
 
     /**
      * Method that can be called to check whether current token
@@ -2216,7 +2261,9 @@ public abstract class JsonParser
      *
      * @since 2.3
      */
-    public Object getObjectId() throws IOException { return null; }
+    public Object getObjectId() throws IOException {
+        return null;
+    }
 
     /**
      * Method that can be called to check whether current token
@@ -2236,7 +2283,9 @@ public abstract class JsonParser
      *
      * @since 2.3
      */
-    public Object getTypeId() throws IOException { return null; }
+    public Object getTypeId() throws IOException {
+        return null;
+    }
 
     /*
     /**********************************************************
@@ -2390,8 +2439,7 @@ public abstract class JsonParser
      * @return {@link JsonParseException} constructed
      */
     protected JsonParseException _constructError(String msg) {
-        return new JsonParseException(this, msg)
-            .withRequestPayload(_requestPayload);
+        return new JsonParseException(this, msg).withRequestPayload(_requestPayload);
     }
 
     /**
@@ -2401,7 +2449,7 @@ public abstract class JsonParser
      * @since 2.1
      */
     protected void _reportUnsupportedOperation() {
-        throw new UnsupportedOperationException("Operation not supported by parser of type "+getClass().getName());
+        throw new UnsupportedOperationException("Operation not supported by parser of type " + getClass().getName());
     }
 
     /**
@@ -2427,8 +2475,7 @@ public abstract class JsonParser
         return _constructReadException(String.format(msg, arg1, arg2));
     }
 
-    protected JsonParseException _constructReadException(String msg,
-            Object arg1, Object arg2, Object arg3) {
+    protected JsonParseException _constructReadException(String msg, Object arg1, Object arg2, Object arg3) {
         return _constructReadException(String.format(msg, arg1, arg2, arg3));
     }
 

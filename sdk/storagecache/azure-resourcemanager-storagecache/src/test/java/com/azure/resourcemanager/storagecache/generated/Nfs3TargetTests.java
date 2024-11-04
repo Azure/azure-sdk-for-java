@@ -12,22 +12,24 @@ public final class Nfs3TargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Nfs3Target model = BinaryData.fromString(
-            "{\"target\":\"taeburuvdm\",\"usageModel\":\"s\",\"verificationTimer\":28452682,\"writeBackTimer\":866846651}")
+            "{\"target\":\"blmhvkzuhb\",\"usageModel\":\"vyhgs\",\"verificationTimer\":2121939227,\"writeBackTimer\":792266928}")
             .toObject(Nfs3Target.class);
-        Assertions.assertEquals("taeburuvdm", model.target());
-        Assertions.assertEquals("s", model.usageModel());
-        Assertions.assertEquals(28452682, model.verificationTimer());
-        Assertions.assertEquals(866846651, model.writeBackTimer());
+        Assertions.assertEquals("blmhvkzuhb", model.target());
+        Assertions.assertEquals("vyhgs", model.usageModel());
+        Assertions.assertEquals(2121939227, model.verificationTimer());
+        Assertions.assertEquals(792266928, model.writeBackTimer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Nfs3Target model = new Nfs3Target().withTarget("taeburuvdm").withUsageModel("s").withVerificationTimer(28452682)
-            .withWriteBackTimer(866846651);
+        Nfs3Target model = new Nfs3Target().withTarget("blmhvkzuhb")
+            .withUsageModel("vyhgs")
+            .withVerificationTimer(2121939227)
+            .withWriteBackTimer(792266928);
         model = BinaryData.fromObject(model).toObject(Nfs3Target.class);
-        Assertions.assertEquals("taeburuvdm", model.target());
-        Assertions.assertEquals("s", model.usageModel());
-        Assertions.assertEquals(28452682, model.verificationTimer());
-        Assertions.assertEquals(866846651, model.writeBackTimer());
+        Assertions.assertEquals("blmhvkzuhb", model.target());
+        Assertions.assertEquals("vyhgs", model.usageModel());
+        Assertions.assertEquals(2121939227, model.verificationTimer());
+        Assertions.assertEquals(792266928, model.writeBackTimer());
     }
 }

@@ -5,91 +5,77 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * SAP Business Warehouse Open Hub Destination Linked Service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapOpenHub")
-@JsonFlatten
 @Fluent
 public class SapOpenHubLinkedService extends LinkedService {
     /*
-     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with
-     * resultType string).
+     * Type of linked service.
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
+    private String type = "SapOpenHub";
+
+    /*
+     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with resultType string).
+     */
     private Object server;
 
     /*
-     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number
-     * represented as a string.) Type: string (or Expression with resultType string).
+     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.systemNumber", required = true)
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit
-     * decimal number represented as a string) Type: string (or Expression with resultType string).
+     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
-     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or
-     * Expression with resultType string).
+     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.language")
     private Object language;
 
     /*
      * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.systemId")
     private Object systemId;
 
     /*
-     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with
-     * resultType string).
+     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
      * Password to access the SAP BW server where the open hub destination is located.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.messageServer")
     private Object messageServer;
 
     /*
      * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.messageServerService")
     private Object messageServerService;
 
     /*
      * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.logonGroup")
     private Object logonGroup;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
@@ -99,8 +85,18 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @return the server value.
      */
@@ -109,8 +105,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @param server the server value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -121,9 +117,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Get the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @return the systemNumber value.
      */
@@ -132,9 +127,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Set the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -169,8 +163,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Get the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @return the language value.
      */
@@ -179,8 +173,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Set the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @param language the language value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -321,8 +315,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @return the encryptedCredential value.
      */
@@ -331,8 +325,8 @@ public class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -376,5 +370,124 @@ public class SapOpenHubLinkedService extends LinkedService {
     public SapOpenHubLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (server != null
+            || systemNumber != null
+            || clientId != null
+            || language != null
+            || systemId != null
+            || userName != null
+            || password != null
+            || messageServer != null
+            || messageServerService != null
+            || logonGroup != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("server", this.server);
+            jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeUntypedField("language", this.language);
+            jsonWriter.writeUntypedField("systemId", this.systemId);
+            jsonWriter.writeUntypedField("userName", this.userName);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("messageServer", this.messageServer);
+            jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
+            jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapOpenHubLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapOpenHubLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapOpenHubLinkedService.
+     */
+    public static SapOpenHubLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapOpenHubLinkedService deserializedSapOpenHubLinkedService = new SapOpenHubLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSapOpenHubLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSapOpenHubLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("server".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.server = reader.readUntyped();
+                        } else if ("systemNumber".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.systemNumber = reader.readUntyped();
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.clientId = reader.readUntyped();
+                        } else if ("language".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.language = reader.readUntyped();
+                        } else if ("systemId".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.systemId = reader.readUntyped();
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.userName = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("messageServer".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.messageServer = reader.readUntyped();
+                        } else if ("messageServerService".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.messageServerService = reader.readUntyped();
+                        } else if ("logonGroup".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.logonGroup = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSapOpenHubLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapOpenHubLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSapOpenHubLinkedService;
+        });
     }
 }

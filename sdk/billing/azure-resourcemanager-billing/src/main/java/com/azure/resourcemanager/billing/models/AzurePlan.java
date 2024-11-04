@@ -5,30 +5,61 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the Azure plan. */
+/**
+ * Details of the Azure plan.
+ */
 @Fluent
-public final class AzurePlan {
+public final class AzurePlan implements JsonSerializable<AzurePlan> {
     /*
-     * The sku id.
+     * The ID that uniquely identifies a product.
      */
-    @JsonProperty(value = "skuId")
+    private String productId;
+
+    /*
+     * The ID that uniquely identifies a sku.
+     */
     private String skuId;
 
     /*
      * The sku description.
      */
-    @JsonProperty(value = "skuDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String skuDescription;
 
-    /** Creates an instance of AzurePlan class. */
+    /**
+     * Creates an instance of AzurePlan class.
+     */
     public AzurePlan() {
     }
 
     /**
-     * Get the skuId property: The sku id.
-     *
+     * Get the productId property: The ID that uniquely identifies a product.
+     * 
+     * @return the productId value.
+     */
+    public String productId() {
+        return this.productId;
+    }
+
+    /**
+     * Set the productId property: The ID that uniquely identifies a product.
+     * 
+     * @param productId the productId value to set.
+     * @return the AzurePlan object itself.
+     */
+    public AzurePlan withProductId(String productId) {
+        this.productId = productId;
+        return this;
+    }
+
+    /**
+     * Get the skuId property: The ID that uniquely identifies a sku.
+     * 
      * @return the skuId value.
      */
     public String skuId() {
@@ -36,8 +67,8 @@ public final class AzurePlan {
     }
 
     /**
-     * Set the skuId property: The sku id.
-     *
+     * Set the skuId property: The ID that uniquely identifies a sku.
+     * 
      * @param skuId the skuId value to set.
      * @return the AzurePlan object itself.
      */
@@ -48,7 +79,7 @@ public final class AzurePlan {
 
     /**
      * Get the skuDescription property: The sku description.
-     *
+     * 
      * @return the skuDescription value.
      */
     public String skuDescription() {
@@ -56,10 +87,63 @@ public final class AzurePlan {
     }
 
     /**
+     * Set the skuDescription property: The sku description.
+     * 
+     * @param skuDescription the skuDescription value to set.
+     * @return the AzurePlan object itself.
+     */
+    public AzurePlan withSkuDescription(String skuDescription) {
+        this.skuDescription = skuDescription;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("productId", this.productId);
+        jsonWriter.writeStringField("skuId", this.skuId);
+        jsonWriter.writeStringField("skuDescription", this.skuDescription);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzurePlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzurePlan if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AzurePlan.
+     */
+    public static AzurePlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzurePlan deserializedAzurePlan = new AzurePlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productId".equals(fieldName)) {
+                    deserializedAzurePlan.productId = reader.getString();
+                } else if ("skuId".equals(fieldName)) {
+                    deserializedAzurePlan.skuId = reader.getString();
+                } else if ("skuDescription".equals(fieldName)) {
+                    deserializedAzurePlan.skuDescription = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzurePlan;
+        });
     }
 }

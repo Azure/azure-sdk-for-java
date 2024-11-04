@@ -20,7 +20,6 @@
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
 com.azure:azure-ai-contentsafety # Tests owner: zhaiyutong
-com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
 com.azure:azure-communication-callautomation # Tests owner: minwoolee-msft, juntuchen-msft
@@ -38,12 +37,14 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
 com.azure:azure-messaging-eventgrid # Tests owner: billwert
+com.azure:azure-messaging-eventgrid-namespaces # Tests owner: billwert
 com.azure:azure-messaging-eventhubs # Tests owner: conniey
 com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729
@@ -57,7 +58,7 @@ com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
-com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
+com.azure:azure-security-keyvault-jca # Tests owner: rujche
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree

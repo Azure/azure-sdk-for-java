@@ -6,42 +6,41 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The profile of an orchestrator and its available versions.
  */
 @Fluent
-public final class OrchestratorVersionProfile {
+public final class OrchestratorVersionProfile implements JsonSerializable<OrchestratorVersionProfile> {
     /*
      * Orchestrator type.
      */
-    @JsonProperty(value = "orchestratorType", required = true)
     private String orchestratorType;
 
     /*
      * Orchestrator version (major, minor, patch).
      */
-    @JsonProperty(value = "orchestratorVersion", required = true)
     private String orchestratorVersion;
 
     /*
      * Installed by default if version is not specified.
      */
-    @JsonProperty(value = "default")
     private Boolean defaultProperty;
 
     /*
      * Whether Kubernetes version is currently in preview.
      */
-    @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
     /*
      * The list of available upgrade versions.
      */
-    @JsonProperty(value = "upgrades")
     private List<OrchestratorProfile> upgrades;
 
     /**
@@ -157,12 +156,14 @@ public final class OrchestratorVersionProfile {
      */
     public void validate() {
         if (orchestratorType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestratorType in model OrchestratorVersionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestratorType in model OrchestratorVersionProfile"));
         }
         if (orchestratorVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
@@ -170,4 +171,55 @@ public final class OrchestratorVersionProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrchestratorVersionProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("orchestratorType", this.orchestratorType);
+        jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
+        jsonWriter.writeBooleanField("default", this.defaultProperty);
+        jsonWriter.writeBooleanField("isPreview", this.isPreview);
+        jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestratorVersionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestratorVersionProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrchestratorVersionProfile.
+     */
+    public static OrchestratorVersionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestratorVersionProfile deserializedOrchestratorVersionProfile = new OrchestratorVersionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orchestratorType".equals(fieldName)) {
+                    deserializedOrchestratorVersionProfile.orchestratorType = reader.getString();
+                } else if ("orchestratorVersion".equals(fieldName)) {
+                    deserializedOrchestratorVersionProfile.orchestratorVersion = reader.getString();
+                } else if ("default".equals(fieldName)) {
+                    deserializedOrchestratorVersionProfile.defaultProperty = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedOrchestratorVersionProfile.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("upgrades".equals(fieldName)) {
+                    List<OrchestratorProfile> upgrades
+                        = reader.readArray(reader1 -> OrchestratorProfile.fromJson(reader1));
+                    deserializedOrchestratorVersionProfile.upgrades = upgrades;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestratorVersionProfile;
+        });
+    }
 }

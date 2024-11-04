@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Protocol settings for file service. */
+/**
+ * Protocol settings for file service.
+ */
 @Fluent
-public final class ProtocolSettings {
+public final class ProtocolSettings implements JsonSerializable<ProtocolSettings> {
     /*
      * Setting for SMB protocol
      */
-    @JsonProperty(value = "smb")
     private SmbSetting smb;
 
-    /** Creates an instance of ProtocolSettings class. */
+    /**
+     * Creates an instance of ProtocolSettings class.
+     */
     public ProtocolSettings() {
     }
 
     /**
      * Get the smb property: Setting for SMB protocol.
-     *
+     * 
      * @return the smb value.
      */
     public SmbSetting smb() {
@@ -31,7 +38,7 @@ public final class ProtocolSettings {
 
     /**
      * Set the smb property: Setting for SMB protocol.
-     *
+     * 
      * @param smb the smb value to set.
      * @return the ProtocolSettings object itself.
      */
@@ -42,12 +49,48 @@ public final class ProtocolSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (smb() != null) {
             smb().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("smb", this.smb);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtocolSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtocolSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtocolSettings.
+     */
+    public static ProtocolSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtocolSettings deserializedProtocolSettings = new ProtocolSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("smb".equals(fieldName)) {
+                    deserializedProtocolSettings.smb = SmbSetting.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtocolSettings;
+        });
     }
 }

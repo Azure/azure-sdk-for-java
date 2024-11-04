@@ -43,10 +43,10 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         if (interceptorManager.isPlaybackMode()) {
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(new CustomMatcher()
-                    .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
-                    .setExcludedHeaders(Collections.singletonList("Accept-Language"))
-                    .setIgnoredQueryParameters(Collections.singletonList("api-version")));
+                interceptorManager
+                    .addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+                        .setExcludedHeaders(Collections.singletonList("Accept-Language"))
+                        .setIgnoredQueryParameters(Collections.singletonList("api-version")));
             }
         }
     }
@@ -54,7 +54,8 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
     @Test
     public void canCRUDDiskEncryptionSet() {
         Region region = Region.US_EAST;
-        VaultAndKey vaultAndKey = createVaultAndKey(region, rgName, generateRandomResourceName("kv", 15), clientIdFromFile());
+        VaultAndKey vaultAndKey = createVaultAndKey(region, rgName, generateRandomResourceName("kv", 15),
+            azureCliSignedInUser().userPrincipalName());
 
         String name = generateRandomResourceName("des", 15);
         DiskEncryptionSet diskEncryptionSet = computeManager.diskEncryptionSets()
@@ -73,12 +74,10 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         Assertions.assertEquals(vaultAndKey.key.id(), diskEncryptionSet.encryptionKeyId());
         Assertions.assertNotNull(diskEncryptionSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertTrue(diskEncryptionSet.isAutomaticKeyRotationEnabled());
-        Assertions.assertEquals(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY, diskEncryptionSet.encryptionType());
+        Assertions.assertEquals(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY,
+            diskEncryptionSet.encryptionType());
 
-        diskEncryptionSet.update()
-            .withoutSystemAssignedManagedServiceIdentity()
-            .withoutAutomaticKeyRotation()
-            .apply();
+        diskEncryptionSet.update().withoutSystemAssignedManagedServiceIdentity().withoutAutomaticKeyRotation().apply();
         Assertions.assertNull(diskEncryptionSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertFalse(diskEncryptionSet.isAutomaticKeyRotationEnabled());
     }
@@ -93,9 +92,10 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         }
     }
 
-    VaultAndKey createVaultAndKey(Region region, String rgName, String name, String clientId) {
+    VaultAndKey createVaultAndKey(Region region, String rgName, String name, String signedInUser) {
         // create vault
-        Vault vault = keyVaultManager.vaults().define(name)
+        Vault vault = keyVaultManager.vaults()
+            .define(name)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withRoleBasedAccessControl()
@@ -104,8 +104,9 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
 
         // RBAC for this app
         String rbacName = generateRandomUuid();
-        authorizationManager.roleAssignments().define(rbacName)
-            .forServicePrincipal(clientId)
+        authorizationManager.roleAssignments()
+            .define(rbacName)
+            .forUser(signedInUser)
             .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
             .withResourceScope(vault)
             .create();
@@ -119,9 +120,6 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
     }
 
     Key createKey(Vault vault) {
-        return vault.keys().define("key1")
-            .withKeyTypeToCreate(KeyType.RSA)
-            .withKeySize(4096)
-            .create();
+        return vault.keys().define("key1").withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
     }
 }

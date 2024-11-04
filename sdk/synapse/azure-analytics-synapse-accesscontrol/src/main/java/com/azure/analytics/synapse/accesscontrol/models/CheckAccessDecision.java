@@ -5,32 +5,41 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Check access response details. */
+/**
+ * Check access response details.
+ */
 @Fluent
-public final class CheckAccessDecision {
+public final class CheckAccessDecision implements JsonSerializable<CheckAccessDecision> {
     /*
      * Access Decision.
      */
-    @JsonProperty(value = "accessDecision")
     private String accessDecision;
 
     /*
      * Action Id.
      */
-    @JsonProperty(value = "actionId")
     private String actionId;
 
     /*
      * Role Assignment response details
      */
-    @JsonProperty(value = "roleAssignment")
     private RoleAssignmentDetails roleAssignment;
 
     /**
+     * Creates an instance of CheckAccessDecision class.
+     */
+    public CheckAccessDecision() {
+    }
+
+    /**
      * Get the accessDecision property: Access Decision.
-     *
+     * 
      * @return the accessDecision value.
      */
     public String getAccessDecision() {
@@ -39,7 +48,7 @@ public final class CheckAccessDecision {
 
     /**
      * Set the accessDecision property: Access Decision.
-     *
+     * 
      * @param accessDecision the accessDecision value to set.
      * @return the CheckAccessDecision object itself.
      */
@@ -50,7 +59,7 @@ public final class CheckAccessDecision {
 
     /**
      * Get the actionId property: Action Id.
-     *
+     * 
      * @return the actionId value.
      */
     public String getActionId() {
@@ -59,7 +68,7 @@ public final class CheckAccessDecision {
 
     /**
      * Set the actionId property: Action Id.
-     *
+     * 
      * @param actionId the actionId value to set.
      * @return the CheckAccessDecision object itself.
      */
@@ -70,7 +79,7 @@ public final class CheckAccessDecision {
 
     /**
      * Get the roleAssignment property: Role Assignment response details.
-     *
+     * 
      * @return the roleAssignment value.
      */
     public RoleAssignmentDetails getRoleAssignment() {
@@ -79,12 +88,54 @@ public final class CheckAccessDecision {
 
     /**
      * Set the roleAssignment property: Role Assignment response details.
-     *
+     * 
      * @param roleAssignment the roleAssignment value to set.
      * @return the CheckAccessDecision object itself.
      */
     public CheckAccessDecision setRoleAssignment(RoleAssignmentDetails roleAssignment) {
         this.roleAssignment = roleAssignment;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessDecision", this.accessDecision);
+        jsonWriter.writeStringField("actionId", this.actionId);
+        jsonWriter.writeJsonField("roleAssignment", this.roleAssignment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckAccessDecision from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckAccessDecision if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckAccessDecision.
+     */
+    public static CheckAccessDecision fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckAccessDecision deserializedCheckAccessDecision = new CheckAccessDecision();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessDecision".equals(fieldName)) {
+                    deserializedCheckAccessDecision.accessDecision = reader.getString();
+                } else if ("actionId".equals(fieldName)) {
+                    deserializedCheckAccessDecision.actionId = reader.getString();
+                } else if ("roleAssignment".equals(fieldName)) {
+                    deserializedCheckAccessDecision.roleAssignment = RoleAssignmentDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckAccessDecision;
+        });
     }
 }

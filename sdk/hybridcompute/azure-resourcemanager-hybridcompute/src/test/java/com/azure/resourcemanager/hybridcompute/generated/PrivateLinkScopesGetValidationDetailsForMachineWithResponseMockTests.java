@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
     @Test
     public void testGetValidationDetailsForMachineWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"h\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"ehol\",\"privateIpAddress\":\"jwiuubwefqsfapaq\",\"linkIdentifier\":\"e\",\"groupId\":\"q\",\"memberName\":\"x\"},{\"id\":\"mfxapjwogqqno\",\"privateIpAddress\":\"udcdabtqwpwyawb\",\"linkIdentifier\":\"sqbuc\",\"groupId\":\"gkyexaoguy\",\"memberName\":\"p\"},{\"id\":\"sdaultxij\",\"privateIpAddress\":\"mfqwa\",\"linkIdentifier\":\"nqnm\",\"groupId\":\"ngz\",\"memberName\":\"qxtbjwgnyf\"}]}";
+            = "{\"id\":\"wfepbnwgfmx\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"bgdlfgtdysna\",\"privateIpAddress\":\"flq\",\"linkIdentifier\":\"tqhamzjrw\",\"groupId\":\"qzeqyjleziunjxdf\",\"memberName\":\"ntkwcegy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,10 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsForMachineWithResponse("a", "zv", com.azure.core.util.Context.NONE)
+            .getValidationDetailsForMachineWithResponse("jbaqehgpdoh", "jqatucoigebxn",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.publicNetworkAccess());
     }
 }

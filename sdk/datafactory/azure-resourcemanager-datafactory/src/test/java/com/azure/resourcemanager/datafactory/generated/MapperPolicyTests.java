@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperPolicy model = BinaryData
-            .fromString("{\"mode\":\"gazlsvbz\",\"recurrence\":{\"frequency\":\"Minute\",\"interval\":63190145}}")
-            .toObject(MapperPolicy.class);
-        Assertions.assertEquals("gazlsvbz", model.mode());
-        Assertions.assertEquals(FrequencyType.MINUTE, model.recurrence().frequency());
-        Assertions.assertEquals(63190145, model.recurrence().interval());
+        MapperPolicy model
+            = BinaryData.fromString("{\"mode\":\"dac\",\"recurrence\":{\"frequency\":\"Hour\",\"interval\":778963300}}")
+                .toObject(MapperPolicy.class);
+        Assertions.assertEquals("dac", model.mode());
+        Assertions.assertEquals(FrequencyType.HOUR, model.recurrence().frequency());
+        Assertions.assertEquals(778963300, model.recurrence().interval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperPolicy model = new MapperPolicy().withMode("gazlsvbz")
-            .withRecurrence(new MapperPolicyRecurrence().withFrequency(FrequencyType.MINUTE).withInterval(63190145));
+        MapperPolicy model = new MapperPolicy().withMode("dac")
+            .withRecurrence(new MapperPolicyRecurrence().withFrequency(FrequencyType.HOUR).withInterval(778963300));
         model = BinaryData.fromObject(model).toObject(MapperPolicy.class);
-        Assertions.assertEquals("gazlsvbz", model.mode());
-        Assertions.assertEquals(FrequencyType.MINUTE, model.recurrence().frequency());
-        Assertions.assertEquals(63190145, model.recurrence().interval());
+        Assertions.assertEquals("dac", model.mode());
+        Assertions.assertEquals(FrequencyType.HOUR, model.recurrence().frequency());
+        Assertions.assertEquals(778963300, model.recurrence().interval());
     }
 }

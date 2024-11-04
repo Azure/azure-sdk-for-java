@@ -15,22 +15,22 @@ public final class AzureBlobDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobDatasetTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"dataxccyijjimhijzr\",\"tableRootLocation\":\"datajxmvvsduydwn\",\"fileName\":\"dataruhhqldrdymnswx\",\"modifiedDatetimeStart\":\"dataxqwqnghxnim\",\"modifiedDatetimeEnd\":\"dataujrxgunnqgyp\",\"format\":{\"type\":\"ny\",\"serializer\":\"datauevqmvyumgmm\",\"deserializer\":\"databsnznwgsqufm\",\"\":{\"gcyjpgawepk\":\"datayoseqcazisvbr\",\"zpghlrdtbgblxbu\":\"dataon\",\"mfjihv\":\"databrvjztaflv\",\"tt\":\"datajcq\"}},\"compression\":{\"type\":\"datauqmmfjewfeqbavdo\",\"level\":\"datawy\",\"\":{\"lvxgwzz\":\"datamw\"}}}")
+            "{\"folderPath\":\"datawnlzuvi\",\"tableRootLocation\":\"datalghfrbzakpjtcqra\",\"fileName\":\"dataojpsucm\",\"modifiedDatetimeStart\":\"datamcwqxynqjgs\",\"modifiedDatetimeEnd\":\"datakyvscbgngcrus\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datarcpgcvsvkkjbjolp\",\"deserializer\":\"dataklkvuznadvh\",\"\":{\"emqwtq\":\"dataeoigowxxbhtpsyio\",\"mwdvgjqcrb\":\"datazzgyksikawan\",\"cmahiwfrya\":\"dataompnbnfgyweojbep\"}},\"compression\":{\"type\":\"datach\",\"level\":\"datapitskshfyftti\",\"\":{\"x\":\"datapzwhjunfdgbggc\"}}}")
             .toObject(AzureBlobDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobDatasetTypeProperties model = new AzureBlobDatasetTypeProperties().withFolderPath("dataxccyijjimhijzr")
-            .withTableRootLocation("datajxmvvsduydwn")
-            .withFileName("dataruhhqldrdymnswx")
-            .withModifiedDatetimeStart("dataxqwqnghxnim")
-            .withModifiedDatetimeEnd("dataujrxgunnqgyp")
-            .withFormat(new DatasetStorageFormat().withSerializer("datauevqmvyumgmm")
-                .withDeserializer("databsnznwgsqufm")
-                .withAdditionalProperties(mapOf("type", "ny")))
-            .withCompression(new DatasetCompression().withType("datauqmmfjewfeqbavdo")
-                .withLevel("datawy")
+        AzureBlobDatasetTypeProperties model = new AzureBlobDatasetTypeProperties().withFolderPath("datawnlzuvi")
+            .withTableRootLocation("datalghfrbzakpjtcqra")
+            .withFileName("dataojpsucm")
+            .withModifiedDatetimeStart("datamcwqxynqjgs")
+            .withModifiedDatetimeEnd("datakyvscbgngcrus")
+            .withFormat(new DatasetStorageFormat().withSerializer("datarcpgcvsvkkjbjolp")
+                .withDeserializer("dataklkvuznadvh")
+                .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
+            .withCompression(new DatasetCompression().withType("datach")
+                .withLevel("datapitskshfyftti")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureBlobDatasetTypeProperties.class);
     }

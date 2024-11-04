@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingAudioChannelType. */
@@ -22,7 +21,6 @@ public final class MediaStreamingAudioChannel extends ExpandableStringEnum<Media
      * @param name a name to look for.
      * @return the corresponding MediaStreamingAudioChannelType.
      */
-    @JsonCreator
     public static MediaStreamingAudioChannel fromString(String name) {
         return fromString(name, MediaStreamingAudioChannel.class);
     }

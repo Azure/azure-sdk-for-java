@@ -4,36 +4,53 @@
 
 package com.azure.resourcemanager.privatedns.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for RecordType. */
+/**
+ * Defines values for RecordType.
+ */
 public enum RecordType {
-    /** Enum value A. */
+    /**
+     * Enum value A.
+     */
     A("A"),
 
-    /** Enum value AAAA. */
+    /**
+     * Enum value AAAA.
+     */
     AAAA("AAAA"),
 
-    /** Enum value CNAME. */
+    /**
+     * Enum value CNAME.
+     */
     CNAME("CNAME"),
 
-    /** Enum value MX. */
+    /**
+     * Enum value MX.
+     */
     MX("MX"),
 
-    /** Enum value PTR. */
+    /**
+     * Enum value PTR.
+     */
     PTR("PTR"),
 
-    /** Enum value SOA. */
+    /**
+     * Enum value SOA.
+     */
     SOA("SOA"),
 
-    /** Enum value SRV. */
+    /**
+     * Enum value SRV.
+     */
     SRV("SRV"),
 
-    /** Enum value TXT. */
+    /**
+     * Enum value TXT.
+     */
     TXT("TXT");
 
-    /** The actual serialized value for a RecordType instance. */
+    /**
+     * The actual serialized value for a RecordType instance.
+     */
     private final String value;
 
     RecordType(String value) {
@@ -42,11 +59,10 @@ public enum RecordType {
 
     /**
      * Parses a serialized value to a RecordType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RecordType object, or null if unable to parse.
      */
-    @JsonCreator
     public static RecordType fromString(String value) {
         if (value == null) {
             return null;
@@ -60,8 +76,9 @@ public enum RecordType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

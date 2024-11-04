@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The deployment status summary for all deployments created by the remediation. */
+/**
+ * The deployment status summary for all deployments created by the remediation.
+ */
 @Immutable
-public final class RemediationDeploymentSummary {
+public final class RemediationDeploymentSummary implements JsonSerializable<RemediationDeploymentSummary> {
     /*
      * The number of deployments required by the remediation.
      */
-    @JsonProperty(value = "totalDeployments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalDeployments;
 
     /*
      * The number of deployments required by the remediation that have succeeded.
      */
-    @JsonProperty(value = "successfulDeployments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer successfulDeployments;
 
     /*
      * The number of deployments required by the remediation that have failed.
      */
-    @JsonProperty(value = "failedDeployments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedDeployments;
 
-    /** Creates an instance of RemediationDeploymentSummary class. */
+    /**
+     * Creates an instance of RemediationDeploymentSummary class.
+     */
     public RemediationDeploymentSummary() {
     }
 
     /**
      * Get the totalDeployments property: The number of deployments required by the remediation.
-     *
+     * 
      * @return the totalDeployments value.
      */
     public Integer totalDeployments() {
@@ -44,7 +49,7 @@ public final class RemediationDeploymentSummary {
     /**
      * Get the successfulDeployments property: The number of deployments required by the remediation that have
      * succeeded.
-     *
+     * 
      * @return the successfulDeployments value.
      */
     public Integer successfulDeployments() {
@@ -53,7 +58,7 @@ public final class RemediationDeploymentSummary {
 
     /**
      * Get the failedDeployments property: The number of deployments required by the remediation that have failed.
-     *
+     * 
      * @return the failedDeployments value.
      */
     public Integer failedDeployments() {
@@ -62,9 +67,49 @@ public final class RemediationDeploymentSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemediationDeploymentSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemediationDeploymentSummary if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemediationDeploymentSummary.
+     */
+    public static RemediationDeploymentSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemediationDeploymentSummary deserializedRemediationDeploymentSummary = new RemediationDeploymentSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalDeployments".equals(fieldName)) {
+                    deserializedRemediationDeploymentSummary.totalDeployments = reader.getNullable(JsonReader::getInt);
+                } else if ("successfulDeployments".equals(fieldName)) {
+                    deserializedRemediationDeploymentSummary.successfulDeployments
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedDeployments".equals(fieldName)) {
+                    deserializedRemediationDeploymentSummary.failedDeployments = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemediationDeploymentSummary;
+        });
     }
 }

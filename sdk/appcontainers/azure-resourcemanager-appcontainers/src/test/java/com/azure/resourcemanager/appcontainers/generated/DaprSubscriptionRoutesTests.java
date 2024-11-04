@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DaprSubscriptionRoutesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprSubscriptionRoutes model = BinaryData.fromString(
-            "{\"rules\":[{\"match\":\"jcazt\",\"path\":\"snsqowxwcoml\"},{\"match\":\"ytwvczcswkacve\",\"path\":\"fdv\"}],\"default\":\"hbwrnfxtgddpqth\"}")
+        DaprSubscriptionRoutes model = BinaryData
+            .fromString("{\"rules\":[{\"match\":\"qqa\",\"path\":\"mkxwxdcvjwcyziak\"}],\"default\":\"iqch\"}")
             .toObject(DaprSubscriptionRoutes.class);
-        Assertions.assertEquals("jcazt", model.rules().get(0).match());
-        Assertions.assertEquals("snsqowxwcoml", model.rules().get(0).path());
-        Assertions.assertEquals("hbwrnfxtgddpqth", model.defaultProperty());
+        Assertions.assertEquals("qqa", model.rules().get(0).match());
+        Assertions.assertEquals("mkxwxdcvjwcyziak", model.rules().get(0).path());
+        Assertions.assertEquals("iqch", model.defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprSubscriptionRoutes model = new DaprSubscriptionRoutes()
-            .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("jcazt").withPath("snsqowxwcoml"),
-                new DaprSubscriptionRouteRule().withMatch("ytwvczcswkacve").withPath("fdv")))
-            .withDefaultProperty("hbwrnfxtgddpqth");
+            .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("qqa").withPath("mkxwxdcvjwcyziak")))
+            .withDefaultProperty("iqch");
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionRoutes.class);
-        Assertions.assertEquals("jcazt", model.rules().get(0).match());
-        Assertions.assertEquals("snsqowxwcoml", model.rules().get(0).path());
-        Assertions.assertEquals("hbwrnfxtgddpqth", model.defaultProperty());
+        Assertions.assertEquals("qqa", model.rules().get(0).match());
+        Assertions.assertEquals("mkxwxdcvjwcyziak", model.rules().get(0).path());
+        Assertions.assertEquals("iqch", model.defaultProperty());
     }
 }

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** emailAddress. */
+/**
+ * emailAddress.
+ */
 @Fluent
-public final class MicrosoftGraphEmailAddress {
+public final class MicrosoftGraphEmailAddress implements JsonSerializable<MicrosoftGraphEmailAddress> {
     /*
      * The email address of the person or entity.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The display name of the person or entity.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * emailAddress
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphEmailAddress class. */
+    /**
+     * Creates an instance of MicrosoftGraphEmailAddress class.
+     */
     public MicrosoftGraphEmailAddress() {
     }
 
     /**
      * Get the address property: The email address of the person or entity.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphEmailAddress {
 
     /**
      * Set the address property: The email address of the person or entity.
-     *
+     * 
      * @param address the address value to set.
      * @return the MicrosoftGraphEmailAddress object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphEmailAddress {
 
     /**
      * Get the name property: The display name of the person or entity.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphEmailAddress {
 
     /**
      * Set the name property: The display name of the person or entity.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphEmailAddress object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphEmailAddress {
 
     /**
      * Get the additionalProperties property: emailAddress.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: emailAddress.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphEmailAddress object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphEmailAddress {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("name", this.name);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphEmailAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphEmailAddress if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphEmailAddress.
+     */
+    public static MicrosoftGraphEmailAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphEmailAddress deserializedMicrosoftGraphEmailAddress = new MicrosoftGraphEmailAddress();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedMicrosoftGraphEmailAddress.address = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphEmailAddress.name = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphEmailAddress.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphEmailAddress;
+        });
     }
 }

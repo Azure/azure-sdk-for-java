@@ -4,12 +4,85 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** Azure Open AI Dialog for UpdateDialog API Call. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AzureOpenAI")
-@Immutable
-public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {}
+/**
+ * Azure Open AI Dialog for UpdateDialog API Call.
+ */
+@Fluent
+public final class AzureOpenAIDialogUpdate extends DialogUpdateBase {
+    /*
+     * Determines the type of the dialog.
+     */
+    private DialogInputType kind = DialogInputType.AZURE_OPEN_AI;
+
+    /**
+     * Creates an instance of AzureOpenAIDialogUpdate class.
+     */
+    public AzureOpenAIDialogUpdate() {
+    }
+
+    /**
+     * Get the kind property: Determines the type of the dialog.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DialogInputType getKind() {
+        return this.kind;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureOpenAIDialogUpdate setContext(Map<String, Object> context) {
+        super.setContext(context);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("context", getContext(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureOpenAIDialogUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureOpenAIDialogUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureOpenAIDialogUpdate.
+     */
+    public static AzureOpenAIDialogUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureOpenAIDialogUpdate deserializedAzureOpenAIDialogUpdate = new AzureOpenAIDialogUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("context".equals(fieldName)) {
+                    Map<String, Object> context = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAzureOpenAIDialogUpdate.setContext(context);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAzureOpenAIDialogUpdate.kind = DialogInputType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureOpenAIDialogUpdate;
+        });
+    }
+}

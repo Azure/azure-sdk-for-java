@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The policy assignment for Patch request. */
+/**
+ * The policy assignment for Patch request.
+ */
 @Fluent
-public final class PolicyAssignmentUpdate {
+public final class PolicyAssignmentUpdate implements JsonSerializable<PolicyAssignmentUpdate> {
     /*
      * The policy assignment properties for Patch request.
      */
-    @JsonProperty(value = "properties")
     private PolicyAssignmentUpdateProperties innerProperties;
 
     /*
      * The location of the policy assignment. Only required when utilizing managed identity.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The managed identity associated with the policy assignment.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
-    /** Creates an instance of PolicyAssignmentUpdate class. */
+    /**
+     * Creates an instance of PolicyAssignmentUpdate class.
+     */
     public PolicyAssignmentUpdate() {
     }
 
     /**
      * Get the innerProperties property: The policy assignment properties for Patch request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicyAssignmentUpdateProperties innerProperties() {
@@ -45,7 +50,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +59,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @param location the location value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -65,7 +70,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -74,7 +79,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -85,7 +90,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -94,7 +99,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -108,7 +113,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -117,7 +122,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -131,7 +136,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -141,5 +146,48 @@ public final class PolicyAssignmentUpdate {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentUpdate.
+     */
+    public static PolicyAssignmentUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentUpdate deserializedPolicyAssignmentUpdate = new PolicyAssignmentUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPolicyAssignmentUpdate.innerProperties
+                        = PolicyAssignmentUpdateProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedPolicyAssignmentUpdate.location = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPolicyAssignmentUpdate.identity = Identity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentUpdate;
+        });
     }
 }

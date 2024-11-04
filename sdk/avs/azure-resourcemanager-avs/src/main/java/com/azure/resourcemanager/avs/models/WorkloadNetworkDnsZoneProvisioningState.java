@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * Workload Network DNS Zone provisioning state.
+ */
 public final class WorkloadNetworkDnsZoneProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkDnsZoneProvisioningState> {
-    /** Static value Succeeded for WorkloadNetworkDnsZoneProvisioningState. */
+    /**
+     * Static value Succeeded for WorkloadNetworkDnsZoneProvisioningState.
+     */
     public static final WorkloadNetworkDnsZoneProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkloadNetworkDnsZoneProvisioningState. */
+    /**
+     * Static value Failed for WorkloadNetworkDnsZoneProvisioningState.
+     */
     public static final WorkloadNetworkDnsZoneProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Building for WorkloadNetworkDnsZoneProvisioningState. */
-    public static final WorkloadNetworkDnsZoneProvisioningState BUILDING = fromString("Building");
-
-    /** Static value Deleting for WorkloadNetworkDnsZoneProvisioningState. */
-    public static final WorkloadNetworkDnsZoneProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Updating for WorkloadNetworkDnsZoneProvisioningState. */
-    public static final WorkloadNetworkDnsZoneProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for WorkloadNetworkDnsZoneProvisioningState. */
+    /**
+     * Static value Canceled for WorkloadNetworkDnsZoneProvisioningState.
+     */
     public static final WorkloadNetworkDnsZoneProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Building for WorkloadNetworkDnsZoneProvisioningState.
+     */
+    public static final WorkloadNetworkDnsZoneProvisioningState BUILDING = fromString("Building");
+
+    /**
+     * Static value Deleting for WorkloadNetworkDnsZoneProvisioningState.
+     */
+    public static final WorkloadNetworkDnsZoneProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Static value Updating for WorkloadNetworkDnsZoneProvisioningState.
+     */
+    public static final WorkloadNetworkDnsZoneProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of WorkloadNetworkDnsZoneProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class WorkloadNetworkDnsZoneProvisioningState
 
     /**
      * Creates or finds a WorkloadNetworkDnsZoneProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkDnsZoneProvisioningState.
      */
-    @JsonCreator
     public static WorkloadNetworkDnsZoneProvisioningState fromString(String name) {
         return fromString(name, WorkloadNetworkDnsZoneProvisioningState.class);
     }
 
     /**
      * Gets known WorkloadNetworkDnsZoneProvisioningState values.
-     *
+     * 
      * @return known WorkloadNetworkDnsZoneProvisioningState values.
      */
     public static Collection<WorkloadNetworkDnsZoneProvisioningState> values() {

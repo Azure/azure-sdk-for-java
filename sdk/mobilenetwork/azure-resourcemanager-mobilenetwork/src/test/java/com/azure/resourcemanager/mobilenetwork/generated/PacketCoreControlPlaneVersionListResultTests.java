@@ -19,61 +19,37 @@ public final class PacketCoreControlPlaneVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PacketCoreControlPlaneVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"platforms\":[{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"moizpos\",\"maximumPlatformSoftwareVersion\":\"grcfb\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"xbpvjymjhx\",\"maximumPlatformSoftwareVersion\":\"yngudivk\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"zjf\",\"maximumPlatformSoftwareVersion\":\"vjfdx\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"t\",\"name\":\"qaqtdoqmcbxvwvxy\",\"type\":\"lqbhsf\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"pe\",\"maximumPlatformSoftwareVersion\":\"wfbkrvrns\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"sbfov\",\"maximumPlatformSoftwareVersion\":\"rruvwbhsq\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"xb\",\"maximumPlatformSoftwareVersion\":\"bsrfbj\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"otftpvjzbexilz\",\"name\":\"nfqqnvwp\",\"type\":\"qtaruoujmkcjhwq\"}],\"nextLink\":\"jrybnwjewgdrjer\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"wmszkk\",\"maximumPlatformSoftwareVersion\":\"qreyfkzi\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"a\",\"vxwc\",\"elpcirelsfeaenwa\"]}]},\"id\":\"atklddxbjhwuaa\",\"name\":\"oz\",\"type\":\"osphyoul\"}],\"nextLink\":\"rvxaglrvimjwosy\"}")
             .toObject(PacketCoreControlPlaneVersionListResult.class);
-        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI,
-            model.value().get(0).platforms().get(0).platformType());
-        Assertions.assertEquals(VersionState.PREVIEW, model.value().get(0).platforms().get(0).versionState());
-        Assertions.assertEquals("moizpos", model.value().get(0).platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("grcfb", model.value().get(0).platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED,
+        Assertions.assertEquals(PlatformType.AKS_HCI, model.value().get(0).platforms().get(0).platformType());
+        Assertions.assertEquals(VersionState.DEPRECATED, model.value().get(0).platforms().get(0).versionState());
+        Assertions.assertEquals("wmszkk", model.value().get(0).platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("qreyfkzi", model.value().get(0).platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.RECOMMENDED,
             model.value().get(0).platforms().get(0).recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE,
-            model.value().get(0).platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals(ObsoleteVersion.OBSOLETE, model.value().get(0).platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals("a", model.value().get(0).platforms().get(0).haUpgradesAvailable().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCoreControlPlaneVersionListResult model
-            = new PacketCoreControlPlaneVersionListResult().withValue(Arrays.asList(
-                new PacketCoreControlPlaneVersionInner().withPlatforms(Arrays.asList(new Platform()
-                    .withPlatformType(PlatformType.THREE_P_AZURE_STACK_HCI).withVersionState(VersionState.PREVIEW)
-                    .withMinimumPlatformSoftwareVersion("moizpos").withMaximumPlatformSoftwareVersion("grcfb")
-                    .withRecommendedVersion(RecommendedVersion.NOT_RECOMMENDED)
-                    .withObsoleteVersion(ObsoleteVersion.NOT_OBSOLETE),
-                    new Platform().withPlatformType(PlatformType.AKS_HCI).withVersionState(VersionState.DEPRECATED)
-                        .withMinimumPlatformSoftwareVersion("xbpvjymjhx").withMaximumPlatformSoftwareVersion("yngudivk")
-                        .withRecommendedVersion(RecommendedVersion.RECOMMENDED)
-                        .withObsoleteVersion(ObsoleteVersion.OBSOLETE),
-                    new Platform().withPlatformType(PlatformType.AKS_HCI)
-                        .withVersionState(VersionState.VALIDATION_FAILED).withMinimumPlatformSoftwareVersion("zjf")
-                        .withMaximumPlatformSoftwareVersion("vjfdx")
-                        .withRecommendedVersion(RecommendedVersion.RECOMMENDED)
-                        .withObsoleteVersion(ObsoleteVersion.OBSOLETE))),
-                new PacketCoreControlPlaneVersionInner().withPlatforms(Arrays.asList(
-                    new Platform().withPlatformType(PlatformType.AKS_HCI).withVersionState(VersionState.DEPRECATED)
-                        .withMinimumPlatformSoftwareVersion("pe").withMaximumPlatformSoftwareVersion("wfbkrvrns")
-                        .withRecommendedVersion(RecommendedVersion.NOT_RECOMMENDED)
-                        .withObsoleteVersion(ObsoleteVersion.OBSOLETE),
-                    new Platform().withPlatformType(PlatformType.AKS_HCI)
-                        .withVersionState(VersionState.VALIDATION_FAILED).withMinimumPlatformSoftwareVersion("sbfov")
-                        .withMaximumPlatformSoftwareVersion("rruvwbhsq")
-                        .withRecommendedVersion(RecommendedVersion.NOT_RECOMMENDED)
-                        .withObsoleteVersion(ObsoleteVersion.NOT_OBSOLETE),
-                    new Platform().withPlatformType(PlatformType.AKS_HCI)
-                        .withVersionState(VersionState.VALIDATION_FAILED).withMinimumPlatformSoftwareVersion("xb")
-                        .withMaximumPlatformSoftwareVersion("bsrfbj")
-                        .withRecommendedVersion(RecommendedVersion.RECOMMENDED)
-                        .withObsoleteVersion(ObsoleteVersion.OBSOLETE)))));
+        PacketCoreControlPlaneVersionListResult model = new PacketCoreControlPlaneVersionListResult()
+            .withValue(Arrays.asList(new PacketCoreControlPlaneVersionInner()
+                .withPlatforms(Arrays.asList(new Platform().withPlatformType(PlatformType.AKS_HCI)
+                    .withVersionState(VersionState.DEPRECATED)
+                    .withMinimumPlatformSoftwareVersion("wmszkk")
+                    .withMaximumPlatformSoftwareVersion("qreyfkzi")
+                    .withRecommendedVersion(RecommendedVersion.RECOMMENDED)
+                    .withObsoleteVersion(ObsoleteVersion.OBSOLETE)
+                    .withHaUpgradesAvailable(Arrays.asList("a", "vxwc", "elpcirelsfeaenwa"))))));
         model = BinaryData.fromObject(model).toObject(PacketCoreControlPlaneVersionListResult.class);
-        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI,
-            model.value().get(0).platforms().get(0).platformType());
-        Assertions.assertEquals(VersionState.PREVIEW, model.value().get(0).platforms().get(0).versionState());
-        Assertions.assertEquals("moizpos", model.value().get(0).platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("grcfb", model.value().get(0).platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED,
+        Assertions.assertEquals(PlatformType.AKS_HCI, model.value().get(0).platforms().get(0).platformType());
+        Assertions.assertEquals(VersionState.DEPRECATED, model.value().get(0).platforms().get(0).versionState());
+        Assertions.assertEquals("wmszkk", model.value().get(0).platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("qreyfkzi", model.value().get(0).platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.RECOMMENDED,
             model.value().get(0).platforms().get(0).recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE,
-            model.value().get(0).platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals(ObsoleteVersion.OBSOLETE, model.value().get(0).platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals("a", model.value().get(0).platforms().get(0).haUpgradesAvailable().get(0));
     }
 }

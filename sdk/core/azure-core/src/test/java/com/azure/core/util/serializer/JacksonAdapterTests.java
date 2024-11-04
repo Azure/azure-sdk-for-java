@@ -9,8 +9,10 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.nojackson.Simple;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,6 +43,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -372,6 +375,62 @@ public class JacksonAdapterTests {
             Arguments.of(URL.class, IOException.class), // Thrown when the String isn't a valid URL
             Arguments.of(URI.class, IllegalArgumentException.class) // Thrown when the String isn't a valid URI
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataWithJsonSerializableContainerSerializationSupplier")
+    public void binaryDataWithJsonSerializableContainerSerialization(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryData.toString());
+    }
+
+    private static Stream<Arguments> binaryDataWithJsonSerializableContainerSerializationSupplier() {
+        Simple[] array = new Simple[] { new Simple("id", "name") };
+        List<Simple> list = Collections.singletonList(new Simple("id", "name"));
+        Iterable<Simple> iterable = () -> Collections.singletonList(new Simple("id", "name")).iterator();
+        Map<String, Simple> map = Collections.singletonMap("key", new Simple("id", "name"));
+
+        return Stream.of(
+            // Should use modifyArraySerializer
+            Arguments.of(BinaryData.fromObject(array), "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyCollectionSerializer or modifyCollectionLikeSerializer
+            Arguments.of(BinaryData.fromObject(list), "[{\"id\":\"id\",\"name\":\"name\"}]"),
+            Arguments.of(BinaryData.fromObject(iterable), "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyMapSerializer or modifyMapLikeSerializer
+            Arguments.of(BinaryData.fromObject(map), "{\"key\":{\"id\":\"id\",\"name\":\"name\"}}"));
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayDeserialization() {
+        Simple[] expected = new Simple[] { new Simple("id", "name") };
+        Simple[] actual = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]").toObject(Simple[].class);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayArrayDeserialization() {
+        Simple[][] expected = new Simple[][] { { new Simple("id", "name") } };
+        Simple[][] actual = BinaryData.fromString("[[{\"id\":\"id\",\"name\":\"name\"}]]").toObject(Simple[][].class);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerListDeserialization() {
+        List<Simple> expected = Collections.singletonList(new Simple("id", "name"));
+        List<Simple> actual
+            = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]").toObject(new TypeReference<List<Simple>>() {
+            });
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerMapDeserialization() {
+        Map<String, Simple> expected = Collections.singletonMap("key", new Simple("id", "name"));
+        Map<String, Simple> actual = BinaryData.fromString("{\"key\":{\"id\":\"id\",\"name\":\"name\"}}")
+            .toObject(new TypeReference<Map<String, Simple>>() {
+            });
+        assertEquals(expected, actual);
     }
 
     public static final class StronglyTypedHeaders {

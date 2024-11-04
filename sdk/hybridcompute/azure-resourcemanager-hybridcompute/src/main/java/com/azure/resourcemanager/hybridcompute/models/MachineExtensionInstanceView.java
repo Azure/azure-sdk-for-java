@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the Machine Extension Instance View.
  */
 @Fluent
-public final class MachineExtensionInstanceView {
+public final class MachineExtensionInstanceView implements JsonSerializable<MachineExtensionInstanceView> {
     /*
      * The machine extension name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Specifies the version of the script handler.
      */
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
      * Instance view status.
      */
-    @JsonProperty(value = "status")
     private MachineExtensionInstanceViewStatus status;
 
     /**
@@ -131,5 +131,51 @@ public final class MachineExtensionInstanceView {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeJsonField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineExtensionInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineExtensionInstanceView if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineExtensionInstanceView.
+     */
+    public static MachineExtensionInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineExtensionInstanceView deserializedMachineExtensionInstanceView = new MachineExtensionInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceView.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceView.type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceView.typeHandlerVersion = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMachineExtensionInstanceView.status
+                        = MachineExtensionInstanceViewStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineExtensionInstanceView;
+        });
     }
 }

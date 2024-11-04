@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Disk Restore Point details.
@@ -13,17 +16,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DiskRestorePointAttributes extends SubResourceReadOnly {
     /*
-     * Encryption at rest settings for disk restore point. It is an optional property that can be specified in the
-     * input while creating a restore point.
+     * Encryption at rest settings for disk restore point. It is an optional property that can be specified in the input
+     * while creating a restore point.
      */
-    @JsonProperty(value = "encryption")
     private RestorePointEncryption encryption;
 
     /*
      * Resource Id of the source disk restore point.
      */
-    @JsonProperty(value = "sourceDiskRestorePoint")
     private ApiEntityReference sourceDiskRestorePoint;
+
+    /*
+     * Resource Id
+     */
+    private String id;
 
     /**
      * Creates an instance of DiskRestorePointAttributes class.
@@ -74,6 +80,16 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
     }
 
     /**
+     * Get the id property: Resource Id.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -87,5 +103,46 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
         if (sourceDiskRestorePoint() != null) {
             sourceDiskRestorePoint().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeJsonField("sourceDiskRestorePoint", this.sourceDiskRestorePoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskRestorePointAttributes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskRestorePointAttributes if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskRestorePointAttributes.
+     */
+    public static DiskRestorePointAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskRestorePointAttributes deserializedDiskRestorePointAttributes = new DiskRestorePointAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiskRestorePointAttributes.id = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedDiskRestorePointAttributes.encryption = RestorePointEncryption.fromJson(reader);
+                } else if ("sourceDiskRestorePoint".equals(fieldName)) {
+                    deserializedDiskRestorePointAttributes.sourceDiskRestorePoint = ApiEntityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskRestorePointAttributes;
+        });
     }
 }

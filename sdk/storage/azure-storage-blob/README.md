@@ -12,6 +12,7 @@ definition, such as text or binary data.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -55,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.26.0</version>
+    <version>12.29.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -554,6 +555,8 @@ BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
 ```java readme-sample-setProxy
 ProxyOptions options = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888));
 BlobServiceClient client = new BlobServiceClientBuilder()
+    .endpoint("<ENDPOINT>")
+    .sasToken("<SAS_TOKEN>")
     .httpClient(new NettyAsyncHttpClientBuilder().proxy(options).build())
     .buildClient();
 ```
@@ -566,6 +569,8 @@ Allow the client builder to determine the `HttpClient` type to be used but const
 HttpClientOptions clientOptions = new HttpClientOptions()
     .setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888)));
 BlobServiceClient client = new BlobServiceClientBuilder()
+    .endpoint("<ENDPOINT>")
+    .sasToken("<SAS_TOKEN>")
     .clientOptions(clientOptions)
     .buildClient();
 ```
@@ -579,7 +584,7 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL

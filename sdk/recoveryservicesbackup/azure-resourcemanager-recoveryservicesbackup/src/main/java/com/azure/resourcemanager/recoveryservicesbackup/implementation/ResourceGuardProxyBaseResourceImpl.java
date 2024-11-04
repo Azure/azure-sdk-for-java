@@ -87,14 +87,16 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource create() {
-        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuardProxyOperations()
             .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public ResourceGuardProxyBaseResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuardProxyOperations()
             .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -112,14 +114,16 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource apply() {
-        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuardProxyOperations()
             .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public ResourceGuardProxyBaseResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuardProxyOperations()
             .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -136,25 +140,29 @@ public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardPr
     }
 
     public ResourceGuardProxyBaseResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
-            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuardProxyOperations()
+            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceGuardProxyBaseResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
-            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuardProxyOperations()
+            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context)
+            .getValue();
         return this;
     }
 
     public Response<UnlockDeleteResponse> unlockDeleteWithResponse(UnlockDeleteRequest parameters, Context context) {
-        return serviceManager.resourceGuardProxyOperations().unlockDeleteWithResponse(vaultName, resourceGroupName,
-            resourceGuardProxyName, parameters, context);
+        return serviceManager.resourceGuardProxyOperations()
+            .unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context);
     }
 
     public UnlockDeleteResponse unlockDelete(UnlockDeleteRequest parameters) {
-        return serviceManager.resourceGuardProxyOperations().unlockDelete(vaultName, resourceGroupName,
-            resourceGuardProxyName, parameters);
+        return serviceManager.resourceGuardProxyOperations()
+            .unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
     }
 
     public ResourceGuardProxyBaseResourceImpl withRegion(Region location) {

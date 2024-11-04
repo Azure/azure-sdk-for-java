@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.Assistant;
@@ -20,6 +19,7 @@ import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.credential.KeyCredential;
@@ -64,7 +64,7 @@ public class FunctionToolCallSample {
         // Pool the run and call methods as requested by the service
         do {
             // We sleep to prevent requesting too many times for an update
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
 
             if (run.getStatus() == RunStatus.REQUIRES_ACTION
@@ -135,7 +135,7 @@ public class FunctionToolCallSample {
         return client.createRun(thread, assistant);
     }
     private static void sendUserMessage(String userMessage, String threadId, AssistantsClient client) {
-        client.createMessage(threadId, MessageRole.USER, userMessage);
+        client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, userMessage));
     }
 
     private static AssistantThread createAssistantThread(AssistantsClient client) {

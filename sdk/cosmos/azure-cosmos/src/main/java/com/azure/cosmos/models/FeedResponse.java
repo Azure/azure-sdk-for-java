@@ -81,6 +81,10 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this(results, header, true, nochanges, new ConcurrentHashMap<>());
     }
 
+    FeedResponse(List<T> results, Map<String, String> header, boolean nochanges, CosmosDiagnostics diagnostics) {
+        this(results, header, true, nochanges, new ConcurrentHashMap<>(), diagnostics);
+    }
+
     FeedResponse(List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics) {
         this(results, headers);
 
@@ -114,6 +118,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
         this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
+    }
+
+    private FeedResponse(
+        List<T> results,
+        Map<String, String> header,
+        boolean useEtagAsContinuation,
+        boolean nochanges,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        CosmosDiagnostics diagnostics) {
+        this.results = results;
+        this.header = header;
+        this.usageHeaders = new HashMap<>();
+        this.quotaHeaders = new HashMap<>();
+        this.useEtagAsContinuation = useEtagAsContinuation;
+        this.nochanges = nochanges;
+        this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
+        this.cosmosDiagnostics = diagnostics;
     }
 
     private FeedResponse(
@@ -592,6 +613,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                     return new FeedResponse<>(
                         noChanges(response) ? Collections.emptyList() : response.getQueryResponse(itemSerializer, cls),
                         response.getResponseHeaders(), noChanges(response));
+                }
+
+                @Override
+                public <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls, CosmosDiagnostics diagnostics) {
+                    return new FeedResponse<>(
+                        noChanges(response) ? Collections.emptyList() : response.getQueryResponse(itemSerializer, cls),
+                        response.getResponseHeaders(), noChanges(response), diagnostics);
                 }
 
                 @Override

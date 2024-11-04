@@ -20,21 +20,20 @@ steps:
   - ${{ if or(ne(parameters.GenerateApiReviewForManualOnly, true), eq(variables['Build.Reason'], 'Manual')) }}:
     - task: Powershell@2
       inputs:
-        filePath: ./eng/common/scripts/Create-APIReview.ps1
+        filePath: ${{ parameters.SourceRootPath }}/eng/common/scripts/Create-APIReview.ps1
         arguments: >
           -ArtifactList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
-          -ArtifactPath ${{parameters.ArtifactPath}}
+          -ArtifactPath '${{parameters.ArtifactPath}}'
           -ArtifactName ${{ parameters.ArtifactName }}
-          -APIKey $(azuresdk-apiview-apikey)
+          -APIKey '$(azuresdk-apiview-apikey)'
           -PackageName '${{parameters.PackageName}}'
-          -SourceBranch $(Build.SourceBranchName)
-          -DefaultBranch $(DefaultBranch)
+          -SourceBranch '$(Build.SourceBranchName)'
+          -DefaultBranch '$(DefaultBranch)'
           -ConfigFileDir '${{parameters.ConfigFileDir}}'
-          -BuildId $(Build.BuildId)
+          -BuildId '$(Build.BuildId)'
           -RepoName '$(Build.Repository.Name)'    
           -MarkPackageAsShipped $${{parameters.MarkPackageAsShipped}}
         pwsh: true
-        workingDirectory: ${{ parameters.SourceRootPath }}
       displayName: Create API Review
       condition: >-
         and(

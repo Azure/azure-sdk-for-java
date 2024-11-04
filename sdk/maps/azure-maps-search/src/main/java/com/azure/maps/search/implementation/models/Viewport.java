@@ -5,30 +5,37 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The viewport that covers the result represented by the top-left and bottom-right coordinates of the viewport. */
+/**
+ * The viewport that covers the result represented by the top-left and bottom-right coordinates of the viewport.
+ */
 @Fluent
-public final class Viewport {
+public final class Viewport implements JsonSerializable<Viewport> {
     /*
      * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
-    @JsonProperty(value = "topLeftPoint")
     private LatLongPairAbbreviated topLeftPoint;
 
     /*
      * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
-    @JsonProperty(value = "btmRightPoint")
     private LatLongPairAbbreviated btmRightPoint;
 
-    /** Creates an instance of Viewport class. */
-    public Viewport() {}
+    /**
+     * Creates an instance of Viewport class.
+     */
+    public Viewport() {
+    }
 
     /**
      * Get the topLeftPoint property: A location represented as a latitude and longitude using short names 'lat' &amp;
      * 'lon'.
-     *
+     * 
      * @return the topLeftPoint value.
      */
     public LatLongPairAbbreviated getTopLeftPoint() {
@@ -38,7 +45,7 @@ public final class Viewport {
     /**
      * Set the topLeftPoint property: A location represented as a latitude and longitude using short names 'lat' &amp;
      * 'lon'.
-     *
+     * 
      * @param topLeftPoint the topLeftPoint value to set.
      * @return the Viewport object itself.
      */
@@ -50,7 +57,7 @@ public final class Viewport {
     /**
      * Get the btmRightPoint property: A location represented as a latitude and longitude using short names 'lat' &amp;
      * 'lon'.
-     *
+     * 
      * @return the btmRightPoint value.
      */
     public LatLongPairAbbreviated getBtmRightPoint() {
@@ -60,12 +67,51 @@ public final class Viewport {
     /**
      * Set the btmRightPoint property: A location represented as a latitude and longitude using short names 'lat' &amp;
      * 'lon'.
-     *
+     * 
      * @param btmRightPoint the btmRightPoint value to set.
      * @return the Viewport object itself.
      */
     public Viewport setBtmRightPoint(LatLongPairAbbreviated btmRightPoint) {
         this.btmRightPoint = btmRightPoint;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("topLeftPoint", this.topLeftPoint);
+        jsonWriter.writeJsonField("btmRightPoint", this.btmRightPoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Viewport from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Viewport if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Viewport.
+     */
+    public static Viewport fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Viewport deserializedViewport = new Viewport();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("topLeftPoint".equals(fieldName)) {
+                    deserializedViewport.topLeftPoint = LatLongPairAbbreviated.fromJson(reader);
+                } else if ("btmRightPoint".equals(fieldName)) {
+                    deserializedViewport.btmRightPoint = LatLongPairAbbreviated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedViewport;
+        });
     }
 }

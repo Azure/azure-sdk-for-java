@@ -13,27 +13,27 @@ public final class EventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Event model = BinaryData.fromString(
-            "{\"name\":\"itnwuizgazxufi\",\"eventNotifier\":\"uckyf\",\"capabilityId\":\"rfidfvzwdz\",\"observabilityMode\":\"none\",\"eventConfiguration\":\"mwisdkfthwxmnt\"}")
+            "{\"name\":\"qpteeh\",\"eventNotifier\":\"zvypyqrimzinp\",\"capabilityId\":\"wjdk\",\"observabilityMode\":\"log\",\"eventConfiguration\":\"od\"}")
             .toObject(Event.class);
-        Assertions.assertEquals("itnwuizgazxufi", model.name());
-        Assertions.assertEquals("uckyf", model.eventNotifier());
-        Assertions.assertEquals("rfidfvzwdz", model.capabilityId());
-        Assertions.assertEquals(EventsObservabilityMode.NONE, model.observabilityMode());
-        Assertions.assertEquals("mwisdkfthwxmnt", model.eventConfiguration());
+        Assertions.assertEquals("qpteeh", model.name());
+        Assertions.assertEquals("zvypyqrimzinp", model.eventNotifier());
+        Assertions.assertEquals("wjdk", model.capabilityId());
+        Assertions.assertEquals(EventsObservabilityMode.LOG, model.observabilityMode());
+        Assertions.assertEquals("od", model.eventConfiguration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Event model = new Event().withName("itnwuizgazxufi")
-            .withEventNotifier("uckyf")
-            .withCapabilityId("rfidfvzwdz")
-            .withObservabilityMode(EventsObservabilityMode.NONE)
-            .withEventConfiguration("mwisdkfthwxmnt");
+        Event model = new Event().withName("qpteeh")
+            .withEventNotifier("zvypyqrimzinp")
+            .withCapabilityId("wjdk")
+            .withObservabilityMode(EventsObservabilityMode.LOG)
+            .withEventConfiguration("od");
         model = BinaryData.fromObject(model).toObject(Event.class);
-        Assertions.assertEquals("itnwuizgazxufi", model.name());
-        Assertions.assertEquals("uckyf", model.eventNotifier());
-        Assertions.assertEquals("rfidfvzwdz", model.capabilityId());
-        Assertions.assertEquals(EventsObservabilityMode.NONE, model.observabilityMode());
-        Assertions.assertEquals("mwisdkfthwxmnt", model.eventConfiguration());
+        Assertions.assertEquals("qpteeh", model.name());
+        Assertions.assertEquals("zvypyqrimzinp", model.eventNotifier());
+        Assertions.assertEquals("wjdk", model.capabilityId());
+        Assertions.assertEquals(EventsObservabilityMode.LOG, model.observabilityMode());
+        Assertions.assertEquals("od", model.eventConfiguration());
     }
 }

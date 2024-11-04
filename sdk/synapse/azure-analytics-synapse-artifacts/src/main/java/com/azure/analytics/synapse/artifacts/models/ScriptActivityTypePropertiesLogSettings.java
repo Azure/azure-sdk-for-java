@@ -5,23 +5,26 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Log settings of script activity.
  */
 @Fluent
-public final class ScriptActivityTypePropertiesLogSettings {
+public final class ScriptActivityTypePropertiesLogSettings
+    implements JsonSerializable<ScriptActivityTypePropertiesLogSettings> {
     /*
      * The destination of logs. Type: string.
      */
-    @JsonProperty(value = "logDestination", required = true)
     private ScriptActivityLogDestination logDestination;
 
     /*
      * Log location settings customer needs to provide when enabling log.
      */
-    @JsonProperty(value = "logLocationSettings")
     private LogLocationSettings logLocationSettings;
 
     /**
@@ -68,5 +71,49 @@ public final class ScriptActivityTypePropertiesLogSettings {
     public ScriptActivityTypePropertiesLogSettings setLogLocationSettings(LogLocationSettings logLocationSettings) {
         this.logLocationSettings = logLocationSettings;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logDestination",
+            this.logDestination == null ? null : this.logDestination.toString());
+        jsonWriter.writeJsonField("logLocationSettings", this.logLocationSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActivityTypePropertiesLogSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActivityTypePropertiesLogSettings if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptActivityTypePropertiesLogSettings.
+     */
+    public static ScriptActivityTypePropertiesLogSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActivityTypePropertiesLogSettings deserializedScriptActivityTypePropertiesLogSettings
+                = new ScriptActivityTypePropertiesLogSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logDestination".equals(fieldName)) {
+                    deserializedScriptActivityTypePropertiesLogSettings.logDestination
+                        = ScriptActivityLogDestination.fromString(reader.getString());
+                } else if ("logLocationSettings".equals(fieldName)) {
+                    deserializedScriptActivityTypePropertiesLogSettings.logLocationSettings
+                        = LogLocationSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActivityTypePropertiesLogSettings;
+        });
     }
 }

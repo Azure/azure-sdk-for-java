@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationUsages. */
+/**
+ * Resource collection API of ReplicationUsages.
+ */
 public interface ReplicationUsages {
     /**
      * Fetches the replication usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface ReplicationUsages {
 
     /**
      * Fetches the replication usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.

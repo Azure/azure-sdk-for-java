@@ -14,28 +14,32 @@ public final class BackupPolicyPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyPatch model = BinaryData.fromString(
-            "{\"properties\":{\"backupPolicyId\":\"bminrfdwoyuhhzi\",\"provisioningState\":\"efozbhdms\",\"dailyBackupsToKeep\":1531171615,\"weeklyBackupsToKeep\":1354395459,\"monthlyBackupsToKeep\":572432734,\"volumesAssigned\":1916559931,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"u\",\"backupsCount\":674060065,\"policyEnabled\":false}]},\"location\":\"cslfaoqzpiyylha\",\"tags\":{\"hka\":\"whccs\",\"ggwoluhczb\":\"vwitqscyw\",\"i\":\"emh\"},\"id\":\"sbrgz\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"}")
+            "{\"properties\":{\"backupPolicyId\":\"cwaekrrjre\",\"provisioningState\":\"xt\",\"dailyBackupsToKeep\":747215260,\"weeklyBackupsToKeep\":1781492308,\"monthlyBackupsToKeep\":1019109775,\"volumesAssigned\":991905690,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"lo\",\"volumeResourceId\":\"qpvuzlmvfelf\",\"backupsCount\":2091794134,\"policyEnabled\":false},{\"volumeName\":\"rpw\",\"volumeResourceId\":\"eznoig\",\"backupsCount\":1629929143,\"policyEnabled\":false}]},\"location\":\"mw\",\"tags\":{\"fhsxttaugz\":\"bsazejjoqka\",\"jlwuenvrkp\":\"nfaazpxdtnkdmkq\",\"ibreb\":\"ou\",\"kixqtnqtt\":\"aays\"},\"id\":\"zlwfffiakp\",\"name\":\"pqqmted\",\"type\":\"tmmjihyeozph\"}")
             .toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("cslfaoqzpiyylha", model.location());
-        Assertions.assertEquals("whccs", model.tags().get("hka"));
-        Assertions.assertEquals(1531171615, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1354395459, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(572432734, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("mw", model.location());
+        Assertions.assertEquals("bsazejjoqka", model.tags().get("fhsxttaugz"));
+        Assertions.assertEquals(747215260, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1781492308, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1019109775, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("cslfaoqzpiyylha")
-            .withTags(mapOf("hka", "whccs", "ggwoluhczb", "vwitqscyw", "i", "emh")).withDailyBackupsToKeep(1531171615)
-            .withWeeklyBackupsToKeep(1354395459).withMonthlyBackupsToKeep(572432734).withEnabled(true);
+        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("mw")
+            .withTags(
+                mapOf("fhsxttaugz", "bsazejjoqka", "jlwuenvrkp", "nfaazpxdtnkdmkq", "ibreb", "ou", "kixqtnqtt", "aays"))
+            .withDailyBackupsToKeep(747215260)
+            .withWeeklyBackupsToKeep(1781492308)
+            .withMonthlyBackupsToKeep(1019109775)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("cslfaoqzpiyylha", model.location());
-        Assertions.assertEquals("whccs", model.tags().get("hka"));
-        Assertions.assertEquals(1531171615, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1354395459, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(572432734, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("mw", model.location());
+        Assertions.assertEquals("bsazejjoqka", model.tags().get("fhsxttaugz"));
+        Assertions.assertEquals(747215260, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1781492308, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1019109775, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     // Use "Map.of" if available

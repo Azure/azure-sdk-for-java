@@ -5,8 +5,13 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -19,231 +24,198 @@ public final class HostAsset extends InventoryAsset {
      * The host property.
      */
     @Generated
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * The domain property.
      */
     @Generated
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The ipAddresses property.
      */
     @Generated
-    @JsonProperty(value = "ipAddresses")
     private List<ObservedString> ipAddresses;
 
     /*
      * The webComponents property.
      */
     @Generated
-    @JsonProperty(value = "webComponents")
     private List<WebComponent> webComponents;
 
     /*
      * The headers property.
      */
     @Generated
-    @JsonProperty(value = "headers")
     private List<ObservedHeader> headers;
 
     /*
      * The attributes property.
      */
     @Generated
-    @JsonProperty(value = "attributes")
     private List<Attribute> attributes;
 
     /*
      * The cookies property.
      */
     @Generated
-    @JsonProperty(value = "cookies")
     private List<Cookie> cookies;
 
     /*
      * The sslCerts property.
      */
     @Generated
-    @JsonProperty(value = "sslCerts")
     private List<SslCertAsset> sslCerts;
 
     /*
      * The parentHosts property.
      */
     @Generated
-    @JsonProperty(value = "parentHosts")
     private List<ObservedString> parentHosts;
 
     /*
      * The childHosts property.
      */
     @Generated
-    @JsonProperty(value = "childHosts")
     private List<ObservedString> childHosts;
 
     /*
      * The hostCore property.
      */
     @Generated
-    @JsonProperty(value = "hostCore")
     private HostCore hostCore;
 
     /*
      * The services property.
      */
     @Generated
-    @JsonProperty(value = "services")
     private List<Service> services;
 
     /*
      * The cnames property.
      */
     @Generated
-    @JsonProperty(value = "cnames")
     private List<ObservedString> cnames;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The resourceUrls property.
      */
     @Generated
-    @JsonProperty(value = "resourceUrls")
     private List<ResourceUrl> resourceUrls;
 
     /*
      * The scanMetadata property.
      */
     @Generated
-    @JsonProperty(value = "scanMetadata")
     private List<ScanMetadata> scanMetadata;
 
     /*
      * The asns property.
      */
     @Generated
-    @JsonProperty(value = "asns")
     private List<ObservedLong> asns;
 
     /*
      * The ipBlocks property.
      */
     @Generated
-    @JsonProperty(value = "ipBlocks")
     private List<IpBlock> ipBlocks;
 
     /*
      * The responseBodies property.
      */
     @Generated
-    @JsonProperty(value = "responseBodies")
     private List<ObservedString> responseBodies;
 
     /*
      * The domainAsset property.
      */
     @Generated
-    @JsonProperty(value = "domainAsset")
     private DomainAsset domainAsset;
 
     /*
      * The nsRecord property.
      */
     @Generated
-    @JsonProperty(value = "nsRecord")
     private List<ObservedBoolean> nsRecord;
 
     /*
      * The mxRecord property.
      */
     @Generated
-    @JsonProperty(value = "mxRecord")
     private List<ObservedBoolean> mxRecord;
 
     /*
      * The webserver property.
      */
     @Generated
-    @JsonProperty(value = "webserver")
     private List<ObservedBoolean> webserver;
 
     /*
      * The location property.
      */
     @Generated
-    @JsonProperty(value = "location")
     private List<ObservedLocation> location;
 
     /*
      * The nxdomain property.
      */
     @Generated
-    @JsonProperty(value = "nxdomain")
     private List<ObservedBoolean> nxdomain;
 
     /*
      * The sslServerConfig property.
      */
     @Generated
-    @JsonProperty(value = "sslServerConfig")
     private List<SslServerConfig> sslServerConfig;
 
     /*
      * The isWildcard property.
      */
     @Generated
-    @JsonProperty(value = "isWildcard")
     private List<ObservedBoolean> isWildcard;
 
     /*
      * The banners property.
      */
     @Generated
-    @JsonProperty(value = "banners")
     private List<Banner> banners;
 
     /*
      * The ipv4 property.
      */
     @Generated
-    @JsonProperty(value = "ipv4")
     private List<ObservedBoolean> ipv4;
 
     /*
      * The ipv6 property.
      */
     @Generated
-    @JsonProperty(value = "ipv6")
     private List<ObservedBoolean> ipv6;
 
     /**
@@ -581,5 +553,170 @@ public final class HostAsset extends InventoryAsset {
     @Generated
     public List<ObservedBoolean> getIpv6() {
         return this.ipv6;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("webComponents", this.webComponents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("attributes", this.attributes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cookies", this.cookies, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sslCerts", this.sslCerts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("parentHosts", this.parentHosts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("childHosts", this.childHosts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("hostCore", this.hostCore);
+        jsonWriter.writeArrayField("services", this.services, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cnames", this.cnames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeArrayField("resourceUrls", this.resourceUrls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("scanMetadata", this.scanMetadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("asns", this.asns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipBlocks", this.ipBlocks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseBodies", this.responseBodies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("domainAsset", this.domainAsset);
+        jsonWriter.writeArrayField("nsRecord", this.nsRecord, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("mxRecord", this.mxRecord, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("webserver", this.webserver, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("location", this.location, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("nxdomain", this.nxdomain, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sslServerConfig", this.sslServerConfig,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("isWildcard", this.isWildcard, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("banners", this.banners, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv4", this.ipv4, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv6", this.ipv6, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostAsset from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostAsset if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the HostAsset.
+     */
+    @Generated
+    public static HostAsset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostAsset deserializedHostAsset = new HostAsset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("host".equals(fieldName)) {
+                    deserializedHostAsset.host = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedHostAsset.domain = reader.getString();
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<ObservedString> ipAddresses = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedHostAsset.ipAddresses = ipAddresses;
+                } else if ("webComponents".equals(fieldName)) {
+                    List<WebComponent> webComponents = reader.readArray(reader1 -> WebComponent.fromJson(reader1));
+                    deserializedHostAsset.webComponents = webComponents;
+                } else if ("headers".equals(fieldName)) {
+                    List<ObservedHeader> headers = reader.readArray(reader1 -> ObservedHeader.fromJson(reader1));
+                    deserializedHostAsset.headers = headers;
+                } else if ("attributes".equals(fieldName)) {
+                    List<Attribute> attributes = reader.readArray(reader1 -> Attribute.fromJson(reader1));
+                    deserializedHostAsset.attributes = attributes;
+                } else if ("cookies".equals(fieldName)) {
+                    List<Cookie> cookies = reader.readArray(reader1 -> Cookie.fromJson(reader1));
+                    deserializedHostAsset.cookies = cookies;
+                } else if ("sslCerts".equals(fieldName)) {
+                    List<SslCertAsset> sslCerts = reader.readArray(reader1 -> SslCertAsset.fromJson(reader1));
+                    deserializedHostAsset.sslCerts = sslCerts;
+                } else if ("parentHosts".equals(fieldName)) {
+                    List<ObservedString> parentHosts = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedHostAsset.parentHosts = parentHosts;
+                } else if ("childHosts".equals(fieldName)) {
+                    List<ObservedString> childHosts = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedHostAsset.childHosts = childHosts;
+                } else if ("hostCore".equals(fieldName)) {
+                    deserializedHostAsset.hostCore = HostCore.fromJson(reader);
+                } else if ("services".equals(fieldName)) {
+                    List<Service> services = reader.readArray(reader1 -> Service.fromJson(reader1));
+                    deserializedHostAsset.services = services;
+                } else if ("cnames".equals(fieldName)) {
+                    List<ObservedString> cnames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedHostAsset.cnames = cnames;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedHostAsset.sources = sources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedHostAsset.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedHostAsset.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedHostAsset.count = reader.getNullable(JsonReader::getLong);
+                } else if ("resourceUrls".equals(fieldName)) {
+                    List<ResourceUrl> resourceUrls = reader.readArray(reader1 -> ResourceUrl.fromJson(reader1));
+                    deserializedHostAsset.resourceUrls = resourceUrls;
+                } else if ("scanMetadata".equals(fieldName)) {
+                    List<ScanMetadata> scanMetadata = reader.readArray(reader1 -> ScanMetadata.fromJson(reader1));
+                    deserializedHostAsset.scanMetadata = scanMetadata;
+                } else if ("asns".equals(fieldName)) {
+                    List<ObservedLong> asns = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedHostAsset.asns = asns;
+                } else if ("ipBlocks".equals(fieldName)) {
+                    List<IpBlock> ipBlocks = reader.readArray(reader1 -> IpBlock.fromJson(reader1));
+                    deserializedHostAsset.ipBlocks = ipBlocks;
+                } else if ("responseBodies".equals(fieldName)) {
+                    List<ObservedString> responseBodies = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedHostAsset.responseBodies = responseBodies;
+                } else if ("domainAsset".equals(fieldName)) {
+                    deserializedHostAsset.domainAsset = DomainAsset.fromJson(reader);
+                } else if ("nsRecord".equals(fieldName)) {
+                    List<ObservedBoolean> nsRecord = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.nsRecord = nsRecord;
+                } else if ("mxRecord".equals(fieldName)) {
+                    List<ObservedBoolean> mxRecord = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.mxRecord = mxRecord;
+                } else if ("webserver".equals(fieldName)) {
+                    List<ObservedBoolean> webserver = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.webserver = webserver;
+                } else if ("location".equals(fieldName)) {
+                    List<ObservedLocation> location = reader.readArray(reader1 -> ObservedLocation.fromJson(reader1));
+                    deserializedHostAsset.location = location;
+                } else if ("nxdomain".equals(fieldName)) {
+                    List<ObservedBoolean> nxdomain = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.nxdomain = nxdomain;
+                } else if ("sslServerConfig".equals(fieldName)) {
+                    List<SslServerConfig> sslServerConfig
+                        = reader.readArray(reader1 -> SslServerConfig.fromJson(reader1));
+                    deserializedHostAsset.sslServerConfig = sslServerConfig;
+                } else if ("isWildcard".equals(fieldName)) {
+                    List<ObservedBoolean> isWildcard = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.isWildcard = isWildcard;
+                } else if ("banners".equals(fieldName)) {
+                    List<Banner> banners = reader.readArray(reader1 -> Banner.fromJson(reader1));
+                    deserializedHostAsset.banners = banners;
+                } else if ("ipv4".equals(fieldName)) {
+                    List<ObservedBoolean> ipv4 = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.ipv4 = ipv4;
+                } else if ("ipv6".equals(fieldName)) {
+                    List<ObservedBoolean> ipv6 = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedHostAsset.ipv6 = ipv6;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedHostAsset;
+        });
     }
 }

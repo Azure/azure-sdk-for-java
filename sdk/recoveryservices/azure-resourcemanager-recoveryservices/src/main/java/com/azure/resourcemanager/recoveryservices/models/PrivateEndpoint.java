@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Private Endpoint network resource that is linked to the Private Endpoint connection. */
+/**
+ * The Private Endpoint network resource that is linked to the Private Endpoint connection.
+ */
 @Immutable
 public final class PrivateEndpoint {
     /*
@@ -16,13 +18,15 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of PrivateEndpoint class. */
+    /**
+     * Creates an instance of PrivateEndpoint class.
+     */
     public PrivateEndpoint() {
     }
 
     /**
      * Get the id property: Gets or sets id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class PrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

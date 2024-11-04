@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** What is this?. */
+/**
+ * What is this?.
+ */
 @Fluent
-public final class OperationMetaServiceSpecification {
+public final class OperationMetaServiceSpecification implements JsonSerializable<OperationMetaServiceSpecification> {
     /*
      * Service metric specifications
      */
-    @JsonProperty(value = "metricSpecifications")
     private List<OperationMetaMetricSpecification> metricSpecifications;
 
     /*
      * Service log specifications
      */
-    @JsonProperty(value = "logSpecifications")
     private List<OperationMetaLogSpecification> logSpecifications;
 
-    /** Creates an instance of OperationMetaServiceSpecification class. */
+    /**
+     * Creates an instance of OperationMetaServiceSpecification class.
+     */
     public OperationMetaServiceSpecification() {
     }
 
     /**
      * Get the metricSpecifications property: Service metric specifications.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<OperationMetaMetricSpecification> metricSpecifications() {
@@ -38,19 +44,19 @@ public final class OperationMetaServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Service metric specifications.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the OperationMetaServiceSpecification object itself.
      */
-    public OperationMetaServiceSpecification withMetricSpecifications(
-        List<OperationMetaMetricSpecification> metricSpecifications) {
+    public OperationMetaServiceSpecification
+        withMetricSpecifications(List<OperationMetaMetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }
 
     /**
      * Get the logSpecifications property: Service log specifications.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<OperationMetaLogSpecification> logSpecifications() {
@@ -59,19 +65,19 @@ public final class OperationMetaServiceSpecification {
 
     /**
      * Set the logSpecifications property: Service log specifications.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the OperationMetaServiceSpecification object itself.
      */
-    public OperationMetaServiceSpecification withLogSpecifications(
-        List<OperationMetaLogSpecification> logSpecifications) {
+    public OperationMetaServiceSpecification
+        withLogSpecifications(List<OperationMetaLogSpecification> logSpecifications) {
         this.logSpecifications = logSpecifications;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,5 +87,51 @@ public final class OperationMetaServiceSpecification {
         if (logSpecifications() != null) {
             logSpecifications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metricSpecifications", this.metricSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logSpecifications", this.logSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetaServiceSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetaServiceSpecification if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetaServiceSpecification.
+     */
+    public static OperationMetaServiceSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetaServiceSpecification deserializedOperationMetaServiceSpecification
+                = new OperationMetaServiceSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricSpecifications".equals(fieldName)) {
+                    List<OperationMetaMetricSpecification> metricSpecifications
+                        = reader.readArray(reader1 -> OperationMetaMetricSpecification.fromJson(reader1));
+                    deserializedOperationMetaServiceSpecification.metricSpecifications = metricSpecifications;
+                } else if ("logSpecifications".equals(fieldName)) {
+                    List<OperationMetaLogSpecification> logSpecifications
+                        = reader.readArray(reader1 -> OperationMetaLogSpecification.fromJson(reader1));
+                    deserializedOperationMetaServiceSpecification.logSpecifications = logSpecifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetaServiceSpecification;
+        });
     }
 }

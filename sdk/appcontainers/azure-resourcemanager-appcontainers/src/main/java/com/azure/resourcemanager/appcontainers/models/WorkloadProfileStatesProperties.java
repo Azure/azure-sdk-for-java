@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Workload Profile resource specific properties.
  */
 @Fluent
-public final class WorkloadProfileStatesProperties {
+public final class WorkloadProfileStatesProperties implements JsonSerializable<WorkloadProfileStatesProperties> {
     /*
      * Minimum count of instances.
      */
-    @JsonProperty(value = "minimumCount")
     private Integer minimumCount;
 
     /*
      * Maximum count of nodes.
      */
-    @JsonProperty(value = "maximumCount")
     private Integer maximumCount;
 
     /*
      * Current count of nodes.
      */
-    @JsonProperty(value = "currentCount")
     private Integer currentCount;
 
     /**
@@ -102,5 +103,48 @@ public final class WorkloadProfileStatesProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minimumCount", this.minimumCount);
+        jsonWriter.writeNumberField("maximumCount", this.maximumCount);
+        jsonWriter.writeNumberField("currentCount", this.currentCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadProfileStatesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadProfileStatesProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadProfileStatesProperties.
+     */
+    public static WorkloadProfileStatesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadProfileStatesProperties deserializedWorkloadProfileStatesProperties
+                = new WorkloadProfileStatesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minimumCount".equals(fieldName)) {
+                    deserializedWorkloadProfileStatesProperties.minimumCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maximumCount".equals(fieldName)) {
+                    deserializedWorkloadProfileStatesProperties.maximumCount = reader.getNullable(JsonReader::getInt);
+                } else if ("currentCount".equals(fieldName)) {
+                    deserializedWorkloadProfileStatesProperties.currentCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadProfileStatesProperties;
+        });
     }
 }

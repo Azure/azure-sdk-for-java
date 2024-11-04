@@ -58,26 +58,40 @@ public final class OrganizationsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AstroManager manager = AstroManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AstroManager manager = AstroManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OrganizationResource response = manager.organizations().define("wz").withRegion("njbkcnxdhbttkph")
+        OrganizationResource response = manager.organizations()
+            .define("wz")
+            .withRegion("njbkcnxdhbttkph")
             .withExistingResourceGroup("bniwdj")
             .withTags(mapOf("t", "nv", "crpab", "qnermclfplphoxu", "sbj", "ye", "wfqkquj", "azqugxywpmueefj"))
             .withProperties(new LiftrBaseDataOrganizationProperties()
                 .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("dbpgnxytxhp")
                     .withSubscriptionStatus(MarketplaceSubscriptionStatus.SUBSCRIBED)
-                    .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("zpfzabglc").withOfferId("hxw")
-                        .withPlanId("ctyqik").withPlanName("bovpl").withTermUnit("bhvgy").withTermId("uosvmkfssxqukk")))
-                .withUser(new LiftrBaseUserDetails().withFirstName("plgmgsxnk").withLastName("zkd")
-                    .withEmailAddress("slpvlop").withUpn("yighxpk").withPhoneNumber("zb"))
-                .withPartnerOrganizationProperties(new LiftrBaseDataPartnerOrganizationProperties()
-                    .withOrganizationId("baumnyqupedeoj").withWorkspaceId("bckhsmtxpsi")
-                    .withOrganizationName("btfhvpesaps").withWorkspaceName("dqmh")
-                    .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.DISABLE).withEnterpriseAppId("ldwkyzxuutkn")
-                        .withSingleSignOnUrl("scwsv").withAadDomains(Arrays.asList("togt", "rupqsxvnmicy", "vce")))))
+                    .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("zpfzabglc")
+                        .withOfferId("hxw")
+                        .withPlanId("ctyqik")
+                        .withPlanName("bovpl")
+                        .withTermUnit("bhvgy")
+                        .withTermId("uosvmkfssxqukk")))
+                .withUser(new LiftrBaseUserDetails().withFirstName("plgmgsxnk")
+                    .withLastName("zkd")
+                    .withEmailAddress("slpvlop")
+                    .withUpn("yighxpk")
+                    .withPhoneNumber("zb"))
+                .withPartnerOrganizationProperties(
+                    new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("baumnyqupedeoj")
+                        .withWorkspaceId("bckhsmtxpsi")
+                        .withOrganizationName("btfhvpesaps")
+                        .withWorkspaceName("dqmh")
+                        .withSingleSignOnProperties(
+                            new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
+                                .withEnterpriseAppId("ldwkyzxuutkn")
+                                .withSingleSignOnUrl("scwsv")
+                                .withAadDomains(Arrays.asList("togt", "rupqsxvnmicy", "vce")))))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf("fj", new UserAssignedIdentity())))
             .create();

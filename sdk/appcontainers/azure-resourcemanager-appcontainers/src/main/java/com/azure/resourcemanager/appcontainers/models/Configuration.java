@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Non versioned Container App configuration properties that define the mutable settings of a Container app.
  */
 @Fluent
-public final class Configuration {
+public final class Configuration implements JsonSerializable<Configuration> {
     /*
      * Collection of secrets used by a Container app
      */
-    @JsonProperty(value = "secrets")
     private List<Secret> secrets;
 
     /*
@@ -24,38 +27,43 @@ public final class Configuration {
      * <list><item>Multiple: multiple revisions can be active.</item><item>Single: Only one revision can be active at a
      * time. Revision weights can not be used in this mode. If no value if provided, this is the default.</item></list>
      */
-    @JsonProperty(value = "activeRevisionsMode")
     private ActiveRevisionsMode activeRevisionsMode;
 
     /*
      * Ingress configurations.
      */
-    @JsonProperty(value = "ingress")
     private Ingress ingress;
 
     /*
      * Collection of private container registry credentials for containers used by the Container app
      */
-    @JsonProperty(value = "registries")
     private List<RegistryCredentials> registries;
 
     /*
      * Dapr configuration for the Container App.
      */
-    @JsonProperty(value = "dapr")
     private Dapr dapr;
+
+    /*
+     * App runtime configuration for the Container App.
+     */
+    private Runtime runtime;
 
     /*
      * Optional. Max inactive revisions a Container App can have.
      */
-    @JsonProperty(value = "maxInactiveRevisions")
     private Integer maxInactiveRevisions;
 
     /*
      * Container App to be a dev Container App Service
      */
-    @JsonProperty(value = "service")
     private Service service;
+
+    /*
+     * Optional settings for Managed Identities that are assigned to the Container App. If a Managed Identity is not
+     * specified here, default settings will be used.
+     */
+    private List<IdentitySettings> identitySettings;
 
     /**
      * Creates an instance of Configuration class.
@@ -87,8 +95,8 @@ public final class Configuration {
      * Get the activeRevisionsMode property: ActiveRevisionsMode controls how active revisions are handled for the
      * Container app:
      * &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active.&lt;/item&gt;&lt;item&gt;Single: Only one
-     * revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this
-     * is the default.&lt;/item&gt;&lt;/list&gt;.
+     * revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is
+     * the default.&lt;/item&gt;&lt;/list&gt;.
      * 
      * @return the activeRevisionsMode value.
      */
@@ -100,8 +108,8 @@ public final class Configuration {
      * Set the activeRevisionsMode property: ActiveRevisionsMode controls how active revisions are handled for the
      * Container app:
      * &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active.&lt;/item&gt;&lt;item&gt;Single: Only one
-     * revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this
-     * is the default.&lt;/item&gt;&lt;/list&gt;.
+     * revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is
+     * the default.&lt;/item&gt;&lt;/list&gt;.
      * 
      * @param activeRevisionsMode the activeRevisionsMode value to set.
      * @return the Configuration object itself.
@@ -174,6 +182,26 @@ public final class Configuration {
     }
 
     /**
+     * Get the runtime property: App runtime configuration for the Container App.
+     * 
+     * @return the runtime value.
+     */
+    public Runtime runtime() {
+        return this.runtime;
+    }
+
+    /**
+     * Set the runtime property: App runtime configuration for the Container App.
+     * 
+     * @param runtime the runtime value to set.
+     * @return the Configuration object itself.
+     */
+    public Configuration withRuntime(Runtime runtime) {
+        this.runtime = runtime;
+        return this;
+    }
+
+    /**
      * Get the maxInactiveRevisions property: Optional. Max inactive revisions a Container App can have.
      * 
      * @return the maxInactiveRevisions value.
@@ -214,6 +242,28 @@ public final class Configuration {
     }
 
     /**
+     * Get the identitySettings property: Optional settings for Managed Identities that are assigned to the Container
+     * App. If a Managed Identity is not specified here, default settings will be used.
+     * 
+     * @return the identitySettings value.
+     */
+    public List<IdentitySettings> identitySettings() {
+        return this.identitySettings;
+    }
+
+    /**
+     * Set the identitySettings property: Optional settings for Managed Identities that are assigned to the Container
+     * App. If a Managed Identity is not specified here, default settings will be used.
+     * 
+     * @param identitySettings the identitySettings value to set.
+     * @return the Configuration object itself.
+     */
+    public Configuration withIdentitySettings(List<IdentitySettings> identitySettings) {
+        this.identitySettings = identitySettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -231,8 +281,81 @@ public final class Configuration {
         if (dapr() != null) {
             dapr().validate();
         }
+        if (runtime() != null) {
+            runtime().validate();
+        }
         if (service() != null) {
             service().validate();
         }
+        if (identitySettings() != null) {
+            identitySettings().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("activeRevisionsMode",
+            this.activeRevisionsMode == null ? null : this.activeRevisionsMode.toString());
+        jsonWriter.writeJsonField("ingress", this.ingress);
+        jsonWriter.writeArrayField("registries", this.registries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dapr", this.dapr);
+        jsonWriter.writeJsonField("runtime", this.runtime);
+        jsonWriter.writeNumberField("maxInactiveRevisions", this.maxInactiveRevisions);
+        jsonWriter.writeJsonField("service", this.service);
+        jsonWriter.writeArrayField("identitySettings", this.identitySettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Configuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Configuration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Configuration.
+     */
+    public static Configuration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Configuration deserializedConfiguration = new Configuration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secrets".equals(fieldName)) {
+                    List<Secret> secrets = reader.readArray(reader1 -> Secret.fromJson(reader1));
+                    deserializedConfiguration.secrets = secrets;
+                } else if ("activeRevisionsMode".equals(fieldName)) {
+                    deserializedConfiguration.activeRevisionsMode = ActiveRevisionsMode.fromString(reader.getString());
+                } else if ("ingress".equals(fieldName)) {
+                    deserializedConfiguration.ingress = Ingress.fromJson(reader);
+                } else if ("registries".equals(fieldName)) {
+                    List<RegistryCredentials> registries
+                        = reader.readArray(reader1 -> RegistryCredentials.fromJson(reader1));
+                    deserializedConfiguration.registries = registries;
+                } else if ("dapr".equals(fieldName)) {
+                    deserializedConfiguration.dapr = Dapr.fromJson(reader);
+                } else if ("runtime".equals(fieldName)) {
+                    deserializedConfiguration.runtime = Runtime.fromJson(reader);
+                } else if ("maxInactiveRevisions".equals(fieldName)) {
+                    deserializedConfiguration.maxInactiveRevisions = reader.getNullable(JsonReader::getInt);
+                } else if ("service".equals(fieldName)) {
+                    deserializedConfiguration.service = Service.fromJson(reader);
+                } else if ("identitySettings".equals(fieldName)) {
+                    List<IdentitySettings> identitySettings
+                        = reader.readArray(reader1 -> IdentitySettings.fromJson(reader1));
+                    deserializedConfiguration.identitySettings = identitySettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfiguration;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
      * @param name a name to look for.
      * @return the corresponding ScaleDownMode.
      */
-    @JsonCreator
     public static ScaleDownMode fromString(String name) {
         return fromString(name, ScaleDownMode.class);
     }

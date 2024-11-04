@@ -69,20 +69,16 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
         return this;
     }
 
@@ -97,50 +93,41 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
         return this;
     }
 
-    DeploymentImpl(
-        DeploymentInner innerObject,
+    DeploymentImpl(DeploymentInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.deploymentName = Utils.getValueFromIdByName(innerObject.id(), "deployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deployments");
     }
 
     public Deployment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Deployment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getWithResponse(resourceGroupName, accountName, deploymentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .getWithResponse(resourceGroupName, accountName, deploymentName, context)
+            .getValue();
         return this;
     }
 

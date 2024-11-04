@@ -7,9 +7,9 @@ package com.azure.resourcemanager.billing.implementation;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionWithCreateSubPermissionInner;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
+import com.azure.resourcemanager.billing.models.BillingProfileStatusReasonCode;
 import com.azure.resourcemanager.billing.models.InvoiceSectionWithCreateSubPermission;
-import com.azure.resourcemanager.billing.models.SpendingLimitForBillingProfile;
-import com.azure.resourcemanager.billing.models.StatusReasonCodeForBillingProfile;
+import com.azure.resourcemanager.billing.models.SpendingLimit;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,47 +18,34 @@ public final class InvoiceSectionWithCreateSubPermissionImpl implements InvoiceS
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    InvoiceSectionWithCreateSubPermissionImpl(
-        InvoiceSectionWithCreateSubPermissionInner innerObject,
+    InvoiceSectionWithCreateSubPermissionImpl(InvoiceSectionWithCreateSubPermissionInner innerObject,
         com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-    }
-
-    public String invoiceSectionId() {
-        return this.innerModel().invoiceSectionId();
-    }
-
-    public String invoiceSectionDisplayName() {
-        return this.innerModel().invoiceSectionDisplayName();
-    }
-
-    public String invoiceSectionSystemId() {
-        return this.innerModel().invoiceSectionSystemId();
-    }
-
-    public String billingProfileId() {
-        return this.innerModel().billingProfileId();
     }
 
     public String billingProfileDisplayName() {
         return this.innerModel().billingProfileDisplayName();
     }
 
-    public BillingProfileStatus billingProfileStatus() {
-        return this.innerModel().billingProfileStatus();
-    }
-
-    public StatusReasonCodeForBillingProfile billingProfileStatusReasonCode() {
-        return this.innerModel().billingProfileStatusReasonCode();
-    }
-
-    public SpendingLimitForBillingProfile billingProfileSpendingLimit() {
-        return this.innerModel().billingProfileSpendingLimit();
+    public String billingProfileId() {
+        return this.innerModel().billingProfileId();
     }
 
     public String billingProfileSystemId() {
         return this.innerModel().billingProfileSystemId();
+    }
+
+    public BillingProfileStatus billingProfileStatus() {
+        return this.innerModel().billingProfileStatus();
+    }
+
+    public BillingProfileStatusReasonCode billingProfileStatusReasonCode() {
+        return this.innerModel().billingProfileStatusReasonCode();
+    }
+
+    public SpendingLimit billingProfileSpendingLimit() {
+        return this.innerModel().billingProfileSpendingLimit();
     }
 
     public List<AzurePlan> enabledAzurePlans() {
@@ -68,6 +55,18 @@ public final class InvoiceSectionWithCreateSubPermissionImpl implements InvoiceS
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String invoiceSectionDisplayName() {
+        return this.innerModel().invoiceSectionDisplayName();
+    }
+
+    public String invoiceSectionId() {
+        return this.innerModel().invoiceSectionId();
+    }
+
+    public String invoiceSectionSystemId() {
+        return this.innerModel().invoiceSectionSystemId();
     }
 
     public InvoiceSectionWithCreateSubPermissionInner innerModel() {

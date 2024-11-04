@@ -3,8 +3,6 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.implementation.util.CoreUtils;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * A collection of {@link HttpHeaders} on a request or response.
@@ -40,8 +40,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     public HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
 
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValues())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValues())));
     }
 
     /**
@@ -107,7 +107,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated {@link HttpHeaders} object.
      */
     public HttpHeaders add(HttpHeaderName name, List<String> values) {
-        if (name == null || CoreUtils.isNullOrEmpty(values)) {
+        if (name == null || isNullOrEmpty(values)) {
             return this;
         }
 
@@ -183,7 +183,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             return this;
         }
 
-        if (CoreUtils.isNullOrEmpty(values)) {
+        if (isNullOrEmpty(values)) {
             remove(name);
         } else {
             headers.put(name, new HttpHeader(name, values));
@@ -289,7 +289,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return Collections.unmodifiableMap(result);
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -309,9 +308,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     @Override
     public String toString() {
-        return this.stream()
-            .map(HttpHeader::toString)
-            .collect(Collectors.joining(", "));
+        return this.stream().map(HttpHeader::toString).collect(Collectors.joining(", "));
     }
 
 }

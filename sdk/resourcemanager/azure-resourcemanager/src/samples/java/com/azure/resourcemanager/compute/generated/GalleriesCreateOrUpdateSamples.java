@@ -25,13 +25,19 @@ public final class GalleriesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createACommunityGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().createOrUpdate("myResourceGroup",
-            "myGalleryName",
-            new GalleryInner().withLocation("West US").withDescription("This is the gallery description.")
-                .withSharingProfile(new SharingProfile().withPermissions(GallerySharingPermissionTypes.COMMUNITY)
-                    .withCommunityGalleryInfo(new CommunityGalleryInfo().withPublisherUri("uri")
-                        .withPublisherContact("pir@microsoft.com").withEula("eula").withPublicNamePrefix("PirPublic"))),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .createOrUpdate("myResourceGroup", "myGalleryName",
+                new GalleryInner().withLocation("West US")
+                    .withDescription("This is the gallery description.")
+                    .withSharingProfile(new SharingProfile().withPermissions(GallerySharingPermissionTypes.COMMUNITY)
+                        .withCommunityGalleryInfo(new CommunityGalleryInfo().withPublisherUri("uri")
+                            .withPublisherContact("pir@microsoft.com")
+                            .withEula("eula")
+                            .withPublicNamePrefix("PirPublic"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -46,11 +52,15 @@ public final class GalleriesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateASimpleGalleryWithSharingProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().createOrUpdate("myResourceGroup",
-            "myGalleryName",
-            new GalleryInner().withLocation("West US").withDescription("This is the gallery description.")
-                .withSharingProfile(new SharingProfile().withPermissions(GallerySharingPermissionTypes.GROUPS)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .createOrUpdate("myResourceGroup", "myGalleryName",
+                new GalleryInner().withLocation("West US")
+                    .withDescription("This is the gallery description.")
+                    .withSharingProfile(new SharingProfile().withPermissions(GallerySharingPermissionTypes.GROUPS)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -64,10 +74,13 @@ public final class GalleriesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateASimpleGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().createOrUpdate("myResourceGroup",
-            "myGalleryName",
-            new GalleryInner().withLocation("West US").withDescription("This is the gallery description."),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .createOrUpdate("myResourceGroup", "myGalleryName",
+                new GalleryInner().withLocation("West US").withDescription("This is the gallery description."),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -82,10 +95,14 @@ public final class GalleriesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateASimpleGalleryWithSoftDeletionEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().createOrUpdate("myResourceGroup",
-            "myGalleryName",
-            new GalleryInner().withLocation("West US").withDescription("This is the gallery description.")
-                .withSoftDeletePolicy(new SoftDeletePolicy().withIsSoftDeleteEnabled(true)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .createOrUpdate("myResourceGroup", "myGalleryName",
+                new GalleryInner().withLocation("West US")
+                    .withDescription("This is the gallery description.")
+                    .withSoftDeletePolicy(new SoftDeletePolicy().withIsSoftDeleteEnabled(true)),
+                com.azure.core.util.Context.NONE);
     }
 }

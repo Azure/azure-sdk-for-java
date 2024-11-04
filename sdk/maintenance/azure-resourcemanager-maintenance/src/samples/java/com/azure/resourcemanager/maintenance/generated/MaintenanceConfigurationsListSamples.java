@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for MaintenanceConfigurations List. */
+/**
+ * Samples for MaintenanceConfigurations List.
+ */
 public final class MaintenanceConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/MaintenanceConfigurations_List.json
      */
     /**
      * Sample code: MaintenanceConfigurations_List.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void maintenanceConfigurationsList(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {

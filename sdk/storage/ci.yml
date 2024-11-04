@@ -115,7 +115,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: storage
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-storage-common
         groupId: com.azure

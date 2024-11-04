@@ -25,7 +25,7 @@ public final class NginxDeploymentUpdateProperties {
     private NginxLogging logging;
 
     /*
-     * The scalingProperties property.
+     * Information on how the deployment will be scaled.
      */
     @JsonProperty(value = "scalingProperties")
     private NginxDeploymentScalingProperties scalingProperties;
@@ -35,6 +35,12 @@ public final class NginxDeploymentUpdateProperties {
      */
     @JsonProperty(value = "userProfile")
     private NginxDeploymentUserProfile userProfile;
+
+    /*
+     * Autoupgrade settings of a deployment.
+     */
+    @JsonProperty(value = "autoUpgradeProfile")
+    private AutoUpgradeProfile autoUpgradeProfile;
 
     /**
      * Creates an instance of NginxDeploymentUpdateProperties class.
@@ -83,7 +89,7 @@ public final class NginxDeploymentUpdateProperties {
     }
 
     /**
-     * Get the scalingProperties property: The scalingProperties property.
+     * Get the scalingProperties property: Information on how the deployment will be scaled.
      * 
      * @return the scalingProperties value.
      */
@@ -92,7 +98,7 @@ public final class NginxDeploymentUpdateProperties {
     }
 
     /**
-     * Set the scalingProperties property: The scalingProperties property.
+     * Set the scalingProperties property: Information on how the deployment will be scaled.
      * 
      * @param scalingProperties the scalingProperties value to set.
      * @return the NginxDeploymentUpdateProperties object itself.
@@ -123,6 +129,26 @@ public final class NginxDeploymentUpdateProperties {
     }
 
     /**
+     * Get the autoUpgradeProfile property: Autoupgrade settings of a deployment.
+     * 
+     * @return the autoUpgradeProfile value.
+     */
+    public AutoUpgradeProfile autoUpgradeProfile() {
+        return this.autoUpgradeProfile;
+    }
+
+    /**
+     * Set the autoUpgradeProfile property: Autoupgrade settings of a deployment.
+     * 
+     * @param autoUpgradeProfile the autoUpgradeProfile value to set.
+     * @return the NginxDeploymentUpdateProperties object itself.
+     */
+    public NginxDeploymentUpdateProperties withAutoUpgradeProfile(AutoUpgradeProfile autoUpgradeProfile) {
+        this.autoUpgradeProfile = autoUpgradeProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,6 +162,9 @@ public final class NginxDeploymentUpdateProperties {
         }
         if (userProfile() != null) {
             userProfile().validate();
+        }
+        if (autoUpgradeProfile() != null) {
+            autoUpgradeProfile().validate();
         }
     }
 }

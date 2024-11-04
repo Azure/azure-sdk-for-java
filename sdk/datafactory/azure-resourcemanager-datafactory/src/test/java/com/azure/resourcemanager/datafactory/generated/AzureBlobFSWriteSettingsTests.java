@@ -13,18 +13,17 @@ public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"lvxwlqlugnbudjy\",\"blockSizeInMB\":\"datakarggvyuewgy\",\"maxConcurrentConnections\":\"dataiotgtlans\",\"disableMetricsCollection\":\"datavlxsycqqdoxooxua\",\"copyBehavior\":\"dataqoobwxctkveqvp\",\"metadata\":[{\"name\":\"datahqcjrerypjbyqxey\",\"value\":\"datanupsipclxvaovss\"}],\"\":{\"iyo\":\"datavqqvicqdbmzwlej\"}}")
+            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"datapkdsldy\",\"maxConcurrentConnections\":\"datawvswlhjlbkq\",\"disableMetricsCollection\":\"dataszhpnatltjek\",\"copyBehavior\":\"datafwlkyrnmgsbubzfa\",\"metadata\":[{\"name\":\"dataec\",\"value\":\"datatrederz\"}],\"\":{\"smvvfpkymqnvvwfa\":\"datagmohhcgh\",\"armtuprqtcxqkoh\":\"datarulboawzplwghfgq\",\"kdejparjvsbo\":\"datapya\"}}")
             .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("dataiotgtlans")
-            .withDisableMetricsCollection("datavlxsycqqdoxooxua")
-            .withCopyBehavior("dataqoobwxctkveqvp")
-            .withMetadata(
-                Arrays.asList(new MetadataItem().withName("datahqcjrerypjbyqxey").withValue("datanupsipclxvaovss")))
-            .withBlockSizeInMB("datakarggvyuewgy");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datawvswlhjlbkq")
+            .withDisableMetricsCollection("dataszhpnatltjek")
+            .withCopyBehavior("datafwlkyrnmgsbubzfa")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("dataec").withValue("datatrederz")))
+            .withBlockSizeInMB("datapkdsldy");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

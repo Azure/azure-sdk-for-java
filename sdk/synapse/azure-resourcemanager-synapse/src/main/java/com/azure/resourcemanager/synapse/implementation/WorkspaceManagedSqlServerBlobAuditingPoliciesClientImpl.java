@@ -44,24 +44,24 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
     implements WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceManagedSqlServerBlobAuditingPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkspaceManagedSqlServerBlobAuditingPoliciesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceManagedSqlServerBlobAuditingPoliciesService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,70 +72,50 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceManagedSqlServerBlobAuditingPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/auditingSettings/{blobAuditingPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/auditingSettings/{blobAuditingPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerBlobAuditingPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<ServerBlobAuditingPolicyInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("blobAuditingPolicyName") BlobAuditingPolicyName blobAuditingPolicyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/auditingSettings/{blobAuditingPolicyName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/auditingSettings/{blobAuditingPolicyName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("blobAuditingPolicyName") BlobAuditingPolicyName blobAuditingPolicyName,
             @BodyParam("application/json") ServerBlobAuditingPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/auditingSettings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/auditingSettings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerBlobAuditingPolicyListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerBlobAuditingPolicyListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBlobAuditingPolicyListResult>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get server's blob auditing policy.
-     *
-     * <p>Get a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Get a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -143,22 +123,18 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace managed sql server's blob auditing policy along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerBlobAuditingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
+    private Mono<Response<ServerBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,33 +144,22 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (blobAuditingPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            blobAuditingPolicyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, blobAuditingPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get server's blob auditing policy.
-     *
-     * <p>Get a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Get a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -203,25 +168,18 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace managed sql server's blob auditing policy along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerBlobAuditingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        Context context) {
+    private Mono<Response<ServerBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -231,30 +189,21 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (blobAuditingPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                blobAuditingPolicyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, blobAuditingPolicyName, accept, context);
     }
 
     /**
      * Get server's blob auditing policy.
-     *
-     * <p>Get a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Get a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -264,17 +213,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a workspace managed sql server's blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerBlobAuditingPolicyInner> getAsync(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
+    private Mono<ServerBlobAuditingPolicyInner> getAsync(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, blobAuditingPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get server's blob auditing policy.
-     *
-     * <p>Get a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Get a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -285,19 +234,16 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a workspace managed sql server's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        Context context) {
+    public Response<ServerBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, context).block();
     }
 
     /**
      * Get server's blob auditing policy.
-     *
-     * <p>Get a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Get a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -307,16 +253,16 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a workspace managed sql server's blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerBlobAuditingPolicyInner get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
+    public ServerBlobAuditingPolicyInner get(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName) {
         return getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE).getValue();
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -327,22 +273,15 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a server blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -352,9 +291,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (blobAuditingPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -364,27 +302,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            blobAuditingPolicyName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, blobAuditingPolicyName, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -396,23 +324,16 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a server blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -422,9 +343,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (blobAuditingPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -434,24 +354,15 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                blobAuditingPolicyName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, accept, context);
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -463,28 +374,20 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String workspaceName,
-            BlobAuditingPolicyName blobAuditingPolicyName,
-            ServerBlobAuditingPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters);
-        return this
-            .client
-            .<ServerBlobAuditingPolicyInner, ServerBlobAuditingPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerBlobAuditingPolicyInner.class,
-                ServerBlobAuditingPolicyInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters);
+        return this.client.<ServerBlobAuditingPolicyInner, ServerBlobAuditingPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerBlobAuditingPolicyInner.class, ServerBlobAuditingPolicyInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -497,31 +400,21 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String workspaceName,
-            BlobAuditingPolicyName blobAuditingPolicyName,
-            ServerBlobAuditingPolicyInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, context);
-        return this
-            .client
-            .<ServerBlobAuditingPolicyInner, ServerBlobAuditingPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerBlobAuditingPolicyInner.class,
-                ServerBlobAuditingPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            blobAuditingPolicyName, parameters, context);
+        return this.client.<ServerBlobAuditingPolicyInner, ServerBlobAuditingPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServerBlobAuditingPolicyInner.class, ServerBlobAuditingPolicyInner.class,
+            context);
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -533,20 +426,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName,
         ServerBlobAuditingPolicyInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -559,11 +449,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters,
-        Context context) {
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName,
+        ServerBlobAuditingPolicyInner parameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, context)
             .getSyncPoller();
@@ -571,9 +458,9 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -584,21 +471,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerBlobAuditingPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters)
-            .last()
+    private Mono<ServerBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -610,12 +493,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerBlobAuditingPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters,
-        Context context) {
+    private Mono<ServerBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -623,9 +502,9 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -636,19 +515,16 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters) {
+    public ServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters).block();
     }
 
     /**
      * Create or Update server's blob auditing policy.
-     *
-     * <p>Create or Update a workspace managed sql server's blob auditing policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -660,43 +536,35 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters,
-        Context context) {
+    public ServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, context)
             .block();
     }
 
     /**
      * List workspace server's blob auditing policies.
-     *
-     * <p>List workspace managed sql server's blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -708,57 +576,37 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<ServerBlobAuditingPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<ServerBlobAuditingPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List workspace server's blob auditing policies.
-     *
-     * <p>List workspace managed sql server's blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -771,30 +619,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List workspace server's blob auditing policies.
-     *
-     * <p>List workspace managed sql server's blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -803,18 +638,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a list of server auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerBlobAuditingPolicyInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
+    private PagedFlux<ServerBlobAuditingPolicyInner> listByWorkspaceAsync(String resourceGroupName,
+        String workspaceName) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * List workspace server's blob auditing policies.
-     *
-     * <p>List workspace managed sql server's blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -824,18 +658,17 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a list of server auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerBlobAuditingPolicyInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<ServerBlobAuditingPolicyInner> listByWorkspaceAsync(String resourceGroupName,
+        String workspaceName, Context context) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List workspace server's blob auditing policies.
-     *
-     * <p>List workspace managed sql server's blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,16 +677,16 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(
-        String resourceGroupName, String workspaceName) {
+    public PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(String resourceGroupName,
+        String workspaceName) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName));
     }
 
     /**
      * List workspace server's blob auditing policies.
-     *
-     * <p>List workspace managed sql server's blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -863,21 +696,20 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -885,62 +717,42 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerBlobAuditingPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ServerBlobAuditingPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

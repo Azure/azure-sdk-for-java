@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The resource selector to filter policies by resource properties. */
+/**
+ * The resource selector to filter policies by resource properties.
+ */
 @Fluent
-public final class ResourceSelector {
+public final class ResourceSelector implements JsonSerializable<ResourceSelector> {
     /*
      * The name of the resource selector.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The list of the selector expressions.
      */
-    @JsonProperty(value = "selectors")
     private List<Selector> selectors;
 
-    /** Creates an instance of ResourceSelector class. */
+    /**
+     * Creates an instance of ResourceSelector class.
+     */
     public ResourceSelector() {
     }
 
     /**
      * Get the name property: The name of the resource selector.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class ResourceSelector {
 
     /**
      * Set the name property: The name of the resource selector.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSelector object itself.
      */
@@ -49,7 +55,7 @@ public final class ResourceSelector {
 
     /**
      * Get the selectors property: The list of the selector expressions.
-     *
+     * 
      * @return the selectors value.
      */
     public List<Selector> selectors() {
@@ -58,7 +64,7 @@ public final class ResourceSelector {
 
     /**
      * Set the selectors property: The list of the selector expressions.
-     *
+     * 
      * @param selectors the selectors value to set.
      * @return the ResourceSelector object itself.
      */
@@ -69,12 +75,52 @@ public final class ResourceSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (selectors() != null) {
             selectors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("selectors", this.selectors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSelector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSelector if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSelector.
+     */
+    public static ResourceSelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSelector deserializedResourceSelector = new ResourceSelector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceSelector.name = reader.getString();
+                } else if ("selectors".equals(fieldName)) {
+                    List<Selector> selectors = reader.readArray(reader1 -> Selector.fromJson(reader1));
+                    deserializedResourceSelector.selectors = selectors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSelector;
+        });
     }
 }

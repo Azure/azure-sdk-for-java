@@ -5,43 +5,64 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the possible uses of a road. */
+/**
+ * Describes the possible uses of a road.
+ */
 public final class RoadUseType extends ExpandableStringEnum<RoadUseType> {
-    /** Static value LimitedAccess for RoadUseType. */
+    /**
+     * Static value LimitedAccess for RoadUseType.
+     */
     public static final RoadUseType LIMITED_ACCESS = fromString("LimitedAccess");
 
-    /** Static value Arterial for RoadUseType. */
+    /**
+     * Static value Arterial for RoadUseType.
+     */
     public static final RoadUseType ARTERIAL = fromString("Arterial");
 
-    /** Static value Terminal for RoadUseType. */
+    /**
+     * Static value Terminal for RoadUseType.
+     */
     public static final RoadUseType TERMINAL = fromString("Terminal");
 
-    /** Static value Ramp for RoadUseType. */
+    /**
+     * Static value Ramp for RoadUseType.
+     */
     public static final RoadUseType RAMP = fromString("Ramp");
 
-    /** Static value Rotary for RoadUseType. */
+    /**
+     * Static value Rotary for RoadUseType.
+     */
     public static final RoadUseType ROTARY = fromString("Rotary");
 
-    /** Static value LocalStreet for RoadUseType. */
+    /**
+     * Static value LocalStreet for RoadUseType.
+     */
     public static final RoadUseType LOCAL_STREET = fromString("LocalStreet");
 
     /**
+     * Creates a new instance of RoadUseType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoadUseType() {
+    }
+
+    /**
      * Creates or finds a RoadUseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoadUseType.
      */
-    @JsonCreator
     public static RoadUseType fromString(String name) {
         return fromString(name, RoadUseType.class);
     }
 
     /**
      * Gets known RoadUseType values.
-     *
+     * 
      * @return known RoadUseType values.
      */
     public static Collection<RoadUseType> values() {

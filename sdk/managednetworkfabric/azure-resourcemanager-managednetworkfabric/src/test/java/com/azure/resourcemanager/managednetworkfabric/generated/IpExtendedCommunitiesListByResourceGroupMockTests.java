@@ -32,48 +32,36 @@ public final class IpExtendedCommunitiesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":3554242738223001924,\"routeTargets\":[\"njuvtz\",\"j\",\"dlxbaeyocpkv\",\"tjfdzfmnpbdrc\"]}],\"annotation\":\"jxnnnoz\"},\"location\":\"h\",\"tags\":{\"amqobqehs\":\"u\",\"syzfeoctrzjw\":\"sht\"},\"id\":\"zwckzebmbvwdxgyy\",\"name\":\"mxqzl\",\"type\":\"l\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":3554242738223001924,\"routeTargets\":[\"njuvtz\",\"j\",\"dlxbaeyocpkv\",\"tjfdzfmnpbdrc\"]}],\"annotation\":\"jxnnnoz\"},\"location\":\"h\",\"tags\":{\"amqobqehs\":\"u\",\"syzfeoctrzjw\":\"sht\"},\"id\":\"zwckzebmbvwdxgyy\",\"name\":\"mxqzl\",\"type\":\"l\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IpExtendedCommunity> response =
-            manager.ipExtendedCommunities().listByResourceGroup("qwssyd", com.azure.core.util.Context.NONE);
+        PagedIterable<IpExtendedCommunity> response
+            = manager.ipExtendedCommunities().listByResourceGroup("qwssyd", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("h", response.iterator().next().location());
         Assertions.assertEquals("u", response.iterator().next().tags().get("amqobqehs"));
-        Assertions
-            .assertEquals(
-                CommunityActionTypes.PERMIT, response.iterator().next().ipExtendedCommunityRules().get(0).action());
-        Assertions
-            .assertEquals(
-                3554242738223001924L, response.iterator().next().ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions
-            .assertEquals("njuvtz", response.iterator().next().ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT,
+            response.iterator().next().ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(3554242738223001924L,
+            response.iterator().next().ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("njuvtz",
+            response.iterator().next().ipExtendedCommunityRules().get(0).routeTargets().get(0));
         Assertions.assertEquals("jxnnnoz", response.iterator().next().annotation());
     }
 }

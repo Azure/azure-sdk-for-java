@@ -19,25 +19,35 @@ import java.util.List;
 public final class BatchPoolReplaceContent implements JsonSerializable<BatchPoolReplaceContent> {
 
     /*
-     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
+     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool
+     * or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If
+     * omitted, any existing StartTask is removed from the Pool.
      */
     @Generated
     private BatchStartTask startTask;
 
     /*
-     * The list of Application Packages to be installed on each Compute Node in the Pool. The list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
+     * The list of Application Packages to be installed on each Compute Node in the Pool. The list replaces any existing
+     * Application Package references on the Pool. Changes to Application Package references affect all new Compute
+     * Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
+     * reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you
+     * specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of
+     * 10 references may be specified on a given Pool.
      */
     @Generated
     private final List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * A list of name-value pairs associated with the Pool as metadata. This list replaces any existing metadata configured on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the Pool.
+     * A list of name-value pairs associated with the Pool as metadata. This list replaces any existing metadata
+     * configured on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from
+     * the Pool.
      */
     @Generated
     private final List<MetadataItem> metadata;
 
     /*
-     * The desired node communication mode for the pool. This setting replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default.
+     * The desired node communication mode for the pool. This setting replaces any existing targetNodeCommunication
+     * setting on the Pool. If omitted, the existing setting is default.
      */
     @Generated
     private BatchNodeCommunicationMode targetNodeCommunicationMode;

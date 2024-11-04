@@ -14,21 +14,21 @@ public final class SupportedFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedFeature model = BinaryData.fromString(
-            "{\"featureName\":\"k\",\"supportStatus\":\"PublicPreview\",\"exposureControlledFeatures\":[\"mvikl\",\"ydv\"]}")
+            "{\"featureName\":\"onasxifto\",\"supportStatus\":\"PublicPreview\",\"exposureControlledFeatures\":[\"f\",\"wesgogczh\",\"nnxk\"]}")
             .toObject(SupportedFeature.class);
-        Assertions.assertEquals("k", model.featureName());
+        Assertions.assertEquals("onasxifto", model.featureName());
         Assertions.assertEquals(FeatureSupportStatus.PUBLIC_PREVIEW, model.supportStatus());
-        Assertions.assertEquals("mvikl", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("f", model.exposureControlledFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedFeature model
-            = new SupportedFeature().withFeatureName("k").withSupportStatus(FeatureSupportStatus.PUBLIC_PREVIEW)
-                .withExposureControlledFeatures(Arrays.asList("mvikl", "ydv"));
+        SupportedFeature model = new SupportedFeature().withFeatureName("onasxifto")
+            .withSupportStatus(FeatureSupportStatus.PUBLIC_PREVIEW)
+            .withExposureControlledFeatures(Arrays.asList("f", "wesgogczh", "nnxk"));
         model = BinaryData.fromObject(model).toObject(SupportedFeature.class);
-        Assertions.assertEquals("k", model.featureName());
+        Assertions.assertEquals("onasxifto", model.featureName());
         Assertions.assertEquals(FeatureSupportStatus.PUBLIC_PREVIEW, model.supportStatus());
-        Assertions.assertEquals("mvikl", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("f", model.exposureControlledFeatures().get(0));
     }
 }

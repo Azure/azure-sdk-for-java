@@ -20,42 +20,42 @@ public final class AppendVariableActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppendVariableActivity model = BinaryData.fromString(
-            "{\"type\":\"ndirdlehjz\",\"typeProperties\":{\"variableName\":\"lrx\",\"value\":\"dataslccuyscjefa\"},\"name\":\"pdwyhggvhcoaoeti\",\"description\":\"tkeiram\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"glubqtfc\",\"dependencyConditions\":[\"Succeeded\",\"Completed\",\"Failed\"],\"\":{\"j\":\"datamir\"}}],\"userProperties\":[{\"name\":\"ksafjht\",\"value\":\"databrkghtsfp\"},{\"name\":\"junkhxthkqny\",\"value\":\"dataufvzrqaphep\"},{\"name\":\"eheeqq\",\"value\":\"datatasijiaqqwom\"}],\"\":{\"mvlfmv\":\"datamwqfdhg\",\"bafscdpbzpo\":\"dataumjmpsxz\",\"qtcnyhsdgmoxnelh\":\"datajhubzkzjazfwywv\",\"kofcsvipwa\":\"datahzfyzb\"}}")
+            "{\"type\":\"AppendVariable\",\"typeProperties\":{\"variableName\":\"lgwpu\",\"value\":\"databfcblvakh\"},\"name\":\"igxxtfvoa\",\"description\":\"hdiiwv\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"mqartpdy\",\"dependencyConditions\":[\"Skipped\",\"Succeeded\",\"Completed\",\"Failed\"],\"\":{\"jcow\":\"dataxpmtztvxfglil\",\"rt\":\"datazqyocjxs\"}}],\"userProperties\":[{\"name\":\"aampgenyvpx\",\"value\":\"datacjn\"},{\"name\":\"nffexzzijt\",\"value\":\"datat\"},{\"name\":\"ewniwt\",\"value\":\"dataplwyluvqp\"}],\"\":{\"qsnttwlxvezoald\":\"datao\",\"miccgubuivzs\":\"datasesxcqtosoanxin\"}}")
             .toObject(AppendVariableActivity.class);
-        Assertions.assertEquals("pdwyhggvhcoaoeti", model.name());
-        Assertions.assertEquals("tkeiram", model.description());
-        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
+        Assertions.assertEquals("igxxtfvoa", model.name());
+        Assertions.assertEquals("hdiiwv", model.description());
+        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
         Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("glubqtfc", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("ksafjht", model.userProperties().get(0).name());
-        Assertions.assertEquals("lrx", model.variableName());
+        Assertions.assertEquals("mqartpdy", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("aampgenyvpx", model.userProperties().get(0).name());
+        Assertions.assertEquals("lgwpu", model.variableName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppendVariableActivity model = new AppendVariableActivity().withName("pdwyhggvhcoaoeti")
-            .withDescription("tkeiram")
-            .withState(ActivityState.INACTIVE)
+        AppendVariableActivity model = new AppendVariableActivity().withName("igxxtfvoa")
+            .withDescription("hdiiwv")
+            .withState(ActivityState.ACTIVE)
             .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("glubqtfc")
-                .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.COMPLETED,
-                    DependencyCondition.FAILED))
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("mqartpdy")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED,
+                    DependencyCondition.COMPLETED, DependencyCondition.FAILED))
                 .withAdditionalProperties(mapOf())))
-            .withUserProperties(Arrays.asList(new UserProperty().withName("ksafjht").withValue("databrkghtsfp"),
-                new UserProperty().withName("junkhxthkqny").withValue("dataufvzrqaphep"),
-                new UserProperty().withName("eheeqq").withValue("datatasijiaqqwom")))
-            .withVariableName("lrx")
-            .withValue("dataslccuyscjefa");
+            .withUserProperties(Arrays.asList(new UserProperty().withName("aampgenyvpx").withValue("datacjn"),
+                new UserProperty().withName("nffexzzijt").withValue("datat"),
+                new UserProperty().withName("ewniwt").withValue("dataplwyluvqp")))
+            .withVariableName("lgwpu")
+            .withValue("databfcblvakh");
         model = BinaryData.fromObject(model).toObject(AppendVariableActivity.class);
-        Assertions.assertEquals("pdwyhggvhcoaoeti", model.name());
-        Assertions.assertEquals("tkeiram", model.description());
-        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
+        Assertions.assertEquals("igxxtfvoa", model.name());
+        Assertions.assertEquals("hdiiwv", model.description());
+        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
         Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("glubqtfc", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("ksafjht", model.userProperties().get(0).name());
-        Assertions.assertEquals("lrx", model.variableName());
+        Assertions.assertEquals("mqartpdy", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("aampgenyvpx", model.userProperties().get(0).name());
+        Assertions.assertEquals("lgwpu", model.variableName());
     }
 
     // Use "Map.of" if available

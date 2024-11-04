@@ -5,6 +5,11 @@
 
 - [List](#operations_list)
 
+## StandbyContainerGroupPoolRuntimeViews
+
+- [Get](#standbycontainergrouppoolruntimeviews_get)
+- [ListByStandbyPool](#standbycontainergrouppoolruntimeviews_listbystandbypool)
+
 ## StandbyContainerGroupPools
 
 - [CreateOrUpdate](#standbycontainergrouppools_createorupdate)
@@ -13,6 +18,11 @@
 - [List](#standbycontainergrouppools_list)
 - [ListByResourceGroup](#standbycontainergrouppools_listbyresourcegroup)
 - [Update](#standbycontainergrouppools_update)
+
+## StandbyVirtualMachinePoolRuntimeViews
+
+- [Get](#standbyvirtualmachinepoolruntimeviews_get)
+- [ListByStandbyPool](#standbyvirtualmachinepoolruntimeviews_listbystandbypool)
 
 ## StandbyVirtualMachinePools
 
@@ -34,6 +44,9 @@
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/Operations_List.json
+     */
     /**
      * Sample code: Operations_List.
      * 
@@ -41,6 +54,52 @@ public final class OperationsListSamples {
      */
     public static void operationsList(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyContainerGroupPoolRuntimeViews_Get
+
+```java
+/**
+ * Samples for StandbyContainerGroupPoolRuntimeViews Get.
+ */
+public final class StandbyContainerGroupPoolRuntimeViewsGetSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPoolRuntimeViews_Get.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPoolRuntimeViews_Get.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyContainerGroupPoolRuntimeViewsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyContainerGroupPoolRuntimeViews()
+            .getWithResponse("rgstandbypool", "pool", "latest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool
+
+```java
+/**
+ * Samples for StandbyContainerGroupPoolRuntimeViews ListByStandbyPool.
+ */
+public final class StandbyContainerGroupPoolRuntimeViewsListByStandbyPoolSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.json
+     */
+    /**
+     * Sample code: StandbyContainerGroupPoolRuntimeViews_ListByStandbyPool.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyContainerGroupPoolRuntimeViewsListByStandbyPool(
+        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyContainerGroupPoolRuntimeViews()
+            .listByStandbyPool("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -62,6 +121,9 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools CreateOrUpdate.
  */
 public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_CreateOrUpdate.
      * 
@@ -79,10 +141,10 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
                     .withRefillPolicy(RefillPolicy.ALWAYS))
                 .withContainerGroupProperties(new ContainerGroupProperties()
                     .withContainerGroupProfile(new ContainerGroupProfile().withId(
-                        "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
                         .withRevision(1L))
                     .withSubnetIds(Arrays.asList(new Subnet().withId(
-                        "/subscriptions/8cf6c1b6-c80f-437c-87ad-45fbaff54f73/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet")))))
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet")))))
             .create();
     }
 
@@ -107,6 +169,9 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
  * Samples for StandbyContainerGroupPools Delete.
  */
 public final class StandbyContainerGroupPoolsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_Delete.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Delete.
      * 
@@ -126,6 +191,9 @@ public final class StandbyContainerGroupPoolsDeleteSamples {
  * Samples for StandbyContainerGroupPools GetByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_Get.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Get.
      * 
@@ -145,6 +213,9 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
  * Samples for StandbyContainerGroupPools List.
  */
 public final class StandbyContainerGroupPoolsListSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_ListBySubscription.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_ListBySubscription.
      * 
@@ -164,6 +235,9 @@ public final class StandbyContainerGroupPoolsListSamples {
  * Samples for StandbyContainerGroupPools ListByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_ListByResourceGroup.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_ListByResourceGroup.
      * 
@@ -194,6 +268,9 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools Update.
  */
 public final class StandbyContainerGroupPoolsUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPools_Update.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Update.
      * 
@@ -211,10 +288,10 @@ public final class StandbyContainerGroupPoolsUpdateSamples {
                     .withRefillPolicy(RefillPolicy.ALWAYS))
                 .withContainerGroupProperties(new ContainerGroupProperties()
                     .withContainerGroupProfile(new ContainerGroupProfile().withId(
-                        "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
                         .withRevision(2L))
                     .withSubnetIds(Arrays.asList(new Subnet().withId(
-                        "/subscriptions/8cf6c1b6-c80f-437c-87ad-45fbaff54f73/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet")))))
+                        "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Network/virtualNetworks/cgSubnet/subnets/cgSubnet")))))
             .apply();
     }
 
@@ -232,6 +309,52 @@ public final class StandbyContainerGroupPoolsUpdateSamples {
 }
 ```
 
+### StandbyVirtualMachinePoolRuntimeViews_Get
+
+```java
+/**
+ * Samples for StandbyVirtualMachinePoolRuntimeViews Get.
+ */
+public final class StandbyVirtualMachinePoolRuntimeViewsGetSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePoolRuntimeViews_Get.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePoolRuntimeViews_Get.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void
+        standbyVirtualMachinePoolRuntimeViewsGet(com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePoolRuntimeViews()
+            .getWithResponse("rgstandbypool", "pool", "latest", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool
+
+```java
+/**
+ * Samples for StandbyVirtualMachinePoolRuntimeViews ListByStandbyPool.
+ */
+public final class StandbyVirtualMachinePoolRuntimeViewsListByStandbyPoolSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool.json
+     */
+    /**
+     * Sample code: StandbyVirtualMachinePoolRuntimeViews_ListByStandbyPool.
+     * 
+     * @param manager Entry point to StandbyPoolManager.
+     */
+    public static void standbyVirtualMachinePoolRuntimeViewsListByStandbyPool(
+        com.azure.resourcemanager.standbypool.StandbyPoolManager manager) {
+        manager.standbyVirtualMachinePoolRuntimeViews()
+            .listByStandbyPool("rgstandbypool", "pool", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### StandbyVirtualMachinePools_CreateOrUpdate
 
 ```java
@@ -245,6 +368,9 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools CreateOrUpdate.
  */
 public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
      * 
@@ -258,10 +384,11 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
             .withExistingResourceGroup("rgstandbypool")
             .withTags(mapOf())
             .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L))
+                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
+                    .withMinReadyCapacity(300L))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
                 .withAttachedVirtualMachineScaleSetId(
-                    "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
+                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
             .create();
     }
 
@@ -286,6 +413,9 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
  * Samples for StandbyVirtualMachinePools Delete.
  */
 public final class StandbyVirtualMachinePoolsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_Delete.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Delete.
      * 
@@ -305,6 +435,9 @@ public final class StandbyVirtualMachinePoolsDeleteSamples {
  * Samples for StandbyVirtualMachinePools GetByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_Get.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Get.
      * 
@@ -324,6 +457,9 @@ public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
  * Samples for StandbyVirtualMachinePools List.
  */
 public final class StandbyVirtualMachinePoolsListSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_ListBySubscription.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_ListBySubscription.
      * 
@@ -343,6 +479,9 @@ public final class StandbyVirtualMachinePoolsListSamples {
  * Samples for StandbyVirtualMachinePools ListByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_ListByResourceGroup.
      * 
@@ -369,6 +508,9 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools Update.
  */
 public final class StandbyVirtualMachinePoolsUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_Update.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Update.
      * 
@@ -382,10 +524,11 @@ public final class StandbyVirtualMachinePoolsUpdateSamples {
         resource.update()
             .withTags(mapOf())
             .withProperties(new StandbyVirtualMachinePoolResourceUpdateProperties()
-                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L))
+                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
+                    .withMinReadyCapacity(300L))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
                 .withAttachedVirtualMachineScaleSetId(
-                    "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
+                    "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
             .apply();
     }
 
@@ -410,6 +553,9 @@ public final class StandbyVirtualMachinePoolsUpdateSamples {
  * Samples for StandbyVirtualMachines Get.
  */
 public final class StandbyVirtualMachinesGetSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachines_Get.json
+     */
     /**
      * Sample code: StandbyVirtualMachines_Get.
      * 
@@ -429,6 +575,9 @@ public final class StandbyVirtualMachinesGetSamples {
  * Samples for StandbyVirtualMachines ListByStandbyVirtualMachinePoolResource.
  */
 public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResourceSamples {
+    /*
+     * x-ms-original-file: 2024-03-01/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
+     */
     /**
      * Sample code: StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.
      * 

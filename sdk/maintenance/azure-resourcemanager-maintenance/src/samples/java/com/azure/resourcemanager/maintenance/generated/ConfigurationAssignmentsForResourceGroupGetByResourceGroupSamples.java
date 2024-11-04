@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for ConfigurationAssignmentsForResourceGroup GetByResourceGroup. */
+/**
+ * Samples for ConfigurationAssignmentsForResourceGroup GetByResourceGroup.
+ */
 public final class ConfigurationAssignmentsForResourceGroupGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ConfigurationAssignmentsForResourceGroup_Get.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignmentsForResourceGroup_Get.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_Get.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
-    public static void configurationAssignmentsForResourceGroupGet(
-        com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
-        manager
-            .configurationAssignmentsForResourceGroups()
+    public static void
+        configurationAssignmentsForResourceGroupGet(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
+        manager.configurationAssignmentsForResourceGroups()
             .getByResourceGroupWithResponse("examplerg", "workervmConfiguration", com.azure.core.util.Context.NONE);
     }
 }

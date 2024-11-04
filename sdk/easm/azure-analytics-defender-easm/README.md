@@ -57,16 +57,10 @@ Custom discoveries are organized into Discovery Groups. They are independent see
 ## Examples
 
 ```java readme-sample-createDefenderEasmClient
-String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
-String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
-String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
 String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
 
 EasmClient easmClient = new EasmClientBuilder()
     .endpoint(endpoint)
-    .subscriptionId(subscriptionId)
-    .workspaceName(workspaceName)
-    .resourceGroupName(resourceGroupName)
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -108,7 +102,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [disco_template_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
 [saved_filter_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/SavedFilterSample.java
 [external_ids_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/ManagingExternalIdsSample.java
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/samples
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery

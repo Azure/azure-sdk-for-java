@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.search.generated;
 
-/** Samples for SharedPrivateLinkResources Delete. */
+/**
+ * Samples for SharedPrivateLinkResources Delete.
+ */
 public final class SharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/DeleteSharedPrivateLinkResource.json
+     * x-ms-original-file:
+     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/DeleteSharedPrivateLinkResource
+     * .json
      */
     /**
      * Sample code: SharedPrivateLinkResourceDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sharedPrivateLinkResourceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
+        azure.searchServices()
             .manager()
             .serviceClient()
             .getSharedPrivateLinkResources()

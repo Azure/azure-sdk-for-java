@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Input properties for patching a Windows machine. */
+/**
+ * Input properties for patching a Windows machine.
+ */
 @Fluent
 public final class InputWindowsParameters {
     /*
@@ -35,13 +37,15 @@ public final class InputWindowsParameters {
     @JsonProperty(value = "excludeKbsRequiringReboot")
     private Boolean excludeKbsRequiringReboot;
 
-    /** Creates an instance of InputWindowsParameters class. */
+    /**
+     * Creates an instance of InputWindowsParameters class.
+     */
     public InputWindowsParameters() {
     }
 
     /**
      * Get the kbNumbersToExclude property: Windows KBID to be excluded for patching.
-     *
+     * 
      * @return the kbNumbersToExclude value.
      */
     public List<String> kbNumbersToExclude() {
@@ -50,7 +54,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the kbNumbersToExclude property: Windows KBID to be excluded for patching.
-     *
+     * 
      * @param kbNumbersToExclude the kbNumbersToExclude value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -61,7 +65,7 @@ public final class InputWindowsParameters {
 
     /**
      * Get the kbNumbersToInclude property: Windows KBID to be included for patching.
-     *
+     * 
      * @return the kbNumbersToInclude value.
      */
     public List<String> kbNumbersToInclude() {
@@ -70,7 +74,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the kbNumbersToInclude property: Windows KBID to be included for patching.
-     *
+     * 
      * @param kbNumbersToInclude the kbNumbersToInclude value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -81,7 +85,7 @@ public final class InputWindowsParameters {
 
     /**
      * Get the classificationsToInclude property: Classification category of patches to be patched.
-     *
+     * 
      * @return the classificationsToInclude value.
      */
     public List<String> classificationsToInclude() {
@@ -90,7 +94,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the classificationsToInclude property: Classification category of patches to be patched.
-     *
+     * 
      * @param classificationsToInclude the classificationsToInclude value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -101,7 +105,7 @@ public final class InputWindowsParameters {
 
     /**
      * Get the excludeKbsRequiringReboot property: Exclude patches which need reboot.
-     *
+     * 
      * @return the excludeKbsRequiringReboot value.
      */
     public Boolean excludeKbsRequiringReboot() {
@@ -110,7 +114,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the excludeKbsRequiringReboot property: Exclude patches which need reboot.
-     *
+     * 
      * @param excludeKbsRequiringReboot the excludeKbsRequiringReboot value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -121,7 +125,7 @@ public final class InputWindowsParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,19 +6,21 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
 
-/** Samples for BlobInventoryPolicies Get. */
+/**
+ * Samples for BlobInventoryPolicies Get.
+ */
 public final class BlobInventoryPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountGetBlobInventoryPolicy.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountGetBlobInventoryPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getBlobInventoryPolicies()

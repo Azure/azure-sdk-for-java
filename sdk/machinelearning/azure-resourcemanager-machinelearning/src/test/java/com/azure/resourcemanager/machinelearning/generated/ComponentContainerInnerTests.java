@@ -14,34 +14,30 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentContainerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isArchived\":true,\"latestVersion\":\"snjvcdwxlpqekftn\",\"nextVersion\":\"tjsyin\",\"description\":\"fq\",\"properties\":{\"ikdgszywkbir\":\"tdhtmdvyp\"},\"tags\":{\"hkjoqr\":\"zh\",\"mfiibfggj\":\"qqaatjinrvgou\",\"rwxkvtkkgl\":\"ool\"}},\"id\":\"wjygvjayvblmhvk\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"}")
-                .toObject(ComponentContainerInner.class);
-        Assertions.assertEquals("fq", model.properties().description());
-        Assertions.assertEquals("tdhtmdvyp", model.properties().properties().get("ikdgszywkbir"));
-        Assertions.assertEquals("zh", model.properties().tags().get("hkjoqr"));
+        ComponentContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"isArchived\":true,\"latestVersion\":\"phqamvdkfwynwcvt\",\"nextVersion\":\"kayh\",\"description\":\"nvyq\",\"tags\":{\"cjaesgvvs\":\"kzwpcnpw\",\"wygzlvdnkfxusem\":\"cyajguqf\",\"pfcqdp\":\"wzrmuh\"},\"properties\":{\"celve\":\"qvpsvuoymg\"}},\"id\":\"ypql\",\"name\":\"feo\",\"type\":\"erqwkyhkobopg\"}")
+            .toObject(ComponentContainerInner.class);
+        Assertions.assertEquals("nvyq", model.properties().description());
+        Assertions.assertEquals("kzwpcnpw", model.properties().tags().get("cjaesgvvs"));
+        Assertions.assertEquals("qvpsvuoymg", model.properties().properties().get("celve"));
         Assertions.assertEquals(true, model.properties().isArchived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentContainerInner model =
-            new ComponentContainerInner()
-                .withProperties(
-                    new ComponentContainerProperties()
-                        .withDescription("fq")
-                        .withProperties(mapOf("ikdgszywkbir", "tdhtmdvyp"))
-                        .withTags(mapOf("hkjoqr", "zh", "mfiibfggj", "qqaatjinrvgou", "rwxkvtkkgl", "ool"))
-                        .withIsArchived(true));
+        ComponentContainerInner model
+            = new ComponentContainerInner().withProperties(new ComponentContainerProperties().withDescription("nvyq")
+                .withTags(mapOf("cjaesgvvs", "kzwpcnpw", "wygzlvdnkfxusem", "cyajguqf", "pfcqdp", "wzrmuh"))
+                .withProperties(mapOf("celve", "qvpsvuoymg"))
+                .withIsArchived(true));
         model = BinaryData.fromObject(model).toObject(ComponentContainerInner.class);
-        Assertions.assertEquals("fq", model.properties().description());
-        Assertions.assertEquals("tdhtmdvyp", model.properties().properties().get("ikdgszywkbir"));
-        Assertions.assertEquals("zh", model.properties().tags().get("hkjoqr"));
+        Assertions.assertEquals("nvyq", model.properties().description());
+        Assertions.assertEquals("kzwpcnpw", model.properties().tags().get("cjaesgvvs"));
+        Assertions.assertEquals("qvpsvuoymg", model.properties().properties().get("celve"));
         Assertions.assertEquals(true, model.properties().isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

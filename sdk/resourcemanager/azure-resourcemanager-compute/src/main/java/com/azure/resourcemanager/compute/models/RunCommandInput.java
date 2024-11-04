@@ -6,31 +6,32 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Capture Virtual Machine parameters.
  */
 @Fluent
-public final class RunCommandInput {
+public final class RunCommandInput implements JsonSerializable<RunCommandInput> {
     /*
      * The run command id.
      */
-    @JsonProperty(value = "commandId", required = true)
     private String commandId;
 
     /*
-     * Optional. The script to be executed. When this value is given, the given script will override the default
-     * script of the command.
+     * Optional. The script to be executed. When this value is given, the given script will override the default script
+     * of the command.
      */
-    @JsonProperty(value = "script")
     private List<String> script;
 
     /*
      * The run command parameters.
      */
-    @JsonProperty(value = "parameters")
     private List<RunCommandInputParameter> parameters;
 
     /**
@@ -108,8 +109,8 @@ public final class RunCommandInput {
      */
     public void validate() {
         if (commandId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
@@ -117,4 +118,50 @@ public final class RunCommandInput {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunCommandInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commandId", this.commandId);
+        jsonWriter.writeArrayField("script", this.script, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunCommandInput.
+     */
+    public static RunCommandInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandInput deserializedRunCommandInput = new RunCommandInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commandId".equals(fieldName)) {
+                    deserializedRunCommandInput.commandId = reader.getString();
+                } else if ("script".equals(fieldName)) {
+                    List<String> script = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRunCommandInput.script = script;
+                } else if ("parameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> parameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedRunCommandInput.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandInput;
+        });
+    }
 }

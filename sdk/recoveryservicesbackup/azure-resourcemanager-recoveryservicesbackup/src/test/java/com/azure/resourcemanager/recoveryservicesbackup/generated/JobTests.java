@@ -28,9 +28,12 @@ public final class JobTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Job model = new Job().withEntityFriendlyName("xongmtsavjcbpwxq")
-            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP).withOperation("nftguvriuhpr")
-            .withStatus("dyvxqtayriww").withStartTime(OffsetDateTime.parse("2021-05-20T03:51:26Z"))
-            .withEndTime(OffsetDateTime.parse("2021-02-13T03:31:18Z")).withActivityId("xrmcqibycnojvk");
+            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
+            .withOperation("nftguvriuhpr")
+            .withStatus("dyvxqtayriww")
+            .withStartTime(OffsetDateTime.parse("2021-05-20T03:51:26Z"))
+            .withEndTime(OffsetDateTime.parse("2021-02-13T03:31:18Z"))
+            .withActivityId("xrmcqibycnojvk");
         model = BinaryData.fromObject(model).toObject(Job.class);
         Assertions.assertEquals("xongmtsavjcbpwxq", model.entityFriendlyName());
         Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());

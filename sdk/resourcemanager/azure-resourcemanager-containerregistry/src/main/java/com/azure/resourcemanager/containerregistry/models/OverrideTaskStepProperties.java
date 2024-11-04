@@ -5,49 +5,47 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The OverrideTaskStepProperties model.
  */
 @Fluent
-public final class OverrideTaskStepProperties {
+public final class OverrideTaskStepProperties implements JsonSerializable<OverrideTaskStepProperties> {
     /*
      * The source context against which run has to be queued.
      */
-    @JsonProperty(value = "contextPath")
     private String contextPath;
 
     /*
      * The file against which run has to be queued.
      */
-    @JsonProperty(value = "file")
     private String file;
 
     /*
      * Gets or sets the collection of override arguments to be used when
      * executing a build step.
      */
-    @JsonProperty(value = "arguments")
     private List<Argument> arguments;
 
     /*
      * The name of the target build stage for the docker build.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * The collection of overridable values that can be passed when running a Task.
      */
-    @JsonProperty(value = "values")
     private List<SetValue> values;
 
     /*
      * Base64 encoded update trigger token that will be attached with the base image trigger webhook.
      */
-    @JsonProperty(value = "updateTriggerToken")
     private String updateTriggerToken;
 
     /**
@@ -192,5 +190,58 @@ public final class OverrideTaskStepProperties {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contextPath", this.contextPath);
+        jsonWriter.writeStringField("file", this.file);
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("updateTriggerToken", this.updateTriggerToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OverrideTaskStepProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OverrideTaskStepProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OverrideTaskStepProperties.
+     */
+    public static OverrideTaskStepProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OverrideTaskStepProperties deserializedOverrideTaskStepProperties = new OverrideTaskStepProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contextPath".equals(fieldName)) {
+                    deserializedOverrideTaskStepProperties.contextPath = reader.getString();
+                } else if ("file".equals(fieldName)) {
+                    deserializedOverrideTaskStepProperties.file = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    List<Argument> arguments = reader.readArray(reader1 -> Argument.fromJson(reader1));
+                    deserializedOverrideTaskStepProperties.arguments = arguments;
+                } else if ("target".equals(fieldName)) {
+                    deserializedOverrideTaskStepProperties.target = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<SetValue> values = reader.readArray(reader1 -> SetValue.fromJson(reader1));
+                    deserializedOverrideTaskStepProperties.values = values;
+                } else if ("updateTriggerToken".equals(fieldName)) {
+                    deserializedOverrideTaskStepProperties.updateTriggerToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOverrideTaskStepProperties;
+        });
     }
 }

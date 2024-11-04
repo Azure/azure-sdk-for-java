@@ -11,19 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ovwizjraks\",\"query\":\"dataljgaykaqwnk\",\"queryTimeout\":\"dataewshhqgjvchl\",\"additionalColumns\":\"datazfbtczzjf\",\"sourceRetryCount\":\"datawqpukltfk\",\"sourceRetryWait\":\"dataoxmisnbzczpfvqt\",\"maxConcurrentConnections\":\"datakcfe\",\"disableMetricsCollection\":\"datazknhcvxf\",\"\":{\"ysdmovbvnjyq\":\"datagrnh\",\"kczolndwrggyt\":\"dataofdgzl\",\"ukfwmhzarrfttx\":\"datavoxnjbyjgobzj\",\"vvab\":\"dataifrjgvhone\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"datagw\",\"queryTimeout\":\"dataujshcsnk\",\"additionalColumns\":\"datagpqxqevt\",\"sourceRetryCount\":\"datavyy\",\"sourceRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datawqpukltfk")
-            .withSourceRetryWait("dataoxmisnbzczpfvqt")
-            .withMaxConcurrentConnections("datakcfe")
-            .withDisableMetricsCollection("datazknhcvxf")
-            .withQueryTimeout("dataewshhqgjvchl")
-            .withAdditionalColumns("datazfbtczzjf")
-            .withQuery("dataljgaykaqwnk");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datavyy")
+            .withSourceRetryWait("datakjirvjogsalvjl")
+            .withMaxConcurrentConnections("dataimua")
+            .withDisableMetricsCollection("datakympwquu")
+            .withQueryTimeout("dataujshcsnk")
+            .withAdditionalColumns("datagpqxqevt")
+            .withQuery("datagw");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

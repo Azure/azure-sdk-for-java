@@ -11,6 +11,9 @@ import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfileUpdat
  * Samples for AssetEndpointProfiles Update.
  */
 public final class AssetEndpointProfilesUpdateSamples {
+    /*
+     * x-ms-original-file: 2023-11-01-preview/Update_AssetEndpointProfile.json
+     */
     /**
      * Sample code: Update_AssetEndpointProfile.
      * 

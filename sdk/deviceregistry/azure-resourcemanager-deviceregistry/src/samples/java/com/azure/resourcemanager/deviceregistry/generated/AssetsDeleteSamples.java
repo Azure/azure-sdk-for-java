@@ -8,6 +8,9 @@ package com.azure.resourcemanager.deviceregistry.generated;
  * Samples for Assets Delete.
  */
 public final class AssetsDeleteSamples {
+    /*
+     * x-ms-original-file: 2023-11-01-preview/Delete_Asset.json
+     */
     /**
      * Sample code: Delete_Asset.
      * 

@@ -30,7 +30,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
         = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
 
     /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
+     * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
      */
     private Duration lockDuration;
 
@@ -50,7 +51,9 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private Boolean requiresSession;
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
+     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
+     * message itself.
      */
     private Duration defaultMessageTimeToLive;
 
@@ -60,12 +63,14 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10
+     * minutes.
      */
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
-     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default value is 10.
+     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
+     * value is 10.
      */
     private Integer maxDeliveryCount;
 
@@ -125,7 +130,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private OffsetDateTime accessedAt;
 
     /*
-     * Indicates if messages are received in the same order they are sent. For queues, defaults to true and setting it to false has no effect.
+     * Indicates if messages are received in the same order they are sent. For queues, defaults to true and setting it
+     * to false has no effect.
      */
     private Boolean supportOrdering;
 
@@ -135,7 +141,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private MessageCountDetailsImpl messageCountDetails;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
+     * ISO 8601 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5
+     * minutes.
      */
     private Duration autoDeleteOnIdle;
 
@@ -155,7 +162,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private String forwardDeadLetteredMessagesTo;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory
+     * temporarily before writing it to persistent storage.
      */
     private Boolean enableExpress;
 

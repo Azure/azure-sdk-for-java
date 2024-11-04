@@ -4,7 +4,7 @@
 package com.azure.ai.vision.face.tests.commands.liveness;
 
 import com.azure.ai.vision.face.FaceSessionClient;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.core.util.BinaryData;
@@ -16,8 +16,8 @@ class LivenessWithVerifySessionSyncCommands implements ILivenessWithVerifySessio
         mSyncClient = syncClient;
     }
 
-    public CreateLivenessWithVerifySessionResult createLivenessWithVerifySessionSync(
-        CreateLivenessSessionContent content, BinaryData verifyImage) {
+    public CreateLivenessWithVerifySessionResult
+        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
         return mSyncClient.createLivenessWithVerifySession(content, verifyImage);
     }
 

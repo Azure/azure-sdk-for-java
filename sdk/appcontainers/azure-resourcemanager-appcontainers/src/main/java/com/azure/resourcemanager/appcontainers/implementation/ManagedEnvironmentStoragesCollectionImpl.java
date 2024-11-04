@@ -27,7 +27,8 @@ public final class ManagedEnvironmentStoragesCollectionImpl implements ManagedEn
         List<ManagedEnvironmentStorageInner> inner = this.innerModel().value();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new ManagedEnvironmentStorageImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new ManagedEnvironmentStorageImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

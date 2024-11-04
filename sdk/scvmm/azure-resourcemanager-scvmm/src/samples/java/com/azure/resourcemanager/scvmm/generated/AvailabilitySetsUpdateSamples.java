@@ -4,30 +4,47 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.models.AvailabilitySet;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AvailabilitySets Update. */
+/**
+ * Samples for AvailabilitySets Update.
+ */
 public final class AvailabilitySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateAvailabilitySet.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * AvailabilitySets_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: UpdateAvailabilitySet.
-     *
+     * Sample code: AvailabilitySets_Update_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void updateAvailabilitySet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        AvailabilitySet resource =
-            manager
-                .availabilitySets()
-                .getByResourceGroupWithResponse("testrg", "HRAvailabilitySet", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+    public static void availabilitySetsUpdateMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        AvailabilitySet resource = manager.availabilitySets()
+            .getByResourceGroupWithResponse("rgscvmm", "1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
     }
 
+    /*
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * AvailabilitySets_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AvailabilitySets_Update_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void availabilitySetsUpdateMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        AvailabilitySet resource = manager.availabilitySets()
+            .getByResourceGroupWithResponse("rgscvmm", "-", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1460", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

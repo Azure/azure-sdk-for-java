@@ -62,18 +62,16 @@ public final class DevCenterCatalog implements JsonSerializable<DevCenterCatalog
     @Generated
     public static DevCenterCatalog fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
+            DevCenterCatalog deserializedDevCenterCatalog = new DevCenterCatalog();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedDevCenterCatalog.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            DevCenterCatalog deserializedDevCenterCatalog = new DevCenterCatalog();
-            deserializedDevCenterCatalog.name = name;
             return deserializedDevCenterCatalog;
         });
     }

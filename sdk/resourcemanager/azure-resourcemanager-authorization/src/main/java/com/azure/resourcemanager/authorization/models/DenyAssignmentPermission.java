@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Deny assignment permissions. */
+/**
+ * Deny assignment permissions.
+ */
 @Fluent
-public final class DenyAssignmentPermission {
+public final class DenyAssignmentPermission implements JsonSerializable<DenyAssignmentPermission> {
     /*
      * Actions to which the deny assignment does not grant access.
      */
-    @JsonProperty(value = "actions")
     private List<String> actions;
 
     /*
      * Actions to exclude from that the deny assignment does not grant access.
      */
-    @JsonProperty(value = "notActions")
     private List<String> notActions;
 
     /*
      * Data actions to which the deny assignment does not grant access.
      */
-    @JsonProperty(value = "dataActions")
     private List<String> dataActions;
 
     /*
      * Data actions to exclude from that the deny assignment does not grant access.
      */
-    @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
 
     /*
      * The conditions on the Deny assignment permission. This limits the resources it applies to.
      */
-    @JsonProperty(value = "condition")
     private String condition;
 
     /*
      * Version of the condition.
      */
-    @JsonProperty(value = "conditionVersion")
     private String conditionVersion;
 
-    /** Creates an instance of DenyAssignmentPermission class. */
+    /**
+     * Creates an instance of DenyAssignmentPermission class.
+     */
     public DenyAssignmentPermission() {
     }
 
     /**
      * Get the actions property: Actions to which the deny assignment does not grant access.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -62,7 +64,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Set the actions property: Actions to which the deny assignment does not grant access.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the DenyAssignmentPermission object itself.
      */
@@ -73,7 +75,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Get the notActions property: Actions to exclude from that the deny assignment does not grant access.
-     *
+     * 
      * @return the notActions value.
      */
     public List<String> notActions() {
@@ -82,7 +84,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Set the notActions property: Actions to exclude from that the deny assignment does not grant access.
-     *
+     * 
      * @param notActions the notActions value to set.
      * @return the DenyAssignmentPermission object itself.
      */
@@ -93,7 +95,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Get the dataActions property: Data actions to which the deny assignment does not grant access.
-     *
+     * 
      * @return the dataActions value.
      */
     public List<String> dataActions() {
@@ -102,7 +104,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Set the dataActions property: Data actions to which the deny assignment does not grant access.
-     *
+     * 
      * @param dataActions the dataActions value to set.
      * @return the DenyAssignmentPermission object itself.
      */
@@ -113,7 +115,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Get the notDataActions property: Data actions to exclude from that the deny assignment does not grant access.
-     *
+     * 
      * @return the notDataActions value.
      */
     public List<String> notDataActions() {
@@ -122,7 +124,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Set the notDataActions property: Data actions to exclude from that the deny assignment does not grant access.
-     *
+     * 
      * @param notDataActions the notDataActions value to set.
      * @return the DenyAssignmentPermission object itself.
      */
@@ -134,7 +136,7 @@ public final class DenyAssignmentPermission {
     /**
      * Get the condition property: The conditions on the Deny assignment permission. This limits the resources it
      * applies to.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -144,7 +146,7 @@ public final class DenyAssignmentPermission {
     /**
      * Set the condition property: The conditions on the Deny assignment permission. This limits the resources it
      * applies to.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the DenyAssignmentPermission object itself.
      */
@@ -155,7 +157,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Get the conditionVersion property: Version of the condition.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -164,7 +166,7 @@ public final class DenyAssignmentPermission {
 
     /**
      * Set the conditionVersion property: Version of the condition.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the DenyAssignmentPermission object itself.
      */
@@ -175,9 +177,65 @@ public final class DenyAssignmentPermission {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("notActions", this.notActions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("dataActions", this.dataActions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("notDataActions", this.notDataActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("condition", this.condition);
+        jsonWriter.writeStringField("conditionVersion", this.conditionVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DenyAssignmentPermission from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DenyAssignmentPermission if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DenyAssignmentPermission.
+     */
+    public static DenyAssignmentPermission fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DenyAssignmentPermission deserializedDenyAssignmentPermission = new DenyAssignmentPermission();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actions".equals(fieldName)) {
+                    List<String> actions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDenyAssignmentPermission.actions = actions;
+                } else if ("notActions".equals(fieldName)) {
+                    List<String> notActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDenyAssignmentPermission.notActions = notActions;
+                } else if ("dataActions".equals(fieldName)) {
+                    List<String> dataActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDenyAssignmentPermission.dataActions = dataActions;
+                } else if ("notDataActions".equals(fieldName)) {
+                    List<String> notDataActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDenyAssignmentPermission.notDataActions = notDataActions;
+                } else if ("condition".equals(fieldName)) {
+                    deserializedDenyAssignmentPermission.condition = reader.getString();
+                } else if ("conditionVersion".equals(fieldName)) {
+                    deserializedDenyAssignmentPermission.conditionVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDenyAssignmentPermission;
+        });
     }
 }

@@ -5,36 +5,38 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The properties of a certificate used for authenticating a token.
  */
 @Fluent
-public final class TokenCertificate {
+public final class TokenCertificate implements JsonSerializable<TokenCertificate> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private TokenCertificateName name;
 
     /*
      * The expiry datetime of the certificate.
      */
-    @JsonProperty(value = "expiry")
     private OffsetDateTime expiry;
 
     /*
      * The thumbprint of the certificate.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * Base 64 encoded string of the public certificate1 in PEM format that will be used for authenticating the token.
      */
-    @JsonProperty(value = "encodedPemCertificate")
     private String encodedPemCertificate;
 
     /**
@@ -104,8 +106,8 @@ public final class TokenCertificate {
     }
 
     /**
-     * Get the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that
-     * will be used for authenticating the token.
+     * Get the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that will
+     * be used for authenticating the token.
      * 
      * @return the encodedPemCertificate value.
      */
@@ -114,8 +116,8 @@ public final class TokenCertificate {
     }
 
     /**
-     * Set the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that
-     * will be used for authenticating the token.
+     * Set the encodedPemCertificate property: Base 64 encoded string of the public certificate1 in PEM format that will
+     * be used for authenticating the token.
      * 
      * @param encodedPemCertificate the encodedPemCertificate value to set.
      * @return the TokenCertificate object itself.
@@ -131,5 +133,52 @@ public final class TokenCertificate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("encodedPemCertificate", this.encodedPemCertificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TokenCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenCertificate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TokenCertificate.
+     */
+    public static TokenCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TokenCertificate deserializedTokenCertificate = new TokenCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTokenCertificate.name = TokenCertificateName.fromString(reader.getString());
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedTokenCertificate.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedTokenCertificate.thumbprint = reader.getString();
+                } else if ("encodedPemCertificate".equals(fieldName)) {
+                    deserializedTokenCertificate.encodedPemCertificate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTokenCertificate;
+        });
     }
 }

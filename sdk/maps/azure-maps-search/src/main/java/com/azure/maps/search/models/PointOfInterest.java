@@ -5,66 +5,67 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Details of the returned POI including information such as the name, phone, url address, and classifications. */
+/**
+ * Details of the returned POI including information such as the name, phone, url address, and classifications.
+ */
 @Fluent
-public final class PointOfInterest {
+public final class PointOfInterest implements JsonSerializable<PointOfInterest> {
     /*
      * Name of the POI property
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Telephone number property
      */
-    @JsonProperty(value = "phone", access = JsonProperty.Access.WRITE_ONLY)
     private String phone;
 
     /*
      * Website URL property
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * The list of the most specific POI categories
      */
-    @JsonProperty(value = "categorySet", access = JsonProperty.Access.WRITE_ONLY)
     private List<PointOfInterestCategorySet> categorySet;
 
     /*
      * Categories array
      */
-    @JsonProperty(value = "categories", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> categories;
 
     /*
      * Classification array
      */
-    @JsonProperty(value = "classifications", access = JsonProperty.Access.WRITE_ONLY)
     private List<Classification> classifications;
 
     /*
      * Brands array. The name of the brand for the POI being returned.
      */
-    @JsonProperty(value = "brands", access = JsonProperty.Access.WRITE_ONLY)
     private List<Brand> brands;
 
     /*
      * Opening hours for a POI (Points of Interest).
      */
-    @JsonProperty(value = "openingHours")
     private OperatingHours operatingHours;
 
-    /** Creates an instance of PointOfInterest class. */
-    public PointOfInterest() {}
+    /**
+     * Creates an instance of PointOfInterest class.
+     */
+    public PointOfInterest() {
+    }
 
     /**
      * Get the name property: Name of the POI property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -73,7 +74,7 @@ public final class PointOfInterest {
 
     /**
      * Get the phone property: Telephone number property.
-     *
+     * 
      * @return the phone value.
      */
     public String getPhone() {
@@ -82,7 +83,7 @@ public final class PointOfInterest {
 
     /**
      * Get the url property: Website URL property.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
@@ -91,7 +92,7 @@ public final class PointOfInterest {
 
     /**
      * Get the categorySet property: The list of the most specific POI categories.
-     *
+     * 
      * @return the categorySet value.
      */
     public List<PointOfInterestCategorySet> getCategorySet() {
@@ -100,7 +101,7 @@ public final class PointOfInterest {
 
     /**
      * Get the categories property: Categories array.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -109,7 +110,7 @@ public final class PointOfInterest {
 
     /**
      * Get the classifications property: Classification array.
-     *
+     * 
      * @return the classifications value.
      */
     public List<Classification> getClassifications() {
@@ -118,7 +119,7 @@ public final class PointOfInterest {
 
     /**
      * Get the brands property: Brands array. The name of the brand for the POI being returned.
-     *
+     * 
      * @return the brands value.
      */
     public List<Brand> getBrands() {
@@ -127,7 +128,7 @@ public final class PointOfInterest {
 
     /**
      * Get the operatingHours property: Opening hours for a POI (Points of Interest).
-     *
+     * 
      * @return the operatingHours value.
      */
     public OperatingHours getOperatingHours() {
@@ -136,12 +137,68 @@ public final class PointOfInterest {
 
     /**
      * Set the operatingHours property: Opening hours for a POI (Points of Interest).
-     *
+     * 
      * @param operatingHours the operatingHours value to set.
      * @return the PointOfInterest object itself.
      */
     public PointOfInterest setOperatingHours(OperatingHours operatingHours) {
         this.operatingHours = operatingHours;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("openingHours", this.operatingHours);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PointOfInterest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PointOfInterest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PointOfInterest.
+     */
+    public static PointOfInterest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PointOfInterest deserializedPointOfInterest = new PointOfInterest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPointOfInterest.name = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedPointOfInterest.phone = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedPointOfInterest.url = reader.getString();
+                } else if ("categorySet".equals(fieldName)) {
+                    List<PointOfInterestCategorySet> categorySet
+                        = reader.readArray(reader1 -> PointOfInterestCategorySet.fromJson(reader1));
+                    deserializedPointOfInterest.categorySet = categorySet;
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPointOfInterest.categories = categories;
+                } else if ("classifications".equals(fieldName)) {
+                    List<Classification> classifications
+                        = reader.readArray(reader1 -> Classification.fromJson(reader1));
+                    deserializedPointOfInterest.classifications = classifications;
+                } else if ("brands".equals(fieldName)) {
+                    List<Brand> brands = reader.readArray(reader1 -> Brand.fromJson(reader1));
+                    deserializedPointOfInterest.brands = brands;
+                } else if ("openingHours".equals(fieldName)) {
+                    deserializedPointOfInterest.operatingHours = OperatingHours.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPointOfInterest;
+        });
     }
 }

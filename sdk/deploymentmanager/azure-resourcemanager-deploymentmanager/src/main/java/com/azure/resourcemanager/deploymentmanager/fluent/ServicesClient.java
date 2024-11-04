@@ -29,12 +29,8 @@ public interface ServicesClient {
      * @return the resource representation of a service in a service topology along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        ServiceResourceInner serviceInfo,
-        Context context);
+    Response<ServiceResourceInner> createOrUpdateWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, ServiceResourceInner serviceInfo, Context context);
 
     /**
      * Creates or updates a service in the service topology.
@@ -51,8 +47,8 @@ public interface ServicesClient {
      * @return the resource representation of a service in a service topology.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner createOrUpdate(
-        String resourceGroupName, String serviceTopologyName, String serviceName, ServiceResourceInner serviceInfo);
+    ServiceResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName, String serviceName,
+        ServiceResourceInner serviceInfo);
 
     /**
      * Gets the service.
@@ -67,8 +63,8 @@ public interface ServicesClient {
      * @return the service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> getWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, Context context);
 
     /**
      * Gets the service.
@@ -97,8 +93,8 @@ public interface ServicesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        Context context);
 
     /**
      * Deletes the service.
@@ -125,8 +121,8 @@ public interface ServicesClient {
      * @return the list of services along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ServiceResourceInner>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
+    Response<List<ServiceResourceInner>> listWithResponse(String resourceGroupName, String serviceTopologyName,
+        Context context);
 
     /**
      * Lists the services in the service topology.

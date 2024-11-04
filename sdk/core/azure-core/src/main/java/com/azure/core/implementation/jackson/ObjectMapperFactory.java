@@ -3,9 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -86,16 +84,14 @@ final class ObjectMapperFactory {
                 .build());
     }
 
-    @SuppressWarnings("removal")
     private ObjectMapper attemptJackson215Mutation(ObjectMapper objectMapper) {
         if (useJackson215 && jackson215IsSafe) {
             try {
                 if (USE_ACCESS_HELPER) {
                     try {
-                        return java.security.AccessController
-                            .doPrivileged((PrivilegedExceptionAction<ObjectMapper>) () -> JacksonDatabind215
-                                .mutateStreamReadConstraints(objectMapper));
-                    } catch (PrivilegedActionException ex) {
+                        return ImplUtils
+                            .doPrivilegedException(() -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper));
+                    } catch (Exception ex) {
                         final Throwable cause = ex.getCause();
                         if (cause instanceof Error) {
                             throw LOGGER.logThrowableAsError((Error) cause);

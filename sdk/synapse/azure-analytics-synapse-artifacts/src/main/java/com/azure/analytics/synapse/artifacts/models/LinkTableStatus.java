@@ -5,68 +5,62 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The LinkTableStatus model.
  */
 @Fluent
-public final class LinkTableStatus {
+public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> {
     /*
      * ID provided by the client
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * Link table status, please refer to this
-     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
-     * for details.
+     * Link table status, please refer to this [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring) for details.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Link table error message
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * Link table start time
      */
-    @JsonProperty(value = "startTime")
     private Object startTime;
 
     /*
      * Link table stop time
      */
-    @JsonProperty(value = "stopTime")
     private Object stopTime;
 
     /*
      * Link table ID
      */
-    @JsonProperty(value = "linkTableId")
     private String linkTableId;
 
     /*
      * Link table error code
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Link table last processed data time
      */
-    @JsonProperty(value = "lastProcessedData")
     private OffsetDateTime lastProcessedData;
 
     /*
      * Link table last transaction commit time
      */
-    @JsonProperty(value = "lastTransactionCommitTime")
     private OffsetDateTime lastTransactionCommitTime;
 
     /**
@@ -257,5 +251,73 @@ public final class LinkTableStatus {
     public LinkTableStatus setLastTransactionCommitTime(OffsetDateTime lastTransactionCommitTime) {
         this.lastTransactionCommitTime = lastTransactionCommitTime;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeUntypedField("startTime", this.startTime);
+        jsonWriter.writeUntypedField("stopTime", this.stopTime);
+        jsonWriter.writeStringField("linkTableId", this.linkTableId);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("lastProcessedData",
+            this.lastProcessedData == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastProcessedData));
+        jsonWriter.writeStringField("lastTransactionCommitTime",
+            this.lastTransactionCommitTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTransactionCommitTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkTableStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkTableStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkTableStatus.
+     */
+    public static LinkTableStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkTableStatus deserializedLinkTableStatus = new LinkTableStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkTableStatus.id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedLinkTableStatus.status = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedLinkTableStatus.errorMessage = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedLinkTableStatus.startTime = reader.readUntyped();
+                } else if ("stopTime".equals(fieldName)) {
+                    deserializedLinkTableStatus.stopTime = reader.readUntyped();
+                } else if ("linkTableId".equals(fieldName)) {
+                    deserializedLinkTableStatus.linkTableId = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedLinkTableStatus.errorCode = reader.getString();
+                } else if ("lastProcessedData".equals(fieldName)) {
+                    deserializedLinkTableStatus.lastProcessedData
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastTransactionCommitTime".equals(fieldName)) {
+                    deserializedLinkTableStatus.lastTransactionCommitTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkTableStatus;
+        });
     }
 }

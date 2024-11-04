@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Result of check name availability.
  */
 @Fluent
-public final class NameAvailabilityResultInner {
+public final class NameAvailabilityResultInner implements JsonSerializable<NameAvailabilityResultInner> {
     /*
      * Indicator of availability of the Microsoft.HDInsight resource name.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * The reason of unavailability.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * The error message of unavailability.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -102,5 +103,47 @@ public final class NameAvailabilityResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityResultInner.
+     */
+    public static NameAvailabilityResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityResultInner deserializedNameAvailabilityResultInner = new NameAvailabilityResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityResultInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityResultInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityResultInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityResultInner;
+        });
     }
 }

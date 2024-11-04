@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Environment auth token resource specific properties.
  */
 @Immutable
-public final class EnvironmentAuthTokenProperties {
+public final class EnvironmentAuthTokenProperties implements JsonSerializable<EnvironmentAuthTokenProperties> {
     /*
      * Auth token value.
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
     private String token;
 
     /*
      * Token expiration date.
      */
-    @JsonProperty(value = "expires", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expires;
 
     /**
@@ -55,5 +58,44 @@ public final class EnvironmentAuthTokenProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentAuthTokenProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentAuthTokenProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentAuthTokenProperties.
+     */
+    public static EnvironmentAuthTokenProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentAuthTokenProperties deserializedEnvironmentAuthTokenProperties
+                = new EnvironmentAuthTokenProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("token".equals(fieldName)) {
+                    deserializedEnvironmentAuthTokenProperties.token = reader.getString();
+                } else if ("expires".equals(fieldName)) {
+                    deserializedEnvironmentAuthTokenProperties.expires = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentAuthTokenProperties;
+        });
     }
 }

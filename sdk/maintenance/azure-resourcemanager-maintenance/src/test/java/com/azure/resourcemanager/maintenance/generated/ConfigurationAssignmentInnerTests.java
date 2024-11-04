@@ -17,54 +17,44 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"aamdect\",\"properties\":{\"maintenanceConfigurationId\":\"iqscjeypv\",\"resourceId\":\"zrkgqhcjrefovg\",\"filter\":{\"resourceTypes\":[\"leyyvx\"],\"resourceGroups\":[\"pkc\",\"t\",\"pngjcrcczsqpjhvm\"],\"osTypes\":[\"v\",\"ysou\",\"q\"],\"locations\":[\"noae\"],\"tagSettings\":{\"tags\":{\"twhrdxwzywqsm\":[\"hltrpmopjmcmatuo\",\"thfuiuaodsfcpkvx\",\"dpuozmyz\",\"dagfuaxbezyiuok\"]},\"filterOperator\":\"Any\"}}},\"id\":\"exim\",\"name\":\"ryocfsfksymdd\",\"type\":\"stkiiuxhqyud\"}")
-                .toObject(ConfigurationAssignmentInner.class);
-        Assertions.assertEquals("aamdect", model.location());
-        Assertions.assertEquals("iqscjeypv", model.maintenanceConfigurationId());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.resourceId());
-        Assertions.assertEquals("leyyvx", model.filter().resourceTypes().get(0));
-        Assertions.assertEquals("pkc", model.filter().resourceGroups().get(0));
-        Assertions.assertEquals("v", model.filter().osTypes().get(0));
-        Assertions.assertEquals("noae", model.filter().locations().get(0));
-        Assertions.assertEquals("hltrpmopjmcmatuo", model.filter().tagSettings().tags().get("twhrdxwzywqsm").get(0));
-        Assertions.assertEquals(TagOperators.ANY, model.filter().tagSettings().filterOperator());
+        ConfigurationAssignmentInner model = BinaryData.fromString(
+            "{\"location\":\"e\",\"properties\":{\"maintenanceConfigurationId\":\"onpc\",\"resourceId\":\"ocohslkevleg\",\"filter\":{\"resourceTypes\":[\"u\",\"fmvfaxkffeiit\",\"lvmezyvshxmzsbbz\",\"ggi\"],\"resourceGroups\":[\"wburvjxxjnspydpt\",\"oenkouknvudwti\",\"kbldngkpocipa\"],\"osTypes\":[\"o\",\"gukgjnpiucgygevq\",\"ntypmrbpizcdrqj\",\"dpydn\"],\"locations\":[\"xdeoejzic\",\"ifsjttgzfbishcb\"],\"tagSettings\":{\"tags\":{\"kix\":[\"eyeam\",\"p\",\"agalpbuxwgipwhon\",\"wkgshwa\"],\"ttmrywnuzoqf\":[\"injep\"],\"oqqnwvlryav\":[\"yqzrnkcqvyxlw\",\"zlsico\"]},\"filterOperator\":\"All\"}}},\"id\":\"unmmq\",\"name\":\"gyxzk\",\"type\":\"noc\"}")
+            .toObject(ConfigurationAssignmentInner.class);
+        Assertions.assertEquals("e", model.location());
+        Assertions.assertEquals("onpc", model.maintenanceConfigurationId());
+        Assertions.assertEquals("ocohslkevleg", model.resourceId());
+        Assertions.assertEquals("u", model.filter().resourceTypes().get(0));
+        Assertions.assertEquals("wburvjxxjnspydpt", model.filter().resourceGroups().get(0));
+        Assertions.assertEquals("o", model.filter().osTypes().get(0));
+        Assertions.assertEquals("xdeoejzic", model.filter().locations().get(0));
+        Assertions.assertEquals("eyeam", model.filter().tagSettings().tags().get("kix").get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.filter().tagSettings().filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationAssignmentInner model =
-            new ConfigurationAssignmentInner()
-                .withLocation("aamdect")
-                .withMaintenanceConfigurationId("iqscjeypv")
-                .withResourceId("zrkgqhcjrefovg")
-                .withFilter(
-                    new ConfigurationAssignmentFilterProperties()
-                        .withResourceTypes(Arrays.asList("leyyvx"))
-                        .withResourceGroups(Arrays.asList("pkc", "t", "pngjcrcczsqpjhvm"))
-                        .withOsTypes(Arrays.asList("v", "ysou", "q"))
-                        .withLocations(Arrays.asList("noae"))
-                        .withTagSettings(
-                            new TagSettingsProperties()
-                                .withTags(
-                                    mapOf(
-                                        "twhrdxwzywqsm",
-                                        Arrays
-                                            .asList(
-                                                "hltrpmopjmcmatuo", "thfuiuaodsfcpkvx", "dpuozmyz", "dagfuaxbezyiuok")))
-                                .withFilterOperator(TagOperators.ANY)));
+        ConfigurationAssignmentInner model = new ConfigurationAssignmentInner().withLocation("e")
+            .withMaintenanceConfigurationId("onpc")
+            .withResourceId("ocohslkevleg")
+            .withFilter(new ConfigurationAssignmentFilterProperties()
+                .withResourceTypes(Arrays.asList("u", "fmvfaxkffeiit", "lvmezyvshxmzsbbz", "ggi"))
+                .withResourceGroups(Arrays.asList("wburvjxxjnspydpt", "oenkouknvudwti", "kbldngkpocipa"))
+                .withOsTypes(Arrays.asList("o", "gukgjnpiucgygevq", "ntypmrbpizcdrqj", "dpydn"))
+                .withLocations(Arrays.asList("xdeoejzic", "ifsjttgzfbishcb"))
+                .withTagSettings(new TagSettingsProperties()
+                    .withTags(mapOf("kix", Arrays.asList("eyeam", "p", "agalpbuxwgipwhon", "wkgshwa"), "ttmrywnuzoqf",
+                        Arrays.asList("injep"), "oqqnwvlryav", Arrays.asList("yqzrnkcqvyxlw", "zlsico")))
+                    .withFilterOperator(TagOperators.ALL)));
         model = BinaryData.fromObject(model).toObject(ConfigurationAssignmentInner.class);
-        Assertions.assertEquals("aamdect", model.location());
-        Assertions.assertEquals("iqscjeypv", model.maintenanceConfigurationId());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.resourceId());
-        Assertions.assertEquals("leyyvx", model.filter().resourceTypes().get(0));
-        Assertions.assertEquals("pkc", model.filter().resourceGroups().get(0));
-        Assertions.assertEquals("v", model.filter().osTypes().get(0));
-        Assertions.assertEquals("noae", model.filter().locations().get(0));
-        Assertions.assertEquals("hltrpmopjmcmatuo", model.filter().tagSettings().tags().get("twhrdxwzywqsm").get(0));
-        Assertions.assertEquals(TagOperators.ANY, model.filter().tagSettings().filterOperator());
+        Assertions.assertEquals("e", model.location());
+        Assertions.assertEquals("onpc", model.maintenanceConfigurationId());
+        Assertions.assertEquals("ocohslkevleg", model.resourceId());
+        Assertions.assertEquals("u", model.filter().resourceTypes().get(0));
+        Assertions.assertEquals("wburvjxxjnspydpt", model.filter().resourceGroups().get(0));
+        Assertions.assertEquals("o", model.filter().osTypes().get(0));
+        Assertions.assertEquals("xdeoejzic", model.filter().locations().get(0));
+        Assertions.assertEquals("eyeam", model.filter().tagSettings().tags().get("kix").get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.filter().tagSettings().filterOperator());
     }
 
     // Use "Map.of" if available

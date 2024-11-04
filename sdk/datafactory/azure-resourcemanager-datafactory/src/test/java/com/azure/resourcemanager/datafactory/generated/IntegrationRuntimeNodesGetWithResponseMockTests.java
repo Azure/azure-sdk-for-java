@@ -20,7 +20,7 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"nodeName\":\"nwafjibaq\",\"machineName\":\"tdije\",\"hostServiceUri\":\"xrrmnoxjwl\",\"status\":\"NeedRegistration\",\"capabilities\":{\"l\":\"zvvidokvzqeadk\",\"tvtpw\":\"rcxvoltjyzolnqk\",\"qpl\":\"mmyaoegh\",\"hewcevpmt\":\"y\"},\"versionStatus\":\"dfpgsoje\",\"version\":\"jnlvcgar\",\"registerTime\":\"2021-02-19T07:29:51Z\",\"lastConnectTime\":\"2021-07-10T06:20:08Z\",\"expiryTime\":\"2021-02-04T14:24:28Z\",\"lastStartTime\":\"2021-01-08T18:44:26Z\",\"lastStopTime\":\"2021-09-02T20:47:22Z\",\"lastUpdateResult\":\"Succeed\",\"lastStartUpdateTime\":\"2021-12-03T17:37:13Z\",\"lastEndUpdateTime\":\"2021-06-09T07:55:39Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":671274453,\"maxConcurrentJobs\":684366978,\"\":{\"d\":\"datatonovveouwixte\",\"qtpbb\":\"dataqprhzsaquha\",\"jlynlrjoydzmbvs\":\"dataicteq\"}}";
+            = "{\"nodeName\":\"fxjpgjaynofwyzpn\",\"machineName\":\"pgwriyxyelzm\",\"hostServiceUri\":\"harucpkpm\",\"status\":\"Limited\",\"capabilities\":{\"gxhjbapflluyhivl\":\"obkfutohkrq\",\"rkgtlrmmmsaujx\":\"wipobtbtlmp\",\"hxmwf\":\"ogtwxgswu\",\"txju\":\"ehryordinfwnlif\"},\"versionStatus\":\"ddtubzekfb\",\"version\":\"tyxmel\",\"registerTime\":\"2021-09-13T01:16:21Z\",\"lastConnectTime\":\"2021-09-11T15:49:12Z\",\"expiryTime\":\"2021-04-16T17:13:53Z\",\"lastStartTime\":\"2021-01-01T01:52:32Z\",\"lastStopTime\":\"2021-09-19T14:31:43Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-09-29T21:30:47Z\",\"lastEndUpdateTime\":\"2021-02-26T07:53:48Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":1124062533,\"maxConcurrentJobs\":916889299,\"\":{\"jslk\":\"dataeqruoan\",\"qsxecejlyhuyhqqq\":\"dataawocsetkrtexji\",\"dmyemvyijvvb\":\"datacdzmh\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IntegrationRuntimeNodesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .getWithResponse("ii", "jkiajokjuehcryww", "ns", "rcj", com.azure.core.util.Context.NONE)
+            .getWithResponse("brsjgrjtlw", "dcz", "lbzcikhcpd", "hvwyitcgybuuu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

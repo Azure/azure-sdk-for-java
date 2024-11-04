@@ -23,16 +23,13 @@ public final class PacketCoreDataPlanePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this
-     * is the S1-U interface.
+     * The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this is the S1-U interface.
      */
     @JsonProperty(value = "userPlaneAccessInterface", required = true)
     private InterfaceProperties userPlaneAccessInterface;
 
     /*
-     * The virtual IP address(es) for the user plane on the access network in a High Availability (HA) system. In an HA
-     * deployment the access network router should be configured to forward traffic for this address to the control
-     * plane access interface on the active or standby node. In non-HA system this list should be omitted or empty.
+     * The virtual IP address(es) for the user plane on the access network in a High Availability (HA) system. In an HA deployment the access network router should be configured to forward traffic for this address to the control plane access interface on the active or standby node. In non-HA system this list should be omitted or empty.
      */
     @JsonProperty(value = "userPlaneAccessVirtualIpv4Addresses")
     private List<String> userPlaneAccessVirtualIpv4Addresses;
@@ -76,10 +73,10 @@ public final class PacketCoreDataPlanePropertiesFormat {
     }
 
     /**
-     * Get the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the
-     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
-     * configured to forward traffic for this address to the control plane access interface on the active or standby
-     * node. In non-HA system this list should be omitted or empty.
+     * Get the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the access
+     * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
+     * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
+     * system this list should be omitted or empty.
      * 
      * @return the userPlaneAccessVirtualIpv4Addresses value.
      */
@@ -88,10 +85,10 @@ public final class PacketCoreDataPlanePropertiesFormat {
     }
 
     /**
-     * Set the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the
-     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
-     * configured to forward traffic for this address to the control plane access interface on the active or standby
-     * node. In non-HA system this list should be omitted or empty.
+     * Set the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane on the access
+     * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
+     * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
+     * system this list should be omitted or empty.
      * 
      * @param userPlaneAccessVirtualIpv4Addresses the userPlaneAccessVirtualIpv4Addresses value to set.
      * @return the PacketCoreDataPlanePropertiesFormat object itself.
@@ -109,8 +106,9 @@ public final class PacketCoreDataPlanePropertiesFormat {
      */
     public void validate() {
         if (userPlaneAccessInterface() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property userPlaneAccessInterface in model PacketCoreDataPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property userPlaneAccessInterface in model PacketCoreDataPlanePropertiesFormat"));
         } else {
             userPlaneAccessInterface().validate();
         }

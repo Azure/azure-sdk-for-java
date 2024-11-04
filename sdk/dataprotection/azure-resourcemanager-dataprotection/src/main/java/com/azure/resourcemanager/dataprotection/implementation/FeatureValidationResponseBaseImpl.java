@@ -18,6 +18,10 @@ public final class FeatureValidationResponseBaseImpl implements FeatureValidatio
         this.serviceManager = serviceManager;
     }
 
+    public String objectType() {
+        return this.innerModel().objectType();
+    }
+
     public FeatureValidationResponseBaseInner innerModel() {
         return this.innerObject;
     }

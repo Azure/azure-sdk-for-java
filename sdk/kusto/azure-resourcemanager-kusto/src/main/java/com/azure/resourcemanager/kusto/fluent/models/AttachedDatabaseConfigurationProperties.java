@@ -147,8 +147,8 @@ public final class AttachedDatabaseConfigurationProperties {
      * @param defaultPrincipalsModificationKind the defaultPrincipalsModificationKind value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
-    public AttachedDatabaseConfigurationProperties withDefaultPrincipalsModificationKind(
-        DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
+    public AttachedDatabaseConfigurationProperties
+        withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
         this.defaultPrincipalsModificationKind = defaultPrincipalsModificationKind;
         return this;
     }
@@ -168,8 +168,8 @@ public final class AttachedDatabaseConfigurationProperties {
      * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
      * @return the AttachedDatabaseConfigurationProperties object itself.
      */
-    public AttachedDatabaseConfigurationProperties withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public AttachedDatabaseConfigurationProperties
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         this.tableLevelSharingProperties = tableLevelSharingProperties;
         return this;
     }
@@ -225,24 +225,17 @@ public final class AttachedDatabaseConfigurationProperties {
      */
     public void validate() {
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model AttachedDatabaseConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property databaseName in model AttachedDatabaseConfigurationProperties"));
         }
         if (clusterResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterResourceId in model"
-                            + " AttachedDatabaseConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clusterResourceId in model" + " AttachedDatabaseConfigurationProperties"));
         }
         if (defaultPrincipalsModificationKind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultPrincipalsModificationKind in model"
-                            + " AttachedDatabaseConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property defaultPrincipalsModificationKind in model"
+                    + " AttachedDatabaseConfigurationProperties"));
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();

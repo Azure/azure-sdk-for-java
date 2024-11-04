@@ -5,32 +5,42 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The connection state of a managed private endpoint. */
+/**
+ * The connection state of a managed private endpoint.
+ */
 @Fluent
-public final class ManagedPrivateEndpointConnectionState {
+public final class ManagedPrivateEndpointConnectionState
+    implements JsonSerializable<ManagedPrivateEndpointConnectionState> {
     /*
      * The approval status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The managed private endpoint description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The actions required on the managed private endpoint
      */
-    @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
 
     /**
+     * Creates an instance of ManagedPrivateEndpointConnectionState class.
+     */
+    public ManagedPrivateEndpointConnectionState() {
+    }
+
+    /**
      * Get the status property: The approval status.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -39,7 +49,7 @@ public final class ManagedPrivateEndpointConnectionState {
 
     /**
      * Get the description property: The managed private endpoint description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -48,7 +58,7 @@ public final class ManagedPrivateEndpointConnectionState {
 
     /**
      * Set the description property: The managed private endpoint description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ManagedPrivateEndpointConnectionState object itself.
      */
@@ -59,7 +69,7 @@ public final class ManagedPrivateEndpointConnectionState {
 
     /**
      * Get the actionsRequired property: The actions required on the managed private endpoint.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String getActionsRequired() {
@@ -68,12 +78,54 @@ public final class ManagedPrivateEndpointConnectionState {
 
     /**
      * Set the actionsRequired property: The actions required on the managed private endpoint.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the ManagedPrivateEndpointConnectionState object itself.
      */
     public ManagedPrivateEndpointConnectionState setActionsRequired(String actionsRequired) {
         this.actionsRequired = actionsRequired;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("actionsRequired", this.actionsRequired);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpointConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpointConnectionState if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpointConnectionState.
+     */
+    public static ManagedPrivateEndpointConnectionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpointConnectionState deserializedManagedPrivateEndpointConnectionState
+                = new ManagedPrivateEndpointConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointConnectionState.status = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointConnectionState.description = reader.getString();
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointConnectionState.actionsRequired = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpointConnectionState;
+        });
     }
 }

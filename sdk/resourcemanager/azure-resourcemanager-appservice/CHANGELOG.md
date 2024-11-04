@@ -1,6 +1,58 @@
 # Release History
 
-## 2.39.0-beta.1 (Unreleased)
+## 2.45.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.44.0 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.43.0 (2024-09-27)
+
+### Features Added
+
+- Added `deploy` and `pushDeploy` API to `FunctionApp` class for deploying zip file to FunctionApp of Flex Consumption plan.
+
+## 2.42.0 (2024-08-23)
+
+### Breaking Changes
+
+- Type changed from `Float` to `Integer`, on `maximumInstanceCount` and `instanceMemoryMB` property in `FunctionsScaleAndConcurrency` class. 
+- Type changed from `Float` to `Integer`, on `instanceCount` property in `FunctionsAlwaysReadyConfig` class.
+- Type changed from `Float` to `Integer`, on `perInstanceConcurrency` property in `FunctionsScaleAndConcurrencyTriggersHttp` class.
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+## 2.41.0 (2024-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.40.0 (2024-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-12-01`.
+
+## 2.39.0 (2024-05-24)
 
 ### Features Added
 

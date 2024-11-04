@@ -49,7 +49,8 @@ public final class ResourceGuardProxyBaseResourceListTests {
                                 .withDefaultResourceRequest("dvypgikdgsz"),
                             new ResourceGuardOperationDetail().withVaultCriticalOperation("kbir")
                                 .withDefaultResourceRequest("uzhlhkjoqrv")))
-                        .withLastUpdatedTime("aatjinrvgoupmfi").withDescription("fggjioolvr"))
+                        .withLastUpdatedTime("aatjinrvgoupmfi")
+                        .withDescription("fggjioolvr"))
                     .withEtag("kvtkkg")));
         model = BinaryData.fromObject(model).toObject(ResourceGuardProxyBaseResourceList.class);
         Assertions.assertEquals("tvgbmhrixkwmy", model.nextLink());

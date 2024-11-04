@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration properties for a Java Component.
  */
 @Fluent
-public final class JavaComponentConfigurationProperty {
+public final class JavaComponentConfigurationProperty implements JsonSerializable<JavaComponentConfigurationProperty> {
     /*
      * The name of the property
      */
-    @JsonProperty(value = "propertyName")
     private String propertyName;
 
     /*
      * The value of the property
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -76,5 +78,45 @@ public final class JavaComponentConfigurationProperty {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("propertyName", this.propertyName);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JavaComponentConfigurationProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JavaComponentConfigurationProperty if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JavaComponentConfigurationProperty.
+     */
+    public static JavaComponentConfigurationProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JavaComponentConfigurationProperty deserializedJavaComponentConfigurationProperty
+                = new JavaComponentConfigurationProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyName".equals(fieldName)) {
+                    deserializedJavaComponentConfigurationProperty.propertyName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedJavaComponentConfigurationProperty.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJavaComponentConfigurationProperty;
+        });
     }
 }

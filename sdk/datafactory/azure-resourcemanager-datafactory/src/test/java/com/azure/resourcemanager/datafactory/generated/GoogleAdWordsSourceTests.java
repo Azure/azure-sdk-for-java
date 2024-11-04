@@ -11,19 +11,19 @@ public final class GoogleAdWordsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsSource model = BinaryData.fromString(
-            "{\"type\":\"ty\",\"query\":\"dataese\",\"queryTimeout\":\"dataetackjuwkkva\",\"additionalColumns\":\"datafjuefjbmowqwodmd\",\"sourceRetryCount\":\"datajqwahciapvcsw\",\"sourceRetryWait\":\"datarpcpg\",\"maxConcurrentConnections\":\"datatftaqmrimletjvz\",\"disableMetricsCollection\":\"datafgabiblhzfgl\",\"\":{\"pwri\":\"datagszx\",\"haskuiosl\":\"datakqnbiiandhsjp\",\"rcx\":\"datachcuhvdrfh\"}}")
+            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"datalymmhzvnetecfy\",\"queryTimeout\":\"datafkcwfpoaflgkzgzx\",\"additionalColumns\":\"datavvfkqbgkssygdv\",\"sourceRetryCount\":\"databbd\",\"sourceRetryWait\":\"datal\",\"maxConcurrentConnections\":\"datapwpsxygrniq\",\"disableMetricsCollection\":\"datapsebaz\",\"\":{\"imtu\":\"datarjroqgnsfzrra\"}}")
             .toObject(GoogleAdWordsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datajqwahciapvcsw")
-            .withSourceRetryWait("datarpcpg")
-            .withMaxConcurrentConnections("datatftaqmrimletjvz")
-            .withDisableMetricsCollection("datafgabiblhzfgl")
-            .withQueryTimeout("dataetackjuwkkva")
-            .withAdditionalColumns("datafjuefjbmowqwodmd")
-            .withQuery("dataese");
+        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("databbd")
+            .withSourceRetryWait("datal")
+            .withMaxConcurrentConnections("datapwpsxygrniq")
+            .withDisableMetricsCollection("datapsebaz")
+            .withQueryTimeout("datafkcwfpoaflgkzgzx")
+            .withAdditionalColumns("datavvfkqbgkssygdv")
+            .withQuery("datalymmhzvnetecfy");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsSource.class);
     }
 }

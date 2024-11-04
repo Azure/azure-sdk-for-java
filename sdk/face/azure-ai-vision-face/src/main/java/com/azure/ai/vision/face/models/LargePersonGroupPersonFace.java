@@ -5,26 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Face resource for large person group person.
  */
 @Immutable
-public final class LargePersonGroupPersonFace {
+public final class LargePersonGroupPersonFace implements JsonSerializable<LargePersonGroupPersonFace> {
 
     /*
      * Face ID of the face.
      */
     @Generated
-    @JsonProperty(value = "persistedFaceId", access = JsonProperty.Access.WRITE_ONLY)
     private String persistedFaceId;
 
     /*
      * User-provided data attached to the face. The length limit is 1K.
      */
     @Generated
-    @JsonProperty(value = "userData")
     private String userData;
 
     /**
@@ -52,5 +54,44 @@ public final class LargePersonGroupPersonFace {
     @Generated
     public String getUserData() {
         return this.userData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LargePersonGroupPersonFace from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LargePersonGroupPersonFace if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LargePersonGroupPersonFace.
+     */
+    @Generated
+    public static LargePersonGroupPersonFace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LargePersonGroupPersonFace deserializedLargePersonGroupPersonFace = new LargePersonGroupPersonFace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("persistedFaceId".equals(fieldName)) {
+                    deserializedLargePersonGroupPersonFace.persistedFaceId = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    deserializedLargePersonGroupPersonFace.userData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedLargePersonGroupPersonFace;
+        });
     }
 }

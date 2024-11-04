@@ -18,28 +18,30 @@ public final class CustomDataSourceLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDataSourceLinkedService model = BinaryData.fromString(
-            "{\"type\":\"drgtuaoou\",\"typeProperties\":\"datatjpsjwlpcxljz\",\"connectVia\":{\"referenceName\":\"afaxv\",\"parameters\":{\"tx\":\"datapbnrolgelsgnen\",\"rqahlbyjahbzbtlm\":\"datauwd\",\"mjyzice\":\"datacbwmvp\",\"bnduqgjibrxxiao\":\"datarlazcgwn\"}},\"description\":\"wu\",\"parameters\":{\"tgwadudok\":{\"type\":\"String\",\"defaultValue\":\"dataspugnv\"}},\"annotations\":[\"databozezxz\"],\"\":{\"qllt\":\"datargukqobo\",\"zqlyputawdmdikuf\":\"datalqufkrnrbnjkcol\",\"ujzofyldxk\":\"dataqvv\"}}")
+            "{\"type\":\"CustomDataSource\",\"typeProperties\":\"datacsp\",\"version\":\"rndqymloslqgs\",\"connectVia\":{\"referenceName\":\"nqqzqdvgn\",\"parameters\":{\"wphbuzmvjil\":\"datakgoynyaa\",\"hrjwyxduwimwnuvj\":\"datalbmfkctpai\"}},\"description\":\"wpfxi\",\"parameters\":{\"yjdbc\":{\"type\":\"Array\",\"defaultValue\":\"datanjtksw\"},\"gu\":{\"type\":\"Bool\",\"defaultValue\":\"dataojtmpdkcbpk\"}},\"annotations\":[\"dataitkce\",\"datadwgussctnppxxeys\",\"dataenfwugonysemun\"],\"\":{\"sxuuksvfsukpk\":\"datavnbckl\"}}")
             .toObject(CustomDataSourceLinkedService.class);
-        Assertions.assertEquals("afaxv", model.connectVia().referenceName());
-        Assertions.assertEquals("wu", model.description());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tgwadudok").type());
+        Assertions.assertEquals("rndqymloslqgs", model.version());
+        Assertions.assertEquals("nqqzqdvgn", model.connectVia().referenceName());
+        Assertions.assertEquals("wpfxi", model.description());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("yjdbc").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDataSourceLinkedService model = new CustomDataSourceLinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("afaxv")
-                .withParameters(mapOf("tx", "datapbnrolgelsgnen", "rqahlbyjahbzbtlm", "datauwd", "mjyzice",
-                    "datacbwmvp", "bnduqgjibrxxiao", "datarlazcgwn")))
-            .withDescription("wu")
-            .withParameters(mapOf("tgwadudok",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataspugnv")))
-            .withAnnotations(Arrays.asList("databozezxz"))
-            .withTypeProperties("datatjpsjwlpcxljz");
+        CustomDataSourceLinkedService model = new CustomDataSourceLinkedService().withVersion("rndqymloslqgs")
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("nqqzqdvgn")
+                .withParameters(mapOf("wphbuzmvjil", "datakgoynyaa", "hrjwyxduwimwnuvj", "datalbmfkctpai")))
+            .withDescription("wpfxi")
+            .withParameters(mapOf("yjdbc",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datanjtksw"), "gu",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataojtmpdkcbpk")))
+            .withAnnotations(Arrays.asList("dataitkce", "datadwgussctnppxxeys", "dataenfwugonysemun"))
+            .withTypeProperties("datacsp");
         model = BinaryData.fromObject(model).toObject(CustomDataSourceLinkedService.class);
-        Assertions.assertEquals("afaxv", model.connectVia().referenceName());
-        Assertions.assertEquals("wu", model.description());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tgwadudok").type());
+        Assertions.assertEquals("rndqymloslqgs", model.version());
+        Assertions.assertEquals("nqqzqdvgn", model.connectVia().referenceName());
+        Assertions.assertEquals("wpfxi", model.description());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("yjdbc").type());
     }
 
     // Use "Map.of" if available

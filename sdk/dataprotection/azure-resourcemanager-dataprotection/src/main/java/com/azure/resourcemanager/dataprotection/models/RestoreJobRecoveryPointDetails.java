@@ -5,24 +5,28 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The RestoreJobRecoveryPointDetails model.
  */
 @Fluent
-public final class RestoreJobRecoveryPointDetails {
+public final class RestoreJobRecoveryPointDetails implements JsonSerializable<RestoreJobRecoveryPointDetails> {
     /*
      * The recoveryPointID property.
      */
-    @JsonProperty(value = "recoveryPointID")
     private String recoveryPointId;
 
     /*
      * The recoveryPointTime property.
      */
-    @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
     /**
@@ -77,5 +81,49 @@ public final class RestoreJobRecoveryPointDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointID", this.recoveryPointId);
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreJobRecoveryPointDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreJobRecoveryPointDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreJobRecoveryPointDetails.
+     */
+    public static RestoreJobRecoveryPointDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreJobRecoveryPointDetails deserializedRestoreJobRecoveryPointDetails
+                = new RestoreJobRecoveryPointDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointID".equals(fieldName)) {
+                    deserializedRestoreJobRecoveryPointDetails.recoveryPointId = reader.getString();
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedRestoreJobRecoveryPointDetails.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreJobRecoveryPointDetails;
+        });
     }
 }

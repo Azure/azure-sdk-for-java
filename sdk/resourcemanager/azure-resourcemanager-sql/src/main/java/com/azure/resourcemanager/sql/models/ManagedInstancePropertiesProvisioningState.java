@@ -5,71 +5,110 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedInstancePropertiesProvisioningState. */
+/**
+ * Defines values for ManagedInstancePropertiesProvisioningState.
+ */
 public final class ManagedInstancePropertiesProvisioningState
     extends ExpandableStringEnum<ManagedInstancePropertiesProvisioningState> {
-    /** Static value Creating for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Creating for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Deleting for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Deleting for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Updating for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Updating for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Unknown for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Unknown for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState UNKNOWN = fromString("Unknown");
 
-    /** Static value Succeeded for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Succeeded for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Failed for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Accepted for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Accepted for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Created for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Created for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState CREATED = fromString("Created");
 
-    /** Static value Deleted for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Deleted for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value Unrecognized for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Unrecognized for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState UNRECOGNIZED = fromString("Unrecognized");
 
-    /** Static value Running for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Running for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState RUNNING = fromString("Running");
 
-    /** Static value Canceled for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Canceled for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value NotSpecified for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value NotSpecified for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Registering for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value Registering for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState REGISTERING = fromString("Registering");
 
-    /** Static value TimedOut for ManagedInstancePropertiesProvisioningState. */
+    /**
+     * Static value TimedOut for ManagedInstancePropertiesProvisioningState.
+     */
     public static final ManagedInstancePropertiesProvisioningState TIMED_OUT = fromString("TimedOut");
 
     /**
+     * Creates a new instance of ManagedInstancePropertiesProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstancePropertiesProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ManagedInstancePropertiesProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedInstancePropertiesProvisioningState.
      */
-    @JsonCreator
     public static ManagedInstancePropertiesProvisioningState fromString(String name) {
         return fromString(name, ManagedInstancePropertiesProvisioningState.class);
     }
 
     /**
      * Gets known ManagedInstancePropertiesProvisioningState values.
-     *
+     * 
      * @return known ManagedInstancePropertiesProvisioningState values.
      */
     public static Collection<ManagedInstancePropertiesProvisioningState> values() {

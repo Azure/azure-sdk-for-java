@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Virtual Machine operation response.
  */
 @Fluent
-public final class VirtualMachineSizeListResult {
+public final class VirtualMachineSizeListResult implements JsonSerializable<VirtualMachineSizeListResult> {
     /*
      * The list of virtual machine sizes.
      */
-    @JsonProperty(value = "value")
     private List<VirtualMachineSizeInner> value;
 
     /**
@@ -55,5 +58,43 @@ public final class VirtualMachineSizeListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineSizeListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineSizeListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineSizeListResult.
+     */
+    public static VirtualMachineSizeListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineSizeListResult deserializedVirtualMachineSizeListResult = new VirtualMachineSizeListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineSizeInner> value
+                        = reader.readArray(reader1 -> VirtualMachineSizeInner.fromJson(reader1));
+                    deserializedVirtualMachineSizeListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineSizeListResult;
+        });
     }
 }

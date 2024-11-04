@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedServiceReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedServiceReference model
-            = BinaryData.fromString("{\"referenceName\":\"fz\",\"parameters\":{\"xzfe\":\"dataxxbuyq\"}}")
-                .toObject(LinkedServiceReference.class);
-        Assertions.assertEquals("fz", model.referenceName());
+        LinkedServiceReference model = BinaryData.fromString(
+            "{\"referenceName\":\"inrfdwoyu\",\"parameters\":{\"mzqhoftrmaequi\":\"dataiuiefozbhdmsm\",\"iyylhalnswhccsp\":\"datahxicslfaoqz\",\"scywuggwoluhc\":\"datakaivwit\"}}")
+            .toObject(LinkedServiceReference.class);
+        Assertions.assertEquals("inrfdwoyu", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceReference model
-            = new LinkedServiceReference().withReferenceName("fz").withParameters(mapOf("xzfe", "dataxxbuyq"));
+        LinkedServiceReference model = new LinkedServiceReference().withReferenceName("inrfdwoyu")
+            .withParameters(mapOf("mzqhoftrmaequi", "dataiuiefozbhdmsm", "iyylhalnswhccsp", "datahxicslfaoqz",
+                "scywuggwoluhc", "datakaivwit"));
         model = BinaryData.fromObject(model).toObject(LinkedServiceReference.class);
-        Assertions.assertEquals("fz", model.referenceName());
+        Assertions.assertEquals("inrfdwoyu", model.referenceName());
     }
 
     // Use "Map.of" if available

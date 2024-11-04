@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Resource request payload of Build Resource.
  */
 @Fluent
-public final class BuildResourceRequests {
+public final class BuildResourceRequests implements JsonSerializable<BuildResourceRequests> {
     /*
      * Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m.
      * The default value is 1, this should not exceed build service agent pool cpu size.
      */
-    @JsonProperty(value = "cpu")
     private String cpu;
 
     /*
      * Optional Memory allocated to the build resource. 1 GB can be represented by 1Gi or 1024Mi.
      * The default value is 2Gi, this should not exceed build service agent pool memory size.
      */
-    @JsonProperty(value = "memory")
     private String memory;
 
     /**
@@ -84,5 +86,44 @@ public final class BuildResourceRequests {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cpu", this.cpu);
+        jsonWriter.writeStringField("memory", this.memory);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildResourceRequests from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildResourceRequests if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildResourceRequests.
+     */
+    public static BuildResourceRequests fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildResourceRequests deserializedBuildResourceRequests = new BuildResourceRequests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpu".equals(fieldName)) {
+                    deserializedBuildResourceRequests.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedBuildResourceRequests.memory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildResourceRequests;
+        });
     }
 }

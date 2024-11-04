@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 import com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin;
 import com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JdbcPropertyConstantsTest {

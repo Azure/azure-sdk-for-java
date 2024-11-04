@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Port Mirroring Status. */
+/**
+ * Port Mirroring status.
+ */
 public final class PortMirroringStatusEnum extends ExpandableStringEnum<PortMirroringStatusEnum> {
-    /** Static value SUCCESS for PortMirroringStatusEnum. */
+    /**
+     * Static value SUCCESS for PortMirroringStatusEnum.
+     */
     public static final PortMirroringStatusEnum SUCCESS = fromString("SUCCESS");
 
-    /** Static value FAILURE for PortMirroringStatusEnum. */
+    /**
+     * Static value FAILURE for PortMirroringStatusEnum.
+     */
     public static final PortMirroringStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates a new instance of PortMirroringStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PortMirroringStatusEnum extends ExpandableStringEnum<PortMirr
 
     /**
      * Creates or finds a PortMirroringStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PortMirroringStatusEnum.
      */
-    @JsonCreator
     public static PortMirroringStatusEnum fromString(String name) {
         return fromString(name, PortMirroringStatusEnum.class);
     }
 
     /**
      * Gets known PortMirroringStatusEnum values.
-     *
+     * 
      * @return known PortMirroringStatusEnum values.
      */
     public static Collection<PortMirroringStatusEnum> values() {

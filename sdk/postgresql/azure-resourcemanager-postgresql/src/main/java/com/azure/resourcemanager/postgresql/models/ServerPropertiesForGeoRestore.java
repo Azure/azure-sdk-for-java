@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GeoRestore")
 @Fluent
 public final class ServerPropertiesForGeoRestore extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForGeoRestore.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerPropertiesForGeoRestore.class);
 
     /*
      * The source server id to restore from.
@@ -67,8 +68,8 @@ public final class ServerPropertiesForGeoRestore extends ServerPropertiesForCrea
 
     /** {@inheritDoc} */
     @Override
-    public ServerPropertiesForGeoRestore withInfrastructureEncryption(
-        InfrastructureEncryption infrastructureEncryption) {
+    public ServerPropertiesForGeoRestore
+        withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
         super.withInfrastructureEncryption(infrastructureEncryption);
         return this;
     }
@@ -96,10 +97,8 @@ public final class ServerPropertiesForGeoRestore extends ServerPropertiesForCrea
     public void validate() {
         super.validate();
         if (sourceServerId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceServerId in model ServerPropertiesForGeoRestore"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceServerId in model ServerPropertiesForGeoRestore"));
         }
     }
 }

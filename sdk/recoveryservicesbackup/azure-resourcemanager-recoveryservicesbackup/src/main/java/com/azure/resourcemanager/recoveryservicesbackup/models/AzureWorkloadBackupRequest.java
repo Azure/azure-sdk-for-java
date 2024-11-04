@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -13,10 +14,21 @@ import java.time.OffsetDateTime;
 /**
  * AzureWorkload workload-specific backup request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = AzureWorkloadBackupRequest.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadBackupRequest")
 @Fluent
 public final class AzureWorkloadBackupRequest extends BackupRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadBackupRequest";
+
     /*
      * Type of backup, viz. Full, Differential, Log or CopyOnlyFull
      */
@@ -39,6 +51,17 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
      * Creates an instance of AzureWorkloadBackupRequest class.
      */
     public AzureWorkloadBackupRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

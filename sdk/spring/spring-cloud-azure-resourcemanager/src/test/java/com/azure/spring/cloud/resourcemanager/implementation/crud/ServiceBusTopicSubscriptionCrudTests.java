@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusTopicProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -170,4 +170,5 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         verify(blank, times(1)).withSizeInMB(topicProperties.getMaxSizeInMegabytes());
         verify(blank, times(1)).withDefaultMessageTTL(topicProperties.getDefaultMessageTimeToLive());
     }
+
 }

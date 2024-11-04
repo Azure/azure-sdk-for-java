@@ -87,27 +87,23 @@ public final class ViewResourceFormatImpl
     }
 
     public ViewResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ViewResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ViewResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    ViewResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new ViewResourceFormatInner();
         this.serviceManager = serviceManager;
         this.viewName = name;
@@ -118,33 +114,28 @@ public final class ViewResourceFormatImpl
     }
 
     public ViewResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ViewResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getViews()
-                .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getViews()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, viewName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ViewResourceFormatImpl(
-        ViewResourceFormatInner innerObject,
+    ViewResourceFormatImpl(ViewResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.viewName = Utils.getValueFromIdByName(innerObject.id(), "views");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.viewName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "views");
     }
 
     public ViewResourceFormatImpl withUserId(String userId) {

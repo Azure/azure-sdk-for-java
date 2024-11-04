@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Connection type used for connecting to the instance. */
+/**
+ * Connection type used for connecting to the instance.
+ */
 public final class ManagedInstanceProxyOverride extends ExpandableStringEnum<ManagedInstanceProxyOverride> {
-    /** Static value Proxy for ManagedInstanceProxyOverride. */
+    /**
+     * Static value Proxy for ManagedInstanceProxyOverride.
+     */
     public static final ManagedInstanceProxyOverride PROXY = fromString("Proxy");
 
-    /** Static value Redirect for ManagedInstanceProxyOverride. */
+    /**
+     * Static value Redirect for ManagedInstanceProxyOverride.
+     */
     public static final ManagedInstanceProxyOverride REDIRECT = fromString("Redirect");
 
-    /** Static value Default for ManagedInstanceProxyOverride. */
+    /**
+     * Static value Default for ManagedInstanceProxyOverride.
+     */
     public static final ManagedInstanceProxyOverride DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of ManagedInstanceProxyOverride value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceProxyOverride() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceProxyOverride from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedInstanceProxyOverride.
      */
-    @JsonCreator
     public static ManagedInstanceProxyOverride fromString(String name) {
         return fromString(name, ManagedInstanceProxyOverride.class);
     }
 
     /**
      * Gets known ManagedInstanceProxyOverride values.
-     *
+     * 
      * @return known ManagedInstanceProxyOverride values.
      */
     public static Collection<ManagedInstanceProxyOverride> values() {

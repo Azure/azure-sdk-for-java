@@ -14,8 +14,7 @@ public final class ReportResourceImpl implements ReportResource {
 
     private final com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager;
 
-    ReportResourceImpl(
-        ReportResourceInner innerObject,
+    ReportResourceImpl(ReportResourceInner innerObject,
         com.azure.resourcemanager.appcomplianceautomation.AppComplianceAutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

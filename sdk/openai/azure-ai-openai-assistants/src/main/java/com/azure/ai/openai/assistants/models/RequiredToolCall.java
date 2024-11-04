@@ -30,7 +30,6 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
      */
     @Generated
     protected RequiredToolCall(String id) {
-        this.type = "RequiredToolCall";
         this.id = id;
     }
 
@@ -112,7 +111,7 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
      * The object type for the required tool call.
      */
     @Generated
-    private String type;
+    private String type = "RequiredToolCall";
 
     /**
      * Get the type property: The object type for the required tool call.

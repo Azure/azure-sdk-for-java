@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The elastic pool edition capability. */
+/**
+ * The elastic pool edition capability.
+ */
 @Fluent
-public final class ElasticPoolEditionCapability {
+public final class ElasticPoolEditionCapability implements JsonSerializable<ElasticPoolEditionCapability> {
     /*
      * The elastic pool edition name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The list of supported elastic pool DTU levels for the edition.
      */
-    @JsonProperty(value = "supportedElasticPoolPerformanceLevels", access = JsonProperty.Access.WRITE_ONLY)
     private List<ElasticPoolPerformanceLevelCapability> supportedElasticPoolPerformanceLevels;
 
     /*
      * Whether or not zone redundancy is supported for the edition.
      */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean zoneRedundant;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ElasticPoolEditionCapability class. */
+    /**
+     * Creates an instance of ElasticPoolEditionCapability class.
+     */
     public ElasticPoolEditionCapability() {
     }
 
     /**
      * Get the name property: The elastic pool edition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +60,7 @@ public final class ElasticPoolEditionCapability {
     /**
      * Get the supportedElasticPoolPerformanceLevels property: The list of supported elastic pool DTU levels for the
      * edition.
-     *
+     * 
      * @return the supportedElasticPoolPerformanceLevels value.
      */
     public List<ElasticPoolPerformanceLevelCapability> supportedElasticPoolPerformanceLevels() {
@@ -66,7 +69,7 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -75,7 +78,7 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -84,7 +87,7 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -93,7 +96,7 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ElasticPoolEditionCapability object itself.
      */
@@ -104,12 +107,59 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportedElasticPoolPerformanceLevels() != null) {
             supportedElasticPoolPerformanceLevels().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolEditionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolEditionCapability if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticPoolEditionCapability.
+     */
+    public static ElasticPoolEditionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolEditionCapability deserializedElasticPoolEditionCapability = new ElasticPoolEditionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedElasticPoolEditionCapability.name = reader.getString();
+                } else if ("supportedElasticPoolPerformanceLevels".equals(fieldName)) {
+                    List<ElasticPoolPerformanceLevelCapability> supportedElasticPoolPerformanceLevels
+                        = reader.readArray(reader1 -> ElasticPoolPerformanceLevelCapability.fromJson(reader1));
+                    deserializedElasticPoolEditionCapability.supportedElasticPoolPerformanceLevels
+                        = supportedElasticPoolPerformanceLevels;
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedElasticPoolEditionCapability.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedElasticPoolEditionCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedElasticPoolEditionCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolEditionCapability;
+        });
     }
 }

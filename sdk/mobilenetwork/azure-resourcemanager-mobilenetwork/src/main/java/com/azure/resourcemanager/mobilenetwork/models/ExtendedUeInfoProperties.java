@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -16,15 +17,22 @@ import java.time.OffsetDateTime;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "ratType",
-    defaultImpl = ExtendedUeInfoProperties.class)
+    defaultImpl = ExtendedUeInfoProperties.class,
+    visible = true)
 @JsonTypeName("ExtendedUeInfoProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "5G", value = UeInfo5G.class),
     @JsonSubTypes.Type(name = "4G", value = UeInfo4G.class) })
 @Fluent
 public class ExtendedUeInfoProperties {
+    /*
+     * RAT Type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ratType", required = true)
+    private RatType ratType;
+
     /*
      * The timestamp of last UE info read from the packet core (UTC).
      */
@@ -35,6 +43,16 @@ public class ExtendedUeInfoProperties {
      * Creates an instance of ExtendedUeInfoProperties class.
      */
     public ExtendedUeInfoProperties() {
+        this.ratType = RatType.fromString("ExtendedUeInfoProperties");
+    }
+
+    /**
+     * Get the ratType property: RAT Type.
+     * 
+     * @return the ratType value.
+     */
+    public RatType ratType() {
+        return this.ratType;
     }
 
     /**

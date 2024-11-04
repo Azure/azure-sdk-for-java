@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The X12 character set. */
+/**
+ * The X12 character set.
+ */
 public final class X12CharacterSet extends ExpandableStringEnum<X12CharacterSet> {
-    /** Static value NotSpecified for X12CharacterSet. */
+    /**
+     * Static value NotSpecified for X12CharacterSet.
+     */
     public static final X12CharacterSet NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Basic for X12CharacterSet. */
+    /**
+     * Static value Basic for X12CharacterSet.
+     */
     public static final X12CharacterSet BASIC = fromString("Basic");
 
-    /** Static value Extended for X12CharacterSet. */
+    /**
+     * Static value Extended for X12CharacterSet.
+     */
     public static final X12CharacterSet EXTENDED = fromString("Extended");
 
-    /** Static value UTF8 for X12CharacterSet. */
+    /**
+     * Static value UTF8 for X12CharacterSet.
+     */
     public static final X12CharacterSet UTF8 = fromString("UTF8");
 
     /**
      * Creates a new instance of X12CharacterSet value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class X12CharacterSet extends ExpandableStringEnum<X12CharacterSet>
 
     /**
      * Creates or finds a X12CharacterSet from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding X12CharacterSet.
      */
-    @JsonCreator
     public static X12CharacterSet fromString(String name) {
         return fromString(name, X12CharacterSet.class);
     }
 
     /**
      * Gets known X12CharacterSet values.
-     *
+     * 
      * @return known X12CharacterSet values.
      */
     public static Collection<X12CharacterSet> values() {

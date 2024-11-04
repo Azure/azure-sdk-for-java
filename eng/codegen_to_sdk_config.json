@@ -1,12 +1,12 @@
 {
   "init": {
     "initScript": {
-      "path": "./eng/mgmt/automation/sdk_init.sh"
+      "path": "./eng/automation/sdk_init.sh"
     }
   },
   "generateAndBuild": {
     "generateAndBuildScript": {
-      "path": "./eng/mgmt/automation/sdk_generate.py",
+      "path": "./eng/automation/sdk_generate.py",
       "script": "python3"
     }
   }

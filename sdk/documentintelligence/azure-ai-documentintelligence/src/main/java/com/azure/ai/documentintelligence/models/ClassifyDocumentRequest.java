@@ -19,13 +19,13 @@ import java.io.IOException;
 @Fluent
 public final class ClassifyDocumentRequest implements JsonSerializable<ClassifyDocumentRequest> {
     /*
-     * Document URL to classify.  Either urlSource or base64Source must be specified.
+     * Document URL to classify. Either urlSource or base64Source must be specified.
      */
     @Generated
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to classify.  Either urlSource or base64Source
+     * Base64 encoding of the document to classify. Either urlSource or base64Source
      * must be specified.
      */
     @Generated

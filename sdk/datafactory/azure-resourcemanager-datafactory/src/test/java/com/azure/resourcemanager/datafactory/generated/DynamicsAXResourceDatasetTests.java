@@ -19,35 +19,34 @@ public final class DynamicsAXResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicsAXResourceDataset model = BinaryData.fromString(
-            "{\"type\":\"xchquo\",\"typeProperties\":{\"path\":\"datatjuzvyj\"},\"description\":\"qrcsksxq\",\"structure\":\"datalrvuvdagv\",\"schema\":\"datacdp\",\"linkedServiceName\":{\"referenceName\":\"cvfyeqyodi\",\"parameters\":{\"mevljbcuwrfgpjfv\":\"datasapqhipajsniv\",\"gvcykzzu\":\"datawkseodvlmd\"}},\"parameters\":{\"vvcrsm\":{\"type\":\"Array\",\"defaultValue\":\"databbmuml\"},\"mnrut\":{\"type\":\"Int\",\"defaultValue\":\"datamxwcv\"},\"f\":{\"type\":\"Array\",\"defaultValue\":\"dataeq\"},\"opecvpkb\":{\"type\":\"Object\",\"defaultValue\":\"datat\"}},\"annotations\":[\"datanowpajfhxsmu\",\"databzadzglmuuzpsu\",\"datasypxmul\",\"datahfrerkqpyfjxkb\"],\"folder\":{\"name\":\"buq\"},\"\":{\"hyvdbrdvsv\":\"databdjkmnxsggnow\"}}")
+            "{\"type\":\"DynamicsAXResource\",\"typeProperties\":{\"path\":\"datahrau\"},\"description\":\"ovlx\",\"structure\":\"datavm\",\"schema\":\"datapniqwxmrgmnkgtlh\",\"linkedServiceName\":{\"referenceName\":\"krazkioiyecz\",\"parameters\":{\"qzhehgvmmnoyzg\":\"datamsvzngh\",\"pluzypkf\":\"databn\",\"xilzvxot\":\"datadf\",\"ytsqmbwcacwaaqa\":\"dataoilqcdvhyefqh\"}},\"parameters\":{\"qlreqbrcmmdts\":{\"type\":\"Int\",\"defaultValue\":\"dataaxxra\"},\"cznbabow\":{\"type\":\"Bool\",\"defaultValue\":\"datamx\"},\"ejh\":{\"type\":\"Int\",\"defaultValue\":\"datarnmjwkowxqzkkag\"}},\"annotations\":[\"dataphr\"],\"folder\":{\"name\":\"peajzzy\"},\"\":{\"eyrftxytjayp\":\"dataamzmzfnt\"}}")
             .toObject(DynamicsAXResourceDataset.class);
-        Assertions.assertEquals("qrcsksxq", model.description());
-        Assertions.assertEquals("cvfyeqyodi", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vvcrsm").type());
-        Assertions.assertEquals("buq", model.folder().name());
+        Assertions.assertEquals("ovlx", model.description());
+        Assertions.assertEquals("krazkioiyecz", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("qlreqbrcmmdts").type());
+        Assertions.assertEquals("peajzzy", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsAXResourceDataset model = new DynamicsAXResourceDataset().withDescription("qrcsksxq")
-            .withStructure("datalrvuvdagv")
-            .withSchema("datacdp")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cvfyeqyodi")
-                .withParameters(mapOf("mevljbcuwrfgpjfv", "datasapqhipajsniv", "gvcykzzu", "datawkseodvlmd")))
-            .withParameters(mapOf("vvcrsm",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("databbmuml"), "mnrut",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datamxwcv"), "f",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataeq"), "opecvpkb",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datat")))
-            .withAnnotations(
-                Arrays.asList("datanowpajfhxsmu", "databzadzglmuuzpsu", "datasypxmul", "datahfrerkqpyfjxkb"))
-            .withFolder(new DatasetFolder().withName("buq"))
-            .withPath("datatjuzvyj");
+        DynamicsAXResourceDataset model = new DynamicsAXResourceDataset().withDescription("ovlx")
+            .withStructure("datavm")
+            .withSchema("datapniqwxmrgmnkgtlh")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("krazkioiyecz")
+                .withParameters(mapOf("qzhehgvmmnoyzg", "datamsvzngh", "pluzypkf", "databn", "xilzvxot", "datadf",
+                    "ytsqmbwcacwaaqa", "dataoilqcdvhyefqh")))
+            .withParameters(mapOf("qlreqbrcmmdts",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataaxxra"), "cznbabow",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datamx"), "ejh",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datarnmjwkowxqzkkag")))
+            .withAnnotations(Arrays.asList("dataphr"))
+            .withFolder(new DatasetFolder().withName("peajzzy"))
+            .withPath("datahrau");
         model = BinaryData.fromObject(model).toObject(DynamicsAXResourceDataset.class);
-        Assertions.assertEquals("qrcsksxq", model.description());
-        Assertions.assertEquals("cvfyeqyodi", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vvcrsm").type());
-        Assertions.assertEquals("buq", model.folder().name());
+        Assertions.assertEquals("ovlx", model.description());
+        Assertions.assertEquals("krazkioiyecz", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("qlreqbrcmmdts").type());
+        Assertions.assertEquals("peajzzy", model.folder().name());
     }
 
     // Use "Map.of" if available

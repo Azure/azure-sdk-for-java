@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The role management policy enablement rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("RoleManagementPolicyEnablementRule")
+/**
+ * The role management policy enablement rule.
+ */
 @Fluent
 public final class RoleManagementPolicyEnablementRule extends RoleManagementPolicyRule {
     /*
+     * The type of rule
+     */
+    private RoleManagementPolicyRuleType ruleType = RoleManagementPolicyRuleType.ROLE_MANAGEMENT_POLICY_ENABLEMENT_RULE;
+
+    /*
      * The list of enabled rules.
      */
-    @JsonProperty(value = "enabledRules")
     private List<EnablementRules> enabledRules;
 
-    /** Creates an instance of RoleManagementPolicyEnablementRule class. */
+    /**
+     * Creates an instance of RoleManagementPolicyEnablementRule class.
+     */
     public RoleManagementPolicyEnablementRule() {
     }
 
     /**
+     * Get the ruleType property: The type of rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public RoleManagementPolicyRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the enabledRules property: The list of enabled rules.
-     *
+     * 
      * @return the enabledRules value.
      */
     public List<EnablementRules> enabledRules() {
@@ -36,7 +53,7 @@ public final class RoleManagementPolicyEnablementRule extends RoleManagementPoli
 
     /**
      * Set the enabledRules property: The list of enabled rules.
-     *
+     * 
      * @param enabledRules the enabledRules value to set.
      * @return the RoleManagementPolicyEnablementRule object itself.
      */
@@ -45,14 +62,18 @@ public final class RoleManagementPolicyEnablementRule extends RoleManagementPoli
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyEnablementRule withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyEnablementRule withTarget(RoleManagementPolicyRuleTarget target) {
         super.withTarget(target);
@@ -61,11 +82,62 @@ public final class RoleManagementPolicyEnablementRule extends RoleManagementPoli
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("target", target());
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeArrayField("enabledRules", this.enabledRules,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyEnablementRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyEnablementRule if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyEnablementRule.
+     */
+    public static RoleManagementPolicyEnablementRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyEnablementRule deserializedRoleManagementPolicyEnablementRule
+                = new RoleManagementPolicyEnablementRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyEnablementRule.withId(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedRoleManagementPolicyEnablementRule
+                        .withTarget(RoleManagementPolicyRuleTarget.fromJson(reader));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyEnablementRule.ruleType
+                        = RoleManagementPolicyRuleType.fromString(reader.getString());
+                } else if ("enabledRules".equals(fieldName)) {
+                    List<EnablementRules> enabledRules
+                        = reader.readArray(reader1 -> EnablementRules.fromString(reader1.getString()));
+                    deserializedRoleManagementPolicyEnablementRule.enabledRules = enabledRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyEnablementRule;
+        });
     }
 }

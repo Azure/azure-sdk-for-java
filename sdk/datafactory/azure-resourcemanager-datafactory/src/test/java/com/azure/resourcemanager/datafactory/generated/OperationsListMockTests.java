@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wegijdejs\",\"origin\":\"j\",\"display\":{\"description\":\"o\",\"provider\":\"blhc\",\"resource\":\"nz\",\"operation\":\"aathdr\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"cwzmdencqyms\",\"displayName\":\"lio\",\"blobDuration\":\"av\"},{\"name\":\"mxctkwx\",\"displayName\":\"kcvbfeucdqejazht\",\"blobDuration\":\"imcjkhexxn\"},{\"name\":\"lcekonmcxriqfrrx\",\"displayName\":\"svrhcjhszmy\",\"blobDuration\":\"riosmicjkiz\"},{\"name\":\"dawmrkryixbb\",\"displayName\":\"gnjlzdjz\",\"blobDuration\":\"wobxsokemawr\"}],\"metricSpecifications\":[{\"name\":\"drtkwxmglln\",\"displayName\":\"h\",\"displayDescription\":\"fup\",\"unit\":\"fosrwzhmlklocyjp\",\"aggregationType\":\"tnvxomhk\",\"enableRegionalMdmAccount\":\"vdmjjiqjv\",\"sourceMdmAccount\":\"iomfkiopkkhb\",\"sourceMdmNamespace\":\"hsp\",\"availabilities\":[{}],\"dimensions\":[{}]},{\"name\":\"t\",\"displayName\":\"crwnayfkvwl\",\"displayDescription\":\"feyhny\",\"unit\":\"mpuqnvn\",\"aggregationType\":\"awicou\",\"enableRegionalMdmAccount\":\"bjccjorovrfdfgdv\",\"sourceMdmAccount\":\"oxozqcy\",\"sourceMdmNamespace\":\"jpkojykyt\",\"availabilities\":[{},{},{},{}],\"dimensions\":[{},{},{},{}]}]}}}]}";
+            = "{\"value\":[{\"name\":\"lshwaadczwmnfavl\",\"origin\":\"sklsakkihxpofv\",\"display\":{\"description\":\"eaxor\",\"provider\":\"zbdvawbtgvqtegk\",\"resource\":\"ecl\",\"operation\":\"scdoqocdrjguhsjl\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"whbsejuuboy\",\"displayName\":\"qyjtollugz\",\"blobDuration\":\"zikk\"},{\"name\":\"bdaudsvdb\",\"displayName\":\"lmutwm\",\"blobDuration\":\"fbsz\"}],\"metricSpecifications\":[{\"name\":\"s\",\"displayName\":\"rdmbebxmkwokl\",\"displayDescription\":\"cenngutitjwvv\",\"unit\":\"pdshkbfweezzr\",\"aggregationType\":\"ytq\",\"enableRegionalMdmAccount\":\"bxgofiphl\",\"sourceMdmAccount\":\"zdphidhkigslczk\",\"sourceMdmNamespace\":\"bz\",\"availabilities\":[{},{}],\"dimensions\":[{}]}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,33 +33,33 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wegijdejs", response.iterator().next().name());
-        Assertions.assertEquals("j", response.iterator().next().origin());
-        Assertions.assertEquals("o", response.iterator().next().display().description());
-        Assertions.assertEquals("blhc", response.iterator().next().display().provider());
-        Assertions.assertEquals("nz", response.iterator().next().display().resource());
-        Assertions.assertEquals("aathdr", response.iterator().next().display().operation());
-        Assertions.assertEquals("cwzmdencqyms",
+        Assertions.assertEquals("lshwaadczwmnfavl", response.iterator().next().name());
+        Assertions.assertEquals("sklsakkihxpofv", response.iterator().next().origin());
+        Assertions.assertEquals("eaxor", response.iterator().next().display().description());
+        Assertions.assertEquals("zbdvawbtgvqtegk", response.iterator().next().display().provider());
+        Assertions.assertEquals("ecl", response.iterator().next().display().resource());
+        Assertions.assertEquals("scdoqocdrjguhsjl", response.iterator().next().display().operation());
+        Assertions.assertEquals("whbsejuuboy",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("lio",
+        Assertions.assertEquals("qyjtollugz",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("av",
+        Assertions.assertEquals("zikk",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).blobDuration());
-        Assertions.assertEquals("drtkwxmglln",
+        Assertions.assertEquals("s",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("h",
+        Assertions.assertEquals("rdmbebxmkwokl",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("fup",
+        Assertions.assertEquals("cenngutitjwvv",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("fosrwzhmlklocyjp",
+        Assertions.assertEquals("pdshkbfweezzr",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions.assertEquals("tnvxomhk",
+        Assertions.assertEquals("ytq",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals("vdmjjiqjv",
+        Assertions.assertEquals("bxgofiphl",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions.assertEquals("iomfkiopkkhb",
+        Assertions.assertEquals("zdphidhkigslczk",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
-        Assertions.assertEquals("hsp",
+        Assertions.assertEquals("bz",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.appconfiguration.fluent.models.ApiKeyInner;
 public final class ApiKeyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiKeyInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"fqpte\",\"name\":\"zzvypyqrimzinp\",\"value\":\"wjdk\",\"connectionString\":\"soodqxhcrmnoh\",\"lastModified\":\"2021-01-19T09:55:19Z\",\"readOnly\":true}")
-                .toObject(ApiKeyInner.class);
+        ApiKeyInner model = BinaryData.fromString(
+            "{\"id\":\"fqpte\",\"name\":\"zzvypyqrimzinp\",\"value\":\"wjdk\",\"connectionString\":\"soodqxhcrmnoh\",\"lastModified\":\"2021-01-19T09:55:19Z\",\"readOnly\":true}")
+            .toObject(ApiKeyInner.class);
     }
 
     @org.junit.jupiter.api.Test

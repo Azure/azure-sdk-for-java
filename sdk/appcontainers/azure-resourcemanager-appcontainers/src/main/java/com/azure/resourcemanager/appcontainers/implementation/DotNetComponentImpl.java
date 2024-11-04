@@ -87,14 +87,16 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent create() {
-        this.innerObject = serviceManager.serviceClient().getDotNetComponents().createOrUpdate(resourceGroupName,
-            environmentName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDotNetComponents()
+            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DotNetComponent create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDotNetComponents().createOrUpdate(resourceGroupName,
-            environmentName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDotNetComponents()
+            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), context);
         return this;
     }
 
@@ -109,14 +111,16 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent apply() {
-        this.innerObject = serviceManager.serviceClient().getDotNetComponents().update(resourceGroupName,
-            environmentName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDotNetComponents()
+            .update(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DotNetComponent apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDotNetComponents().update(resourceGroupName,
-            environmentName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDotNetComponents()
+            .update(resourceGroupName, environmentName, name, this.innerModel(), context);
         return this;
     }
 
@@ -130,14 +134,18 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent refresh() {
-        this.innerObject = serviceManager.serviceClient().getDotNetComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDotNetComponents()
+            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DotNetComponent refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDotNetComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDotNetComponents()
+            .getWithResponse(resourceGroupName, environmentName, name, context)
+            .getValue();
         return this;
     }
 

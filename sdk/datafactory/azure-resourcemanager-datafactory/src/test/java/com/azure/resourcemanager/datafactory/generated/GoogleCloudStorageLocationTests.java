@@ -11,16 +11,16 @@ public final class GoogleCloudStorageLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleCloudStorageLocation model = BinaryData.fromString(
-            "{\"type\":\"ymcqidkltvdhq\",\"bucketName\":\"datadsbgzan\",\"version\":\"datainm\",\"folderPath\":\"datafbxweiibntojovfn\",\"fileName\":\"datay\",\"\":{\"rhjkehw\":\"dataihaouwudhua\",\"qircamqprlob\":\"dataumo\",\"gelajdyolje\":\"dataugejcvjkjyczcmt\"}}")
+            "{\"type\":\"GoogleCloudStorageLocation\",\"bucketName\":\"datadirdammtzjgc\",\"version\":\"datafxtbwjjirmuydg\",\"folderPath\":\"datatmdofgeoag\",\"fileName\":\"dataoftnxodwxm\",\"\":{\"stgfczl\":\"datawiygmgsevmdmzenl\",\"cidt\":\"datad\",\"cvucgytoxu\":\"datavamyyznmrgcdo\",\"qmebgszplusdekpd\":\"datahttnzqs\"}}")
             .toObject(GoogleCloudStorageLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleCloudStorageLocation model = new GoogleCloudStorageLocation().withFolderPath("datafbxweiibntojovfn")
-            .withFileName("datay")
-            .withBucketName("datadsbgzan")
-            .withVersion("datainm");
+        GoogleCloudStorageLocation model = new GoogleCloudStorageLocation().withFolderPath("datatmdofgeoag")
+            .withFileName("dataoftnxodwxm")
+            .withBucketName("datadirdammtzjgc")
+            .withVersion("datafxtbwjjirmuydg");
         model = BinaryData.fromObject(model).toObject(GoogleCloudStorageLocation.class);
     }
 }

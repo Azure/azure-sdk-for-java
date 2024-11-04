@@ -13,25 +13,37 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 public class StateHolderTest {
 
     private final List<ConfigurationSetting> watchKeys = new ArrayList<>();
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinel").setValue("0").setETag("current");
 
         watchKeys.add(watchKey);
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     /**
@@ -169,10 +181,8 @@ public class StateHolderTest {
         String endpoint = testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc" + ".azconfig.io";
         StateHolder testStateHolder = new StateHolder();
         testStateHolder.setLoadState(endpoint, true, false);
-        testStateHolder.setLoadStateFeatureFlag(endpoint, true, false);
         StateHolder.updateState(testStateHolder);
         assertEquals(testStateHolder.getLoadState().get(endpoint), StateHolder.getLoadState(endpoint));
-        assertTrue(StateHolder.getLoadStateFeatureFlag(endpoint));
         assertEquals(testStateHolder, StateHolder.getCurrentState());
     }
 

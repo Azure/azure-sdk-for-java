@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The default authentication provider to use when multiple providers are configured.
  * This setting is only needed if multiple providers are configured and the unauthenticated client
@@ -58,7 +55,6 @@ public enum BuiltInAuthenticationProvider {
      * @param value the serialized value to parse.
      * @return the parsed BuiltInAuthenticationProvider object, or null if unable to parse.
      */
-    @JsonCreator
     public static BuiltInAuthenticationProvider fromString(String value) {
         if (value == null) {
             return null;
@@ -75,7 +71,6 @@ public enum BuiltInAuthenticationProvider {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

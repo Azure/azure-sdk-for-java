@@ -5,7 +5,11 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sku
@@ -13,24 +17,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * SQL pool SKU.
  */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * The service tier
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The SKU name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
-     * for the resource this may be omitted.
+     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
@@ -99,5 +99,47 @@ public final class Sku {
     public Sku setCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSku.name = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

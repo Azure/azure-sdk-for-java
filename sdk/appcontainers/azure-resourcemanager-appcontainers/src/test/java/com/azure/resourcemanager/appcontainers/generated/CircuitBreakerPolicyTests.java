@@ -23,7 +23,8 @@ public final class CircuitBreakerPolicyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CircuitBreakerPolicy model = new CircuitBreakerPolicy().withConsecutiveErrors(1722437661)
-            .withIntervalInSeconds(1946289710).withMaxEjectionPercent(158340850);
+            .withIntervalInSeconds(1946289710)
+            .withMaxEjectionPercent(158340850);
         model = BinaryData.fromObject(model).toObject(CircuitBreakerPolicy.class);
         Assertions.assertEquals(1722437661, model.consecutiveErrors());
         Assertions.assertEquals(1946289710, model.intervalInSeconds());

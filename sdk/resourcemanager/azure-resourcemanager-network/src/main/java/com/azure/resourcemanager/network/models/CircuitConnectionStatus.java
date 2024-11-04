@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class CircuitConnectionStatus extends ExpandableStringEnum<CircuitC
      * @param name a name to look for.
      * @return the corresponding CircuitConnectionStatus.
      */
-    @JsonCreator
     public static CircuitConnectionStatus fromString(String name) {
         return fromString(name, CircuitConnectionStatus.class);
     }

@@ -523,14 +523,4 @@ public class JsonParserDelegate extends JsonParser {
      * /**********************************************************************
      */
 
-    /**
-     * Accessor for getting the immediate {@link JsonParser} this parser delegates calls to.
-     *
-     * @return Underlying parser calls are delegated to
-     *
-     * @since 2.10
-     */
-    public JsonParser delegate() {
-        return delegate;
-    }
 }

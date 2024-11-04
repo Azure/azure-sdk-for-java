@@ -5,54 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Execution policy for an activity.
  */
 @Fluent
-public final class ActivityPolicy {
+public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
     /*
-     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "timeout")
     private Object timeout;
 
     /*
-     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum:
-     * 0.
+     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "retry")
     private Object retry;
 
     /*
      * Interval between each retry attempt (in seconds). The default is 30 sec.
      */
-    @JsonProperty(value = "retryIntervalInSeconds")
     private Integer retryIntervalInSeconds;
 
     /*
      * When set to true, Input from activity is considered as secure and will not be logged to monitoring.
      */
-    @JsonProperty(value = "secureInput")
     private Boolean secureInput;
 
     /*
      * When set to true, Output from activity is considered as secure and will not be logged to monitoring.
      */
-    @JsonProperty(value = "secureOutput")
     private Boolean secureOutput;
 
     /*
      * Execution policy for an activity.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -106,8 +99,7 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
-     * sec.
+     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
      * 
      * @return the retryIntervalInSeconds value.
      */
@@ -116,8 +108,7 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
-     * sec.
+     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
      * 
      * @param retryIntervalInSeconds the retryIntervalInSeconds value to set.
      * @return the ActivityPolicy object itself.
@@ -176,7 +167,6 @@ public final class ActivityPolicy {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -192,11 +182,62 @@ public final class ActivityPolicy {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("timeout", this.timeout);
+        jsonWriter.writeUntypedField("retry", this.retry);
+        jsonWriter.writeNumberField("retryIntervalInSeconds", this.retryIntervalInSeconds);
+        jsonWriter.writeBooleanField("secureInput", this.secureInput);
+        jsonWriter.writeBooleanField("secureOutput", this.secureOutput);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityPolicy.
+     */
+    public static ActivityPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityPolicy deserializedActivityPolicy = new ActivityPolicy();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeout".equals(fieldName)) {
+                    deserializedActivityPolicy.timeout = reader.readUntyped();
+                } else if ("retry".equals(fieldName)) {
+                    deserializedActivityPolicy.retry = reader.readUntyped();
+                } else if ("retryIntervalInSeconds".equals(fieldName)) {
+                    deserializedActivityPolicy.retryIntervalInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("secureInput".equals(fieldName)) {
+                    deserializedActivityPolicy.secureInput = reader.getNullable(JsonReader::getBoolean);
+                } else if ("secureOutput".equals(fieldName)) {
+                    deserializedActivityPolicy.secureOutput = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedActivityPolicy.additionalProperties = additionalProperties;
+
+            return deserializedActivityPolicy;
+        });
     }
 }

@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,54 +17,45 @@ import java.util.Map;
  * Extended Information about the job.
  */
 @Fluent
-public final class JobExtendedInfo {
+public final class JobExtendedInfo implements JsonSerializable<JobExtendedInfo> {
     /*
      * Job's Additional Details
      */
-    @JsonProperty(value = "additionalDetails")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalDetails;
 
     /*
      * State of the Backup Instance
      */
-    @JsonProperty(value = "backupInstanceState", access = JsonProperty.Access.WRITE_ONLY)
     private String backupInstanceState;
 
     /*
      * Number of bytes transferred
      */
-    @JsonProperty(value = "dataTransferredInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Double dataTransferredInBytes;
 
     /*
      * Destination where restore is done
      */
-    @JsonProperty(value = "recoveryDestination", access = JsonProperty.Access.WRITE_ONLY)
     private String recoveryDestination;
 
     /*
      * Details of the Source Recovery Point
      */
-    @JsonProperty(value = "sourceRecoverPoint", access = JsonProperty.Access.WRITE_ONLY)
     private RestoreJobRecoveryPointDetails sourceRecoverPoint;
 
     /*
      * List of Sub Tasks of the job
      */
-    @JsonProperty(value = "subTasks", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobSubTask> subTasks;
 
     /*
      * Details of the Target Recovery Point
      */
-    @JsonProperty(value = "targetRecoverPoint", access = JsonProperty.Access.WRITE_ONLY)
     private RestoreJobRecoveryPointDetails targetRecoverPoint;
 
     /*
      * A List, detailing the warnings related to the job
      */
-    @JsonProperty(value = "warningDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<UserFacingWarningDetail> warningDetails;
 
     /**
@@ -171,5 +165,60 @@ public final class JobExtendedInfo {
         if (warningDetails() != null) {
             warningDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("additionalDetails", this.additionalDetails,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobExtendedInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobExtendedInfo.
+     */
+    public static JobExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobExtendedInfo deserializedJobExtendedInfo = new JobExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalDetails".equals(fieldName)) {
+                    Map<String, String> additionalDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobExtendedInfo.additionalDetails = additionalDetails;
+                } else if ("backupInstanceState".equals(fieldName)) {
+                    deserializedJobExtendedInfo.backupInstanceState = reader.getString();
+                } else if ("dataTransferredInBytes".equals(fieldName)) {
+                    deserializedJobExtendedInfo.dataTransferredInBytes = reader.getNullable(JsonReader::getDouble);
+                } else if ("recoveryDestination".equals(fieldName)) {
+                    deserializedJobExtendedInfo.recoveryDestination = reader.getString();
+                } else if ("sourceRecoverPoint".equals(fieldName)) {
+                    deserializedJobExtendedInfo.sourceRecoverPoint = RestoreJobRecoveryPointDetails.fromJson(reader);
+                } else if ("subTasks".equals(fieldName)) {
+                    List<JobSubTask> subTasks = reader.readArray(reader1 -> JobSubTask.fromJson(reader1));
+                    deserializedJobExtendedInfo.subTasks = subTasks;
+                } else if ("targetRecoverPoint".equals(fieldName)) {
+                    deserializedJobExtendedInfo.targetRecoverPoint = RestoreJobRecoveryPointDetails.fromJson(reader);
+                } else if ("warningDetails".equals(fieldName)) {
+                    List<UserFacingWarningDetail> warningDetails
+                        = reader.readArray(reader1 -> UserFacingWarningDetail.fromJson(reader1));
+                    deserializedJobExtendedInfo.warningDetails = warningDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobExtendedInfo;
+        });
     }
 }

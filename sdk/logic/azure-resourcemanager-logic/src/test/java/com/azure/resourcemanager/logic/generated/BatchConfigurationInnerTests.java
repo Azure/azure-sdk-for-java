@@ -8,7 +8,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 import com.azure.resourcemanager.logic.models.BatchConfigurationProperties;
 import com.azure.resourcemanager.logic.models.BatchReleaseCriteria;
+import com.azure.resourcemanager.logic.models.DaysOfWeek;
+import com.azure.resourcemanager.logic.models.RecurrenceFrequency;
+import com.azure.resourcemanager.logic.models.RecurrenceSchedule;
+import com.azure.resourcemanager.logic.models.RecurrenceScheduleOccurrence;
+import com.azure.resourcemanager.logic.models.WorkflowTriggerRecurrence;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,44 +22,77 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"batchGroupName\":\"kgymareqnajxqug\",\"releaseCriteria\":{\"messageCount\":432489630,\"batchSize\":1068546777},\"createdTime\":\"2021-05-25T15:55:45Z\",\"changedTime\":\"2020-12-26T14:38:09Z\",\"metadata\":\"datassofwqmzqa\"},\"location\":\"krmnjijpxacqqud\",\"tags\":{\"imrzrtuzqog\":\"yxbaaabjyvayf\",\"vfdnwnwmewzsyyce\":\"exn\",\"hzv\":\"zsoibjudpfrxtr\"},\"id\":\"ytdw\",\"name\":\"qbrqubpaxhexiili\",\"type\":\"pdtii\"}")
-                .toObject(BatchConfigurationInner.class);
-        Assertions.assertEquals("krmnjijpxacqqud", model.location());
-        Assertions.assertEquals("yxbaaabjyvayf", model.tags().get("imrzrtuzqog"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T15:55:45Z"), model.properties().createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T14:38:09Z"), model.properties().changedTime());
-        Assertions.assertEquals("kgymareqnajxqug", model.properties().batchGroupName());
-        Assertions.assertEquals(432489630, model.properties().releaseCriteria().messageCount());
-        Assertions.assertEquals(1068546777, model.properties().releaseCriteria().batchSize());
+        BatchConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"batchGroupName\":\"w\",\"releaseCriteria\":{\"messageCount\":1194335789,\"batchSize\":1138704794,\"recurrence\":{\"frequency\":\"Day\",\"interval\":1490007773,\"startTime\":\"isze\",\"endTime\":\"nb\",\"timeZone\":\"rxgibbd\",\"schedule\":{\"minutes\":[724874464],\"hours\":[2047724357,536315027,1054559896,549450060],\"weekDays\":[\"Tuesday\",\"Monday\",\"Tuesday\"],\"monthDays\":[1308317081,2015960130],\"monthlyOccurrences\":[{}]}}},\"createdTime\":\"2021-12-08T11:17:35Z\",\"changedTime\":\"2021-05-19T05:27:01Z\",\"metadata\":\"datauepzl\"},\"location\":\"phwzsoldweyuqdu\",\"tags\":{\"alywjhhgdn\":\"nnrwrbiork\",\"iqndieuzaofj\":\"xmsivfomiloxggdu\"},\"id\":\"hvcyyysfg\",\"name\":\"otcubi\",\"type\":\"p\"}")
+            .toObject(BatchConfigurationInner.class);
+        Assertions.assertEquals("phwzsoldweyuqdu", model.location());
+        Assertions.assertEquals("nnrwrbiork", model.tags().get("alywjhhgdn"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T11:17:35Z"), model.properties().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T05:27:01Z"), model.properties().changedTime());
+        Assertions.assertEquals("w", model.properties().batchGroupName());
+        Assertions.assertEquals(1194335789, model.properties().releaseCriteria().messageCount());
+        Assertions.assertEquals(1138704794, model.properties().releaseCriteria().batchSize());
+        Assertions.assertEquals(RecurrenceFrequency.DAY, model.properties().releaseCriteria().recurrence().frequency());
+        Assertions.assertEquals(1490007773, model.properties().releaseCriteria().recurrence().interval());
+        Assertions.assertEquals("isze", model.properties().releaseCriteria().recurrence().startTime());
+        Assertions.assertEquals("nb", model.properties().releaseCriteria().recurrence().endTime());
+        Assertions.assertEquals("rxgibbd", model.properties().releaseCriteria().recurrence().timeZone());
+        Assertions.assertEquals(724874464,
+            model.properties().releaseCriteria().recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(2047724357,
+            model.properties().releaseCriteria().recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(DaysOfWeek.TUESDAY,
+            model.properties().releaseCriteria().recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals(1308317081,
+            model.properties().releaseCriteria().recurrence().schedule().monthDays().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchConfigurationInner model =
-            new BatchConfigurationInner()
-                .withLocation("krmnjijpxacqqud")
-                .withTags(mapOf("imrzrtuzqog", "yxbaaabjyvayf", "vfdnwnwmewzsyyce", "exn", "hzv", "zsoibjudpfrxtr"))
-                .withProperties(
-                    new BatchConfigurationProperties()
-                        .withCreatedTime(OffsetDateTime.parse("2021-05-25T15:55:45Z"))
-                        .withChangedTime(OffsetDateTime.parse("2020-12-26T14:38:09Z"))
-                        .withMetadata("datassofwqmzqa")
-                        .withBatchGroupName("kgymareqnajxqug")
-                        .withReleaseCriteria(
-                            new BatchReleaseCriteria().withMessageCount(432489630).withBatchSize(1068546777)));
+        BatchConfigurationInner model
+            = new BatchConfigurationInner().withLocation("phwzsoldweyuqdu")
+                .withTags(mapOf("alywjhhgdn", "nnrwrbiork", "iqndieuzaofj", "xmsivfomiloxggdu"))
+                .withProperties(new BatchConfigurationProperties()
+                    .withCreatedTime(OffsetDateTime.parse("2021-12-08T11:17:35Z"))
+                    .withChangedTime(OffsetDateTime.parse("2021-05-19T05:27:01Z"))
+                    .withMetadata("datauepzl")
+                    .withBatchGroupName("w")
+                    .withReleaseCriteria(new BatchReleaseCriteria().withMessageCount(1194335789)
+                        .withBatchSize(1138704794)
+                        .withRecurrence(new WorkflowTriggerRecurrence().withFrequency(RecurrenceFrequency.DAY)
+                            .withInterval(1490007773)
+                            .withStartTime("isze")
+                            .withEndTime("nb")
+                            .withTimeZone("rxgibbd")
+                            .withSchedule(new RecurrenceSchedule().withMinutes(Arrays.asList(724874464))
+                                .withHours(Arrays.asList(2047724357, 536315027, 1054559896, 549450060))
+                                .withWeekDays(Arrays.asList(DaysOfWeek.TUESDAY, DaysOfWeek.MONDAY, DaysOfWeek.TUESDAY))
+                                .withMonthDays(Arrays.asList(1308317081, 2015960130))
+                                .withMonthlyOccurrences(Arrays.asList(new RecurrenceScheduleOccurrence()))))));
         model = BinaryData.fromObject(model).toObject(BatchConfigurationInner.class);
-        Assertions.assertEquals("krmnjijpxacqqud", model.location());
-        Assertions.assertEquals("yxbaaabjyvayf", model.tags().get("imrzrtuzqog"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T15:55:45Z"), model.properties().createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T14:38:09Z"), model.properties().changedTime());
-        Assertions.assertEquals("kgymareqnajxqug", model.properties().batchGroupName());
-        Assertions.assertEquals(432489630, model.properties().releaseCriteria().messageCount());
-        Assertions.assertEquals(1068546777, model.properties().releaseCriteria().batchSize());
+        Assertions.assertEquals("phwzsoldweyuqdu", model.location());
+        Assertions.assertEquals("nnrwrbiork", model.tags().get("alywjhhgdn"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T11:17:35Z"), model.properties().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T05:27:01Z"), model.properties().changedTime());
+        Assertions.assertEquals("w", model.properties().batchGroupName());
+        Assertions.assertEquals(1194335789, model.properties().releaseCriteria().messageCount());
+        Assertions.assertEquals(1138704794, model.properties().releaseCriteria().batchSize());
+        Assertions.assertEquals(RecurrenceFrequency.DAY, model.properties().releaseCriteria().recurrence().frequency());
+        Assertions.assertEquals(1490007773, model.properties().releaseCriteria().recurrence().interval());
+        Assertions.assertEquals("isze", model.properties().releaseCriteria().recurrence().startTime());
+        Assertions.assertEquals("nb", model.properties().releaseCriteria().recurrence().endTime());
+        Assertions.assertEquals("rxgibbd", model.properties().releaseCriteria().recurrence().timeZone());
+        Assertions.assertEquals(724874464,
+            model.properties().releaseCriteria().recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(2047724357,
+            model.properties().releaseCriteria().recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(DaysOfWeek.TUESDAY,
+            model.properties().releaseCriteria().recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals(1308317081,
+            model.properties().releaseCriteria().recurrence().schedule().monthDays().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

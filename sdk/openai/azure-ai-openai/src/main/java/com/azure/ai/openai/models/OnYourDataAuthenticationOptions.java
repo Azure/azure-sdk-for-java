@@ -22,14 +22,14 @@ public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourD
      */
     @Generated
     public OnYourDataAuthenticationOptions() {
-        this.type = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
     }
 
     /*
      * The authentication type.
      */
     @Generated
-    private OnYourDataAuthenticationType type;
+    private OnYourDataAuthenticationType type
+        = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
 
     /**
      * Get the type property: The authentication type.
@@ -86,6 +86,8 @@ public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourD
                     return OnYourDataKeyAndKeyIdAuthenticationOptions.fromJson(readerToUse.reset());
                 } else if ("encoded_api_key".equals(discriminatorValue)) {
                     return OnYourDataEncodedApiKeyAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("username_and_password".equals(discriminatorValue)) {
+                    return OnYourDataUsernameAndPasswordAuthenticationOptions.fromJson(readerToUse.reset());
                 } else if ("access_token".equals(discriminatorValue)) {
                     return OnYourDataAccessTokenAuthenticationOptions.fromJson(readerToUse.reset());
                 } else if ("system_assigned_managed_identity".equals(discriminatorValue)) {

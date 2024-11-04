@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The kubernetes spec information. */
+/**
+ * The kubernetes spec information.
+ */
 @Fluent
-public final class SqlManagedInstanceK8SSpec {
+public final class SqlManagedInstanceK8SSpec implements JsonSerializable<SqlManagedInstanceK8SSpec> {
     /*
      * The kubernetes scheduling information.
      */
-    @JsonProperty(value = "scheduling")
     private K8SScheduling scheduling;
 
     /*
@@ -26,21 +28,22 @@ public final class SqlManagedInstanceK8SSpec {
      * cluster for high availability purposes. If sku.tier is BusinessCritical, allowed values are '2' or '3' with
      * default of '3'. If sku.tier is GeneralPurpose, replicas must be '1'.
      */
-    @JsonProperty(value = "replicas")
     private Integer replicas;
 
     /*
      * The kubernetes spec information.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SqlManagedInstanceK8SSpec class. */
+    /**
+     * Creates an instance of SqlManagedInstanceK8SSpec class.
+     */
     public SqlManagedInstanceK8SSpec() {
     }
 
     /**
      * Get the scheduling property: The kubernetes scheduling information.
-     *
+     * 
      * @return the scheduling value.
      */
     public K8SScheduling scheduling() {
@@ -49,7 +52,7 @@ public final class SqlManagedInstanceK8SSpec {
 
     /**
      * Set the scheduling property: The kubernetes scheduling information.
-     *
+     * 
      * @param scheduling the scheduling value to set.
      * @return the SqlManagedInstanceK8SSpec object itself.
      */
@@ -62,7 +65,7 @@ public final class SqlManagedInstanceK8SSpec {
      * Get the replicas property: This option specifies the number of SQL Managed Instance replicas that will be
      * deployed in your Kubernetes cluster for high availability purposes. If sku.tier is BusinessCritical, allowed
      * values are '2' or '3' with default of '3'. If sku.tier is GeneralPurpose, replicas must be '1'.
-     *
+     * 
      * @return the replicas value.
      */
     public Integer replicas() {
@@ -73,7 +76,7 @@ public final class SqlManagedInstanceK8SSpec {
      * Set the replicas property: This option specifies the number of SQL Managed Instance replicas that will be
      * deployed in your Kubernetes cluster for high availability purposes. If sku.tier is BusinessCritical, allowed
      * values are '2' or '3' with default of '3'. If sku.tier is GeneralPurpose, replicas must be '1'.
-     *
+     * 
      * @param replicas the replicas value to set.
      * @return the SqlManagedInstanceK8SSpec object itself.
      */
@@ -84,17 +87,16 @@ public final class SqlManagedInstanceK8SSpec {
 
     /**
      * Get the additionalProperties property: The kubernetes spec information.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The kubernetes spec information.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlManagedInstanceK8SSpec object itself.
      */
@@ -103,22 +105,64 @@ public final class SqlManagedInstanceK8SSpec {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scheduling() != null) {
             scheduling().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("scheduling", this.scheduling);
+        jsonWriter.writeNumberField("replicas", this.replicas);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlManagedInstanceK8SSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlManagedInstanceK8SSpec if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlManagedInstanceK8SSpec.
+     */
+    public static SqlManagedInstanceK8SSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlManagedInstanceK8SSpec deserializedSqlManagedInstanceK8SSpec = new SqlManagedInstanceK8SSpec();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheduling".equals(fieldName)) {
+                    deserializedSqlManagedInstanceK8SSpec.scheduling = K8SScheduling.fromJson(reader);
+                } else if ("replicas".equals(fieldName)) {
+                    deserializedSqlManagedInstanceK8SSpec.replicas = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlManagedInstanceK8SSpec.additionalProperties = additionalProperties;
+
+            return deserializedSqlManagedInstanceK8SSpec;
+        });
     }
 }

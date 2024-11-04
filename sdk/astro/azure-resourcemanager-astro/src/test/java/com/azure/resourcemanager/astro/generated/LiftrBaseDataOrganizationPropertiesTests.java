@@ -55,16 +55,27 @@ public final class LiftrBaseDataOrganizationPropertiesTests {
         LiftrBaseDataOrganizationProperties model = new LiftrBaseDataOrganizationProperties()
             .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("ytb")
                 .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-                .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("fouflmmnkzsmo").withOfferId("mglougpbkw")
-                    .withPlanId("mutduqktaps").withPlanName("gcue").withTermUnit("umkdosvqwhbmd").withTermId("bjf")))
-            .withUser(new LiftrBaseUserDetails().withFirstName("dgmb").withLastName("bexppb").withEmailAddress("tq")
-                .withUpn("ol").withPhoneNumber("fpsalgbqu"))
+                .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("fouflmmnkzsmo")
+                    .withOfferId("mglougpbkw")
+                    .withPlanId("mutduqktaps")
+                    .withPlanName("gcue")
+                    .withTermUnit("umkdosvqwhbmd")
+                    .withTermId("bjf")))
+            .withUser(new LiftrBaseUserDetails().withFirstName("dgmb")
+                .withLastName("bexppb")
+                .withEmailAddress("tq")
+                .withUpn("ol")
+                .withPhoneNumber("fpsalgbqu"))
             .withPartnerOrganizationProperties(
-                new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("jgzjaoyfhrtx").withWorkspaceId("n")
-                    .withOrganizationName("rkujy").withWorkspaceName("l")
-                    .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                        .withSingleSignOnState(SingleSignOnStates.DISABLE).withEnterpriseAppId("qawrlyxwj")
-                        .withSingleSignOnUrl("prbnwbxgjvtbv").withAadDomains(Arrays.asList("szdnr", "jq"))));
+                new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("jgzjaoyfhrtx")
+                    .withWorkspaceId("n")
+                    .withOrganizationName("rkujy")
+                    .withWorkspaceName("l")
+                    .withSingleSignOnProperties(
+                        new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
+                            .withEnterpriseAppId("qawrlyxwj")
+                            .withSingleSignOnUrl("prbnwbxgjvtbv")
+                            .withAadDomains(Arrays.asList("szdnr", "jq"))));
         model = BinaryData.fromObject(model).toObject(LiftrBaseDataOrganizationProperties.class);
         Assertions.assertEquals("ytb", model.marketplace().subscriptionId());
         Assertions.assertEquals(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START,

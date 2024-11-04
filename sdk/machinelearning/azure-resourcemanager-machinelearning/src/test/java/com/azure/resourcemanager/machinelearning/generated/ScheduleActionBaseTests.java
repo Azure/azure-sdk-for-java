@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.ScheduleActionBase;
 public final class ScheduleActionBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleActionBase model =
-            BinaryData.fromString("{\"actionType\":\"ScheduleActionBase\"}").toObject(ScheduleActionBase.class);
+        ScheduleActionBase model
+            = BinaryData.fromString("{\"actionType\":\"ScheduleActionBase\"}").toObject(ScheduleActionBase.class);
     }
 
     @org.junit.jupiter.api.Test

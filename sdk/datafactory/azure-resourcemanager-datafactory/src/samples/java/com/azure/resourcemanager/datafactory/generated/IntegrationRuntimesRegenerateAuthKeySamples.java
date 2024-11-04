@@ -12,7 +12,8 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerate
  */
 public final class IntegrationRuntimesRegenerateAuthKeySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RegenerateAuthKey.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * IntegrationRuntimes_RegenerateAuthKey.json
      */
     /**
      * Sample code: IntegrationRuntimes_RegenerateAuthKey.

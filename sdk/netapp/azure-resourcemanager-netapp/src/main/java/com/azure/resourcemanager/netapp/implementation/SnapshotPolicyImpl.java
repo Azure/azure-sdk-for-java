@@ -114,14 +114,16 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     public SnapshotPolicy create() {
-        this.innerObject = serviceManager.serviceClient().getSnapshotPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshotPolicies()
             .createWithResponse(resourceGroupName, accountName, snapshotPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public SnapshotPolicy create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSnapshotPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshotPolicies()
             .createWithResponse(resourceGroupName, accountName, snapshotPolicyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -139,14 +141,16 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     public SnapshotPolicy apply() {
-        this.innerObject = serviceManager.serviceClient().getSnapshotPolicies().update(resourceGroupName, accountName,
-            snapshotPolicyName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshotPolicies()
+            .update(resourceGroupName, accountName, snapshotPolicyName, updateBody, Context.NONE);
         return this;
     }
 
     public SnapshotPolicy apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSnapshotPolicies().update(resourceGroupName, accountName,
-            snapshotPolicyName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshotPolicies()
+            .update(resourceGroupName, accountName, snapshotPolicyName, updateBody, context);
         return this;
     }
 
@@ -160,14 +164,18 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     public SnapshotPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient().getSnapshotPolicies()
-            .getWithResponse(resourceGroupName, accountName, snapshotPolicyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshotPolicies()
+            .getWithResponse(resourceGroupName, accountName, snapshotPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SnapshotPolicy refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSnapshotPolicies()
-            .getWithResponse(resourceGroupName, accountName, snapshotPolicyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshotPolicies()
+            .getWithResponse(resourceGroupName, accountName, snapshotPolicyName, context)
+            .getValue();
         return this;
     }
 

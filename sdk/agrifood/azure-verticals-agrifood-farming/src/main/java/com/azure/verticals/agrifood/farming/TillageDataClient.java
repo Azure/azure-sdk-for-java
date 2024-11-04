@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = TillageDataClientBuilder.class)
 public final class TillageDataClient {
-    @Generated private final TillageDataAsyncClient client;
+    @Generated
+    private final TillageDataAsyncClient client;
 
     /**
      * Initializes an instance of TillageDataClient class.
@@ -247,8 +248,8 @@ public final class TillageDataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String tillageDataId, BinaryData tillageData, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String tillageDataId, BinaryData tillageData,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(partyId, tillageDataId, tillageData, requestOptions).block();
     }
 
@@ -388,8 +389,8 @@ public final class TillageDataClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String tillageDataId, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String tillageDataId, RequestOptions requestOptions) {
         return this.client.beginCreateCascadeDeleteJob(jobId, partyId, tillageDataId, requestOptions).getSyncPoller();
     }
 

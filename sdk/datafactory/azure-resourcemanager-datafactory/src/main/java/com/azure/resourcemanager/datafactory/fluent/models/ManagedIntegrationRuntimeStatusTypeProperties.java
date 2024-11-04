@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntimeError;
 import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntimeNode;
 import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntimeOperationResult;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,29 +21,26 @@ import java.util.List;
  * Managed integration runtime status type properties.
  */
 @Immutable
-public final class ManagedIntegrationRuntimeStatusTypeProperties {
+public final class ManagedIntegrationRuntimeStatusTypeProperties
+    implements JsonSerializable<ManagedIntegrationRuntimeStatusTypeProperties> {
     /*
      * The time at which the integration runtime was created, in ISO8601 format.
      */
-    @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
 
     /*
      * The list of nodes for managed integration runtime.
      */
-    @JsonProperty(value = "nodes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedIntegrationRuntimeNode> nodes;
 
     /*
      * The errors that occurred on this integration runtime.
      */
-    @JsonProperty(value = "otherErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedIntegrationRuntimeError> otherErrors;
 
     /*
      * The last operation result that occurred on this integration runtime.
      */
-    @JsonProperty(value = "lastOperation", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedIntegrationRuntimeOperationResult lastOperation;
 
     /**
@@ -98,5 +100,53 @@ public final class ManagedIntegrationRuntimeStatusTypeProperties {
         if (lastOperation() != null) {
             lastOperation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntimeStatusTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntimeStatusTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntimeStatusTypeProperties.
+     */
+    public static ManagedIntegrationRuntimeStatusTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntimeStatusTypeProperties deserializedManagedIntegrationRuntimeStatusTypeProperties
+                = new ManagedIntegrationRuntimeStatusTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createTime".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeStatusTypeProperties.createTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nodes".equals(fieldName)) {
+                    List<ManagedIntegrationRuntimeNode> nodes
+                        = reader.readArray(reader1 -> ManagedIntegrationRuntimeNode.fromJson(reader1));
+                    deserializedManagedIntegrationRuntimeStatusTypeProperties.nodes = nodes;
+                } else if ("otherErrors".equals(fieldName)) {
+                    List<ManagedIntegrationRuntimeError> otherErrors
+                        = reader.readArray(reader1 -> ManagedIntegrationRuntimeError.fromJson(reader1));
+                    deserializedManagedIntegrationRuntimeStatusTypeProperties.otherErrors = otherErrors;
+                } else if ("lastOperation".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeStatusTypeProperties.lastOperation
+                        = ManagedIntegrationRuntimeOperationResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIntegrationRuntimeStatusTypeProperties;
+        });
     }
 }

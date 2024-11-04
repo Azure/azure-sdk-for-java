@@ -10,10 +10,6 @@ module com.azure.resourcemanager.devtestlabs {
     exports com.azure.resourcemanager.devtestlabs.fluent.models;
     exports com.azure.resourcemanager.devtestlabs.models;
 
-    opens com.azure.resourcemanager.devtestlabs.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.devtestlabs.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.devtestlabs.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.devtestlabs.models to com.azure.core, com.fasterxml.jackson.databind;
 }

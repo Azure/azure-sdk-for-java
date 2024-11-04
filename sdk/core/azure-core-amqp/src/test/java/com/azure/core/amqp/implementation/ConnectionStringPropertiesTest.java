@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -151,6 +152,7 @@ public class ConnectionStringPropertiesTest {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
 
         // Assert
+        Assertions.assertFalse(properties.useDevelopmentEmulator());
         Assertions.assertEquals(HOST, properties.getEndpoint().getHost());
         Assertions.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
         Assertions.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
@@ -169,6 +171,28 @@ public class ConnectionStringPropertiesTest {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
 
         // Assert
+        Assertions.assertFalse(properties.useDevelopmentEmulator());
+        Assertions.assertEquals(HOST, properties.getEndpoint().getHost());
+        Assertions.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
+        Assertions.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
+        Assertions.assertEquals(EVENT_HUB, properties.getEntityPath());
+    }
+
+    /**
+     * Verifies we can create ConnectionStringProperties with "UseDevelopmentEmulator" specified.
+     */
+    @ValueSource(booleans = { true, false })
+    @ParameterizedTest
+    public void useDevelopmentConnectionString(boolean useEmulator) {
+        // Arrange
+        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, SAS_VALUE)
+            + "UseDevelopmentEmulator=" + useEmulator + ";";
+
+        // Act
+        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+
+        // Assert
+        Assertions.assertEquals(useEmulator, properties.useDevelopmentEmulator());
         Assertions.assertEquals(HOST, properties.getEndpoint().getHost());
         Assertions.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
         Assertions.assertEquals(SAS_VALUE, properties.getSharedAccessKey());

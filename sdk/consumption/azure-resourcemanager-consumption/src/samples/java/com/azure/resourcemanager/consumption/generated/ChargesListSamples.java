@@ -4,278 +4,216 @@
 
 package com.azure.resourcemanager.consumption.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Charges List. */
+/**
+ * Samples for Charges List.
+ */
 public final class ChargesListSamples {
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingAccount.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingAccount.json
      */
     /**
      * Sample code: ChargesListByBillingAccount-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
-    public static void chargesListByBillingAccountModern(
-        com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/1234:56789",
-                "2019-09-01",
-                "2019-10-31",
-                null,
-                null,
-                Context.NONE);
+    public static void
+        chargesListByBillingAccountModern(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/1234:56789", "2019-09-01", "2019-10-31",
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesForBillingPeriodByEnrollmentAccount.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesForBillingPeriodByEnrollmentAccount.json
      */
     /**
      * Sample code: ChangesForBillingPeriodByEnrollmentAccount-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void changesForBillingPeriodByEnrollmentAccountLegacy(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234/enrollmentAccounts/42425",
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234/enrollmentAccounts/42425", null, null,
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingAccountGroupByCustomerId.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingAccountGroupByCustomerId.json
      */
     /**
      * Sample code: ChargesListByBillingAccountGroupByCustomerId-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByBillingAccountGroupByCustomerIdModern(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/1234:56789",
-                "2019-09-01",
-                "2019-09-30",
-                null,
-                "groupby((properties/customerId))",
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/1234:56789", "2019-09-01", "2019-09-30",
+                null, "groupby((properties/customerId))", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingProfile.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingProfile.json
      */
     /**
      * Sample code: ChargesListByBillingProfile-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
-    public static void chargesListByBillingProfileModern(
-        com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234:56789/billingProfiles/2460",
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+    public static void
+        chargesListByBillingProfileModern(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234:56789/billingProfiles/2460", null, null,
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingProfileInvoiceSection.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingProfileInvoiceSection.json
      */
     /**
      * Sample code: ChargesListByBillingProfileInvoiceSection-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByBillingProfileInvoiceSectionModern(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
+        manager.charges()
             .listWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425/invoiceSections/67890",
-                "2019-09-01",
-                "2019-10-31",
-                null,
-                null,
-                Context.NONE);
+                "2019-09-01", "2019-10-31", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernCustomer.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernCustomer.json
      */
     /**
      * Sample code: ChargesListByCustomer-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByCustomerModern(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234:56789/customers/67890",
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234:56789/customers/67890", null, null,
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListForDepartmentFilterByStartEndDate.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListForDepartmentFilterByStartEndDate.json
      */
     /**
      * Sample code: ChargesListByDepartment-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByDepartmentLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234/departments/42425",
-                null,
-                null,
-                "usageStart eq '2018-04-01' AND usageEnd eq '2018-05-30'",
-                null,
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234/departments/42425", null, null,
+                "usageStart eq '2018-04-01' AND usageEnd eq '2018-05-30'", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListForEnrollmentAccountFilterByStartEndDate.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListForEnrollmentAccountFilterByStartEndDate.json
      */
     /**
      * Sample code: ChargesListForEnrollmentAccount-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
-    public static void chargesListForEnrollmentAccountLegacy(
-        com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234/enrollmentAccounts/42425",
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+    public static void
+        chargesListForEnrollmentAccountLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234/enrollmentAccounts/42425", null, null,
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingProfileGroupByInvoiceSectionId.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingProfileGroupByInvoiceSectionId.json
      */
     /**
      * Sample code: ChargesListByBillingProfileGroupByInvoiceSectionId-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByBillingProfileGroupByInvoiceSectionIdModern(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425",
-                "2019-09-01",
-                "2019-09-30",
-                null,
-                "groupby((properties/invoiceSectionId))",
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425",
+                "2019-09-01", "2019-09-30", null, "groupby((properties/invoiceSectionId))",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingAccountGroupByBillingProfileId.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingAccountGroupByBillingProfileId.json
      */
     /**
      * Sample code: ChargesListByBillingAccountGroupByBillingProfileId-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByBillingAccountGroupByBillingProfileIdModern(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/1234:56789",
-                "2019-09-01",
-                "2019-09-30",
-                null,
-                "groupby((properties/billingProfileId))",
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/1234:56789", "2019-09-01", "2019-09-30",
+                null, "groupby((properties/billingProfileId))", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernBillingAccountGroupByInvoiceSectionId.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernBillingAccountGroupByInvoiceSectionId.json
      */
     /**
      * Sample code: ChargesListByBillingAccountGroupByInvoiceSectionId-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void chargesListByBillingAccountGroupByInvoiceSectionIdModern(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425",
-                "2019-09-01",
-                "2019-09-30",
-                null,
-                "groupby((properties/invoiceSectionId))",
-                Context.NONE);
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425",
+                "2019-09-01", "2019-09-30", null, "groupby((properties/invoiceSectionId))",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesForBillingPeriodByDepartment.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesForBillingPeriodByDepartment.json
      */
     /**
      * Sample code: ChangesForBillingPeriodByDepartment-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
-    public static void changesForBillingPeriodByDepartmentLegacy(
-        com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234/departments/42425",
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+    public static void
+        changesForBillingPeriodByDepartmentLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234/departments/42425", null, null, null,
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ChargesListByModernInvoiceSectionId.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ChargesListByModernInvoiceSectionId.json
      */
     /**
      * Sample code: ChargesListByInvoiceSectionId-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
-    public static void chargesListByInvoiceSectionIdModern(
-        com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .charges()
-            .listWithResponse(
-                "providers/Microsoft.Billing/BillingAccounts/1234:56789/invoiceSections/97531",
-                null,
-                null,
-                null,
-                null,
-                Context.NONE);
+    public static void
+        chargesListByInvoiceSectionIdModern(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
+        manager.charges()
+            .listWithResponse("providers/Microsoft.Billing/BillingAccounts/1234:56789/invoiceSections/97531", null,
+                null, null, null, com.azure.core.util.Context.NONE);
     }
 }

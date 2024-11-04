@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.AutomationRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The AutomationRulesList model. */
+/**
+ * The AutomationRulesList model.
+ */
 @Fluent
-public final class AutomationRulesList {
+public final class AutomationRulesList implements JsonSerializable<AutomationRulesList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<AutomationRuleInner> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of AutomationRulesList class.
+     */
+    public AutomationRulesList() {
+    }
+
+    /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<AutomationRuleInner> value() {
@@ -35,7 +45,7 @@ public final class AutomationRulesList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the AutomationRulesList object itself.
      */
@@ -46,7 +56,7 @@ public final class AutomationRulesList {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +65,7 @@ public final class AutomationRulesList {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AutomationRulesList object itself.
      */
@@ -66,12 +76,53 @@ public final class AutomationRulesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRulesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRulesList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationRulesList.
+     */
+    public static AutomationRulesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRulesList deserializedAutomationRulesList = new AutomationRulesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AutomationRuleInner> value
+                        = reader.readArray(reader1 -> AutomationRuleInner.fromJson(reader1));
+                    deserializedAutomationRulesList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAutomationRulesList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRulesList;
+        });
     }
 }

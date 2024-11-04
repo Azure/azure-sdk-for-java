@@ -13,11 +13,10 @@ extends:
             ACCOUNT_AAD_CLIENT_SECRET: $(spark-databricks-cosmos-spn-clientSecret)
             COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
             COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT: $(cosmos-client-telemetry-cosmos-account)
+            COSMOS_ACR_NAME: $(kafka-mcr-name)
           CloudConfig:
             Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Kafka_TestContainer_Integration_Test
               Path: sdk/cosmos/kafka-testcontainer-matrix.json
