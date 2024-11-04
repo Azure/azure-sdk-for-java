@@ -12,7 +12,7 @@ import java.net.URL;
 public class BreakingChangeTests {
     @Test
     public void testBreakingChange() {
-        BreakingChange breakingChange = BreakingChange.fromClass("MyClass");
+        BreakingChange breakingChange = BreakingChange.onJavaClass("MyClass");
         breakingChange.setClassLevelChangeType(BreakingChange.Type.REMOVED);
         Assertions.assertEquals("#### `MyClass` was removed\n", breakingChange.getForChangelog());
         Assertions.assertEquals("Class `MyClass` was removed.", breakingChange.getItems().iterator().next());

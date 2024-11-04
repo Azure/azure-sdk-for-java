@@ -152,7 +152,8 @@ def generate_changelog_and_breaking_change(
 
     config = json.loads(stdout)
     breaking_changes = config.get("breakingChanges", [])
-    return (True if len(breaking_changes) > 0 else False, config.get("changelog", ""), breaking_changes)
+    breaking = True if len(breaking_changes) > 0 else False
+    return breaking, config.get("changelog", ""), breaking_changes
 
 
 def update_changelog(changelog_file, changelog):

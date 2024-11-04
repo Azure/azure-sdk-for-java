@@ -7,7 +7,6 @@ import com.azure.resourcemanager.tools.changelog.utils.AllMethods;
 import com.azure.resourcemanager.tools.changelog.utils.BreakingChange;
 import com.azure.resourcemanager.tools.changelog.utils.ClassName;
 import com.azure.resourcemanager.tools.changelog.utils.MethodName;
-import japicmp.model.JApiChangeStatus;
 import japicmp.model.JApiMethod;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class DefinitionStageChangeLog extends ChangeLog {
 
     DefinitionStageChangeLog(Map<String, AllMethods> allStages, String parentClass) {
         this.parentClass = parentClass;
-        this.breakingChange = BreakingChange.fromClass(this.parentClass);
+        this.breakingChange = BreakingChange.onJavaClass(this.parentClass);
         oldMethodStages = new ArrayList<>();
         newMethodStages = new ArrayList<>();
         AllMethods blankStage = allStages.entrySet().stream().filter(x -> ClassName.name(x.getKey()).equals("Blank")).findAny().get().getValue();

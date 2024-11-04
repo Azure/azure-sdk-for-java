@@ -21,7 +21,7 @@ public class BreakingChange {
         setClassLevelChangeType(Type.NOT_CHANGED);
     }
 
-    public static BreakingChange fromClass(String className) {
+    public static BreakingChange onJavaClass(String className) {
         return new BreakingChange(className);
     }
 

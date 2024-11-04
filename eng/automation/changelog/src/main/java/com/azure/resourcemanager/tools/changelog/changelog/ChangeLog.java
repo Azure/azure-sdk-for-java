@@ -31,7 +31,7 @@ public class ChangeLog {
     ChangeLog(AllMethods allMethods) {
         this.allMethods = allMethods;
         this.newFeature = new ArrayList<>();
-        this.breakingChange = BreakingChange.fromClass(getJApiClass().getFullyQualifiedName());
+        this.breakingChange = BreakingChange.onJavaClass(getJApiClass().getFullyQualifiedName());
         calcChangeLog();
     }
 
