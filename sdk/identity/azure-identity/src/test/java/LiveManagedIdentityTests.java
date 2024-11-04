@@ -73,7 +73,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
 
         String spClientId = configuration.get("AZ_CLIENT_ID");
-        String oidc = configuration.get("ARM_OIDC_TOKEN");
+        String oidc = configuration.get("AZ_OIDC_TOKEN");
         String tenantId = configuration.get("AZ_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
@@ -109,7 +109,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         String spClientId = configuration.get("AZ_CLIENT_ID");
-        String oidc = configuration.get("ARM_OIDC_TOKEN");
+        String oidc = configuration.get("AZ_OIDC_TOKEN");
         String tenantId = configuration.get("AZ_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
