@@ -118,15 +118,13 @@ class AzureAppConfigurationBootstrapRegistrar {
             .getRegisteredInstanceSupplier(
                 (Class<ConfigurationClientCustomizer>) (Class<?>) ConfigurationClientCustomizer.class);
 
-        // TODO (mametcal) need spring profiles
-        boolean isDev = false;
         ConfigurationClientCustomizer clientCustomizer = null;
         if (configurationClientCustomizer != null) {
             clientCustomizer = configurationClientCustomizer.get(context.getBootstrapContext());
         }
 
         return new AppConfigurationReplicaClientsBuilder(3, clientFactory, clientCustomizer, isCredentialConfigured,
-            keyVaultClientFactory.isConfigured(), isDev);
+            keyVaultClientFactory.isConfigured());
     }
 
     private static boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {

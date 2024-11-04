@@ -58,9 +58,11 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             this.featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
         } else {
             this.featureFlagClient = new FeatureFlagClient();
-            context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class, InstanceSupplier.from(() -> this.featureFlagClient));
+            context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
+                InstanceSupplier.from(() -> this.featureFlagClient));
         }
-        
+        // TODO (mametcal) isRefresh?
+        boolean isRefresh = false;
 
         List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
 
@@ -90,8 +92,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
-                    sourceList.addAll(createSettings(client));
-                    List<FeatureFlags> featureFlags = createFeatureFlags(client);
+                    sourceList.addAll(createSettings(client, isRefresh));
+                    List<FeatureFlags> featureFlags = createFeatureFlags(client, isRefresh);
 
                     logger.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
@@ -102,7 +104,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     if (monitoring.isEnabled()) {
                         // Setting new ETag values for Watch
                         List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                            .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel())).toList();
+                            .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), isRefresh))
+                            .toList();
 
                         storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
                     }
@@ -143,7 +146,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * @return a list of AppConfigurationPropertySources
      * @throws Exception creating a property source failed
      */
-    private List<AppConfigurationPropertySource> createSettings(AppConfigurationReplicaClient client) throws Exception {
+    private List<AppConfigurationPropertySource> createSettings(AppConfigurationReplicaClient client, boolean isRefresh)
+        throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
         List<String> profiles = resource.getProfiles().getActive();
@@ -160,7 +164,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
             }
-            propertySource.initProperties(resource.getTrimKeyPrefix());
+            propertySource.initProperties(resource.getTrimKeyPrefix(), isRefresh);
             sourceList.add(propertySource);
 
         }
@@ -177,19 +181,19 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * @return a list of AppConfigurationPropertySources
      * @throws Exception creating a property source failed
      */
-    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client) throws Exception {
+    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client, boolean isRefresh)
+        throws Exception {
         List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
         List<String> profiles = resource.getProfiles().getActive();
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
             List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
-                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), isRefresh);
             storesFeatureFlags.forEach(featureFlags -> featureFlags.setResource(resource));
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }
 
         return featureFlagWatchKeys;
     }
-    
     private void delayException() {
         Instant currentDate = Instant.now();
         Instant preKillTIme = resource.getAppProperties().getStartDate()

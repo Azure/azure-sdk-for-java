@@ -44,8 +44,8 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * @param trim prefix to trim
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException {
-        processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
+    public void initProperties(List<String> trim, boolean isRefresh) throws InvalidConfigurationPropertyValueException {
+        processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, isRefresh), null, trim);
 
         FeatureFlags featureFlags = new FeatureFlags(null, featureFlagsList);
         featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());

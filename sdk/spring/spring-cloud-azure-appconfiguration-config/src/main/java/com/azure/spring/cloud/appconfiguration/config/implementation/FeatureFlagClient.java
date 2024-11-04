@@ -43,7 +43,8 @@ import com.nimbusds.jose.util.Base64URL;
  * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
  * take priority.
  */
-@Component class FeatureFlagClient {
+@Component
+class FeatureFlagClient {
 
     private final Map<String, Feature> properties = new LinkedHashMap<>();
 
@@ -63,7 +64,7 @@ import com.nimbusds.jose.util.Base64URL;
      *
      */
     List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
-        String[] labelFilter) {
+        String[] labelFilter, boolean isRefresh) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
@@ -78,7 +79,7 @@ import com.nimbusds.jose.util.Base64URL;
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
-            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector);
+            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, isRefresh);
             loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
         }
         return loadedFeatureFlags;

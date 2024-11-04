@@ -73,8 +73,6 @@ public class AppConfigurationReplicaClientsBuilder {
 
     private final ConfigurationClientBuilderFactory clientFactory;
 
-    private boolean isDev;
-
     private boolean isKeyVaultConfigured;
 
     private final boolean credentialConfigured;
@@ -82,14 +80,12 @@ public class AppConfigurationReplicaClientsBuilder {
     private final int defaultMaxRetries;
 
     AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
-        ConfigurationClientCustomizer clientCustomizer, boolean credentialConfigured, boolean isKeyVaultConfigured,
-        boolean isDev) {
+        ConfigurationClientCustomizer clientCustomizer, boolean credentialConfigured, boolean isKeyVaultConfigured) {
         this.defaultMaxRetries = defaultMaxRetries;
         this.credentialConfigured = credentialConfigured;
         this.clientFactory = clientFactory;
         this.clientCustomizer = clientCustomizer;
         this.isKeyVaultConfigured = isKeyVaultConfigured;
-        this.isDev = isDev;
     }
 
     /**
@@ -199,14 +195,14 @@ public class AppConfigurationReplicaClientsBuilder {
 
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
         Integer replicaCount) {
-        TracingInfo tracingInfo = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount,
+        TracingInfo tracingInfo = new TracingInfo(isKeyVaultConfigured, replicaCount,
             Configuration.getGlobalConfiguration());
         builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
         if (clientCustomizer != null) {
             clientCustomizer.customize(builder, endpoint);
         }
-        return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
+        return new AppConfigurationReplicaClient(endpoint, builder.buildClient());
     }
 
     private ConfigurationClientBuilder createBuilderInstance() {

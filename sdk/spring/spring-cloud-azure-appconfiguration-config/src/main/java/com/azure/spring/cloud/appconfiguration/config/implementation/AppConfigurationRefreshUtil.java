@@ -172,7 +172,7 @@ class AppConfigurationRefreshUtil {
     private static void refreshWithoutTime(AppConfigurationReplicaClient client, List<ConfigurationSetting> watchKeys,
         RefreshEventData eventData) throws AppConfigurationStatusException {
         for (ConfigurationSetting watchKey : watchKeys) {
-            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel());
+            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel(), true);
 
             // If there is no result, etag will be considered empty.
             // A refresh will trigger once the selector returns a value.
@@ -193,8 +193,7 @@ class AppConfigurationRefreshUtil {
             replicaLookUp.updateAutoFailoverEndpoints();
 
             for (FeatureFlags featureFlags : state.getWatchKeys()) {
-
-                if (client.checkWatchKeys(featureFlags.getSettingSelector())) {
+                if (client.checkWatchKeys(featureFlags.getSettingSelector(), true)) {
                     String eventDataInfo = ".appconfig.featureflag/*";
 
                     // Only one refresh Event needs to be call to update all of the
@@ -215,8 +214,7 @@ class AppConfigurationRefreshUtil {
         RefreshEventData eventData) throws AppConfigurationStatusException {
 
         for (FeatureFlags featureFlags : watchKeys.getWatchKeys()) {
-
-            if (client.checkWatchKeys(featureFlags.getSettingSelector())) {
+            if (client.checkWatchKeys(featureFlags.getSettingSelector(), true)) {
                 String eventDataInfo = ".appconfig.featureflag/*";
 
                 // Only one refresh Event needs to be call to update all of the

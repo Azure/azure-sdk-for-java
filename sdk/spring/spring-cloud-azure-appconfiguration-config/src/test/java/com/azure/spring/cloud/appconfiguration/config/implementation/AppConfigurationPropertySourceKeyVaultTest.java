@@ -98,7 +98,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM);
         when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(keyVaultSecretListMock)
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
@@ -106,7 +106,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         when(clientManagerMock.getSecret(Mockito.any(URI.class))).thenReturn(secret);
 
         try {
-            propertySource.initProperties(null);
+            propertySource.initProperties(null, false);
         } catch (InvalidConfigurationPropertyValueException e) {
             fail("Failed Reading in Feature Flags");
         }
@@ -124,11 +124,11 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM_INVALID_URI);
         when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(keyVaultSecretListMock)
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
         InvalidConfigurationPropertyValueException exception = assertThrows(
-            InvalidConfigurationPropertyValueException.class, () -> propertySource.initProperties(null));
+            InvalidConfigurationPropertyValueException.class, () -> propertySource.initProperties(null, false));
         assertEquals("test_key_vault_1", exception.getName());
         assertEquals("<Redacted>", exception.getValue());
         assertEquals("Invalid URI found in JSON property field 'uri' unable to parse.", exception.getReason());
@@ -139,12 +139,12 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM);
         when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(keyVaultSecretListMock)
+        when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
         when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com"))).thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any())).thenThrow(new RuntimeException("Parse Failed"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> propertySource.initProperties(null));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> propertySource.initProperties(null, false));
         assertEquals("Parse Failed", exception.getMessage());
     }
 }
