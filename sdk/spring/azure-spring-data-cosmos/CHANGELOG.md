@@ -1,14 +1,9 @@
 ## Release History
 
-### 5.18.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 5.18.0 (2024-11-05)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.64.0`.
 
 ### 5.17.1 (2024-10-11)
 
