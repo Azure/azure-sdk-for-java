@@ -84,7 +84,7 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
     /** @return the DNS configuration for the container group */
     DnsConfiguration dnsConfig();
 
-    /** @return the reuser policy of DSN name label */
+    /** @return the reuse policy of DSN name label */
     DnsNameLabelReusePolicy dnsNameLabelReusePolicy();
 
     /**
