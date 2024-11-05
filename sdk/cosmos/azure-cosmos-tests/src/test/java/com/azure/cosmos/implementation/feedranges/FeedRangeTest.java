@@ -721,11 +721,9 @@ public class FeedRangeTest {
         // pk header population calls epk header population, so just make sure we have
         // the correct headers for the feed range
         assertThat(request.getPartitionKeyInternal()).isNotNull();
-        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK))
-            .isNotNull();
-
-        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK))
-            .isNotNull();
+        assertThat(request.getPartitionKeyInternal().toJson())
+            .isNotNull()
+            .isEqualTo(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
     }
 
     @Test(groups = "unit")
