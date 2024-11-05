@@ -546,6 +546,28 @@ public final class DocumentIntelligenceAdministrationClientImpl {
             @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
+        @Get("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAnalyzeBatchResult(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/documentModels/{modelId}/analyzeBatchResults/{resultId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAnalyzeBatchResultSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
+            @PathParam("resultId") String resultId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -3854,6 +3876,123 @@ public final class DocumentIntelligenceAdministrationClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteAnalyzeBatchResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
+            resultId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of batch document analysis along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAnalyzeBatchResultWithResponseAsync(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getAnalyzeBatchResult(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), modelId, resultId, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets the result of batch document analysis.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     lastUpdatedDateTime: OffsetDateTime (Required)
+     *     percentCompleted: Integer (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     result (Optional): {
+     *         succeededCount: int (Required)
+     *         failedCount: int (Required)
+     *         skippedCount: int (Required)
+     *         details (Optional): [
+     *              (Optional){
+     *                 status: String(notStarted/running/failed/succeeded/canceled/skipped) (Required)
+     *                 sourceUrl: String (Required)
+     *                 resultUrl: String (Optional)
+     *                 error (Optional): (recursive schema, see error above)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param resultId Analyze batch operation result ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of batch document analysis along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAnalyzeBatchResultWithResponse(String modelId, String resultId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getAnalyzeBatchResultSync(this.getEndpoint(), this.getServiceVersion().getVersion(), modelId,
             resultId, accept, requestOptions, Context.NONE);
     }
 

@@ -19,18 +19,32 @@ public class DocumentIntelligenceCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeAnalzyeResultOperation(customization, logger);
+        customizeAnalyzeResultOperation(customization, logger);
+        customizeAnalyzeBatchResultOperation(customization, logger);
         customizePollingStrategy(customization, logger);
         customizePollingUtils(customization, logger);
     }
 
-    private void customizeAnalzyeResultOperation(LibraryCustomization customization, Logger logger) {
+    private void customizeAnalyzeBatchResultOperation(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing the AnalyzeResultOperation class");
         PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
         packageCustomization.getClass("AnalyzeResultOperation")
             .removeAnnotation("Immutable")
             .customizeAst(ast ->
                 ast.getClassByName("AnalyzeResultOperation").ifPresent(clazz -> {
+                    addOperationIdField(clazz);
+                    addOperationIdGetter(clazz);
+                    addOperationIdSetter(clazz);
+                }));
+    }
+
+    private void customizeAnalyzeResultOperation(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the AnalyzeResultOperation class");
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.documentintelligence.models");
+        packageCustomization.getClass("AnalyzeBatchResultOperation")
+            .removeAnnotation("Immutable")
+            .customizeAst(ast ->
+                ast.getClassByName("AnalyzeBatchResultOperation").ifPresent(clazz -> {
                     addOperationIdField(clazz);
                     addOperationIdGetter(clazz);
                     addOperationIdSetter(clazz);
