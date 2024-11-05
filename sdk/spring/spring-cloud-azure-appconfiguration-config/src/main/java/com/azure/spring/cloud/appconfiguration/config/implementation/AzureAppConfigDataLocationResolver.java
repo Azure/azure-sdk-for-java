@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.naming.NamingException;
 
@@ -32,10 +33,12 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 @EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 public class AzureAppConfigDataLocationResolver
     implements ConfigDataLocationResolver<AzureAppConfigDataResource> {
-    
+
     private static final Log LOGGER = new DeferredLog();
 
     public static final String PREFIX = "azureAppConfiguration";
+
+    private static final AtomicBoolean START_UP = new AtomicBoolean(true);
 
     @Override
     public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
@@ -69,10 +72,10 @@ public class AzureAppConfigDataLocationResolver
 
         for (ConfigStore store : holder.properties.getStores()) {
             locations.add(
-                new AzureAppConfigDataResource(store, profiles, holder.appProperties));
+                new AzureAppConfigDataResource(store, profiles, holder.appProperties, START_UP.get()));
 
         }
-
+        START_UP.set(false);
         return locations;
     }
 

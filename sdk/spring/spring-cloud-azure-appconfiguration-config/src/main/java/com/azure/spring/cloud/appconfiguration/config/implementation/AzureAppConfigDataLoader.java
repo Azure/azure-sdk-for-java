@@ -61,8 +61,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
                 InstanceSupplier.from(() -> this.featureFlagClient));
         }
-        // TODO (mametcal) isRefresh?
-        boolean isRefresh = false;
+
+        boolean isRefresh = resource.isRefresh();
 
         List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
 
@@ -194,6 +194,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
         return featureFlagWatchKeys;
     }
+
     private void delayException() {
         Instant currentDate = Instant.now();
         Instant preKillTIme = resource.getAppProperties().getStartDate()

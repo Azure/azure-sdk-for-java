@@ -17,7 +17,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 public class AzureAppConfigDataResource extends ConfigDataResource {
 
     private final boolean configStoreEnabled;
-    
+
     private final String endpoint;
 
     private List<String> trimKeyPrefix;
@@ -25,15 +25,17 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     private final Profiles profiles;
 
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
-    
+
     private List<FeatureFlagKeyValueSelector> featureFlagSelects = new ArrayList<>();
 
     private final AppConfigurationStoreMonitoring monitoring;
 
     private final AppConfigurationProviderProperties appProperties;
 
+    private final boolean isRefresh;
+
     AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles,
-        AppConfigurationProviderProperties appProperties) {
+        AppConfigurationProviderProperties appProperties, boolean isRefresh) {
         this.configStoreEnabled = configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
@@ -42,6 +44,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
         this.monitoring = configStore.getMonitoring();
         this.profiles = profiles;
         this.appProperties = appProperties;
+        this.isRefresh = isRefresh;
     }
 
     /**
@@ -112,6 +115,13 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      */
     public Profiles getProfiles() {
         return profiles;
+    }
+
+    /**
+     * @return the isRefresh
+     */
+    public boolean isRefresh() {
+        return isRefresh;
     }
 
     /**
