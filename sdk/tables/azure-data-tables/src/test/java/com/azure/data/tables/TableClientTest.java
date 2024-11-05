@@ -70,9 +70,9 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        tableClient = getClientBuilder(tableName, false)
-            .serviceVersion(TableServiceVersion.getLatest())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).disableRedactedHeaderLogging(false))
+        tableClient = getClientBuilder(tableName, false).serviceVersion(TableServiceVersion.getLatest())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .disableRedactedHeaderLogging(false))
             .buildClient();
 
         tableClient.createTable();

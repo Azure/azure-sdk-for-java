@@ -68,7 +68,6 @@ public final class TablesConstants {
     public static final Set<String> METADATA_KEYS = Collections.unmodifiableSet(new HashSet<>(
         Arrays.asList(ODATA_EDIT_LINK_KEY, ODATA_ETAG_KEY, ODATA_ID_KEY, ODATA_METADATA_KEY, ODATA_TYPE_KEY)));
 
-
     /**
      * Scope for Cosmos endpoints.
      */

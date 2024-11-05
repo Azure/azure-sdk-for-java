@@ -26,7 +26,7 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected TableServiceClientBuilder getClientBuilder(String connectionString) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .connectionString(connectionString);
-
+    
         return configureTestClientBuilder(tableServiceClientBuilder);
     }
     */
@@ -37,9 +37,9 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
 
     protected TableServiceClientBuilder getClientBuilderWithEntra(boolean enableTenantDiscovery) {
         usingEntraAuth = true;
-        final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
-            .credential(TestUtils.getTestTokenCredential(interceptorManager))
-            .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
+        final TableServiceClientBuilder tableServiceClientBuilder
+            = new TableServiceClientBuilder().credential(TestUtils.getTestTokenCredential(interceptorManager))
+                .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
 
         if (enableTenantDiscovery) {
             tableServiceClientBuilder.enableTenantDiscovery();

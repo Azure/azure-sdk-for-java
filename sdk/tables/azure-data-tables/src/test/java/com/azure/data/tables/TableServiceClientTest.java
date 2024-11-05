@@ -85,7 +85,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         });
     }
 
-
     @Test
     public void serviceCreateTable() {
         // Arrange
