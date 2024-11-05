@@ -109,9 +109,10 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
 
     /**
      * Get the playPrompt property: The source of the audio to be played for recognition.
-     *
+     * @deprecated Use the {@link #getPlayPrompts() method.
      * @return the playPrompt value.
      */
+    @Deprecated
     public PlaySource getPlayPrompt() {
         return this.playPrompt;
     }
@@ -120,9 +121,10 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
-     * @Deprecated Use the {@link #setPlayPrompts(List<PlaySource>) or #setPlayPrompts(PlaySource... playPrompts)} method.
+     * @deprecated Use the {@link #setPlayPrompts(List<PlaySource>) or #setPlayPrompts(PlaySource... playPrompts)} method.
      * @return the RecognizeRequest object itself.
      */
+    @Deprecated
     public CallMediaRecognizeOptions setPlayPrompt(PlaySource playPrompt) {
         this.playPrompt = playPrompt;
         return this;
