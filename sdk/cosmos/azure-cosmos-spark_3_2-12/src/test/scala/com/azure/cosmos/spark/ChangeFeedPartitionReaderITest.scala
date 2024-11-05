@@ -9,6 +9,7 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
+import java.lang.Thread.sleep
 import java.util.{Base64, UUID}
 import scala.util.Random
 
@@ -16,8 +17,7 @@ class ChangeFeedPartitionReaderITest
  extends IntegrationSpec
   with Spark
   with CosmosClient
-  with CosmosContainer
-  with BasicLoggingTrait {
+  with CosmosContainer {
 
 
  "change feed partition reader" should "honor endLSN during split with lower endLSN than changes" in {
@@ -79,6 +79,7 @@ class ChangeFeedPartitionReaderITest
   for (_ <- 0 until inputtedDocuments) {
    ingestTestDocuments(sourceContainer, Random.nextInt())
   }
+  sleep(1000)
 
   val structs = Array(
    StructField("_rawBody", StringType, false),
@@ -106,7 +107,8 @@ class ChangeFeedPartitionReaderITest
 
 
   while (changeFeedPartitionReader.next()) {
-   val row = changeFeedPartitionReader.get()
+   changeFeedPartitionReader.get()
+   logInfo("ChangeFeedPartitionReaderITest: row read")
    count += 1
   }
 
