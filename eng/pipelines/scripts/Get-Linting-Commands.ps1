@@ -51,6 +51,7 @@ Write-Host "Linting pipeline variable: ${LintingPipelineVariable}"
 if ($BuildReason -ne "PullRequest") {
     Write-Host "Non-PR pipeline runs always run Checkstyle, RevApi, and Spotbugs."
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
+    Write-Host "##vso[task.setvariable variable=RunLinting;]true"
     exit 0
 }
 
@@ -58,6 +59,7 @@ $diffFiles = (git diff $TargetBranch $SourceBranch --name-only --relative)
 if ($diffFiles -contains 'eng/code-quality-reports/ci.yml') {
     Write-Host "PR changed the CI configuration, running all linting steps."
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
+    Write-Host "##vso[task.setvariable variable=RunLinting;]true"
     exit 0
 }
 
