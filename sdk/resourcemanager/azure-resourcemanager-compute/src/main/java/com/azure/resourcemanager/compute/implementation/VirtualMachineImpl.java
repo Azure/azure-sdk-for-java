@@ -929,6 +929,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled) {
+        this.managedDataDisks.setDefaultWriteAcceleratorEnabled(writeAcceleratorEnabled);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withDataDiskDefaultDiskEncryptionSet(String diskEncryptionSetId) {
         this.managedDataDisks.setDefaultEncryptionSet(diskEncryptionSetId);
         return this;
@@ -958,6 +964,12 @@ class VirtualMachineImpl
             .storageProfile()
             .osDisk()
             .withDeleteOption(DiskDeleteOptionTypes.fromString(deleteOptions.toString()));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled) {
+        this.innerModel().storageProfile().osDisk().withWriteAcceleratorEnabled(writeAcceleratorEnabled);
         return this;
     }
 
@@ -1110,6 +1122,7 @@ class VirtualMachineImpl
             .withDiskSizeGB(sizeInGB)
             .withCaching(options.cachingTypes())
             .withDeleteOption(diskDeleteOptionsFromDeleteOptions(options.deleteOptions()))
+            .withWriteAcceleratorEnabled(options.writeAcceleratorEnabled())
             .withManagedDisk(managedDiskParameters));
         return this;
     }
@@ -1163,6 +1176,7 @@ class VirtualMachineImpl
             .withDiskSizeGB(newSizeInGB)
             .withCaching(options.cachingTypes())
             .withDeleteOption(diskDeleteOptionsFromDeleteOptions(options.deleteOptions()))
+            .withWriteAcceleratorEnabled(options.writeAcceleratorEnabled())
             .withManagedDisk(managedDiskParameters));
         return this;
     }
@@ -1210,6 +1224,7 @@ class VirtualMachineImpl
             .withDiskSizeGB(newSizeInGB)
             .withCaching(options.cachingTypes())
             .withDeleteOption(diskDeleteOptionsFromDeleteOptions(options.deleteOptions()))
+            .withWriteAcceleratorEnabled(options.writeAcceleratorEnabled())
             .withManagedDisk(managedDiskParameters));
         return this;
     }
@@ -1663,6 +1678,17 @@ class VirtualMachineImpl
             return null;
         }
         return this.storageProfile().osDisk().managedDisk().diskEncryptionSet().id();
+    }
+
+    @Override
+    public boolean isOsDiskWriteAcceleratorEnabled() {
+        if (this.storageProfile() == null || this.storageProfile().osDisk() == null) {
+            // write accelerator should only work for managed disk,
+            // but for potential future changes we didn't use "isManagedDiskEnabled()" here.
+            // ref https://learn.microsoft.com/azure/virtual-machines/how-to-enable-write-accelerator
+            return false;
+        }
+        return ResourceManagerUtils.toPrimitiveBoolean(this.storageProfile().osDisk().writeAcceleratorEnabled());
     }
 
     @Override
@@ -2877,6 +2903,7 @@ class VirtualMachineImpl
         private CachingTypes defaultCachingType;
         private StorageAccountTypes defaultStorageAccountType;
         private DiskDeleteOptionTypes defaultDeleteOptions;
+        private Boolean defaultWriteAcceleratorEnabled;
         private DiskEncryptionSetParameters defaultDiskEncryptionSet;
 
         ManagedDataDiskCollection(VirtualMachineImpl vm) {
@@ -2893,6 +2920,10 @@ class VirtualMachineImpl
 
         void setDefaultStorageAccountType(StorageAccountTypes defaultStorageAccountType) {
             this.defaultStorageAccountType = defaultStorageAccountType;
+        }
+
+        void setDefaultWriteAcceleratorEnabled(Boolean defaultWriteAcceleratorEnabled) {
+            this.defaultWriteAcceleratorEnabled = defaultWriteAcceleratorEnabled;
         }
 
         void setDefaultEncryptionSet(String diskEncryptionSetId) {
@@ -2973,6 +3004,7 @@ class VirtualMachineImpl
             defaultStorageAccountType = null;
             defaultDeleteOptions = null;
             defaultDiskEncryptionSet = null;
+            defaultWriteAcceleratorEnabled = null;
         }
 
         private boolean isPending() {
@@ -3017,6 +3049,9 @@ class VirtualMachineImpl
                 if (dataDisk.deleteOption() == null) {
                     dataDisk.withDeleteOption(getDefaultDeleteOptions());
                 }
+                if (dataDisk.writeAcceleratorEnabled() == null) {
+                    dataDisk.withWriteAcceleratorEnabled(getDefaultWriteAcceleratorEnabled());
+                }
                 setDefaultDiskEncryptionSetOptions(dataDisk);
                 // Don't set default storage account type for the attachable managed disks, it is already
                 // defined in the managed disk and not allowed to change.
@@ -3037,6 +3072,9 @@ class VirtualMachineImpl
                 }
                 if (dataDisk.deleteOption() == null) {
                     dataDisk.withDeleteOption(getDefaultDeleteOptions());
+                }
+                if (dataDisk.writeAcceleratorEnabled() == null) {
+                    dataDisk.withWriteAcceleratorEnabled(getDefaultWriteAcceleratorEnabled());
                 }
                 setDefaultDiskEncryptionSetOptions(dataDisk);
                 // Don't set default storage account type for the attachable managed disks, it is already
@@ -3065,6 +3103,9 @@ class VirtualMachineImpl
                 if (dataDisk.deleteOption() == null) {
                     dataDisk.withDeleteOption(getDefaultDeleteOptions());
                 }
+                if (dataDisk.writeAcceleratorEnabled() == null) {
+                    dataDisk.withWriteAcceleratorEnabled(getDefaultWriteAcceleratorEnabled());
+                }
                 setDefaultDiskEncryptionSetOptions(dataDisk);
                 dataDisk.withName(null);
                 dataDisks.add(dataDisk);
@@ -3080,6 +3121,9 @@ class VirtualMachineImpl
                 }
                 if (dataDisk.deleteOption() == null) {
                     dataDisk.withDeleteOption(getDefaultDeleteOptions());
+                }
+                if (dataDisk.writeAcceleratorEnabled() == null) {
+                    dataDisk.withWriteAcceleratorEnabled(getDefaultWriteAcceleratorEnabled());
                 }
                 setDefaultDiskEncryptionSetOptions(dataDisk);
                 // Don't set default storage account type for the disk, either user has to specify it explicitly or let
@@ -3119,6 +3163,10 @@ class VirtualMachineImpl
 
         private DiskDeleteOptionTypes getDefaultDeleteOptions() {
             return defaultDeleteOptions;
+        }
+
+        private Boolean getDefaultWriteAcceleratorEnabled() {
+            return defaultWriteAcceleratorEnabled;
         }
 
         private DiskEncryptionSetParameters getDefaultDiskEncryptionSetOptions() {

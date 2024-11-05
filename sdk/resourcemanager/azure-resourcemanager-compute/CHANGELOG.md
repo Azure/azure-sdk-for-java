@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported enabling write accelerator for OS disk and data disks in `VirtualMachine` class.
+
 ### Breaking Changes
 
 ### Bugs Fixed

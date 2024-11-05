@@ -284,6 +284,13 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
     /** @return resource ID of the disk encryption set of the OS disk */
     String osDiskDiskEncryptionSetId();
 
+    /**
+     * Gets whether the write accelerator is enabled.
+     *
+     * @return whether the write accelerator is enabled
+     */
+    boolean isOsDiskWriteAcceleratorEnabled();
+
     /** @return whether the os disk is ephemeral*/
     boolean isOSDiskEphemeral();
 
@@ -1223,6 +1230,18 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
 
             /**
+             * Specifies the write accelerator for the OS disks.
+             * <p>
+             * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+             * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+             * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+             *
+             * @param writeAcceleratorEnabled whether to enable the write accelerator
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
+
+            /**
              * Specifies the disk encryption set for the managed OS disk.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
@@ -1840,6 +1859,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies the write accelerator for managed data disks.
+             *
+             * @param writeAcceleratorEnabled whether to enable the write accelerator
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
 
             /**
              * Specifies the disk encryption set for the managed data disk.
@@ -2636,6 +2663,18 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
         Update withOSDiskEncryptionSettings(DiskEncryptionSettings settings);
 
         /**
+         * Specifies the write accelerator for the OS disks.
+         * <p>
+         * Write Accelerator is generally available for M-series VMs in the Public Cloud.
+         * Enabling write accelerator for the operating system disk of the VM will reboot the VM.
+         * The Premium disk caching must be set to 'None' or 'Read Only'. All other caching modes are not supported.
+         *
+         * @param writeAcceleratorEnabled whether to enable the write accelerator
+         * @return the next stage of the update
+         */
+        Update withOSDiskWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
+
+        /**
          * Specifies the default caching type for the managed data disks.
          *
          * @param cachingType a caching type
@@ -2658,6 +2697,14 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
          * @return the next stage of the definition
          */
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+        /**
+         * Specifies the write accelerator for managed data disks.
+         *
+         * @param writeAcceleratorEnabled whether to enable the write accelerator
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultWriteAcceleratorEnabled(boolean writeAcceleratorEnabled);
 
         /**
          * Specifies the disk encryption set for the managed data disk.
