@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -155,14 +156,32 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             request,
             "Argument 'request' must not be null");
 
+        AtomicBoolean isHpk = new AtomicBoolean(false);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionResponseMono = collectionResolutionMono.map(valueHolder -> {
+            if (valueHolder.v.getPartitionKey().getPaths().size() > 1) {
+                isHpk.set(true);
+            }
+            if (!isHpk.get()) {
+                request.getHeaders().put(
+                    HttpConstants.HttpHeaders.PARTITION_KEY,
+                    this.partitionKey.toJson());
+            }
+            return valueHolder;
+        });
+
         request.setPartitionKeyInternal(this.partitionKey);
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
         return this
-            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionResponseMono)
             .flatMap(effectiveRange -> {
+                if (!isHpk.get()) {
+                    request.setEffectiveRange(effectiveRange);
+                    request.setHasFeedRangeFilteringBeenApplied(true);
+                    return Mono.just(request);
+                }
                 FeedRangeEpkImpl feedRangeEpkImpl = new FeedRangeEpkImpl(effectiveRange);
                 return feedRangeEpkImpl.populateFeedRangeFilteringHeaders(routingMapProvider, request, collectionResolutionMono);
             });
