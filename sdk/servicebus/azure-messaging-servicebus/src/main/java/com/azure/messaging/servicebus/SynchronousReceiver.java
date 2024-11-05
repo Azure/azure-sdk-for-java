@@ -164,7 +164,10 @@ final class SynchronousReceiver {
         final Flux<ServiceBusReceivedMessage> decorated = tracer.traceSyncReceive(SYNC_RECEIVE_SPAN_NAME, toDecorate);
         // TODO (anu) - discuss with Liudmila - do we need decorated.subscribe() here or IterableStream's internal
         //              subscription to the 'decorated' flux will do?
-        decorated.subscribe();
+        decorated.subscribe(i -> {
+        }, e -> {
+        }, () -> {
+        });
         return decorated;
     }
 }
