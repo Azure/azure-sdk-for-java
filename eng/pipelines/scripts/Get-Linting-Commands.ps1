@@ -54,12 +54,20 @@ if ($BuildReason -ne "PullRequest") {
     exit 0
 }
 
+$diffFiles = (git diff $TargetBranch $SourceBranch --name-only --relative)
+if ($diffFiles -contains 'eng/code-quality-reports/ci.yml') {
+    Write-Host "PR changed the CI configuration, running all linting steps."
+    Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
+    exit 0
+}
+
 $runLinting = 'false'
 [string[]]$lintingGoals = @()
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
-$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
-$checkstyleConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+
+$checkstyleSourceChanged = ($diffFiles -match "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
+$checkstyleConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Dcheckstyle.failOnViolation=false'
@@ -68,8 +76,8 @@ if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += '-Dcheckstyle.skip=true'
 }
 
-$revapiSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
-$revapiConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
+$revapiSourceChanged = ($diffFiles -match "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
+$revapiConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
 if ($revapiSourceChanged -or $revapiConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Drevapi.failBuildOnProblemsFound=false'
@@ -77,7 +85,7 @@ if ($revapiSourceChanged -or $revapiConfigChanged) {
     $lintingGoals += '-Drevapi.skip=true'
 }
 
-$spotbugsConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
+$spotbugsConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
 if ($spotbugsConfigChanged) {
     $runLinting = 'true'
     $lintingGoals += '-Dspotbugs.failOnError=false'
@@ -85,7 +93,7 @@ if ($spotbugsConfigChanged) {
     $lintingGoals += '-Dspotbugs.skip=true'
 }
 
-$lintingCommand = Join-String $lintingGoals ' '
+$lintingCommand = $lintingGoals -join ' '
 Write-Host "Using linting goals '${lintingCommand}'"
 Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]${lintingCommand}"
 Write-Host "##vso[task.setvariable variable=RunLinting;]${runLinting}"
