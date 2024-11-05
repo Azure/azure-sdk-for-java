@@ -93,8 +93,8 @@ public class QuickPulse {
             endpointUrl, instrumentationKey, roleName, instanceName, machineName, quickPulseId, sdkVersion);
         QuickPulseDataSender quickPulseDataSender
             = new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs, sendQueue, endpointUrl, instrumentationKey);
-        QuickPulseDataFetcher quickPulseDataFetcher
-            = new QuickPulseDataFetcher(collector, sendQueue, roleName, instanceName, machineName, quickPulseId, sdkVersion);
+        QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, roleName,
+            instanceName, machineName, quickPulseId, sdkVersion);
 
         QuickPulseCoordinatorInitData coordinatorInitData
             = new QuickPulseCoordinatorInitDataBuilder().withPingSender(quickPulsePingSender)

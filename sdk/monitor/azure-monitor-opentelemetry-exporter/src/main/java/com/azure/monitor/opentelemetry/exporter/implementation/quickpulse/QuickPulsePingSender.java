@@ -120,7 +120,6 @@ class QuickPulsePingSender {
         return onPingError(sendTime);
     }
 
-
     @Nullable
     // visible for testing
     public String getInstrumentationKey() {

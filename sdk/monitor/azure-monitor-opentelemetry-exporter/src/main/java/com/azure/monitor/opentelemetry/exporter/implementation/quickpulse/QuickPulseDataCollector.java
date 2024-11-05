@@ -161,7 +161,7 @@ final class QuickPulseDataCollector {
 
         List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
         Exception exceptionDoc = new Exception();
-        if(exceptionList != null && !exceptionList.isEmpty()) {
+        if (exceptionList != null && !exceptionList.isEmpty()) {
             exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
             exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
         }

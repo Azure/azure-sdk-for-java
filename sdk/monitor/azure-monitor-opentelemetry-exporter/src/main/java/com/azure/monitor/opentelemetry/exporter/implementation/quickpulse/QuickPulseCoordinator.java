@@ -81,7 +81,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // network error continues, we would want pings to remain in backoff mode instead of pinging every
                 // 5 seconds. Subtracting the 40s ensures that the ping sender thinks requests have been failing long
                 // enough to stay in a backoff state if the next ping fails.
-                pingSender.resetLastValidRequestTimeNs( (long) (dataSender.getLastValidPostRequestTimeNs() - 40 * 1e9) );
+                pingSender.resetLastValidRequestTimeNs((long) (dataSender.getLastValidPostRequestTimeNs() - 40 * 1e9));
                 return waitOnErrorInMillis;
 
             case QP_IS_OFF:
