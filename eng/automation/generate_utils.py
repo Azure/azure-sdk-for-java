@@ -151,7 +151,9 @@ def generate_changelog_and_breaking_change(
     logging.info("[CHANGELOG] changelog output: {0}".format(stdout))
 
     config = json.loads(stdout)
-    return (config.get("breaking", False), config.get("changelog", ""))
+    breaking_changes = config.get("breakingChanges", [])
+    breaking = True if len(breaking_changes) > 0 else False
+    return breaking, config.get("changelog", ""), breaking_changes
 
 
 def update_changelog(changelog_file, changelog):
@@ -214,7 +216,7 @@ def compare_with_maven_package(
         )
         if not os.path.exists(new_jar):
             raise Exception("Cannot found built jar in {0}".format(new_jar))
-        breaking, changelog = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
+        breaking, changelog, breaking_changes = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
         if changelog is not None:
             changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
             update_changelog(changelog_file, changelog)
@@ -222,7 +224,7 @@ def compare_with_maven_package(
             logging.error("[Changelog][Skip] Cannot get changelog")
     finally:
         os.remove(old_jar)
-    return breaking, changelog
+    return breaking, changelog, breaking_changes
 
 
 def get_version(
