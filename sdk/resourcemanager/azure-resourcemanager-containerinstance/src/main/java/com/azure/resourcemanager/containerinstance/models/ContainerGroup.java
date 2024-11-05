@@ -1177,7 +1177,7 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
         /** The stage of the container group definition allowing to specify the DNS prefix label. */
         interface WithDnsPrefix {
             /**
-             * Specifies the DNS prefix and DNS name label reuse policy to be used to create the FQDN for the container group.
+             * Specifies the DNS prefix to be used to create the FQDN for the container group.
              *
              * @param dnsPrefix the DNS prefix to be used to create the FQDN for the container group
              * @return the next stage of the definition

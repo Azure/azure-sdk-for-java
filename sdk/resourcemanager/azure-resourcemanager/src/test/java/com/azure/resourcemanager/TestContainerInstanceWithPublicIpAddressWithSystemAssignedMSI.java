@@ -70,7 +70,6 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
         Assertions.assertEquals(1, containerGroup.volumes().size());
         Assertions.assertNotNull(containerGroup.volumes().get("emptydir1"));
         Assertions.assertNotNull(containerGroup.ipAddress());
-        Assertions.assertTrue(DnsNameLabelReusePolicy.NOREUSE.equals(containerGroup.dnsNameLabelReusePolicy()));
         Assertions.assertTrue(containerGroup.isIPAddressPublic());
         Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
         Assertions.assertEquals(2, containerGroup.externalPorts().size());
