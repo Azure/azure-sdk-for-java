@@ -4,7 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -12,17 +12,20 @@ import java.util.List;
 /**
  * Full Text Search Policy
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CosmosFullTextPolicy {
     @JsonProperty(Constants.Properties.DEFAULT_LANGUAGE)
     private String defaultLanguage;
-    @JsonProperty(Constants.Properties.FULL_TEXT_INDEXES)
+    @JsonProperty(Constants.Properties.FULL_TEXT_PATHS)
     private List<CosmosFullTextPath> paths;
-    private JsonSerializable jsonSerializable;
+//    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor
      */
-    public CosmosFullTextPolicy() { this.jsonSerializable = new JsonSerializable(); }
+    public CosmosFullTextPolicy() {
+//    this.jsonSerializable = new JsonSerializable();
+    }
 
     /**
      * Gets the default language for cosmosFullText.
@@ -57,6 +60,11 @@ public class CosmosFullTextPolicy {
      * @return CosmosFullTextPolicy
      */
     public CosmosFullTextPolicy setPaths(List<CosmosFullTextPath> paths) {
+        for (CosmosFullTextPath cosmosFullTextPath : paths) {
+            if (cosmosFullTextPath.getLanguage().isEmpty()) {
+                throw new IllegalArgumentException("Language needs to specified for the path in the Full text policy.");
+            }
+        }
         this.paths = paths;
         return this;
     }

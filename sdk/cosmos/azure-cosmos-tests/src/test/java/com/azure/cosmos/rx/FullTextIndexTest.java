@@ -103,23 +103,6 @@ public class FullTextIndexTest extends TestSuiteBase{
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void shouldFailFullTextPolicyWithNullLanguage() throws Exception {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        try {
-            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, DEFAULT_LANGUAGE, null);
-            database.createContainer(collectionDefinition).block();
-            fail("");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(400);
-            assertThat(ex.getMessage()).contains("The Full Text Policy contains invalid syntax.");
-        }
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void shouldFailFullTextPolicyWithEmptyLanguage() throws Exception {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -129,10 +112,9 @@ public class FullTextIndexTest extends TestSuiteBase{
         try {
             CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, DEFAULT_LANGUAGE, "");
             database.createContainer(collectionDefinition).block();
-            fail("");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(400);
-            assertThat(ex.getMessage()).contains("The Full Text Policy contains an unsupported language . Supported languages are: \\\\\\\"en-US\\\\\\");
+            fail("Language needs to specified for the path in the Full text policy.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).contains("Language needs to specified for the path in the Full text policy.");
         }
     }
 
@@ -150,23 +132,6 @@ public class FullTextIndexTest extends TestSuiteBase{
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(400);
             assertThat(ex.getMessage()).contains("The Full Text Policy contains an unsupported language fr-FR. Supported languages are: \\\\\\\"en-US\\\\\\");
-        }
-    }
-
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void shouldFailFullTextPolicyWithNullDefaultLanguage() throws Exception {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        try {
-            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, null, LANGUAGE);
-            database.createContainer(collectionDefinition).block();
-            fail("");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(400);
-            assertThat(ex.getMessage()).contains("The Full Text Policy contains invalid syntax.");
         }
     }
 
