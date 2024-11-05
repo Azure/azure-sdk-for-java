@@ -21,20 +21,6 @@ parameters:
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
   - task: Maven@4
-    displayName: 'Build and Install'
-    inputs:
-      mavenPomFile: pom.xml
-      goals: 'install'
-      options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-    continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
-
-  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Run SpotBugs and Checkstyle'
     ${{ else }}:
@@ -42,12 +28,11 @@ steps:
     inputs:
       mavenPomFile: pom.xml
       ${{ if ne(parameters.SDKType, 'client') }}:
-        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl $(ProjectList)'
-        goals: 'checkstyle:check spotbugs:check'
+        options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.skip=true -pl $(ProjectList) -am'
       ${{ else }}:
-        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
-        goals: 'checkstyle:check spotbugs:check revapi:check'
-      mavenOptions: '$(MemoryOptions)'
+        options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList) -am'
+      goals: 'install'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
