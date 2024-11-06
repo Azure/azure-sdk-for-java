@@ -3,13 +3,13 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /** The TranscriptionConfigurationInternal model. */
 @Fluent
@@ -33,6 +33,16 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      * Determines if the transcription should be started immediately after call is answered or not.
      */
     private final boolean startTranscription;
+
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    private String speechRecognitionModelEndpointId;
+
+    /*
+     * Enables intermediate results for the transcribed speech.
+     */
+    private Boolean enableIntermediateResults;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -83,6 +93,46 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      */
     public boolean getStartTranscription() {
         return this.startTranscription;
+    }
+    
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
+     * 
+     * @return the enableIntermediateResults value.
+     */
+    public Boolean isIntermediateResultsEnabled() {
+        return this.enableIntermediateResults;
+    }
+
+    /**
+     * Set the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
+     * 
+     * @param enableIntermediateResults the enableIntermediateResults value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setEnableIntermediateResults(Boolean enableIntermediateResults) {
+        this.enableIntermediateResults = enableIntermediateResults;
+        return this;
     }
 
     @Override

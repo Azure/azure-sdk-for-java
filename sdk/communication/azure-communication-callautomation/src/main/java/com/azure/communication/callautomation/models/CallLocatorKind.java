@@ -3,9 +3,9 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
+
+import com.azure.core.util.ExpandableStringEnum;
 
 /** Defines values for CallLocatorKind. */
 public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind> {
@@ -14,6 +14,9 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
 
     /** Static value serverCallLocator for CallLocatorKind. */
     public static final CallLocatorKind SERVER_CALL_LOCATOR = fromString("serverCallLocator");
+
+    /** Static value serverCallLocator for CallLocatorKind. */
+    public static final CallLocatorKind ROOM_CALL_LOCATOR = fromString("roomCallLocator");
 
     /**
      * Creates or finds a CallLocatorKind from its string representation.

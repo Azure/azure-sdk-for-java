@@ -26,10 +26,10 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 
 ### Code generation settings
 ``` yaml
-tag: package-2023-10-03-preview
+tag: package-2024-09-01-preview
 use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/156ff363e44f764ddd8a0a6adcd371610240ba15/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/6204479165ba24610f678105dce67ed501201b39/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL

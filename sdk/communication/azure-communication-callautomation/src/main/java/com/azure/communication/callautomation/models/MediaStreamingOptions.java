@@ -3,13 +3,13 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /** The MediaStreamingConfigurationInternal model. */
 @Fluent
@@ -34,19 +34,25 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      */
     private final MediaStreamingAudioChannel audioChannelType;
 
+    /*
+     * The type of transport to be used for media streaming, eg. Websocket
+     */
+    private final Boolean startMediaStreaming;
+
     /**
      * Creates a new instance of MediaStreamingConfiguration
      * @param transportUrl - The Transport URL
      * @param transportType - Transport type
      * @param contentType - Content Type
      * @param audioChannelType - Audio Channel Type
+     * @param startMediaStreaming - Start media streaming flag
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType,
-        MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType) {
+    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;
         this.audioChannelType = audioChannelType;
+        this.startMediaStreaming = startMediaStreaming;
     }
 
     /**
@@ -76,6 +82,15 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         return this.contentType;
     }
 
+     /**
+     * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
+     * 
+     * @return the startMediaStreaming value.
+     */
+    public Boolean isStartMediaStreamingEnabled() {
+        return this.startMediaStreaming;
+    }
+    
     /**
      * Get the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
      *
@@ -92,6 +107,7 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
         jsonWriter.writeStringField("contentType", contentType != null ? contentType.toString() : null);
         jsonWriter.writeStringField("audioChannelType", audioChannelType != null ? audioChannelType.toString() : null);
+        jsonWriter.writeBooleanField("startMediaStreaming", startMediaStreaming);
         return jsonWriter.writeEndObject();
     }
 
@@ -109,6 +125,7 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
             MediaStreamingTransport transportType = null;
             MediaStreamingContent contentType = null;
             MediaStreamingAudioChannel audioChannelType = null;
+            boolean startMediaStreaming = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -120,11 +137,13 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
                     contentType = MediaStreamingContent.fromString(reader.getString());
                 } else if ("audioChannelType".equals(fieldName)) {
                     audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
+                } else if ("startMediaStreaming".equals(fieldName)) {
+                    startMediaStreaming = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType);
+            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType, startMediaStreaming);
         });
     }
 }
