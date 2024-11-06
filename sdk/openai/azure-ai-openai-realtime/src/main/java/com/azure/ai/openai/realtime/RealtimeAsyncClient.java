@@ -17,20 +17,18 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
 import com.azure.ai.openai.realtime.models.SendMessageFailedException;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
+import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class RealtimeAsyncClient implements Closeable {
@@ -59,6 +57,10 @@ public final class RealtimeAsyncClient implements Closeable {
 
     private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofMillis(100);
 
+    // retry
+    // TODO jpalvarezl: doesn't seem like we can use this given that message IDs are not incremental
+    private final Retry sendMessageRetrySpec;
+
     // incoming message handlers:
 
     // Server catch all:
@@ -74,10 +76,29 @@ public final class RealtimeAsyncClient implements Closeable {
         this.clientEndpointConfiguration = cec;
         this.applicationId = applicationId;
         this.authenticationProvider = authenticationProvider;
+
+        this.sendMessageRetrySpec = Retry.from(signals -> {
+            AtomicInteger retryCount = new AtomicInteger(0);
+            return signals.concatMap(s -> {
+                Mono<Retry.RetrySignal> ret = Mono.error(s.failure());
+                if (s.failure() instanceof SendMessageFailedException) {
+                    if (((SendMessageFailedException) s.failure()).isTransient()) {
+                        int retryAttempt = retryCount.incrementAndGet();
+                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
+                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt)).then(Mono.just(s));
+                        }
+                    }
+                }
+                return ret;
+            });
+        });
     }
 
+    /**
+     * Closes the client.
+     */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (this.isDisposed.getAndSet(true)) {
             this.isClosedMono.asMono().block();
         } else {
@@ -87,48 +108,24 @@ public final class RealtimeAsyncClient implements Closeable {
                 isClosedMono.emitEmpty(emitFailureHandler("Unable to emit Close"));
             })).block();
         }
-        // TODO jpalvarezl: should this be here?
-//        webSocketSession.close();
+        // TODO jpalvarezl: should this be here? WebPubSubClient doesn't do it.
+        webSocketSession.close();
     }
 
+    /**
+     * Starts the client for connecting to the server.
+     *
+     * @return the task.
+     */
     public Mono<Void> start() {
         return this.start(null);
     }
 
-    public Mono<Void>start(Runnable postStartTask) {
-        if(clientState.get() == RealtimeClientState.CLOSED) {
-            return Mono.error(
-                    logger.logExceptionAsError(new IllegalStateException("Failed to start. Client is CLOSED.")));
-        }
-
-        return Mono.defer(() -> {
-            logger.atInfo().addKeyValue("currentClientState", clientState.get()).log("Start client called.");
-
-            isStoppedByUser.set(false);
-            isStoppedByUserSink.set(null);
-
-            boolean success = clientState.changeStateOn(RealtimeClientState.STOPPED, RealtimeClientState.CONNECTING);
-            if (!success) {
-                return Mono.error(
-                        logger.logExceptionAsError(new IllegalStateException("Failed to start. Client is not STOPPED.")));
-            } else {
-                if (postStartTask != null) {
-                    postStartTask.run();
-                }
-
-                return Mono.empty();
-            }
-        }).then(authenticationProvider.authenticationToken())
-                .flatMap(authenticationHeader -> Mono.<Void>fromRunnable(() -> {
-                    this.webSocketSession = webSocketClient.connectToServer(this.clientEndpointConfiguration, () -> authenticationHeader,
-                            loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
-                })).subscribeOn(Schedulers.boundedElastic())
-                .doOnError(error -> {
-                    // stop if error, do not send StoppedEvent when it fails at start(), which would have exception thrown
-                    handleClientStop(false);
-                });
-    }
-
+    /**
+     * Stops the client and disconnects from the server.
+     *
+     * @return the task.
+     */
     public Mono<Void> stop() {
         if (clientState.get() == RealtimeClientState.CLOSED) {
             return Mono.error(
@@ -175,8 +172,75 @@ public final class RealtimeAsyncClient implements Closeable {
         });
     }
 
+    /**
+     * Sends a message to the server.
+     *
+     * @param message client message to send.
+     * @return the task.
+     */
+    public Mono<Void> sendMessage(RealtimeClientEvent message) {
+        return checkStateBeforeSend().then(Mono.create(sink -> {
+//            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+//                try {
+//                    String json = JacksonAdapter.createDefaultSerializerAdapter()
+//                        .serialize(message, SerializerEncoding.JSON);
+//                    logger.atInfo().addKeyValue("message", json).log("Send message");
+//                } catch (IOException e) {
+//                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
+//                }
+//            }
+            webSocketSession.sendObjectAsync(message, sendResult -> {
+                if (sendResult.isOK()) {
+                    sink.success();
+                } else {
+                    sink.error(logSendMessageFailedException("Failed to send message.", sendResult.getException(), true,
+                            message));
+                }
+            });
+        }));//.retryWhen(this.sendMessageRetrySpec);
+    }
+
+    /**
+     * Returns a flux of server events.
+     *
+     * @return the server events.
+     */
     public Flux<RealtimeServerEvent> getServerEvents() {
         return serverEvents.asFlux();
+    }
+
+    Mono<Void>start(Runnable postStartTask) {
+        if(clientState.get() == RealtimeClientState.CLOSED) {
+            return Mono.error(
+                    logger.logExceptionAsError(new IllegalStateException("Failed to start. Client is CLOSED.")));
+        }
+
+        return Mono.defer(() -> {
+            logger.atInfo().addKeyValue("currentClientState", clientState.get()).log("Start client called.");
+
+            isStoppedByUser.set(false);
+            isStoppedByUserSink.set(null);
+
+            boolean success = clientState.changeStateOn(RealtimeClientState.STOPPED, RealtimeClientState.CONNECTING);
+            if (!success) {
+                return Mono.error(
+                        logger.logExceptionAsError(new IllegalStateException("Failed to start. Client is not STOPPED.")));
+            } else {
+                if (postStartTask != null) {
+                    postStartTask.run();
+                }
+
+                return Mono.empty();
+            }
+        }).then(authenticationProvider.authenticationToken())
+                .flatMap(authenticationHeader -> Mono.<Void>fromRunnable(() -> {
+                    this.webSocketSession = webSocketClient.connectToServer(this.clientEndpointConfiguration, () -> authenticationHeader,
+                            loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
+                })).subscribeOn(Schedulers.boundedElastic())
+                .doOnError(error -> {
+                    // stop if error, do not send StoppedEvent when it fails at start(), which would have exception thrown
+                    handleClientStop(false);
+                });
     }
 
     private Mono<Void> getStoppedByUserMono() {
@@ -186,6 +250,31 @@ public final class RealtimeAsyncClient implements Closeable {
             sink = isStoppedByUserSink.get();
         }
         return sink == null ? Mono.empty() : sink.asMono();
+    }
+
+    private Mono<Void> checkStateBeforeSend() {
+        return Mono.defer(() -> {
+            RealtimeClientState state = clientState.get();
+            if (state == RealtimeClientState.CLOSED) {
+                return Mono.error(logger.logExceptionAsError(
+                        new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
+            }
+            if (state != RealtimeClientState.CONNECTED) {
+                return Mono.error(
+                        logSendMessageFailedException("Failed to send message. Client is " + state.name() + ".", null,
+                                state == RealtimeClientState.RECOVERING || state == RealtimeClientState.CONNECTING
+                                        || state == RealtimeClientState.RECONNECTING || state == RealtimeClientState.DISCONNECTED,
+                                (String) null));
+            }
+            if (webSocketSession == null || !webSocketSession.isOpen()) {
+                // something unexpected
+                return Mono.error(
+                        logSendMessageFailedException("Failed to send message. Websocket session is not opened.", null,
+                                false, (String) null));
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     private void handleMessage(Object message) {
@@ -278,7 +367,6 @@ public final class RealtimeAsyncClient implements Closeable {
         updateLogger(applicationId, null);
     }
 
-
     private void tryCompleteOnStoppedByUserSink() {
         // clear isStoppedByUserMono
         Sinks.Empty<Void> mono = isStoppedByUserSink.getAndSet(null);
@@ -316,8 +404,6 @@ public final class RealtimeAsyncClient implements Closeable {
 //        }
 //    }
 
-
-    // connectionId appears to be business logic concept from WebPubSub
     private void updateLogger(String applicationId, String connectionId) {
         logger = new ClientLogger(RealtimeAsyncClient.class,
                 LoggingUtils.createContextWithConnectionId(applicationId, connectionId));
@@ -353,54 +439,6 @@ public final class RealtimeAsyncClient implements Closeable {
         }
     }
 
-    public Mono<Void> sendMessage(RealtimeClientEvent message) {
-        return checkStateBeforeSend().then(Mono.create(sink -> {
-                        if (logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                            try {
-                                String json = JacksonAdapter.createDefaultSerializerAdapter()
-                                    .serialize(message, SerializerEncoding.JSON);
-                                logger.atInfo().addKeyValue("message", json).log("Send message");
-                            } catch (IOException e) {
-                                sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
-                            }
-                        }
-
-            webSocketSession.sendObjectAsync(message, sendResult -> {
-                if (sendResult.isOK()) {
-                    sink.success();
-                } else {
-                    sink.error(logSendMessageFailedException("Failed to send message.", sendResult.getException(), true,
-                            message));
-                }
-            });
-        }));
-    }
-
-    private Mono<Void> checkStateBeforeSend() {
-        return Mono.defer(() -> {
-            RealtimeClientState state = clientState.get();
-            if (state == RealtimeClientState.CLOSED) {
-                return Mono.error(logger.logExceptionAsError(
-                        new IllegalStateException("Failed to send message. WebPubSubClient is CLOSED.")));
-            }
-            if (state != RealtimeClientState.CONNECTED) {
-                return Mono.error(
-                        logSendMessageFailedException("Failed to send message. Client is " + state.name() + ".", null,
-                                state == RealtimeClientState.RECOVERING || state == RealtimeClientState.CONNECTING
-                                        || state == RealtimeClientState.RECONNECTING || state == RealtimeClientState.DISCONNECTED,
-                                (String) null));
-            }
-            if (webSocketSession == null || !webSocketSession.isOpen()) {
-                // something unexpected
-                return Mono.error(
-                        logSendMessageFailedException("Failed to send message. Websocket session is not opened.", null,
-                                false, (String) null));
-            } else {
-                return Mono.empty();
-            }
-        });
-    }
-
     private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
                                                            RealtimeClientEvent message) {
         return logSendMessageFailedException(errorMessage, cause, isTransient, message.getEventId());
@@ -417,7 +455,5 @@ public final class RealtimeAsyncClient implements Closeable {
         return logger.logExceptionAsWarning(
                 new SendMessageFailedException(errorMessage, cause, isTransient, eventId, error));
     }
-
-
 }
 
