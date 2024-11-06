@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
 
 #### Other Changes
 
