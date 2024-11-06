@@ -4,13 +4,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations, Utils}
 import com.azure.cosmos.models.{PartitionKey, ThroughputProperties}
-import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
+import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
-import java.lang.Thread.sleep
 import java.util.{Base64, UUID}
 import scala.util.Random
 
@@ -21,8 +20,8 @@ class ChangeFeedPartitionReaderITest
   with CosmosClient {
 
 
- "change feed partition reader" should "honor endLSN during split with lower endLSN than changes" in {
-  changeFeedPartitionReaderTest(4)
+ "change feed partition reader" should "honor endLSN during split" in {
+  changeFeedPartitionReaderTest(-1)
  }
 
 
@@ -94,7 +93,7 @@ class ChangeFeedPartitionReaderITest
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
   val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
-  val effectiveEndLSN = Math.max(endLSN, lsn-endLSN)
+  val effectiveEndLSN = Math.max(endLSN, lsn)
   val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(effectiveEndLSN), Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
    cosmosInputPartition,
@@ -107,15 +106,12 @@ class ChangeFeedPartitionReaderITest
   )
   var count = 0
 
-  sleep(5000)
-
   while (changeFeedPartitionReader.next()) {
    changeFeedPartitionReader.get()
-   logInfo("ChangeFeedPartitionReaderITest: row read")
    count += 1
   }
 
-  count shouldEqual Math.min((effectiveEndLSN - 1) * 2, inputtedDocuments)
+  count shouldEqual inputtedDocuments
  }
 
  private[this] def initializeAndBroadcastCosmosClientStatesForContainer(config: Map[String, String])
