@@ -1,5 +1,6 @@
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations, Utils}
 import com.azure.cosmos.models.{PartitionKey, ThroughputProperties}
@@ -16,6 +17,7 @@ import scala.util.Random
 class ChangeFeedPartitionReaderITest
  extends IntegrationSpec
   with Spark
+  with CosmosContainer
   with CosmosClient {
 
 
@@ -25,20 +27,18 @@ class ChangeFeedPartitionReaderITest
 
 
  "change feed partition reader" should "honor endLSN during split with higher endLSN than changes" in {
-  changeFeedPartitionReaderTest(20)
+  changeFeedPartitionReaderTest(1000)
  }
 
  private[this] def changeFeedPartitionReaderTest(endLSN: Long): Unit = {
   val cosmosEndpoint = TestConfigurations.HOST
   val cosmosMasterKey = TestConfigurations.MASTER_KEY
   val testId = UUID.randomUUID().toString
-  val cosmosDatabaseId = UUID.randomUUID().toString
-  cosmosClient.createDatabase(cosmosDatabaseId).block()
-  val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabaseId).createContainer(
+  val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
    "source_" + testId,
    "/sequenceNumber",
    ThroughputProperties.createManualThroughput(11000)).block()
-  val sourceContainer = cosmosClient.getDatabase(cosmosDatabaseId).getContainer(sourceContainerResponse.getProperties.getId)
+  val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(sourceContainerResponse.getProperties.getId)
   val rid = sourceContainerResponse.getProperties.getResourceId
   val continuationState = s"""{
   "V": 1,
@@ -72,13 +72,14 @@ class ChangeFeedPartitionReaderITest
   val changeFeedCfg = Map(
    "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
    "spark.cosmos.accountKey" -> cosmosMasterKey,
-   "spark.cosmos.database" -> cosmosDatabaseId,
+   "spark.cosmos.database" -> cosmosDatabase,
    "spark.cosmos.container" -> sourceContainer.getId(),
    "spark.cosmos.read.inferSchema.enabled" -> "false",
   )
   val inputtedDocuments = 20
+  var lsn = 0L
   for (_ <- 0 until inputtedDocuments) {
-   ingestTestDocuments(sourceContainer, Random.nextInt())
+   lsn = Math.max(ingestTestDocuments(sourceContainer, Random.nextInt()), lsn)
   }
 
   val structs = Array(
@@ -93,7 +94,8 @@ class ChangeFeedPartitionReaderITest
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
   val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
-  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(endLSN), Some(continuationStateEncoded))
+  val effectiveEndLSN = Math.max(endLSN, lsn-endLSN)
+  val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(effectiveEndLSN), Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
    cosmosInputPartition,
    changeFeedCfg,
@@ -113,7 +115,7 @@ class ChangeFeedPartitionReaderITest
    count += 1
   }
 
-  count shouldEqual Math.min((endLSN - 1) * 2, inputtedDocuments)
+  count shouldEqual Math.min((effectiveEndLSN - 1) * 2, inputtedDocuments)
  }
 
  private[this] def initializeAndBroadcastCosmosClientStatesForContainer(config: Map[String, String])
@@ -176,7 +178,7 @@ class ChangeFeedPartitionReaderITest
  (
   container: CosmosAsyncContainer,
   sequenceNumber: Int
- ): String = {
+ ): Long = {
   val id = UUID.randomUUID().toString
   val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
   objectNode.put("name", "Shrodigner's cat")
@@ -184,9 +186,21 @@ class ChangeFeedPartitionReaderITest
   objectNode.put("age", 20)
   objectNode.put("sequenceNumber", sequenceNumber)
   objectNode.put("id", id)
-  container.createItem(objectNode).block()
+  val response = container.createItem(objectNode).block()
 
-  id
+  getLSN(response.getSessionToken)
+ }
+
+ private[this] def getLSN(sessionToken: String): Long = {
+  val parsedSessionToken = sessionToken.substring(sessionToken.indexOf(":"))
+  val segments = StringUtils.split(parsedSessionToken, "#")
+  var latestLsn = segments(0)
+  if (segments.length >= 2) {
+   // default to Global LSN
+   latestLsn = segments(1)
+  }
+
+  latestLsn.toLong
  }
 
 }
