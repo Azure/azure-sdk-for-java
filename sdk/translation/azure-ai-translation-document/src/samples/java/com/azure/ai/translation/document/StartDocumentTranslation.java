@@ -58,7 +58,7 @@ public class StartDocumentTranslation {
         translationTarget2.setCategory("general");
         translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-        List<TranslationTarget> translationTargets = new ArrayList<>());
+        List<TranslationTarget> translationTargets = new ArrayList<>();
         translationTargets.add(translationTarget1);
         translationTargets.add(translationTarget2);
 
