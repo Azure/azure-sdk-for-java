@@ -79,7 +79,6 @@ class ChangeFeedPartitionReaderITest
   for (_ <- 0 until inputtedDocuments) {
    ingestTestDocuments(sourceContainer, Random.nextInt())
   }
-  sleep(1000)
 
   val structs = Array(
    StructField("_rawBody", StringType, false),
@@ -105,6 +104,7 @@ class ChangeFeedPartitionReaderITest
   )
   var count = 0
 
+  sleep(5000)
 
   while (changeFeedPartitionReader.next()) {
    changeFeedPartitionReader.get()

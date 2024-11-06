@@ -154,6 +154,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
       if (hasNext) {
         val feedResponse = feedResponseIterator.next()
+        logInfo("FeedResponse size from TransientIterator " + feedResponse.getResults.size())
         if (operationContextAndListener.isDefined) {
           operationContextAndListener.get.getOperationListener.feedResponseProcessedListener(
             operationContextAndListener.get.getOperationContext,
