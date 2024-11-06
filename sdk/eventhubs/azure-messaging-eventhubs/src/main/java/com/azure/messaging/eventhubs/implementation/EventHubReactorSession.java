@@ -46,8 +46,8 @@ import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
  */
 class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
-    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
-        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME
+        = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
     private final boolean isV2;
@@ -101,8 +101,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         final String eventPositionExpression = getExpression(eventPosition);
         final Map<Symbol, Object> filter = new HashMap<>();
-        filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-            eventPositionExpression));
+        filter.put(AmqpConstants.STRING_FILTER,
+            new UnknownDescribedType(AmqpConstants.STRING_FILTER, eventPositionExpression));
 
         final Map<Symbol, Object> properties = new HashMap<>();
         if (options.getOwnerLevel() != null) {
@@ -111,9 +111,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         properties.put(CLIENT_RECEIVER_IDENTIFIER, clientIdentifier);
 
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
+            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME }
             : null;
-
 
         final ConsumerFactory consumerFactory;
         if (isV2) {
@@ -132,18 +131,13 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         // order of preference
         if (eventPosition.getOffset() != null) {
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                eventPosition.getOffset());
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag, eventPosition.getOffset());
         }
 
         if (eventPosition.getSequenceNumber() != null) {
-            return String.format(
-                AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag,
-                eventPosition.getSequenceNumber());
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag, eventPosition.getSequenceNumber());
         }
 
         if (eventPosition.getEnqueuedDateTime() != null) {
@@ -151,13 +145,14 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             try {
                 ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
             } catch (ArithmeticException ex) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-                    "Event position for enqueued DateTime could not be parsed. Value: '%s'",
-                    eventPosition.getEnqueuedDateTime()), ex));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    String.format(Locale.ROOT, "Event position for enqueued DateTime could not be parsed. Value: '%s'",
+                        eventPosition.getEnqueuedDateTime()),
+                    ex));
             }
 
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag, ms);
         }
 
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("No starting position was set."));

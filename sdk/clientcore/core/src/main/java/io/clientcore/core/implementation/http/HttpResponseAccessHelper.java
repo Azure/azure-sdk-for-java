@@ -47,7 +47,7 @@ public final class HttpResponseAccessHelper {
          * @return The modified {@link HttpResponse}.
          */
         HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
-                                            Function<BinaryData, Object> bodyDeserializer);
+            Function<BinaryData, Object> bodyDeserializer);
     }
 
     /**
@@ -83,7 +83,7 @@ public final class HttpResponseAccessHelper {
      * @return The modified {@link HttpResponse}.
      */
     public static HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
-                                                      Function<BinaryData, Object> bodyDeserializer) {
+        Function<BinaryData, Object> bodyDeserializer) {
         return accessor.setBodyDeserializer(httpResponse, bodyDeserializer);
     }
 

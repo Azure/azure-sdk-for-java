@@ -47,17 +47,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public final class JobsClientImpl implements JobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxManagementClientImpl client;
 
     /**
      * Initializes an instance of JobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobsClientImpl(DataBoxManagementClientImpl client) {
@@ -72,174 +78,123 @@ public final class JobsClientImpl implements JobsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxManagementCli")
     public interface JobsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/jobs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobResourceList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/markDevicesShipped")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/markDevicesShipped")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> markDevicesShipped(
-            @HostParam("$host") String endpoint,
-            @PathParam("jobName") String jobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> markDevicesShipped(@HostParam("$host") String endpoint,
+            @PathParam("jobName") String jobName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MarkDevicesShippedRequest markDevicesShippedRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobResourceList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobResourceList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") JobResourceInner jobResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") JobResourceInner jobResource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/json") JobResourceUpdateParameter jobResourceUpdateParameter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/bookShipmentPickUp")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/bookShipmentPickUp")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ShipmentPickUpResponseInner>> bookShipmentPickUp(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ShipmentPickUpResponseInner>> bookShipmentPickUp(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ShipmentPickUpRequest shipmentPickUpRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/cancel")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/cancel")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> cancel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CancellationReason cancellationReason,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CancellationReason cancellationReason, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/listCredentials")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/listCredentials")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UnencryptedCredentialsList>> listCredentials(
-            @HostParam("$host") String endpoint,
+        Mono<Response<UnencryptedCredentialsList>> listCredentials(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobResourceList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobResourceList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -249,44 +204,25 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResourceInner>> listSinglePageAsync(String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<JobResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<JobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,41 +233,25 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResourceInner>> listSinglePageAsync(String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), skipToken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -345,7 +265,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource Collection as paginated response with {@link PagedFlux}.
@@ -358,7 +278,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,13 +288,13 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResourceInner> listAsync(String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(skipToken, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(skipToken, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource Collection as paginated response with {@link PagedIterable}.
@@ -387,7 +307,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,9 +322,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,57 +333,42 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> markDevicesShippedWithResponseAsync(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest) {
+    private Mono<Response<Void>> markDevicesShippedWithResponseAsync(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (markDevicesShippedRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter markDevicesShippedRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter markDevicesShippedRequest is required and cannot be null."));
         } else {
             markDevicesShippedRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .markDevicesShipped(
-                            this.client.getEndpoint(),
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            markDevicesShippedRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.markDevicesShipped(this.client.getEndpoint(), jobName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(),
+                markDevicesShippedRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @param context The context to associate with this operation.
@@ -473,57 +378,40 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> markDevicesShippedWithResponseAsync(
-        String jobName,
-        String resourceGroupName,
-        MarkDevicesShippedRequest markDevicesShippedRequest,
-        Context context) {
+    private Mono<Response<Void>> markDevicesShippedWithResponseAsync(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (markDevicesShippedRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter markDevicesShippedRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter markDevicesShippedRequest is required and cannot be null."));
         } else {
             markDevicesShippedRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .markDevicesShipped(
-                this.client.getEndpoint(),
-                jobName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                markDevicesShippedRequest,
-                accept,
-                context);
+        return service.markDevicesShipped(this.client.getEndpoint(), jobName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), markDevicesShippedRequest, accept, context);
     }
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,17 +420,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> markDevicesShippedAsync(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest) {
+    private Mono<Void> markDevicesShippedAsync(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest) {
         return markDevicesShippedWithResponseAsync(jobName, resourceGroupName, markDevicesShippedRequest)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @param context The context to associate with this operation.
@@ -552,20 +440,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> markDevicesShippedWithResponse(
-        String jobName,
-        String resourceGroupName,
-        MarkDevicesShippedRequest markDevicesShippedRequest,
-        Context context) {
+    public Response<Void> markDevicesShippedWithResponse(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest, Context context) {
         return markDevicesShippedWithResponseAsync(jobName, resourceGroupName, markDevicesShippedRequest, context)
             .block();
     }
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -573,14 +458,14 @@ public final class JobsClientImpl implements JobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void markDevicesShipped(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest) {
+    public void markDevicesShipped(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest) {
         markDevicesShippedWithResponse(jobName, resourceGroupName, markDevicesShippedRequest, Context.NONE);
     }
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,19 +474,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String skipToken) {
+    private Mono<PagedResponse<JobResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -610,31 +491,16 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<JobResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<JobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -644,19 +510,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String skipToken, Context context) {
+    private Mono<PagedResponse<JobResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -665,28 +527,15 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,14 +545,13 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResourceInner> listByResourceGroupAsync(String resourceGroupName, String skipToken) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -713,14 +561,13 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -730,16 +577,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource Collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken, context),
+    private PagedFlux<JobResourceInner> listByResourceGroupAsync(String resourceGroupName, String skipToken,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -754,7 +600,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -764,17 +610,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobResourceInner> listByResourceGroup(
-        String resourceGroupName, String skipToken, Context context) {
+    public PagedIterable<JobResourceInner> listByResourceGroup(String resourceGroupName, String skipToken,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, skipToken, context));
     }
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -782,19 +628,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about the specified job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String jobName, String expand) {
+    private Mono<Response<JobResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String jobName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,26 +648,17 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            expand,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, jobName, this.client.getApiVersion(), expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -834,19 +667,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about the specified job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String jobName, String expand, Context context) {
+    private Mono<Response<JobResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String jobName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -857,24 +686,16 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                expand,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            jobName, this.client.getApiVersion(), expand, accept, context);
     }
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -889,10 +710,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -901,17 +722,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about the specified job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, String expand, Context context) {
+    public Response<JobResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String jobName,
+        String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, jobName, expand, context).block();
     }
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -926,10 +747,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,19 +758,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String jobName, JobResourceInner jobResource) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String jobName,
+        JobResourceInner jobResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -965,28 +782,18 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            jobResource,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, jobName, this.client.getApiVersion(), jobResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,19 +802,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String jobName, JobResourceInner jobResource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String jobName,
+        JobResourceInner jobResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1023,25 +826,17 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                jobResource,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+            this.client.getApiVersion(), jobResource, accept, context);
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1049,26 +844,20 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginCreateAsync(
-        String resourceGroupName, String jobName, JobResourceInner jobResource) {
+    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginCreateAsync(String resourceGroupName,
+        String jobName, JobResourceInner jobResource) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, jobName, jobResource);
-        return this
-            .client
-            .<JobResourceInner, JobResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JobResourceInner.class,
-                JobResourceInner.class,
-                this.client.getContext());
+        return this.client.<JobResourceInner, JobResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobResourceInner.class, JobResourceInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1077,24 +866,22 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginCreateAsync(
-        String resourceGroupName, String jobName, JobResourceInner jobResource, Context context) {
+    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginCreateAsync(String resourceGroupName,
+        String jobName, JobResourceInner jobResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, jobName, jobResource, context);
-        return this
-            .client
-            .<JobResourceInner, JobResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobResourceInner.class, JobResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, jobName, jobResource, context);
+        return this.client.<JobResourceInner, JobResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobResourceInner.class, JobResourceInner.class, context);
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1102,18 +889,18 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(
-        String resourceGroupName, String jobName, JobResourceInner jobResource) {
+    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(String resourceGroupName,
+        String jobName, JobResourceInner jobResource) {
         return this.beginCreateAsync(resourceGroupName, jobName, jobResource).getSyncPoller();
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1122,18 +909,18 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(
-        String resourceGroupName, String jobName, JobResourceInner jobResource, Context context) {
+    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginCreate(String resourceGroupName,
+        String jobName, JobResourceInner jobResource, Context context) {
         return this.beginCreateAsync(resourceGroupName, jobName, jobResource, context).getSyncPoller();
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1142,18 +929,17 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResourceInner> createAsync(String resourceGroupName, String jobName, JobResourceInner jobResource) {
-        return beginCreateAsync(resourceGroupName, jobName, jobResource)
-            .last()
+        return beginCreateAsync(resourceGroupName, jobName, jobResource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1162,20 +948,19 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResourceInner> createAsync(
-        String resourceGroupName, String jobName, JobResourceInner jobResource, Context context) {
-        return beginCreateAsync(resourceGroupName, jobName, jobResource, context)
-            .last()
+    private Mono<JobResourceInner> createAsync(String resourceGroupName, String jobName, JobResourceInner jobResource,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, jobName, jobResource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1190,10 +975,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1202,17 +987,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResourceInner create(
-        String resourceGroupName, String jobName, JobResourceInner jobResource, Context context) {
+    public JobResourceInner create(String resourceGroupName, String jobName, JobResourceInner jobResource,
+        Context context) {
         return createAsync(resourceGroupName, jobName, jobResource, context).block();
     }
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1221,16 +1006,12 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1241,26 +1022,17 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, jobName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1268,19 +1040,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String jobName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String jobName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1291,23 +1059,16 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1316,18 +1077,16 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String jobName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, jobName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1335,21 +1094,20 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String jobName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String jobName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, jobName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1362,10 +1120,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1379,10 +1137,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1395,10 +1153,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1407,17 +1165,16 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String jobName, Context context) {
-        return beginDeleteAsync(resourceGroupName, jobName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, jobName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1429,10 +1186,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1445,35 +1202,28 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1483,40 +1233,28 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (jobResourceUpdateParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter jobResourceUpdateParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter jobResourceUpdateParameter is required and cannot be null."));
         } else {
             jobResourceUpdateParameter.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            jobResourceUpdateParameter,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    jobName, this.client.getApiVersion(), ifMatch, jobResourceUpdateParameter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1524,23 +1262,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1550,66 +1280,46 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (jobResourceUpdateParameter == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter jobResourceUpdateParameter is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter jobResourceUpdateParameter is required and cannot be null."));
         } else {
             jobResourceUpdateParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                ifMatch,
-                jobResourceUpdateParameter,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+            this.client.getApiVersion(), ifMatch, jobResourceUpdateParameter, accept, context);
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);
-        return this
-            .client
-            .<JobResourceInner, JobResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JobResourceInner.class,
-                JobResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginUpdateAsync(String resourceGroupName,
+        String jobName, JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);
+        return this.client.<JobResourceInner, JobResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobResourceInner.class, JobResourceInner.class, this.client.getContext());
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1617,30 +1327,24 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginUpdateAsync(
-        String resourceGroupName, String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
+    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginUpdateAsync(String resourceGroupName,
+        String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
         final String ifMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);
-        return this
-            .client
-            .<JobResourceInner, JobResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                JobResourceInner.class,
-                JobResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch);
+        return this.client.<JobResourceInner, JobResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobResourceInner.class, JobResourceInner.class, this.client.getContext());
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1648,27 +1352,21 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link PollerFlux} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context) {
+    private PollerFlux<PollResult<JobResourceInner>, JobResourceInner> beginUpdateAsync(String resourceGroupName,
+        String jobName, JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context);
-        return this
-            .client
-            .<JobResourceInner, JobResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobResourceInner.class, JobResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context);
+        return this.client.<JobResourceInner, JobResourceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            JobResourceInner.class, JobResourceInner.class, context);
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1676,21 +1374,21 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(
-        String resourceGroupName, String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
+    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
+        String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
         final String ifMatch = null;
         return this.beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch).getSyncPoller();
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1698,48 +1396,39 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link SyncPoller} for polling of job Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context)
+    public SyncPoller<PollResult<JobResourceInner>, JobResourceInner> beginUpdate(String resourceGroupName,
+        String jobName, JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context)
             .getSyncPoller();
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResourceInner> updateAsync(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch) {
-        return beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch)
-            .last()
+    private Mono<JobResourceInner> updateAsync(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch) {
+        return beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1747,23 +1436,22 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResourceInner> updateAsync(
-        String resourceGroupName, String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
+    private Mono<JobResourceInner> updateAsync(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter) {
         final String ifMatch = null;
-        return beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch)
-            .last()
+        return beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1771,23 +1459,18 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResourceInner> updateAsync(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context)
-            .last()
+    private Mono<JobResourceInner> updateAsync(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
+        return beginUpdateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1795,21 +1478,21 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResourceInner update(
-        String resourceGroupName, String jobName, JobResourceUpdateParameter jobResourceUpdateParameter) {
+    public JobResourceInner update(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter) {
         final String ifMatch = null;
         return updateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch).block();
     }
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1817,21 +1500,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResourceInner update(
-        String resourceGroupName,
-        String jobName,
-        JobResourceUpdateParameter jobResourceUpdateParameter,
-        String ifMatch,
-        Context context) {
+    public JobResourceInner update(String resourceGroupName, String jobName,
+        JobResourceUpdateParameter jobResourceUpdateParameter, String ifMatch, Context context) {
         return updateAsync(resourceGroupName, jobName, jobResourceUpdateParameter, ifMatch, context).block();
     }
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1839,19 +1518,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return shipment pick up response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ShipmentPickUpResponseInner>> bookShipmentPickUpWithResponseAsync(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest) {
+    private Mono<Response<ShipmentPickUpResponseInner>> bookShipmentPickUpWithResponseAsync(String resourceGroupName,
+        String jobName, ShipmentPickUpRequest shipmentPickUpRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1869,26 +1544,17 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .bookShipmentPickUp(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            shipmentPickUpRequest,
-                            accept,
-                            context))
+                context -> service.bookShipmentPickUp(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, jobName, this.client.getApiVersion(), shipmentPickUpRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1897,19 +1563,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return shipment pick up response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ShipmentPickUpResponseInner>> bookShipmentPickUpWithResponseAsync(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
+    private Mono<Response<ShipmentPickUpResponseInner>> bookShipmentPickUpWithResponseAsync(String resourceGroupName,
+        String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1926,24 +1588,16 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .bookShipmentPickUp(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                shipmentPickUpRequest,
-                accept,
-                context);
+        return service.bookShipmentPickUp(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            jobName, this.client.getApiVersion(), shipmentPickUpRequest, accept, context);
     }
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1951,18 +1605,18 @@ public final class JobsClientImpl implements JobsClient {
      * @return shipment pick up response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ShipmentPickUpResponseInner> bookShipmentPickUpAsync(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest) {
+    private Mono<ShipmentPickUpResponseInner> bookShipmentPickUpAsync(String resourceGroupName, String jobName,
+        ShipmentPickUpRequest shipmentPickUpRequest) {
         return bookShipmentPickUpWithResponseAsync(resourceGroupName, jobName, shipmentPickUpRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1971,17 +1625,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return shipment pick up response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShipmentPickUpResponseInner> bookShipmentPickUpWithResponse(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
+    public Response<ShipmentPickUpResponseInner> bookShipmentPickUpWithResponse(String resourceGroupName,
+        String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context) {
         return bookShipmentPickUpWithResponseAsync(resourceGroupName, jobName, shipmentPickUpRequest, context).block();
     }
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1989,18 +1643,18 @@ public final class JobsClientImpl implements JobsClient {
      * @return shipment pick up response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShipmentPickUpResponseInner bookShipmentPickUp(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest) {
+    public ShipmentPickUpResponseInner bookShipmentPickUp(String resourceGroupName, String jobName,
+        ShipmentPickUpRequest shipmentPickUpRequest) {
         return bookShipmentPickUpWithResponse(resourceGroupName, jobName, shipmentPickUpRequest, Context.NONE)
             .getValue();
     }
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2008,19 +1662,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String jobName, CancellationReason cancellationReason) {
+    private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String jobName,
+        CancellationReason cancellationReason) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2037,27 +1687,17 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            cancellationReason,
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, jobName, this.client.getApiVersion(), cancellationReason, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2066,19 +1706,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String jobName, CancellationReason cancellationReason, Context context) {
+    private Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String jobName,
+        CancellationReason cancellationReason, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2095,24 +1731,16 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                cancellationReason,
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+            this.client.getApiVersion(), cancellationReason, accept, context);
     }
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2126,10 +1754,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2138,17 +1766,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName, String jobName, CancellationReason cancellationReason, Context context) {
+    public Response<Void> cancelWithResponse(String resourceGroupName, String jobName,
+        CancellationReason cancellationReason, Context context) {
         return cancelWithResponseAsync(resourceGroupName, jobName, cancellationReason, context).block();
     }
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2161,30 +1789,26 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of unencrypted credentials for accessing device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UnencryptedCredentialsInner>> listCredentialsSinglePageAsync(
-        String resourceGroupName, String jobName) {
+    private Mono<PagedResponse<UnencryptedCredentialsInner>> listCredentialsSinglePageAsync(String resourceGroupName,
+        String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2195,51 +1819,36 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCredentials(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<UnencryptedCredentialsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, jobName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<UnencryptedCredentialsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of unencrypted credentials for accessing device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UnencryptedCredentialsInner>> listCredentialsSinglePageAsync(
-        String resourceGroupName, String jobName, Context context) {
+    private Mono<PagedResponse<UnencryptedCredentialsInner>> listCredentialsSinglePageAsync(String resourceGroupName,
+        String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2251,26 +1860,18 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCredentials(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listCredentials(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2283,10 +1884,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2294,17 +1895,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UnencryptedCredentialsInner> listCredentialsAsync(
-        String resourceGroupName, String jobName, Context context) {
+    private PagedFlux<UnencryptedCredentialsInner> listCredentialsAsync(String resourceGroupName, String jobName,
+        Context context) {
         return new PagedFlux<>(() -> listCredentialsSinglePageAsync(resourceGroupName, jobName, context));
     }
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2317,10 +1918,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2328,16 +1929,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return list of unencrypted credentials for accessing device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UnencryptedCredentialsInner> listCredentials(
-        String resourceGroupName, String jobName, Context context) {
+    public PagedIterable<UnencryptedCredentialsInner> listCredentials(String resourceGroupName, String jobName,
+        Context context) {
         return new PagedIterable<>(listCredentialsAsync(resourceGroupName, jobName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2349,31 +1949,20 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<JobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2386,31 +1975,20 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2422,32 +2000,22 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2455,29 +2023,19 @@ public final class JobsClientImpl implements JobsClient {
      * @return job Resource Collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<JobResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

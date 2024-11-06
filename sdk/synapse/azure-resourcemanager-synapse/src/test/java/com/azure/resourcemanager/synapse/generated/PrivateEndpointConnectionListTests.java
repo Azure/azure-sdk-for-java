@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionList;
 public final class PrivateEndpointConnectionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"khixuigdtopbo\"},\"id\":\"joghmewuama\",\"name\":\"hrzayvvtpgvdf\",\"type\":\"iotkftutqxl\"},{\"properties\":{\"provisioningState\":\"fgugnxkrxdqmid\"},\"id\":\"thz\",\"name\":\"vqdra\",\"type\":\"hjybigehoqfbo\"}],\"nextLink\":\"kanyktzlcuiywg\"}")
-                .toObject(PrivateEndpointConnectionList.class);
+        PrivateEndpointConnectionList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"q\"},\"privateLinkServiceConnectionState\":{\"status\":\"noae\",\"description\":\"fhyhltrpmopjmcma\",\"actionsRequired\":\"okth\"},\"provisioningState\":\"iuaod\"},\"id\":\"fcp\",\"name\":\"vxodpu\",\"type\":\"zmyzydagf\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ezyiuokktwhrdxw\"},\"privateLinkServiceConnectionState\":{\"status\":\"q\",\"description\":\"bsureximo\",\"actionsRequired\":\"ocfs\"},\"provisioningState\":\"s\"},\"id\":\"mddystkiiux\",\"name\":\"qyud\",\"type\":\"o\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"b\"},\"privateLinkServiceConnectionState\":{\"status\":\"zvyifqrvkdvj\",\"description\":\"lrmv\",\"actionsRequired\":\"f\"},\"provisioningState\":\"t\"},\"id\":\"pnpulexxbczwtru\",\"name\":\"iqzbq\",\"type\":\"vsovmyokac\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"lhzdobp\"},\"privateLinkServiceConnectionState\":{\"status\":\"flbvvnchrkcciwwz\",\"description\":\"qkhr\",\"actionsRequired\":\"jiwkuofoskghsau\"},\"provisioningState\":\"mjmvxieduugidyjr\"},\"id\":\"f\",\"name\":\"y\",\"type\":\"osvexcsonpclhoc\"}],\"nextLink\":\"slkevle\"}")
+            .toObject(PrivateEndpointConnectionList.class);
     }
 
     @org.junit.jupiter.api.Test

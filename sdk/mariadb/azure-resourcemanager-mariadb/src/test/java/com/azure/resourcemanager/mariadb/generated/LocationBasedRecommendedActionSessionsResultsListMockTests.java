@@ -6,73 +6,42 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mariadb.MariaDBManager;
 import com.azure.resourcemanager.mariadb.models.RecommendationAction;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationBasedRecommendedActionSessionsResultsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"advisorName\":\"xjjs\",\"sessionId\":\"qbeitpkxztmoob\",\"actionId\":358908286,\"createdTime\":\"2021-05-25T12:15:23Z\",\"expirationTime\":\"2021-09-03T03:39:31Z\",\"reason\":\"cwq\",\"recommendationType\":\"imaq\",\"details\":{\"yhohujswtwkozzwc\":\"em\",\"wpfaj\":\"lkb\"}},\"id\":\"jwltlwtjjgu\",\"name\":\"talhsnvkcdmxzr\",\"type\":\"oaimlnw\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"advisorName\":\"z\",\"sessionId\":\"rpgogtqxep\",\"actionId\":991582121,\"createdTime\":\"2021-06-16T11:51:19Z\",\"expirationTime\":\"2021-09-26T03:21:12Z\",\"reason\":\"lyjt\",\"recommendationType\":\"of\",\"details\":{\"kjpvdwxf\":\"vfcibyfmowux\",\"rkambt\":\"wiivwzjbhyzsx\",\"vldspa\":\"negvmnvuqe\"}},\"id\":\"tjb\",\"name\":\"kdmflvestmjlx\",\"type\":\"ril\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MariaDBManager manager = MariaDBManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<RecommendationAction> response = manager.locationBasedRecommendedActionSessionsResults()
+            .list("kkzjcjbtrga", "hvv", com.azure.core.util.Context.NONE);
 
-        MariaDBManager manager =
-            MariaDBManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<RecommendationAction> response =
-            manager
-                .locationBasedRecommendedActionSessionsResults()
-                .list("cjdx", "nbzoggcu", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("z", response.iterator().next().advisorName());
-        Assertions.assertEquals("rpgogtqxep", response.iterator().next().sessionId());
-        Assertions.assertEquals(991582121, response.iterator().next().actionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T11:51:19Z"), response.iterator().next().createdTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-26T03:21:12Z"), response.iterator().next().expirationTime());
-        Assertions.assertEquals("lyjt", response.iterator().next().reason());
-        Assertions.assertEquals("of", response.iterator().next().recommendationType());
-        Assertions.assertEquals("vfcibyfmowux", response.iterator().next().details().get("kjpvdwxf"));
+        Assertions.assertEquals("xjjs", response.iterator().next().advisorName());
+        Assertions.assertEquals("qbeitpkxztmoob", response.iterator().next().sessionId());
+        Assertions.assertEquals(358908286, response.iterator().next().actionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T12:15:23Z"), response.iterator().next().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T03:39:31Z"),
+            response.iterator().next().expirationTime());
+        Assertions.assertEquals("cwq", response.iterator().next().reason());
+        Assertions.assertEquals("imaq", response.iterator().next().recommendationType());
+        Assertions.assertEquals("em", response.iterator().next().details().get("yhohujswtwkozzwc"));
     }
 }

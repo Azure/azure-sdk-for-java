@@ -5,75 +5,77 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.AppliedScopeProperties;
 import com.azure.resourcemanager.reservations.models.AppliedScopeType;
 import com.azure.resourcemanager.reservations.models.InstanceFlexibility;
 import com.azure.resourcemanager.reservations.models.PatchPropertiesRenewProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties for reservation patch. */
+/**
+ * Properties for reservation patch.
+ */
 @Fluent
-public final class PatchProperties {
+public final class PatchProperties implements JsonSerializable<PatchProperties> {
     /*
      * Type of the Applied Scope.
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared. This
      * property will be deprecated and replaced by appliedScopeProperties instead for Single AppliedScopeType.
      */
-    @JsonProperty(value = "appliedScopes")
     private List<String> appliedScopes;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId
      * and managementGroupId if AppliedScopeType is ManagementGroup
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
     /*
      * Turning this on will apply the reservation discount to other VMs in the same VM size group. Only specify for
      * VirtualMachines reserved resource type.
      */
-    @JsonProperty(value = "instanceFlexibility")
     private InstanceFlexibility instanceFlexibility;
 
     /*
      * Display name of the reservation
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Setting this to true will automatically purchase a new reservation on the expiration date time.
      */
-    @JsonProperty(value = "renew")
     private Boolean renew;
 
     /*
      * The renewProperties property.
      */
-    @JsonProperty(value = "renewProperties")
     private PatchPropertiesRenewProperties renewProperties;
 
     /*
      * This is the date-time when the Azure hybrid benefit needs to be reviewed.
      */
-    @JsonProperty(value = "reviewDateTime")
     private OffsetDateTime reviewDateTime;
 
-    /** Creates an instance of PatchProperties class. */
+    /**
+     * Creates an instance of PatchProperties class.
+     */
     public PatchProperties() {
     }
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -82,7 +84,7 @@ public final class PatchProperties {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the PatchProperties object itself.
      */
@@ -95,7 +97,7 @@ public final class PatchProperties {
      * Get the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @return the appliedScopes value.
      */
     public List<String> appliedScopes() {
@@ -106,7 +108,7 @@ public final class PatchProperties {
      * Set the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @param appliedScopes the appliedScopes value to set.
      * @return the PatchProperties object itself.
      */
@@ -118,7 +120,7 @@ public final class PatchProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -128,7 +130,7 @@ public final class PatchProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the PatchProperties object itself.
      */
@@ -140,7 +142,7 @@ public final class PatchProperties {
     /**
      * Get the instanceFlexibility property: Turning this on will apply the reservation discount to other VMs in the
      * same VM size group. Only specify for VirtualMachines reserved resource type.
-     *
+     * 
      * @return the instanceFlexibility value.
      */
     public InstanceFlexibility instanceFlexibility() {
@@ -150,7 +152,7 @@ public final class PatchProperties {
     /**
      * Set the instanceFlexibility property: Turning this on will apply the reservation discount to other VMs in the
      * same VM size group. Only specify for VirtualMachines reserved resource type.
-     *
+     * 
      * @param instanceFlexibility the instanceFlexibility value to set.
      * @return the PatchProperties object itself.
      */
@@ -161,7 +163,7 @@ public final class PatchProperties {
 
     /**
      * Get the name property: Display name of the reservation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -170,7 +172,7 @@ public final class PatchProperties {
 
     /**
      * Set the name property: Display name of the reservation.
-     *
+     * 
      * @param name the name value to set.
      * @return the PatchProperties object itself.
      */
@@ -182,7 +184,7 @@ public final class PatchProperties {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -192,7 +194,7 @@ public final class PatchProperties {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the PatchProperties object itself.
      */
@@ -203,7 +205,7 @@ public final class PatchProperties {
 
     /**
      * Get the renewProperties property: The renewProperties property.
-     *
+     * 
      * @return the renewProperties value.
      */
     public PatchPropertiesRenewProperties renewProperties() {
@@ -212,7 +214,7 @@ public final class PatchProperties {
 
     /**
      * Set the renewProperties property: The renewProperties property.
-     *
+     * 
      * @param renewProperties the renewProperties value to set.
      * @return the PatchProperties object itself.
      */
@@ -223,7 +225,7 @@ public final class PatchProperties {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -232,7 +234,7 @@ public final class PatchProperties {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the PatchProperties object itself.
      */
@@ -243,7 +245,7 @@ public final class PatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -253,5 +255,69 @@ public final class PatchProperties {
         if (renewProperties() != null) {
             renewProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeArrayField("appliedScopes", this.appliedScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        jsonWriter.writeStringField("instanceFlexibility",
+            this.instanceFlexibility == null ? null : this.instanceFlexibility.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("renew", this.renew);
+        jsonWriter.writeJsonField("renewProperties", this.renewProperties);
+        jsonWriter.writeStringField("reviewDateTime",
+            this.reviewDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reviewDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchProperties.
+     */
+    public static PatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchProperties deserializedPatchProperties = new PatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appliedScopeType".equals(fieldName)) {
+                    deserializedPatchProperties.appliedScopeType = AppliedScopeType.fromString(reader.getString());
+                } else if ("appliedScopes".equals(fieldName)) {
+                    List<String> appliedScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPatchProperties.appliedScopes = appliedScopes;
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedPatchProperties.appliedScopeProperties = AppliedScopeProperties.fromJson(reader);
+                } else if ("instanceFlexibility".equals(fieldName)) {
+                    deserializedPatchProperties.instanceFlexibility
+                        = InstanceFlexibility.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedPatchProperties.name = reader.getString();
+                } else if ("renew".equals(fieldName)) {
+                    deserializedPatchProperties.renew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("renewProperties".equals(fieldName)) {
+                    deserializedPatchProperties.renewProperties = PatchPropertiesRenewProperties.fromJson(reader);
+                } else if ("reviewDateTime".equals(fieldName)) {
+                    deserializedPatchProperties.reviewDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchProperties;
+        });
     }
 }

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalSignupSettingsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalSignupSettingsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"enabled\":false,\"termsOfService\":{\"text\":\"wnhkgq\",\"enabled\":false,\"consentRequired\":false}},\"id\":\"stcivrak\",\"name\":\"rrynjcwmhly\",\"type\":\"gnukxrkemjpe\"}")
-                .toObject(PortalSignupSettingsInner.class);
+        PortalSignupSettingsInner model = BinaryData.fromString(
+            "{\"properties\":{\"enabled\":false,\"termsOfService\":{\"text\":\"wnhkgq\",\"enabled\":false,\"consentRequired\":false}},\"id\":\"stcivrak\",\"name\":\"rrynjcwmhly\",\"type\":\"gnukxrkemjpe\"}")
+            .toObject(PortalSignupSettingsInner.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals("wnhkgq", model.termsOfService().text());
         Assertions.assertEquals(false, model.termsOfService().enabled());
@@ -25,11 +23,9 @@ public final class PortalSignupSettingsInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalSignupSettingsInner model =
-            new PortalSignupSettingsInner()
-                .withEnabled(false)
-                .withTermsOfService(
-                    new TermsOfServiceProperties().withText("wnhkgq").withEnabled(false).withConsentRequired(false));
+        PortalSignupSettingsInner model = new PortalSignupSettingsInner().withEnabled(false)
+            .withTermsOfService(
+                new TermsOfServiceProperties().withText("wnhkgq").withEnabled(false).withConsentRequired(false));
         model = BinaryData.fromObject(model).toObject(PortalSignupSettingsInner.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals("wnhkgq", model.termsOfService().text());

@@ -47,12 +47,13 @@ public final class EnvironmentsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Environment> response = manager.environments().list("asdvl", "fwdgzxulucvp", "mrsreuzvxurisjnh",
-            "ytxifqjzgxmrh", com.azure.core.util.Context.NONE);
+        PagedIterable<Environment> response = manager.environments()
+            .list("asdvl", "fwdgzxulucvp", "mrsreuzvxurisjnh", "ytxifqjzgxmrh", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lw", response.iterator().next().properties().title());
         Assertions.assertEquals("esutrgjupauutpw", response.iterator().next().properties().description());

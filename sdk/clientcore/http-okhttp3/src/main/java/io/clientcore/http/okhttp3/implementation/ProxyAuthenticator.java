@@ -3,25 +3,26 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.auth.AuthUtils;
+import io.clientcore.core.util.auth.ChallengeHandler;
 import io.clientcore.core.util.binarydata.BinaryData;
 import okhttp3.Authenticator;
-import okhttp3.Challenge;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.isNullOrEmpty;
+import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
@@ -30,9 +31,12 @@ public final class ProxyAuthenticator implements Authenticator {
     private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
 
-    private static final String BASIC = "basic";
-    private static final String DIGEST = "digest";
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
+
+    /**
+     * Header representing additional information a proxy server is expecting during future authentication requests.
+     */
+    private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
 
     /*
      * Proxies use 'CONNECT' as the HTTP method.
@@ -51,19 +55,23 @@ public final class ProxyAuthenticator implements Authenticator {
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
+    private static final String NEXT_NONCE = "nextnonce";
+    private static final String NONCE = "nonce";
 
     private static final ClientLogger LOGGER = new ClientLogger(ProxyAuthenticator.class);
 
-    private final AuthorizationChallengeHandler challengeHandler;
+    private final ChallengeHandler compositeChallengeHandler;
+    private final ProxyAuthenticationInfoInterceptor proxyInterceptor;
+    private volatile String lastAuthorizationHeader;
 
     /**
      * Constructs a {@link ProxyAuthenticator} which handles authenticating against proxy servers.
      *
-     * @param username Username used in authentication challenges.
-     * @param password Password used in authentication challenges.
+     * @param compositeChallengeHandler List of challenge handlers that will process the challenges.
      */
-    public ProxyAuthenticator(String username, String password) {
-        this.challengeHandler = new AuthorizationChallengeHandler(username, password);
+    public ProxyAuthenticator(ChallengeHandler compositeChallengeHandler) {
+        this.compositeChallengeHandler = compositeChallengeHandler;
+        this.proxyInterceptor = new ProxyAuthenticationInfoInterceptor();
     }
 
     /**
@@ -73,7 +81,7 @@ public final class ProxyAuthenticator implements Authenticator {
      * @return An {@link Interceptor} that attempts to read headers from the response.
      */
     public Interceptor getProxyAuthenticationInfoInterceptor() {
-        return new ProxyAuthenticationInfoInterceptor(challengeHandler);
+        return this.proxyInterceptor;
     }
 
     /**
@@ -84,76 +92,95 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     @Override
     public Request authenticate(Route route, Response response) {
-        String authorizationHeader =
-            challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
-
-        // Pipelining was successful, use the generated authorization header.
-        if (!isNullOrEmpty(authorizationHeader)) {
-            return response.request().newBuilder()
-                .header(PROXY_AUTHORIZATION, authorizationHeader)
-                .build();
-        }
-
-        // If this is a pre-emptive challenge quit now if pipelining doesn't produce anything.
+        // Handle preemptive authentication
         if (PREEMPTIVE_AUTHENTICATE.equalsIgnoreCase(response.message())) {
+            // If we have already authenticated, apply the stored Proxy-Authorization header.
+            if (lastAuthorizationHeader != null) {
+                return response.request()
+                    .newBuilder()
+                    .header(PROXY_AUTHORIZATION.getCaseInsensitiveName(), lastAuthorizationHeader)
+                    .build();
+            }
+            // If no previous authorization, return the request unchanged.
             return response.request();
         }
 
-        boolean hasBasicChallenge = false;
-        List<Map<String, String>> digestChallenges = new ArrayList<>();
+        Request.Builder requestBuilder = response.request().newBuilder();
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.valueOf(PROXY_METHOD), PROXY_URI_PATH);
+        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(),
+            OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
+        String authorizationHeader;
+        // Replace nonce value in the PROXY_AUTHENTICATE header with the updated nonce
+        ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();
+        String updatedNonce = lastChallengeMap.get(NONCE);
 
-        for (Challenge challenge : response.challenges()) {
-            if (BASIC.equalsIgnoreCase(challenge.scheme())) {
-                hasBasicChallenge = true;
-            } else if (DIGEST.equalsIgnoreCase(challenge.scheme())) {
-                digestChallenges.add(challenge.authParams());
+        if (updatedNonce != null) {
+            String proxyAuthenticateHeader
+                = httpResponse.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
+
+            if (proxyAuthenticateHeader != null) {
+                // Replace the old nonce with the updated nonce in the header for security against replay-attacks
+                String updatedHeader = replaceNonceInHeader(proxyAuthenticateHeader, updatedNonce);
+                httpResponse.getHeaders().set(HttpHeaderName.PROXY_AUTHENTICATE, updatedHeader);
             }
         }
+        // set isProxy true to indicate proxy authentication
+        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, true);
+        authorizationHeader = httpRequest.getHeaders().getValue(PROXY_AUTHORIZATION);
 
-        // Prefer digest challenges over basic.
-        if (digestChallenges.size() > 0) {
-            authorizationHeader =
-                challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
-        }
-
-        /*
-         * If Digest proxy was attempted but it wasn't able to be computed and the server sent a Basic
-         * challenge as well apply the basic authorization header.
-         */
-        if (authorizationHeader == null && hasBasicChallenge) {
-            authorizationHeader = challengeHandler.handleBasic();
-        }
-
-        Request.Builder requestBuilder = response.request().newBuilder();
-
-        if (authorizationHeader != null) {
-            requestBuilder.header(PROXY_AUTHORIZATION, authorizationHeader);
+        synchronized (this) {
+            if (authorizationHeader != null) {
+                // Store the Proxy-Authorization header for future preemptive requests.
+                lastAuthorizationHeader = authorizationHeader;
+                requestBuilder.header(PROXY_AUTHORIZATION.getCaseInsensitiveName(), authorizationHeader);
+            }
         }
 
         return requestBuilder.build();
     }
 
     /**
+     * Replaces the nonce value in the Proxy-Authenticate header with the new nonce.
+     *
+     * @param header The original Proxy-Authenticate header.
+     * @param newNonce The new nonce to replace the existing one.
+     * @return The updated Proxy-Authenticate header.
+     */
+    private String replaceNonceInHeader(String header, String newNonce) {
+        // Split the header into parts
+        String[] parts = header.split(","); // Assuming multiple values are comma-separated
+        StringBuilder updatedHeader = new StringBuilder();
+
+        for (String part : parts) {
+            String trimmedPart = part.trim();
+            // If the part contains "nonce=", replace it with the new nonce
+            if (trimmedPart.startsWith("nonce=")) {
+                updatedHeader.append("nonce=\"").append(newNonce).append("\"");
+            } else {
+                updatedHeader.append(trimmedPart); // Keep other parts unchanged
+            }
+            updatedHeader.append(", "); // Add a separator
+        }
+
+        // Remove the trailing ", " if present
+        if (updatedHeader.length() > 2) {
+            updatedHeader.setLength(updatedHeader.length() - 2);
+        }
+
+        return updatedHeader.toString();
+    }
+
+    /**
      * This class handles intercepting the response returned from the server when proxying.
      */
     private static class ProxyAuthenticationInfoInterceptor implements Interceptor {
-        private final AuthorizationChallengeHandler challengeHandler;
-
-        /**
-         * Constructs an {@link Interceptor} which intercepts responses from the server when using proxy authentication
-         * in an attempt to retrieve authentication info response headers.
-         *
-         * @param challengeHandler {@link AuthorizationChallengeHandler} that consumes authentication info response
-         * headers.
-         */
-        ProxyAuthenticationInfoInterceptor(AuthorizationChallengeHandler challengeHandler) {
-            this.challengeHandler = challengeHandler;
-        }
+        private static final String NONCE = "nonce";
+        private final ConcurrentHashMap<String, String> lastChallenge = new ConcurrentHashMap<>();  // Manages the state of nonce.
 
         /**
          * Attempts to intercept the 'Proxy-Authentication-Info' response header sent from the server. If the header is
          * set it will be used to validate the request and response and update the pipelined challenge in the passed
-         * {@link AuthorizationChallengeHandler}.
+         * {@link ChallengeHandler}.
          *
          * @param chain Interceptor chain.
          *
@@ -167,11 +194,11 @@ public final class ProxyAuthenticator implements Authenticator {
 
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
-            if (!isNullOrEmpty(proxyAuthenticationInfoHeader)) {
-                Map<String, String> authenticationInfoPieces = AuthorizationChallengeHandler
-                    .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
-                Map<String, String> authorizationPieces = AuthorizationChallengeHandler
-                    .parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
+            if (!AuthUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
+                Map<String, String> authenticationInfoPieces
+                    = AuthUtils.parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
+                Map<String, String> authorizationPieces = AuthUtils.parseAuthenticationOrAuthorizationHeader(
+                    chain.request().header(PROXY_AUTHORIZATION.getCaseInsensitiveName()));
 
                 /*
                  * If the authentication info response contains a cnonce or nc value it MUST match the value sent in the
@@ -181,10 +208,19 @@ public final class ProxyAuthenticator implements Authenticator {
                 validateProxyAuthenticationInfoValue(CNONCE, authenticationInfoPieces, authorizationPieces);
                 validateProxyAuthenticationInfoValue(NC, authenticationInfoPieces, authorizationPieces);
 
-                challengeHandler.consumeAuthenticationInfoHeader(authenticationInfoPieces);
+                // Let the challenge handler process the info and return any data like next nonce.
+                String nextNonce = processAuthenticationInfoHeader(authenticationInfoPieces);
+
+                if (nextNonce != null) {
+                    lastChallenge.put(NONCE, nextNonce);
+                }
             }
 
             return response;
+        }
+
+        private ConcurrentHashMap<String, String> getLastChallenge() {
+            return this.lastChallenge;
         }
     }
 
@@ -194,16 +230,35 @@ public final class ProxyAuthenticator implements Authenticator {
      * outlining that the values didn't match.
      */
     private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
-                                                             Map<String, String> authorizationPieces) {
+        Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalStateException(
-                        String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER.logThrowableAsError(new IllegalStateException(
+                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }
+    }
+
+    /**
+     * Processes the authentication info header and extracts the 'nextnonce' value if present.
+     */
+    private static String processAuthenticationInfoHeader(Map<String, String> authenticationInfoMap) {
+        if (authenticationInfoMap == null || authenticationInfoMap.isEmpty()) {
+            return null;
+        }
+
+        /*
+         * Extracts the 'nextnonce' value from the authentication info header, if present.
+         * This value is used to replace the current nonce for future digest authentications.
+         */
+        if (authenticationInfoMap.containsKey(NEXT_NONCE)) {
+            return authenticationInfoMap.get(NEXT_NONCE);
+        }
+
+        // If no nextnonce is present, return null.
+        return null;
     }
 }

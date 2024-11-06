@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryPerformanceInsightResetDataResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryPerformanceInsightResetDataResultInner model =
-            BinaryData
-                .fromString("{\"status\":\"Failed\",\"message\":\"zmh\"}")
+        QueryPerformanceInsightResetDataResultInner model
+            = BinaryData.fromString("{\"status\":\"Succeeded\",\"message\":\"sgwbnbbeld\"}")
                 .toObject(QueryPerformanceInsightResetDataResultInner.class);
-        Assertions.assertEquals(QueryPerformanceInsightResetDataResultState.FAILED, model.status());
-        Assertions.assertEquals("zmh", model.message());
+        Assertions.assertEquals(QueryPerformanceInsightResetDataResultState.SUCCEEDED, model.status());
+        Assertions.assertEquals("sgwbnbbeld", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryPerformanceInsightResetDataResultInner model =
-            new QueryPerformanceInsightResetDataResultInner()
-                .withStatus(QueryPerformanceInsightResetDataResultState.FAILED)
-                .withMessage("zmh");
+        QueryPerformanceInsightResetDataResultInner model = new QueryPerformanceInsightResetDataResultInner()
+            .withStatus(QueryPerformanceInsightResetDataResultState.SUCCEEDED)
+            .withMessage("sgwbnbbeld");
         model = BinaryData.fromObject(model).toObject(QueryPerformanceInsightResetDataResultInner.class);
-        Assertions.assertEquals(QueryPerformanceInsightResetDataResultState.FAILED, model.status());
-        Assertions.assertEquals("zmh", model.message());
+        Assertions.assertEquals(QueryPerformanceInsightResetDataResultState.SUCCEEDED, model.status());
+        Assertions.assertEquals("sgwbnbbeld", model.message());
     }
 }

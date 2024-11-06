@@ -10,7 +10,7 @@ import com.beust.jcommander.Parameter;
  * Azure Search specific performance test configuration options.
  */
 public class SearchPerfStressOptions extends PerfStressOptions {
-    @Parameter(names = {"-ds", "--documentSize"}, description = "Size of Search documents (SMALL, LARGE)")
+    @Parameter(names = { "-ds", "--documentSize" }, description = "Size of Search documents (SMALL, LARGE)")
     private String documentSize = DocumentSize.SMALL.name();
 
     /**

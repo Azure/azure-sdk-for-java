@@ -203,7 +203,6 @@ public final class ShareLeaseClientBuilder {
         return (leaseId == null) ? CoreUtils.randomUuid().toString() : leaseId;
     }
 
-
     /**
      * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.
      *

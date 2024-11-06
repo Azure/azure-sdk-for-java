@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ListConnectionDetailsParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListConnectionDetailsParameters model =
-            BinaryData
-                .fromString("{\"targetContainerHostResourceId\":\"ifpikxwczby\"}")
+        ListConnectionDetailsParameters model
+            = BinaryData.fromString("{\"targetContainerHostResourceId\":\"ifpikxwczby\"}")
                 .toObject(ListConnectionDetailsParameters.class);
         Assertions.assertEquals("ifpikxwczby", model.targetContainerHostResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListConnectionDetailsParameters model =
-            new ListConnectionDetailsParameters().withTargetContainerHostResourceId("ifpikxwczby");
+        ListConnectionDetailsParameters model
+            = new ListConnectionDetailsParameters().withTargetContainerHostResourceId("ifpikxwczby");
         model = BinaryData.fromObject(model).toObject(ListConnectionDetailsParameters.class);
         Assertions.assertEquals("ifpikxwczby", model.targetContainerHostResourceId());
     }

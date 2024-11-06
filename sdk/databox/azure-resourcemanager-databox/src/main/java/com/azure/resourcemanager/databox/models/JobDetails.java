@@ -6,148 +6,136 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Job details. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "jobDetailsType",
-    defaultImpl = JobDetails.class)
-@JsonTypeName("JobDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskJobDetails.class),
-    @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobDetails.class),
-    @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobDetails.class),
-    @JsonSubTypes.Type(name = "DataBox", value = DataBoxJobDetails.class)
-})
+/**
+ * Job details.
+ */
 @Fluent
-public class JobDetails {
+public class JobDetails implements JsonSerializable<JobDetails> {
+    /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator jobDetailsType = ClassDiscriminator.fromString("JobDetails");
+
     /*
      * List of stages that run in the job.
      */
-    @JsonProperty(value = "jobStages", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobStages> jobStages;
 
     /*
      * Contact details for notification and shipping.
      */
-    @JsonProperty(value = "contactDetails", required = true)
     private ContactDetails contactDetails;
 
     /*
      * Shipping address of the customer.
      */
-    @JsonProperty(value = "shippingAddress")
     private ShippingAddress shippingAddress;
 
     /*
      * Delivery package shipping details.
      */
-    @JsonProperty(value = "deliveryPackage", access = JsonProperty.Access.WRITE_ONLY)
     private PackageShippingDetails deliveryPackage;
 
     /*
      * Return package shipping details.
      */
-    @JsonProperty(value = "returnPackage", access = JsonProperty.Access.WRITE_ONLY)
     private PackageShippingDetails returnPackage;
 
     /*
      * Details of the data to be imported into azure.
      */
-    @JsonProperty(value = "dataImportDetails")
     private List<DataImportDetails> dataImportDetails;
 
     /*
      * Details of the data to be exported from azure.
      */
-    @JsonProperty(value = "dataExportDetails")
     private List<DataExportDetails> dataExportDetails;
 
     /*
      * Preferences for the order.
      */
-    @JsonProperty(value = "preferences")
     private Preferences preferences;
 
     /*
      * Optional Reverse Shipping details for order.
      */
-    @JsonProperty(value = "reverseShippingDetails")
     private ReverseShippingDetails reverseShippingDetails;
 
     /*
      * List of copy log details.
      */
-    @JsonProperty(value = "copyLogDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<CopyLogDetails> copyLogDetails;
 
     /*
      * Shared access key to download the return shipment label
      */
-    @JsonProperty(value = "reverseShipmentLabelSasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String reverseShipmentLabelSasKey;
 
     /*
      * Shared access key to download the chain of custody logs
      */
-    @JsonProperty(value = "chainOfCustodySasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String chainOfCustodySasKey;
 
     /*
      * Holds device data erasure details
      */
-    @JsonProperty(value = "deviceErasureDetails", access = JsonProperty.Access.WRITE_ONLY)
     private DeviceErasureDetails deviceErasureDetails;
 
     /*
      * Details about which key encryption type is being used.
      */
-    @JsonProperty(value = "keyEncryptionKey")
     private KeyEncryptionKey keyEncryptionKey;
 
     /*
      * The expected size of the data, which needs to be transferred in this job, in terabytes.
      */
-    @JsonProperty(value = "expectedDataSizeInTeraBytes")
     private Integer expectedDataSizeInTeraBytes;
 
     /*
      * Available actions on the job.
      */
-    @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
     private List<CustomerResolutionCode> actions;
 
     /*
      * Last mitigation action performed on the job.
      */
-    @JsonProperty(value = "lastMitigationActionOnJob", access = JsonProperty.Access.WRITE_ONLY)
     private LastMitigationActionOnJob lastMitigationActionOnJob;
 
     /*
      * Datacenter address to ship to, for the given sku and storage location.
      */
-    @JsonProperty(value = "datacenterAddress", access = JsonProperty.Access.WRITE_ONLY)
     private DatacenterAddressResponse datacenterAddress;
 
     /*
      * DataCenter code.
      */
-    @JsonProperty(value = "dataCenterCode", access = JsonProperty.Access.WRITE_ONLY)
     private DataCenterCode dataCenterCode;
 
-    /** Creates an instance of JobDetails class. */
+    /**
+     * Creates an instance of JobDetails class.
+     */
     public JobDetails() {
     }
 
     /**
+     * Get the jobDetailsType property: Indicates the type of job details.
+     * 
+     * @return the jobDetailsType value.
+     */
+    public ClassDiscriminator jobDetailsType() {
+        return this.jobDetailsType;
+    }
+
+    /**
      * Get the jobStages property: List of stages that run in the job.
-     *
+     * 
      * @return the jobStages value.
      */
     public List<JobStages> jobStages() {
@@ -155,8 +143,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the jobStages property: List of stages that run in the job.
+     * 
+     * @param jobStages the jobStages value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withJobStages(List<JobStages> jobStages) {
+        this.jobStages = jobStages;
+        return this;
+    }
+
+    /**
      * Get the contactDetails property: Contact details for notification and shipping.
-     *
+     * 
      * @return the contactDetails value.
      */
     public ContactDetails contactDetails() {
@@ -165,7 +164,7 @@ public class JobDetails {
 
     /**
      * Set the contactDetails property: Contact details for notification and shipping.
-     *
+     * 
      * @param contactDetails the contactDetails value to set.
      * @return the JobDetails object itself.
      */
@@ -176,7 +175,7 @@ public class JobDetails {
 
     /**
      * Get the shippingAddress property: Shipping address of the customer.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public ShippingAddress shippingAddress() {
@@ -185,7 +184,7 @@ public class JobDetails {
 
     /**
      * Set the shippingAddress property: Shipping address of the customer.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the JobDetails object itself.
      */
@@ -196,7 +195,7 @@ public class JobDetails {
 
     /**
      * Get the deliveryPackage property: Delivery package shipping details.
-     *
+     * 
      * @return the deliveryPackage value.
      */
     public PackageShippingDetails deliveryPackage() {
@@ -204,8 +203,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the deliveryPackage property: Delivery package shipping details.
+     * 
+     * @param deliveryPackage the deliveryPackage value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withDeliveryPackage(PackageShippingDetails deliveryPackage) {
+        this.deliveryPackage = deliveryPackage;
+        return this;
+    }
+
+    /**
      * Get the returnPackage property: Return package shipping details.
-     *
+     * 
      * @return the returnPackage value.
      */
     public PackageShippingDetails returnPackage() {
@@ -213,8 +223,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the returnPackage property: Return package shipping details.
+     * 
+     * @param returnPackage the returnPackage value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withReturnPackage(PackageShippingDetails returnPackage) {
+        this.returnPackage = returnPackage;
+        return this;
+    }
+
+    /**
      * Get the dataImportDetails property: Details of the data to be imported into azure.
-     *
+     * 
      * @return the dataImportDetails value.
      */
     public List<DataImportDetails> dataImportDetails() {
@@ -223,7 +244,7 @@ public class JobDetails {
 
     /**
      * Set the dataImportDetails property: Details of the data to be imported into azure.
-     *
+     * 
      * @param dataImportDetails the dataImportDetails value to set.
      * @return the JobDetails object itself.
      */
@@ -234,7 +255,7 @@ public class JobDetails {
 
     /**
      * Get the dataExportDetails property: Details of the data to be exported from azure.
-     *
+     * 
      * @return the dataExportDetails value.
      */
     public List<DataExportDetails> dataExportDetails() {
@@ -243,7 +264,7 @@ public class JobDetails {
 
     /**
      * Set the dataExportDetails property: Details of the data to be exported from azure.
-     *
+     * 
      * @param dataExportDetails the dataExportDetails value to set.
      * @return the JobDetails object itself.
      */
@@ -254,7 +275,7 @@ public class JobDetails {
 
     /**
      * Get the preferences property: Preferences for the order.
-     *
+     * 
      * @return the preferences value.
      */
     public Preferences preferences() {
@@ -263,7 +284,7 @@ public class JobDetails {
 
     /**
      * Set the preferences property: Preferences for the order.
-     *
+     * 
      * @param preferences the preferences value to set.
      * @return the JobDetails object itself.
      */
@@ -274,7 +295,7 @@ public class JobDetails {
 
     /**
      * Get the reverseShippingDetails property: Optional Reverse Shipping details for order.
-     *
+     * 
      * @return the reverseShippingDetails value.
      */
     public ReverseShippingDetails reverseShippingDetails() {
@@ -283,7 +304,7 @@ public class JobDetails {
 
     /**
      * Set the reverseShippingDetails property: Optional Reverse Shipping details for order.
-     *
+     * 
      * @param reverseShippingDetails the reverseShippingDetails value to set.
      * @return the JobDetails object itself.
      */
@@ -294,7 +315,7 @@ public class JobDetails {
 
     /**
      * Get the copyLogDetails property: List of copy log details.
-     *
+     * 
      * @return the copyLogDetails value.
      */
     public List<CopyLogDetails> copyLogDetails() {
@@ -302,8 +323,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the copyLogDetails property: List of copy log details.
+     * 
+     * @param copyLogDetails the copyLogDetails value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withCopyLogDetails(List<CopyLogDetails> copyLogDetails) {
+        this.copyLogDetails = copyLogDetails;
+        return this;
+    }
+
+    /**
      * Get the reverseShipmentLabelSasKey property: Shared access key to download the return shipment label.
-     *
+     * 
      * @return the reverseShipmentLabelSasKey value.
      */
     public String reverseShipmentLabelSasKey() {
@@ -311,8 +343,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the reverseShipmentLabelSasKey property: Shared access key to download the return shipment label.
+     * 
+     * @param reverseShipmentLabelSasKey the reverseShipmentLabelSasKey value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withReverseShipmentLabelSasKey(String reverseShipmentLabelSasKey) {
+        this.reverseShipmentLabelSasKey = reverseShipmentLabelSasKey;
+        return this;
+    }
+
+    /**
      * Get the chainOfCustodySasKey property: Shared access key to download the chain of custody logs.
-     *
+     * 
      * @return the chainOfCustodySasKey value.
      */
     public String chainOfCustodySasKey() {
@@ -320,8 +363,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the chainOfCustodySasKey property: Shared access key to download the chain of custody logs.
+     * 
+     * @param chainOfCustodySasKey the chainOfCustodySasKey value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withChainOfCustodySasKey(String chainOfCustodySasKey) {
+        this.chainOfCustodySasKey = chainOfCustodySasKey;
+        return this;
+    }
+
+    /**
      * Get the deviceErasureDetails property: Holds device data erasure details.
-     *
+     * 
      * @return the deviceErasureDetails value.
      */
     public DeviceErasureDetails deviceErasureDetails() {
@@ -329,8 +383,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the deviceErasureDetails property: Holds device data erasure details.
+     * 
+     * @param deviceErasureDetails the deviceErasureDetails value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withDeviceErasureDetails(DeviceErasureDetails deviceErasureDetails) {
+        this.deviceErasureDetails = deviceErasureDetails;
+        return this;
+    }
+
+    /**
      * Get the keyEncryptionKey property: Details about which key encryption type is being used.
-     *
+     * 
      * @return the keyEncryptionKey value.
      */
     public KeyEncryptionKey keyEncryptionKey() {
@@ -339,7 +404,7 @@ public class JobDetails {
 
     /**
      * Set the keyEncryptionKey property: Details about which key encryption type is being used.
-     *
+     * 
      * @param keyEncryptionKey the keyEncryptionKey value to set.
      * @return the JobDetails object itself.
      */
@@ -351,7 +416,7 @@ public class JobDetails {
     /**
      * Get the expectedDataSizeInTeraBytes property: The expected size of the data, which needs to be transferred in
      * this job, in terabytes.
-     *
+     * 
      * @return the expectedDataSizeInTeraBytes value.
      */
     public Integer expectedDataSizeInTeraBytes() {
@@ -361,7 +426,7 @@ public class JobDetails {
     /**
      * Set the expectedDataSizeInTeraBytes property: The expected size of the data, which needs to be transferred in
      * this job, in terabytes.
-     *
+     * 
      * @param expectedDataSizeInTeraBytes the expectedDataSizeInTeraBytes value to set.
      * @return the JobDetails object itself.
      */
@@ -372,7 +437,7 @@ public class JobDetails {
 
     /**
      * Get the actions property: Available actions on the job.
-     *
+     * 
      * @return the actions value.
      */
     public List<CustomerResolutionCode> actions() {
@@ -380,8 +445,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the actions property: Available actions on the job.
+     * 
+     * @param actions the actions value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withActions(List<CustomerResolutionCode> actions) {
+        this.actions = actions;
+        return this;
+    }
+
+    /**
      * Get the lastMitigationActionOnJob property: Last mitigation action performed on the job.
-     *
+     * 
      * @return the lastMitigationActionOnJob value.
      */
     public LastMitigationActionOnJob lastMitigationActionOnJob() {
@@ -389,8 +465,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the lastMitigationActionOnJob property: Last mitigation action performed on the job.
+     * 
+     * @param lastMitigationActionOnJob the lastMitigationActionOnJob value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withLastMitigationActionOnJob(LastMitigationActionOnJob lastMitigationActionOnJob) {
+        this.lastMitigationActionOnJob = lastMitigationActionOnJob;
+        return this;
+    }
+
+    /**
      * Get the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
-     *
+     * 
      * @return the datacenterAddress value.
      */
     public DatacenterAddressResponse datacenterAddress() {
@@ -398,8 +485,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
+     * 
+     * @param datacenterAddress the datacenterAddress value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withDatacenterAddress(DatacenterAddressResponse datacenterAddress) {
+        this.datacenterAddress = datacenterAddress;
+        return this;
+    }
+
+    /**
      * Get the dataCenterCode property: DataCenter code.
-     *
+     * 
      * @return the dataCenterCode value.
      */
     public DataCenterCode dataCenterCode() {
@@ -407,8 +505,19 @@ public class JobDetails {
     }
 
     /**
+     * Set the dataCenterCode property: DataCenter code.
+     * 
+     * @param dataCenterCode the dataCenterCode value to set.
+     * @return the JobDetails object itself.
+     */
+    JobDetails withDataCenterCode(DataCenterCode dataCenterCode) {
+        this.dataCenterCode = dataCenterCode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -416,9 +525,8 @@ public class JobDetails {
             jobStages().forEach(e -> e.validate());
         }
         if (contactDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactDetails in model JobDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contactDetails in model JobDetails"));
         } else {
             contactDetails().validate();
         }
@@ -461,4 +569,129 @@ public class JobDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", this.contactDetails);
+        jsonWriter.writeStringField("jobDetailsType",
+            this.jobDetailsType == null ? null : this.jobDetailsType.toString());
+        jsonWriter.writeJsonField("shippingAddress", this.shippingAddress);
+        jsonWriter.writeArrayField("dataImportDetails", this.dataImportDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataExportDetails", this.dataExportDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("preferences", this.preferences);
+        jsonWriter.writeJsonField("reverseShippingDetails", this.reverseShippingDetails);
+        jsonWriter.writeJsonField("keyEncryptionKey", this.keyEncryptionKey);
+        jsonWriter.writeNumberField("expectedDataSizeInTeraBytes", this.expectedDataSizeInTeraBytes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobDetails if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobDetails.
+     */
+    public static JobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("jobDetailsType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DataBoxCustomerDisk".equals(discriminatorValue)) {
+                    return DataBoxCustomerDiskJobDetails.fromJson(readerToUse.reset());
+                } else if ("DataBoxDisk".equals(discriminatorValue)) {
+                    return DataBoxDiskJobDetails.fromJson(readerToUse.reset());
+                } else if ("DataBoxHeavy".equals(discriminatorValue)) {
+                    return DataBoxHeavyJobDetails.fromJson(readerToUse.reset());
+                } else if ("DataBox".equals(discriminatorValue)) {
+                    return DataBoxJobDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static JobDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDetails deserializedJobDetails = new JobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedJobDetails.contactDetails = ContactDetails.fromJson(reader);
+                } else if ("jobDetailsType".equals(fieldName)) {
+                    deserializedJobDetails.jobDetailsType = ClassDiscriminator.fromString(reader.getString());
+                } else if ("jobStages".equals(fieldName)) {
+                    List<JobStages> jobStages = reader.readArray(reader1 -> JobStages.fromJson(reader1));
+                    deserializedJobDetails.jobStages = jobStages;
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedJobDetails.shippingAddress = ShippingAddress.fromJson(reader);
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedJobDetails.deliveryPackage = PackageShippingDetails.fromJson(reader);
+                } else if ("returnPackage".equals(fieldName)) {
+                    deserializedJobDetails.returnPackage = PackageShippingDetails.fromJson(reader);
+                } else if ("dataImportDetails".equals(fieldName)) {
+                    List<DataImportDetails> dataImportDetails
+                        = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
+                    deserializedJobDetails.dataImportDetails = dataImportDetails;
+                } else if ("dataExportDetails".equals(fieldName)) {
+                    List<DataExportDetails> dataExportDetails
+                        = reader.readArray(reader1 -> DataExportDetails.fromJson(reader1));
+                    deserializedJobDetails.dataExportDetails = dataExportDetails;
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedJobDetails.preferences = Preferences.fromJson(reader);
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedJobDetails.reverseShippingDetails = ReverseShippingDetails.fromJson(reader);
+                } else if ("copyLogDetails".equals(fieldName)) {
+                    List<CopyLogDetails> copyLogDetails = reader.readArray(reader1 -> CopyLogDetails.fromJson(reader1));
+                    deserializedJobDetails.copyLogDetails = copyLogDetails;
+                } else if ("reverseShipmentLabelSasKey".equals(fieldName)) {
+                    deserializedJobDetails.reverseShipmentLabelSasKey = reader.getString();
+                } else if ("chainOfCustodySasKey".equals(fieldName)) {
+                    deserializedJobDetails.chainOfCustodySasKey = reader.getString();
+                } else if ("deviceErasureDetails".equals(fieldName)) {
+                    deserializedJobDetails.deviceErasureDetails = DeviceErasureDetails.fromJson(reader);
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedJobDetails.keyEncryptionKey = KeyEncryptionKey.fromJson(reader);
+                } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
+                    deserializedJobDetails.expectedDataSizeInTeraBytes = reader.getNullable(JsonReader::getInt);
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedJobDetails.actions = actions;
+                } else if ("lastMitigationActionOnJob".equals(fieldName)) {
+                    deserializedJobDetails.lastMitigationActionOnJob = LastMitigationActionOnJob.fromJson(reader);
+                } else if ("datacenterAddress".equals(fieldName)) {
+                    deserializedJobDetails.datacenterAddress = DatacenterAddressResponse.fromJson(reader);
+                } else if ("dataCenterCode".equals(fieldName)) {
+                    deserializedJobDetails.dataCenterCode = DataCenterCode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobDetails;
+        });
+    }
 }

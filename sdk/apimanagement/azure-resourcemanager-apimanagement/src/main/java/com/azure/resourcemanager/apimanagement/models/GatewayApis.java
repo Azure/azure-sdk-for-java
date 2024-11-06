@@ -42,14 +42,8 @@ public interface GatewayApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiContract> listByService(String resourceGroupName, String serviceName, String gatewayId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Gateway entity.
@@ -65,8 +59,8 @@ public interface GatewayApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    GatewayApisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context);
+    GatewayApisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String apiId, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Gateway entity.
@@ -97,13 +91,8 @@ public interface GatewayApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aPI details along with {@link Response}.
      */
-    Response<ApiContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String apiId,
-        AssociationContract parameters,
-        Context context);
+    Response<ApiContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String apiId, AssociationContract parameters, Context context);
 
     /**
      * Adds an API to the specified Gateway.
@@ -134,8 +123,8 @@ public interface GatewayApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId, String apiId,
+        Context context);
 
     /**
      * Deletes the specified API from the specified Gateway.

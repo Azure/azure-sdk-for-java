@@ -7,25 +7,27 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.resourcemanager.costmanagement.fluent.models.GenerateDetailedCostReportOperationResultInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of GenerateDetailedCostReportOperationResult. */
+/**
+ * An immutable client-side representation of GenerateDetailedCostReportOperationResult.
+ */
 public interface GenerateDetailedCostReportOperationResult {
     /**
      * Gets the id property: The ARM resource id of the long running operation.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the long running operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the long running operation.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -33,7 +35,7 @@ public interface GenerateDetailedCostReportOperationResult {
     /**
      * Gets the expiryTime property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the expiryTime value.
      */
     OffsetDateTime expiryTime();
@@ -41,14 +43,14 @@ public interface GenerateDetailedCostReportOperationResult {
     /**
      * Gets the validTill property: The time at which report URL becomes invalid/expires in UTC e.g.
      * 2020-12-08T05:55:59.4394737Z.
-     *
+     * 
      * @return the validTill value.
      */
     OffsetDateTime validTill();
 
     /**
      * Gets the downloadUrl property: The URL to download the generated report.
-     *
+     * 
      * @return the downloadUrl value.
      */
     String downloadUrl();
@@ -56,7 +58,7 @@ public interface GenerateDetailedCostReportOperationResult {
     /**
      * Gets the inner
      * com.azure.resourcemanager.costmanagement.fluent.models.GenerateDetailedCostReportOperationResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     GenerateDetailedCostReportOperationResultInner innerModel();

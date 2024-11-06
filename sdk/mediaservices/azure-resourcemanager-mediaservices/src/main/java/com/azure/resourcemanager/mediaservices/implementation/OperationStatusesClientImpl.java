@@ -25,22 +25,28 @@ import com.azure.resourcemanager.mediaservices.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackOperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationStatusesClient.
+ */
 public final class OperationStatusesClientImpl implements OperationStatusesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationStatusesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of OperationStatusesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationStatusesClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy.create(OperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,30 +57,23 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesOp")
     public interface OperationStatusesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks/{trackName}/operationStatuses/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/tracks/{trackName}/operationStatuses/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetTrackOperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetTrackOperationStatusInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("trackName") String trackName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("trackName") String trackName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -86,19 +85,15 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return asset track operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetTrackOperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+    private Mono<Response<AssetTrackOperationStatusInner>> getWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -119,28 +114,16 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            trackName,
-                            operationId,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, trackName, operationId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -153,24 +136,15 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return asset track operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetTrackOperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context) {
+    private Mono<Response<AssetTrackOperationStatusInner>> getWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,25 +165,15 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                trackName,
-                operationId,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            assetName, trackName, operationId, apiVersion, accept, context);
     }
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -221,17 +185,17 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return asset track operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetTrackOperationStatusInner> getAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+    private Mono<AssetTrackOperationStatusInner> getAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, String operationId) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -244,21 +208,16 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return asset track operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetTrackOperationStatusInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context) {
+    public Response<AssetTrackOperationStatusInner> getWithResponse(String resourceGroupName, String accountName,
+        String assetName, String trackName, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId, context).block();
     }
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -270,8 +229,8 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @return asset track operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackOperationStatusInner get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+    public AssetTrackOperationStatusInner get(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId) {
         return getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, Context.NONE)
             .getValue();
     }

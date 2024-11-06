@@ -30,37 +30,27 @@ public final class ProviderInstancesDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"xpxiwfcngjs\",\"name\":\"sii\",\"status\":\"tmkzjvkviirhgfgr\",\"percentComplete\":25.038736,\"startTime\":\"2021-05-20T10:14:07Z\",\"endTime\":\"2021-04-27T20:58:15Z\",\"operations\":[{\"id\":\"zb\",\"name\":\"byvi\",\"status\":\"tctbrxkjzwrgxffm\",\"percentComplete\":41.11345,\"startTime\":\"2021-08-28T12:30:32Z\",\"endTime\":\"2021-02-11T20:50:53Z\",\"operations\":[]},{\"id\":\"wopdbydpiz\",\"name\":\"clnapxbiygnugjkn\",\"status\":\"smfcttuxuuyilfl\",\"percentComplete\":45.98145,\"startTime\":\"2021-04-20T21:21:34Z\",\"endTime\":\"2021-06-20T10:05:15Z\",\"operations\":[]},{\"id\":\"njhvsujztc\",\"name\":\"tqjtwhauu\",\"status\":\"fprnjl\",\"percentComplete\":97.46975,\"startTime\":\"2021-02-18T12:39:05Z\",\"endTime\":\"2020-12-30T16:27:54Z\",\"operations\":[]}]}";
+        String responseStr
+            = "{\"id\":\"xpxiwfcngjs\",\"name\":\"sii\",\"status\":\"tmkzjvkviirhgfgr\",\"percentComplete\":25.038736,\"startTime\":\"2021-05-20T10:14:07Z\",\"endTime\":\"2021-04-27T20:58:15Z\",\"operations\":[{\"id\":\"zb\",\"name\":\"byvi\",\"status\":\"tctbrxkjzwrgxffm\",\"percentComplete\":41.11345,\"startTime\":\"2021-08-28T12:30:32Z\",\"endTime\":\"2021-02-11T20:50:53Z\",\"operations\":[]},{\"id\":\"wopdbydpiz\",\"name\":\"clnapxbiygnugjkn\",\"status\":\"smfcttuxuuyilfl\",\"percentComplete\":45.98145,\"startTime\":\"2021-04-20T21:21:34Z\",\"endTime\":\"2021-06-20T10:05:15Z\",\"operations\":[]},{\"id\":\"njhvsujztc\",\"name\":\"tqjtwhauu\",\"status\":\"fprnjl\",\"percentComplete\":97.46975,\"startTime\":\"2021-02-18T12:39:05Z\",\"endTime\":\"2020-12-30T16:27:54Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager.providerInstances().delete("gwflq", "mpizru", "n", com.azure.core.util.Context.NONE);
+        OperationStatusResult response
+            = manager.providerInstances().delete("gwflq", "mpizru", "n", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("xpxiwfcngjs", response.id());
         Assertions.assertEquals("sii", response.name());

@@ -77,15 +77,13 @@ public final class MetricWholeSeriesDetectionCondition {
         return this.changeThresholdCondition;
     }
 
-
     /**
      * Sets the logical operator to apply across conditions.
      *
      * @param conditionOperator The logical operator.
      * @return The MetricWholeSeriesDetectionCondition object itself.
      */
-    public MetricWholeSeriesDetectionCondition setConditionOperator(
-        DetectionConditionOperator conditionOperator) {
+    public MetricWholeSeriesDetectionCondition setConditionOperator(DetectionConditionOperator conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
     }
@@ -103,8 +101,8 @@ public final class MetricWholeSeriesDetectionCondition {
      * @param smartDetectionCondition The smart detection condition.
      * @return The MetricWholeSeriesDetectionCondition object itself.
      */
-    public MetricWholeSeriesDetectionCondition setSmartDetectionCondition(
-        SmartDetectionCondition smartDetectionCondition) {
+    public MetricWholeSeriesDetectionCondition
+        setSmartDetectionCondition(SmartDetectionCondition smartDetectionCondition) {
         this.smartDetectionCondition = smartDetectionCondition;
         return this;
     }
@@ -120,8 +118,8 @@ public final class MetricWholeSeriesDetectionCondition {
      * @param hardThresholdCondition The hard threshold condition.
      * @return The MetricWholeSeriesDetectionCondition object itself.
      */
-    public MetricWholeSeriesDetectionCondition setHardThresholdCondition(
-        HardThresholdCondition hardThresholdCondition) {
+    public MetricWholeSeriesDetectionCondition
+        setHardThresholdCondition(HardThresholdCondition hardThresholdCondition) {
         this.hardThresholdCondition = hardThresholdCondition;
         return this;
     }
@@ -138,8 +136,8 @@ public final class MetricWholeSeriesDetectionCondition {
      * @param changeThresholdCondition The change threshold condition.
      * @return The MetricWholeSeriesDetectionCondition object itself.
      */
-    public MetricWholeSeriesDetectionCondition setChangeThresholdCondition(ChangeThresholdCondition
-                                                                    changeThresholdCondition) {
+    public MetricWholeSeriesDetectionCondition
+        setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
     }

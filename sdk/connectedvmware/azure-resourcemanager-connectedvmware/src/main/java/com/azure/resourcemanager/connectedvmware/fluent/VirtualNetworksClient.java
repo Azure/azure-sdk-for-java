@@ -29,8 +29,8 @@ public interface VirtualNetworksClient {
      * @return the {@link SyncPoller} for polling of define the virtualNetwork.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(
-        String resourceGroupName, String virtualNetworkName);
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(String resourceGroupName,
+        String virtualNetworkName);
 
     /**
      * Implements virtual network PUT method.
@@ -47,8 +47,8 @@ public interface VirtualNetworksClient {
      * @return the {@link SyncPoller} for polling of define the virtualNetwork.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body, Context context);
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(String resourceGroupName,
+        String virtualNetworkName, VirtualNetworkInner body, Context context);
 
     /**
      * Implements virtual network PUT method.
@@ -80,8 +80,8 @@ public interface VirtualNetworksClient {
      * @return define the virtualNetwork.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner create(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body, Context context);
+    VirtualNetworkInner create(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body,
+        Context context);
 
     /**
      * Gets a virtual network.
@@ -97,8 +97,8 @@ public interface VirtualNetworksClient {
      * @return define the virtualNetwork along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualNetworkName, Context context);
+    Response<VirtualNetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        Context context);
 
     /**
      * Gets a virtual network.
@@ -130,8 +130,8 @@ public interface VirtualNetworksClient {
      * @return define the virtualNetwork along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> updateWithResponse(
-        String resourceGroupName, String virtualNetworkName, ResourcePatch body, Context context);
+    Response<VirtualNetworkInner> updateWithResponse(String resourceGroupName, String virtualNetworkName,
+        ResourcePatch body, Context context);
 
     /**
      * Updates a virtual network.
@@ -178,8 +178,8 @@ public interface VirtualNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName, Boolean force,
+        Context context);
 
     /**
      * Deletes an virtual network.

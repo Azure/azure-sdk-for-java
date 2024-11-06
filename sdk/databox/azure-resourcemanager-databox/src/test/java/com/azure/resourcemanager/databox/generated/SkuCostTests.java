@@ -10,10 +10,9 @@ import com.azure.resourcemanager.databox.models.SkuCost;
 public final class SkuCostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCost model =
-            BinaryData
-                .fromString("{\"meterId\":\"fpl\",\"meterType\":\"gsxnkjzkdeslpv\",\"multiplier\":33.70149080749856}")
-                .toObject(SkuCost.class);
+        SkuCost model = BinaryData
+            .fromString("{\"meterId\":\"wozuhkf\",\"meterType\":\"sjyofdx\",\"multiplier\":7.019162359413455}")
+            .toObject(SkuCost.class);
     }
 
     @org.junit.jupiter.api.Test

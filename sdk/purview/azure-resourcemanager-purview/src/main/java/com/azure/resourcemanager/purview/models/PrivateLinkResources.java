@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * Gets a list of privately linkable resources for an account.
-     *
-     * <p>Gets a list of privately linkable resources for an account.
-     *
+     * 
+     * Gets a list of privately linkable resources for an account.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface PrivateLinkResources {
 
     /**
      * Gets a list of privately linkable resources for an account.
-     *
-     * <p>Gets a list of privately linkable resources for an account.
-     *
+     * 
+     * Gets a list of privately linkable resources for an account.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface PrivateLinkResources {
 
     /**
      * Gets a privately linkable resources for an account with given group identifier.
-     *
-     * <p>Gets a privately linkable resources for an account with given group identifier.
-     *
+     * 
+     * Gets a privately linkable resources for an account with given group identifier.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param groupId The group identifier.
@@ -53,14 +55,14 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a privately linkable resources for an account with given group identifier along with {@link Response}.
      */
-    Response<PrivateLinkResource> getByGroupIdWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context);
+    Response<PrivateLinkResource> getByGroupIdWithResponse(String resourceGroupName, String accountName, String groupId,
+        Context context);
 
     /**
      * Gets a privately linkable resources for an account with given group identifier.
-     *
-     * <p>Gets a privately linkable resources for an account with given group identifier.
-     *
+     * 
+     * Gets a privately linkable resources for an account with given group identifier.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @param groupId The group identifier.

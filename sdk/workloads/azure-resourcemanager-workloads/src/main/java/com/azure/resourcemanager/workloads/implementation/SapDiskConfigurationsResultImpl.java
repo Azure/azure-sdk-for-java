@@ -15,8 +15,7 @@ public final class SapDiskConfigurationsResultImpl implements SapDiskConfigurati
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    SapDiskConfigurationsResultImpl(
-        SapDiskConfigurationsResultInner innerObject,
+    SapDiskConfigurationsResultImpl(SapDiskConfigurationsResultInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

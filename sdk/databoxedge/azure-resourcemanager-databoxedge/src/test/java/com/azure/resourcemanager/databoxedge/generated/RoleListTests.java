@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.RoleList;
 public final class RoleListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"Role\",\"id\":\"eoellwptfdygp\",\"name\":\"qbuaceopzfqr\",\"type\":\"huaoppp\"}],\"nextLink\":\"eqx\"}")
-                .toObject(RoleList.class);
+        RoleList model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"Role\",\"id\":\"z\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"},{\"kind\":\"Role\",\"id\":\"bdagxt\",\"name\":\"bqdxbx\",\"type\":\"akbogqxndlkzgxh\"},{\"kind\":\"Role\",\"id\":\"ripl\",\"name\":\"podxunkb\",\"type\":\"bxmubyynt\"}],\"nextLink\":\"rbqtkoie\"}")
+            .toObject(RoleList.class);
     }
 
     @org.junit.jupiter.api.Test

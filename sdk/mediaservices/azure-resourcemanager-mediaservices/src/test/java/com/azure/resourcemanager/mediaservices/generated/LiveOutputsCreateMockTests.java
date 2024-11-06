@@ -6,81 +6,50 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.Hls;
 import com.azure.resourcemanager.mediaservices.models.LiveOutput;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LiveOutputsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"nkyhf\",\"assetName\":\"zv\",\"archiveWindowLength\":\"PT148H22M52S\",\"rewindWindowLength\":\"PT55H33M23S\",\"manifestName\":\"jelgcmpzqjhhhq\",\"hls\":{\"fragmentsPerTsSegment\":1057566425},\"outputSnapTime\":3563929703826464840,\"created\":\"2021-10-07T10:11:02Z\",\"lastModified\":\"2021-03-16T00:43:40Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Deleting\"},\"id\":\"jiu\",\"name\":\"ehgmvflnwyv\",\"type\":\"kxrerlniylylyfwx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"qowxwcom\",\"assetName\":\"ikytwvczcswka\",\"archiveWindowLength\":\"PT206H19M22S\",\"rewindWindowLength\":\"PT81H56M32S\",\"manifestName\":\"fdv\",\"hls\":{\"fragmentsPerTsSegment\":133046174},\"outputSnapTime\":506262228039984631,\"created\":\"2021-07-08T00:02:29Z\",\"lastModified\":\"2021-08-22T01:15:59Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Deleting\"},\"id\":\"yank\",\"name\":\"oe\",\"type\":\"swankltytmh\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        LiveOutput response = manager.liveOutputs()
+            .define("nfnzhhh")
+            .withExistingLiveEvent("dgo", "ewijymrhbguz", "zkye")
+            .withDescription("mffjkutycyarn")
+            .withAssetName("oohguabzoghkt")
+            .withArchiveWindowLength(Duration.parse("PT173H13M29S"))
+            .withRewindWindowLength(Duration.parse("PT227H38M26S"))
+            .withManifestName("hcoeocnhzq")
+            .withHls(new Hls().withFragmentsPerTsSegment(368546114))
+            .withOutputSnapTime(2745437835600434543L)
+            .create();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        LiveOutput response =
-            manager
-                .liveOutputs()
-                .define("hcecybmrqbr")
-                .withExistingLiveEvent("qejo", "ovyrrleaesinu", "tljqobbpih")
-                .withDescription("mpxdlvy")
-                .withAssetName("frexcrseqw")
-                .withArchiveWindowLength(Duration.parse("PT110H29M37S"))
-                .withRewindWindowLength(Duration.parse("PT48H32M10S"))
-                .withManifestName("udgzhxogjgg")
-                .withHls(new Hls().withFragmentsPerTsSegment(210376116))
-                .withOutputSnapTime(8090537844238536185L)
-                .create();
-
-        Assertions.assertEquals("qowxwcom", response.description());
-        Assertions.assertEquals("ikytwvczcswka", response.assetName());
-        Assertions.assertEquals(Duration.parse("PT206H19M22S"), response.archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT81H56M32S"), response.rewindWindowLength());
-        Assertions.assertEquals("fdv", response.manifestName());
-        Assertions.assertEquals(133046174, response.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(506262228039984631L, response.outputSnapTime());
+        Assertions.assertEquals("nkyhf", response.description());
+        Assertions.assertEquals("zv", response.assetName());
+        Assertions.assertEquals(Duration.parse("PT148H22M52S"), response.archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT55H33M23S"), response.rewindWindowLength());
+        Assertions.assertEquals("jelgcmpzqjhhhq", response.manifestName());
+        Assertions.assertEquals(1057566425, response.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(3563929703826464840L, response.outputSnapTime());
     }
 }

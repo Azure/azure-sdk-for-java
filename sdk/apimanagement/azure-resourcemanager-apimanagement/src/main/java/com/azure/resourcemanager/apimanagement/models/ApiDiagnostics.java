@@ -40,14 +40,8 @@ public interface ApiDiagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Diagnostic list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DiagnosticContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
@@ -62,8 +56,8 @@ public interface ApiDiagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
      */
-    ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
+    ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String diagnosticId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
@@ -91,8 +85,8 @@ public interface ApiDiagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Diagnostic for an API specified by its identifier.
      */
-    Response<DiagnosticContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context);
+    Response<DiagnosticContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String diagnosticId, Context context);
 
     /**
      * Gets the details of the Diagnostic for an API specified by its identifier.
@@ -123,13 +117,8 @@ public interface ApiDiagnostics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String diagnosticId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Diagnostic from an API.

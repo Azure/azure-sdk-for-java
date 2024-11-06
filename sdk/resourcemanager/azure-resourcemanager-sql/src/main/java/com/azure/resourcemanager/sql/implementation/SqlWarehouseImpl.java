@@ -15,30 +15,21 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
         super(name, parent, innerObject, sqlServerManager);
     }
 
-    SqlWarehouseImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        String sqlServerLocation,
-        String name,
-        DatabaseInner innerObject,
-        SqlServerManager sqlServerManager) {
+    SqlWarehouseImpl(String resourceGroupName, String sqlServerName, String sqlServerLocation, String name,
+        DatabaseInner innerObject, SqlServerManager sqlServerManager) {
         super(resourceGroupName, sqlServerName, sqlServerLocation, name, innerObject, sqlServerManager);
     }
 
     @Override
     public void pauseDataWarehouse() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getDatabases()
             .pause(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     public Mono<Void> pauseDataWarehouseAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabases()
             .pauseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .flatMap(databaseInner -> Mono.empty());
@@ -46,18 +37,14 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
 
     @Override
     public void resumeDataWarehouse() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getDatabases()
             .resume(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     public Mono<Void> resumeDataWarehouseAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabases()
             .resumeAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .flatMap(databaseInner -> Mono.empty());

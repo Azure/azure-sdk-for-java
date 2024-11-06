@@ -7,11 +7,13 @@ package com.azure.resourcemanager.peering.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PeeringServiceLocations. */
+/**
+ * Resource collection API of PeeringServiceLocations.
+ */
 public interface PeeringServiceLocations {
     /**
      * Lists all of the available locations for peering service.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering service locations as paginated response with {@link PagedIterable}.
@@ -20,7 +22,7 @@ public interface PeeringServiceLocations {
 
     /**
      * Lists all of the available locations for peering service.
-     *
+     * 
      * @param country The country of interest, in which the locations are to be present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -14,22 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportDataset model =
-            BinaryData
-                .fromString("{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"bjj\",\"anvx\"]}}")
-                .toObject(ExportDataset.class);
+        ExportDataset model = BinaryData
+            .fromString("{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"mjpb\",\"ephmgtvljvrcmyfq\"]}}")
+            .toObject(ExportDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
-        Assertions.assertEquals("bjj", model.configuration().columns().get(0));
+        Assertions.assertEquals("mjpb", model.configuration().columns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportDataset model =
-            new ExportDataset()
-                .withGranularity(GranularityType.DAILY)
-                .withConfiguration(new ExportDatasetConfiguration().withColumns(Arrays.asList("bjj", "anvx")));
+        ExportDataset model = new ExportDataset().withGranularity(GranularityType.DAILY)
+            .withConfiguration(new ExportDatasetConfiguration().withColumns(Arrays.asList("mjpb", "ephmgtvljvrcmyfq")));
         model = BinaryData.fromObject(model).toObject(ExportDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
-        Assertions.assertEquals("bjj", model.configuration().columns().get(0));
+        Assertions.assertEquals("mjpb", model.configuration().columns().get(0));
     }
 }

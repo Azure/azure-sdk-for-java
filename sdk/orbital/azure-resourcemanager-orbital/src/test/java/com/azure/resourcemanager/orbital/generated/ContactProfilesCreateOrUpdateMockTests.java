@@ -6,17 +6,21 @@ package com.azure.resourcemanager.orbital.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.orbital.OrbitalManager;
 import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfile;
+import com.azure.resourcemanager.orbital.models.ContactProfileLink;
+import com.azure.resourcemanager.orbital.models.ContactProfileLinkChannel;
+import com.azure.resourcemanager.orbital.models.ContactProfileThirdPartyConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesNetworkConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.orbital.models.Direction;
+import com.azure.resourcemanager.orbital.models.EndPoint;
+import com.azure.resourcemanager.orbital.models.Polarization;
+import com.azure.resourcemanager.orbital.models.Protocol;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,77 +28,132 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContactProfilesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"minimumViableContactDuration\":\"hjxa\",\"minimumElevationDegrees\":30.664253,\"autoTrackingConfiguration\":\"xBand\",\"eventHubUri\":\"lordilmywwtkgkxn\",\"networkConfiguration\":{\"subnetId\":\"edabgyvudtjue\"},\"thirdPartyConfigurations\":[{\"providerName\":\"ihxuuwh\",\"missionConfiguration\":\"j\"},{\"providerName\":\"xccybvpa\",\"missionConfiguration\":\"akkud\"},{\"providerName\":\"px\",\"missionConfiguration\":\"wjplma\"}],\"links\":[{\"name\":\"tcyohpfkyrk\",\"polarization\":\"linearVertical\",\"direction\":\"Uplink\",\"gainOverTemperature\":56.479233,\"eirpdBW\":15.116018,\"channels\":[{\"name\":\"jkmnwq\",\"centerFrequencyMHz\":94.966415,\"bandwidthMHz\":87.046394,\"endPoint\":{\"ipAddress\":\"baiyhddviaceg\",\"endPointName\":\"n\",\"port\":\"ntfpmvmemfnc\",\"protocol\":\"TCP\"}},{\"name\":\"wvvb\",\"centerFrequencyMHz\":53.000874,\"bandwidthMHz\":38.038097,\"endPoint\":{\"ipAddress\":\"lllchpodb\",\"endPointName\":\"evwrdnhfuk\",\"port\":\"vsjcswsmystuluqy\",\"protocol\":\"TCP\"}}]},{\"name\":\"cvlerchpqbmfpjba\",\"polarization\":\"RHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":78.01136,\"eirpdBW\":75.51508,\"channels\":[{\"name\":\"spuunnoxyhkxgq\",\"centerFrequencyMHz\":99.49231,\"bandwidthMHz\":48.135914,\"endPoint\":{\"ipAddress\":\"i\",\"endPointName\":\"pfhoqcaaewdao\",\"port\":\"djvlpj\",\"protocol\":\"TCP\"}},{\"name\":\"kzbrmsgeivsiy\",\"centerFrequencyMHz\":27.006971,\"bandwidthMHz\":30.264484,\"endPoint\":{\"ipAddress\":\"dncj\",\"endPointName\":\"xonbzoggculapz\",\"port\":\"y\",\"protocol\":\"UDP\"}},{\"name\":\"gogtqxepnylbf\",\"centerFrequencyMHz\":82.768166,\"bandwidthMHz\":58.09601,\"endPoint\":{\"ipAddress\":\"lyjt\",\"endPointName\":\"vofqzhvfc\",\"port\":\"byfmowuxr\",\"protocol\":\"TCP\"}},{\"name\":\"pvdwxf\",\"centerFrequencyMHz\":77.284424,\"bandwidthMHz\":99.00972,\"endPoint\":{\"ipAddress\":\"ivwzjbhyzs\",\"endPointName\":\"jrkambtrnegvmnv\",\"port\":\"q\",\"protocol\":\"UDP\"}}]},{\"name\":\"vldspa\",\"polarization\":\"RHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":34.49968,\"eirpdBW\":25.554615,\"channels\":[{\"name\":\"flvestmjlxrrilo\",\"centerFrequencyMHz\":74.649536,\"bandwidthMHz\":65.04678,\"endPoint\":{\"ipAddress\":\"eewchpxlktw\",\"endPointName\":\"uziycsl\",\"port\":\"vu\",\"protocol\":\"UDP\"}},{\"name\":\"ztcktyh\",\"centerFrequencyMHz\":66.69776,\"bandwidthMHz\":59.33001,\"endPoint\":{\"ipAddress\":\"edcg\",\"endPointName\":\"ulwm\",\"port\":\"rqzz\",\"protocol\":\"UDP\"}}]},{\"name\":\"jvpglydzgk\",\"polarization\":\"linearVertical\",\"direction\":\"Uplink\",\"gainOverTemperature\":8.784514,\"eirpdBW\":38.789143,\"channels\":[{\"name\":\"epr\",\"centerFrequencyMHz\":89.64401,\"bandwidthMHz\":2.533424,\"endPoint\":{\"ipAddress\":\"nwy\",\"endPointName\":\"pzdm\",\"port\":\"vzvfvaawzqadfl\",\"protocol\":\"TCP\"}},{\"name\":\"ur\",\"centerFrequencyMHz\":24.852264,\"bandwidthMHz\":73.55753,\"endPoint\":{\"ipAddress\":\"aecxndtic\",\"endPointName\":\"kpvzmlq\",\"port\":\"mldgxobfirc\",\"protocol\":\"TCP\"}}]}]},\"location\":\"kciayzri\",\"tags\":{\"kjlmx\":\"yawfvjlboxq\"},\"id\":\"omdynhdwdigum\",\"name\":\"nraauzz\",\"type\":\"tj\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"minimumViableContactDuration\":\"ocmbqfqvmkcxoza\",\"minimumElevationDegrees\":56.86097,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"prglya\",\"networkConfiguration\":{\"subnetId\":\"dd\"},\"thirdPartyConfigurations\":[],\"links\":[]},\"location\":\"uejrjxgc\",\"tags\":{\"sxsdqrhzoymibm\":\"brh\",\"hwflu\":\"qyib\",\"voqacpiexpbt\":\"zdtmhrkwofy\"},\"id\":\"iwbwoenwashrtdtk\",\"name\":\"nqxwbp\",\"type\":\"kulpiujwaasi\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ContactProfile response = manager.contactProfiles()
+            .define("sutujba")
+            .withRegion("fvazivjlfrqttba")
+            .withExistingResourceGroup("enr")
+            .withNetworkConfiguration(new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("wpklvxw"))
+            .withLinks(Arrays.asList(
+                new ContactProfileLink().withName("uuepzlrphwzsoldw")
+                    .withPolarization(Polarization.LHCP)
+                    .withDirection(Direction.DOWNLINK)
+                    .withGainOverTemperature(99.18592F)
+                    .withEirpdBW(87.928825F)
+                    .withChannels(Arrays.asList(
+                        new ContactProfileLinkChannel().withName("mnnrwr")
+                            .withCenterFrequencyMHz(1.8541336f)
+                            .withBandwidthMHz(17.158354f)
+                            .withEndPoint(new EndPoint().withIpAddress("rk")
+                                .withEndPointName("alywjhhgdn")
+                                .withPort("xmsivfomiloxggdu")
+                                .withProtocol(Protocol.UDP)),
+                        new ContactProfileLinkChannel().withName("q")
+                            .withCenterFrequencyMHz(53.11064f)
+                            .withBandwidthMHz(88.44245f)
+                            .withEndPoint(new EndPoint().withIpAddress("euzaof")
+                                .withEndPointName("chvcyyysfgdo")
+                                .withPort("cubiipuipw")
+                                .withProtocol(Protocol.TCP)))),
+                new ContactProfileLink().withName("onmacjekniz")
+                    .withPolarization(Polarization.LINEAR_HORIZONTAL)
+                    .withDirection(Direction.UPLINK)
+                    .withGainOverTemperature(48.20631F)
+                    .withEirpdBW(2.8592408F)
+                    .withChannels(Arrays.asList(new ContactProfileLinkChannel().withName("ev")
+                        .withCenterFrequencyMHz(40.36637f)
+                        .withBandwidthMHz(66.675064f)
+                        .withEndPoint(new EndPoint().withIpAddress("b")
+                            .withEndPointName("rrilbywdxsmic")
+                            .withPort("wrwfscjfnyns")
+                            .withProtocol(Protocol.TCP)))),
+                new ContactProfileLink().withName("ujiz")
+                    .withPolarization(Polarization.LHCP)
+                    .withDirection(Direction.DOWNLINK)
+                    .withGainOverTemperature(41.774715F)
+                    .withEirpdBW(88.05086F)
+                    .withChannels(Arrays.asList(
+                        new ContactProfileLinkChannel().withName("yo")
+                            .withCenterFrequencyMHz(53.959526f)
+                            .withBandwidthMHz(69.872574f)
+                            .withEndPoint(new EndPoint().withIpAddress("lgy")
+                                .withEndPointName("vutpthjoxo")
+                                .withPort("smsks")
+                                .withProtocol(Protocol.TCP)),
+                        new ContactProfileLinkChannel().withName("iml")
+                            .withCenterFrequencyMHz(48.246895f)
+                            .withBandwidthMHz(57.293236f)
+                            .withEndPoint(new EndPoint().withIpAddress("jxkcgxxlxsff")
+                                .withEndPointName("cvizqzdwlvw")
+                                .withPort("youpfgfbkj")
+                                .withProtocol(Protocol.UDP)),
+                        new ContactProfileLinkChannel().withName("dyhgkfminsg")
+                            .withCenterFrequencyMHz(17.695457f)
+                            .withBandwidthMHz(79.628006f)
+                            .withEndPoint(new EndPoint().withIpAddress("fttsttk")
+                                .withEndPointName("lahb")
+                                .withPort("actxtgzukxitm")
+                                .withProtocol(Protocol.UDP)),
+                        new ContactProfileLinkChannel().withName("tg")
+                            .withCenterFrequencyMHz(74.6131f)
+                            .withBandwidthMHz(5.9823155f)
+                            .withEndPoint(new EndPoint().withIpAddress("x")
+                                .withEndPointName("rnxrxcpj")
+                                .withPort("isavok")
+                                .withProtocol(Protocol.TCP))))))
+            .withTags(mapOf("kqqfk", "atnwxyiopi", "dmligovibrxk", "vscx"))
+            .withProvisioningState(ContactProfilesPropertiesProvisioningState.CANCELED)
+            .withMinimumViableContactDuration("o")
+            .withMinimumElevationDegrees(90.69441F)
+            .withAutoTrackingConfiguration(AutoTrackingConfiguration.DISABLED)
+            .withEventHubUri("lnorwmdu")
+            .withThirdPartyConfigurations(Arrays.asList(
+                new ContactProfileThirdPartyConfiguration().withProviderName("dxpgpqchiszepnnb")
+                    .withMissionConfiguration("crxgibb"),
+                new ContactProfileThirdPartyConfiguration().withProviderName("axconfozauo")
+                    .withMissionConfiguration("sukokwbqplhl")))
+            .create();
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ContactProfile response =
-            manager
-                .contactProfiles()
-                .define("mgxcxrslpm")
-                .withRegion("modfvuefywsbpfvm")
-                .withExistingResourceGroup("ld")
-                .withNetworkConfiguration(
-                    new ContactProfilesPropertiesNetworkConfiguration().withSubnetId("pdggkzzlvm"))
-                .withLinks(Arrays.asList())
-                .withTags(mapOf("yzvqt", "rfouyftaakcpw", "zksmondj", "nubexk"))
-                .withProvisioningState(ContactProfilesPropertiesProvisioningState.DELETING)
-                .withMinimumViableContactDuration("oegrpkhjwn")
-                .withMinimumElevationDegrees(38.208916F)
-                .withAutoTrackingConfiguration(AutoTrackingConfiguration.S_BAND)
-                .withEventHubUri("i")
-                .withThirdPartyConfigurations(Arrays.asList())
-                .create();
-
-        Assertions.assertEquals("uejrjxgc", response.location());
-        Assertions.assertEquals("brh", response.tags().get("sxsdqrhzoymibm"));
-        Assertions
-            .assertEquals(
-                ContactProfilesPropertiesProvisioningState.fromString("Succeeded"), response.provisioningState());
-        Assertions.assertEquals("ocmbqfqvmkcxoza", response.minimumViableContactDuration());
-        Assertions.assertEquals(56.86097F, response.minimumElevationDegrees());
-        Assertions.assertEquals(AutoTrackingConfiguration.DISABLED, response.autoTrackingConfiguration());
-        Assertions.assertEquals("prglya", response.eventHubUri());
-        Assertions.assertEquals("dd", response.networkConfiguration().subnetId());
+        Assertions.assertEquals("kciayzri", response.location());
+        Assertions.assertEquals("yawfvjlboxq", response.tags().get("kjlmx"));
+        Assertions.assertEquals(ContactProfilesPropertiesProvisioningState.fromString("Succeeded"),
+            response.provisioningState());
+        Assertions.assertEquals("hjxa", response.minimumViableContactDuration());
+        Assertions.assertEquals(30.664253F, response.minimumElevationDegrees());
+        Assertions.assertEquals(AutoTrackingConfiguration.X_BAND, response.autoTrackingConfiguration());
+        Assertions.assertEquals("lordilmywwtkgkxn", response.eventHubUri());
+        Assertions.assertEquals("edabgyvudtjue", response.networkConfiguration().subnetId());
+        Assertions.assertEquals("ihxuuwh", response.thirdPartyConfigurations().get(0).providerName());
+        Assertions.assertEquals("j", response.thirdPartyConfigurations().get(0).missionConfiguration());
+        Assertions.assertEquals("tcyohpfkyrk", response.links().get(0).name());
+        Assertions.assertEquals(Polarization.LINEAR_VERTICAL, response.links().get(0).polarization());
+        Assertions.assertEquals(Direction.UPLINK, response.links().get(0).direction());
+        Assertions.assertEquals(56.479233F, response.links().get(0).gainOverTemperature());
+        Assertions.assertEquals(15.116018F, response.links().get(0).eirpdBW());
+        Assertions.assertEquals("jkmnwq", response.links().get(0).channels().get(0).name());
+        Assertions.assertEquals(94.966415f, response.links().get(0).channels().get(0).centerFrequencyMHz());
+        Assertions.assertEquals(87.046394f, response.links().get(0).channels().get(0).bandwidthMHz());
+        Assertions.assertEquals("baiyhddviaceg", response.links().get(0).channels().get(0).endPoint().ipAddress());
+        Assertions.assertEquals("n", response.links().get(0).channels().get(0).endPoint().endPointName());
+        Assertions.assertEquals("ntfpmvmemfnc", response.links().get(0).channels().get(0).endPoint().port());
+        Assertions.assertEquals(Protocol.TCP, response.links().get(0).channels().get(0).endPoint().protocol());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

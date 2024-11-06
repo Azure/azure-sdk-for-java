@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** key name to generate (Key1|Key2). */
+/**
+ * key name to generate (Key1|Key2).
+ */
 public enum KeyName {
-    /** Enum value Key1. */
+    /**
+     * Enum value Key1.
+     */
     KEY1("Key1"),
 
-    /** Enum value Key2. */
+    /**
+     * Enum value Key2.
+     */
     KEY2("Key2");
 
-    /** The actual serialized value for a KeyName instance. */
+    /**
+     * The actual serialized value for a KeyName instance.
+     */
     private final String value;
 
     KeyName(String value) {
@@ -24,11 +29,10 @@ public enum KeyName {
 
     /**
      * Parses a serialized value to a KeyName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KeyName object, or null if unable to parse.
      */
-    @JsonCreator
     public static KeyName fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum KeyName {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

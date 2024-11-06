@@ -128,11 +128,8 @@ public interface ClusterPrincipalAssignment {
          * The stage of the ClusterPrincipalAssignment definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPrincipalId,
-                DefinitionStages.WithRole,
-                DefinitionStages.WithTenantId,
-                DefinitionStages.WithPrincipalType {
+        interface WithCreate extends DefinitionStages.WithPrincipalId, DefinitionStages.WithRole,
+            DefinitionStages.WithTenantId, DefinitionStages.WithPrincipalType {
             /**
              * Executes the create request.
              *
@@ -204,11 +201,8 @@ public interface ClusterPrincipalAssignment {
     ClusterPrincipalAssignment.Update update();
 
     /** The template for ClusterPrincipalAssignment update. */
-    interface Update
-        extends UpdateStages.WithPrincipalId,
-            UpdateStages.WithRole,
-            UpdateStages.WithTenantId,
-            UpdateStages.WithPrincipalType {
+    interface Update extends UpdateStages.WithPrincipalId, UpdateStages.WithRole, UpdateStages.WithTenantId,
+        UpdateStages.WithPrincipalType {
         /**
          * Executes the update request.
          *

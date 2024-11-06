@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ClusterVersionsEnvironment extends ExpandableStringEnum<Clust
      * @param name a name to look for.
      * @return the corresponding ClusterVersionsEnvironment.
      */
-    @JsonCreator
     public static ClusterVersionsEnvironment fromString(String name) {
         return fromString(name, ClusterVersionsEnvironment.class);
     }

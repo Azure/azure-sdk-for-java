@@ -76,16 +76,12 @@ public final class AdministrativeCredentials {
      */
     public void validate() {
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model AdministrativeCredentials"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property password in model AdministrativeCredentials"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model AdministrativeCredentials"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model AdministrativeCredentials"));
         }
     }
 

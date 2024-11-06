@@ -32,11 +32,8 @@ public interface ActiveDirectoryUser
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithUserPrincipalName,
-            DefinitionStages.WithPassword,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithUserPrincipalName,
+        DefinitionStages.WithPassword, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the user definition stages. */
@@ -114,11 +111,8 @@ public interface ActiveDirectoryUser
          * An AD user definition with sufficient inputs to create a new user in the cloud, but exposing additional
          * optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<ActiveDirectoryUser>,
-                DefinitionStages.WithAccontEnabled,
-                DefinitionStages.WithPromptToChangePasswordOnLogin,
-                DefinitionStages.WithUsageLocation {
+        interface WithCreate extends Creatable<ActiveDirectoryUser>, DefinitionStages.WithAccontEnabled,
+            DefinitionStages.WithPromptToChangePasswordOnLogin, DefinitionStages.WithUsageLocation {
         }
     }
 
@@ -171,11 +165,7 @@ public interface ActiveDirectoryUser
     }
 
     /** The template for a user update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ActiveDirectoryUser>,
-            UpdateStages.WithAccontEnabled,
-            UpdateStages.WithPassword,
-            UpdateStages.WithPromptToChangePasswordOnLogin,
-            UpdateStages.WithUsageLocation {
+    interface Update extends Appliable<ActiveDirectoryUser>, UpdateStages.WithAccontEnabled, UpdateStages.WithPassword,
+        UpdateStages.WithPromptToChangePasswordOnLogin, UpdateStages.WithUsageLocation {
     }
 }

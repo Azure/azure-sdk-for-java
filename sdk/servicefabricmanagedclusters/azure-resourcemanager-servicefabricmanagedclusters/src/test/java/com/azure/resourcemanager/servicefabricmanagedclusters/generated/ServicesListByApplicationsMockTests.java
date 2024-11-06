@@ -26,7 +26,7 @@ public final class ServicesListByApplicationsMockTests {
     @Test
     public void testListByApplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"idizozsdbccxjmo\",\"serviceTypeName\":\"fdgnwncypuuwwlt\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"ctzenkeifzzhmkd\",\"placementConstraints\":\"vflyhbxcu\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"gsrboldforobw\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"vizbfhfo\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"acqpbtuodxesza\"}],\"serviceLoadMetrics\":[{\"name\":\"l\",\"weight\":\"High\",\"primaryDefaultLoad\":308639473,\"secondaryDefaultLoad\":1274363092,\"defaultLoad\":46527363},{\"name\":\"kwrrwo\",\"weight\":\"Medium\",\"primaryDefaultLoad\":2074554756,\"secondaryDefaultLoad\":913388028,\"defaultLoad\":671664231}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Zero\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"location\":\"ywuhpsvfuur\",\"tags\":{\"xwlalniexzsrzpg\":\"we\",\"wpgdak\":\"pqtybb\"},\"id\":\"zyvli\",\"name\":\"q\",\"type\":\"rkcxkj\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"nzlrpiqywncvjt\",\"serviceTypeName\":\"z\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"zehtdhgb\",\"placementConstraints\":\"vreljea\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"zmlovuanash\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"lpmjerb\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"elvidizozsdbccx\"}],\"serviceLoadMetrics\":[{\"name\":\"nfdgn\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1054212324,\"secondaryDefaultLoad\":961140040,\"defaultLoad\":85723241}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Zero\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"location\":\"tzenk\",\"tags\":{\"svflyhbxcudch\":\"zzhmkd\",\"lvizb\":\"gsrboldforobw\",\"dxe\":\"hfovvacqpbtu\"},\"id\":\"abbelawumuaslzk\",\"name\":\"rrwoycqucwyhahn\",\"type\":\"mdr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,28 +36,28 @@ public final class ServicesListByApplicationsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ServiceResource> response
-            = manager.services().listByApplications("zmlovuanash", "xlpm", "erbdk", com.azure.core.util.Context.NONE);
+            = manager.services().listByApplications("ujrtrhqvwr", "vk", "gnl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vflyhbxcu", response.iterator().next().properties().placementConstraints());
+        Assertions.assertEquals("vreljea", response.iterator().next().properties().placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
             response.iterator().next().properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("gsrboldforobw",
+        Assertions.assertEquals("zmlovuanash",
             response.iterator().next().properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("l", response.iterator().next().properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH,
+        Assertions.assertEquals("nfdgn", response.iterator().next().properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM,
             response.iterator().next().properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(308639473,
+        Assertions.assertEquals(1054212324,
             response.iterator().next().properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1274363092,
+        Assertions.assertEquals(961140040,
             response.iterator().next().properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(46527363,
+        Assertions.assertEquals(85723241,
             response.iterator().next().properties().serviceLoadMetrics().get(0).defaultLoad());
         Assertions.assertEquals(MoveCost.ZERO, response.iterator().next().properties().defaultMoveCost());
-        Assertions.assertEquals("fdgnwncypuuwwlt", response.iterator().next().properties().serviceTypeName());
+        Assertions.assertEquals("z", response.iterator().next().properties().serviceTypeName());
         Assertions.assertEquals(ServicePackageActivationMode.EXCLUSIVE_PROCESS,
             response.iterator().next().properties().servicePackageActivationMode());
-        Assertions.assertEquals("ctzenkeifzzhmkd", response.iterator().next().properties().serviceDnsName());
-        Assertions.assertEquals("ywuhpsvfuur", response.iterator().next().location());
-        Assertions.assertEquals("we", response.iterator().next().tags().get("xwlalniexzsrzpg"));
+        Assertions.assertEquals("zehtdhgb", response.iterator().next().properties().serviceDnsName());
+        Assertions.assertEquals("tzenk", response.iterator().next().location());
+        Assertions.assertEquals("zzhmkd", response.iterator().next().tags().get("svflyhbxcudch"));
     }
 }

@@ -35,7 +35,7 @@ public class GetDocumentStatus {
                 .buildClient();
 
         // BEGIN:GetDocumentStatus
-        SyncPoller<TranslationStatus, Void> response = documentTranslationClient
+        SyncPoller<TranslationStatus, TranslationStatus> response = documentTranslationClient
                 .beginStartTranslation(
                         new StartTranslationDetails(Arrays.asList(new BatchRequest(
                                 new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")

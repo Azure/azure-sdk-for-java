@@ -6,22 +6,24 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
+import com.azure.resourcemanager.peering.models.BgpSession;
+import com.azure.resourcemanager.peering.models.DirectConnection;
 import com.azure.resourcemanager.peering.models.DirectPeeringType;
+import com.azure.resourcemanager.peering.models.ExchangeConnection;
 import com.azure.resourcemanager.peering.models.Family;
 import com.azure.resourcemanager.peering.models.Kind;
 import com.azure.resourcemanager.peering.models.Peering;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesDirect;
 import com.azure.resourcemanager.peering.models.PeeringPropertiesExchange;
 import com.azure.resourcemanager.peering.models.PeeringSku;
+import com.azure.resourcemanager.peering.models.SessionAddressProvider;
 import com.azure.resourcemanager.peering.models.Size;
 import com.azure.resourcemanager.peering.models.Tier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -29,80 +31,89 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PeeringsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"rhnj\",\"tier\":\"Premium\",\"family\":\"Direct\",\"size\":\"Unlimited\"},\"kind\":\"Direct\",\"properties\":{\"direct\":{\"connections\":[{\"bandwidthInMbps\":1960555856,\"provisionedBandwidthInMbps\":430792961,\"sessionAddressProvider\":\"Microsoft\",\"useForPeeringService\":true,\"microsoftTrackingId\":\"jltduceam\",\"peeringDBFacilityId\":654358924,\"connectionState\":\"None\",\"bgpSession\":{},\"connectionIdentifier\":\"ejwcwwqiok\",\"errorMessage\":\"sx\"},{\"bandwidthInMbps\":2133935833,\"provisionedBandwidthInMbps\":322017356,\"sessionAddressProvider\":\"Microsoft\",\"useForPeeringService\":false,\"microsoftTrackingId\":\"rvkwc\",\"peeringDBFacilityId\":344733635,\"connectionState\":\"ProvisioningStarted\",\"bgpSession\":{},\"connectionIdentifier\":\"gtczheydb\",\"errorMessage\":\"shmkxmaehvbbxur\"},{\"bandwidthInMbps\":874326134,\"provisionedBandwidthInMbps\":1041302406,\"sessionAddressProvider\":\"Microsoft\",\"useForPeeringService\":false,\"microsoftTrackingId\":\"x\",\"peeringDBFacilityId\":854940072,\"connectionState\":\"PendingApproval\",\"bgpSession\":{},\"connectionIdentifier\":\"kpyklyhp\",\"errorMessage\":\"odpvruudlgzib\"},{\"bandwidthInMbps\":1621588970,\"provisionedBandwidthInMbps\":777690092,\"sessionAddressProvider\":\"Microsoft\",\"useForPeeringService\":true,\"microsoftTrackingId\":\"vdxec\",\"peeringDBFacilityId\":1249312895,\"connectionState\":\"ProvisioningCompleted\",\"bgpSession\":{},\"connectionIdentifier\":\"vh\",\"errorMessage\":\"h\"}],\"useForPeeringService\":true,\"peerAsn\":{\"id\":\"kdl\"},\"directPeeringType\":\"Internal\"},\"exchange\":{\"connections\":[{\"peeringDBFacilityId\":856589213,\"connectionState\":\"ProvisioningStarted\",\"bgpSession\":{},\"connectionIdentifier\":\"qjfsmlmbtxhw\",\"errorMessage\":\"wsrt\"}],\"peerAsn\":{\"id\":\"oezbrhubsk\"}},\"peeringLocation\":\"dyg\",\"provisioningState\":\"Deleting\"},\"location\":\"kkqfqjbvle\",\"tags\":{\"iqtqzfavyvnq\":\"ml\",\"euayjkqabqgzsles\":\"ybar\",\"vbquwr\":\"cbhernntiewdj\",\"uffkmrqemvvh\":\"ehwagoh\"},\"id\":\"xtdr\",\"name\":\"futacoebjvewzc\",\"type\":\"znmwcp\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"cybxa\",\"tier\":\"Premium\",\"family\":\"Direct\",\"size\":\"Unlimited\"},\"kind\":\"Exchange\",\"properties\":{\"direct\":{\"connections\":[],\"useForPeeringService\":true,\"directPeeringType\":\"Ix\"},\"exchange\":{\"connections\":[]},\"peeringLocation\":\"iodhkhazxkhnz\",\"provisioningState\":\"Updating\"},\"location\":\"lwntoego\",\"tags\":{\"szzcmrvexztv\":\"bwh\"},\"id\":\"t\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Peering response = manager.peerings()
+            .define("mv")
+            .withRegion("twnawjslbiwkojgc")
+            .withExistingResourceGroup("ovjzhpjbibgjmfx")
+            .withSku(new PeeringSku().withName("luyovwxnbkfezzx")
+                .withTier(Tier.PREMIUM)
+                .withFamily(Family.EXCHANGE)
+                .withSize(Size.FREE))
+            .withKind(Kind.DIRECT)
+            .withTags(mapOf("qnrnrpxehuwryk", "sfmznbaeqphc"))
+            .withDirect(new PeeringPropertiesDirect()
+                .withConnections(Arrays.asList(
+                    new DirectConnection().withBandwidthInMbps(1913424270)
+                        .withSessionAddressProvider(SessionAddressProvider.MICROSOFT)
+                        .withUseForPeeringService(false)
+                        .withPeeringDBFacilityId(277819924)
+                        .withBgpSession(new BgpSession())
+                        .withConnectionIdentifier("hfssnrb"),
+                    new DirectConnection().withBandwidthInMbps(844553789)
+                        .withSessionAddressProvider(SessionAddressProvider.MICROSOFT)
+                        .withUseForPeeringService(false)
+                        .withPeeringDBFacilityId(1012441055)
+                        .withBgpSession(new BgpSession())
+                        .withConnectionIdentifier("rctym"),
+                    new DirectConnection().withBandwidthInMbps(1967043899)
+                        .withSessionAddressProvider(SessionAddressProvider.PEER)
+                        .withUseForPeeringService(true)
+                        .withPeeringDBFacilityId(897300141)
+                        .withBgpSession(new BgpSession())
+                        .withConnectionIdentifier("asdvl"),
+                    new DirectConnection().withBandwidthInMbps(2021027348)
+                        .withSessionAddressProvider(SessionAddressProvider.MICROSOFT)
+                        .withUseForPeeringService(true)
+                        .withPeeringDBFacilityId(396154164)
+                        .withBgpSession(new BgpSession())
+                        .withConnectionIdentifier("xmrhu")))
+                .withPeerAsn(new SubResource().withId("rgjupauut"))
+                .withDirectPeeringType(DirectPeeringType.IX))
+            .withExchange(new PeeringPropertiesExchange()
+                .withConnections(Arrays.asList(new ExchangeConnection().withPeeringDBFacilityId(1245729434)
+                    .withBgpSession(new BgpSession())
+                    .withConnectionIdentifier("zpnfqntcypsxj")))
+                .withPeerAsn(new SubResource().withId("xvydfceacvlhvygd")))
+            .withPeeringLocation("t")
+            .create();
 
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Peering response =
-            manager
-                .peerings()
-                .define("mr")
-                .withRegion("juetaebur")
-                .withExistingResourceGroup("udutnco")
-                .withSku(
-                    new PeeringSku()
-                        .withName("qtvcofudflvkgj")
-                        .withTier(Tier.BASIC)
-                        .withFamily(Family.EXCHANGE)
-                        .withSize(Size.UNLIMITED))
-                .withKind(Kind.EXCHANGE)
-                .withTags(mapOf("kif", "movsmzlxwabmqoe", "btndo", "vtpuqujmqlgk"))
-                .withDirect(
-                    new PeeringPropertiesDirect()
-                        .withConnections(Arrays.asList())
-                        .withDirectPeeringType(DirectPeeringType.INTERNAL))
-                .withExchange(new PeeringPropertiesExchange().withConnections(Arrays.asList()))
-                .withPeeringLocation("sgsahmkycgr")
-                .create();
-
-        Assertions.assertEquals("cybxa", response.sku().name());
+        Assertions.assertEquals("rhnj", response.sku().name());
         Assertions.assertEquals(Tier.PREMIUM, response.sku().tier());
         Assertions.assertEquals(Family.DIRECT, response.sku().family());
         Assertions.assertEquals(Size.UNLIMITED, response.sku().size());
-        Assertions.assertEquals(Kind.EXCHANGE, response.kind());
-        Assertions.assertEquals("lwntoego", response.location());
-        Assertions.assertEquals("bwh", response.tags().get("szzcmrvexztv"));
-        Assertions.assertEquals(DirectPeeringType.IX, response.direct().directPeeringType());
-        Assertions.assertEquals("iodhkhazxkhnz", response.peeringLocation());
+        Assertions.assertEquals(Kind.DIRECT, response.kind());
+        Assertions.assertEquals("kkqfqjbvle", response.location());
+        Assertions.assertEquals("ml", response.tags().get("iqtqzfavyvnq"));
+        Assertions.assertEquals(1960555856, response.direct().connections().get(0).bandwidthInMbps());
+        Assertions.assertEquals(SessionAddressProvider.MICROSOFT,
+            response.direct().connections().get(0).sessionAddressProvider());
+        Assertions.assertEquals(true, response.direct().connections().get(0).useForPeeringService());
+        Assertions.assertEquals(654358924, response.direct().connections().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("ejwcwwqiok", response.direct().connections().get(0).connectionIdentifier());
+        Assertions.assertEquals("kdl", response.direct().peerAsn().id());
+        Assertions.assertEquals(DirectPeeringType.INTERNAL, response.direct().directPeeringType());
+        Assertions.assertEquals(856589213, response.exchange().connections().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("qjfsmlmbtxhw", response.exchange().connections().get(0).connectionIdentifier());
+        Assertions.assertEquals("oezbrhubsk", response.exchange().peerAsn().id());
+        Assertions.assertEquals("dyg", response.peeringLocation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -6,65 +6,37 @@ package com.azure.resourcemanager.databricks.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databricks.AzureDatabricksManager;
 import com.azure.resourcemanager.databricks.models.AccessConnector;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"principalId\":\"e4065d05-f2b4-41ce-86c4-b30cdc7c16cd\",\"tenantId\":\"93f392bd-9a17-4d0f-8b2a-5f673ac3dded\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"bjibwwiftohq\":{\"principalId\":\"8bd900b5-d392-4064-8380-e0e80e1bafab\",\"clientId\":\"2335a3c3-abbb-4156-a1cd-14f20a0d40d6\"},\"uvksgplsaknynfsy\":{\"principalId\":\"be2deb97-a6a4-420f-a21b-dde674be1b22\",\"clientId\":\"f677a790-37cf-4712-a7dc-48f76cb015da\"},\"ph\":{\"principalId\":\"11eca027-a178-4425-b01a-fd508ffe1eb2\",\"clientId\":\"f2213292-5a67-4f41-951f-fc07a004b674\"}}},\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"dlqiyntorzih\",\"tags\":{\"yzrpzbchckqqzq\":\"sjswsrms\",\"ysuiizynkedya\":\"ox\"},\"id\":\"rwyhqmibzyhwitsm\",\"name\":\"pyy\",\"type\":\"pcdpumnz\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"principalId\":\"0b6e54aa-aa52-4836-ac81-01efe6d11758\",\"tenantId\":\"d4b0e95f-10eb-45df-9d18-d4503b2b5f2e\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"xllrxcyjm\",\"tags\":{\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\",\"hky\":\"kgymareqnajxqug\"},\"id\":\"ubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AccessConnector> response = manager.accessConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xllrxcyjm", response.iterator().next().location());
-        Assertions.assertEquals("su", response.iterator().next().tags().get("arm"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("dlqiyntorzih", response.iterator().next().location());
+        Assertions.assertEquals("sjswsrms", response.iterator().next().tags().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

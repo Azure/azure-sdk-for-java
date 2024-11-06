@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource power state. */
+/**
+ * Resource power state.
+ */
 public final class AzureBareMetalInstancePowerStateEnum
     extends ExpandableStringEnum<AzureBareMetalInstancePowerStateEnum> {
-    /** Static value starting for AzureBareMetalInstancePowerStateEnum. */
+    /**
+     * Static value starting for AzureBareMetalInstancePowerStateEnum.
+     */
     public static final AzureBareMetalInstancePowerStateEnum STARTING = fromString("starting");
 
-    /** Static value started for AzureBareMetalInstancePowerStateEnum. */
+    /**
+     * Static value started for AzureBareMetalInstancePowerStateEnum.
+     */
     public static final AzureBareMetalInstancePowerStateEnum STARTED = fromString("started");
 
-    /** Static value stopping for AzureBareMetalInstancePowerStateEnum. */
+    /**
+     * Static value stopping for AzureBareMetalInstancePowerStateEnum.
+     */
     public static final AzureBareMetalInstancePowerStateEnum STOPPING = fromString("stopping");
 
-    /** Static value stopped for AzureBareMetalInstancePowerStateEnum. */
+    /**
+     * Static value stopped for AzureBareMetalInstancePowerStateEnum.
+     */
     public static final AzureBareMetalInstancePowerStateEnum STOPPED = fromString("stopped");
 
-    /** Static value restarting for AzureBareMetalInstancePowerStateEnum. */
+    /**
+     * Static value restarting for AzureBareMetalInstancePowerStateEnum.
+     */
     public static final AzureBareMetalInstancePowerStateEnum RESTARTING = fromString("restarting");
 
-    /** Static value unknown for AzureBareMetalInstancePowerStateEnum. */
+    /**
+     * Static value unknown for AzureBareMetalInstancePowerStateEnum.
+     */
     public static final AzureBareMetalInstancePowerStateEnum UNKNOWN = fromString("unknown");
 
     /**
      * Creates a new instance of AzureBareMetalInstancePowerStateEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class AzureBareMetalInstancePowerStateEnum
 
     /**
      * Creates or finds a AzureBareMetalInstancePowerStateEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureBareMetalInstancePowerStateEnum.
      */
-    @JsonCreator
     public static AzureBareMetalInstancePowerStateEnum fromString(String name) {
         return fromString(name, AzureBareMetalInstancePowerStateEnum.class);
     }
 
     /**
      * Gets known AzureBareMetalInstancePowerStateEnum values.
-     *
+     * 
      * @return known AzureBareMetalInstancePowerStateEnum values.
      */
     public static Collection<AzureBareMetalInstancePowerStateEnum> values() {

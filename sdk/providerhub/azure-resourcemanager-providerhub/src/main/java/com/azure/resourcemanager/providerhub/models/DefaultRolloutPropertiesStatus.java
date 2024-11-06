@@ -25,16 +25,16 @@ public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesStatus withNextTrafficRegionScheduledTime(
-        OffsetDateTime nextTrafficRegionScheduledTime) {
+    public DefaultRolloutPropertiesStatus
+        withNextTrafficRegionScheduledTime(OffsetDateTime nextTrafficRegionScheduledTime) {
         super.withNextTrafficRegionScheduledTime(nextTrafficRegionScheduledTime);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesStatus withSubscriptionReregistrationResult(
-        SubscriptionReregistrationResult subscriptionReregistrationResult) {
+    public DefaultRolloutPropertiesStatus
+        withSubscriptionReregistrationResult(SubscriptionReregistrationResult subscriptionReregistrationResult) {
         super.withSubscriptionReregistrationResult(subscriptionReregistrationResult);
         return this;
     }
@@ -48,8 +48,8 @@ public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
 
     /** {@inheritDoc} */
     @Override
-    public DefaultRolloutPropertiesStatus withFailedOrSkippedRegions(
-        Map<String, ExtendedErrorInfo> failedOrSkippedRegions) {
+    public DefaultRolloutPropertiesStatus
+        withFailedOrSkippedRegions(Map<String, ExtendedErrorInfo> failedOrSkippedRegions) {
         super.withFailedOrSkippedRegions(failedOrSkippedRegions);
         return this;
     }

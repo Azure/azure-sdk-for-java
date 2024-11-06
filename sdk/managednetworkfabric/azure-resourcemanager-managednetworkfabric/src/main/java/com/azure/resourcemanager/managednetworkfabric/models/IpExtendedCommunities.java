@@ -23,8 +23,8 @@ public interface IpExtendedCommunities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP Extended Community resource definition along with {@link Response}.
      */
-    Response<IpExtendedCommunity> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipExtendedCommunityName, Context context);
+    Response<IpExtendedCommunity> getByResourceGroupWithResponse(String resourceGroupName,
+        String ipExtendedCommunityName, Context context);
 
     /**
      * Gets an IP Extended Community.

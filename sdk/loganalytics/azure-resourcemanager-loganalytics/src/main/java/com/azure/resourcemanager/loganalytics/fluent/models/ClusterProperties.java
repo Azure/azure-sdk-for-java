@@ -240,8 +240,8 @@ public final class ClusterProperties {
      * @param capacityReservationProperties the capacityReservationProperties value to set.
      * @return the ClusterProperties object itself.
      */
-    public ClusterProperties withCapacityReservationProperties(
-        CapacityReservationProperties capacityReservationProperties) {
+    public ClusterProperties
+        withCapacityReservationProperties(CapacityReservationProperties capacityReservationProperties) {
         this.capacityReservationProperties = capacityReservationProperties;
         return this;
     }

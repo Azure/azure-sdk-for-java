@@ -121,8 +121,8 @@ public class BlobBeginCopyOptions {
      * @param sourceRequestConditions {@link BlobBeginCopySourceRequestConditions} for the source.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setSourceRequestConditions(
-        BlobBeginCopySourceRequestConditions sourceRequestConditions) {
+    public BlobBeginCopyOptions
+        setSourceRequestConditions(BlobBeginCopySourceRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }

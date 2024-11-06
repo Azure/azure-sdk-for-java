@@ -44,13 +44,15 @@ public final class OrganizationsGetSchemaRegistryClusterByIdWithResponseMockTest
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SchemaRegistryClusterRecord response
-            = manager.organizations().getSchemaRegistryClusterByIdWithResponse("ajuwas", "vdaeyyguxakjsq", "hzbezkgi",
-                "sidxasicdd", com.azure.core.util.Context.NONE).getValue();
+        SchemaRegistryClusterRecord response = manager.organizations()
+            .getSchemaRegistryClusterByIdWithResponse("ajuwas", "vdaeyyguxakjsq", "hzbezkgi", "sidxasicdd",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("vjskgfmoc", response.kind());
         Assertions.assertEquals("hpqgatjeaahhvj", response.id());

@@ -47,14 +47,18 @@ public final class NetworkServiceDesignGroupsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkServiceDesignGroup response
-            = manager.networkServiceDesignGroups().define("swkacvej").withRegion("nfxtgdd")
-                .withExistingPublisher("snsqowxwcoml", "kytwvcz").withTags(mapOf("kcoeqswank", "hehnmnaoya"))
-                .withProperties(new NetworkServiceDesignGroupPropertiesFormat().withDescription("vhb")).create();
+        NetworkServiceDesignGroup response = manager.networkServiceDesignGroups()
+            .define("swkacvej")
+            .withRegion("nfxtgdd")
+            .withExistingPublisher("snsqowxwcoml", "kytwvcz")
+            .withTags(mapOf("kcoeqswank", "hehnmnaoya"))
+            .withProperties(new NetworkServiceDesignGroupPropertiesFormat().withDescription("vhb"))
+            .create();
 
         Assertions.assertEquals("ywaeeczgf", response.location());
         Assertions.assertEquals("klelssxb", response.tags().get("ycsxzu"));

@@ -44,12 +44,15 @@ public final class OrganizationsGetClusterByIdWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SCClusterRecord response = manager.organizations().getClusterByIdWithResponse("zeexavoxtfgle", "dmdqb",
-            "pypqtgsfj", "cbslhhx", com.azure.core.util.Context.NONE).getValue();
+        SCClusterRecord response = manager.organizations()
+            .getClusterByIdWithResponse("zeexavoxtfgle", "dmdqb", "pypqtgsfj", "cbslhhx",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("bxv", response.kind());
         Assertions.assertEquals("htnsi", response.id());

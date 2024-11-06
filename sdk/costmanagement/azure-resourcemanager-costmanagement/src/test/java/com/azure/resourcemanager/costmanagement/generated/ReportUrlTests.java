@@ -13,22 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportUrlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportUrl model =
-            BinaryData
-                .fromString("{\"reportUrl\":\"InstanceFlexibilityRatio\",\"validUntil\":\"2021-12-07T02:37:58Z\"}")
+        ReportUrl model
+            = BinaryData.fromString("{\"reportUrl\":\"ReservationOrderId\",\"validUntil\":\"2021-02-04T02:41:34Z\"}")
                 .toObject(ReportUrl.class);
-        Assertions.assertEquals(ReservationReportSchema.INSTANCE_FLEXIBILITY_RATIO, model.reportUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T02:37:58Z"), model.validUntil());
+        Assertions.assertEquals(ReservationReportSchema.RESERVATION_ORDER_ID, model.reportUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T02:41:34Z"), model.validUntil());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportUrl model =
-            new ReportUrl()
-                .withReportUrl(ReservationReportSchema.INSTANCE_FLEXIBILITY_RATIO)
-                .withValidUntil(OffsetDateTime.parse("2021-12-07T02:37:58Z"));
+        ReportUrl model = new ReportUrl().withReportUrl(ReservationReportSchema.RESERVATION_ORDER_ID)
+            .withValidUntil(OffsetDateTime.parse("2021-02-04T02:41:34Z"));
         model = BinaryData.fromObject(model).toObject(ReportUrl.class);
-        Assertions.assertEquals(ReservationReportSchema.INSTANCE_FLEXIBILITY_RATIO, model.reportUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T02:37:58Z"), model.validUntil());
+        Assertions.assertEquals(ReservationReportSchema.RESERVATION_ORDER_ID, model.reportUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T02:41:34Z"), model.validUntil());
     }
 }

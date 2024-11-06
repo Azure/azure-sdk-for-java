@@ -71,159 +71,109 @@ public final class JobsClientImpl implements JobsClient {
     @Host("{$host}")
     @ServiceInterface(name = "BatchAIJobs")
     private interface JobsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobListResult>> listByExperiment(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @QueryParam("maxresults") Integer maxResults,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<JobListResult>> listByExperiment(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @QueryParam("maxresults") Integer maxResults,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") JobCreateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") JobCreateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}/listOutputFiles")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}/listOutputFiles")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FileListResult>> listOutputFiles(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("outputdirectoryid") String outputdirectoryid,
-            @QueryParam("directory") String directory,
+        Mono<Response<FileListResult>> listOutputFiles(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @PathParam("jobName") String jobName,
+            @QueryParam("outputdirectoryid") String outputdirectoryid, @QueryParam("directory") String directory,
             @QueryParam("linkexpiryinminutes") Integer linkexpiryinminutes,
-            @QueryParam("maxresults") Integer maxResults,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("maxresults") Integer maxResults, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}/listRemoteLoginInformation")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}/listRemoteLoginInformation")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RemoteLoginInformationListResult>> listRemoteLoginInformation(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RemoteLoginInformationListResult>> listRemoteLoginInformation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
-                + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}/terminate")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces"
+            + "/{workspaceName}/experiments/{experimentName}/jobs/{jobName}/terminate")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> terminate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("experimentName") String experimentName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> terminate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("experimentName") String experimentName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobListResult>> listByExperimentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FileListResult>> listOutputFilesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RemoteLoginInformationListResult>> listRemoteLoginInformationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -241,13 +191,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobInner>> listByExperimentSinglePageAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults) {
+    private Mono<PagedResponse<JobInner>> listByExperimentSinglePageAsync(String resourceGroupName,
+        String workspaceName, String experimentName, Integer maxResults) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,35 +208,16 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByExperiment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            maxResults,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<JobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByExperiment(this.client.getEndpoint(), resourceGroupName,
+                workspaceName, experimentName, maxResults, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<JobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -308,13 +237,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobInner>> listByExperimentSinglePageAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults, Context context) {
+    private Mono<PagedResponse<JobInner>> listByExperimentSinglePageAsync(String resourceGroupName,
+        String workspaceName, String experimentName, Integer maxResults, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -327,33 +254,16 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter experimentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByExperiment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                maxResults,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByExperiment(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName, maxResults,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -371,8 +281,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobInner> listByExperimentAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults) {
+    private PagedFlux<JobInner> listByExperimentAsync(String resourceGroupName, String workspaceName,
+        String experimentName, Integer maxResults) {
         return new PagedFlux<>(
             () -> listByExperimentSinglePageAsync(resourceGroupName, workspaceName, experimentName, maxResults),
             nextLink -> listByExperimentNextSinglePageAsync(nextLink));
@@ -392,8 +302,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobInner> listByExperimentAsync(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    private PagedFlux<JobInner> listByExperimentAsync(String resourceGroupName, String workspaceName,
+        String experimentName) {
         final Integer maxResults = null;
         return new PagedFlux<>(
             () -> listByExperimentSinglePageAsync(resourceGroupName, workspaceName, experimentName, maxResults),
@@ -416,12 +326,10 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobInner> listByExperimentAsync(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByExperimentSinglePageAsync(resourceGroupName, workspaceName, experimentName, maxResults, context),
-            nextLink -> listByExperimentNextSinglePageAsync(nextLink, context));
+    private PagedFlux<JobInner> listByExperimentAsync(String resourceGroupName, String workspaceName,
+        String experimentName, Integer maxResults, Context context) {
+        return new PagedFlux<>(() -> listByExperimentSinglePageAsync(resourceGroupName, workspaceName, experimentName,
+            maxResults, context), nextLink -> listByExperimentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -438,8 +346,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobInner> listByExperiment(
-        String resourceGroupName, String workspaceName, String experimentName) {
+    public PagedIterable<JobInner> listByExperiment(String resourceGroupName, String workspaceName,
+        String experimentName) {
         final Integer maxResults = null;
         return new PagedIterable<>(listByExperimentAsync(resourceGroupName, workspaceName, experimentName, maxResults));
     }
@@ -460,8 +368,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobInner> listByExperiment(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults, Context context) {
+    public PagedIterable<JobInner> listByExperiment(String resourceGroupName, String workspaceName,
+        String experimentName, Integer maxResults, Context context) {
         return new PagedIterable<>(
             listByExperimentAsync(resourceGroupName, workspaceName, experimentName, maxResults, context));
     }
@@ -484,17 +392,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -510,10 +412,8 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -523,19 +423,8 @@ public final class JobsClientImpl implements JobsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName,
+                    jobName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -558,18 +447,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -585,10 +467,8 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -597,18 +477,8 @@ public final class JobsClientImpl implements JobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName, jobName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -629,18 +499,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<JobInner>, JobInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters);
-        return this
-            .client
-            .<JobInner, JobInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobInner.class, JobInner.class, Context.NONE);
+    private PollerFlux<PollResult<JobInner>, JobInner> beginCreateAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters);
+        return this.client.<JobInner, JobInner>getLroResult(mono, this.client.getHttpPipeline(), JobInner.class,
+            JobInner.class, Context.NONE);
     }
 
     /**
@@ -662,20 +526,13 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<JobInner>, JobInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<JobInner>, JobInner> beginCreateAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters, context);
-        return this
-            .client
-            .<JobInner, JobInner>getLroResult(
-                mono, this.client.getHttpPipeline(), JobInner.class, JobInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters, context);
+        return this.client.<JobInner, JobInner>getLroResult(mono, this.client.getHttpPipeline(), JobInner.class,
+            JobInner.class, context);
     }
 
     /**
@@ -696,12 +553,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<JobInner>, JobInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters) {
+    public SyncPoller<PollResult<JobInner>, JobInner> beginCreate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters) {
         return beginCreateAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters).getSyncPoller();
     }
 
@@ -724,13 +577,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<JobInner>, JobInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context) {
+    public SyncPoller<PollResult<JobInner>, JobInner> beginCreate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters, context)
             .getSyncPoller();
     }
@@ -753,14 +601,9 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters)
-            .last()
+    private Mono<JobInner> createAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, JobCreateParameters parameters) {
+        return beginCreateAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -783,15 +626,9 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters, context)
-            .last()
+    private Mono<JobInner> createAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, JobCreateParameters parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -813,11 +650,7 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
+    public JobInner create(String resourceGroupName, String workspaceName, String experimentName, String jobName,
         JobCreateParameters parameters) {
         return createAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters).block();
     }
@@ -841,13 +674,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context) {
+    public JobInner create(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        JobCreateParameters parameters, Context context) {
         return createAsync(resourceGroupName, workspaceName, experimentName, jobName, parameters, context).block();
     }
 
@@ -868,13 +696,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -890,26 +716,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, jobName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -931,13 +744,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -953,24 +764,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName, jobName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -990,13 +790,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            Context.NONE);
     }
 
     /**
@@ -1017,14 +816,13 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1044,8 +842,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, jobName).getSyncPoller();
     }
 
@@ -1067,8 +865,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, jobName, context).getSyncPoller();
     }
 
@@ -1089,10 +887,9 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, jobName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, jobName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1114,10 +911,9 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, jobName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, experimentName, jobName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1158,8 +954,8 @@ public final class JobsClientImpl implements JobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context) {
         deleteAsync(resourceGroupName, workspaceName, experimentName, jobName, context).block();
     }
 
@@ -1180,13 +976,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    private Mono<Response<JobInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1202,26 +996,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, jobName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1243,13 +1024,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    private Mono<Response<JobInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,24 +1044,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName, jobName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1302,17 +1070,16 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> getAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    private Mono<JobInner> getAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<JobInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1354,8 +1121,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public Response<JobInner> getWithResponse(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, context).block();
     }
 
@@ -1382,20 +1149,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FileInner>> listOutputFilesSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults) {
+    private Mono<PagedResponse<FileInner>> listOutputFilesSinglePageAsync(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName, String outputdirectoryid, String directory,
+        Integer linkexpiryinminutes, Integer maxResults) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1415,39 +1174,16 @@ public final class JobsClientImpl implements JobsClient {
                 .error(new IllegalArgumentException("Parameter outputdirectoryid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutputFiles(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            jobName,
-                            outputdirectoryid,
-                            directory,
-                            linkexpiryinminutes,
-                            maxResults,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<FileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutputFiles(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, jobName, outputdirectoryid, directory, linkexpiryinminutes, maxResults,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<FileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1475,21 +1211,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FileInner>> listOutputFilesSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults,
-        Context context) {
+    private Mono<PagedResponse<FileInner>> listOutputFilesSinglePageAsync(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName, String outputdirectoryid, String directory,
+        Integer linkexpiryinminutes, Integer maxResults, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1509,37 +1236,17 @@ public final class JobsClientImpl implements JobsClient {
                 .error(new IllegalArgumentException("Parameter outputdirectoryid is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutputFiles(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                outputdirectoryid,
-                directory,
-                linkexpiryinminutes,
-                maxResults,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOutputFiles(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName, jobName,
+                outputdirectoryid, directory, linkexpiryinminutes, maxResults, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1565,26 +1272,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FileInner> listOutputFilesAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
+    private PagedFlux<FileInner> listOutputFilesAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, String outputdirectoryid, String directory, Integer linkexpiryinminutes,
         Integer maxResults) {
         return new PagedFlux<>(
-            () ->
-                listOutputFilesSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    experimentName,
-                    jobName,
-                    outputdirectoryid,
-                    directory,
-                    linkexpiryinminutes,
-                    maxResults),
+            () -> listOutputFilesSinglePageAsync(resourceGroupName, workspaceName, experimentName, jobName,
+                outputdirectoryid, directory, linkexpiryinminutes, maxResults),
             nextLink -> listOutputFilesNextSinglePageAsync(nextLink));
     }
 
@@ -1608,26 +1301,14 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FileInner> listOutputFilesAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid) {
+    private PagedFlux<FileInner> listOutputFilesAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, String outputdirectoryid) {
         final String directory = null;
         final Integer linkexpiryinminutes = null;
         final Integer maxResults = null;
         return new PagedFlux<>(
-            () ->
-                listOutputFilesSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    experimentName,
-                    jobName,
-                    outputdirectoryid,
-                    directory,
-                    linkexpiryinminutes,
-                    maxResults),
+            () -> listOutputFilesSinglePageAsync(resourceGroupName, workspaceName, experimentName, jobName,
+                outputdirectoryid, directory, linkexpiryinminutes, maxResults),
             nextLink -> listOutputFilesNextSinglePageAsync(nextLink));
     }
 
@@ -1655,28 +1336,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FileInner> listOutputFilesAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults,
-        Context context) {
+    private PagedFlux<FileInner> listOutputFilesAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, String outputdirectoryid, String directory, Integer linkexpiryinminutes,
+        Integer maxResults, Context context) {
         return new PagedFlux<>(
-            () ->
-                listOutputFilesSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    experimentName,
-                    jobName,
-                    outputdirectoryid,
-                    directory,
-                    linkexpiryinminutes,
-                    maxResults,
-                    context),
+            () -> listOutputFilesSinglePageAsync(resourceGroupName, workspaceName, experimentName, jobName,
+                outputdirectoryid, directory, linkexpiryinminutes, maxResults, context),
             nextLink -> listOutputFilesNextSinglePageAsync(nextLink, context));
     }
 
@@ -1700,25 +1365,13 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FileInner> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid) {
+    public PagedIterable<FileInner> listOutputFiles(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, String outputdirectoryid) {
         final String directory = null;
         final Integer linkexpiryinminutes = null;
         final Integer maxResults = null;
-        return new PagedIterable<>(
-            listOutputFilesAsync(
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                outputdirectoryid,
-                directory,
-                linkexpiryinminutes,
-                maxResults));
+        return new PagedIterable<>(listOutputFilesAsync(resourceGroupName, workspaceName, experimentName, jobName,
+            outputdirectoryid, directory, linkexpiryinminutes, maxResults));
     }
 
     /**
@@ -1745,27 +1398,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FileInner> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults,
-        Context context) {
-        return new PagedIterable<>(
-            listOutputFilesAsync(
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                outputdirectoryid,
-                directory,
-                linkexpiryinminutes,
-                maxResults,
-                context));
+    public PagedIterable<FileInner> listOutputFiles(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, String outputdirectoryid, String directory, Integer linkexpiryinminutes,
+        Integer maxResults, Context context) {
+        return new PagedIterable<>(listOutputFilesAsync(resourceGroupName, workspaceName, experimentName, jobName,
+            outputdirectoryid, directory, linkexpiryinminutes, maxResults, context));
     }
 
     /**
@@ -1789,10 +1426,8 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<PagedResponse<RemoteLoginInformationInner>> listRemoteLoginInformationSinglePageAsync(
         String resourceGroupName, String workspaceName, String experimentName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1808,35 +1443,16 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRemoteLoginInformation(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RemoteLoginInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRemoteLoginInformation(this.client.getEndpoint(), resourceGroupName,
+                workspaceName, experimentName, jobName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<RemoteLoginInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1862,10 +1478,8 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<PagedResponse<RemoteLoginInformationInner>> listRemoteLoginInformationSinglePageAsync(
         String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1881,33 +1495,16 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRemoteLoginInformation(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRemoteLoginInformation(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName,
+                jobName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1928,8 +1525,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of currently existing nodes which were used for the Job execution.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RemoteLoginInformationInner> listRemoteLoginInformationAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    private PagedFlux<RemoteLoginInformationInner> listRemoteLoginInformationAsync(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName) {
         return new PagedFlux<>(
             () -> listRemoteLoginInformationSinglePageAsync(resourceGroupName, workspaceName, experimentName, jobName),
             nextLink -> listRemoteLoginInformationNextSinglePageAsync(nextLink));
@@ -1954,12 +1551,10 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of currently existing nodes which were used for the Job execution.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RemoteLoginInformationInner> listRemoteLoginInformationAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listRemoteLoginInformationSinglePageAsync(
-                    resourceGroupName, workspaceName, experimentName, jobName, context),
+    private PagedFlux<RemoteLoginInformationInner> listRemoteLoginInformationAsync(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName, Context context) {
+        return new PagedFlux<>(() -> listRemoteLoginInformationSinglePageAsync(resourceGroupName, workspaceName,
+            experimentName, jobName, context),
             nextLink -> listRemoteLoginInformationNextSinglePageAsync(nextLink, context));
     }
 
@@ -1981,8 +1576,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of currently existing nodes which were used for the Job execution.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    public PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName) {
         return new PagedIterable<>(
             listRemoteLoginInformationAsync(resourceGroupName, workspaceName, experimentName, jobName));
     }
@@ -2006,8 +1601,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a list of currently existing nodes which were used for the Job execution.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName, Context context) {
         return new PagedIterable<>(
             listRemoteLoginInformationAsync(resourceGroupName, workspaceName, experimentName, jobName, context));
     }
@@ -2029,13 +1624,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> terminateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    private Mono<Response<Flux<ByteBuffer>>> terminateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2051,26 +1644,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .terminate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            experimentName,
-                            jobName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.terminate(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                experimentName, jobName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2092,13 +1672,11 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> terminateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> terminateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2114,24 +1692,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .terminate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                experimentName,
-                jobName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.terminate(this.client.getEndpoint(), resourceGroupName, workspaceName, experimentName, jobName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -2151,13 +1718,12 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginTerminateAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            terminateWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    private PollerFlux<PollResult<Void>, Void> beginTerminateAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = terminateWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            Context.NONE);
     }
 
     /**
@@ -2178,14 +1744,13 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginTerminateAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginTerminateAsync(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            terminateWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = terminateWithResponseAsync(resourceGroupName, workspaceName, experimentName, jobName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2205,8 +1770,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginTerminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    public SyncPoller<PollResult<Void>, Void> beginTerminate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName) {
         return beginTerminateAsync(resourceGroupName, workspaceName, experimentName, jobName).getSyncPoller();
     }
 
@@ -2228,8 +1793,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginTerminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginTerminate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context) {
         return beginTerminateAsync(resourceGroupName, workspaceName, experimentName, jobName, context).getSyncPoller();
     }
 
@@ -2250,10 +1815,9 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> terminateAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName) {
-        return beginTerminateAsync(resourceGroupName, workspaceName, experimentName, jobName)
-            .last()
+    private Mono<Void> terminateAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName) {
+        return beginTerminateAsync(resourceGroupName, workspaceName, experimentName, jobName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2275,10 +1839,9 @@ public final class JobsClientImpl implements JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> terminateAsync(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
-        return beginTerminateAsync(resourceGroupName, workspaceName, experimentName, jobName, context)
-            .last()
+    private Mono<Void> terminateAsync(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, Context context) {
+        return beginTerminateAsync(resourceGroupName, workspaceName, experimentName, jobName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2319,8 +1882,8 @@ public final class JobsClientImpl implements JobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context) {
+    public void terminate(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context) {
         terminateAsync(resourceGroupName, workspaceName, experimentName, jobName, context).block();
     }
 
@@ -2339,23 +1902,14 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByExperimentNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2375,24 +1929,14 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByExperimentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByExperimentNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2410,23 +1954,14 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOutputFilesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2446,24 +1981,14 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOutputFilesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listOutputFilesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2476,30 +2001,21 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RemoteLoginInformationInner>> listRemoteLoginInformationNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<RemoteLoginInformationInner>>
+        listRemoteLoginInformationNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listRemoteLoginInformationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RemoteLoginInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RemoteLoginInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2514,29 +2030,19 @@ public final class JobsClientImpl implements JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RemoteLoginInformationInner>> listRemoteLoginInformationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RemoteLoginInformationInner>>
+        listRemoteLoginInformationNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRemoteLoginInformationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRemoteLoginInformationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

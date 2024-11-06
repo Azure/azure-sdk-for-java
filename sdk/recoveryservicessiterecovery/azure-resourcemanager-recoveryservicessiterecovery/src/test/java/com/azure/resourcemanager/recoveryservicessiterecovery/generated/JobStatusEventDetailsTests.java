@@ -22,8 +22,10 @@ public final class JobStatusEventDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobStatusEventDetails model = new JobStatusEventDetails().withJobId("wkaupwhlz").withJobFriendlyName("kremgjl")
-            .withJobStatus("vdorsirx").withAffectedObjectType("yrkqa");
+        JobStatusEventDetails model = new JobStatusEventDetails().withJobId("wkaupwhlz")
+            .withJobFriendlyName("kremgjl")
+            .withJobStatus("vdorsirx")
+            .withAffectedObjectType("yrkqa");
         model = BinaryData.fromObject(model).toObject(JobStatusEventDetails.class);
         Assertions.assertEquals("wkaupwhlz", model.jobId());
         Assertions.assertEquals("kremgjl", model.jobFriendlyName());

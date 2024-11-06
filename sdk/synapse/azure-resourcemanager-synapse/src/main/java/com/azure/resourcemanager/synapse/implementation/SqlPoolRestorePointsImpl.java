@@ -22,47 +22,29 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolRestorePointsImpl(
-        SqlPoolRestorePointsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolRestorePointsImpl(SqlPoolRestorePointsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<RestorePointInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
+        PagedIterable<RestorePointInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RestorePoint> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        PagedIterable<RestorePointInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
-    }
-
-    public RestorePoint create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters) {
-        RestorePointInner inner =
-            this.serviceClient().create(resourceGroupName, workspaceName, sqlPoolName, parameters);
-        if (inner != null) {
-            return new RestorePointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public RestorePoint create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
+    public PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         Context context) {
-        RestorePointInner inner =
-            this.serviceClient().create(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
+        PagedIterable<RestorePointInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
+    }
+
+    public RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters) {
+        RestorePointInner inner
+            = this.serviceClient().create(resourceGroupName, workspaceName, sqlPoolName, parameters);
         if (inner != null) {
             return new RestorePointImpl(inner, this.manager());
         } else {
@@ -70,27 +52,33 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
         }
     }
 
-    public Response<RestorePoint> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
-        Response<RestorePointInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context);
+    public RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context) {
+        RestorePointInner inner
+            = this.serviceClient().create(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new RestorePointImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<RestorePoint> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context) {
+        Response<RestorePointInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RestorePointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RestorePoint get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
-        RestorePointInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
+    public RestorePoint get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName) {
+        RestorePointInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, restorePointName);
         if (inner != null) {
             return new RestorePointImpl(inner, this.manager());
         } else {
@@ -98,10 +86,9 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context);
     }
 

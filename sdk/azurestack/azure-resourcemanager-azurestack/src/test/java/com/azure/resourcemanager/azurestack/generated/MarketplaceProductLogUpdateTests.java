@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurestack.models.MarketplaceProductLogUpdate;
 public final class MarketplaceProductLogUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceProductLogUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"operation\":\"mddystkiiux\",\"status\":\"yudxorrqnbp\",\"error\":\"zvyifqrvkdvj\",\"details\":\"lrmv\"}")
-                .toObject(MarketplaceProductLogUpdate.class);
+        MarketplaceProductLogUpdate model = BinaryData.fromString(
+            "{\"operation\":\"ctq\",\"status\":\"fbebrjcxer\",\"error\":\"wutttxfvjrbi\",\"details\":\"hxepcyvahfnlj\"}")
+            .toObject(MarketplaceProductLogUpdate.class);
     }
 
     @org.junit.jupiter.api.Test

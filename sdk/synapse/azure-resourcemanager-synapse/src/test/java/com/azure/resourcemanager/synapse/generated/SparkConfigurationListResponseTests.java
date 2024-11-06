@@ -16,66 +16,59 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigurationListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigurationListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"fdlpukhpyr\",\"configs\":{},\"annotations\":[],\"notes\":\"zjcpeogk\",\"createdBy\":\"mgbro\",\"created\":\"2021-10-26T06:11:35Z\",\"configMergeRule\":{}},\"etag\":\"hfhpfp\",\"id\":\"zjzoywjxhpdul\",\"name\":\"ntacn\",\"type\":\"qwtehtuevr\"},{\"properties\":{\"description\":\"ljyoogwx\",\"configs\":{},\"annotations\":[],\"notes\":\"duugwbsre\",\"createdBy\":\"fqkfuarenl\",\"created\":\"2021-11-15T21:51:51Z\",\"configMergeRule\":{}},\"etag\":\"lnvnafvvkyfedev\",\"id\":\"bo\",\"name\":\"lcqxypokk\",\"type\":\"minqcym\"},{\"properties\":{\"description\":\"ngnbdxxew\",\"configs\":{},\"annotations\":[],\"notes\":\"nvudbchaqdtvqecr\",\"createdBy\":\"tmxxdtddmflhuy\",\"created\":\"2021-10-16T00:35:13Z\",\"configMergeRule\":{}},\"etag\":\"zna\",\"id\":\"xbannovvoxc\",\"name\":\"ytprwnwvroev\",\"type\":\"tlyo\"},{\"properties\":{\"description\":\"rrouuxvnsasbcry\",\"configs\":{},\"annotations\":[],\"notes\":\"izrxklob\",\"createdBy\":\"nazpmk\",\"created\":\"2021-01-20T07:51:57Z\",\"configMergeRule\":{}},\"etag\":\"vfxzopjh\",\"id\":\"zxlioh\",\"name\":\"d\",\"type\":\"dtfgxqbawpcbb\"}],\"nextLink\":\"qcy\"}")
-                .toObject(SparkConfigurationListResponse.class);
-        Assertions.assertEquals("fdlpukhpyr", model.value().get(0).description());
-        Assertions.assertEquals("zjcpeogk", model.value().get(0).notes());
-        Assertions.assertEquals("mgbro", model.value().get(0).createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T06:11:35Z"), model.value().get(0).created());
-        Assertions.assertEquals("qcy", model.nextLink());
+        SparkConfigurationListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"oe\",\"configs\":{\"drlktg\":\"wankltytmhdroznn\",\"waeeczgfb\":\"csgguxhemlw\",\"zujksrlsmdes\":\"kklelssxblycs\"},\"annotations\":[\"pvmjcdoewbid\",\"vteo\",\"xvgpiude\",\"gfsxzec\"],\"notes\":\"xw\",\"createdBy\":\"fykhvuhxepmru\",\"created\":\"2021-01-01T13:09:47Z\",\"configMergeRule\":{\"lujdjltymkmv\":\"aobn\",\"pphkixkykxds\":\"uihywart\"}},\"etag\":\"pemmucfxhik\",\"id\":\"flrmymyi\",\"name\":\"cqlh\",\"type\":\"isws\"},{\"properties\":{\"description\":\"iiiovgqcgxuugq\",\"configs\":{\"dtguk\":\"totiowlxteqdptjg\",\"gygqwah\":\"anblwphqlkccu\",\"gniiprglvaw\":\"iul\"},\"annotations\":[\"d\"],\"notes\":\"ypivlsbb\",\"createdBy\":\"mcub\",\"created\":\"2021-07-10T21:52:44Z\",\"configMergeRule\":{\"h\":\"xxkubvphavp\",\"bbttefjo\":\"rbqgvgov\"}},\"etag\":\"ssqyzqedik\",\"id\":\"frdbiqmrjgeihf\",\"name\":\"lg\",\"type\":\"wfiwzcxmj\"},{\"properties\":{\"description\":\"yephmgtvljvrcmyf\",\"configs\":{\"pomyqwcabvnuile\":\"pgxh\"},\"annotations\":[\"swlpaugmrmfj\",\"rxwtoaukhfkvc\"],\"notes\":\"izmoaeds\",\"createdBy\":\"wuived\",\"created\":\"2021-07-25T04:49:06Z\",\"configMergeRule\":{\"omguamlj\":\"ewxeiqbpsm\",\"gmsplzgaufcshhv\":\"l\",\"ixt\":\"ewgnxkympqanxrj\"}},\"etag\":\"taoypnyghshxc\",\"id\":\"lhkgmnsghp\",\"name\":\"ycphdrwjjkhvyo\",\"type\":\"ac\"}],\"nextLink\":\"zvxnqmhrp\"}")
+            .toObject(SparkConfigurationListResponse.class);
+        Assertions.assertEquals("oe", model.value().get(0).description());
+        Assertions.assertEquals("wankltytmhdroznn", model.value().get(0).configs().get("drlktg"));
+        Assertions.assertEquals("pvmjcdoewbid", model.value().get(0).annotations().get(0));
+        Assertions.assertEquals("xw", model.value().get(0).notes());
+        Assertions.assertEquals("fykhvuhxepmru", model.value().get(0).createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T13:09:47Z"), model.value().get(0).created());
+        Assertions.assertEquals("aobn", model.value().get(0).configMergeRule().get("lujdjltymkmv"));
+        Assertions.assertEquals("zvxnqmhrp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkConfigurationListResponse model =
-            new SparkConfigurationListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SparkConfigurationResourceInner()
-                                .withDescription("fdlpukhpyr")
-                                .withConfigs(mapOf())
-                                .withAnnotations(Arrays.asList())
-                                .withNotes("zjcpeogk")
-                                .withCreatedBy("mgbro")
-                                .withCreated(OffsetDateTime.parse("2021-10-26T06:11:35Z"))
-                                .withConfigMergeRule(mapOf()),
-                            new SparkConfigurationResourceInner()
-                                .withDescription("ljyoogwx")
-                                .withConfigs(mapOf())
-                                .withAnnotations(Arrays.asList())
-                                .withNotes("duugwbsre")
-                                .withCreatedBy("fqkfuarenl")
-                                .withCreated(OffsetDateTime.parse("2021-11-15T21:51:51Z"))
-                                .withConfigMergeRule(mapOf()),
-                            new SparkConfigurationResourceInner()
-                                .withDescription("ngnbdxxew")
-                                .withConfigs(mapOf())
-                                .withAnnotations(Arrays.asList())
-                                .withNotes("nvudbchaqdtvqecr")
-                                .withCreatedBy("tmxxdtddmflhuy")
-                                .withCreated(OffsetDateTime.parse("2021-10-16T00:35:13Z"))
-                                .withConfigMergeRule(mapOf()),
-                            new SparkConfigurationResourceInner()
-                                .withDescription("rrouuxvnsasbcry")
-                                .withConfigs(mapOf())
-                                .withAnnotations(Arrays.asList())
-                                .withNotes("izrxklob")
-                                .withCreatedBy("nazpmk")
-                                .withCreated(OffsetDateTime.parse("2021-01-20T07:51:57Z"))
-                                .withConfigMergeRule(mapOf())))
-                .withNextLink("qcy");
+        SparkConfigurationListResponse model = new SparkConfigurationListResponse()
+            .withValue(Arrays.asList(
+                new SparkConfigurationResourceInner().withDescription("oe")
+                    .withConfigs(mapOf("drlktg", "wankltytmhdroznn", "waeeczgfb", "csgguxhemlw", "zujksrlsmdes",
+                        "kklelssxblycs"))
+                    .withAnnotations(Arrays.asList("pvmjcdoewbid", "vteo", "xvgpiude", "gfsxzec"))
+                    .withNotes("xw")
+                    .withCreatedBy("fykhvuhxepmru")
+                    .withCreated(OffsetDateTime.parse("2021-01-01T13:09:47Z"))
+                    .withConfigMergeRule(mapOf("lujdjltymkmv", "aobn", "pphkixkykxds", "uihywart")),
+                new SparkConfigurationResourceInner().withDescription("iiiovgqcgxuugq")
+                    .withConfigs(mapOf("dtguk", "totiowlxteqdptjg", "gygqwah", "anblwphqlkccu", "gniiprglvaw", "iul"))
+                    .withAnnotations(Arrays.asList("d"))
+                    .withNotes("ypivlsbb")
+                    .withCreatedBy("mcub")
+                    .withCreated(OffsetDateTime.parse("2021-07-10T21:52:44Z"))
+                    .withConfigMergeRule(mapOf("h", "xxkubvphavp", "bbttefjo", "rbqgvgov")),
+                new SparkConfigurationResourceInner().withDescription("yephmgtvljvrcmyf")
+                    .withConfigs(mapOf("pomyqwcabvnuile", "pgxh"))
+                    .withAnnotations(Arrays.asList("swlpaugmrmfj", "rxwtoaukhfkvc"))
+                    .withNotes("izmoaeds")
+                    .withCreatedBy("wuived")
+                    .withCreated(OffsetDateTime.parse("2021-07-25T04:49:06Z"))
+                    .withConfigMergeRule(
+                        mapOf("omguamlj", "ewxeiqbpsm", "gmsplzgaufcshhv", "l", "ixt", "ewgnxkympqanxrj"))))
+            .withNextLink("zvxnqmhrp");
         model = BinaryData.fromObject(model).toObject(SparkConfigurationListResponse.class);
-        Assertions.assertEquals("fdlpukhpyr", model.value().get(0).description());
-        Assertions.assertEquals("zjcpeogk", model.value().get(0).notes());
-        Assertions.assertEquals("mgbro", model.value().get(0).createdBy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T06:11:35Z"), model.value().get(0).created());
-        Assertions.assertEquals("qcy", model.nextLink());
+        Assertions.assertEquals("oe", model.value().get(0).description());
+        Assertions.assertEquals("wankltytmhdroznn", model.value().get(0).configs().get("drlktg"));
+        Assertions.assertEquals("pvmjcdoewbid", model.value().get(0).annotations().get(0));
+        Assertions.assertEquals("xw", model.value().get(0).notes());
+        Assertions.assertEquals("fykhvuhxepmru", model.value().get(0).createdBy());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T13:09:47Z"), model.value().get(0).created());
+        Assertions.assertEquals("aobn", model.value().get(0).configMergeRule().get("lujdjltymkmv"));
+        Assertions.assertEquals("zvxnqmhrp", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

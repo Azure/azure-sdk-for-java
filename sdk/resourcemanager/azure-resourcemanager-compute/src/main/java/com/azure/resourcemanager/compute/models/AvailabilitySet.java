@@ -17,10 +17,8 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure availability set. */
 @Fluent
-public interface AvailabilitySet
-    extends GroupableResource<ComputeManager, AvailabilitySetInner>,
-        Refreshable<AvailabilitySet>,
-        Updatable<AvailabilitySet.Update> {
+public interface AvailabilitySet extends GroupableResource<ComputeManager, AvailabilitySetInner>,
+    Refreshable<AvailabilitySet>, Updatable<AvailabilitySet.Update> {
 
     /** @return the update domain count of this availability set */
     int updateDomainCount();
@@ -114,21 +112,16 @@ public interface AvailabilitySet
              * @param type the type of the group
              * @return the next stage of the definition.
              */
-            WithCreate withNewProximityPlacementGroup(
-                String proximityPlacementGroupName, ProximityPlacementGroupType type);
+            WithCreate withNewProximityPlacementGroup(String proximityPlacementGroupName,
+                ProximityPlacementGroupType type);
         }
 
         /**
          * The stage of an availability set definition which contains all the minimum required inputs for the resource
          * to be created but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<AvailabilitySet>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithUpdateDomainCount,
-                WithFaultDomainCount,
-                WithSku,
-                WithProximityPlacementGroup {
+        interface WithCreate extends Creatable<AvailabilitySet>, Resource.DefinitionWithTags<WithCreate>,
+            WithUpdateDomainCount, WithFaultDomainCount, WithSku, WithProximityPlacementGroup {
         }
     }
 
@@ -163,11 +156,9 @@ public interface AvailabilitySet
             Update withoutProximityPlacementGroup();
         }
     }
+
     /** The template for an availability set update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<AvailabilitySet>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithProximityPlacementGroup {
+    interface Update extends Appliable<AvailabilitySet>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
+        UpdateStages.WithProximityPlacementGroup {
     }
 }

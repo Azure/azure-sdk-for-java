@@ -51,16 +51,17 @@ public class PathProperties {
     private List<PathAccessControlEntry> accessControlList;
 
     static {
-        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group, permissions, AccessControlList) -> {
-            properties.encryptionScope = encryptionScope;
-            properties.encryptionContext = encryptionContext;
-            properties.owner = owner;
-            properties.group = group;
-            properties.permissions = permissions;
-            properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
+        AccessorUtility.setPathPropertiesAccessor(
+            (properties, encryptionScope, encryptionContext, owner, group, permissions, AccessControlList) -> {
+                properties.encryptionScope = encryptionScope;
+                properties.encryptionContext = encryptionContext;
+                properties.owner = owner;
+                properties.group = group;
+                properties.permissions = permissions;
+                properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
 
-            return properties;
-        });
+                return properties;
+            });
     }
 
     /**
@@ -148,8 +149,8 @@ public class PathProperties {
         final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
-        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime,
-        final Map<String, String> metadata, final OffsetDateTime expiresOn) {
+        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final OffsetDateTime expiresOn) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;

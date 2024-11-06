@@ -30,7 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AzureGlobalPropertiesAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class));
 
     @Test
     void testAutoConfiguration() {

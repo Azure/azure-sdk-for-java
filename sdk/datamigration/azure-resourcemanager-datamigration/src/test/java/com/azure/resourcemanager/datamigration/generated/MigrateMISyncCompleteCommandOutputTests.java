@@ -13,26 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrateMISyncCompleteCommandOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateMISyncCompleteCommandOutput model =
-            BinaryData
-                .fromString(
-                    "{\"errors\":[{\"message\":\"ankixzbinjeput\",\"actionableMessage\":\"rywn\",\"filePath\":\"oqftiyqzrnkcq\",\"lineNumber\":\"xlwhzlsicoh\",\"hResult\":1969001145,\"stackTrace\":\"wvl\"},{\"message\":\"avwhheunm\",\"actionableMessage\":\"hgyxzkonoc\",\"filePath\":\"oklyaxuconuq\",\"lineNumber\":\"fkbey\",\"hResult\":1315033601,\"stackTrace\":\"mjmwvvjektcx\"},{\"message\":\"nhwlrsffrzpwvl\",\"actionableMessage\":\"q\",\"filePath\":\"iqylihkaetck\",\"lineNumber\":\"fcivfsnkym\",\"hResult\":1059821653,\"stackTrace\":\"hjfbebrjcxe\"},{\"message\":\"uwutttxfvjrbi\",\"actionableMessage\":\"hxepcyvahfnlj\",\"filePath\":\"qxj\",\"lineNumber\":\"ujqgidok\",\"hResult\":792619615,\"stackTrace\":\"yoxgvcltbgsnc\"}]}")
-                .toObject(MigrateMISyncCompleteCommandOutput.class);
-        Assertions.assertEquals("rywn", model.errors().get(0).actionableMessage());
+        MigrateMISyncCompleteCommandOutput model = BinaryData.fromString(
+            "{\"errors\":[{\"message\":\"gdtjixhbkuofqwey\",\"actionableMessage\":\"menevfyexfwh\",\"filePath\":\"cibvyvdcsitynn\",\"lineNumber\":\"mdectehfiqscjey\",\"hResult\":1797610507,\"stackTrace\":\"zrkgqhcjrefovg\"},{\"message\":\"qsl\",\"actionableMessage\":\"yvxyqjp\",\"filePath\":\"attpngjcrcczsq\",\"lineNumber\":\"hvmdajvnysounq\",\"hResult\":97546857,\"stackTrace\":\"oaeupfhyhltrpmo\"},{\"message\":\"mcmatuokthfuiu\",\"actionableMessage\":\"dsfcpkvxodpuoz\",\"filePath\":\"zydagfuaxbezyiuo\",\"lineNumber\":\"twhrdxwzywqsm\",\"hResult\":1243889101,\"stackTrace\":\"exim\"}]}")
+            .toObject(MigrateMISyncCompleteCommandOutput.class);
+        Assertions.assertEquals("menevfyexfwh", model.errors().get(0).actionableMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateMISyncCompleteCommandOutput model =
-            new MigrateMISyncCompleteCommandOutput()
-                .withErrors(
-                    Arrays
-                        .asList(
-                            new ReportableException().withActionableMessage("rywn"),
-                            new ReportableException().withActionableMessage("hgyxzkonoc"),
-                            new ReportableException().withActionableMessage("q"),
-                            new ReportableException().withActionableMessage("hxepcyvahfnlj")));
+        MigrateMISyncCompleteCommandOutput model = new MigrateMISyncCompleteCommandOutput()
+            .withErrors(Arrays.asList(new ReportableException().withActionableMessage("menevfyexfwh"),
+                new ReportableException().withActionableMessage("yvxyqjp"),
+                new ReportableException().withActionableMessage("dsfcpkvxodpuoz")));
         model = BinaryData.fromObject(model).toObject(MigrateMISyncCompleteCommandOutput.class);
-        Assertions.assertEquals("rywn", model.errors().get(0).actionableMessage());
+        Assertions.assertEquals("menevfyexfwh", model.errors().get(0).actionableMessage());
     }
 }

@@ -44,13 +44,17 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SenderUsernameResource response
-            = manager.senderUsernames().define("opcjwvnhd").withExistingDomain("cvkcvqvpkeqdcv", "rhvoods", "tbobz")
-                .withUsername("twuoegrpkhjwni").withDisplayName("sluicpdggkzz").create();
+        SenderUsernameResource response = manager.senderUsernames()
+            .define("opcjwvnhd")
+            .withExistingDomain("cvkcvqvpkeqdcv", "rhvoods", "tbobz")
+            .withUsername("twuoegrpkhjwni")
+            .withDisplayName("sluicpdggkzz")
+            .create();
 
         Assertions.assertEquals("xkp", response.username());
         Assertions.assertEquals("smond", response.displayName());

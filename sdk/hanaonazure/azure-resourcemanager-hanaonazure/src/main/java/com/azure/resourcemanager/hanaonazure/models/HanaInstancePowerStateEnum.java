@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource power state. */
+/**
+ * Resource power state.
+ */
 public final class HanaInstancePowerStateEnum extends ExpandableStringEnum<HanaInstancePowerStateEnum> {
-    /** Static value starting for HanaInstancePowerStateEnum. */
+    /**
+     * Static value starting for HanaInstancePowerStateEnum.
+     */
     public static final HanaInstancePowerStateEnum STARTING = fromString("starting");
 
-    /** Static value started for HanaInstancePowerStateEnum. */
+    /**
+     * Static value started for HanaInstancePowerStateEnum.
+     */
     public static final HanaInstancePowerStateEnum STARTED = fromString("started");
 
-    /** Static value stopping for HanaInstancePowerStateEnum. */
+    /**
+     * Static value stopping for HanaInstancePowerStateEnum.
+     */
     public static final HanaInstancePowerStateEnum STOPPING = fromString("stopping");
 
-    /** Static value stopped for HanaInstancePowerStateEnum. */
+    /**
+     * Static value stopped for HanaInstancePowerStateEnum.
+     */
     public static final HanaInstancePowerStateEnum STOPPED = fromString("stopped");
 
-    /** Static value restarting for HanaInstancePowerStateEnum. */
+    /**
+     * Static value restarting for HanaInstancePowerStateEnum.
+     */
     public static final HanaInstancePowerStateEnum RESTARTING = fromString("restarting");
 
-    /** Static value unknown for HanaInstancePowerStateEnum. */
+    /**
+     * Static value unknown for HanaInstancePowerStateEnum.
+     */
     public static final HanaInstancePowerStateEnum UNKNOWN = fromString("unknown");
 
     /**
      * Creates a new instance of HanaInstancePowerStateEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class HanaInstancePowerStateEnum extends ExpandableStringEnum<HanaI
 
     /**
      * Creates or finds a HanaInstancePowerStateEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HanaInstancePowerStateEnum.
      */
-    @JsonCreator
     public static HanaInstancePowerStateEnum fromString(String name) {
         return fromString(name, HanaInstancePowerStateEnum.class);
     }
 
     /**
      * Gets known HanaInstancePowerStateEnum values.
-     *
+     * 
      * @return known HanaInstancePowerStateEnum values.
      */
     public static Collection<HanaInstancePowerStateEnum> values() {

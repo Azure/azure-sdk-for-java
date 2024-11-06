@@ -13,15 +13,19 @@ import com.beust.jcommander.converters.BaseConverter;
  * Set of options for running event hubs performance tests.
  */
 public class EventHubsOptions extends PerfStressOptions {
-    @Parameter(names = {"--transportType"}, description = "TransportType for the connection",
+    @Parameter(
+        names = { "--transportType" },
+        description = "TransportType for the connection",
         converter = TransportTypeConverter.class)
     private AmqpTransportType transportType;
 
-    @Parameter(names = {"-cs", "--connectionString"}, description = "Connection string for Event Hubs namespace.",
+    @Parameter(
+        names = { "-cs", "--connectionString" },
+        description = "Connection string for Event Hubs namespace.",
         required = true)
     private String connectionString;
 
-    @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.", required = true)
+    @Parameter(names = { "-n", "--name" }, description = "Name of the Event Hub.", required = true)
     private String eventHubName;
 
     /**

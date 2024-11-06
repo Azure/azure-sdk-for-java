@@ -133,10 +133,8 @@ public final class GroupCreateParametersProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model GroupCreateParametersProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model GroupCreateParametersProperties"));
         }
     }
 

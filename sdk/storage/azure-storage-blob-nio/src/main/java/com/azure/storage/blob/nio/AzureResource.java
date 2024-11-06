@@ -142,8 +142,8 @@ final class AzureResource {
          * empty Else it does not exist
          */
         try {
-            Iterator<BlobItem> blobIterator = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
-                listOptions, null).iterator();
+            Iterator<BlobItem> blobIterator
+                = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR, listOptions, null).iterator();
             if (blobIterator.hasNext()) {
                 return DirectoryStatus.NOT_EMPTY;
             } else if (exists) {
@@ -164,8 +164,9 @@ final class AzureResource {
      * @param requestConditions Any necessary request conditions to pass when creating the directory blob.
      */
     void putDirectoryBlob(BlobRequestConditions requestConditions) {
-        this.blobClient.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), this.blobHeaders,
-            this.prepareMetadataForDirectory(), null, requestConditions, null, null);
+        this.blobClient.getBlockBlobClient()
+            .commitBlockListWithResponse(Collections.emptyList(), this.blobHeaders, this.prepareMetadataForDirectory(),
+                null, requestConditions, null, null);
     }
 
     /*
@@ -180,15 +181,19 @@ final class AzureResource {
                 case AzureFileSystemProvider.CONTENT_TYPE:
                     headers.setContentType(attr.value().toString());
                     break;
+
                 case AzureFileSystemProvider.CONTENT_LANGUAGE:
                     headers.setContentLanguage(attr.value().toString());
                     break;
+
                 case AzureFileSystemProvider.CONTENT_DISPOSITION:
                     headers.setContentDisposition(attr.value().toString());
                     break;
+
                 case AzureFileSystemProvider.CONTENT_ENCODING:
                     headers.setContentEncoding(attr.value().toString());
                     break;
+
                 case AzureFileSystemProvider.CONTENT_MD5:
                     if ((attr.value() instanceof byte[])) {
                         headers.setContentMd5((byte[]) attr.value());
@@ -197,9 +202,11 @@ final class AzureResource {
                             new UnsupportedOperationException("Content-MD5 attribute must be a byte[]"));
                     }
                     break;
+
                 case AzureFileSystemProvider.CACHE_CONTROL:
                     headers.setCacheControl(attr.value().toString());
                     break;
+
                 default:
                     propertyFound = false;
                     break;
@@ -230,15 +237,15 @@ final class AzureResource {
 
     private void validateNotRoot() {
         if (this.path.isRoot()) {
-            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(
-                "Root directory not supported. Path: " + this.path));
+            throw LoggingUtility.logError(LOGGER,
+                new IllegalArgumentException("Root directory not supported. Path: " + this.path));
         }
     }
 
     private AzurePath validatePathInstanceType(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("This provider cannot operate on "
-                + "subtypes of Path other than AzurePath"));
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(
+                "This provider cannot operate on " + "subtypes of Path other than AzurePath"));
         }
         return (AzurePath) path;
     }
@@ -266,8 +273,7 @@ final class AzureResource {
     }
 
     BlobOutputStream getBlobOutputStream(ParallelTransferOptions pto, BlobRequestConditions rq) {
-        BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions()
-            .setHeaders(this.blobHeaders)
+        BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions().setHeaders(this.blobHeaders)
             .setMetadata(this.blobMetadata)
             .setParallelTransferOptions(pto)
             .setRequestConditions(rq);

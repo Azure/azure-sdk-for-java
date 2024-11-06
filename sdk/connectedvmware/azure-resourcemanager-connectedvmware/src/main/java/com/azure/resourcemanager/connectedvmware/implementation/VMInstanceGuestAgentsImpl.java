@@ -21,8 +21,7 @@ public final class VMInstanceGuestAgentsImpl implements VMInstanceGuestAgents {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public VMInstanceGuestAgentsImpl(
-        VMInstanceGuestAgentsClient innerClient,
+    public VMInstanceGuestAgentsImpl(VMInstanceGuestAgentsClient innerClient,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -49,10 +48,7 @@ public final class VMInstanceGuestAgentsImpl implements VMInstanceGuestAgents {
     public Response<GuestAgent> getWithResponse(String resourceUri, Context context) {
         Response<GuestAgentInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GuestAgentImpl(inner.getValue(), this.manager()));
         } else {
             return null;

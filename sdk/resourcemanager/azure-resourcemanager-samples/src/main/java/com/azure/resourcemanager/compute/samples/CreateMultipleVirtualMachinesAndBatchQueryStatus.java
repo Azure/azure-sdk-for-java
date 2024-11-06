@@ -43,7 +43,8 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
      * @param resourceGraphManager instance of the azure graph client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, ResourceGraphManager resourceGraphManager) {
+    public static boolean runSample(AzureResourceManager azureResourceManager,
+        ResourceGraphManager resourceGraphManager) {
         final Integer desiredVMCount = 6;
         final Region region = Region.US_EAST;
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg-", 15);
@@ -56,52 +57,54 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
 
             System.out.println("Creating Network: " + networkName);
             Network primaryNetwork = azureResourceManager.networks()
-                    .define(networkName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withAddressSpace("10.0.0.0/16")
-                    .withSubnet(subNetName, "10.0.1.0/24")
-                    .create();
+                .define(networkName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/16")
+                .withSubnet(subNetName, "10.0.1.0/24")
+                .create();
 
             System.out.println("Batch creating Virtual Machines");
             for (int i = 0; i < desiredVMCount; i++) {
                 azureResourceManager.virtualMachines()
-                        .define(Utils.randomResourceName(azureResourceManager, "javascvm", 15))
-                        .withRegion(region)
-                        .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(primaryNetwork)
-                        .withSubnet(subNetName)
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                        .withRootUsername(Utils.randomResourceName(azureResourceManager, "tirekicker", 15))
-                        .withSsh(Utils.sshPublicKey())
-                        .withNewDataDisk(50, 1, CachingTypes.READ_WRITE)
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .beginCreate();
+                    .define(Utils.randomResourceName(azureResourceManager, "javascvm", 15))
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingPrimaryNetwork(primaryNetwork)
+                    .withSubnet(subNetName)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                    .withRootUsername(Utils.randomResourceName(azureResourceManager, "tirekicker", 15))
+                    .withSsh(Utils.sshPublicKey())
+                    .withNewDataDisk(50, 1, CachingTypes.READ_WRITE)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .beginCreate();
             }
 
             System.out.println("Use Azure Resource Graph to query the count number for each [provisioningState].");
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.append("resources ")
-                    .append("| where (resourceGroup =~ ('").append(rgName).append("')) ")
-                    .append("| where (type =~ ('microsoft.compute/virtualmachines')) ")
-                    .append("| where (name contains 'javascvm') ")
-                    .append("| extend provisioningState = case(")
-                    .append("properties['provisioningState'] =~ 'NotSpecified','NotSpecified',")
-                    .append("properties['provisioningState'] =~ 'Accepted','Accepted',")
-                    .append("properties['provisioningState'] =~ 'Running','Running',")
-                    .append("properties['provisioningState'] =~ 'Ready','Ready',")
-                    .append("properties['provisioningState'] =~ 'Creating','Creating',")
-                    .append("properties['provisioningState'] =~ 'Created','Created',")
-                    .append("properties['provisioningState'] =~ 'Deleting','Deleting',")
-                    .append("properties['provisioningState'] =~ 'Deleted','Deleted',")
-                    .append("properties['provisioningState'] =~ 'Canceled','Canceled',")
-                    .append("properties['provisioningState'] =~ 'Failed','Failed',")
-                    .append("properties['provisioningState'] =~ 'Succeeded','Succeeded',")
-                    .append("properties['provisioningState'] =~ 'Updating','Updating',")
-                    .append("properties['provisioningState']) ")
-                    .append("| summarize count=count() by provisioningState");
+                .append("| where (resourceGroup =~ ('")
+                .append(rgName)
+                .append("')) ")
+                .append("| where (type =~ ('microsoft.compute/virtualmachines')) ")
+                .append("| where (name contains 'javascvm') ")
+                .append("| extend provisioningState = case(")
+                .append("properties['provisioningState'] =~ 'NotSpecified','NotSpecified',")
+                .append("properties['provisioningState'] =~ 'Accepted','Accepted',")
+                .append("properties['provisioningState'] =~ 'Running','Running',")
+                .append("properties['provisioningState'] =~ 'Ready','Ready',")
+                .append("properties['provisioningState'] =~ 'Creating','Creating',")
+                .append("properties['provisioningState'] =~ 'Created','Created',")
+                .append("properties['provisioningState'] =~ 'Deleting','Deleting',")
+                .append("properties['provisioningState'] =~ 'Deleted','Deleted',")
+                .append("properties['provisioningState'] =~ 'Canceled','Canceled',")
+                .append("properties['provisioningState'] =~ 'Failed','Failed',")
+                .append("properties['provisioningState'] =~ 'Succeeded','Succeeded',")
+                .append("properties['provisioningState'] =~ 'Updating','Updating',")
+                .append("properties['provisioningState']) ")
+                .append("| summarize count=count() by provisioningState");
 
             while (succeededTotal < desiredVMCount) {
                 Integer creatingTotal = 0;
@@ -111,38 +114,48 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
                 succeededTotal = 0;
 
                 QueryResponse queryResponse = resourceGraphManager.resourceProviders()
-                        .resources(new QueryRequest()
-                                .withSubscriptions(Collections.singletonList(azureResourceManager.subscriptionId()))
-                                .withQuery(queryBuilder.toString())
-                                .withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.OBJECT_ARRAY)));
+                    .resources(new QueryRequest()
+                        .withSubscriptions(Collections.singletonList(azureResourceManager.subscriptionId()))
+                        .withQuery(queryBuilder.toString())
+                        .withOptions(new QueryRequestOptions().withResultFormat(ResultFormat.OBJECT_ARRAY)));
 
-                List<TotalResult> totalResultList = new ObjectMapper().convertValue(queryResponse.data(), new TypeReference<List<TotalResult>>() {});
+                List<TotalResult> totalResultList
+                    = new ObjectMapper().convertValue(queryResponse.data(), new TypeReference<List<TotalResult>>() {
+                    });
                 for (TotalResult totalResult : totalResultList) {
                     switch (totalResult.getProvisioningState()) {
                         case "Creating":
                             creatingTotal = totalResult.getCount();
                             break;
+
                         case "Succeeded":
                             succeededTotal = totalResult.getCount();
                             break;
+
                         case "Updating":
                             updatingTotal = totalResult.getCount();
                             break;
+
                         case "Failed":
                             failedTotal = totalResult.getCount();
                             break;
+
                         default:
                             otherTotal += totalResult.getCount();
                             break;
                     }
                 }
 
-                System.out.println(new StringBuilder()
-                        .append("\n\tThe total number of Creating : ").append(creatingTotal)
-                        .append("\n\tThe total number of Updating : ").append(updatingTotal)
-                        .append("\n\tThe total number of Failed : ").append(failedTotal)
-                        .append("\n\tThe total number of Succeeded : ").append(succeededTotal)
-                        .append("\n\tThe total number of Other Status : ").append(otherTotal));
+                System.out.println(new StringBuilder().append("\n\tThe total number of Creating : ")
+                    .append(creatingTotal)
+                    .append("\n\tThe total number of Updating : ")
+                    .append(updatingTotal)
+                    .append("\n\tThe total number of Failed : ")
+                    .append(failedTotal)
+                    .append("\n\tThe total number of Succeeded : ")
+                    .append(succeededTotal)
+                    .append("\n\tThe total number of Other Status : ")
+                    .append(otherTotal));
 
                 if (failedTotal > 0) {
                     break;
@@ -172,19 +185,17 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
             // Authenticate
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-                    .build();
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+                .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                    .configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credential, profile)
-                    .withDefaultSubscription();
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
-            ResourceGraphManager resourceGraphManager = ResourceGraphManager
-                    .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                    .authenticate(credential, profile);
+            ResourceGraphManager resourceGraphManager = ResourceGraphManager.configure()
+                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                .authenticate(credential, profile);
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
@@ -196,7 +207,8 @@ public final class CreateMultipleVirtualMachinesAndBatchQueryStatus {
         }
     }
 
-    private CreateMultipleVirtualMachinesAndBatchQueryStatus() {}
+    private CreateMultipleVirtualMachinesAndBatchQueryStatus() {
+    }
 
     private static class TotalResult {
         private String provisioningState;

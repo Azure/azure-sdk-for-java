@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Represents a Redis patch schedule collection associated with a Redis cache instance. */
-class RedisPatchSchedulesImpl
-    extends ExternalChildResourcesCachedImpl<
-        RedisPatchScheduleImpl, RedisPatchSchedule, RedisPatchScheduleInner, RedisCacheImpl, RedisCache> {
+class RedisPatchSchedulesImpl extends
+    ExternalChildResourcesCachedImpl<RedisPatchScheduleImpl, RedisPatchSchedule, RedisPatchScheduleInner, RedisCacheImpl, RedisCache> {
     // Currently Redis Cache has one PatchSchedule
     private static final String PATCH_SCHEDULE_NAME = "default";
     private boolean load = false;
@@ -79,15 +78,13 @@ class RedisPatchSchedulesImpl
 
     @Override
     protected Flux<RedisPatchScheduleImpl> listChildResourcesAsync() {
-        return this
-            .getParent()
+        return this.getParent()
             .manager()
             .serviceClient()
             .getPatchSchedules()
             .listByRedisResourceAsync(this.getParent().resourceGroupName(), this.getParent().name())
-            .map(
-                patchScheduleInner ->
-                    new RedisPatchScheduleImpl(patchScheduleInner.name(), this.getParent(), patchScheduleInner))
+            .map(patchScheduleInner -> new RedisPatchScheduleImpl(patchScheduleInner.name(), this.getParent(),
+                patchScheduleInner))
             .onErrorResume(e -> Mono.empty());
     }
 

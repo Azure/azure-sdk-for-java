@@ -31,41 +31,29 @@ public final class GroupUsersCreateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"firstName\":\"p\",\"lastName\":\"wojdzccq\",\"email\":\"srbfbs\",\"registrationDate\":\"2021-04-01T02:12:46Z\",\"groups\":[{\"displayName\":\"zfbvexrvnh\",\"description\":\"fsnqpvjtshl\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"dzmhwts\"},{\"displayName\":\"ppwfbw\",\"description\":\"txizrfw\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"ungaypxsazbxsnxy\"}],\"state\":\"pending\",\"note\":\"fstmprvgrandzk\",\"identities\":[{\"provider\":\"lpczlq\",\"id\":\"o\"},{\"provider\":\"gmrolhsf\",\"id\":\"k\"},{\"provider\":\"vevwxmnbw\",\"id\":\"a\"},{\"provider\":\"gnpyhtuhalpq\",\"id\":\"dnao\"}]},\"id\":\"exznpny\",\"name\":\"kqjarlazbtgtzpca\",\"type\":\"rmzoujfgt\"}";
+        String responseStr
+            = "{\"properties\":{\"firstName\":\"p\",\"lastName\":\"wojdzccq\",\"email\":\"srbfbs\",\"registrationDate\":\"2021-04-01T02:12:46Z\",\"groups\":[{\"displayName\":\"zfbvexrvnh\",\"description\":\"fsnqpvjtshl\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"dzmhwts\"},{\"displayName\":\"ppwfbw\",\"description\":\"txizrfw\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"ungaypxsazbxsnxy\"}],\"state\":\"pending\",\"note\":\"fstmprvgrandzk\",\"identities\":[{\"provider\":\"lpczlq\",\"id\":\"o\"},{\"provider\":\"gmrolhsf\",\"id\":\"k\"},{\"provider\":\"vevwxmnbw\",\"id\":\"a\"},{\"provider\":\"gnpyhtuhalpq\",\"id\":\"dnao\"}]},\"id\":\"exznpny\",\"name\":\"kqjarlazbtgtzpca\",\"type\":\"rmzoujfgt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        UserContract response =
-            manager
-                .groupUsers()
-                .createWithResponse(
-                    "olknshgwakptbhm", "glmnlbnatln", "hzzcdkxortdzzvhb", "jk", com.azure.core.util.Context.NONE)
-                .getValue();
+        UserContract response = manager.groupUsers()
+            .createWithResponse("olknshgwakptbhm", "glmnlbnatln", "hzzcdkxortdzzvhb", "jk",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("p", response.firstName());
         Assertions.assertEquals("wojdzccq", response.lastName());

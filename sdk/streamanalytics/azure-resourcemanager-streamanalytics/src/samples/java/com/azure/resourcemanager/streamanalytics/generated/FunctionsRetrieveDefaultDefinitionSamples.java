@@ -23,9 +23,11 @@ public final class FunctionsRetrieveDefaultDefinitionSamples {
      */
     public static void retrieveTheDefaultDefinitionForAnAzureMLFunction(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.functions().retrieveDefaultDefinitionWithResponse("sjrg7", "sj9093", "function588",
-            new AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters()
-                .withExecuteEndpoint("someAzureMLExecuteEndpointUrl").withUdfType(UdfType.SCALAR),
-            com.azure.core.util.Context.NONE);
+        manager.functions()
+            .retrieveDefaultDefinitionWithResponse("sjrg7", "sj9093", "function588",
+                new AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters()
+                    .withExecuteEndpoint("someAzureMLExecuteEndpointUrl")
+                    .withUdfType(UdfType.SCALAR),
+                com.azure.core.util.Context.NONE);
     }
 }

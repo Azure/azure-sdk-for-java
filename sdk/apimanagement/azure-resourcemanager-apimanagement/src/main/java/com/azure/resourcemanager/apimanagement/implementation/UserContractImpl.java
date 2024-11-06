@@ -77,12 +77,9 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
     public List<UserIdentityContract> identities() {
         List<UserIdentityContractInner> inner = this.innerModel().identities();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new UserIdentityContractImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new UserIdentityContractImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -123,24 +120,20 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
     }
 
     public UserContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, userId, createParameters, createNotify, createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, userId, createParameters, createNotify,
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public UserContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, userId, createParameters, createNotify, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, userId, createParameters, createNotify,
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -160,28 +153,23 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
     }
 
     public UserContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, userId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .updateWithResponse(resourceGroupName, serviceName, userId, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public UserContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .updateWithResponse(resourceGroupName, serviceName, userId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .updateWithResponse(resourceGroupName, serviceName, userId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    UserContractImpl(
-        UserContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    UserContractImpl(UserContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -190,22 +178,18 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
     }
 
     public UserContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .getWithResponse(resourceGroupName, serviceName, userId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .getWithResponse(resourceGroupName, serviceName, userId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public UserContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .getWithResponse(resourceGroupName, serviceName, userId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getUsers()
+            .getWithResponse(resourceGroupName, serviceName, userId, context)
+            .getValue();
         return this;
     }
 
@@ -218,8 +202,7 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
     }
 
     public Response<UserTokenResult> getSharedAccessTokenWithResponse(UserTokenParameters parameters, Context context) {
-        return serviceManager
-            .users()
+        return serviceManager.users()
             .getSharedAccessTokenWithResponse(resourceGroupName, serviceName, userId, parameters, context);
     }
 

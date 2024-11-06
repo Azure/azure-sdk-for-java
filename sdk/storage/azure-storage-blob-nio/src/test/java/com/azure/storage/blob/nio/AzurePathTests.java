@@ -36,8 +36,8 @@ public class AzurePathTests extends BlobNioTestBase {
         config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, "jtcazurepath1,jtcazurepath2");
         try {
-            fs = (AzureFileSystem) new AzureFileSystemProvider().newFileSystem(
-                new URI("azb://?endpoint=" + ENV.getPrimaryAccount().getBlobEndpoint()), config);
+            fs = (AzureFileSystem) new AzureFileSystemProvider()
+                .newFileSystem(new URI("azb://?endpoint=" + ENV.getPrimaryAccount().getBlobEndpoint()), config);
         } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -51,9 +51,16 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"foo,false,null", "foo/bar,false,null", "jtcazurepath1/foo,false,null",
-        "jtcazurepath1:/foo,true,jtcazurepath1:/", "fakeroot:/foo,true,fakeroot:/",
-        "jtcazurepath2:/,true,jtcazurepath2:/", "jtcazurepath2:,true,jtcazurepath2:/", "'',false,null"},
+    @CsvSource(
+        value = {
+            "foo,false,null",
+            "foo/bar,false,null",
+            "jtcazurepath1/foo,false,null",
+            "jtcazurepath1:/foo,true,jtcazurepath1:/",
+            "fakeroot:/foo,true,fakeroot:/",
+            "jtcazurepath2:/,true,jtcazurepath2:/",
+            "jtcazurepath2:,true,jtcazurepath2:/",
+            "'',false,null" },
         nullValues = "null")
     public void isAbsoluteGetRoot(String path, boolean absolute, String root) {
         assertEquals(absolute, fs.getPath(path).isAbsolute());
@@ -61,10 +68,22 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"root:/,null,null,0", "root:/foo,foo,root:,1", "root:/foo/bar,bar,root:/foo,2",
-        "foo,foo,null,1", "foo/,foo,null,1", "/foo,foo,null,1", "foo/bar,bar,foo,2", "foo/bar/baz,baz,foo/bar,3",
-        "foo/../bar/baz,baz,foo/../bar/,4", "foo/..,..,foo/,2", "foo/./bar,bar,foo/./,3", "foo/bar/.,.,foo/bar/,3",
-        "'','',null,1"}, nullValues = "null")
+    @CsvSource(
+        value = {
+            "root:/,null,null,0",
+            "root:/foo,foo,root:,1",
+            "root:/foo/bar,bar,root:/foo,2",
+            "foo,foo,null,1",
+            "foo/,foo,null,1",
+            "/foo,foo,null,1",
+            "foo/bar,bar,foo,2",
+            "foo/bar/baz,baz,foo/bar,3",
+            "foo/../bar/baz,baz,foo/../bar/,4",
+            "foo/..,..,foo/,2",
+            "foo/./bar,bar,foo/./,3",
+            "foo/bar/.,.,foo/bar/,3",
+            "'','',null,1" },
+        nullValues = "null")
     public void getFileNameGetParentGetNameCount(String path, String fileName, String parent, int nameCount) {
         assertEquals((fileName == null ? null : fs.getPath(fileName)), fs.getPath(path).getFileName());
         assertEquals((parent == null ? null : fs.getPath(parent)), fs.getPath(path).getParent());
@@ -72,14 +91,14 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"0,foo", "1,bar", "2,baz"})
+    @CsvSource(value = { "0,foo", "1,bar", "2,baz" })
     public void getName(int index, String name) {
         assertEquals(fs.getPath("root:/foo/bar/baz").getName(index), fs.getPath(name));
         assertEquals(fs.getPath("foo/bar/baz").getName(index), fs.getPath(name));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 2})
+    @ValueSource(ints = { -1, 2 })
     public void getNameFail(int index) {
         assertThrows(IllegalArgumentException.class, () -> fs.getPath("foo/bar").getName(index));
 
@@ -88,8 +107,15 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"0,1,foo", "0,3,foo/bar/fizz", "0,5,foo/bar/fizz/buzz/dir", "1,2,bar", "1,4,bar/fizz/buzz",
-        "1,5,bar/fizz/buzz/dir", "4,5,dir"})
+    @CsvSource(
+        value = {
+            "0,1,foo",
+            "0,3,foo/bar/fizz",
+            "0,5,foo/bar/fizz/buzz/dir",
+            "1,2,bar",
+            "1,4,bar/fizz/buzz",
+            "1,5,bar/fizz/buzz/dir",
+            "4,5,dir" })
     public void subPath(int begin, int end, String resultPath) {
         assertEquals(fs.getPath(resultPath), fs.getPath("root:/foo/bar/fizz/buzz/dir").subpath(begin, end));
         assertEquals(fs.getPath(resultPath), fs.getPath("foo/bar/fizz/buzz/dir").subpath(begin, end));
@@ -104,16 +130,28 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"-1,1", "5,5", "3,3", "3,1", "3,6"})
+    @CsvSource(value = { "-1,1", "5,5", "3,3", "3,1", "3,6" })
     public void subPathFail(int begin, int end) {
         assertThrows(IllegalArgumentException.class, () -> fs.getPath("foo/bar/fizz/buzz/dir").subpath(begin, end));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"root:/foo,foo,false", "foo,root:/foo,false", "foo,foo,true", "root:/foo,root:/foo,true",
-        "root2:/foo,root:/foo,false", "root:/foo,root2:/foo,false", "foo/bar,foo,true", "foo/bar,foo/bar,true",
-        "foo/bar/fizz,foo,true", "foo/bar/fizz,f,false", "foo/bar/fizz,foo/bar/f,false", "foo,foo/bar,false",
-        "'',foo,false", "foo,'',false"})
+    @CsvSource(
+        value = {
+            "root:/foo,foo,false",
+            "foo,root:/foo,false",
+            "foo,foo,true",
+            "root:/foo,root:/foo,true",
+            "root2:/foo,root:/foo,false",
+            "root:/foo,root2:/foo,false",
+            "foo/bar,foo,true",
+            "foo/bar,foo/bar,true",
+            "foo/bar/fizz,foo,true",
+            "foo/bar/fizz,f,false",
+            "foo/bar/fizz,foo/bar/f,false",
+            "foo,foo/bar,false",
+            "'',foo,false",
+            "foo,'',false" })
     public void startsWith(String path, String otherPath, boolean startsWith) {
         assertEquals(startsWith, fs.getPath(path).startsWith(fs.getPath(otherPath)));
         assertEquals(startsWith, fs.getPath(path).startsWith(otherPath));
@@ -123,10 +161,22 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"root:/foo,foo,true", "foo,root:/foo,false", "foo,foo,true", "root:/foo,root:/foo,true",
-        "root2:/foo,root:/foo,false", "root:/foo,root2:/foo,false", "foo/bar,bar,true", "foo/bar,foo/bar,true",
-        "foo/bar/fizz,fizz,true", "foo/bar/fizz,z,false", "foo/bar/fizz,r/fizz,false", "foo,foo/bar,false",
-        "'',foo,false", "foo,'',false"})
+    @CsvSource(
+        value = {
+            "root:/foo,foo,true",
+            "foo,root:/foo,false",
+            "foo,foo,true",
+            "root:/foo,root:/foo,true",
+            "root2:/foo,root:/foo,false",
+            "root:/foo,root2:/foo,false",
+            "foo/bar,bar,true",
+            "foo/bar,foo/bar,true",
+            "foo/bar/fizz,fizz,true",
+            "foo/bar/fizz,z,false",
+            "foo/bar/fizz,r/fizz,false",
+            "foo,foo/bar,false",
+            "'',foo,false",
+            "foo,'',false" })
     public void endsWith(String path, String otherPath, boolean endsWith) {
         assertEquals(endsWith, fs.getPath(path).endsWith(fs.getPath(otherPath)));
         assertEquals(endsWith, fs.getPath(path).endsWith(otherPath));
@@ -136,38 +186,76 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"foo/bar,foo/bar", ".,''", "..,..", "foo/..,''", "foo/bar/..,foo", "foo/../bar,bar",
-        "foo/./bar,foo/bar", "foo/bar/.,foo/bar", "foo/bar/fizz/../..,foo", "foo/bar/../fizz/.,foo/fizz",
-        "foo/../..,..", "foo/../../bar,../bar", "root:/foo/bar,root:/foo/bar", "root:/.,root:/", "root:/..,root:/",
-        "root:/../../..,root:/", "root:/foo/..,root:", "'',''"})
+    @CsvSource(
+        value = {
+            "foo/bar,foo/bar",
+            ".,''",
+            "..,..",
+            "foo/..,''",
+            "foo/bar/..,foo",
+            "foo/../bar,bar",
+            "foo/./bar,foo/bar",
+            "foo/bar/.,foo/bar",
+            "foo/bar/fizz/../..,foo",
+            "foo/bar/../fizz/.,foo/fizz",
+            "foo/../..,..",
+            "foo/../../bar,../bar",
+            "root:/foo/bar,root:/foo/bar",
+            "root:/.,root:/",
+            "root:/..,root:/",
+            "root:/../../..,root:/",
+            "root:/foo/..,root:",
+            "'',''" })
     public void normalize(String path, String resultPath) {
         assertEquals(fs.getPath(resultPath), fs.getPath(path).normalize());
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"foo/bar,root:/fizz/buzz,root:/fizz/buzz", "root:/foo/bar,root:/fizz/buzz,root:/fizz/buzz",
-        "foo/bar,'',foo/bar", "foo/bar,fizz/buzz,foo/bar/fizz/buzz",
-        "foo/bar/..,../../fizz/buzz,foo/bar/../../../fizz/buzz",
-        "root:/../foo/./,fizz/../buzz,root:/../foo/./fizz/../buzz", "'',foo/bar,foo/bar"})
+    @CsvSource(
+        value = {
+            "foo/bar,root:/fizz/buzz,root:/fizz/buzz",
+            "root:/foo/bar,root:/fizz/buzz,root:/fizz/buzz",
+            "foo/bar,'',foo/bar",
+            "foo/bar,fizz/buzz,foo/bar/fizz/buzz",
+            "foo/bar/..,../../fizz/buzz,foo/bar/../../../fizz/buzz",
+            "root:/../foo/./,fizz/../buzz,root:/../foo/./fizz/../buzz",
+            "'',foo/bar,foo/bar" })
     public void resolve(String path, String other, String resultPath) {
         assertEquals(fs.getPath(resultPath), fs.getPath(path).resolve(fs.getPath(other)));
         assertEquals(fs.getPath(resultPath), fs.getPath(path).resolve(other));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"foo,fizz,fizz", "foo/bar,root:/fizz,root:/fizz", "foo/bar,'',foo", "foo,'',''", "'',foo,foo",
-        "foo/bar,fizz,foo/fizz", "foo/bar/fizz,buzz/dir,foo/bar/buzz/dir", "root:/foo/bar,fizz,root:/foo/fizz",
-        "root:/foo,fizz,root:/fizz", "root:/,fizz,fizz"})
+    @CsvSource(
+        value = {
+            "foo,fizz,fizz",
+            "foo/bar,root:/fizz,root:/fizz",
+            "foo/bar,'',foo",
+            "foo,'',''",
+            "'',foo,foo",
+            "foo/bar,fizz,foo/fizz",
+            "foo/bar/fizz,buzz/dir,foo/bar/buzz/dir",
+            "root:/foo/bar,fizz,root:/foo/fizz",
+            "root:/foo,fizz,root:/fizz",
+            "root:/,fizz,fizz" })
     public void resolveSibling(String path, String other, String resultPath) {
         assertEquals(fs.getPath(resultPath), fs.getPath(path).resolveSibling(fs.getPath(other)));
         assertEquals(fs.getPath(resultPath), fs.getPath(path).resolveSibling(other));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"foo/bar,foo/bar/fizz/buzz/,fizz/buzz,true", "foo/bar,foo/bar,'',true",
-        "root:/foo/bar,root:/foo/bar/fizz,fizz,false", "foo/dir,foo/fizz/buzz,../fizz/buzz,true",
-        "foo/bar/a/b/c,foo/bar/fizz,../../../fizz,true", "a/b/c,foo/bar/fizz,../../../foo/bar/fizz,true",
-        "foo/../bar,bar/./fizz,fizz,false", "root:,root:/foo/bar,foo/bar,false", "'',foo,foo,true", "foo,'',..,true"})
+    @CsvSource(
+        value = {
+            "foo/bar,foo/bar/fizz/buzz/,fizz/buzz,true",
+            "foo/bar,foo/bar,'',true",
+            "root:/foo/bar,root:/foo/bar/fizz,fizz,false",
+            "foo/dir,foo/fizz/buzz,../fizz/buzz,true",
+            "foo/bar/a/b/c,foo/bar/fizz,../../../fizz,true",
+            "a/b/c,foo/bar/fizz,../../../foo/bar/fizz,true",
+            "foo/../bar,bar/./fizz,fizz,false",
+            "root:,root:/foo/bar,foo/bar,false",
+            "'',foo,foo,true",
+            "foo,'',..,true" })
     public void relativize(String path, String other, String result, boolean equivalence) {
         Path p = fs.getPath(path);
         Path otherP = fs.getPath(other);
@@ -179,20 +267,20 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"root:/foo/bar,foo/bar/fizz/buzz", "foo/bar,root:/foo/bar/fizz"})
+    @CsvSource(value = { "root:/foo/bar,foo/bar/fizz/buzz", "foo/bar,root:/foo/bar/fizz" })
     public void relativizeFail(String path, String other) {
         assertThrows(IllegalArgumentException.class, () -> fs.getPath(path).relativize(fs.getPath(other)));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"root:/foo/bar,root:/foo/bar", "foo/bar,jtcazurepath1:/foo/bar", "'',jtcazurepath1:"})
+    @CsvSource(value = { "root:/foo/bar,root:/foo/bar", "foo/bar,jtcazurepath1:/foo/bar", "'',jtcazurepath1:" })
     public void toUriToAbsolute(String path, String expected) {
         assertEquals(expected, fs.getPath(path).toAbsolutePath().toString());
         assertEquals(fs.provider().getScheme() + ":/" + expected, fs.getPath(path).toUri().toString());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"root:/foo/bar", "foo/bar/fizz/buzz", "foo", "root:/"})
+    @ValueSource(strings = { "root:/foo/bar", "foo/bar/fizz/buzz", "foo", "root:/" })
     public void iterator(String path) {
         Path p = fs.getPath(path);
         Iterator<Path> it = p.iterator();
@@ -210,7 +298,7 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"a/b/c,a/b,false", "a/b/c,foo/bar,false", "foo/bar,foo/bar,true", "'',foo,false"})
+    @CsvSource(value = { "a/b/c,a/b,false", "a/b/c,foo/bar,false", "foo/bar,foo/bar,true", "'',foo,false" })
     public void compareToEquals(String path1, String path2, boolean equals) {
         assertEquals(path1.compareTo(path2), fs.getPath(path1).compareTo(fs.getPath(path2)));
         assertEquals(equals, fs.getPath(path1).equals(fs.getPath(path2)));
@@ -255,12 +343,12 @@ public class AzurePathTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {
-        "://myaccount.blob.core.windows.net/containername/blobname,containername:/blobname",
-        "://myaccount.blob.core.windows.net/containername/dirname/blobname,containername:/dirname/blobname",
-        "://myaccount.blob.core.windows.net/containername,containername:",
-        "://myaccount.blob.core.windows.net/,''",
-    })
+    @CsvSource(
+        value = {
+            "://myaccount.blob.core.windows.net/containername/blobname,containername:/blobname",
+            "://myaccount.blob.core.windows.net/containername/dirname/blobname,containername:/dirname/blobname",
+            "://myaccount.blob.core.windows.net/containername,containername:",
+            "://myaccount.blob.core.windows.net/,''", })
     public void fromBlobUrl(String url, String path) throws URISyntaxException {
         // Adjust the parameterized urls to point at real resources
         String scheme = ENV.getPrimaryAccount().getBlobEndpoint().startsWith("https") ? "https" : "http";

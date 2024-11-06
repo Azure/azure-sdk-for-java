@@ -16,14 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to express route circuits management API in Azure. */
 @Fluent
-public interface ExpressRouteCircuits
-    extends SupportsCreating<ExpressRouteCircuit.DefinitionStages.Blank>,
-        SupportsListing<ExpressRouteCircuit>,
-        SupportsListingByResourceGroup<ExpressRouteCircuit>,
-        SupportsGettingByResourceGroup<ExpressRouteCircuit>,
-        SupportsGettingById<ExpressRouteCircuit>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<ExpressRouteCircuit>,
-        HasManager<NetworkManager> {
+public interface ExpressRouteCircuits extends SupportsCreating<ExpressRouteCircuit.DefinitionStages.Blank>,
+    SupportsListing<ExpressRouteCircuit>, SupportsListingByResourceGroup<ExpressRouteCircuit>,
+    SupportsGettingByResourceGroup<ExpressRouteCircuit>, SupportsGettingById<ExpressRouteCircuit>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, SupportsBatchCreation<ExpressRouteCircuit>, HasManager<NetworkManager> {
 }

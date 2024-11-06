@@ -46,9 +46,10 @@ public final class PrivateEndpointConnectionProxiesListByAccountMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnectionProxy> response = manager.privateEndpointConnectionProxies()
             .listByAccount("fdlwg", "ytsbwtovv", com.azure.core.util.Context.NONE);
@@ -60,25 +61,59 @@ public final class PrivateEndpointConnectionProxiesListByAccountMockTests {
         Assertions.assertEquals("lpijnkrxfrd", response.iterator().next().remotePrivateEndpoint().vnetTrafficTag());
         Assertions.assertEquals("atiz",
             response.iterator().next().remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("nasx", response.iterator().next().remotePrivateEndpoint()
-            .manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("hftwesgog", response.iterator().next().remotePrivateEndpoint()
-            .manualPrivateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("nasx",
+            response.iterator()
+                .next()
+                .remotePrivateEndpoint()
+                .manualPrivateLinkServiceConnections()
+                .get(0)
+                .groupIds()
+                .get(0));
+        Assertions.assertEquals("hftwesgog",
+            response.iterator()
+                .next()
+                .remotePrivateEndpoint()
+                .manualPrivateLinkServiceConnections()
+                .get(0)
+                .requestMessage());
         Assertions.assertEquals("nnxk",
             response.iterator().next().remotePrivateEndpoint().privateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("nyhmossxkkgthr", response.iterator().next().remotePrivateEndpoint()
-            .privateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("nyhmossxkkgthr",
+            response.iterator()
+                .next()
+                .remotePrivateEndpoint()
+                .privateLinkServiceConnections()
+                .get(0)
+                .groupIds()
+                .get(0));
         Assertions.assertEquals("frpdsofbshrns",
             response.iterator().next().remotePrivateEndpoint().privateLinkServiceConnections().get(0).requestMessage());
         Assertions.assertEquals("jviylwdshfs",
             response.iterator().next().remotePrivateEndpoint().privateLinkServiceProxies().get(0).id());
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
-            response.iterator().next().remotePrivateEndpoint().privateLinkServiceProxies().get(0)
-                .remotePrivateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ye", response.iterator().next().remotePrivateEndpoint().privateLinkServiceProxies()
-            .get(0).remotePrivateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ymsgaojfmwnc", response.iterator().next().remotePrivateEndpoint()
-            .privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().actionsRequired());
+            response.iterator()
+                .next()
+                .remotePrivateEndpoint()
+                .privateLinkServiceProxies()
+                .get(0)
+                .remotePrivateLinkServiceConnectionState()
+                .status());
+        Assertions.assertEquals("ye",
+            response.iterator()
+                .next()
+                .remotePrivateEndpoint()
+                .privateLinkServiceProxies()
+                .get(0)
+                .remotePrivateLinkServiceConnectionState()
+                .description());
+        Assertions.assertEquals("ymsgaojfmwnc",
+            response.iterator()
+                .next()
+                .remotePrivateEndpoint()
+                .privateLinkServiceProxies()
+                .get(0)
+                .remotePrivateLinkServiceConnectionState()
+                .actionsRequired());
         Assertions.assertEquals("mznbaeqphch", response.iterator().next().status());
     }
 }

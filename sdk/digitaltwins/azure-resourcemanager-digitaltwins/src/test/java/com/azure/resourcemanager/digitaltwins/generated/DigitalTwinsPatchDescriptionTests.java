@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DigitalTwinsPatchDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DigitalTwinsPatchDescription model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"ndv\":\"xhocdgeablgphuti\",\"okftyxolniwpwcuk\":\"aozwyiftyhxhu\",\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\"},\"identity\":{\"type\":\"None\",\"principalId\":\"wyqkgfgibm\",\"tenantId\":\"gakeqsr\",\"userAssignedIdentities\":{\"ugpbkw\":{\"clientId\":\"qqedqytbciqfou\",\"principalId\":\"mmnkzsmodmgl\"},\"gbbjfddgmbmbe\":{\"clientId\":\"utduqktapspwgcu\",\"principalId\":\"tumkdosvqwhbm\"},\"gzjaoyfhrtxilne\":{\"clientId\":\"pbhtqqrolfpfpsa\",\"principalId\":\"bquxigjy\"},\"nwbxgjvtbvpyssz\":{\"clientId\":\"ujysvle\",\"principalId\":\"vfqawrlyxwjkcpr\"}}},\"properties\":{\"publicNetworkAccess\":\"Enabled\"}}")
-                .toObject(DigitalTwinsPatchDescription.class);
+        DigitalTwinsPatchDescription model = BinaryData.fromString(
+            "{\"tags\":{\"ndv\":\"xhocdgeablgphuti\",\"okftyxolniwpwcuk\":\"aozwyiftyhxhu\",\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\"},\"identity\":{\"type\":\"None\",\"principalId\":\"wyqkgfgibm\",\"tenantId\":\"gakeqsr\",\"userAssignedIdentities\":{\"ugpbkw\":{\"clientId\":\"qqedqytbciqfou\",\"principalId\":\"mmnkzsmodmgl\"},\"gbbjfddgmbmbe\":{\"clientId\":\"utduqktapspwgcu\",\"principalId\":\"tumkdosvqwhbm\"},\"gzjaoyfhrtxilne\":{\"clientId\":\"pbhtqqrolfpfpsa\",\"principalId\":\"bquxigjy\"},\"nwbxgjvtbvpyssz\":{\"clientId\":\"ujysvle\",\"principalId\":\"vfqawrlyxwjkcpr\"}}},\"properties\":{\"publicNetworkAccess\":\"Enabled\"}}")
+            .toObject(DigitalTwinsPatchDescription.class);
         Assertions.assertEquals("xhocdgeablgphuti", model.tags().get("ndv"));
         Assertions.assertEquals(DigitalTwinsIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
@@ -30,31 +28,14 @@ public final class DigitalTwinsPatchDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsPatchDescription model =
-            new DigitalTwinsPatchDescription()
-                .withTags(
-                    mapOf(
-                        "ndv",
-                        "xhocdgeablgphuti",
-                        "okftyxolniwpwcuk",
-                        "aozwyiftyhxhu",
-                        "ryplwckbasyypn",
-                        "fkgiawxk",
-                        "phejkotynqgoulz",
-                        "dhsgcba"))
-                .withIdentity(
-                    new DigitalTwinsIdentity()
-                        .withType(DigitalTwinsIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "ugpbkw",
-                                new UserAssignedIdentity(),
-                                "gbbjfddgmbmbe",
-                                new UserAssignedIdentity(),
-                                "gzjaoyfhrtxilne",
-                                new UserAssignedIdentity(),
-                                "nwbxgjvtbvpyssz",
-                                new UserAssignedIdentity())))
+        DigitalTwinsPatchDescription model
+            = new DigitalTwinsPatchDescription()
+                .withTags(mapOf("ndv", "xhocdgeablgphuti", "okftyxolniwpwcuk", "aozwyiftyhxhu", "ryplwckbasyypn",
+                    "fkgiawxk", "phejkotynqgoulz", "dhsgcba"))
+                .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("ugpbkw", new UserAssignedIdentity(), "gbbjfddgmbmbe",
+                        new UserAssignedIdentity(), "gzjaoyfhrtxilne", new UserAssignedIdentity(), "nwbxgjvtbvpyssz",
+                        new UserAssignedIdentity())))
                 .withProperties(new DigitalTwinsPatchProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED));
         model = BinaryData.fromObject(model).toObject(DigitalTwinsPatchDescription.class);
         Assertions.assertEquals("xhocdgeablgphuti", model.tags().get("ndv"));

@@ -47,9 +47,10 @@ public final class StorageTasksListByResourceGroupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StorageActionsManager manager = StorageActionsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StorageActionsManager manager = StorageActionsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<StorageTask> response
             = manager.storageTasks().listByResourceGroup("exznelixhnr", com.azure.core.util.Context.NONE);

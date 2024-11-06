@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.TriggerList;
 public final class TriggerListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"Trigger\",\"id\":\"pnppfuf\",\"name\":\"rwdmhdlxyjrxsa\",\"type\":\"afcnih\"},{\"kind\":\"Trigger\",\"id\":\"wqapnedgfbcvk\",\"name\":\"vq\",\"type\":\"pkeqdcvdrhvoo\"}],\"nextLink\":\"otbobzdopcj\"}")
-                .toObject(TriggerList.class);
+        TriggerList model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"Trigger\",\"id\":\"trwyhqmib\",\"name\":\"yhwitsmypyynpcdp\",\"type\":\"mnzgmwznmabi\"},{\"kind\":\"Trigger\",\"id\":\"nsorgjhxbldt\",\"name\":\"wwrlkdmtncv\",\"type\":\"kotl\"},{\"kind\":\"Trigger\",\"id\":\"xdy\",\"name\":\"gsyocogj\",\"type\":\"tdtbnnhadooc\"},{\"kind\":\"Trigger\",\"id\":\"kvci\",\"name\":\"hnvpamqgxq\",\"type\":\"u\"}],\"nextLink\":\"ik\"}")
+            .toObject(TriggerList.class);
     }
 
     @org.junit.jupiter.api.Test

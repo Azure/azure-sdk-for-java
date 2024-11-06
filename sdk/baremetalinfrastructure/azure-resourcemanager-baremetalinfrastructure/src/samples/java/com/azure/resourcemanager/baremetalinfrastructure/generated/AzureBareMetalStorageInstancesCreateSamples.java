@@ -10,37 +10,37 @@ import com.azure.resourcemanager.baremetalinfrastructure.models.StoragePropertie
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AzureBareMetalStorageInstances Create. */
+/**
+ * Samples for AzureBareMetalStorageInstances Create.
+ */
 public final class AzureBareMetalStorageInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-preview/examples/AzureBareMetalStorageInstances_Create.json
+     * x-ms-original-file:
+     * specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/preview/2023-08-04-
+     * preview/examples/AzureBareMetalStorageInstances_Create.json
      */
     /**
      * Sample code: Put a new AzureBareMetalStorageInstance.
-     *
+     * 
      * @param manager Entry point to BareMetalInfrastructureManager.
      */
     public static void putANewAzureBareMetalStorageInstance(
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager
-            .azureBareMetalStorageInstances()
+        manager.azureBareMetalStorageInstances()
             .define("myAzureBareMetalStorageInstance")
             .withRegion("westus2")
             .withExistingResourceGroup("myResourceGroup")
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withAzureBareMetalStorageInstanceUniqueIdentifier("23415635-4d7e-41dc-9598-8194f22c24e9")
             .withStorageProperties(
-                new StorageProperties()
-                    .withProvisioningState(ProvisioningState.SUCCEEDED)
+                new StorageProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
                     .withOfferingType("EPIC")
                     .withStorageType("FC")
                     .withGeneration("Gen4")
                     .withHardwareType("NetApp")
                     .withWorkloadType("ODB")
-                    .withStorageBillingProperties(
-                        new StorageBillingProperties()
-                            .withBillingMode("PAYG")
-                            .withAzureBareMetalStorageInstanceSize("")))
+                    .withStorageBillingProperties(new StorageBillingProperties().withBillingMode("PAYG")
+                        .withAzureBareMetalStorageInstanceSize("")))
             .create();
     }
 

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"wzo\",\"name\":\"j\",\"status\":\"felluwfzitonpe\",\"percentComplete\":68.49165,\"startTime\":\"2021-02-04T10:43:39Z\",\"endTime\":\"2021-10-08T03:48:51Z\",\"operations\":[{\"id\":\"pdvhpfxxypin\",\"name\":\"mayhuybbkpodepoo\",\"status\":\"inuvamiheogn\",\"percentComplete\":41.474594,\"startTime\":\"2021-11-26T09:10:23Z\",\"endTime\":\"2021-07-04T09:54:35Z\",\"operations\":[]},{\"id\":\"si\",\"name\":\"evcciqihnhun\",\"status\":\"bwjzr\",\"percentComplete\":74.57618,\"startTime\":\"2021-11-20T13:28:32Z\",\"endTime\":\"2021-05-21T15:18:02Z\",\"operations\":[]}]}")
-                .toObject(OperationStatusResultInner.class);
+        OperationStatusResultInner model = BinaryData.fromString(
+            "{\"id\":\"wzo\",\"name\":\"j\",\"status\":\"felluwfzitonpe\",\"percentComplete\":68.49165,\"startTime\":\"2021-02-04T10:43:39Z\",\"endTime\":\"2021-10-08T03:48:51Z\",\"operations\":[{\"id\":\"pdvhpfxxypin\",\"name\":\"mayhuybbkpodepoo\",\"status\":\"inuvamiheogn\",\"percentComplete\":41.474594,\"startTime\":\"2021-11-26T09:10:23Z\",\"endTime\":\"2021-07-04T09:54:35Z\",\"operations\":[]},{\"id\":\"si\",\"name\":\"evcciqihnhun\",\"status\":\"bwjzr\",\"percentComplete\":74.57618,\"startTime\":\"2021-11-20T13:28:32Z\",\"endTime\":\"2021-05-21T15:18:02Z\",\"operations\":[]}]}")
+            .toObject(OperationStatusResultInner.class);
         Assertions.assertEquals("wzo", model.id());
         Assertions.assertEquals("j", model.name());
         Assertions.assertEquals("felluwfzitonpe", model.status());
@@ -34,33 +32,27 @@ public final class OperationStatusResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusResultInner model =
-            new OperationStatusResultInner()
-                .withId("wzo")
-                .withName("j")
-                .withStatus("felluwfzitonpe")
-                .withPercentComplete(68.49165F)
-                .withStartTime(OffsetDateTime.parse("2021-02-04T10:43:39Z"))
-                .withEndTime(OffsetDateTime.parse("2021-10-08T03:48:51Z"))
-                .withOperations(
-                    Arrays
-                        .asList(
-                            new OperationStatusResultInner()
-                                .withId("pdvhpfxxypin")
-                                .withName("mayhuybbkpodepoo")
-                                .withStatus("inuvamiheogn")
-                                .withPercentComplete(41.474594F)
-                                .withStartTime(OffsetDateTime.parse("2021-11-26T09:10:23Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-07-04T09:54:35Z"))
-                                .withOperations(Arrays.asList()),
-                            new OperationStatusResultInner()
-                                .withId("si")
-                                .withName("evcciqihnhun")
-                                .withStatus("bwjzr")
-                                .withPercentComplete(74.57618F)
-                                .withStartTime(OffsetDateTime.parse("2021-11-20T13:28:32Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-05-21T15:18:02Z"))
-                                .withOperations(Arrays.asList())));
+        OperationStatusResultInner model = new OperationStatusResultInner().withId("wzo")
+            .withName("j")
+            .withStatus("felluwfzitonpe")
+            .withPercentComplete(68.49165F)
+            .withStartTime(OffsetDateTime.parse("2021-02-04T10:43:39Z"))
+            .withEndTime(OffsetDateTime.parse("2021-10-08T03:48:51Z"))
+            .withOperations(Arrays.asList(
+                new OperationStatusResultInner().withId("pdvhpfxxypin")
+                    .withName("mayhuybbkpodepoo")
+                    .withStatus("inuvamiheogn")
+                    .withPercentComplete(41.474594F)
+                    .withStartTime(OffsetDateTime.parse("2021-11-26T09:10:23Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-07-04T09:54:35Z"))
+                    .withOperations(Arrays.asList()),
+                new OperationStatusResultInner().withId("si")
+                    .withName("evcciqihnhun")
+                    .withStatus("bwjzr")
+                    .withPercentComplete(74.57618F)
+                    .withStartTime(OffsetDateTime.parse("2021-11-20T13:28:32Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-05-21T15:18:02Z"))
+                    .withOperations(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OperationStatusResultInner.class);
         Assertions.assertEquals("wzo", model.id());
         Assertions.assertEquals("j", model.name());

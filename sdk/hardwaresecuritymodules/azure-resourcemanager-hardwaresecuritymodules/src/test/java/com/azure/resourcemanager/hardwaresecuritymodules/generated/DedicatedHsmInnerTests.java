@@ -39,15 +39,16 @@ public final class DedicatedHsmInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmInner model = new DedicatedHsmInner().withLocation("rhhuaopppcqeqx")
-            .withTags(mapOf("kdmoi", "dahzxctobg")).withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS60))
+            .withTags(mapOf("kdmoi", "dahzxctobg"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS60))
             .withZones(Arrays.asList("wptfdy", "pfqbuaceopzf"))
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("dultskz"))
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("hkfpbs"),
                         new NetworkInterface().withPrivateIpAddress("uusdttouwa"),
                         new NetworkInterface().withPrivateIpAddress("vbxwyjsflhh"))))
-                .withManagementNetworkProfile(
-                    new NetworkProfile().withSubnet(new ApiEntityReference().withId("n")).withNetworkInterfaces(
+                .withManagementNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("n"))
+                    .withNetworkInterfaces(
                         Arrays.asList(new NetworkInterface().withPrivateIpAddress("jpkiidzyexznelix"),
                             new NetworkInterface().withPrivateIpAddress("lhbnxkna"),
                             new NetworkInterface().withPrivateIpAddress("uhpigvp"),

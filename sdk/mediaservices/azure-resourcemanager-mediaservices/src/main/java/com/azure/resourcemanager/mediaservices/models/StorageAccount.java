@@ -6,38 +6,42 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The storage account details. */
+/**
+ * The storage account details.
+ */
 @Fluent
-public final class StorageAccount {
+public final class StorageAccount implements JsonSerializable<StorageAccount> {
     /*
      * The ID of the storage account resource. Media Services relies on tables and queues as well as blobs, so the
      * primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or
      * Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The type of the storage account.
      */
-    @JsonProperty(value = "type", required = true)
     private StorageAccountType type;
 
     /*
      * The storage account identity.
      */
-    @JsonProperty(value = "identity")
     private ResourceIdentity identity;
 
     /*
      * The current status of the storage account mapping.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of StorageAccount class. */
+    /**
+     * Creates an instance of StorageAccount class.
+     */
     public StorageAccount() {
     }
 
@@ -45,7 +49,7 @@ public final class StorageAccount {
      * Get the id property: The ID of the storage account resource. Media Services relies on tables and queues as well
      * as blobs, so the primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or
      * Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class StorageAccount {
      * Set the id property: The ID of the storage account resource. Media Services relies on tables and queues as well
      * as blobs, so the primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or
      * Microsoft.Storage). Blob only storage accounts can be added as secondary storage accounts.
-     *
+     * 
      * @param id the id value to set.
      * @return the StorageAccount object itself.
      */
@@ -67,7 +71,7 @@ public final class StorageAccount {
 
     /**
      * Get the type property: The type of the storage account.
-     *
+     * 
      * @return the type value.
      */
     public StorageAccountType type() {
@@ -76,7 +80,7 @@ public final class StorageAccount {
 
     /**
      * Set the type property: The type of the storage account.
-     *
+     * 
      * @param type the type value to set.
      * @return the StorageAccount object itself.
      */
@@ -87,7 +91,7 @@ public final class StorageAccount {
 
     /**
      * Get the identity property: The storage account identity.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -96,7 +100,7 @@ public final class StorageAccount {
 
     /**
      * Set the identity property: The storage account identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the StorageAccount object itself.
      */
@@ -107,7 +111,7 @@ public final class StorageAccount {
 
     /**
      * Get the status property: The current status of the storage account mapping.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -116,14 +120,13 @@ public final class StorageAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model StorageAccount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model StorageAccount"));
         }
         if (identity() != null) {
             identity().validate();
@@ -131,4 +134,49 @@ public final class StorageAccount {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccount.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccount.
+     */
+    public static StorageAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccount deserializedStorageAccount = new StorageAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedStorageAccount.type = StorageAccountType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedStorageAccount.id = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedStorageAccount.identity = ResourceIdentity.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedStorageAccount.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccount;
+        });
+    }
 }

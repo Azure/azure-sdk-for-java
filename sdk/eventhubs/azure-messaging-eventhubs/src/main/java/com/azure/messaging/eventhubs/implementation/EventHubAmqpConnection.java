@@ -32,7 +32,8 @@ public interface EventHubAmqpConnection extends AmqpConnection {
      * @param clientIdentifier The identifier of client.
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions, String clientIdentifier);
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
+        String clientIdentifier);
 
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the

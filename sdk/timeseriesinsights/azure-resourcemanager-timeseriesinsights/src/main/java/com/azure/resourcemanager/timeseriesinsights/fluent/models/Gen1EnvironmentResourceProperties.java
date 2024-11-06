@@ -5,60 +5,64 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentStatus;
 import com.azure.resourcemanager.timeseriesinsights.models.ProvisioningState;
 import com.azure.resourcemanager.timeseriesinsights.models.StorageLimitExceededBehavior;
 import com.azure.resourcemanager.timeseriesinsights.models.TimeSeriesIdProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** Properties of the Gen1 environment. */
+/**
+ * Properties of the Gen1 environment.
+ */
 @Fluent
 public final class Gen1EnvironmentResourceProperties extends Gen1EnvironmentCreationProperties {
     /*
      * An id used to access the environment data, e.g. to query the environment's events or upload reference data for
      * the environment.
      */
-    @JsonProperty(value = "dataAccessId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID dataAccessId;
 
     /*
      * The fully qualified domain name used to access the environment data, e.g. to query the environment's events or
      * upload reference data for the environment.
      */
-    @JsonProperty(value = "dataAccessFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String dataAccessFqdn;
 
     /*
      * An object that represents the status of the environment, and its internal state in the Time Series Insights
      * service.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EnvironmentStatus status;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The time the resource was created.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of Gen1EnvironmentResourceProperties class. */
+    /**
+     * Creates an instance of Gen1EnvironmentResourceProperties class.
+     */
     public Gen1EnvironmentResourceProperties() {
     }
 
     /**
      * Get the dataAccessId property: An id used to access the environment data, e.g. to query the environment's events
      * or upload reference data for the environment.
-     *
+     * 
      * @return the dataAccessId value.
      */
     public UUID dataAccessId() {
@@ -68,7 +72,7 @@ public final class Gen1EnvironmentResourceProperties extends Gen1EnvironmentCrea
     /**
      * Get the dataAccessFqdn property: The fully qualified domain name used to access the environment data, e.g. to
      * query the environment's events or upload reference data for the environment.
-     *
+     * 
      * @return the dataAccessFqdn value.
      */
     public String dataAccessFqdn() {
@@ -78,7 +82,7 @@ public final class Gen1EnvironmentResourceProperties extends Gen1EnvironmentCrea
     /**
      * Get the status property: An object that represents the status of the environment, and its internal state in the
      * Time Series Insights service.
-     *
+     * 
      * @return the status value.
      */
     public EnvironmentStatus status() {
@@ -87,7 +91,7 @@ public final class Gen1EnvironmentResourceProperties extends Gen1EnvironmentCrea
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -96,46 +100,124 @@ public final class Gen1EnvironmentResourceProperties extends Gen1EnvironmentCrea
 
     /**
      * Get the creationTime property: The time the resource was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
         return this.creationTime;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen1EnvironmentResourceProperties withDataRetentionTime(Duration dataRetentionTime) {
         super.withDataRetentionTime(dataRetentionTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Gen1EnvironmentResourceProperties withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentResourceProperties
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         super.withStorageLimitExceededBehavior(storageLimitExceededBehavior);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Gen1EnvironmentResourceProperties withPartitionKeyProperties(
-        List<TimeSeriesIdProperty> partitionKeyProperties) {
+    public Gen1EnvironmentResourceProperties
+        withPartitionKeyProperties(List<TimeSeriesIdProperty> partitionKeyProperties) {
         super.withPartitionKeyProperties(partitionKeyProperties);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (status() != null) {
             status().validate();
         }
+        if (dataRetentionTime() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataRetentionTime in model Gen1EnvironmentResourceProperties"));
+        }
+        if (partitionKeyProperties() != null) {
+            partitionKeyProperties().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Gen1EnvironmentResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataRetentionTime", CoreUtils.durationToStringWithDays(dataRetentionTime()));
+        jsonWriter.writeStringField("storageLimitExceededBehavior",
+            storageLimitExceededBehavior() == null ? null : storageLimitExceededBehavior().toString());
+        jsonWriter.writeArrayField("partitionKeyProperties", partitionKeyProperties(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Gen1EnvironmentResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Gen1EnvironmentResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Gen1EnvironmentResourceProperties.
+     */
+    public static Gen1EnvironmentResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Gen1EnvironmentResourceProperties deserializedGen1EnvironmentResourceProperties
+                = new Gen1EnvironmentResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataRetentionTime".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties.withDataRetentionTime(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("storageLimitExceededBehavior".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties
+                        .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.fromString(reader.getString()));
+                } else if ("partitionKeyProperties".equals(fieldName)) {
+                    List<TimeSeriesIdProperty> partitionKeyProperties
+                        = reader.readArray(reader1 -> TimeSeriesIdProperty.fromJson(reader1));
+                    deserializedGen1EnvironmentResourceProperties.withPartitionKeyProperties(partitionKeyProperties);
+                } else if ("dataAccessId".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties.dataAccessId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dataAccessFqdn".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties.dataAccessFqdn = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties.status = EnvironmentStatus.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedGen1EnvironmentResourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGen1EnvironmentResourceProperties;
+        });
     }
 }

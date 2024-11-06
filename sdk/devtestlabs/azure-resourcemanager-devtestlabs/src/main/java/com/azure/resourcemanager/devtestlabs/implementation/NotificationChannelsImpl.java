@@ -22,8 +22,7 @@ public final class NotificationChannelsImpl implements NotificationChannels {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public NotificationChannelsImpl(
-        NotificationChannelsClient innerClient,
+    public NotificationChannelsImpl(NotificationChannelsClient innerClient,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,28 +33,19 @@ public final class NotificationChannelsImpl implements NotificationChannels {
         return Utils.mapPage(inner, inner1 -> new NotificationChannelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NotificationChannel> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        PagedIterable<NotificationChannelInner> inner =
-            this.serviceClient().list(resourceGroupName, labName, expand, filter, top, orderby, context);
+    public PagedIterable<NotificationChannel> list(String resourceGroupName, String labName, String expand,
+        String filter, Integer top, String orderby, Context context) {
+        PagedIterable<NotificationChannelInner> inner
+            = this.serviceClient().list(resourceGroupName, labName, expand, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new NotificationChannelImpl(inner1, this.manager()));
     }
 
-    public Response<NotificationChannel> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context) {
-        Response<NotificationChannelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, labName, name, expand, context);
+    public Response<NotificationChannel> getWithResponse(String resourceGroupName, String labName, String name,
+        String expand, Context context) {
+        Response<NotificationChannelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, labName, name, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NotificationChannelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -79,8 +69,8 @@ public final class NotificationChannelsImpl implements NotificationChannels {
         this.serviceClient().delete(resourceGroupName, labName, name);
     }
 
-    public Response<Void> notifyWithResponse(
-        String resourceGroupName, String labName, String name, NotifyParameters notifyParameters, Context context) {
+    public Response<Void> notifyWithResponse(String resourceGroupName, String labName, String name,
+        NotifyParameters notifyParameters, Context context) {
         return this.serviceClient().notifyWithResponse(resourceGroupName, labName, name, notifyParameters, context);
     }
 
@@ -91,28 +81,18 @@ public final class NotificationChannelsImpl implements NotificationChannels {
     public NotificationChannel getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "notificationchannels");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.", id)));
         }
         String localExpand = null;
         return this.getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE).getValue();
@@ -121,28 +101,18 @@ public final class NotificationChannelsImpl implements NotificationChannels {
     public Response<NotificationChannel> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "notificationchannels");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.", id)));
         }
         return this.getWithResponse(resourceGroupName, labName, name, expand, context);
     }
@@ -150,28 +120,18 @@ public final class NotificationChannelsImpl implements NotificationChannels {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "notificationchannels");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
@@ -179,28 +139,18 @@ public final class NotificationChannelsImpl implements NotificationChannels {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "notificationchannels");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'notificationchannels'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, labName, name, context);
     }

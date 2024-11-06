@@ -41,12 +41,6 @@ public interface ProductWikisOperations {
      * @return the details of the Wiki for a Product specified by its identifier as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<WikiContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<WikiContract> list(String resourceGroupName, String serviceName, String productId, String filter,
+        Integer top, Integer skip, Context context);
 }

@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class JsonSerializationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonSerializationProperties model = BinaryData.fromString("{\"encoding\":\"UTF8\",\"format\":\"Array\"}")
-            .toObject(JsonSerializationProperties.class);
+        JsonSerializationProperties model
+            = BinaryData.fromString("{\"encoding\":\"UTF8\",\"format\":\"LineSeparated\"}")
+                .toObject(JsonSerializationProperties.class);
         Assertions.assertEquals(Encoding.UTF8, model.encoding());
-        Assertions.assertEquals(JsonOutputSerializationFormat.ARRAY, model.format());
+        Assertions.assertEquals(JsonOutputSerializationFormat.LINE_SEPARATED, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JsonSerializationProperties model = new JsonSerializationProperties().withEncoding(Encoding.UTF8)
-            .withFormat(JsonOutputSerializationFormat.ARRAY);
+            .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED);
         model = BinaryData.fromObject(model).toObject(JsonSerializationProperties.class);
         Assertions.assertEquals(Encoding.UTF8, model.encoding());
-        Assertions.assertEquals(JsonOutputSerializationFormat.ARRAY, model.format());
+        Assertions.assertEquals(JsonOutputSerializationFormat.LINE_SEPARATED, model.format());
     }
 }

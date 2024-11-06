@@ -113,12 +113,8 @@ public interface NamedValueContract {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithValue,
-                DefinitionStages.WithKeyVault,
-                DefinitionStages.WithSecret,
-                DefinitionStages.WithIfMatch {
+            extends DefinitionStages.WithTags, DefinitionStages.WithDisplayName, DefinitionStages.WithValue,
+            DefinitionStages.WithKeyVault, DefinitionStages.WithSecret, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -220,13 +216,8 @@ public interface NamedValueContract {
     NamedValueContract.Update update();
 
     /** The template for NamedValueContract update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithValue,
-            UpdateStages.WithKeyVault,
-            UpdateStages.WithSecret,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithDisplayName, UpdateStages.WithValue,
+        UpdateStages.WithKeyVault, UpdateStages.WithSecret, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

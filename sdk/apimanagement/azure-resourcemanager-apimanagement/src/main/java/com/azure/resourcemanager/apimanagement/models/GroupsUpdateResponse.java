@@ -20,11 +20,7 @@ public final class GroupsUpdateResponse extends ResponseBase<GroupsUpdateHeaders
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GroupsUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        GroupContractInner value,
+    public GroupsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, GroupContractInner value,
         GroupsUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

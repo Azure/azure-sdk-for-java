@@ -51,14 +51,6 @@ public final class ElasticsearchChatExtensionParameters
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
-     */
-    @Generated
-    private String roleInformation;
-
-    /*
      * The endpoint of Elasticsearch®.
      */
     @Generated
@@ -201,32 +193,6 @@ public final class ElasticsearchChatExtensionParameters
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @return the roleInformation value.
-     */
-    @Generated
-    public String getRoleInformation() {
-        return this.roleInformation;
-    }
-
-    /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @param roleInformation the roleInformation value to set.
-     * @return the ElasticsearchChatExtensionParameters object itself.
-     */
-    @Generated
-    public ElasticsearchChatExtensionParameters setRoleInformation(String roleInformation) {
-        this.roleInformation = roleInformation;
-        return this;
-    }
-
-    /**
      * Get the endpoint property: The endpoint of Elasticsearch®.
      *
      * @return the endpoint value.
@@ -322,15 +288,14 @@ public final class ElasticsearchChatExtensionParameters
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpoint", this.endpoint);
         jsonWriter.writeStringField("index_name", this.indexName);
-        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);
-        jsonWriter.writeStringField("role_information", this.roleInformation);
         jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
         jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
         jsonWriter.writeArrayField("include_contexts", this.includeContexts,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeStringField("query_type", this.queryType == null ? null : this.queryType.toString());
         jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
@@ -351,14 +316,13 @@ public final class ElasticsearchChatExtensionParameters
         return jsonReader.readObject(reader -> {
             String endpoint = null;
             String indexName = null;
-            OnYourDataAuthenticationOptions authentication = null;
             Integer topNDocuments = null;
             Boolean inScope = null;
             Integer strictness = null;
-            String roleInformation = null;
             Integer maxSearchQueries = null;
             Boolean allowPartialResult = null;
             List<OnYourDataContextProperty> includeContexts = null;
+            OnYourDataAuthenticationOptions authentication = null;
             ElasticsearchIndexFieldMappingOptions fieldsMapping = null;
             ElasticsearchQueryType queryType = null;
             OnYourDataVectorizationSource embeddingDependency = null;
@@ -369,16 +333,12 @@ public final class ElasticsearchChatExtensionParameters
                     endpoint = reader.getString();
                 } else if ("index_name".equals(fieldName)) {
                     indexName = reader.getString();
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("top_n_documents".equals(fieldName)) {
                     topNDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("in_scope".equals(fieldName)) {
                     inScope = reader.getNullable(JsonReader::getBoolean);
                 } else if ("strictness".equals(fieldName)) {
                     strictness = reader.getNullable(JsonReader::getInt);
-                } else if ("role_information".equals(fieldName)) {
-                    roleInformation = reader.getString();
                 } else if ("max_search_queries".equals(fieldName)) {
                     maxSearchQueries = reader.getNullable(JsonReader::getInt);
                 } else if ("allow_partial_result".equals(fieldName)) {
@@ -386,6 +346,8 @@ public final class ElasticsearchChatExtensionParameters
                 } else if ("include_contexts".equals(fieldName)) {
                     includeContexts
                         = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("fields_mapping".equals(fieldName)) {
                     fieldsMapping = ElasticsearchIndexFieldMappingOptions.fromJson(reader);
                 } else if ("query_type".equals(fieldName)) {
@@ -398,14 +360,13 @@ public final class ElasticsearchChatExtensionParameters
             }
             ElasticsearchChatExtensionParameters deserializedElasticsearchChatExtensionParameters
                 = new ElasticsearchChatExtensionParameters(endpoint, indexName);
-            deserializedElasticsearchChatExtensionParameters.authentication = authentication;
             deserializedElasticsearchChatExtensionParameters.topNDocuments = topNDocuments;
             deserializedElasticsearchChatExtensionParameters.inScope = inScope;
             deserializedElasticsearchChatExtensionParameters.strictness = strictness;
-            deserializedElasticsearchChatExtensionParameters.roleInformation = roleInformation;
             deserializedElasticsearchChatExtensionParameters.maxSearchQueries = maxSearchQueries;
             deserializedElasticsearchChatExtensionParameters.allowPartialResult = allowPartialResult;
             deserializedElasticsearchChatExtensionParameters.includeContexts = includeContexts;
+            deserializedElasticsearchChatExtensionParameters.authentication = authentication;
             deserializedElasticsearchChatExtensionParameters.fieldsMapping = fieldsMapping;
             deserializedElasticsearchChatExtensionParameters.queryType = queryType;
             deserializedElasticsearchChatExtensionParameters.embeddingDependency = embeddingDependency;

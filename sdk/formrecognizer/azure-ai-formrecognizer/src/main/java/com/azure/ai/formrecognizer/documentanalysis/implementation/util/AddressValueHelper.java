@@ -28,12 +28,19 @@ public final class AddressValueHelper {
      */
     public interface AddressValueAccessor {
         void setPoBox(AddressValue addressValue, String poBox);
+
         void setHouseNumber(AddressValue addressValue, String houseNumber);
+
         void setRoad(AddressValue addressValue, String road);
+
         void setCity(AddressValue addressValue, String city);
+
         void setState(AddressValue addressValue, String state);
+
         void setPostalCode(AddressValue addressValue, String postalCode);
+
         void setCountryRegion(AddressValue addressValue, String countryRegion);
+
         void setStreetAddress(AddressValue addressValue, String streetAddress);
 
         void setUnit(AddressValue addressValue, String unit);
@@ -48,6 +55,7 @@ public final class AddressValueHelper {
 
         void setLevel(AddressValue addressValue, String level);
     }
+
     static void setPoBox(AddressValue addressValue, String poBox) {
         accessor.setPoBox(addressValue, poBox);
     }

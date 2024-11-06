@@ -15,9 +15,8 @@ import java.util.List;
  * An immutable client-side representation of an Azure Spring Cloud Configuration Service.
  */
 @Fluent
-public interface SpringConfigurationService
-    extends ExternalChildResource<SpringConfigurationService, SpringService>,
-        HasInnerModel<ConfigurationServiceResourceInner> {
+public interface SpringConfigurationService extends ExternalChildResource<SpringConfigurationService, SpringService>,
+    HasInnerModel<ConfigurationServiceResourceInner> {
     /** @return cpu for the Configuration Service */
     Double cpu();
 

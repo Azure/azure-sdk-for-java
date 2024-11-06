@@ -12,16 +12,15 @@ import java.util.Arrays;
 public final class OperationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"sonpclhocohs\",\"display\":{\"provider\":\"vleggzfbuhfmvfax\",\"resource\":\"feiithlvmez\",\"operation\":\"shxmzsbbzoggigrx\",\"description\":\"ur\"},\"origin\":\"user\",\"properties\":{\"udwtiukbl\":\"datanspydptkoenkoukn\",\"o\":\"datangkpocipazy\"}}]}")
-                .toObject(OperationListResultInner.class);
+        OperationListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"lb\",\"display\":{\"provider\":\"chrkcciwwzjuqk\",\"resource\":\"sa\",\"operation\":\"wkuofoskghsauu\",\"description\":\"jmvxie\"},\"origin\":\"user\",\"properties\":{\"xc\":\"datadyjrrfbyaosv\",\"hocohslkev\":\"dataonpc\",\"hfmvfaxkffe\":\"dataeggzfb\",\"sbbzo\":\"dataithlvmezyvshxm\"}},{\"name\":\"igrxwburvjxxjn\",\"display\":{\"provider\":\"dptkoenkouk\",\"resource\":\"udwtiukbl\",\"operation\":\"gkpocipazyxoe\",\"description\":\"kgjn\"},\"origin\":\"system\",\"properties\":{\"drqjsdpy\":\"dataygevqzntypmrbpiz\",\"eoejzic\":\"datanfyhx\"}}]}")
+            .toObject(OperationListResultInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResultInner model = new OperationListResultInner().withValue(Arrays.asList(new Operation()));
+        OperationListResultInner model
+            = new OperationListResultInner().withValue(Arrays.asList(new Operation(), new Operation()));
         model = BinaryData.fromObject(model).toObject(OperationListResultInner.class);
     }
 }

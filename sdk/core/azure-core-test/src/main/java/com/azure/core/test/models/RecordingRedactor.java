@@ -24,9 +24,9 @@ public class RecordingRedactor {
         = Base64.getEncoder().encodeToString(REDACTED.getBytes(StandardCharsets.UTF_8));
 
     private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
-    private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN
+    private static final Pattern DELEGATIONKEY_CLIENT_ID_PATTERN
         = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
-    private static final Pattern DELEGATIONKEY_TENANTID_PATTERN
+    private static final Pattern DELEGATIONKEY_TENANT_ID_PATTERN
         = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
     private static final Pattern PASSWORD_KEY_PATTERN = Pattern.compile("(?:Password=)(.*?)(?:;)");
     private static final Pattern USER_ID_KEY_PATTERN = Pattern.compile("(?:User ID=)(.*?)(?:;)");
@@ -127,9 +127,9 @@ public class RecordingRedactor {
     private static String redactUserDelegationKey(String content) {
         if (content.contains("<UserDelegationKey>")) {
             content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
-            content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content),
+            content = redactionReplacement(content, DELEGATIONKEY_CLIENT_ID_PATTERN.matcher(content),
                 CoreUtils.randomUuid().toString());
-            content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content),
+            content = redactionReplacement(content, DELEGATIONKEY_TENANT_ID_PATTERN.matcher(content),
                 CoreUtils.randomUuid().toString());
         }
 

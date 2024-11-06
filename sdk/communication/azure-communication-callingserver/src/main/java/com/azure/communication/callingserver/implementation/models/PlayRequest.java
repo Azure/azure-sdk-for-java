@@ -5,35 +5,35 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** The PlayRequest model. */
 @Fluent
-public final class PlayRequest {
+public final class PlayRequest implements JsonSerializable<PlayRequest> {
     /*
      * The source of the audio to be played.
      */
-    @JsonProperty(value = "playSourceInfo", required = true)
     private PlaySourceInternal playSourceInfo;
 
     /*
-     * The list of call participants play provided audio to.
-     * Plays to everyone in the call when not provided.
+     * The list of call participants play provided audio to. Plays to everyone in the call when not provided.
      */
-    @JsonProperty(value = "playTo")
     private List<CommunicationIdentifierModel> playTo;
 
     /*
      * Defines options for playing the audio.
      */
-    @JsonProperty(value = "playOptions")
     private PlayOptionsInternal playOptions;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
@@ -116,5 +116,48 @@ public final class PlayRequest {
     public PlayRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeJsonField("playSourceInfo", playSourceInfo)
+            .writeArrayField("playTo", playTo, JsonWriter::writeJson)
+            .writeJsonField("playOptions", playOptions)
+            .writeStringField("operationContext", operationContext)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link PlayRequest} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PlayRequest}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PlayRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlayRequest request = new PlayRequest();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("playSourceInfo".equals(fieldName)) {
+                    request.playSourceInfo = PlaySourceInternal.fromJson(reader);
+                } else if ("playTo".equals(fieldName)) {
+                    request.playTo = reader.readArray(CommunicationIdentifierModel::fromJson);
+                } else if ("playOptions".equals(fieldName)) {
+                    request.playOptions = PlayOptionsInternal.fromJson(reader);
+                } else if ("operationContext".equals(fieldName)) {
+                    request.operationContext = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return request;
+        });
     }
 }

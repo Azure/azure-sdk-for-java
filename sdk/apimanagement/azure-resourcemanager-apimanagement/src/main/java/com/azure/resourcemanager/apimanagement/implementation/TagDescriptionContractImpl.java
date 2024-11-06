@@ -83,35 +83,25 @@ public final class TagDescriptionContractImpl
     }
 
     public TagDescriptionContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiTagDescriptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    tagDescriptionId,
-                    createParameters,
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiTagDescriptions()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, createParameters,
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagDescriptionContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiTagDescriptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, tagDescriptionId, createParameters, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiTagDescriptions()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, createParameters,
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    TagDescriptionContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    TagDescriptionContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new TagDescriptionContractInner();
         this.serviceManager = serviceManager;
         this.tagDescriptionId = name;
@@ -126,35 +116,24 @@ public final class TagDescriptionContractImpl
     }
 
     public TagDescriptionContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiTagDescriptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    tagDescriptionId,
-                    updateParameters,
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiTagDescriptions()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, updateParameters,
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagDescriptionContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiTagDescriptions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, tagDescriptionId, updateParameters, updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiTagDescriptions()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, updateParameters,
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    TagDescriptionContractImpl(
-        TagDescriptionContractInner innerObject,
+    TagDescriptionContractImpl(TagDescriptionContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -165,22 +144,18 @@ public final class TagDescriptionContractImpl
     }
 
     public TagDescriptionContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiTagDescriptions()
-                .getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiTagDescriptions()
+            .getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagDescriptionContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiTagDescriptions()
-                .getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiTagDescriptions()
+            .getWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context)
+            .getValue();
         return this;
     }
 

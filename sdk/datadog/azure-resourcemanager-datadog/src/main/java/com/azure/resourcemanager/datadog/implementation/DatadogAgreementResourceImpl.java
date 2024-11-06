@@ -14,8 +14,7 @@ public final class DatadogAgreementResourceImpl implements DatadogAgreementResou
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogAgreementResourceImpl(
-        DatadogAgreementResourceInner innerObject,
+    DatadogAgreementResourceImpl(DatadogAgreementResourceInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

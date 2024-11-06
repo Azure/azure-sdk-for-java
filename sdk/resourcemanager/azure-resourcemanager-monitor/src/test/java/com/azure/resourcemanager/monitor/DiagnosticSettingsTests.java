@@ -61,43 +61,44 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         VirtualMachine vm = ensureVM(region, resourceGroup, vmName, "10.0.0.0/28");
 
         // clean all diagnostic settings.
-        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(vm.id()).stream().collect(Collectors.toList());
+        List<DiagnosticSetting> dsList
+            = monitorManager.diagnosticSettings().listByResource(vm.id()).stream().collect(Collectors.toList());
         for (DiagnosticSetting dsd : dsList) {
             monitorManager.diagnosticSettings().deleteById(dsd.id());
         }
 
         StorageAccount sa = storageManager.storageAccounts()
-                .define(saName)
-                // Storage Account should be in the same region as resource
-                .withRegion(vm.region())
-                .withNewResourceGroup(rgName)
-                .withTag("tag1", "value1")
-                .create();
+            .define(saName)
+            // Storage Account should be in the same region as resource
+            .withRegion(vm.region())
+            .withNewResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
 
         EventHubNamespace namespace = eventHubManager.namespaces()
-                .define(ehName)
-                // EventHub should be in the same region as resource
-                .withRegion(vm.region())
-                .withNewResourceGroup(rgName)
-                .withNewManageRule("mngRule1")
-                .withNewSendRule("sndRule1")
-                .create();
+            .define(ehName)
+            // EventHub should be in the same region as resource
+            .withRegion(vm.region())
+            .withNewResourceGroup(rgName)
+            .withNewManageRule("mngRule1")
+            .withNewSendRule("sndRule1")
+            .create();
 
         EventHubNamespaceAuthorizationRule evenHubNsRule = namespace.listAuthorizationRules().iterator().next();
 
-        List<DiagnosticSettingsCategory> categories = monitorManager.diagnosticSettings()
-                .listCategoriesByResource(vm.id());
+        List<DiagnosticSettingsCategory> categories
+            = monitorManager.diagnosticSettings().listCategoriesByResource(vm.id());
 
         Assertions.assertNotNull(categories);
         Assertions.assertFalse(categories.isEmpty());
 
         DiagnosticSetting setting = monitorManager.diagnosticSettings()
-                .define(dsName)
-                .withResource(vm.id())
-                .withStorageAccount(sa.id())
-                .withEventHub(evenHubNsRule.id())
-                .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
-                .create();
+            .define(dsName)
+            .withResource(vm.id())
+            .withStorageAccount(sa.id())
+            .withEventHub(evenHubNsRule.id())
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            .create();
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
         assertResourceIdEquals(sa.id(), setting.storageAccountId());
@@ -107,10 +108,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertTrue(setting.logs().isEmpty());
         Assertions.assertFalse(setting.metrics().isEmpty());
 
-        setting.update()
-                .withoutStorageAccount()
-                .withoutLogs()
-                .apply();
+        setting.update().withoutStorageAccount().withoutLogs().apply();
 
         assertResourceIdEquals(vm.id(), setting.resourceId());
         assertResourceIdEquals(evenHubNsRule.id(), setting.eventHubAuthorizationRuleId());
@@ -174,30 +172,24 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             checkDiagnosticSettingValues(setting, ds2);
 
             // removing all metrics and logs from a diagnostic setting, is equivalent to deleting the setting itself
-            setting.update()
-                .withoutLog("Security")
-                .apply();
+            setting.update().withoutLog("Security").apply();
 
             // "get" will throw 404 since the setting is deleted
             Assertions.assertThrows(ManagementException.class, setting::refresh);
 
-            Assertions.assertFalse(
-                monitorManager.diagnosticSettings()
-                    .listByResource(resourceId)
-                    .stream()
-                    .anyMatch(s -> s.name().equals(dsName)));
+            Assertions.assertFalse(monitorManager.diagnosticSettings()
+                .listByResource(resourceId)
+                .stream()
+                .anyMatch(s -> s.name().equals(dsName)));
 
-            setting.update()
-                .withLog("Security", 7)
-                .apply();
+            setting.update().withLog("Security", 7).apply();
 
             setting.refresh();
 
-            Assertions.assertTrue(
-                monitorManager.diagnosticSettings()
-                    .listByResource(resourceId)
-                    .stream()
-                    .anyMatch(s -> s.name().equals(dsName)));
+            Assertions.assertTrue(monitorManager.diagnosticSettings()
+                .listByResource(resourceId)
+                .stream()
+                .anyMatch(s -> s.name().equals(dsName)));
         } finally {
             monitorManager.diagnosticSettings().deleteById(setting.id());
         }
@@ -209,32 +201,33 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Region region = Region.US_WEST;
 
         StorageAccount sa = storageManager.storageAccounts()
-                .define(saName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withTag("tag1", "value1")
-                .create();
+            .define(saName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
 
         Vault vault = ensureVault(region, rgName);
 
         // clean all diagnostic settings.
-        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(vault.id()).stream().collect(Collectors.toList());
+        List<DiagnosticSetting> dsList
+            = monitorManager.diagnosticSettings().listByResource(vault.id()).stream().collect(Collectors.toList());
         for (DiagnosticSetting dsd : dsList) {
             monitorManager.diagnosticSettings().deleteById(dsd.id());
         }
 
-        List<DiagnosticSettingsCategory> categories = monitorManager.diagnosticSettings()
-                .listCategoriesByResource(vault.id());
+        List<DiagnosticSettingsCategory> categories
+            = monitorManager.diagnosticSettings().listCategoriesByResource(vault.id());
 
         Assertions.assertNotNull(categories);
         Assertions.assertFalse(categories.isEmpty());
 
         DiagnosticSetting setting = monitorManager.diagnosticSettings()
-                .define(dsName)
-                .withResource(vault.id())
-                .withStorageAccount(sa.id())
-                .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
-                .create();
+            .define(dsName)
+            .withResource(vault.id())
+            .withStorageAccount(sa.id())
+            .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
+            .create();
 
         Assertions.assertTrue(vault.id().equalsIgnoreCase(setting.resourceId()));
         Assertions.assertNotNull(setting.storageAccountId());
@@ -244,9 +237,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertFalse(setting.logs().isEmpty());
         Assertions.assertFalse(setting.metrics().isEmpty());
 
-        setting.update()
-                .withoutLogs()
-                .apply();
+        setting.update().withoutLogs().apply();
 
         Assertions.assertTrue(vault.id().equalsIgnoreCase(setting.resourceId()));
         Assertions.assertNotNull(setting.storageAccountId());
@@ -269,26 +260,27 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         checkDiagnosticSettingValues(setting, ds3);
 
         DiagnosticSettingsResourceInner inner = setting.innerModel();
-        inner.withLogs(new ArrayList<>())
-            .logs().add(new LogSettings().withEnabled(true).withCategoryGroup("audit"));
-        monitorManager.serviceClient().getDiagnosticSettingsOperations().createOrUpdate(vault.id(), setting.name(), inner);
+        inner.withLogs(new ArrayList<>()).logs().add(new LogSettings().withEnabled(true).withCategoryGroup("audit"));
+        monitorManager.serviceClient()
+            .getDiagnosticSettingsOperations()
+            .createOrUpdate(vault.id(), setting.name(), inner);
 
         setting.refresh();
 
-        Assertions.assertTrue(setting.logs().stream().anyMatch(logSettings -> "audit".equals(logSettings.categoryGroup())));
+        Assertions
+            .assertTrue(setting.logs().stream().anyMatch(logSettings -> "audit".equals(logSettings.categoryGroup())));
 
         // verify category logs and category group logs can both be present during update
         // issue: https://github.com/Azure/azure-sdk-for-java/issues/35425
         // mixture of category group and category logs aren't supported
-        Assertions.assertThrows(ManagementException.class,
-            () -> setting.update()
-                .withLog("AuditEvent", 7)
-                .apply());
+        Assertions.assertThrows(ManagementException.class, () -> setting.update().withLog("AuditEvent", 7).apply());
 
         setting.refresh();
 
-        Assertions.assertTrue(setting.logs().stream().anyMatch(logSettings -> "audit".equals(logSettings.categoryGroup())));
-        Assertions.assertTrue(setting.logs().stream().noneMatch(logSettings -> "AuditEvent".equals(logSettings.category())));
+        Assertions
+            .assertTrue(setting.logs().stream().anyMatch(logSettings -> "audit".equals(logSettings.categoryGroup())));
+        Assertions
+            .assertTrue(setting.logs().stream().noneMatch(logSettings -> "AuditEvent".equals(logSettings.category())));
         Assertions.assertTrue(setting.logs().stream().allMatch(logSettings -> logSettings.category() == null));
         Assertions.assertFalse(setting.metrics().isEmpty());
 
@@ -306,7 +298,8 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         String wpsName = generateRandomResourceName("jMonitorWps", 18);
 
         // resource (webpubsub) to monitor
-        GenericResource wpsResource = monitorManager.resourceManager().genericResources()
+        GenericResource wpsResource = monitorManager.resourceManager()
+            .genericResources()
             .define(wpsName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -336,17 +329,20 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         // add category group "audit" to log settings
         DiagnosticSettingsResourceInner inner = setting.innerModel();
         inner.logs().clear();   // Remove category "MessagingLogs". Diagnostic setting does not support mix of log category and log category group.
-        inner.logs().add(new LogSettings().withCategoryGroup("audit").withEnabled(true).withRetentionPolicy(new RetentionPolicy().withEnabled(false)));
-        monitorManager.serviceClient().getDiagnosticSettingsOperations().createOrUpdate(wpsResource.id(), dsName, inner);
+        inner.logs()
+            .add(new LogSettings().withCategoryGroup("audit")
+                .withEnabled(true)
+                .withRetentionPolicy(new RetentionPolicy().withEnabled(false)));
+        monitorManager.serviceClient()
+            .getDiagnosticSettingsOperations()
+            .createOrUpdate(wpsResource.id(), dsName, inner);
 
         // verify category group "audit"
         setting = monitorManager.diagnosticSettings().listByResource(wpsResource.id()).iterator().next();
         Assertions.assertTrue(setting.logs().stream().anyMatch(ls -> "audit".equals(ls.categoryGroup())));
 
         // update to add metric
-        setting.update()
-            .withMetric("AllMetrics", Duration.ofMinutes(5), 7)
-            .apply();
+        setting.update().withMetric("AllMetrics", Duration.ofMinutes(5), 7).apply();
 
         // verify category group "audit"
         setting = monitorManager.diagnosticSettings().listByResource(wpsResource.id()).iterator().next();
@@ -369,13 +365,16 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         SqlElasticPool sqlElasticPool = ensureElasticPoolWithWhiteSpace(region, rgName);
 
         // clean all diagnostic settings.
-        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings()
+            .listByResource(sqlElasticPool.id())
+            .stream()
+            .collect(Collectors.toList());
         for (DiagnosticSetting dsd : dsList) {
             monitorManager.diagnosticSettings().deleteById(dsd.id());
         }
 
-        List<DiagnosticSettingsCategory> categories = monitorManager.diagnosticSettings()
-            .listCategoriesByResource(sqlElasticPool.id());
+        List<DiagnosticSettingsCategory> categories
+            = monitorManager.diagnosticSettings().listCategoriesByResource(sqlElasticPool.id());
 
         Assertions.assertNotNull(categories);
         Assertions.assertFalse(categories.isEmpty());
@@ -394,9 +393,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         Assertions.assertNull(setting.workspaceId());
         Assertions.assertFalse(setting.metrics().isEmpty());
 
-        setting.update()
-            .withoutMetric("InstanceAndAppAdvanced")
-            .apply();
+        setting.update().withoutMetric("InstanceAndAppAdvanced").apply();
 
         Assertions.assertTrue(sqlElasticPool.id().equalsIgnoreCase(setting.resourceId()));
         Assertions.assertNotNull(setting.storageAccountId());
@@ -412,7 +409,10 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         DiagnosticSetting ds2 = monitorManager.diagnosticSettings().getById(setting.id());
         checkDiagnosticSettingValues(setting, ds2);
 
-        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        dsList = monitorManager.diagnosticSettings()
+            .listByResource(sqlElasticPool.id())
+            .stream()
+            .collect(Collectors.toList());
         Assertions.assertNotNull(dsList);
         Assertions.assertEquals(1, dsList.size());
         DiagnosticSetting ds3 = dsList.get(0);
@@ -420,7 +420,10 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
 
         monitorManager.diagnosticSettings().deleteById(setting.id());
 
-        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        dsList = monitorManager.diagnosticSettings()
+            .listByResource(sqlElasticPool.id())
+            .stream()
+            .collect(Collectors.toList());
         Assertions.assertNotNull(dsList);
         Assertions.assertTrue(dsList.isEmpty());
 
@@ -432,13 +435,19 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .withLogsAndMetrics(categories, Duration.ofMinutes(5), 7)
             .create();
 
-        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        dsList = monitorManager.diagnosticSettings()
+            .listByResource(sqlElasticPool.id())
+            .stream()
+            .collect(Collectors.toList());
         Assertions.assertNotNull(dsList);
         Assertions.assertEquals(1, dsList.size());
 
         monitorManager.diagnosticSettings().deleteByIds(setting.id());
 
-        dsList = monitorManager.diagnosticSettings().listByResource(sqlElasticPool.id()).stream().collect(Collectors.toList());
+        dsList = monitorManager.diagnosticSettings()
+            .listByResource(sqlElasticPool.id())
+            .stream()
+            .collect(Collectors.toList());
         Assertions.assertNotNull(dsList);
         Assertions.assertTrue(dsList.isEmpty());
     }
@@ -460,9 +469,8 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         if (expected.eventHubAuthorizationRuleId() == null) {
             Assertions.assertNull(actual.eventHubAuthorizationRuleId());
         } else {
-            Assertions
-                .assertTrue(
-                    expected.eventHubAuthorizationRuleId().equalsIgnoreCase(actual.eventHubAuthorizationRuleId()));
+            Assertions.assertTrue(
+                expected.eventHubAuthorizationRuleId().equalsIgnoreCase(actual.eventHubAuthorizationRuleId()));
         }
         if (expected.eventHubName() == null) {
             Assertions.assertNull(actual.eventHubName());
@@ -473,15 +481,13 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
         if (expected.logs() == null) {
             Assertions.assertNull(actual.logs());
         } else {
-            Assertions.assertEquals(
-                expected.logs().stream().filter(LogSettings::enabled).count(),
+            Assertions.assertEquals(expected.logs().stream().filter(LogSettings::enabled).count(),
                 actual.logs().stream().filter(LogSettings::enabled).count());
         }
         if (expected.metrics() == null) {
             Assertions.assertNull(actual.metrics());
         } else {
-            Assertions.assertEquals(
-                expected.metrics().stream().filter(MetricSettings::enabled).count(),
+            Assertions.assertEquals(expected.metrics().stream().filter(MetricSettings::enabled).count(),
                 actual.metrics().stream().filter(MetricSettings::enabled).count());
         }
     }

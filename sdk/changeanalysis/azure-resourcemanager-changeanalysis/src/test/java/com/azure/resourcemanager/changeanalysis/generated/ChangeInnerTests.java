@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceId\":\"kvnipjoxz\",\"timeStamp\":\"2021-09-07T17:28:25Z\",\"initiatedByList\":[\"ejspodmail\",\"ydehoj\",\"yahux\",\"npmqnjaqwixjspro\"],\"changeType\":\"Remove\",\"propertyChanges\":[{\"changeType\":\"Update\",\"changeCategory\":\"User\",\"jsonPath\":\"wmfdatscmdvpjhul\",\"displayName\":\"uvm\",\"level\":\"Noisy\",\"description\":\"k\",\"oldValue\":\"f\",\"newValue\":\"iodjp\",\"isDataMasked\":false},{\"changeType\":\"Remove\",\"changeCategory\":\"System\",\"jsonPath\":\"wryoqpsoacc\",\"displayName\":\"zakljlahbc\",\"level\":\"Noisy\",\"description\":\"dfdosygexp\",\"oldValue\":\"jakhmsbzjh\",\"newValue\":\"zevdphlx\",\"isDataMasked\":true},{\"changeType\":\"Update\",\"changeCategory\":\"User\",\"jsonPath\":\"gqjbpfzfsin\",\"displayName\":\"v\",\"level\":\"Noisy\",\"description\":\"wzo\",\"oldValue\":\"j\",\"newValue\":\"elluwfziton\",\"isDataMasked\":false},{\"changeType\":\"Remove\",\"changeCategory\":\"System\",\"jsonPath\":\"lxofpdvhpfxxypin\",\"displayName\":\"mayhuybbkpodepoo\",\"level\":\"Important\",\"description\":\"vamih\",\"oldValue\":\"gnarxzxtheo\",\"newValue\":\"si\",\"isDataMasked\":true}]},\"id\":\"v\",\"name\":\"ciqihnhung\",\"type\":\"wjzrnfygxgisp\"}")
-                .toObject(ChangeInner.class);
+        ChangeInner model = BinaryData.fromString(
+            "{\"properties\":{\"resourceId\":\"kvnipjoxz\",\"timeStamp\":\"2021-09-07T17:28:25Z\",\"initiatedByList\":[\"ejspodmail\",\"ydehoj\",\"yahux\",\"npmqnjaqwixjspro\"],\"changeType\":\"Remove\",\"propertyChanges\":[{\"changeType\":\"Update\",\"changeCategory\":\"User\",\"jsonPath\":\"wmfdatscmdvpjhul\",\"displayName\":\"uvm\",\"level\":\"Noisy\",\"description\":\"k\",\"oldValue\":\"f\",\"newValue\":\"iodjp\",\"isDataMasked\":false},{\"changeType\":\"Remove\",\"changeCategory\":\"System\",\"jsonPath\":\"wryoqpsoacc\",\"displayName\":\"zakljlahbc\",\"level\":\"Noisy\",\"description\":\"dfdosygexp\",\"oldValue\":\"jakhmsbzjh\",\"newValue\":\"zevdphlx\",\"isDataMasked\":true},{\"changeType\":\"Update\",\"changeCategory\":\"User\",\"jsonPath\":\"gqjbpfzfsin\",\"displayName\":\"v\",\"level\":\"Noisy\",\"description\":\"wzo\",\"oldValue\":\"j\",\"newValue\":\"elluwfziton\",\"isDataMasked\":false},{\"changeType\":\"Remove\",\"changeCategory\":\"System\",\"jsonPath\":\"lxofpdvhpfxxypin\",\"displayName\":\"mayhuybbkpodepoo\",\"level\":\"Important\",\"description\":\"vamih\",\"oldValue\":\"gnarxzxtheo\",\"newValue\":\"si\",\"isDataMasked\":true}]},\"id\":\"v\",\"name\":\"ciqihnhung\",\"type\":\"wjzrnfygxgisp\"}")
+            .toObject(ChangeInner.class);
         Assertions.assertEquals("kvnipjoxz", model.properties().resourceId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T17:28:25Z"), model.properties().timestamp());
         Assertions.assertEquals("ejspodmail", model.properties().initiatedByList().get(0));
@@ -40,57 +38,47 @@ public final class ChangeInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeInner model =
-            new ChangeInner()
-                .withProperties(
-                    new ChangeProperties()
-                        .withResourceId("kvnipjoxz")
-                        .withTimestamp(OffsetDateTime.parse("2021-09-07T17:28:25Z"))
-                        .withInitiatedByList(Arrays.asList("ejspodmail", "ydehoj", "yahux", "npmqnjaqwixjspro"))
-                        .withChangeType(ChangeType.REMOVE)
-                        .withPropertyChanges(
-                            Arrays
-                                .asList(
-                                    new PropertyChange()
-                                        .withChangeType(ChangeType.UPDATE)
-                                        .withChangeCategory(ChangeCategory.USER)
-                                        .withJsonPath("wmfdatscmdvpjhul")
-                                        .withDisplayName("uvm")
-                                        .withLevel(Level.NOISY)
-                                        .withDescription("k")
-                                        .withOldValue("f")
-                                        .withNewValue("iodjp")
-                                        .withIsDataMasked(false),
-                                    new PropertyChange()
-                                        .withChangeType(ChangeType.REMOVE)
-                                        .withChangeCategory(ChangeCategory.SYSTEM)
-                                        .withJsonPath("wryoqpsoacc")
-                                        .withDisplayName("zakljlahbc")
-                                        .withLevel(Level.NOISY)
-                                        .withDescription("dfdosygexp")
-                                        .withOldValue("jakhmsbzjh")
-                                        .withNewValue("zevdphlx")
-                                        .withIsDataMasked(true),
-                                    new PropertyChange()
-                                        .withChangeType(ChangeType.UPDATE)
-                                        .withChangeCategory(ChangeCategory.USER)
-                                        .withJsonPath("gqjbpfzfsin")
-                                        .withDisplayName("v")
-                                        .withLevel(Level.NOISY)
-                                        .withDescription("wzo")
-                                        .withOldValue("j")
-                                        .withNewValue("elluwfziton")
-                                        .withIsDataMasked(false),
-                                    new PropertyChange()
-                                        .withChangeType(ChangeType.REMOVE)
-                                        .withChangeCategory(ChangeCategory.SYSTEM)
-                                        .withJsonPath("lxofpdvhpfxxypin")
-                                        .withDisplayName("mayhuybbkpodepoo")
-                                        .withLevel(Level.IMPORTANT)
-                                        .withDescription("vamih")
-                                        .withOldValue("gnarxzxtheo")
-                                        .withNewValue("si")
-                                        .withIsDataMasked(true))));
+        ChangeInner model = new ChangeInner().withProperties(new ChangeProperties().withResourceId("kvnipjoxz")
+            .withTimestamp(OffsetDateTime.parse("2021-09-07T17:28:25Z"))
+            .withInitiatedByList(Arrays.asList("ejspodmail", "ydehoj", "yahux", "npmqnjaqwixjspro"))
+            .withChangeType(ChangeType.REMOVE)
+            .withPropertyChanges(Arrays.asList(
+                new PropertyChange().withChangeType(ChangeType.UPDATE)
+                    .withChangeCategory(ChangeCategory.USER)
+                    .withJsonPath("wmfdatscmdvpjhul")
+                    .withDisplayName("uvm")
+                    .withLevel(Level.NOISY)
+                    .withDescription("k")
+                    .withOldValue("f")
+                    .withNewValue("iodjp")
+                    .withIsDataMasked(false),
+                new PropertyChange().withChangeType(ChangeType.REMOVE)
+                    .withChangeCategory(ChangeCategory.SYSTEM)
+                    .withJsonPath("wryoqpsoacc")
+                    .withDisplayName("zakljlahbc")
+                    .withLevel(Level.NOISY)
+                    .withDescription("dfdosygexp")
+                    .withOldValue("jakhmsbzjh")
+                    .withNewValue("zevdphlx")
+                    .withIsDataMasked(true),
+                new PropertyChange().withChangeType(ChangeType.UPDATE)
+                    .withChangeCategory(ChangeCategory.USER)
+                    .withJsonPath("gqjbpfzfsin")
+                    .withDisplayName("v")
+                    .withLevel(Level.NOISY)
+                    .withDescription("wzo")
+                    .withOldValue("j")
+                    .withNewValue("elluwfziton")
+                    .withIsDataMasked(false),
+                new PropertyChange().withChangeType(ChangeType.REMOVE)
+                    .withChangeCategory(ChangeCategory.SYSTEM)
+                    .withJsonPath("lxofpdvhpfxxypin")
+                    .withDisplayName("mayhuybbkpodepoo")
+                    .withLevel(Level.IMPORTANT)
+                    .withDescription("vamih")
+                    .withOldValue("gnarxzxtheo")
+                    .withNewValue("si")
+                    .withIsDataMasked(true))));
         model = BinaryData.fromObject(model).toObject(ChangeInner.class);
         Assertions.assertEquals("kvnipjoxz", model.properties().resourceId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T17:28:25Z"), model.properties().timestamp());

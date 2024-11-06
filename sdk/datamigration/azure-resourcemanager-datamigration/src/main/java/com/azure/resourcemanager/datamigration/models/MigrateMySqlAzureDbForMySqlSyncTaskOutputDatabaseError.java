@@ -5,36 +5,57 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("DatabaseLevelErrorOutput")
+/**
+ * The MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError model.
+ */
 @Fluent
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
     extends MigrateMySqlAzureDbForMySqlSyncTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "DatabaseLevelErrorOutput";
+
+    /*
      * Error message
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * List of error events.
      */
-    @JsonProperty(value = "events")
     private List<SyncMigrationDatabaseErrorEvent> events;
 
-    /** Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError class.
+     */
     public MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the errorMessage property: Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -43,7 +64,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
 
     /**
      * Set the errorMessage property: Error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError object itself.
      */
@@ -54,7 +75,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
 
     /**
      * Get the events property: List of error events.
-     *
+     * 
      * @return the events value.
      */
     public List<SyncMigrationDatabaseErrorEvent> events() {
@@ -63,26 +84,84 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
 
     /**
      * Set the events property: List of error events.
-     *
+     * 
      * @param events the events value to set.
      * @return the MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError object itself.
      */
-    public MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError withEvents(
-        List<SyncMigrationDatabaseErrorEvent> events) {
+    public MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
+        withEvents(List<SyncMigrationDatabaseErrorEvent> events) {
         this.events = events;
         return this;
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (events() != null) {
             events().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.
+     */
+    public static MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError
+                = new MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.resultType = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.errorMessage
+                        = reader.getString();
+                } else if ("events".equals(fieldName)) {
+                    List<SyncMigrationDatabaseErrorEvent> events
+                        = reader.readArray(reader1 -> SyncMigrationDatabaseErrorEvent.fromJson(reader1));
+                    deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.events = events;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError;
+        });
     }
 }

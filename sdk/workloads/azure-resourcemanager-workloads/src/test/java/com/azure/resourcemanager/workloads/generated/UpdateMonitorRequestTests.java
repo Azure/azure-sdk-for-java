@@ -16,31 +16,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateMonitorRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateMonitorRequest model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"ba4e8e39-4d8c-4df0-b474-6268ebc19ff0\",\"clientId\":\"50d09aa1-837a-439d-add4-f29214d450e6\"},\"wiwubm\":{\"principalId\":\"09559181-9d20-4838-9e28-54d4d59aee1e\",\"clientId\":\"01af568c-3304-49cf-85c1-074a846dc298\"},\"esl\":{\"principalId\":\"0c3d2754-8972-4cc2-89ba-d0e7e6ea1587\",\"clientId\":\"195f9248-d5fe-44c5-8b71-e48a9c776924\"}}}}")
-                .toObject(UpdateMonitorRequest.class);
+        UpdateMonitorRequest model = BinaryData.fromString(
+            "{\"tags\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"ba4e8e39-4d8c-4df0-b474-6268ebc19ff0\",\"clientId\":\"50d09aa1-837a-439d-add4-f29214d450e6\"},\"wiwubm\":{\"principalId\":\"09559181-9d20-4838-9e28-54d4d59aee1e\",\"clientId\":\"01af568c-3304-49cf-85c1-074a846dc298\"},\"esl\":{\"principalId\":\"0c3d2754-8972-4cc2-89ba-d0e7e6ea1587\",\"clientId\":\"195f9248-d5fe-44c5-8b71-e48a9c776924\"}}}}")
+            .toObject(UpdateMonitorRequest.class);
         Assertions.assertEquals("lylpstdb", model.tags().get("hxsrzdzucersc"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateMonitorRequest model =
-            new UpdateMonitorRequest()
-                .withTags(mapOf("hxsrzdzucersc", "lylpstdb", "iwjmygtdssls", "ntnev", "emwabnet", "tmweriofzpyq"))
-                .withIdentity(
-                    new UserAssignedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "d",
-                                new UserAssignedIdentity(),
-                                "wiwubm",
-                                new UserAssignedIdentity(),
-                                "esl",
-                                new UserAssignedIdentity())));
+        UpdateMonitorRequest model = new UpdateMonitorRequest()
+            .withTags(mapOf("hxsrzdzucersc", "lylpstdb", "iwjmygtdssls", "ntnev", "emwabnet", "tmweriofzpyq"))
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("d", new UserAssignedIdentity(), "wiwubm", new UserAssignedIdentity(),
+                    "esl", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(UpdateMonitorRequest.class);
         Assertions.assertEquals("lylpstdb", model.tags().get("hxsrzdzucersc"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());

@@ -69,8 +69,7 @@ public final class BlobContainerProperties {
         final boolean hasLegalHold, final String defaultEncryptionScope,
         final Boolean encryptionScopeOverridePrevented) {
         this(metadata, eTag, lastModified, leaseDuration, leaseState, leaseStatus, blobPublicAccess,
-            hasImmutabilityPolicy, hasLegalHold, defaultEncryptionScope, encryptionScopeOverridePrevented,
-            null);
+            hasImmutabilityPolicy, hasLegalHold, defaultEncryptionScope, encryptionScopeOverridePrevented, null);
     }
 
     /**
@@ -93,8 +92,8 @@ public final class BlobContainerProperties {
     public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
-        final boolean hasLegalHold, final String defaultEncryptionScope,
-        final Boolean encryptionScopeOverridePrevented, final Boolean isImmutableStorageWithVersioningEnabled) {
+        final boolean hasLegalHold, final String defaultEncryptionScope, final Boolean encryptionScopeOverridePrevented,
+        final Boolean isImmutableStorageWithVersioningEnabled) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;

@@ -14,26 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LanguageExtensionsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LanguageExtensionsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"R\"},{\"languageExtensionName\":\"PYTHON\"},{\"languageExtensionName\":\"R\"}]}")
-                .toObject(LanguageExtensionsList.class);
-        Assertions.assertEquals(LanguageExtensionName.PYTHON, model.value().get(0).languageExtensionName());
+        LanguageExtensionsList model = BinaryData
+            .fromString("{\"value\":[{\"languageExtensionName\":\"R\"},{\"languageExtensionName\":\"PYTHON\"}]}")
+            .toObject(LanguageExtensionsList.class);
+        Assertions.assertEquals(LanguageExtensionName.R, model.value().get(0).languageExtensionName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LanguageExtensionsList model =
-            new LanguageExtensionsList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R),
-                            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R)));
+        LanguageExtensionsList model = new LanguageExtensionsList()
+            .withValue(Arrays.asList(new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R),
+                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON)));
         model = BinaryData.fromObject(model).toObject(LanguageExtensionsList.class);
-        Assertions.assertEquals(LanguageExtensionName.PYTHON, model.value().get(0).languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionName.R, model.value().get(0).languageExtensionName());
     }
 }

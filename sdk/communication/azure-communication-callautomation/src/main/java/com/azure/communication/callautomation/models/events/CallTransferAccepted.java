@@ -13,7 +13,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-
 /** The CallTransferAccepted model. */
 @Immutable
 public final class CallTransferAccepted extends CallAutomationEventBase {

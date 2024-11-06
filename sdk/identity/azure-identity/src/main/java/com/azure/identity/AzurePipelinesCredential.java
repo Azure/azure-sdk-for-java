@@ -19,6 +19,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.models.OidcTokenResponse;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -50,12 +51,8 @@ import java.net.URL;
 @Immutable
 public class AzurePipelinesCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredential.class);
-    private static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
-    private static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
-    private static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
-
 
     /**
      * Creates an instance of {@link AzurePipelinesCredential}.
@@ -66,10 +63,10 @@ public class AzurePipelinesCredential implements TokenCredential {
      * @param systemAccessToken the system access token
      * @param identityClientOptions the options for configuring the identity client
      */
-    AzurePipelinesCredential(String clientId, String tenantId, String requestUrl, String systemAccessToken, IdentityClientOptions identityClientOptions) {
+    AzurePipelinesCredential(String clientId, String tenantId, String requestUrl, String systemAccessToken,
+        IdentityClientOptions identityClientOptions) {
 
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .clientAssertionSupplierWithHttpPipeline((httpPipeline) -> {
@@ -79,21 +76,21 @@ public class AzurePipelinesCredential implements TokenCredential {
                     request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                     request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
                     // Prevents the service from responding with a redirect HTTP status code (useful for automation).
-                    request.setHeader(X_TFS_FED_AUTH_REDIRECT, "Suppress");
+                    request.setHeader(IdentityUtil.X_TFS_FED_AUTH_REDIRECT, "Suppress");
                     try (HttpResponse response = httpPipeline.sendSync(request, Context.NONE)) {
                         String responseBody = response.getBodyAsBinaryData().toString();
                         if (response.getStatusCode() != 200) {
-                            String xVssHeader = response.getHeaderValue(X_VSS_E2EID);
-                            String xMsEdgeRefHeader = response.getHeaderValue(X_MSEDGE_REF);
-                            String message = "Failed to get the client assertion token "
-                                + responseBody + ".";
+                            String xVssHeader = response.getHeaderValue(IdentityUtil.X_VSS_E2EID);
+                            String xMsEdgeRefHeader = response.getHeaderValue(IdentityUtil.X_MSEDGE_REF);
+                            String message = "Failed to get the client assertion token " + responseBody + ".";
                             if (xVssHeader != null) {
                                 message += " x-vss-e2eid: " + xVssHeader + ".";
                             }
                             if (xMsEdgeRefHeader != null) {
                                 message += " x-msedge-ref: " + xMsEdgeRefHeader + ".";
                             }
-                            message += "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.";
+                            message
+                                += "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.";
                             throw LOGGER.logExceptionAsError(new ClientAuthenticationException(message, response));
                         }
                         try (JsonReader reader = JsonProviders.createReader(responseBody)) {
@@ -101,21 +98,23 @@ public class AzurePipelinesCredential implements TokenCredential {
                         }
                     }
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null, e));
+                    throw LOGGER.logExceptionAsError(
+                        new ClientAuthenticationException("Failed to get the client assertion token", null, e));
                 }
             });
 
         this.identitySyncClient = builder.buildSyncClient();
         this.identityClient = builder.build();
     }
+
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
@@ -126,7 +125,8 @@ public class AzurePipelinesCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);

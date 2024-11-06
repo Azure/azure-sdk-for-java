@@ -21,8 +21,8 @@ public interface SavedSearches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String savedSearchId,
+        Context context);
 
     /**
      * Deletes the specified saved search in a given workspace.
@@ -48,8 +48,8 @@ public interface SavedSearches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified saved search for a given workspace along with {@link Response}.
      */
-    Response<SavedSearch> getWithResponse(
-        String resourceGroupName, String workspaceName, String savedSearchId, Context context);
+    Response<SavedSearch> getWithResponse(String resourceGroupName, String workspaceName, String savedSearchId,
+        Context context);
 
     /**
      * Gets the specified saved search for a given workspace.
@@ -75,8 +75,8 @@ public interface SavedSearches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the saved searches for a given Log Analytics Workspace along with {@link Response}.
      */
-    Response<SavedSearchesListResult> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<SavedSearchesListResult> listByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the saved searches for a given Log Analytics Workspace.

@@ -20,12 +20,8 @@ public final class GraphQLApiResolverPoliciesGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GraphQLApiResolverPoliciesGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        GraphQLApiResolverPoliciesGetEntityTagHeaders headers) {
+    public GraphQLApiResolverPoliciesGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, GraphQLApiResolverPoliciesGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

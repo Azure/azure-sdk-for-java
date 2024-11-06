@@ -6,79 +6,50 @@ package com.azure.resourcemanager.mixedreality.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mixedreality.MixedRealityManager;
 import com.azure.resourcemanager.mixedreality.models.RemoteRenderingAccount;
 import com.azure.resourcemanager.mixedreality.models.ResourceIdentityType;
 import com.azure.resourcemanager.mixedreality.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RemoteRenderingAccountsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"storageAccountName\":\"sluicpdggkzz\",\"accountId\":\"mbmpaxmodfvuefy\",\"accountDomain\":\"bpfvm\"},\"identity\":{\"principalId\":\"rfouyftaakcpw\",\"tenantId\":\"zvqtmnubexkp\",\"type\":\"SystemAssigned\"},\"plan\":{\"principalId\":\"ndjmquxvyp\",\"tenantId\":\"gkopkwhojvpajqgx\",\"type\":\"SystemAssigned\"},\"sku\":{\"name\":\"cmbqfqvmk\",\"tier\":\"Free\",\"size\":\"apvhelxprgly\",\"family\":\"dd\",\"capacity\":1454263457},\"kind\":{\"name\":\"cuejrjxgci\",\"tier\":\"Free\",\"size\":\"hos\",\"family\":\"dqrhzoymib\",\"capacity\":1056733583},\"location\":\"ibahwflus\",\"tags\":{\"expbtg\":\"mhrkwofyyvoqacp\",\"nwashrtd\":\"wbwo\",\"ulpiuj\":\"kcnqxwbpo\",\"obyu\":\"aasipqi\"},\"id\":\"erpqlpqwcciuqg\",\"name\":\"dbutauvfbtkuwhh\",\"type\":\"hykojoxafnndlpic\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"storageAccountName\":\"vvcnayr\",\"accountId\":\"rnxxmueed\",\"accountDomain\":\"rdvstkwqqtch\"},\"identity\":{\"principalId\":\"mfmtdaaygdvw\",\"tenantId\":\"piohgwxrtfu\",\"type\":\"SystemAssigned\"},\"plan\":{\"principalId\":\"gyqagvrvmnpkuk\",\"tenantId\":\"i\",\"type\":\"SystemAssigned\"},\"sku\":{\"name\":\"xgwim\",\"tier\":\"Basic\",\"size\":\"fjxwmsz\",\"family\":\"foqreyfkzik\",\"capacity\":498356163},\"kind\":{\"name\":\"n\",\"tier\":\"Free\",\"size\":\"xwczelpcire\",\"family\":\"feaenwab\",\"capacity\":737595664},\"location\":\"lddxbjhwua\",\"tags\":{\"youlp\":\"zjosp\"},\"id\":\"rvxaglrvimjwosy\",\"name\":\"xitc\",\"type\":\"kfcktqum\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MixedRealityManager manager = MixedRealityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<RemoteRenderingAccount> response
+            = manager.remoteRenderingAccounts().listByResourceGroup("rpkhjwn", com.azure.core.util.Context.NONE);
 
-        MixedRealityManager manager =
-            MixedRealityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<RemoteRenderingAccount> response =
-            manager.remoteRenderingAccounts().listByResourceGroup("z", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("lddxbjhwua", response.iterator().next().location());
-        Assertions.assertEquals("zjosp", response.iterator().next().tags().get("youlp"));
+        Assertions.assertEquals("ibahwflus", response.iterator().next().location());
+        Assertions.assertEquals("mhrkwofyyvoqacp", response.iterator().next().tags().get("expbtg"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().plan().type());
-        Assertions.assertEquals("xgwim", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().sku().tier());
-        Assertions.assertEquals("fjxwmsz", response.iterator().next().sku().size());
-        Assertions.assertEquals("foqreyfkzik", response.iterator().next().sku().family());
-        Assertions.assertEquals(498356163, response.iterator().next().sku().capacity());
-        Assertions.assertEquals("n", response.iterator().next().kind().name());
+        Assertions.assertEquals("cmbqfqvmk", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
+        Assertions.assertEquals("apvhelxprgly", response.iterator().next().sku().size());
+        Assertions.assertEquals("dd", response.iterator().next().sku().family());
+        Assertions.assertEquals(1454263457, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("cuejrjxgci", response.iterator().next().kind().name());
         Assertions.assertEquals(SkuTier.FREE, response.iterator().next().kind().tier());
-        Assertions.assertEquals("xwczelpcire", response.iterator().next().kind().size());
-        Assertions.assertEquals("feaenwab", response.iterator().next().kind().family());
-        Assertions.assertEquals(737595664, response.iterator().next().kind().capacity());
-        Assertions.assertEquals("vvcnayr", response.iterator().next().storageAccountName());
+        Assertions.assertEquals("hos", response.iterator().next().kind().size());
+        Assertions.assertEquals("dqrhzoymib", response.iterator().next().kind().family());
+        Assertions.assertEquals(1056733583, response.iterator().next().kind().capacity());
+        Assertions.assertEquals("sluicpdggkzz", response.iterator().next().storageAccountName());
     }
 }

@@ -95,7 +95,8 @@ public final class AppendBlobAppendBlockFromUrlOptions {
      * @param destinationRequestConditions {@link AppendBlobRequestConditions} for writing to destination.
      * @return The updated options.
      */
-    public AppendBlobAppendBlockFromUrlOptions setDestinationRequestConditions(AppendBlobRequestConditions destinationRequestConditions) {
+    public AppendBlobAppendBlockFromUrlOptions
+        setDestinationRequestConditions(AppendBlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
@@ -115,7 +116,8 @@ public final class AppendBlobAppendBlockFromUrlOptions {
      * @param sourceRequestConditions {@link BlobRequestConditions} for accessing source.
      * @return The updated options.
      */
-    public AppendBlobAppendBlockFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
+    public AppendBlobAppendBlockFromUrlOptions
+        setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }

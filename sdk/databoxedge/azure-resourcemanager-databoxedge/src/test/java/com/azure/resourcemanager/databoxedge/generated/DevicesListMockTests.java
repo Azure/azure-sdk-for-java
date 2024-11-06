@@ -6,76 +6,45 @@ package com.azure.resourcemanager.databoxedge.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databoxedge.DataBoxEdgeManager;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDevice;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceStatus;
 import com.azure.resourcemanager.databoxedge.models.SkuName;
 import com.azure.resourcemanager.databoxedge.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DevicesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"location\":\"ccyajg\",\"tags\":{\"lvdnkfx\":\"hwyg\",\"apfcqdpsq\":\"semdwzrmu\",\"celve\":\"qvpsvuoymg\",\"erqwkyhkobopg\":\"rypqlmfeo\"},\"sku\":{\"name\":\"TEA_1Node_Heater\",\"tier\":\"Standard\"},\"etag\":\"pbqpcrfkbwccsn\",\"properties\":{\"dataBoxEdgeDeviceStatus\":\"Maintenance\",\"serialNumber\":\"xlpqekftnkhtjsy\",\"description\":\"gwfqatmt\",\"modelDescription\":\"tmdvypgikdgs\",\"deviceType\":\"DataBoxEdgeDevice\",\"friendlyName\":\"birryuzhl\",\"culture\":\"joqrvqqaatj\",\"deviceModel\":\"rv\",\"deviceSoftwareVersion\":\"upmfiibfg\",\"deviceLocalCapacity\":9051786010935823048,\"timeZone\":\"lvrwxkvtkk\",\"deviceHcsVersion\":\"lqwjygvjayvblm\",\"configuredRoleTypes\":[\"Cognitive\"],\"nodeCount\":2100624724},\"id\":\"bxvvyhg\",\"name\":\"opbyrqufegxu\",\"type\":\"wz\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"vfvpdbodaciz\",\"tags\":{\"hvxndzwmkrefajpj\":\"lhkrribdeibqipqk\"},\"sku\":{\"name\":\"TEA_1Node\",\"tier\":\"Standard\"},\"etag\":\"hgbijt\",\"properties\":{\"dataBoxEdgeDeviceStatus\":\"NeedsAttention\",\"serialNumber\":\"zs\",\"description\":\"bibsystawfsdjpvk\",\"modelDescription\":\"bjxbkzbzk\",\"deviceType\":\"DataBoxEdgeDevice\",\"friendlyName\":\"jabudurgkakmo\",\"culture\":\"hjjklff\",\"deviceModel\":\"ouw\",\"deviceSoftwareVersion\":\"gzrf\",\"deviceLocalCapacity\":6379761191794506744,\"timeZone\":\"bizikayuhq\",\"deviceHcsVersion\":\"jbsybbqw\",\"configuredRoleTypes\":[\"Functions\"],\"nodeCount\":1918019278},\"id\":\"mfpgv\",\"name\":\"pip\",\"type\":\"slthaq\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataBoxEdgeManager manager = DataBoxEdgeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DataBoxEdgeDevice> response = manager.devices().list("v", com.azure.core.util.Context.NONE);
 
-        DataBoxEdgeManager manager =
-            DataBoxEdgeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DataBoxEdgeDevice> response =
-            manager.devices().list("nyowxwlmdjrkvfg", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("vfvpdbodaciz", response.iterator().next().location());
-        Assertions.assertEquals("lhkrribdeibqipqk", response.iterator().next().tags().get("hvxndzwmkrefajpj"));
-        Assertions.assertEquals(SkuName.TEA_1NODE, response.iterator().next().sku().name());
+        Assertions.assertEquals("ccyajg", response.iterator().next().location());
+        Assertions.assertEquals("hwyg", response.iterator().next().tags().get("lvdnkfx"));
+        Assertions.assertEquals(SkuName.TEA_1NODE_HEATER, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
-        Assertions.assertEquals("hgbijt", response.iterator().next().etag());
-        Assertions
-            .assertEquals(
-                DataBoxEdgeDeviceStatus.NEEDS_ATTENTION, response.iterator().next().dataBoxEdgeDeviceStatus());
-        Assertions.assertEquals("bibsystawfsdjpvk", response.iterator().next().description());
-        Assertions.assertEquals("bjxbkzbzk", response.iterator().next().modelDescription());
-        Assertions.assertEquals("jabudurgkakmo", response.iterator().next().friendlyName());
+        Assertions.assertEquals("pbqpcrfkbwccsn", response.iterator().next().etag());
+        Assertions.assertEquals(DataBoxEdgeDeviceStatus.MAINTENANCE,
+            response.iterator().next().dataBoxEdgeDeviceStatus());
+        Assertions.assertEquals("gwfqatmt", response.iterator().next().description());
+        Assertions.assertEquals("tmdvypgikdgs", response.iterator().next().modelDescription());
+        Assertions.assertEquals("birryuzhl", response.iterator().next().friendlyName());
     }
 }

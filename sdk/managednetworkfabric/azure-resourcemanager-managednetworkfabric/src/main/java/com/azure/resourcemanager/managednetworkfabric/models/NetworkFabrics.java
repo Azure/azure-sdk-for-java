@@ -23,8 +23,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Fabric resource details along with {@link Response}.
      */
-    Response<NetworkFabric> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricName, Context context);
+    Response<NetworkFabric> getByResourceGroupWithResponse(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Gets a Network Fabric.
@@ -145,8 +145,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate provision(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdate provision(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -175,8 +175,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate deprovision(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdate deprovision(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -191,8 +191,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body);
+    CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkFabricName,
+        UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -208,8 +208,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkFabricName,
+        UpdateVersion body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -238,8 +238,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate refreshConfiguration(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForStateUpdate refreshConfiguration(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -255,8 +255,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -273,8 +273,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -290,8 +290,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -308,8 +308,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -324,8 +324,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -341,8 +341,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -400,8 +400,8 @@ public interface NetworkFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String networkFabricName,
+        Context context);
 
     /**
      * Gets a Network Fabric.

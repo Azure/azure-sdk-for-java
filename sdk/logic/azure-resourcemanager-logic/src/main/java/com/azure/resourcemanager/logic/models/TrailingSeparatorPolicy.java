@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The trailing separator policy. */
+/**
+ * The trailing separator policy.
+ */
 public final class TrailingSeparatorPolicy extends ExpandableStringEnum<TrailingSeparatorPolicy> {
-    /** Static value NotSpecified for TrailingSeparatorPolicy. */
+    /**
+     * Static value NotSpecified for TrailingSeparatorPolicy.
+     */
     public static final TrailingSeparatorPolicy NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value NotAllowed for TrailingSeparatorPolicy. */
+    /**
+     * Static value NotAllowed for TrailingSeparatorPolicy.
+     */
     public static final TrailingSeparatorPolicy NOT_ALLOWED = fromString("NotAllowed");
 
-    /** Static value Optional for TrailingSeparatorPolicy. */
+    /**
+     * Static value Optional for TrailingSeparatorPolicy.
+     */
     public static final TrailingSeparatorPolicy OPTIONAL = fromString("Optional");
 
-    /** Static value Mandatory for TrailingSeparatorPolicy. */
+    /**
+     * Static value Mandatory for TrailingSeparatorPolicy.
+     */
     public static final TrailingSeparatorPolicy MANDATORY = fromString("Mandatory");
 
     /**
      * Creates a new instance of TrailingSeparatorPolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class TrailingSeparatorPolicy extends ExpandableStringEnum<Trailing
 
     /**
      * Creates or finds a TrailingSeparatorPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrailingSeparatorPolicy.
      */
-    @JsonCreator
     public static TrailingSeparatorPolicy fromString(String name) {
         return fromString(name, TrailingSeparatorPolicy.class);
     }
 
     /**
      * Gets known TrailingSeparatorPolicy values.
-     *
+     * 
      * @return known TrailingSeparatorPolicy values.
      */
     public static Collection<TrailingSeparatorPolicy> values() {

@@ -267,10 +267,8 @@ public final class ArtifactSourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ArtifactSourceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ArtifactSourceInner"));
         } else {
             innerProperties().validate();
         }

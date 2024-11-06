@@ -45,8 +45,8 @@ public final class ReplicationProtectionContainersImpl implements ReplicationPro
 
     public Response<ProtectionContainer> getWithResponse(String resourceName, String resourceGroupName,
         String fabricName, String protectionContainerName, Context context) {
-        Response<ProtectionContainerInner> inner = this.serviceClient().getWithResponse(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, context);
+        Response<ProtectionContainerInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectionContainerImpl(inner.getValue(), this.manager()));
@@ -68,8 +68,9 @@ public final class ReplicationProtectionContainersImpl implements ReplicationPro
 
     public ProtectionContainer discoverProtectableItem(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        ProtectionContainerInner inner = this.serviceClient().discoverProtectableItem(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, discoverProtectableItemRequest);
+        ProtectionContainerInner inner = this.serviceClient()
+            .discoverProtectableItem(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                discoverProtectableItemRequest);
         if (inner != null) {
             return new ProtectionContainerImpl(inner, this.manager());
         } else {
@@ -80,8 +81,9 @@ public final class ReplicationProtectionContainersImpl implements ReplicationPro
     public ProtectionContainer discoverProtectableItem(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, DiscoverProtectableItemRequest discoverProtectableItemRequest,
         Context context) {
-        ProtectionContainerInner inner = this.serviceClient().discoverProtectableItem(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, discoverProtectableItemRequest, context);
+        ProtectionContainerInner inner = this.serviceClient()
+            .discoverProtectableItem(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                discoverProtectableItemRequest, context);
         if (inner != null) {
             return new ProtectionContainerImpl(inner, this.manager());
         } else {
@@ -101,8 +103,8 @@ public final class ReplicationProtectionContainersImpl implements ReplicationPro
 
     public ProtectionContainer switchProtection(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, SwitchProtectionInput switchInput) {
-        ProtectionContainerInner inner = this.serviceClient().switchProtection(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, switchInput);
+        ProtectionContainerInner inner = this.serviceClient()
+            .switchProtection(resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput);
         if (inner != null) {
             return new ProtectionContainerImpl(inner, this.manager());
         } else {
@@ -112,8 +114,9 @@ public final class ReplicationProtectionContainersImpl implements ReplicationPro
 
     public ProtectionContainer switchProtection(String resourceName, String resourceGroupName, String fabricName,
         String protectionContainerName, SwitchProtectionInput switchInput, Context context) {
-        ProtectionContainerInner inner = this.serviceClient().switchProtection(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, switchInput, context);
+        ProtectionContainerInner inner = this.serviceClient()
+            .switchProtection(resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput,
+                context);
         if (inner != null) {
             return new ProtectionContainerImpl(inner, this.manager());
         } else {

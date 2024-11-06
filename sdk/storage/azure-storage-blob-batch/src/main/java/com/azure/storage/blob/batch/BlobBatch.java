@@ -70,8 +70,8 @@ public final class BlobBatch {
      * Track the status codes expected for the batching operations here as the batch body does not get parsed in
      * Azure Core where this information is maintained.
      */
-    private static final int[] EXPECTED_DELETE_STATUS_CODES = {202};
-    private static final int[] EXPECTED_SET_TIER_STATUS_CODES = {200, 202};
+    private static final int[] EXPECTED_DELETE_STATUS_CODES = { 202 };
+    private static final int[] EXPECTED_SET_TIER_STATUS_CODES = { 200, 202 };
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobBatch.class);
 
@@ -104,8 +104,7 @@ public final class BlobBatch {
         batchPipelineBuilder.tracer(pipeline.getTracer());
         batchPipelineBuilder.httpClient(pipeline.getHttpClient());
 
-        this.blobAsyncClient = new BlobClientBuilder()
-            .endpoint(accountUrl)
+        this.blobAsyncClient = new BlobClientBuilder().endpoint(accountUrl)
             .blobName("")
             .serviceVersion(serviceVersion)
             .pipeline(batchPipelineBuilder.build())
@@ -157,8 +156,8 @@ public final class BlobBatch {
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
-    public Response<Void> deleteBlob(String containerName, String blobName,
-        DeleteSnapshotsOptionType deleteOptions, BlobRequestConditions blobRequestConditions) {
+    public Response<Void> deleteBlob(String containerName, String blobName, DeleteSnapshotsOptionType deleteOptions,
+        BlobRequestConditions blobRequestConditions) {
         return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), deleteOptions,
             blobRequestConditions);
     }
@@ -212,8 +211,8 @@ public final class BlobBatch {
     private Response<Void> deleteBlobHelper(String urlPath, DeleteSnapshotsOptionType deleteOptions,
         BlobRequestConditions blobRequestConditions) {
         setBatchType(BlobBatchType.DELETE);
-        return createBatchOperation(blobAsyncClient.deleteWithResponse(deleteOptions, blobRequestConditions),
-            urlPath, EXPECTED_DELETE_STATUS_CODES);
+        return createBatchOperation(blobAsyncClient.deleteWithResponse(deleteOptions, blobRequestConditions), urlPath,
+            EXPECTED_DELETE_STATUS_CODES);
     }
 
     /**
@@ -334,9 +333,8 @@ public final class BlobBatch {
     private Response<Void> setBlobAccessTierHelper(String blobPath, AccessTier tier, RehydratePriority priority,
         String leaseId, String tagsConditions) {
         setBatchType(BlobBatchType.SET_TIER);
-        return createBatchOperation(blobAsyncClient.setAccessTierWithResponse(
-            new BlobSetAccessTierOptions(tier)
-                .setLeaseId(leaseId)
+        return createBatchOperation(
+            blobAsyncClient.setAccessTierWithResponse(new BlobSetAccessTierOptions(tier).setLeaseId(leaseId)
                 .setPriority(priority)
                 .setTagsConditions(tagsConditions)),
             blobPath, EXPECTED_SET_TIER_STATUS_CODES);
@@ -378,10 +376,12 @@ public final class BlobBatch {
         while (!operations.isEmpty()) {
             BlobBatchOperation<?> batchOperation = operations.pop();
 
-            batchOperationResponses.add(batchOperation.getResponse()
-                .contextWrite(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
-                    BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
-                    BATCH_OPERATION_INFO, operationInfo)));
+            batchOperationResponses
+                .add(
+                    batchOperation.getResponse()
+                        .contextWrite(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
+                            BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(), BATCH_OPERATION_INFO,
+                            operationInfo)));
         }
 
         /*
@@ -439,8 +439,8 @@ public final class BlobBatch {
      */
     private Mono<HttpResponse> buildBatchOperation(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         BlobBatchOperationInfo operationInfo = (BlobBatchOperationInfo) context.getData(BATCH_OPERATION_INFO).get();
-        BlobBatchOperationResponse<?> batchOperationResponse =
-            (BlobBatchOperationResponse<?>) context.getData(BATCH_OPERATION_RESPONSE).get();
+        BlobBatchOperationResponse<?> batchOperationResponse
+            = (BlobBatchOperationResponse<?>) context.getData(BATCH_OPERATION_RESPONSE).get();
         operationInfo.addBatchOperation(batchOperationResponse, context.getHttpRequest());
 
         return Mono.empty();

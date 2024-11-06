@@ -11,7 +11,7 @@ public final class ClusterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterProperties model = BinaryData.fromString(
-            "{\"createdDate\":\"2021-06-22T14:44:07Z\",\"clusterId\":\"avxbniwdjswztsdb\",\"provisioningState\":\"Failed\",\"capacityAllocated\":1127167490,\"capacityAssigned\":208552539}")
+            "{\"createdDate\":\"2021-01-04T18:35:03Z\",\"clusterId\":\"ctyqik\",\"provisioningState\":\"Failed\",\"capacityAllocated\":2077643232,\"capacityAssigned\":779451406}")
             .toObject(ClusterProperties.class);
     }
 

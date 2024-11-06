@@ -20,7 +20,8 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
     private String signatureRecord;
 
     /** Creates an instance of TagAttributesTag class. */
-    public TagAttributesTag() {}
+    public TagAttributesTag() {
+    }
 
     /**
      * Get the signatureRecord property: SignatureRecord value.
@@ -58,21 +59,20 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
      * @throws IOException If an error occurs while reading the TagAttributesTag.
      */
     public static TagAttributesTag fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TagAttributesTag deserializedTagAttributesTag = new TagAttributesTag();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TagAttributesTag deserializedTagAttributesTag = new TagAttributesTag();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("signatureRecord".equals(fieldName)) {
-                            deserializedTagAttributesTag.signatureRecord = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("signatureRecord".equals(fieldName)) {
+                    deserializedTagAttributesTag.signatureRecord = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTagAttributesTag;
-                });
+            return deserializedTagAttributesTag;
+        });
     }
 }

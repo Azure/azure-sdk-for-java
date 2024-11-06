@@ -89,11 +89,11 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficFlowSegmentOptions trafficFlowSegmentOptions
             = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
-            .setOpenLr(false)
-            .setZoom(10)
-            .setCoordinates(new GeoPosition(4.84239, 52.41072))
-            .setThickness(2)
-            .setUnit(SpeedUnit.MPH);
+                .setOpenLr(false)
+                .setZoom(10)
+                .setCoordinates(new GeoPosition(4.84239, 52.41072))
+                .setThickness(2)
+                .setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegment(trafficFlowSegmentOptions))
             .assertNext(actualResults -> validateGetTrafficFlowSegment(TestUtils.getExpectedTrafficFlowSegment(),
                 actualResults))
@@ -110,11 +110,11 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficFlowSegmentOptions trafficFlowSegmentOptions
             = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
-            .setOpenLr(false)
-            .setZoom(10)
-            .setCoordinates(new GeoPosition(4.84239, 52.41072))
-            .setThickness(2)
-            .setUnit(SpeedUnit.MPH);
+                .setOpenLr(false)
+                .setZoom(10)
+                .setCoordinates(new GeoPosition(4.84239, 52.41072))
+                .setThickness(2)
+                .setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions))
             .assertNext(response -> validateGetTrafficFlowSegmentWithResponse(TestUtils.getExpectedTrafficFlowSegment(),
                 response))
@@ -130,11 +130,11 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficFlowSegmentOptions trafficFlowSegmentOptions
             = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
-            .setOpenLr(false)
-            .setZoom(-1000)
-            .setCoordinates(new GeoPosition(45, 45))
-            .setThickness(2)
-            .setUnit(SpeedUnit.MPH);
+                .setOpenLr(false)
+                .setZoom(-1000)
+                .setCoordinates(new GeoPosition(45, 45))
+                .setThickness(2)
+                .setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -183,9 +183,8 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
             .setLanguage("en")
             .setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions))
-            .assertNext(
-                response -> validateTrafficIncidentDetailWithResponse(TestUtils.getExpectedTrafficIncidentDetail(),
-                    response))
+            .assertNext(response -> validateTrafficIncidentDetailWithResponse(
+                TestUtils.getExpectedTrafficIncidentDetail(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -221,10 +220,10 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficIncidentViewportOptions trafficIncidentViewportOptions
             = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(2)
-            .setOverviewZoom(2)
-            .setCopyright(true);
+                .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+                .setBoundingZoom(2)
+                .setOverviewZoom(2)
+                .setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewport(trafficIncidentViewportOptions))
             .assertNext(actualResults -> validateTrafficIncidentViewport(TestUtils.getExpectedTrafficIncidentViewport(),
                 actualResults))
@@ -241,14 +240,13 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficIncidentViewportOptions trafficIncidentViewportOptions
             = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(2)
-            .setOverviewZoom(2)
-            .setCopyright(true);
+                .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+                .setBoundingZoom(2)
+                .setOverviewZoom(2)
+                .setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions))
-            .assertNext(
-                response -> validateTrafficIncidentViewportWithResponse(TestUtils.getExpectedTrafficIncidentViewport(),
-                    response))
+            .assertNext(response -> validateTrafficIncidentViewportWithResponse(
+                TestUtils.getExpectedTrafficIncidentViewport(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -261,10 +259,10 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficIncidentViewportOptions trafficIncidentViewportOptions
             = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000)
-            .setOverviewZoom(2)
-            .setCopyright(true);
+                .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+                .setBoundingZoom(-1000)
+                .setOverviewZoom(2)
+                .setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;

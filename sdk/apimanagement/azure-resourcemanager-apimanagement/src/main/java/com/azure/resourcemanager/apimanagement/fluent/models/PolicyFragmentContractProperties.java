@@ -101,10 +101,8 @@ public final class PolicyFragmentContractProperties {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PolicyFragmentContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model PolicyFragmentContractProperties"));
         }
     }
 

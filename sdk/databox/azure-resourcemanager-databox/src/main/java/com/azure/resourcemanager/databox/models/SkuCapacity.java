@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Capacity of the sku. */
+/**
+ * Capacity of the sku.
+ */
 @Immutable
-public final class SkuCapacity {
+public final class SkuCapacity implements JsonSerializable<SkuCapacity> {
     /*
      * Usable capacity in TB.
      */
-    @JsonProperty(value = "usable", access = JsonProperty.Access.WRITE_ONLY)
     private String usable;
 
     /*
      * Maximum capacity in TB.
      */
-    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private String maximum;
 
-    /** Creates an instance of SkuCapacity class. */
+    /**
+     * Creates an instance of SkuCapacity class.
+     */
     public SkuCapacity() {
     }
 
     /**
      * Get the usable property: Usable capacity in TB.
-     *
+     * 
      * @return the usable value.
      */
     public String usable() {
@@ -37,7 +43,7 @@ public final class SkuCapacity {
 
     /**
      * Get the maximum property: Maximum capacity in TB.
-     *
+     * 
      * @return the maximum value.
      */
     public String maximum() {
@@ -46,9 +52,46 @@ public final class SkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCapacity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuCapacity.
+     */
+    public static SkuCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCapacity deserializedSkuCapacity = new SkuCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("usable".equals(fieldName)) {
+                    deserializedSkuCapacity.usable = reader.getString();
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedSkuCapacity.maximum = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCapacity;
+        });
     }
 }

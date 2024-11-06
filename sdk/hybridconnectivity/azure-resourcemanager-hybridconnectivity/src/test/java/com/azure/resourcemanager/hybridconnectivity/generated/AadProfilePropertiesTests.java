@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AadProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AadProfileProperties model =
-            BinaryData
-                .fromString("{\"serverId\":\"czdzev\",\"tenantId\":\"dhkrwpdappdsbdk\"}")
-                .toObject(AadProfileProperties.class);
+        AadProfileProperties model = BinaryData.fromString("{\"serverId\":\"czdzev\",\"tenantId\":\"dhkrwpdappdsbdk\"}")
+            .toObject(AadProfileProperties.class);
         Assertions.assertEquals("czdzev", model.serverId());
         Assertions.assertEquals("dhkrwpdappdsbdk", model.tenantId());
     }

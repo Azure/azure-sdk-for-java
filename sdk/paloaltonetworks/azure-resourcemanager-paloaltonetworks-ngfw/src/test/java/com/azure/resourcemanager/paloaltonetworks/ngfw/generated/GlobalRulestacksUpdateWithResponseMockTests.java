@@ -55,7 +55,8 @@ public final class GlobalRulestacksUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
@@ -73,16 +74,21 @@ public final class GlobalRulestacksUpdateWithResponseMockTests {
                         "mrnjh",
                         new AzureResourceManagerUserAssignedIdentity().withClientId("tuxuuyilflq")
                             .withPrincipalId("quvre"))))
-                .withProperties(
-                    new GlobalRulestackResourceUpdateProperties().withPanEtag("jztczytqj").withPanLocation("h")
-                        .withScope(ScopeType.GLOBAL).withAssociatedSubscriptions(Arrays.asList("prnjletlxsmr", "ddoui"))
-                        .withDescription("mowaziynknlqwzdv").withDefaultMode(DefaultMode.FIREWALL)
-                        .withMinAppIdVersion("xqszdtmaajquh")
-                        .withSecurityServices(new SecurityServices().withVulnerabilityProfile("lrjvmtyg")
-                            .withAntiSpywareProfile("mzyospspshck").withAntiVirusProfile("yjpmspbpssdfppyo")
-                            .withUrlFilteringProfile("ieyujtvc").withFileBlockingProfile("cnyxrxmunjd")
-                            .withDnsSubscription("glnkvxlxpagl").withOutboundUnTrustCertificate("vbgkcvkhpzv")
-                            .withOutboundTrustCertificate("d"))),
+                .withProperties(new GlobalRulestackResourceUpdateProperties().withPanEtag("jztczytqj")
+                    .withPanLocation("h")
+                    .withScope(ScopeType.GLOBAL)
+                    .withAssociatedSubscriptions(Arrays.asList("prnjletlxsmr", "ddoui"))
+                    .withDescription("mowaziynknlqwzdv")
+                    .withDefaultMode(DefaultMode.FIREWALL)
+                    .withMinAppIdVersion("xqszdtmaajquh")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("lrjvmtyg")
+                        .withAntiSpywareProfile("mzyospspshck")
+                        .withAntiVirusProfile("yjpmspbpssdfppyo")
+                        .withUrlFilteringProfile("ieyujtvc")
+                        .withFileBlockingProfile("cnyxrxmunjd")
+                        .withDnsSubscription("glnkvxlxpagl")
+                        .withOutboundUnTrustCertificate("vbgkcvkhpzv")
+                        .withOutboundTrustCertificate("d"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

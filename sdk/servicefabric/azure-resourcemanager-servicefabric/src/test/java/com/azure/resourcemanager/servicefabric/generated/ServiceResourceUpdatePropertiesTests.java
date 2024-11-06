@@ -44,15 +44,26 @@ public final class ServiceResourceUpdatePropertiesTests {
                 new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
                     .withServiceName("waezkojvd")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("foqouicybx").withWeight(ServiceLoadMetricWeight.ZERO)
-                    .withPrimaryDefaultLoad(1685402148).withSecondaryDefaultLoad(1273142830)
+                new ServiceLoadMetricDescription().withName("foqouicybx")
+                    .withWeight(ServiceLoadMetricWeight.ZERO)
+                    .withPrimaryDefaultLoad(1685402148)
+                    .withSecondaryDefaultLoad(1273142830)
                     .withDefaultLoad(1813944379),
-                new ServiceLoadMetricDescription().withName("x").withWeight(ServiceLoadMetricWeight.ZERO)
-                    .withPrimaryDefaultLoad(153808073).withSecondaryDefaultLoad(1015925448).withDefaultLoad(1109207713),
-                new ServiceLoadMetricDescription().withName("mciodhkhazxkhn").withWeight(ServiceLoadMetricWeight.MEDIUM)
-                    .withPrimaryDefaultLoad(1895789611).withSecondaryDefaultLoad(959916144).withDefaultLoad(332286671),
-                new ServiceLoadMetricDescription().withName("egokdwbwhkszzcmr").withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(648975494).withSecondaryDefaultLoad(465027307).withDefaultLoad(1159944878)))
+                new ServiceLoadMetricDescription().withName("x")
+                    .withWeight(ServiceLoadMetricWeight.ZERO)
+                    .withPrimaryDefaultLoad(153808073)
+                    .withSecondaryDefaultLoad(1015925448)
+                    .withDefaultLoad(1109207713),
+                new ServiceLoadMetricDescription().withName("mciodhkhazxkhn")
+                    .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                    .withPrimaryDefaultLoad(1895789611)
+                    .withSecondaryDefaultLoad(959916144)
+                    .withDefaultLoad(332286671),
+                new ServiceLoadMetricDescription().withName("egokdwbwhkszzcmr")
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(648975494)
+                    .withSecondaryDefaultLoad(465027307)
+                    .withDefaultLoad(1159944878)))
             .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription(),
                 new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
             .withDefaultMoveCost(MoveCost.ZERO);

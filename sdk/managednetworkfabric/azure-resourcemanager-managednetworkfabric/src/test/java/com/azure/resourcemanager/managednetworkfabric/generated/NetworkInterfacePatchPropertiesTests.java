@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfacePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfacePatchProperties model =
-            BinaryData.fromString("{\"annotation\":\"yqhfnkv\"}").toObject(NetworkInterfacePatchProperties.class);
+        NetworkInterfacePatchProperties model
+            = BinaryData.fromString("{\"annotation\":\"yqhfnkv\"}").toObject(NetworkInterfacePatchProperties.class);
         Assertions.assertEquals("yqhfnkv", model.annotation());
     }
 

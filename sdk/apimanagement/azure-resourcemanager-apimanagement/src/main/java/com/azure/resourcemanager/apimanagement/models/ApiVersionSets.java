@@ -37,8 +37,8 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Version Set list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiVersionSetContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<ApiVersionSetContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
@@ -52,8 +52,8 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Api Version Set specified by its identifier.
      */
-    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, Context context);
+    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String versionSetId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
@@ -79,8 +79,8 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Api Version Set specified by its identifier.
      */
-    Response<ApiVersionSetContract> getWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, Context context);
+    Response<ApiVersionSetContract> getWithResponse(String resourceGroupName, String serviceName, String versionSetId,
+        Context context);
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
@@ -109,8 +109,8 @@ public interface ApiVersionSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String versionSetId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Api Version Set.

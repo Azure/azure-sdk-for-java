@@ -52,18 +52,18 @@ public final class ShareServiceSasQueryParameters extends BaseSasQueryParameters
         super(queryParamsMap, removeSasParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
             removeSasParametersFromMap);
-        this.resource = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE,
-            removeSasParametersFromMap);
-        this.cacheControl = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL,
-            removeSasParametersFromMap);
+        this.resource
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_RESOURCE, removeSasParametersFromMap);
+        this.cacheControl
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CACHE_CONTROL, removeSasParametersFromMap);
         this.contentDisposition = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
             removeSasParametersFromMap);
         this.contentEncoding = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_ENCODING,
             removeSasParametersFromMap);
         this.contentLanguage = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
             removeSasParametersFromMap);
-        this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
-            removeSasParametersFromMap);
+        this.contentType
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE, removeSasParametersFromMap);
     }
 
     /**

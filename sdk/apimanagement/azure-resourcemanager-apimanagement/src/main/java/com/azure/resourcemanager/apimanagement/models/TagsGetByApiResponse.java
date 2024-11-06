@@ -20,11 +20,7 @@ public final class TagsGetByApiResponse extends ResponseBase<TagsGetByApiHeaders
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TagsGetByApiResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        TagContractInner value,
+    public TagsGetByApiResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, TagContractInner value,
         TagsGetByApiHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

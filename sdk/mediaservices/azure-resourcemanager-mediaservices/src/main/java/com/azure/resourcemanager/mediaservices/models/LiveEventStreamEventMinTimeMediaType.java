@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The media type of the smaller timestamp of two fragments compared. */
+/**
+ * The media type of the smaller timestamp of two fragments compared.
+ */
 public final class LiveEventStreamEventMinTimeMediaType
     extends ExpandableStringEnum<LiveEventStreamEventMinTimeMediaType> {
-    /** Static value Audio for LiveEventStreamEventMinTimeMediaType. */
+    /**
+     * Static value Audio for LiveEventStreamEventMinTimeMediaType.
+     */
     public static final LiveEventStreamEventMinTimeMediaType AUDIO = fromString("Audio");
 
-    /** Static value Video for LiveEventStreamEventMinTimeMediaType. */
+    /**
+     * Static value Video for LiveEventStreamEventMinTimeMediaType.
+     */
     public static final LiveEventStreamEventMinTimeMediaType VIDEO = fromString("Video");
 
     /**
      * Creates a new instance of LiveEventStreamEventMinTimeMediaType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class LiveEventStreamEventMinTimeMediaType
 
     /**
      * Creates or finds a LiveEventStreamEventMinTimeMediaType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LiveEventStreamEventMinTimeMediaType.
      */
-    @JsonCreator
     public static LiveEventStreamEventMinTimeMediaType fromString(String name) {
         return fromString(name, LiveEventStreamEventMinTimeMediaType.class);
     }
 
     /**
      * Gets known LiveEventStreamEventMinTimeMediaType values.
-     *
+     * 
      * @return known LiveEventStreamEventMinTimeMediaType values.
      */
     public static Collection<LiveEventStreamEventMinTimeMediaType> values() {

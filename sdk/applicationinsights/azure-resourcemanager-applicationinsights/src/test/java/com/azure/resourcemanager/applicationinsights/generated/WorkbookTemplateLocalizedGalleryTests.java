@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookTemplateLocalizedGalleryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookTemplateLocalizedGallery model =
-            BinaryData
-                .fromString(
-                    "{\"templateData\":\"datakvugfhzovawjvzun\",\"galleries\":[{\"name\":\"nnprn\",\"category\":\"peilpjzuaejxdu\",\"type\":\"skzbb\",\"order\":538368150,\"resourceType\":\"mv\"},{\"name\":\"kgpwoz\",\"category\":\"kfpbs\",\"type\":\"ofd\",\"order\":519560547,\"resourceType\":\"sd\"}]}")
-                .toObject(WorkbookTemplateLocalizedGallery.class);
+        WorkbookTemplateLocalizedGallery model = BinaryData.fromString(
+            "{\"templateData\":\"datakvugfhzovawjvzun\",\"galleries\":[{\"name\":\"nnprn\",\"category\":\"peilpjzuaejxdu\",\"type\":\"skzbb\",\"order\":538368150,\"resourceType\":\"mv\"},{\"name\":\"kgpwoz\",\"category\":\"kfpbs\",\"type\":\"ofd\",\"order\":519560547,\"resourceType\":\"sd\"}]}")
+            .toObject(WorkbookTemplateLocalizedGallery.class);
         Assertions.assertEquals("nnprn", model.galleries().get(0).name());
         Assertions.assertEquals("peilpjzuaejxdu", model.galleries().get(0).category());
         Assertions.assertEquals("skzbb", model.galleries().get(0).type());
@@ -27,24 +25,19 @@ public final class WorkbookTemplateLocalizedGalleryTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookTemplateLocalizedGallery model =
-            new WorkbookTemplateLocalizedGallery()
-                .withTemplateData("datakvugfhzovawjvzun")
-                .withGalleries(
-                    Arrays
-                        .asList(
-                            new WorkbookTemplateGallery()
-                                .withName("nnprn")
-                                .withCategory("peilpjzuaejxdu")
-                                .withType("skzbb")
-                                .withOrder(538368150)
-                                .withResourceType("mv"),
-                            new WorkbookTemplateGallery()
-                                .withName("kgpwoz")
-                                .withCategory("kfpbs")
-                                .withType("ofd")
-                                .withOrder(519560547)
-                                .withResourceType("sd")));
+        WorkbookTemplateLocalizedGallery model
+            = new WorkbookTemplateLocalizedGallery().withTemplateData("datakvugfhzovawjvzun")
+                .withGalleries(Arrays.asList(
+                    new WorkbookTemplateGallery().withName("nnprn")
+                        .withCategory("peilpjzuaejxdu")
+                        .withType("skzbb")
+                        .withOrder(538368150)
+                        .withResourceType("mv"),
+                    new WorkbookTemplateGallery().withName("kgpwoz")
+                        .withCategory("kfpbs")
+                        .withType("ofd")
+                        .withOrder(519560547)
+                        .withResourceType("sd")));
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateLocalizedGallery.class);
         Assertions.assertEquals("nnprn", model.galleries().get(0).name());
         Assertions.assertEquals("peilpjzuaejxdu", model.galleries().get(0).category());

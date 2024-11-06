@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentWithOSConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentWithOSConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"configurationType\":\"DeploymentWithOSConfig\",\"appLocation\":\"dxtqmieoxo\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"gufhyaomtbg\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"},\"osSapConfiguration\":{\"deployerVmPackages\":{\"url\":\"rvk\",\"storageAccountId\":\"ovjzhpjbibgjmfx\"},\"sapFqdn\":\"vfcluyovwxnbkfe\"}}")
-                .toObject(DeploymentWithOSConfiguration.class);
+        DeploymentWithOSConfiguration model = BinaryData.fromString(
+            "{\"configurationType\":\"DeploymentWithOSConfig\",\"appLocation\":\"dxtqmieoxo\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"gufhyaomtbg\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"},\"osSapConfiguration\":{\"deployerVmPackages\":{\"url\":\"rvk\",\"storageAccountId\":\"ovjzhpjbibgjmfx\"},\"sapFqdn\":\"vfcluyovwxnbkfe\"}}")
+            .toObject(DeploymentWithOSConfiguration.class);
         Assertions.assertEquals("dxtqmieoxo", model.appLocation());
         Assertions.assertEquals("gufhyaomtbg", model.infrastructureConfiguration().appResourceGroup());
         Assertions.assertEquals("rvk", model.osSapConfiguration().deployerVmPackages().url());
@@ -29,16 +27,12 @@ public final class DeploymentWithOSConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentWithOSConfiguration model =
-            new DeploymentWithOSConfiguration()
-                .withAppLocation("dxtqmieoxo")
-                .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("gufhyaomtbg"))
-                .withSoftwareConfiguration(new SoftwareConfiguration())
-                .withOsSapConfiguration(
-                    new OsSapConfiguration()
-                        .withDeployerVmPackages(
-                            new DeployerVmPackages().withUrl("rvk").withStorageAccountId("ovjzhpjbibgjmfx"))
-                        .withSapFqdn("vfcluyovwxnbkfe"));
+        DeploymentWithOSConfiguration model = new DeploymentWithOSConfiguration().withAppLocation("dxtqmieoxo")
+            .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("gufhyaomtbg"))
+            .withSoftwareConfiguration(new SoftwareConfiguration())
+            .withOsSapConfiguration(new OsSapConfiguration()
+                .withDeployerVmPackages(new DeployerVmPackages().withUrl("rvk").withStorageAccountId("ovjzhpjbibgjmfx"))
+                .withSapFqdn("vfcluyovwxnbkfe"));
         model = BinaryData.fromObject(model).toObject(DeploymentWithOSConfiguration.class);
         Assertions.assertEquals("dxtqmieoxo", model.appLocation());
         Assertions.assertEquals("gufhyaomtbg", model.infrastructureConfiguration().appResourceGroup());

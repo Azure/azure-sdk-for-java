@@ -22,7 +22,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,24 +100,26 @@ public final class ManageInternalLoadBalancer {
         final String vmName3 = Utils.randomResourceName(azureResourceManager, "lVM3", 24);
         final String vmName4 = Utils.randomResourceName(azureResourceManager, "lVM4", 24);
         final String userName = "tirekicker";
-        final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String sshKey
+            = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
         try {
 
             //=============================================================
             // Create a virtual network with a frontend and a backend subnets
             System.out.println("Creating virtual network with a frontend and a backend subnets...");
 
-            Network network = azureResourceManager.networks().define(vnetName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("172.16.0.0/16")
-                    .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
-                    .defineSubnet("Back-end")
-                    .withAddressPrefix("172.16.3.0/24")
-                    .attach()
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("172.16.0.0/16")
+                .defineSubnet("Front-end")
+                .withAddressPrefix("172.16.1.0/24")
+                .attach()
+                .defineSubnet("Back-end")
+                .withAddressPrefix("172.16.3.0/24")
+                .attach()
+                .create();
 
             System.out.println("Created a virtual network");
             // Print the virtual network details
@@ -139,70 +141,71 @@ public final class ManageInternalLoadBalancer {
             System.out.println("Creating an internal facing load balancer with ...");
             System.out.println("- A private IP address");
             System.out.println("- One backend address pool which contain network interfaces for the virtual\n"
-                    + "  machines to receive 1521 network traffic from the load balancer");
+                + "  machines to receive 1521 network traffic from the load balancer");
             System.out.println("- One load balancing rules for 1521 to map public ports on the load\n"
-                    + "  balancer to ports in the backend address pool");
+                + "  balancer to ports in the backend address pool");
             System.out.println("- One probe which contains HTTP health probe used to check availability\n"
-                    + "  of virtual machines in the backend address pool");
+                + "  of virtual machines in the backend address pool");
             System.out.println("- Two inbound NAT rules which contain rules that map a port on the load\n"
-                    + "  balancer to a port for a specific virtual machine in the backend address pool\n"
-                    + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
+                + "  balancer to a port for a specific virtual machine in the backend address pool\n"
+                + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-            LoadBalancer loadBalancer3 = azureResourceManager.loadBalancers().define(loadBalancerName3)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
+            LoadBalancer loadBalancer3 = azureResourceManager.loadBalancers()
+                .define(loadBalancerName3)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
 
-                    // Add one rule that uses above backend and probe
-                    .defineLoadBalancingRule(tcpLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(orcaleSQLNodePort)
-                    .toBackend(backendPoolName3)
-                    .withProbe(httpProbe)
-                    .attach()
+                // Add one rule that uses above backend and probe
+                .defineLoadBalancingRule(tcpLoadBalancingRule)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(orcaleSQLNodePort)
+                .toBackend(backendPoolName3)
+                .withProbe(httpProbe)
+                .attach()
 
-                    // Add two nat pools to enable direct VM connectivity for
-                    //  SSH to port 22 and TELNET to port 23
-                    .defineInboundNatRule(natRule6000to22forVM3)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6000)
-                    .toBackendPort(22)
-                    .attach()
+                // Add two nat pools to enable direct VM connectivity for
+                //  SSH to port 22 and TELNET to port 23
+                .defineInboundNatRule(natRule6000to22forVM3)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6000)
+                .toBackendPort(22)
+                .attach()
 
-                    .defineInboundNatRule(natRule6001to23forVM3)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6001)
-                    .toBackendPort(23)
-                    .attach()
+                .defineInboundNatRule(natRule6001to23forVM3)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6001)
+                .toBackendPort(23)
+                .attach()
 
-                    .defineInboundNatRule(natRule6002to22forVM4)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6002)
-                    .toBackendPort(22)
-                    .attach()
+                .defineInboundNatRule(natRule6002to22forVM4)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6002)
+                .toBackendPort(22)
+                .attach()
 
-                    .defineInboundNatRule(natRule6003to23forVM4)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6003)
-                    .toBackendPort(23)
-                    .attach()
+                .defineInboundNatRule(natRule6003to23forVM4)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6003)
+                .toBackendPort(23)
+                .attach()
 
-                    // Explicitly define the frontend
-                    .definePrivateFrontend(privateFrontEndName)
-                    .withExistingSubnet(network, "Back-end")
-                    .withPrivateIpAddressStatic("172.16.3.5")
-                    .attach()
+                // Explicitly define the frontend
+                .definePrivateFrontend(privateFrontEndName)
+                .withExistingSubnet(network, "Back-end")
+                .withPrivateIpAddressStatic("172.16.3.5")
+                .attach()
 
-                    // Add one probes - one per rule
-                    .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
+                // Add one probes - one per rule
+                .defineHttpProbe("httpProbe")
+                .withRequestPath("/")
+                .attach()
 
-                    .create();
+                .create();
 
             // Print load balancer details
             System.out.println("Created an internal load balancer");
@@ -212,35 +215,38 @@ public final class ManageInternalLoadBalancer {
             // Define two network interfaces in the backend subnet
             // associate network interfaces to NAT rules, backend pools
 
-            Creatable<NetworkInterface> networkInterface3Creatable = azureResourceManager.networkInterfaces().define(networkInterfaceName3)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("Back-end")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
-                    .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6000to22forVM3)
-                    .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6001to23forVM3);
+            Creatable<NetworkInterface> networkInterface3Creatable = azureResourceManager.networkInterfaces()
+                .define(networkInterfaceName3)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("Back-end")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
+                .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6000to22forVM3)
+                .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6001to23forVM3);
 
-            Creatable<NetworkInterface> networkInterface4Creatable = azureResourceManager.networkInterfaces().define(networkInterfaceName4)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("Back-end")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
-                    .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6002to22forVM4)
-                    .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6003to23forVM4);
+            Creatable<NetworkInterface> networkInterface4Creatable = azureResourceManager.networkInterfaces()
+                .define(networkInterfaceName4)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("Back-end")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
+                .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6002to22forVM4)
+                .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6003to23forVM4);
 
             //=============================================================
             // Define an availability set
 
-            Creatable<AvailabilitySet> availSet2Definition = azureResourceManager.availabilitySets().define(availSetName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withFaultDomainCount(2)
-                    .withUpdateDomainCount(4)
-                    .withSku(AvailabilitySetSkuTypes.ALIGNED);
+            Creatable<AvailabilitySet> availSet2Definition = azureResourceManager.availabilitySets()
+                .define(availSetName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withFaultDomainCount(2)
+                .withUpdateDomainCount(4)
+                .withSku(AvailabilitySetSkuTypes.ALIGNED);
 
             //=============================================================
             // Create two virtual machines and assign network interfaces
@@ -250,34 +256,37 @@ public final class ManageInternalLoadBalancer {
 
             List<Creatable<VirtualMachine>> virtualMachineCreateables2 = new ArrayList<Creatable<VirtualMachine>>();
 
-            Creatable<VirtualMachine> virtualMachine3Creatable = azureResourceManager.virtualMachines().define(vmName3)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetworkInterface(networkInterface3Creatable)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .withNewAvailabilitySet(availSet2Definition);
+            Creatable<VirtualMachine> virtualMachine3Creatable = azureResourceManager.virtualMachines()
+                .define(vmName3)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetworkInterface(networkInterface3Creatable)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshKey)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withNewAvailabilitySet(availSet2Definition);
 
             virtualMachineCreateables2.add(virtualMachine3Creatable);
 
-            Creatable<VirtualMachine> virtualMachine4Creatable = azureResourceManager.virtualMachines().define(vmName4)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetworkInterface(networkInterface4Creatable)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .withNewAvailabilitySet(availSet2Definition);
+            Creatable<VirtualMachine> virtualMachine4Creatable = azureResourceManager.virtualMachines()
+                .define(vmName4)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetworkInterface(networkInterface4Creatable)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshKey)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withNewAvailabilitySet(availSet2Definition);
 
             virtualMachineCreateables2.add(virtualMachine4Creatable);
 
             StopWatch stopwatch = new StopWatch();
             stopwatch.start();
 
-            Collection<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(virtualMachineCreateables2).values();
+            Collection<VirtualMachine> virtualMachines
+                = azureResourceManager.virtualMachines().create(virtualMachineCreateables2).values();
 
             stopwatch.stop();
             System.out.println("Created 2 Linux VMs: (took " + (stopwatch.getTime() / 1000) + " seconds) ");
@@ -296,13 +305,12 @@ public final class ManageInternalLoadBalancer {
             System.out.println("Updating the load balancer ...");
 
             loadBalancer3.update()
-                    .updateLoadBalancingRule(tcpLoadBalancingRule)
-                    .withIdleTimeoutInMinutes(15)
-                    .parent()
-                    .apply();
+                .updateLoadBalancingRule(tcpLoadBalancingRule)
+                .withIdleTimeoutInMinutes(15)
+                .parent()
+                .apply();
 
             System.out.println("Update the load balancer with a TCP idle timeout to 15 minutes");
-
 
             //=============================================================
             // Create another internal load balancer
@@ -320,70 +328,71 @@ public final class ManageInternalLoadBalancer {
             System.out.println("Creating another internal facing load balancer with ...");
             System.out.println("- A private IP address");
             System.out.println("- One backend address pool which contain network interfaces for the virtual\n"
-                    + "  machines to receive 1521 network traffic from the load balancer");
+                + "  machines to receive 1521 network traffic from the load balancer");
             System.out.println("- One load balancing rules for 1521 to map public ports on the load\n"
-                    + "  balancer to ports in the backend address pool");
+                + "  balancer to ports in the backend address pool");
             System.out.println("- One probe which contains HTTP health probe used to check availability\n"
-                    + "  of virtual machines in the backend address pool");
+                + "  of virtual machines in the backend address pool");
             System.out.println("- Two inbound NAT rules which contain rules that map a port on the load\n"
-                    + "  balancer to a port for a specific virtual machine in the backend address pool\n"
-                    + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
+                + "  balancer to a port for a specific virtual machine in the backend address pool\n"
+                + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-            LoadBalancer loadBalancer4 = azureResourceManager.loadBalancers().define(loadBalancerName4)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
+            LoadBalancer loadBalancer4 = azureResourceManager.loadBalancers()
+                .define(loadBalancerName4)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
 
-                    // Add one rule that uses above backend and probe
-                    .defineLoadBalancingRule(tcpLoadBalancingRule)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(orcaleSQLNodePort)
-                    .toBackend(backendPoolName3)
-                    .withProbe(httpProbe)
-                    .attach()
+                // Add one rule that uses above backend and probe
+                .defineLoadBalancingRule(tcpLoadBalancingRule)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(orcaleSQLNodePort)
+                .toBackend(backendPoolName3)
+                .withProbe(httpProbe)
+                .attach()
 
-                    // Add two nat pools to enable direct VM connectivity for
-                    //  SSH to port 22 and TELNET to port 23
-                    .defineInboundNatRule(natRule6000to22forVM3)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6000)
-                    .toBackendPort(22)
-                    .attach()
+                // Add two nat pools to enable direct VM connectivity for
+                //  SSH to port 22 and TELNET to port 23
+                .defineInboundNatRule(natRule6000to22forVM3)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6000)
+                .toBackendPort(22)
+                .attach()
 
-                    .defineInboundNatRule(natRule6001to23forVM3)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6001)
-                    .toBackendPort(23)
-                    .attach()
+                .defineInboundNatRule(natRule6001to23forVM3)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6001)
+                .toBackendPort(23)
+                .attach()
 
-                    .defineInboundNatRule(natRule6002to22forVM4)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6002)
-                    .toBackendPort(22)
-                    .attach()
+                .defineInboundNatRule(natRule6002to22forVM4)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6002)
+                .toBackendPort(22)
+                .attach()
 
-                    .defineInboundNatRule(natRule6003to23forVM4)
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(privateFrontEndName)
-                    .fromFrontendPort(6003)
-                    .toBackendPort(23)
-                    .attach()
+                .defineInboundNatRule(natRule6003to23forVM4)
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(privateFrontEndName)
+                .fromFrontendPort(6003)
+                .toBackendPort(23)
+                .attach()
 
-                    // Explicitly define the frontend
-                    .definePrivateFrontend(privateFrontEndName)
-                    .withExistingSubnet(network, "Back-end")
-                    .withPrivateIpAddressStatic("172.16.3.15")
-                    .attach()
+                // Explicitly define the frontend
+                .definePrivateFrontend(privateFrontEndName)
+                .withExistingSubnet(network, "Back-end")
+                .withPrivateIpAddressStatic("172.16.3.15")
+                .attach()
 
-                    // Add one probes - one per rule
-                    .defineHttpProbe("httpProbe")
-                    .withRequestPath("/")
-                    .attach()
+                // Add one probes - one per rule
+                .defineHttpProbe("httpProbe")
+                .withRequestPath("/")
+                .attach()
 
-                    .create();
+                .create();
 
             // Print load balancer details
             System.out.println("Created an internal load balancer");
@@ -401,12 +410,10 @@ public final class ManageInternalLoadBalancer {
                 System.out.println();
             }
 
-
             //=============================================================
             // Remove a load balancer
 
-            System.out.println("Deleting load balancer " + loadBalancerName4
-                    + "(" + loadBalancer4.id() + ")");
+            System.out.println("Deleting load balancer " + loadBalancerName4 + "(" + loadBalancer4.id() + ")");
             azureResourceManager.loadBalancers().deleteById(loadBalancer4.id());
             System.out.println("Deleted load balancer" + loadBalancerName4);
 
@@ -440,8 +447,7 @@ public final class ManageInternalLoadBalancer {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

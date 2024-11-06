@@ -52,10 +52,8 @@ public final class DigitalTwinsEndpointResourceInner extends ExternalResource {
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model DigitalTwinsEndpointResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model DigitalTwinsEndpointResourceInner"));
         } else {
             properties().validate();
         }

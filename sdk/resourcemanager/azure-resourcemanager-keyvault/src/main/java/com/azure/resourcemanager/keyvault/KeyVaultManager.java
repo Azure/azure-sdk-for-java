@@ -49,8 +49,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     public static KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return authenticate(
-            HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
@@ -81,19 +80,13 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return KeyVaultManager
-                .authenticate(
-                    buildHttpPipeline(credential, profile), profile);
+            return KeyVaultManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private KeyVaultManager(
-        final HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new KeyVaultManagementClientBuilder()
-                .pipeline(httpPipeline)
+    private KeyVaultManager(final HttpPipeline httpPipeline, AzureProfile profile) {
+        super(httpPipeline, profile,
+            new KeyVaultManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
@@ -117,12 +110,12 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
         return managedHsms;
     }
 
-//    /**
-//     * Creates a new RestClientBuilder instance from the RestClient used by Manager.
-//     *
-//     * @return the new RestClientBuilder instance created from the RestClient used by Manager
-//     */
-//    RestClientBuilder newRestClientBuilder() {
-//        return restClient.newBuilder();
-//    }
+    //    /**
+    //     * Creates a new RestClientBuilder instance from the RestClient used by Manager.
+    //     *
+    //     * @return the new RestClientBuilder instance created from the RestClient used by Manager
+    //     */
+    //    RestClientBuilder newRestClientBuilder() {
+    //        return restClient.newBuilder();
+    //    }
 }

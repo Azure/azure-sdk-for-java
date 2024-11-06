@@ -23,8 +23,8 @@ public interface ResourcePools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the resourcePool along with {@link Response}.
      */
-    Response<ResourcePool> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourcePoolName, Context context);
+    Response<ResourcePool> getByResourceGroupWithResponse(String resourceGroupName, String resourcePoolName,
+        Context context);
 
     /**
      * Gets a resourcePool.

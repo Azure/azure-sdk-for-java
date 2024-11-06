@@ -14,8 +14,8 @@ public final class DiagnoseVirtualNetworkResultImpl implements DiagnoseVirtualNe
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    DiagnoseVirtualNetworkResultImpl(
-        DiagnoseVirtualNetworkResultInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    DiagnoseVirtualNetworkResultImpl(DiagnoseVirtualNetworkResultInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

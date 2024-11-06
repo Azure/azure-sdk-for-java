@@ -68,14 +68,17 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject
-            = serviceManager.serviceClient().getCloudHsmClusterPrivateEndpointConnections().createWithResponse(
-                resourceGroupName, cloudHsmClusterName, peConnectionName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusterPrivateEndpointConnections()
+            .createWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnection create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusterPrivateEndpointConnections()
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusterPrivateEndpointConnections()
             .createWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, this.innerModel(), context)
             .getValue();
         return this;
@@ -89,14 +92,18 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusterPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusterPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnection refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCloudHsmClusterPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCloudHsmClusterPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, context)
+            .getValue();
         return this;
     }
 

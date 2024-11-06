@@ -9,10 +9,7 @@ module com.azure.communication.chat {
     exports com.azure.communication.chat;
     exports com.azure.communication.chat.models;
 
-    opens com.azure.communication.chat
-        to com.fasterxml.jackson.databind;
-    opens com.azure.communication.chat.models
-        to com.fasterxml.jackson.databind;
-    opens com.azure.communication.chat.implementation.models
-        to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.communication.chat to com.azure.core;
+    opens com.azure.communication.chat.models to com.azure.core;
+    opens com.azure.communication.chat.implementation.models to com.azure.core;
 }

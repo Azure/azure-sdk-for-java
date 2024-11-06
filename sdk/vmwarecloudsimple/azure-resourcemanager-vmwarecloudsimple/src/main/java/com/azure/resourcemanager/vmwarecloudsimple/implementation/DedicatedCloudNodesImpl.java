@@ -21,8 +21,7 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public DedicatedCloudNodesImpl(
-        DedicatedCloudNodesClient innerClient,
+    public DedicatedCloudNodesImpl(DedicatedCloudNodesClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,35 +29,32 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
 
     public PagedIterable<DedicatedCloudNode> list() {
         PagedIterable<DedicatedCloudNodeInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCloudNode> list(String filter, Integer top, String skipToken, Context context) {
         PagedIterable<DedicatedCloudNodeInner> inner = this.serviceClient().list(filter, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCloudNode> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DedicatedCloudNodeInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DedicatedCloudNode> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context) {
-        PagedIterable<DedicatedCloudNodeInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
+    public PagedIterable<DedicatedCloudNode> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        String skipToken, Context context) {
+        PagedIterable<DedicatedCloudNodeInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudNodeImpl(inner1, this.manager()));
     }
 
-    public Response<DedicatedCloudNode> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudNodeName, Context context) {
-        Response<DedicatedCloudNodeInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
+    public Response<DedicatedCloudNode> getByResourceGroupWithResponse(String resourceGroupName,
+        String dedicatedCloudNodeName, Context context) {
+        Response<DedicatedCloudNodeInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DedicatedCloudNodeImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -66,8 +62,8 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
     }
 
     public DedicatedCloudNode getByResourceGroup(String resourceGroupName, String dedicatedCloudNodeName) {
-        DedicatedCloudNodeInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudNodeName);
+        DedicatedCloudNodeInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudNodeName);
         if (inner != null) {
             return new DedicatedCloudNodeImpl(inner, this.manager());
         } else {
@@ -75,8 +71,8 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudNodeName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String dedicatedCloudNodeName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
     }
 
@@ -85,85 +81,57 @@ public final class DedicatedCloudNodesImpl implements DedicatedCloudNodes {
     }
 
     public DedicatedCloudNode getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
+        String dedicatedCloudNodeName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE).getValue();
     }
 
     public Response<DedicatedCloudNode> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
+        String dedicatedCloudNodeName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
+        String dedicatedCloudNodeName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudNodeName = Utils.getValueFromIdByName(id, "dedicatedCloudNodes");
+        String dedicatedCloudNodeName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudNodes");
         if (dedicatedCloudNodeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudNodes'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, dedicatedCloudNodeName, context);
     }

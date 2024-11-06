@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringReceivedRouteInner;
 
-/** An instance of this class provides access to all the operations defined in ReceivedRoutesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReceivedRoutesClient.
+ */
 public interface ReceivedRoutesClient {
     /**
      * Lists the prefixes received over the specified peering under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface ReceivedRoutesClient {
 
     /**
      * Lists the prefixes received over the specified peering under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param prefix The optional prefix that can be used to filter the routes.
@@ -42,13 +44,6 @@ public interface ReceivedRoutesClient {
      * @return the paginated list of received routes for the peering as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PeeringReceivedRouteInner> listByPeering(
-        String resourceGroupName,
-        String peeringName,
-        String prefix,
-        String asPath,
-        String originAsValidationState,
-        String rpkiValidationState,
-        String skipToken,
-        Context context);
+    PagedIterable<PeeringReceivedRouteInner> listByPeering(String resourceGroupName, String peeringName, String prefix,
+        String asPath, String originAsValidationState, String rpkiValidationState, String skipToken, Context context);
 }

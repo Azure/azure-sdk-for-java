@@ -25,8 +25,7 @@ class SrvRecordSetsImpl extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSet
 
     @Override
     public Mono<SrvRecordSet> getByNameAsync(String name) {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
@@ -36,31 +35,21 @@ class SrvRecordSetsImpl extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSet
 
     @Override
     protected PagedIterable<SrvRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
-        return super
-            .wrapList(
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getRecordSets()
-                    .listByType(
-                        this.dnsZone.resourceGroupName(),
-                        this.dnsZone.name(),
-                        this.recordType,
-                        pageSize,
-                        recordSetNameSuffix,
-                        Context.NONE));
+        return super.wrapList(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType, pageSize,
+                recordSetNameSuffix, Context.NONE));
     }
 
     @Override
     protected PagedFlux<SrvRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
-        return wrapPageAsync(
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getRecordSets()
-                .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
+        return wrapPageAsync(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
     @Override

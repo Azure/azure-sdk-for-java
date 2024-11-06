@@ -224,33 +224,17 @@ public interface ApiContract {
          * The stage of the ApiContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithValue,
-                DefinitionStages.WithFormat,
-                DefinitionStages.WithWsdlSelector,
-                DefinitionStages.WithSoapApiType,
-                DefinitionStages.WithTranslateRequiredQueryParametersConduct,
-                DefinitionStages.WithSourceApiId,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithServiceUrl,
-                DefinitionStages.WithPath,
-                DefinitionStages.WithProtocols,
-                DefinitionStages.WithApiVersionSet,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithAuthenticationSettings,
-                DefinitionStages.WithSubscriptionKeyParameterNames,
-                DefinitionStages.WithApiType,
-                DefinitionStages.WithApiRevision,
-                DefinitionStages.WithApiVersion,
-                DefinitionStages.WithIsCurrent,
-                DefinitionStages.WithApiRevisionDescription,
-                DefinitionStages.WithApiVersionDescription,
-                DefinitionStages.WithApiVersionSetId,
-                DefinitionStages.WithSubscriptionRequired,
-                DefinitionStages.WithTermsOfServiceUrl,
-                DefinitionStages.WithContact,
-                DefinitionStages.WithLicense,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithValue, DefinitionStages.WithFormat,
+            DefinitionStages.WithWsdlSelector, DefinitionStages.WithSoapApiType,
+            DefinitionStages.WithTranslateRequiredQueryParametersConduct, DefinitionStages.WithSourceApiId,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithServiceUrl, DefinitionStages.WithPath,
+            DefinitionStages.WithProtocols, DefinitionStages.WithApiVersionSet, DefinitionStages.WithDescription,
+            DefinitionStages.WithAuthenticationSettings, DefinitionStages.WithSubscriptionKeyParameterNames,
+            DefinitionStages.WithApiType, DefinitionStages.WithApiRevision, DefinitionStages.WithApiVersion,
+            DefinitionStages.WithIsCurrent, DefinitionStages.WithApiRevisionDescription,
+            DefinitionStages.WithApiVersionDescription, DefinitionStages.WithApiVersionSetId,
+            DefinitionStages.WithSubscriptionRequired, DefinitionStages.WithTermsOfServiceUrl,
+            DefinitionStages.WithContact, DefinitionStages.WithLicense, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -431,8 +415,8 @@ public interface ApiContract {
              * @param subscriptionKeyParameterNames Protocols over which API is made available.
              * @return the next definition stage.
              */
-            WithCreate withSubscriptionKeyParameterNames(
-                SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
+            WithCreate
+                withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
         }
 
         /** The stage of the ApiContract definition allowing to specify apiType. */
@@ -583,26 +567,13 @@ public interface ApiContract {
     ApiContract.Update update();
 
     /** The template for ApiContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithServiceUrl,
-            UpdateStages.WithPath,
-            UpdateStages.WithProtocols,
-            UpdateStages.WithDescription,
-            UpdateStages.WithAuthenticationSettings,
-            UpdateStages.WithSubscriptionKeyParameterNames,
-            UpdateStages.WithApiType,
-            UpdateStages.WithApiRevision,
-            UpdateStages.WithApiVersion,
-            UpdateStages.WithIsCurrent,
-            UpdateStages.WithApiRevisionDescription,
-            UpdateStages.WithApiVersionDescription,
-            UpdateStages.WithApiVersionSetId,
-            UpdateStages.WithSubscriptionRequired,
-            UpdateStages.WithTermsOfServiceUrl,
-            UpdateStages.WithContact,
-            UpdateStages.WithLicense,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithServiceUrl, UpdateStages.WithPath,
+        UpdateStages.WithProtocols, UpdateStages.WithDescription, UpdateStages.WithAuthenticationSettings,
+        UpdateStages.WithSubscriptionKeyParameterNames, UpdateStages.WithApiType, UpdateStages.WithApiRevision,
+        UpdateStages.WithApiVersion, UpdateStages.WithIsCurrent, UpdateStages.WithApiRevisionDescription,
+        UpdateStages.WithApiVersionDescription, UpdateStages.WithApiVersionSetId, UpdateStages.WithSubscriptionRequired,
+        UpdateStages.WithTermsOfServiceUrl, UpdateStages.WithContact, UpdateStages.WithLicense,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -701,8 +672,8 @@ public interface ApiContract {
              * @param subscriptionKeyParameterNames Protocols over which API is made available.
              * @return the next definition stage.
              */
-            Update withSubscriptionKeyParameterNames(
-                SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
+            Update
+                withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
         }
 
         /** The stage of the ApiContract update allowing to specify apiType. */

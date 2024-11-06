@@ -18,14 +18,8 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for NamespaceAuthorizationRules.
  */
-class NamespaceAuthorizationRulesImpl
-    extends ServiceBusChildResourcesImpl<
-        NamespaceAuthorizationRule,
-        NamespaceAuthorizationRuleImpl,
-        SBAuthorizationRuleInner,
-        NamespacesClient,
-        ServiceBusManager,
-        ServiceBusNamespace>
+class NamespaceAuthorizationRulesImpl extends
+    ServiceBusChildResourcesImpl<NamespaceAuthorizationRule, NamespaceAuthorizationRuleImpl, SBAuthorizationRuleInner, NamespacesClient, ServiceBusManager, ServiceBusNamespace>
     implements NamespaceAuthorizationRules {
     private final String resourceGroupName;
     private final String namespaceName;
@@ -33,10 +27,8 @@ class NamespaceAuthorizationRulesImpl
 
     private final ClientLogger logger = new ClientLogger(NamespaceAuthorizationRulesImpl.class);
 
-    NamespaceAuthorizationRulesImpl(String resourceGroupName,
-                                    String namespaceName,
-                                    Region region,
-                                    ServiceBusManager manager) {
+    NamespaceAuthorizationRulesImpl(String resourceGroupName, String namespaceName, Region region,
+        ServiceBusManager manager) {
         super(manager.serviceClient().getNamespaces(), manager);
         this.resourceGroupName = resourceGroupName;
         this.namespaceName = namespaceName;
@@ -65,32 +57,23 @@ class NamespaceAuthorizationRulesImpl
 
     @Override
     protected PagedIterable<SBAuthorizationRuleInner> listInner() {
-        return this.innerModel().listAuthorizationRules(this.resourceGroupName,
-                this.namespaceName);
+        return this.innerModel().listAuthorizationRules(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(String name) {
-        return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
-                this.namespaceName,
-                name,
-                new SBAuthorizationRuleInner(),
-                this.manager());
+        return new NamespaceAuthorizationRuleImpl(this.resourceGroupName, this.namespaceName, name,
+            new SBAuthorizationRuleInner(), this.manager());
     }
-
 
     @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(SBAuthorizationRuleInner inner) {
         if (inner == null) {
             return null;
         }
-        return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
-                this.namespaceName,
-                inner.name(),
-                inner,
-                this.manager());
+        return new NamespaceAuthorizationRuleImpl(this.resourceGroupName, this.namespaceName, inner.name(), inner,
+            this.manager());
     }
-
 
     @Override
     public PagedIterable<NamespaceAuthorizationRule> listByParent(String resourceGroupName, String parentName) {

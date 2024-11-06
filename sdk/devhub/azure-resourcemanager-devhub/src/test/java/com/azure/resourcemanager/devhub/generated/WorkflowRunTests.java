@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowRunTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowRun model =
-            BinaryData
-                .fromString(
-                    "{\"succeeded\":true,\"workflowRunURL\":\"fcyddg\",\"lastRunAt\":\"2021-08-14T20:27:10Z\",\"workflowRunStatus\":\"inprogress\"}")
-                .toObject(WorkflowRun.class);
+        WorkflowRun model = BinaryData.fromString(
+            "{\"succeeded\":false,\"workflowRunURL\":\"xzlocxscp\",\"lastRunAt\":\"2021-01-30T19:49:48Z\",\"workflowRunStatus\":\"inprogress\"}")
+            .toObject(WorkflowRun.class);
         Assertions.assertEquals(WorkflowRunStatus.INPROGRESS, model.workflowRunStatus());
     }
 

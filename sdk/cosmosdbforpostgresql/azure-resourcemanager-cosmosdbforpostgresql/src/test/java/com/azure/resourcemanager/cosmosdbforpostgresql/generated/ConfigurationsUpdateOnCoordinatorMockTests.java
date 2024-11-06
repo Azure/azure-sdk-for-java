@@ -45,12 +45,14 @@ public final class ConfigurationsUpdateOnCoordinatorMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServerConfiguration response = manager.configurations().updateOnCoordinator("mifthnzdnd", "l", "nayqi",
-            new ServerConfigurationInner().withValue("nduhavhqlkthum"), com.azure.core.util.Context.NONE);
+        ServerConfiguration response = manager.configurations()
+            .updateOnCoordinator("mifthnzdnd", "l", "nayqi", new ServerConfigurationInner().withValue("nduhavhqlkthum"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("rsc", response.value());
     }

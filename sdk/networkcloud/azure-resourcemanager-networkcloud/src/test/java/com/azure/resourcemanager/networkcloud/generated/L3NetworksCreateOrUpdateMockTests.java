@@ -36,52 +36,40 @@ public final class L3NetworksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"cqoccq\",\"type\":\"qxwetjtd\"},\"properties\":{\"associatedResourceIds\":[\"tfdoadtx\"],\"clusterId\":\"ge\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"k\",\"hybridAksClustersAssociatedIds\":[\"gssz\",\"vctkbbx\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"ir\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"abvoyngsuxxcz\",\"ipv6ConnectedPrefix\":\"yqjoghdsa\",\"l3IsolationDomainId\":\"djanormo\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"rntu\"],\"vlan\":4317600423711221201},\"location\":\"lu\",\"tags\":{\"jue\":\"mhdeeljslkyozdsf\",\"jtv\":\"rhrhtsl\",\"xvgjbfi\":\"j\"},\"id\":\"bpnjodf\",\"name\":\"bj\",\"type\":\"qwm\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"cqoccq\",\"type\":\"qxwetjtd\"},\"properties\":{\"associatedResourceIds\":[\"tfdoadtx\"],\"clusterId\":\"ge\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"k\",\"hybridAksClustersAssociatedIds\":[\"gssz\",\"vctkbbx\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"ir\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"abvoyngsuxxcz\",\"ipv6ConnectedPrefix\":\"yqjoghdsa\",\"l3IsolationDomainId\":\"djanormo\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"rntu\"],\"vlan\":4317600423711221201},\"location\":\"lu\",\"tags\":{\"jue\":\"mhdeeljslkyozdsf\",\"jtv\":\"rhrhtsl\",\"xvgjbfi\":\"j\"},\"id\":\"bpnjodf\",\"name\":\"bj\",\"type\":\"qwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        L3Network response =
-            manager
-                .l3Networks()
-                .define("mdtff")
-                .withRegion("hscozawmvgxsmpk")
-                .withExistingResourceGroup("azrhxudd")
-                .withExtendedLocation(new ExtendedLocation().withName("sjmrkkhm").withType("dmdlgyqixokw"))
-                .withL3IsolationDomainId("uowyrnskbyhqu")
-                .withVlan(4661928250048503661L)
-                .withTags(mapOf("wxqouoxudnmc", "irfljf", "oqueqihkkyowltj", "aprhknqiijgencdg"))
-                .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("t")
-                .withIpAllocationType(IpAllocationType.IPV4)
-                .withIpv4ConnectedPrefix("cyanrfvqtvkhgv")
-                .withIpv6ConnectedPrefix("gxkfnaoaqymhccto")
-                .create();
+        L3Network response = manager.l3Networks()
+            .define("mdtff")
+            .withRegion("hscozawmvgxsmpk")
+            .withExistingResourceGroup("azrhxudd")
+            .withExtendedLocation(new ExtendedLocation().withName("sjmrkkhm").withType("dmdlgyqixokw"))
+            .withL3IsolationDomainId("uowyrnskbyhqu")
+            .withVlan(4661928250048503661L)
+            .withTags(mapOf("wxqouoxudnmc", "irfljf", "oqueqihkkyowltj", "aprhknqiijgencdg"))
+            .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
+            .withHybridAksPluginType(HybridAksPluginType.DPDK)
+            .withInterfaceName("t")
+            .withIpAllocationType(IpAllocationType.IPV4)
+            .withIpv4ConnectedPrefix("cyanrfvqtvkhgv")
+            .withIpv6ConnectedPrefix("gxkfnaoaqymhccto")
+            .create();
 
         Assertions.assertEquals("lu", response.location());
         Assertions.assertEquals("mhdeeljslkyozdsf", response.tags().get("jue"));

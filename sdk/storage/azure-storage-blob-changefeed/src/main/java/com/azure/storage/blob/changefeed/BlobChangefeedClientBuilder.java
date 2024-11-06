@@ -26,11 +26,11 @@ import java.util.Map;
  * {@link BlobChangefeedClient BlobChangefeedClients} and {@link BlobChangefeedAsyncClient BlobChangefeedAsyncClients}
  * when {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} are called respectively.
  */
-@ServiceClientBuilder(serviceClients = {BlobChangefeedClient.class, BlobChangefeedAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { BlobChangefeedClient.class, BlobChangefeedAsyncClient.class })
 public final class BlobChangefeedClientBuilder {
 
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
@@ -96,8 +96,7 @@ public final class BlobChangefeedClientBuilder {
      * @return a {@link BlobChangefeedAsyncClient} created from the configurations in this builder.
      */
     public BlobChangefeedAsyncClient buildAsyncClient() {
-        BlobContainerAsyncClient client = new BlobContainerClientBuilder()
-            .endpoint(accountUrl)
+        BlobContainerAsyncClient client = new BlobContainerClientBuilder().endpoint(accountUrl)
             .containerName(CHANGEFEED_CONTAINER_NAME)
             .pipeline(addBlobUserAgentModificationPolicy(pipeline))
             .serviceVersion(version)
@@ -122,8 +121,7 @@ public final class BlobChangefeedClientBuilder {
             }
         }
 
-        return new HttpPipelineBuilder()
-            .httpClient(pipeline.getHttpClient())
+        return new HttpPipelineBuilder().httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .tracer(pipeline.getTracer())
             .build();

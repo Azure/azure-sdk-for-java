@@ -46,11 +46,13 @@ public final class ApiVersionsCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApiVersion response = manager.apiVersions().define("bnhlmc")
+        ApiVersion response = manager.apiVersions()
+            .define("bnhlmc")
             .withExistingApi("wjygvjayvblmhvk", "uhbxvvy", "gsopbyrqufegxu", "wz")
             .withProperties(new ApiVersionProperties().withTitle("p").withLifecycleStage(LifecycleStage.PRODUCTION))
             .create();

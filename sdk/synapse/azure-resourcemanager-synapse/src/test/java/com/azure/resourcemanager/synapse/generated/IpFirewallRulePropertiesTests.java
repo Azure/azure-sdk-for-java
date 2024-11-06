@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IpFirewallRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpFirewallRuleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"endIpAddress\":\"zvgnwzs\",\"provisioningState\":\"Provisioning\",\"startIpAddress\":\"zufcyzkohdbi\"}")
-                .toObject(IpFirewallRuleProperties.class);
+        IpFirewallRuleProperties model = BinaryData.fromString(
+            "{\"endIpAddress\":\"zvgnwzs\",\"provisioningState\":\"Provisioning\",\"startIpAddress\":\"zufcyzkohdbi\"}")
+            .toObject(IpFirewallRuleProperties.class);
         Assertions.assertEquals("zvgnwzs", model.endIpAddress());
         Assertions.assertEquals("zufcyzkohdbi", model.startIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpFirewallRuleProperties model =
-            new IpFirewallRuleProperties().withEndIpAddress("zvgnwzs").withStartIpAddress("zufcyzkohdbi");
+        IpFirewallRuleProperties model
+            = new IpFirewallRuleProperties().withEndIpAddress("zvgnwzs").withStartIpAddress("zufcyzkohdbi");
         model = BinaryData.fromObject(model).toObject(IpFirewallRuleProperties.class);
         Assertions.assertEquals("zvgnwzs", model.endIpAddress());
         Assertions.assertEquals("zufcyzkohdbi", model.startIpAddress());

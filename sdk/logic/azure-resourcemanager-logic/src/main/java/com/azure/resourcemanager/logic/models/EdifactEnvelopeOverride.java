@@ -5,108 +5,101 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact envelope override settings. */
+/**
+ * The Edifact envelope override settings.
+ */
 @Fluent
-public final class EdifactEnvelopeOverride {
+public final class EdifactEnvelopeOverride implements JsonSerializable<EdifactEnvelopeOverride> {
     /*
      * The message id on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
      * The message version on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "messageVersion")
     private String messageVersion;
 
     /*
      * The message release version on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "messageRelease")
     private String messageRelease;
 
     /*
      * The message association assigned code.
      */
-    @JsonProperty(value = "messageAssociationAssignedCode")
     private String messageAssociationAssignedCode;
 
     /*
      * The target namespace on which this envelope settings has to be applied.
      */
-    @JsonProperty(value = "targetNamespace")
     private String targetNamespace;
 
     /*
      * The functional group id.
      */
-    @JsonProperty(value = "functionalGroupId")
     private String functionalGroupId;
 
     /*
      * The sender application qualifier.
      */
-    @JsonProperty(value = "senderApplicationQualifier")
     private String senderApplicationQualifier;
 
     /*
      * The sender application id.
      */
-    @JsonProperty(value = "senderApplicationId")
     private String senderApplicationId;
 
     /*
      * The receiver application qualifier.
      */
-    @JsonProperty(value = "receiverApplicationQualifier")
     private String receiverApplicationQualifier;
 
     /*
      * The receiver application id.
      */
-    @JsonProperty(value = "receiverApplicationId")
     private String receiverApplicationId;
 
     /*
      * The controlling agency code.
      */
-    @JsonProperty(value = "controllingAgencyCode")
     private String controllingAgencyCode;
 
     /*
      * The group header message version.
      */
-    @JsonProperty(value = "groupHeaderMessageVersion")
     private String groupHeaderMessageVersion;
 
     /*
      * The group header message release.
      */
-    @JsonProperty(value = "groupHeaderMessageRelease")
     private String groupHeaderMessageRelease;
 
     /*
      * The association assigned code.
      */
-    @JsonProperty(value = "associationAssignedCode")
     private String associationAssignedCode;
 
     /*
      * The application password.
      */
-    @JsonProperty(value = "applicationPassword")
     private String applicationPassword;
 
-    /** Creates an instance of EdifactEnvelopeOverride class. */
+    /**
+     * Creates an instance of EdifactEnvelopeOverride class.
+     */
     public EdifactEnvelopeOverride() {
     }
 
     /**
      * Get the messageId property: The message id on which this envelope settings has to be applied.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -115,7 +108,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the messageId property: The message id on which this envelope settings has to be applied.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -126,7 +119,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the messageVersion property: The message version on which this envelope settings has to be applied.
-     *
+     * 
      * @return the messageVersion value.
      */
     public String messageVersion() {
@@ -135,7 +128,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the messageVersion property: The message version on which this envelope settings has to be applied.
-     *
+     * 
      * @param messageVersion the messageVersion value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -146,7 +139,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the messageRelease property: The message release version on which this envelope settings has to be applied.
-     *
+     * 
      * @return the messageRelease value.
      */
     public String messageRelease() {
@@ -155,7 +148,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the messageRelease property: The message release version on which this envelope settings has to be applied.
-     *
+     * 
      * @param messageRelease the messageRelease value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -166,7 +159,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the messageAssociationAssignedCode property: The message association assigned code.
-     *
+     * 
      * @return the messageAssociationAssignedCode value.
      */
     public String messageAssociationAssignedCode() {
@@ -175,7 +168,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the messageAssociationAssignedCode property: The message association assigned code.
-     *
+     * 
      * @param messageAssociationAssignedCode the messageAssociationAssignedCode value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -186,7 +179,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the targetNamespace property: The target namespace on which this envelope settings has to be applied.
-     *
+     * 
      * @return the targetNamespace value.
      */
     public String targetNamespace() {
@@ -195,7 +188,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the targetNamespace property: The target namespace on which this envelope settings has to be applied.
-     *
+     * 
      * @param targetNamespace the targetNamespace value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -206,7 +199,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the functionalGroupId property: The functional group id.
-     *
+     * 
      * @return the functionalGroupId value.
      */
     public String functionalGroupId() {
@@ -215,7 +208,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the functionalGroupId property: The functional group id.
-     *
+     * 
      * @param functionalGroupId the functionalGroupId value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -226,7 +219,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the senderApplicationQualifier property: The sender application qualifier.
-     *
+     * 
      * @return the senderApplicationQualifier value.
      */
     public String senderApplicationQualifier() {
@@ -235,7 +228,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the senderApplicationQualifier property: The sender application qualifier.
-     *
+     * 
      * @param senderApplicationQualifier the senderApplicationQualifier value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -246,7 +239,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the senderApplicationId property: The sender application id.
-     *
+     * 
      * @return the senderApplicationId value.
      */
     public String senderApplicationId() {
@@ -255,7 +248,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the senderApplicationId property: The sender application id.
-     *
+     * 
      * @param senderApplicationId the senderApplicationId value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -266,7 +259,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the receiverApplicationQualifier property: The receiver application qualifier.
-     *
+     * 
      * @return the receiverApplicationQualifier value.
      */
     public String receiverApplicationQualifier() {
@@ -275,7 +268,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the receiverApplicationQualifier property: The receiver application qualifier.
-     *
+     * 
      * @param receiverApplicationQualifier the receiverApplicationQualifier value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -286,7 +279,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the receiverApplicationId property: The receiver application id.
-     *
+     * 
      * @return the receiverApplicationId value.
      */
     public String receiverApplicationId() {
@@ -295,7 +288,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the receiverApplicationId property: The receiver application id.
-     *
+     * 
      * @param receiverApplicationId the receiverApplicationId value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -306,7 +299,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the controllingAgencyCode property: The controlling agency code.
-     *
+     * 
      * @return the controllingAgencyCode value.
      */
     public String controllingAgencyCode() {
@@ -315,7 +308,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the controllingAgencyCode property: The controlling agency code.
-     *
+     * 
      * @param controllingAgencyCode the controllingAgencyCode value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -326,7 +319,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the groupHeaderMessageVersion property: The group header message version.
-     *
+     * 
      * @return the groupHeaderMessageVersion value.
      */
     public String groupHeaderMessageVersion() {
@@ -335,7 +328,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the groupHeaderMessageVersion property: The group header message version.
-     *
+     * 
      * @param groupHeaderMessageVersion the groupHeaderMessageVersion value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -346,7 +339,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the groupHeaderMessageRelease property: The group header message release.
-     *
+     * 
      * @return the groupHeaderMessageRelease value.
      */
     public String groupHeaderMessageRelease() {
@@ -355,7 +348,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the groupHeaderMessageRelease property: The group header message release.
-     *
+     * 
      * @param groupHeaderMessageRelease the groupHeaderMessageRelease value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -366,7 +359,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the associationAssignedCode property: The association assigned code.
-     *
+     * 
      * @return the associationAssignedCode value.
      */
     public String associationAssignedCode() {
@@ -375,7 +368,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the associationAssignedCode property: The association assigned code.
-     *
+     * 
      * @param associationAssignedCode the associationAssignedCode value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -386,7 +379,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Get the applicationPassword property: The application password.
-     *
+     * 
      * @return the applicationPassword value.
      */
     public String applicationPassword() {
@@ -395,7 +388,7 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Set the applicationPassword property: The application password.
-     *
+     * 
      * @param applicationPassword the applicationPassword value to set.
      * @return the EdifactEnvelopeOverride object itself.
      */
@@ -406,9 +399,87 @@ public final class EdifactEnvelopeOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("messageVersion", this.messageVersion);
+        jsonWriter.writeStringField("messageRelease", this.messageRelease);
+        jsonWriter.writeStringField("messageAssociationAssignedCode", this.messageAssociationAssignedCode);
+        jsonWriter.writeStringField("targetNamespace", this.targetNamespace);
+        jsonWriter.writeStringField("functionalGroupId", this.functionalGroupId);
+        jsonWriter.writeStringField("senderApplicationQualifier", this.senderApplicationQualifier);
+        jsonWriter.writeStringField("senderApplicationId", this.senderApplicationId);
+        jsonWriter.writeStringField("receiverApplicationQualifier", this.receiverApplicationQualifier);
+        jsonWriter.writeStringField("receiverApplicationId", this.receiverApplicationId);
+        jsonWriter.writeStringField("controllingAgencyCode", this.controllingAgencyCode);
+        jsonWriter.writeStringField("groupHeaderMessageVersion", this.groupHeaderMessageVersion);
+        jsonWriter.writeStringField("groupHeaderMessageRelease", this.groupHeaderMessageRelease);
+        jsonWriter.writeStringField("associationAssignedCode", this.associationAssignedCode);
+        jsonWriter.writeStringField("applicationPassword", this.applicationPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactEnvelopeOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactEnvelopeOverride if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EdifactEnvelopeOverride.
+     */
+    public static EdifactEnvelopeOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactEnvelopeOverride deserializedEdifactEnvelopeOverride = new EdifactEnvelopeOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.messageId = reader.getString();
+                } else if ("messageVersion".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.messageVersion = reader.getString();
+                } else if ("messageRelease".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.messageRelease = reader.getString();
+                } else if ("messageAssociationAssignedCode".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.messageAssociationAssignedCode = reader.getString();
+                } else if ("targetNamespace".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.targetNamespace = reader.getString();
+                } else if ("functionalGroupId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.functionalGroupId = reader.getString();
+                } else if ("senderApplicationQualifier".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.senderApplicationQualifier = reader.getString();
+                } else if ("senderApplicationId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.senderApplicationId = reader.getString();
+                } else if ("receiverApplicationQualifier".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.receiverApplicationQualifier = reader.getString();
+                } else if ("receiverApplicationId".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.receiverApplicationId = reader.getString();
+                } else if ("controllingAgencyCode".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.controllingAgencyCode = reader.getString();
+                } else if ("groupHeaderMessageVersion".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.groupHeaderMessageVersion = reader.getString();
+                } else if ("groupHeaderMessageRelease".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.groupHeaderMessageRelease = reader.getString();
+                } else if ("associationAssignedCode".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.associationAssignedCode = reader.getString();
+                } else if ("applicationPassword".equals(fieldName)) {
+                    deserializedEdifactEnvelopeOverride.applicationPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactEnvelopeOverride;
+        });
     }
 }

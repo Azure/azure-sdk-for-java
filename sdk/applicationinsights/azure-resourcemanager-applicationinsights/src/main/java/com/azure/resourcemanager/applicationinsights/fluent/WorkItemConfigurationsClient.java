@@ -59,11 +59,8 @@ public interface WorkItemConfigurationsClient {
      * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkItemConfigurationInner> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkItemCreateConfiguration workItemConfigurationProperties,
-        Context context);
+    Response<WorkItemConfigurationInner> createWithResponse(String resourceGroupName, String resourceName,
+        WorkItemCreateConfiguration workItemConfigurationProperties, Context context);
 
     /**
      * Create a work item configuration for an Application Insights component.
@@ -78,8 +75,8 @@ public interface WorkItemConfigurationsClient {
      * @return work item configuration associated with an application insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkItemConfigurationInner create(
-        String resourceGroupName, String resourceName, WorkItemCreateConfiguration workItemConfigurationProperties);
+    WorkItemConfigurationInner create(String resourceGroupName, String resourceName,
+        WorkItemCreateConfiguration workItemConfigurationProperties);
 
     /**
      * Gets default work item configurations that exist for the application.
@@ -93,8 +90,8 @@ public interface WorkItemConfigurationsClient {
      * @return default work item configurations that exist for the application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkItemConfigurationInner> getDefaultWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<WorkItemConfigurationInner> getDefaultWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Gets default work item configurations that exist for the application.
@@ -123,8 +120,8 @@ public interface WorkItemConfigurationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String workItemConfigId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String workItemConfigId,
+        Context context);
 
     /**
      * Delete a work item configuration of an Application Insights component.
@@ -154,8 +151,8 @@ public interface WorkItemConfigurationsClient {
      * @return specified work item configuration for an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkItemConfigurationInner> getItemWithResponse(
-        String resourceGroupName, String resourceName, String workItemConfigId, Context context);
+    Response<WorkItemConfigurationInner> getItemWithResponse(String resourceGroupName, String resourceName,
+        String workItemConfigId, Context context);
 
     /**
      * Gets specified work item configuration for an Application Insights component.
@@ -188,12 +185,8 @@ public interface WorkItemConfigurationsClient {
      * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkItemConfigurationInner> updateItemWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
-        WorkItemCreateConfiguration workItemConfigurationProperties,
-        Context context);
+    Response<WorkItemConfigurationInner> updateItemWithResponse(String resourceGroupName, String resourceName,
+        String workItemConfigId, WorkItemCreateConfiguration workItemConfigurationProperties, Context context);
 
     /**
      * Update a work item configuration for an Application Insights component.
@@ -210,9 +203,6 @@ public interface WorkItemConfigurationsClient {
      * @return work item configuration associated with an application insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkItemConfigurationInner updateItem(
-        String resourceGroupName,
-        String resourceName,
-        String workItemConfigId,
+    WorkItemConfigurationInner updateItem(String resourceGroupName, String resourceName, String workItemConfigId,
         WorkItemCreateConfiguration workItemConfigurationProperties);
 }

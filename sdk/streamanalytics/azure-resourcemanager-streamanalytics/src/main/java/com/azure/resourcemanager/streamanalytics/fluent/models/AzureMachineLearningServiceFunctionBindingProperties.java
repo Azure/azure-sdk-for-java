@@ -5,64 +5,61 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningServiceInputColumn;
 import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningServiceOutputColumn;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The binding properties associated with an Azure Machine learning web service.
  */
 @Fluent
-public final class AzureMachineLearningServiceFunctionBindingProperties {
+public final class AzureMachineLearningServiceFunctionBindingProperties
+    implements JsonSerializable<AzureMachineLearningServiceFunctionBindingProperties> {
     /*
      * The Request-Response execute endpoint of the Azure Machine Learning web service.
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
      * The API key used to authenticate with Request-Response endpoint.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * The inputs for the Azure Machine Learning web service endpoint.
      */
-    @JsonProperty(value = "inputs")
     private List<AzureMachineLearningServiceInputColumn> inputs;
 
     /*
      * A list of outputs from the Azure Machine Learning web service endpoint execution.
      */
-    @JsonProperty(value = "outputs")
     private List<AzureMachineLearningServiceOutputColumn> outputs;
 
     /*
      * Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is
      * 1000.
      */
-    @JsonProperty(value = "batchSize")
     private Integer batchSize;
 
     /*
      * The number of parallel requests that will be sent per partition of your job to the machine learning service.
      * Default is 1.
      */
-    @JsonProperty(value = "numberOfParallelRequests")
     private Integer numberOfParallelRequests;
 
     /*
      * Label for the input request object.
      */
-    @JsonProperty(value = "inputRequestName")
     private String inputRequestName;
 
     /*
      * Label for the output request object.
      */
-    @JsonProperty(value = "outputResponseName")
     private String outputResponseName;
 
     /**
@@ -250,5 +247,72 @@ public final class AzureMachineLearningServiceFunctionBindingProperties {
         if (outputs() != null) {
             outputs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("batchSize", this.batchSize);
+        jsonWriter.writeNumberField("numberOfParallelRequests", this.numberOfParallelRequests);
+        jsonWriter.writeStringField("inputRequestName", this.inputRequestName);
+        jsonWriter.writeStringField("outputResponseName", this.outputResponseName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningServiceFunctionBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningServiceFunctionBindingProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningServiceFunctionBindingProperties.
+     */
+    public static AzureMachineLearningServiceFunctionBindingProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningServiceFunctionBindingProperties deserializedAzureMachineLearningServiceFunctionBindingProperties
+                = new AzureMachineLearningServiceFunctionBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.endpoint = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.apiKey = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    List<AzureMachineLearningServiceInputColumn> inputs
+                        = reader.readArray(reader1 -> AzureMachineLearningServiceInputColumn.fromJson(reader1));
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.inputs = inputs;
+                } else if ("outputs".equals(fieldName)) {
+                    List<AzureMachineLearningServiceOutputColumn> outputs
+                        = reader.readArray(reader1 -> AzureMachineLearningServiceOutputColumn.fromJson(reader1));
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.outputs = outputs;
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.batchSize
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfParallelRequests".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.numberOfParallelRequests
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("inputRequestName".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.inputRequestName
+                        = reader.getString();
+                } else if ("outputResponseName".equals(fieldName)) {
+                    deserializedAzureMachineLearningServiceFunctionBindingProperties.outputResponseName
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningServiceFunctionBindingProperties;
+        });
     }
 }

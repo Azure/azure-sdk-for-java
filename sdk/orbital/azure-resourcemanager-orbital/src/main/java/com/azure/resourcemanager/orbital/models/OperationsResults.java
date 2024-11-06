@@ -6,11 +6,13 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationsResults. */
+/**
+ * Resource collection API of OperationsResults.
+ */
 public interface OperationsResults {
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,7 +24,7 @@ public interface OperationsResults {
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.

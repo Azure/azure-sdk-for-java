@@ -53,8 +53,8 @@ public class PageBlobCopyIncrementalOptions {
      * @param requestConditions {@link PageBlobCopyIncrementalRequestConditions} for the blob.
      * @return The updated options.
      */
-    public PageBlobCopyIncrementalOptions setRequestConditions(
-        PageBlobCopyIncrementalRequestConditions requestConditions) {
+    public PageBlobCopyIncrementalOptions
+        setRequestConditions(PageBlobCopyIncrementalRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }

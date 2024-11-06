@@ -54,8 +54,8 @@ public interface SingleSignOnConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName);
 
     /**
      * Configures single-sign-on for this resource.
@@ -72,10 +72,7 @@ public interface SingleSignOnConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
+        String resourceGroupName, String monitorName, String configurationName, DatadogSingleSignOnResourceInner body,
         Context context);
 
     /**
@@ -90,8 +87,8 @@ public interface SingleSignOnConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatadogSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName);
+    DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName);
 
     /**
      * Configures single-sign-on for this resource.
@@ -107,12 +104,8 @@ public interface SingleSignOnConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatadogSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
-        Context context);
+    DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DatadogSingleSignOnResourceInner body, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
@@ -127,8 +120,8 @@ public interface SingleSignOnConfigurationsClient {
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DatadogSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RegenerateKeyParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegenerateKeyParameters model =
-            BinaryData.fromString("{\"id\":\"dsoifiyipj\"}").toObject(RegenerateKeyParameters.class);
+        RegenerateKeyParameters model
+            = BinaryData.fromString("{\"id\":\"dsoifiyipj\"}").toObject(RegenerateKeyParameters.class);
         Assertions.assertEquals("dsoifiyipj", model.id());
     }
 

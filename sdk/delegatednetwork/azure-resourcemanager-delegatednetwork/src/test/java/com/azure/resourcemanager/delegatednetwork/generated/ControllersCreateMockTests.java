@@ -6,83 +6,44 @@ package com.azure.resourcemanager.delegatednetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedController;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ControllersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceGuid\":\"ymuctqhjfbebrj\",\"provisioningState\":\"Succeeded\",\"dncAppId\":\"fuwutttxf\",\"dncTenantId\":\"rbirphxe\",\"dncEndpoint\":\"yva\"},\"location\":\"fnljky\",\"tags\":{\"idokgjlj\":\"vuujq\"},\"id\":\"oxgvclt\",\"name\":\"gsncghkjeszz\",\"type\":\"bijhtxfvgxbf\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceGuid\":\"gshwankixz\",\"provisioningState\":\"Succeeded\",\"dncAppId\":\"eputtmrywnuzoqf\",\"dncTenantId\":\"yqzrnkcqvyxlw\",\"dncEndpoint\":\"lsicohoqqnwv\"},\"location\":\"ryavwhheunmmqh\",\"tags\":{\"ocukoklyax\":\"zko\"},\"id\":\"conuqszfkbeype\",\"name\":\"rmjmwvvjektc\",\"type\":\"senhwlrs\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DelegatedNetworkManager manager = DelegatedNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DelegatedController response = manager.controllers()
+            .define("qnwvlrya")
+            .withRegion("zf")
+            .withExistingResourceGroup("qvyxlwhzlsicoho")
+            .withTags(mapOf("xsenhwlr", "ypewrmjmwvvjekt"))
+            .create();
 
-        DelegatedNetworkManager manager =
-            DelegatedNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DelegatedController response =
-            manager
-                .controllers()
-                .define("vleggzfbuhfmvfax")
-                .withRegion("ptkoenkoukn")
-                .withExistingResourceGroup("pclhocohslk")
-                .withTags(
-                    mapOf(
-                        "kpoc",
-                        "wtiukbldn",
-                        "npiucgygevqznty",
-                        "pazyxoegukg",
-                        "dpydn",
-                        "mrbpizcdrqj",
-                        "sjttgzfbish",
-                        "yhxdeoejzicwi"))
-                .create();
-
-        Assertions.assertEquals("ryavwhheunmmqh", response.location());
-        Assertions.assertEquals("zko", response.tags().get("ocukoklyax"));
+        Assertions.assertEquals("fnljky", response.location());
+        Assertions.assertEquals("vuujq", response.tags().get("idokgjlj"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

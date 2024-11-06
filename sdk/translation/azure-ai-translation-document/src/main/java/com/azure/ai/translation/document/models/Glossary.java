@@ -5,14 +5,17 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Glossary / translation memory for the request.
  */
 @Fluent
-public final class Glossary {
+public final class Glossary implements JsonSerializable<Glossary> {
 
     /*
      * Location of the glossary.
@@ -23,28 +26,24 @@ public final class Glossary {
      * language pair is not present in the glossary, it will not be applied
      */
     @Generated
-    @JsonProperty(value = "glossaryUrl")
     private final String glossaryUrl;
 
     /*
      * Format
      */
     @Generated
-    @JsonProperty(value = "format")
     private final String format;
 
     /*
      * Optional Version. If not specified, default is used.
      */
     @Generated
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Storage Source
      */
     @Generated
-    @JsonProperty(value = "storageSource")
     private StorageSource storageSource;
 
     /**
@@ -54,9 +53,7 @@ public final class Glossary {
      * @param format the format value to set.
      */
     @Generated
-    @JsonCreator
-    public Glossary(@JsonProperty(value = "glossaryUrl") String glossaryUrl,
-        @JsonProperty(value = "format") String format) {
+    public Glossary(String glossaryUrl, String format) {
         this.glossaryUrl = glossaryUrl;
         this.format = format;
     }
@@ -128,5 +125,57 @@ public final class Glossary {
     public Glossary setStorageSource(StorageSource storageSource) {
         this.storageSource = storageSource;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("glossaryUrl", this.glossaryUrl);
+        jsonWriter.writeStringField("format", this.format);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("storageSource", this.storageSource == null ? null : this.storageSource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Glossary from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Glossary if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Glossary.
+     */
+    @Generated
+    public static Glossary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String glossaryUrl = null;
+            String format = null;
+            String version = null;
+            StorageSource storageSource = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("glossaryUrl".equals(fieldName)) {
+                    glossaryUrl = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    format = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    version = reader.getString();
+                } else if ("storageSource".equals(fieldName)) {
+                    storageSource = StorageSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            Glossary deserializedGlossary = new Glossary(glossaryUrl, format);
+            deserializedGlossary.version = version;
+            deserializedGlossary.storageSource = storageSource;
+            return deserializedGlossary;
+        });
     }
 }

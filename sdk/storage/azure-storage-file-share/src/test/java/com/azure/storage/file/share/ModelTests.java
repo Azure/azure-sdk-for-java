@@ -31,8 +31,9 @@ public class ModelTests {
         assertEquals(EnumSet.of(NtfsFileAttributes.NOT_CONTENT_INDEXED),
             NtfsFileAttributes.toAttributes("NotContentIndexed"));
         assertEquals(EnumSet.of(NtfsFileAttributes.NO_SCRUB_DATA), NtfsFileAttributes.toAttributes("NoScrubData"));
-        assertEquals(EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.NO_SCRUB_DATA,
-            NtfsFileAttributes.OFFLINE, NtfsFileAttributes.DIRECTORY),
+        assertEquals(
+            EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.NO_SCRUB_DATA, NtfsFileAttributes.OFFLINE,
+                NtfsFileAttributes.DIRECTORY),
             NtfsFileAttributes.toAttributes("ReadOnly |  NoScrubData | Offline   |Directory"));
     }
 

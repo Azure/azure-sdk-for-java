@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalRCustomCertificates CreateOrUpdate. */
+/**
+ * Samples for SignalRCustomCertificates CreateOrUpdate.
+ */
 public final class SignalRCustomCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRCustomCertificates_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRCustomCertificates_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalRCustomCertificates_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
-    public static void signalRCustomCertificatesCreateOrUpdate(
-        com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRCustomCertificates()
+    public static void
+        signalRCustomCertificatesCreateOrUpdate(com.azure.resourcemanager.signalr.SignalRManager manager) {
+        manager.signalRCustomCertificates()
             .define("myCert")
             .withExistingSignalR("myResourceGroup", "mySignalRService")
             .withKeyVaultBaseUri("https://myvault.keyvault.azure.net/")

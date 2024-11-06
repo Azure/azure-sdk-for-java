@@ -21,59 +21,42 @@ public final class SqlPoolTablesImpl implements SqlPoolTables {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolTablesImpl(
-        SqlPoolTablesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolTablesImpl(SqlPoolTablesClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SqlPoolTable> listBySchema(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
-        PagedIterable<SqlPoolTableInner> inner =
-            this.serviceClient().listBySchema(resourceGroupName, workspaceName, sqlPoolName, schemaName);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
+    public PagedIterable<SqlPoolTable> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName) {
+        PagedIterable<SqlPoolTableInner> inner
+            = this.serviceClient().listBySchema(resourceGroupName, workspaceName, sqlPoolName, schemaName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SqlPoolTable> listBySchema(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String filter,
-        Context context) {
-        PagedIterable<SqlPoolTableInner> inner =
-            this
-                .serviceClient()
-                .listBySchema(resourceGroupName, workspaceName, sqlPoolName, schemaName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
+    public PagedIterable<SqlPoolTable> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String filter, Context context) {
+        PagedIterable<SqlPoolTableInner> inner = this.serviceClient()
+            .listBySchema(resourceGroupName, workspaceName, sqlPoolName, schemaName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
     }
 
-    public Response<SqlPoolTable> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        Context context) {
-        Response<SqlPoolTableInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, context);
+    public Response<SqlPoolTable> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, Context context) {
+        Response<SqlPoolTableInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SqlPoolTableImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SqlPoolTable get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName) {
-        SqlPoolTableInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName);
+    public SqlPoolTable get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName) {
+        SqlPoolTableInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName);
         if (inner != null) {
             return new SqlPoolTableImpl(inner, this.manager());
         } else {

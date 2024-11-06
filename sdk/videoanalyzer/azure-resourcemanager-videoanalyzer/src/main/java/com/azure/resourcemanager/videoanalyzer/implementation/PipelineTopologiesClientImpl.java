@@ -49,8 +49,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @param client the instance of the service client containing this operation class.
      */
     PipelineTopologiesClientImpl(VideoAnalyzerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PipelineTopologiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PipelineTopologiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,98 +61,72 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface PipelineTopologiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineTopologies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineTopologies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineTopologyCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PipelineTopologyCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineTopologyInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PipelineTopologyInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineTopologyName") String pipelineTopologyName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PipelineTopologyInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("pipelineTopologyName") String pipelineTopologyName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PipelineTopologyInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineTopologyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("pipelineTopologyName") String pipelineTopologyName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PipelineTopologyInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("pipelineTopologyName") String pipelineTopologyName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PipelineTopologyInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PipelineTopologyUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineTopologyName") String pipelineTopologyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/pipelineTopologies/{pipelineTopologyName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PipelineTopologyInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("pipelineTopologyName") String pipelineTopologyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PipelineTopologyUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PipelineTopologyCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -171,19 +145,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineTopologyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top) {
+    private Mono<PagedResponse<PipelineTopologyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -194,28 +164,10 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<PipelineTopologyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<PipelineTopologyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -236,19 +188,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PipelineTopologyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<PipelineTopologyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,25 +208,10 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -296,10 +229,9 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @return a collection of PipelineTopology items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PipelineTopologyInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
+    private PagedFlux<PipelineTopologyInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -318,8 +250,7 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
     private PagedFlux<PipelineTopologyInner> listAsync(String resourceGroupName, String accountName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -339,10 +270,9 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @return a collection of PipelineTopology items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PipelineTopologyInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, context),
+    private PagedFlux<PipelineTopologyInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -380,8 +310,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @return a collection of PipelineTopology items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PipelineTopologyInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, Context context) {
+    public PagedIterable<PipelineTopologyInner> list(String resourceGroupName, String accountName, String filter,
+        Integer top, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, context));
     }
 
@@ -399,19 +329,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineTopologyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName) {
+    private Mono<Response<PipelineTopologyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -426,18 +352,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineTopologyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineTopologyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -456,19 +372,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineTopologyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context) {
+    private Mono<Response<PipelineTopologyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -483,16 +395,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineTopologyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            pipelineTopologyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -509,8 +413,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineTopologyInner> getAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName) {
+    private Mono<PipelineTopologyInner> getAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName) {
         return getWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -548,8 +452,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineTopologyInner> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context) {
+    public Response<PipelineTopologyInner> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName, context).block();
     }
 
@@ -570,19 +474,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineTopologyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyInner parameters) {
+    private Mono<Response<PipelineTopologyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String pipelineTopologyName, PipelineTopologyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -602,19 +502,9 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineTopologyName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineTopologyName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -636,23 +526,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineTopologyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String pipelineTopologyName,
-        PipelineTopologyInner parameters,
-        Context context) {
+    private Mono<Response<PipelineTopologyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String pipelineTopologyName, PipelineTopologyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -672,17 +554,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineTopologyName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineTopologyName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -702,8 +575,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineTopologyInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyInner parameters) {
+    private Mono<PipelineTopologyInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -725,8 +598,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineTopologyInner createOrUpdate(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyInner parameters) {
+    public PipelineTopologyInner createOrUpdate(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, accountName, pipelineTopologyName, parameters).block();
     }
 
@@ -748,15 +621,10 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineTopologyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineTopologyName,
-        PipelineTopologyInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, pipelineTopologyName, parameters, context)
-            .block();
+    public Response<PipelineTopologyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName, parameters,
+            context).block();
     }
 
     /**
@@ -772,19 +640,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -799,18 +663,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineTopologyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, pipelineTopologyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -828,19 +682,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,16 +705,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineTopologyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineTopologyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -915,8 +757,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String pipelineTopologyName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String pipelineTopologyName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName, context).block();
     }
 
@@ -936,19 +778,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineTopologyInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyUpdate parameters) {
+    private Mono<Response<PipelineTopologyInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -969,18 +807,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            pipelineTopologyName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, pipelineTopologyName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1001,23 +829,15 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PipelineTopologyInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String pipelineTopologyName,
-        PipelineTopologyUpdate parameters,
-        Context context) {
+    private Mono<Response<PipelineTopologyInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1037,17 +857,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                pipelineTopologyName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, pipelineTopologyName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -1066,8 +877,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PipelineTopologyInner> updateAsync(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyUpdate parameters) {
+    private Mono<PipelineTopologyInner> updateAsync(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1088,8 +899,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineTopologyInner update(
-        String resourceGroupName, String accountName, String pipelineTopologyName, PipelineTopologyUpdate parameters) {
+    public PipelineTopologyInner update(String resourceGroupName, String accountName, String pipelineTopologyName,
+        PipelineTopologyUpdate parameters) {
         return updateAsync(resourceGroupName, accountName, pipelineTopologyName, parameters).block();
     }
 
@@ -1110,12 +921,8 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
      *     outcome along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PipelineTopologyInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String pipelineTopologyName,
-        PipelineTopologyUpdate parameters,
-        Context context) {
+    public Response<PipelineTopologyInner> updateWithResponse(String resourceGroupName, String accountName,
+        String pipelineTopologyName, PipelineTopologyUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, pipelineTopologyName, parameters, context)
             .block();
     }
@@ -1136,23 +943,13 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PipelineTopologyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PipelineTopologyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1173,23 +970,13 @@ public final class PipelineTopologiesClientImpl implements PipelineTopologiesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

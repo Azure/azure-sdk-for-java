@@ -31,8 +31,8 @@ public interface ProductPoliciesClient {
      * @return the policy configuration at the Product level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyCollectionInner> listByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    Response<PolicyCollectionInner> listByProductWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context);
 
     /**
      * Get the policy configuration at the Product level.
@@ -62,8 +62,8 @@ public interface ProductPoliciesClient {
      * @return the ETag of the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context);
+    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, Context context);
 
     /**
      * Get the ETag of the policy configuration at the Product level.
@@ -94,13 +94,8 @@ public interface ProductPoliciesClient {
      * @return the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    ProductPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the Product level.
@@ -133,14 +128,8 @@ public interface ProductPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    ProductPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the Product.
@@ -156,12 +145,8 @@ public interface ProductPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters);
+    PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyContractInner parameters);
 
     /**
      * Deletes the policy configuration at the Product.
@@ -179,13 +164,8 @@ public interface ProductPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Product.

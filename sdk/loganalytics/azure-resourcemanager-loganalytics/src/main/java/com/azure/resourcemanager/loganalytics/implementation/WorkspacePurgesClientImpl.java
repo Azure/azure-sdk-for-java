@@ -44,8 +44,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @param client the instance of the service client containing this operation class.
      */
     WorkspacePurgesClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WorkspacePurgesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkspacePurgesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,35 +56,24 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface WorkspacePurgesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/purge")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/purge")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<WorkspacePurgesPurgeResponse> purge(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @BodyParam("application/json") WorkspacePurgeBody body,
-            @HeaderParam("Accept") String accept,
+        Mono<WorkspacePurgesPurgeResponse> purge(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @BodyParam("application/json") WorkspacePurgeBody body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/operations/{purgeId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/operations/{purgeId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatus(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("purgeId") String purgeId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatus(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @PathParam("purgeId") String purgeId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -107,23 +96,19 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspacePurgesPurgeResponse> purgeWithResponseAsync(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body) {
+    private Mono<WorkspacePurgesPurgeResponse> purgeWithResponseAsync(String resourceGroupName, String workspaceName,
+        WorkspacePurgeBody body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -136,18 +121,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .purge(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.purge(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), workspaceName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -172,23 +147,19 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspacePurgesPurgeResponse> purgeWithResponseAsync(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context) {
+    private Mono<WorkspacePurgesPurgeResponse> purgeWithResponseAsync(String resourceGroupName, String workspaceName,
+        WorkspacePurgeBody body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -201,16 +172,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .purge(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                workspaceName,
-                body,
-                accept,
-                context);
+        return service.purge(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            workspaceName, body, accept, context);
     }
 
     /**
@@ -233,8 +196,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspacePurgeResponseInner> purgeAsync(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body) {
+    private Mono<WorkspacePurgeResponseInner> purgeAsync(String resourceGroupName, String workspaceName,
+        WorkspacePurgeBody body) {
         return purgeWithResponseAsync(resourceGroupName, workspaceName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -260,8 +223,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspacePurgesPurgeResponse purgeWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context) {
+    public WorkspacePurgesPurgeResponse purgeWithResponse(String resourceGroupName, String workspaceName,
+        WorkspacePurgeBody body, Context context) {
         return purgeWithResponseAsync(resourceGroupName, workspaceName, body, context).block();
     }
 
@@ -302,23 +265,19 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(
-        String resourceGroupName, String workspaceName, String purgeId) {
+    private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(String resourceGroupName,
+        String workspaceName, String purgeId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -329,18 +288,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getPurgeStatus(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            purgeId,
-                            accept,
-                            context))
+            .withContext(context -> service.getPurgeStatus(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), workspaceName, purgeId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -358,23 +307,19 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(
-        String resourceGroupName, String workspaceName, String purgeId, Context context) {
+    private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(String resourceGroupName,
+        String workspaceName, String purgeId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -385,16 +330,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getPurgeStatus(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                workspaceName,
-                purgeId,
-                accept,
-                context);
+        return service.getPurgeStatus(this.client.getEndpoint(), resourceGroupName, apiVersion,
+            this.client.getSubscriptionId(), workspaceName, purgeId, accept, context);
     }
 
     /**
@@ -409,8 +346,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return status of an ongoing purge operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspacePurgeStatusResponseInner> getPurgeStatusAsync(
-        String resourceGroupName, String workspaceName, String purgeId) {
+    private Mono<WorkspacePurgeStatusResponseInner> getPurgeStatusAsync(String resourceGroupName, String workspaceName,
+        String purgeId) {
         return getPurgeStatusWithResponseAsync(resourceGroupName, workspaceName, purgeId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -428,8 +365,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return status of an ongoing purge operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspacePurgeStatusResponseInner> getPurgeStatusWithResponse(
-        String resourceGroupName, String workspaceName, String purgeId, Context context) {
+    public Response<WorkspacePurgeStatusResponseInner> getPurgeStatusWithResponse(String resourceGroupName,
+        String workspaceName, String purgeId, Context context) {
         return getPurgeStatusWithResponseAsync(resourceGroupName, workspaceName, purgeId, context).block();
     }
 
@@ -445,8 +382,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @return status of an ongoing purge operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspacePurgeStatusResponseInner getPurgeStatus(
-        String resourceGroupName, String workspaceName, String purgeId) {
+    public WorkspacePurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String workspaceName,
+        String purgeId) {
         return getPurgeStatusWithResponse(resourceGroupName, workspaceName, purgeId, Context.NONE).getValue();
     }
 }

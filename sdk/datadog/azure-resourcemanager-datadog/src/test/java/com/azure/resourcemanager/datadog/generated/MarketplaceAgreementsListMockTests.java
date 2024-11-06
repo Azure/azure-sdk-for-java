@@ -31,47 +31,35 @@ public final class MarketplaceAgreementsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"publisher\":\"tcktvfcivfsnky\",\"product\":\"ctq\",\"plan\":\"fbebrjcxer\",\"licenseTextLink\":\"wutttxfvjrbi\",\"privacyPolicyLink\":\"hxepcyvahfnlj\",\"retrieveDatetime\":\"2021-01-31T22:23:26Z\",\"signature\":\"j\",\"accepted\":false},\"id\":\"qgidokgjljyo\",\"name\":\"gvcl\",\"type\":\"bgsncghkjeszzhb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"publisher\":\"tcktvfcivfsnky\",\"product\":\"ctq\",\"plan\":\"fbebrjcxer\",\"licenseTextLink\":\"wutttxfvjrbi\",\"privacyPolicyLink\":\"hxepcyvahfnlj\",\"retrieveDatetime\":\"2021-01-31T22:23:26Z\",\"signature\":\"j\",\"accepted\":false},\"id\":\"qgidokgjljyo\",\"name\":\"gvcl\",\"type\":\"bgsncghkjeszzhb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MicrosoftDatadogManager manager =
-            MicrosoftDatadogManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MicrosoftDatadogManager manager = MicrosoftDatadogManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DatadogAgreementResource> response =
-            manager.marketplaceAgreements().list(com.azure.core.util.Context.NONE);
+        PagedIterable<DatadogAgreementResource> response
+            = manager.marketplaceAgreements().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("tcktvfcivfsnky", response.iterator().next().properties().publisher());
         Assertions.assertEquals("ctq", response.iterator().next().properties().product());
         Assertions.assertEquals("fbebrjcxer", response.iterator().next().properties().plan());
         Assertions.assertEquals("wutttxfvjrbi", response.iterator().next().properties().licenseTextLink());
         Assertions.assertEquals("hxepcyvahfnlj", response.iterator().next().properties().privacyPolicyLink());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-01-31T22:23:26Z"),
-                response.iterator().next().properties().retrieveDatetime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T22:23:26Z"),
+            response.iterator().next().properties().retrieveDatetime());
         Assertions.assertEquals("j", response.iterator().next().properties().signature());
         Assertions.assertEquals(false, response.iterator().next().properties().accepted());
     }

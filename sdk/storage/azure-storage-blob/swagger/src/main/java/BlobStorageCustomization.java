@@ -122,6 +122,8 @@ public class BlobStorageCustomization extends Customization {
         customizeBlobSignedIdentifierWrapper(implementationModels.getClass("BlobSignedIdentifierWrapper"));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.blob.implementation"));
+
+        addMissingHashMapImport(implementationModels);
     }
 
     private static void customizeQueryFormat(ClassCustomization classCustomization) {
@@ -352,5 +354,12 @@ public class BlobStorageCustomization extends Customization {
 
         // Replace the last statement with the try-catch block.
         method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
+    }
+
+    // Temporary fix to a bug in Autorest.
+    private static void addMissingHashMapImport(PackageCustomization implementationModels) {
+        for (String className : Arrays.asList("BlobsDownloadHeaders", "BlobsQueryHeaders", "BlobsGetPropertiesHeaders", "ContainersGetPropertiesHeaders")) {
+            implementationModels.getClass(className).addImports("java.util.HashMap");
+        }
     }
 }

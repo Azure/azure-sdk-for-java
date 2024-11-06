@@ -77,24 +77,21 @@ public class ProxySendTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageId);
-        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .sender()
-            .queueName(queueName)
-            .buildAsyncClient();
+        final ServiceBusSenderAsyncClient sender
+            = getAuthenticatedBuilder().transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+                .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                .sender()
+                .queueName(queueName)
+                .buildAsyncClient();
         toClose(sender);
         // Act & Assert
-        StepVerifier.create(sender.createMessageBatch()
-            .flatMap(batch -> {
-                for (int i = 0; i < messages.size(); i++) {
-                    Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
-                }
+        StepVerifier.create(sender.createMessageBatch().flatMap(batch -> {
+            for (int i = 0; i < messages.size(); i++) {
+                Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
+            }
 
-                return sender.sendMessages(batch);
-            }))
-            .expectComplete()
-            .verify(Duration.ofSeconds(30));
+            return sender.sendMessages(batch);
+        })).expectComplete().verify(Duration.ofSeconds(30));
     }
 }

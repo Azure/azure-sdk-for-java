@@ -14,63 +14,59 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertPropertiesDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertPropertiesDetails model =
-            BinaryData
-                .fromString(
-                    "{\"timeGrainType\":\"None\",\"periodStartDate\":\"dng\",\"triggeredBy\":\"ocipazyxoeg\",\"resourceGroupFilter\":[\"datajnpiucgyg\"],\"resourceFilter\":[\"datazntypmrb\",\"dataizcdrqjsd\"],\"meterFilter\":[\"datanfyhx\",\"dataeoejzic\",\"dataifsjttgzfbishcb\",\"datahajdeyeamdpha\"],\"tagFilter\":\"datalpbuxwgipwhonowk\",\"operator\":\"GreaterThanOrEqualTo\",\"unit\":\"kix\",\"contactEmails\":[\"jeputtmrywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"],\"contactGroups\":[\"icohoqqnwvl\",\"yav\",\"hheunmmqhgyx\",\"konocu\"],\"contactRoles\":[\"lyaxuc\",\"nuqszfkbey\",\"ewrmjmwvvjektc\"],\"overridingAlert\":\"enhwlrs\",\"departmentName\":\"rzpwvlqdqgbiq\",\"companyName\":\"ihkaetcktvfc\",\"enrollmentNumber\":\"fsnkymuctq\",\"enrollmentStartDate\":\"fbebrjcxer\",\"enrollmentEndDate\":\"wutttxfvjrbi\"}")
-                .toObject(AlertPropertiesDetails.class);
+        AlertPropertiesDetails model = BinaryData.fromString(
+            "{\"timeGrainType\":\"None\",\"periodStartDate\":\"wutwbdsre\",\"triggeredBy\":\"drhneuyow\",\"resourceGroupFilter\":[\"datawyt\"],\"resourceFilter\":[\"databi\"],\"meterFilter\":[\"datapikpz\",\"datamejzanlfzxia\",\"datarmbzo\"],\"tagFilter\":\"datakixrj\",\"operator\":\"GreaterThan\",\"unit\":\"pfrlazsz\",\"contactEmails\":[\"iin\",\"fpwpjylwbt\",\"h\"],\"contactGroups\":[\"jcdh\"],\"contactRoles\":[\"jvfbgofelja\",\"rqmq\",\"ldvriiiojnalghfk\",\"tvsexsowuel\"],\"overridingAlert\":\"hhahhxvrhmzkwpjg\",\"departmentName\":\"spughftqsxhq\",\"companyName\":\"j\",\"enrollmentNumber\":\"kndxdigrjgu\",\"enrollmentStartDate\":\"zdmsyqtfi\",\"enrollmentEndDate\":\"hbotzingamvppho\"}")
+            .toObject(AlertPropertiesDetails.class);
         Assertions.assertEquals(AlertTimeGrainType.NONE, model.timeGrainType());
-        Assertions.assertEquals("dng", model.periodStartDate());
-        Assertions.assertEquals("ocipazyxoeg", model.triggeredBy());
-        Assertions.assertEquals(AlertOperator.GREATER_THAN_OR_EQUAL_TO, model.operator());
-        Assertions.assertEquals("kix", model.unit());
-        Assertions.assertEquals("jeputtmrywn", model.contactEmails().get(0));
-        Assertions.assertEquals("icohoqqnwvl", model.contactGroups().get(0));
-        Assertions.assertEquals("lyaxuc", model.contactRoles().get(0));
-        Assertions.assertEquals("enhwlrs", model.overridingAlert());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.departmentName());
-        Assertions.assertEquals("ihkaetcktvfc", model.companyName());
-        Assertions.assertEquals("fsnkymuctq", model.enrollmentNumber());
-        Assertions.assertEquals("fbebrjcxer", model.enrollmentStartDate());
-        Assertions.assertEquals("wutttxfvjrbi", model.enrollmentEndDate());
+        Assertions.assertEquals("wutwbdsre", model.periodStartDate());
+        Assertions.assertEquals("drhneuyow", model.triggeredBy());
+        Assertions.assertEquals(AlertOperator.GREATER_THAN, model.operator());
+        Assertions.assertEquals("pfrlazsz", model.unit());
+        Assertions.assertEquals("iin", model.contactEmails().get(0));
+        Assertions.assertEquals("jcdh", model.contactGroups().get(0));
+        Assertions.assertEquals("jvfbgofelja", model.contactRoles().get(0));
+        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.overridingAlert());
+        Assertions.assertEquals("spughftqsxhq", model.departmentName());
+        Assertions.assertEquals("j", model.companyName());
+        Assertions.assertEquals("kndxdigrjgu", model.enrollmentNumber());
+        Assertions.assertEquals("zdmsyqtfi", model.enrollmentStartDate());
+        Assertions.assertEquals("hbotzingamvppho", model.enrollmentEndDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertPropertiesDetails model =
-            new AlertPropertiesDetails()
-                .withTimeGrainType(AlertTimeGrainType.NONE)
-                .withPeriodStartDate("dng")
-                .withTriggeredBy("ocipazyxoeg")
-                .withResourceGroupFilter(Arrays.asList("datajnpiucgyg"))
-                .withResourceFilter(Arrays.asList("datazntypmrb", "dataizcdrqjsd"))
-                .withMeterFilter(Arrays.asList("datanfyhx", "dataeoejzic", "dataifsjttgzfbishcb", "datahajdeyeamdpha"))
-                .withTagFilter("datalpbuxwgipwhonowk")
-                .withOperator(AlertOperator.GREATER_THAN_OR_EQUAL_TO)
-                .withUnit("kix")
-                .withContactEmails(Arrays.asList("jeputtmrywn", "zoqftiyqzrnkcqvy", "lwh"))
-                .withContactGroups(Arrays.asList("icohoqqnwvl", "yav", "hheunmmqhgyx", "konocu"))
-                .withContactRoles(Arrays.asList("lyaxuc", "nuqszfkbey", "ewrmjmwvvjektc"))
-                .withOverridingAlert("enhwlrs")
-                .withDepartmentName("rzpwvlqdqgbiq")
-                .withCompanyName("ihkaetcktvfc")
-                .withEnrollmentNumber("fsnkymuctq")
-                .withEnrollmentStartDate("fbebrjcxer")
-                .withEnrollmentEndDate("wutttxfvjrbi");
+        AlertPropertiesDetails model = new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.NONE)
+            .withPeriodStartDate("wutwbdsre")
+            .withTriggeredBy("drhneuyow")
+            .withResourceGroupFilter(Arrays.asList("datawyt"))
+            .withResourceFilter(Arrays.asList("databi"))
+            .withMeterFilter(Arrays.asList("datapikpz", "datamejzanlfzxia", "datarmbzo"))
+            .withTagFilter("datakixrj")
+            .withOperator(AlertOperator.GREATER_THAN)
+            .withUnit("pfrlazsz")
+            .withContactEmails(Arrays.asList("iin", "fpwpjylwbt", "h"))
+            .withContactGroups(Arrays.asList("jcdh"))
+            .withContactRoles(Arrays.asList("jvfbgofelja", "rqmq", "ldvriiiojnalghfk", "tvsexsowuel"))
+            .withOverridingAlert("hhahhxvrhmzkwpjg")
+            .withDepartmentName("spughftqsxhq")
+            .withCompanyName("j")
+            .withEnrollmentNumber("kndxdigrjgu")
+            .withEnrollmentStartDate("zdmsyqtfi")
+            .withEnrollmentEndDate("hbotzingamvppho");
         model = BinaryData.fromObject(model).toObject(AlertPropertiesDetails.class);
         Assertions.assertEquals(AlertTimeGrainType.NONE, model.timeGrainType());
-        Assertions.assertEquals("dng", model.periodStartDate());
-        Assertions.assertEquals("ocipazyxoeg", model.triggeredBy());
-        Assertions.assertEquals(AlertOperator.GREATER_THAN_OR_EQUAL_TO, model.operator());
-        Assertions.assertEquals("kix", model.unit());
-        Assertions.assertEquals("jeputtmrywn", model.contactEmails().get(0));
-        Assertions.assertEquals("icohoqqnwvl", model.contactGroups().get(0));
-        Assertions.assertEquals("lyaxuc", model.contactRoles().get(0));
-        Assertions.assertEquals("enhwlrs", model.overridingAlert());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.departmentName());
-        Assertions.assertEquals("ihkaetcktvfc", model.companyName());
-        Assertions.assertEquals("fsnkymuctq", model.enrollmentNumber());
-        Assertions.assertEquals("fbebrjcxer", model.enrollmentStartDate());
-        Assertions.assertEquals("wutttxfvjrbi", model.enrollmentEndDate());
+        Assertions.assertEquals("wutwbdsre", model.periodStartDate());
+        Assertions.assertEquals("drhneuyow", model.triggeredBy());
+        Assertions.assertEquals(AlertOperator.GREATER_THAN, model.operator());
+        Assertions.assertEquals("pfrlazsz", model.unit());
+        Assertions.assertEquals("iin", model.contactEmails().get(0));
+        Assertions.assertEquals("jcdh", model.contactGroups().get(0));
+        Assertions.assertEquals("jvfbgofelja", model.contactRoles().get(0));
+        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.overridingAlert());
+        Assertions.assertEquals("spughftqsxhq", model.departmentName());
+        Assertions.assertEquals("j", model.companyName());
+        Assertions.assertEquals("kndxdigrjgu", model.enrollmentNumber());
+        Assertions.assertEquals("zdmsyqtfi", model.enrollmentStartDate());
+        Assertions.assertEquals("hbotzingamvppho", model.enrollmentEndDate());
     }
 }

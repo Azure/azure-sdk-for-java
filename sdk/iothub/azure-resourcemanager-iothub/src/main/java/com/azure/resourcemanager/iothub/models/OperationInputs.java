@@ -48,9 +48,8 @@ public final class OperationInputs {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model OperationInputs"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model OperationInputs"));
         }
     }
 

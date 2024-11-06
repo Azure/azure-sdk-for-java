@@ -13,21 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlVirtualMachineGroupUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlVirtualMachineGroupUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"vbqid\":\"gpbtoqcjmklj\"}}")
-                .toObject(SqlVirtualMachineGroupUpdate.class);
-        Assertions.assertEquals("gpbtoqcjmklj", model.tags().get("vbqid"));
+        SqlVirtualMachineGroupUpdate model
+            = BinaryData.fromString("{\"tags\":{\"w\":\"m\"}}").toObject(SqlVirtualMachineGroupUpdate.class);
+        Assertions.assertEquals("m", model.tags().get("w"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlVirtualMachineGroupUpdate model =
-            new SqlVirtualMachineGroupUpdate().withTags(mapOf("vbqid", "gpbtoqcjmklj"));
+        SqlVirtualMachineGroupUpdate model = new SqlVirtualMachineGroupUpdate().withTags(mapOf("w", "m"));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineGroupUpdate.class);
-        Assertions.assertEquals("gpbtoqcjmklj", model.tags().get("vbqid"));
+        Assertions.assertEquals("m", model.tags().get("w"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

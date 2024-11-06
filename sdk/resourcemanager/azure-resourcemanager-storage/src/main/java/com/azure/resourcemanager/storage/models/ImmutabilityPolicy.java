@@ -17,12 +17,8 @@ import reactor.core.publisher.Mono;
 
 /** Type representing ImmutabilityPolicy. */
 @Fluent
-public interface ImmutabilityPolicy
-    extends HasInnerModel<ImmutabilityPolicyInner>,
-        Indexable,
-        Refreshable<ImmutabilityPolicy>,
-        Updatable<ImmutabilityPolicy.Update>,
-        HasManager<StorageManager> {
+public interface ImmutabilityPolicy extends HasInnerModel<ImmutabilityPolicyInner>, Indexable,
+    Refreshable<ImmutabilityPolicy>, Updatable<ImmutabilityPolicy.Update>, HasManager<StorageManager> {
     /** @return the etag value. */
     String etag();
 
@@ -55,7 +51,7 @@ public interface ImmutabilityPolicy
 
     /**
      * Extends the immutability policy.
-
+    
      * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
      *     policy creation, in days.
      */
@@ -63,7 +59,7 @@ public interface ImmutabilityPolicy
 
     /**
      * Extends the immutability policy.
-
+    
      * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
      *     policy creation, in days.
      * @return the completion
@@ -71,11 +67,8 @@ public interface ImmutabilityPolicy
     Mono<Void> extendAsync(int immutabilityPeriodSinceCreationInDays);
 
     /** The entirety of the ImmutabilityPolicy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithContainer,
-            DefinitionStages.WithImmutabilityPeriodSinceCreationInDays,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer,
+        DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithCreate {
     }
 
     /** Grouping of ImmutabilityPolicy definition stages. */
@@ -98,8 +91,8 @@ public interface ImmutabilityPolicy
              *     only. Every dash (-) character must be immediately preceded and followed by a letter or number
              * @return the next definition stage
              */
-            WithImmutabilityPeriodSinceCreationInDays withExistingContainer(
-                String resourceGroupName, String accountName, String containerName);
+            WithImmutabilityPeriodSinceCreationInDays withExistingContainer(String resourceGroupName,
+                String accountName, String containerName);
         }
 
         /** The stage of the immutabilitypolicy definition allowing to specify ImmutabilityPeriodSinceCreationInDays. */
@@ -131,11 +124,10 @@ public interface ImmutabilityPolicy
         interface WithCreate extends WithETagCheck, Creatable<ImmutabilityPolicy> {
         }
     }
+
     /** The template for a ImmutabilityPolicy update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<ImmutabilityPolicy>,
-            UpdateStages.WithETagCheck,
-            UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
+    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithETagCheck,
+        UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
     }
 
     /** Grouping of ImmutabilityPolicy update stages. */

@@ -20,17 +20,16 @@ public final class OperationStatusesImpl implements OperationStatuses {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public OperationStatusesImpl(
-        OperationStatusesClient innerClient,
+    public OperationStatusesImpl(OperationStatusesClient innerClient,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public VideoAnalyzerPrivateEndpointConnectionOperationStatus get(
-        String resourceGroupName, String accountName, String name, String operationId) {
-        VideoAnalyzerPrivateEndpointConnectionOperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, name, operationId);
+    public VideoAnalyzerPrivateEndpointConnectionOperationStatus get(String resourceGroupName, String accountName,
+        String name, String operationId) {
+        VideoAnalyzerPrivateEndpointConnectionOperationStatusInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, name, operationId);
         if (inner != null) {
             return new VideoAnalyzerPrivateEndpointConnectionOperationStatusImpl(inner, this.manager());
         } else {
@@ -38,15 +37,12 @@ public final class OperationStatusesImpl implements OperationStatuses {
         }
     }
 
-    public Response<VideoAnalyzerPrivateEndpointConnectionOperationStatus> getWithResponse(
-        String resourceGroupName, String accountName, String name, String operationId, Context context) {
-        Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, name, operationId, context);
+    public Response<VideoAnalyzerPrivateEndpointConnectionOperationStatus> getWithResponse(String resourceGroupName,
+        String accountName, String name, String operationId, Context context) {
+        Response<VideoAnalyzerPrivateEndpointConnectionOperationStatusInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, name, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VideoAnalyzerPrivateEndpointConnectionOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

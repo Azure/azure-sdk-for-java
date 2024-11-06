@@ -20,12 +20,8 @@ public final class ProductPoliciesGetResponse extends ResponseBase<ProductPolici
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ProductPoliciesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PolicyContractInner value,
-        ProductPoliciesGetHeaders headers) {
+    public ProductPoliciesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PolicyContractInner value, ProductPoliciesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -7,59 +7,71 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies a configuration for FairPlay licenses. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration")
+/**
+ * Specifies a configuration for FairPlay licenses.
+ */
 @Fluent
 public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfiguration {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration";
+
+    /*
      * The key that must be used as FairPlay Application Secret key. This needs to be base64 encoded.
      */
-    @JsonProperty(value = "ask", required = true)
     private byte[] ask;
 
     /*
      * The password encrypting FairPlay certificate in PKCS 12 (pfx) format.
      */
-    @JsonProperty(value = "fairPlayPfxPassword", required = true)
     private String fairPlayPfxPassword;
 
     /*
      * The Base64 representation of FairPlay certificate in PKCS 12 (pfx) format (including private key).
      */
-    @JsonProperty(value = "fairPlayPfx", required = true)
     private String fairPlayPfx;
 
     /*
      * The rental and lease key type.
      */
-    @JsonProperty(value = "rentalAndLeaseKeyType", required = true)
     private ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType;
 
     /*
      * The rental duration. Must be greater than or equal to 0.
      */
-    @JsonProperty(value = "rentalDuration", required = true)
     private long rentalDuration;
 
     /*
      * Offline rental policy
      */
-    @JsonProperty(value = "offlineRentalConfiguration")
     private ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration;
 
-    /** Creates an instance of ContentKeyPolicyFairPlayConfiguration class. */
+    /**
+     * Creates an instance of ContentKeyPolicyFairPlayConfiguration class.
+     */
     public ContentKeyPolicyFairPlayConfiguration() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Get the ask property: The key that must be used as FairPlay Application Secret key. This needs to be base64
      * encoded.
-     *
+     * 
      * @return the ask value.
      */
     public byte[] ask() {
@@ -69,7 +81,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     /**
      * Set the ask property: The key that must be used as FairPlay Application Secret key. This needs to be base64
      * encoded.
-     *
+     * 
      * @param ask the ask value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
@@ -80,7 +92,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Get the fairPlayPfxPassword property: The password encrypting FairPlay certificate in PKCS 12 (pfx) format.
-     *
+     * 
      * @return the fairPlayPfxPassword value.
      */
     public String fairPlayPfxPassword() {
@@ -89,7 +101,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Set the fairPlayPfxPassword property: The password encrypting FairPlay certificate in PKCS 12 (pfx) format.
-     *
+     * 
      * @param fairPlayPfxPassword the fairPlayPfxPassword value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
@@ -101,7 +113,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     /**
      * Get the fairPlayPfx property: The Base64 representation of FairPlay certificate in PKCS 12 (pfx) format
      * (including private key).
-     *
+     * 
      * @return the fairPlayPfx value.
      */
     public String fairPlayPfx() {
@@ -111,7 +123,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     /**
      * Set the fairPlayPfx property: The Base64 representation of FairPlay certificate in PKCS 12 (pfx) format
      * (including private key).
-     *
+     * 
      * @param fairPlayPfx the fairPlayPfx value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
@@ -122,7 +134,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Get the rentalAndLeaseKeyType property: The rental and lease key type.
-     *
+     * 
      * @return the rentalAndLeaseKeyType value.
      */
     public ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType() {
@@ -131,19 +143,19 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Set the rentalAndLeaseKeyType property: The rental and lease key type.
-     *
+     * 
      * @param rentalAndLeaseKeyType the rentalAndLeaseKeyType value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
-    public ContentKeyPolicyFairPlayConfiguration withRentalAndLeaseKeyType(
-        ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType) {
+    public ContentKeyPolicyFairPlayConfiguration
+        withRentalAndLeaseKeyType(ContentKeyPolicyFairPlayRentalAndLeaseKeyType rentalAndLeaseKeyType) {
         this.rentalAndLeaseKeyType = rentalAndLeaseKeyType;
         return this;
     }
 
     /**
      * Get the rentalDuration property: The rental duration. Must be greater than or equal to 0.
-     *
+     * 
      * @return the rentalDuration value.
      */
     public long rentalDuration() {
@@ -152,7 +164,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Set the rentalDuration property: The rental duration. Must be greater than or equal to 0.
-     *
+     * 
      * @param rentalDuration the rentalDuration value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
@@ -163,7 +175,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Get the offlineRentalConfiguration property: Offline rental policy.
-     *
+     * 
      * @return the offlineRentalConfiguration value.
      */
     public ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration() {
@@ -172,49 +184,42 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
 
     /**
      * Set the offlineRentalConfiguration property: Offline rental policy.
-     *
+     * 
      * @param offlineRentalConfiguration the offlineRentalConfiguration value to set.
      * @return the ContentKeyPolicyFairPlayConfiguration object itself.
      */
-    public ContentKeyPolicyFairPlayConfiguration withOfflineRentalConfiguration(
-        ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration) {
+    public ContentKeyPolicyFairPlayConfiguration
+        withOfflineRentalConfiguration(ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration) {
         this.offlineRentalConfiguration = offlineRentalConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (ask() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ask in model ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ask in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (fairPlayPfxPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fairPlayPfxPassword in model"
-                            + " ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fairPlayPfxPassword in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (fairPlayPfx() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fairPlayPfx in model ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fairPlayPfx in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (rentalAndLeaseKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rentalAndLeaseKeyType in model"
-                            + " ContentKeyPolicyFairPlayConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rentalAndLeaseKeyType in model ContentKeyPolicyFairPlayConfiguration"));
         }
         if (offlineRentalConfiguration() != null) {
             offlineRentalConfiguration().validate();
@@ -222,4 +227,63 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyFairPlayConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("ask", this.ask);
+        jsonWriter.writeStringField("fairPlayPfxPassword", this.fairPlayPfxPassword);
+        jsonWriter.writeStringField("fairPlayPfx", this.fairPlayPfx);
+        jsonWriter.writeStringField("rentalAndLeaseKeyType",
+            this.rentalAndLeaseKeyType == null ? null : this.rentalAndLeaseKeyType.toString());
+        jsonWriter.writeLongField("rentalDuration", this.rentalDuration);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeJsonField("offlineRentalConfiguration", this.offlineRentalConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyFairPlayConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyFairPlayConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyFairPlayConfiguration.
+     */
+    public static ContentKeyPolicyFairPlayConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyFairPlayConfiguration deserializedContentKeyPolicyFairPlayConfiguration
+                = new ContentKeyPolicyFairPlayConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ask".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.ask = reader.getBinary();
+                } else if ("fairPlayPfxPassword".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.fairPlayPfxPassword = reader.getString();
+                } else if ("fairPlayPfx".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.fairPlayPfx = reader.getString();
+                } else if ("rentalAndLeaseKeyType".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.rentalAndLeaseKeyType
+                        = ContentKeyPolicyFairPlayRentalAndLeaseKeyType.fromString(reader.getString());
+                } else if ("rentalDuration".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.rentalDuration = reader.getLong();
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.odataType = reader.getString();
+                } else if ("offlineRentalConfiguration".equals(fieldName)) {
+                    deserializedContentKeyPolicyFairPlayConfiguration.offlineRentalConfiguration
+                        = ContentKeyPolicyFairPlayOfflineRentalConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyFairPlayConfiguration;
+        });
+    }
 }

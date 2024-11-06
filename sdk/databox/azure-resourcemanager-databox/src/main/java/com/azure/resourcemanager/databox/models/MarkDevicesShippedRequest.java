@@ -6,24 +6,31 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request body to provide the delivery package details of job. */
+/**
+ * The request body to provide the delivery package details of job.
+ */
 @Fluent
-public final class MarkDevicesShippedRequest {
+public final class MarkDevicesShippedRequest implements JsonSerializable<MarkDevicesShippedRequest> {
     /*
      * Delivery package details
      */
-    @JsonProperty(value = "deliverToDcPackageDetails", required = true)
     private PackageCarrierInfo deliverToDcPackageDetails;
 
-    /** Creates an instance of MarkDevicesShippedRequest class. */
+    /**
+     * Creates an instance of MarkDevicesShippedRequest class.
+     */
     public MarkDevicesShippedRequest() {
     }
 
     /**
      * Get the deliverToDcPackageDetails property: Delivery package details.
-     *
+     * 
      * @return the deliverToDcPackageDetails value.
      */
     public PackageCarrierInfo deliverToDcPackageDetails() {
@@ -32,7 +39,7 @@ public final class MarkDevicesShippedRequest {
 
     /**
      * Set the deliverToDcPackageDetails property: Delivery package details.
-     *
+     * 
      * @param deliverToDcPackageDetails the deliverToDcPackageDetails value to set.
      * @return the MarkDevicesShippedRequest object itself.
      */
@@ -43,19 +50,56 @@ public final class MarkDevicesShippedRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deliverToDcPackageDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deliverToDcPackageDetails in model MarkDevicesShippedRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deliverToDcPackageDetails in model MarkDevicesShippedRequest"));
         } else {
             deliverToDcPackageDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MarkDevicesShippedRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deliverToDcPackageDetails", this.deliverToDcPackageDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarkDevicesShippedRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarkDevicesShippedRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MarkDevicesShippedRequest.
+     */
+    public static MarkDevicesShippedRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarkDevicesShippedRequest deserializedMarkDevicesShippedRequest = new MarkDevicesShippedRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deliverToDcPackageDetails".equals(fieldName)) {
+                    deserializedMarkDevicesShippedRequest.deliverToDcPackageDetails
+                        = PackageCarrierInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarkDevicesShippedRequest;
+        });
+    }
 }

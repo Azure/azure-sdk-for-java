@@ -7,34 +7,54 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.StreamingLocatorContentKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** A Streaming Locator resource. */
+/**
+ * A Streaming Locator resource.
+ */
 @Fluent
 public final class StreamingLocatorInner extends ProxyResource {
     /*
      * Properties of the Streaming Locator.
      */
-    @JsonProperty(value = "properties")
     private StreamingLocatorProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of StreamingLocatorInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StreamingLocatorInner class.
+     */
     public StreamingLocatorInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Streaming Locator.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StreamingLocatorProperties innerProperties() {
@@ -43,7 +63,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,8 +71,38 @@ public final class StreamingLocatorInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the assetName property: Asset Name.
-     *
+     * 
      * @return the assetName value.
      */
     public String assetName() {
@@ -61,7 +111,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the assetName property: Asset Name.
-     *
+     * 
      * @param assetName the assetName value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -75,7 +125,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the created property: The creation time of the Streaming Locator.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -84,7 +134,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the startTime property: The start time of the Streaming Locator.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -93,7 +143,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the startTime property: The start time of the Streaming Locator.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -107,7 +157,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the endTime property: The end time of the Streaming Locator.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -116,7 +166,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the endTime property: The end time of the Streaming Locator.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -130,7 +180,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the streamingLocatorId property: The StreamingLocatorId of the Streaming Locator.
-     *
+     * 
      * @return the streamingLocatorId value.
      */
     public UUID streamingLocatorId() {
@@ -139,7 +189,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the streamingLocatorId property: The StreamingLocatorId of the Streaming Locator.
-     *
+     * 
      * @param streamingLocatorId the streamingLocatorId value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -157,7 +207,7 @@ public final class StreamingLocatorInner extends ProxyResource {
      * Streaming Policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly',
      * 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and
      * 'Predefined_MultiDrmStreaming'.
-     *
+     * 
      * @return the streamingPolicyName value.
      */
     public String streamingPolicyName() {
@@ -170,7 +220,7 @@ public final class StreamingLocatorInner extends ProxyResource {
      * Streaming Policies available are: 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly',
      * 'Predefined_DownloadAndClearStreaming', 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and
      * 'Predefined_MultiDrmStreaming'.
-     *
+     * 
      * @param streamingPolicyName the streamingPolicyName value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -185,7 +235,7 @@ public final class StreamingLocatorInner extends ProxyResource {
     /**
      * Get the defaultContentKeyPolicyName property: Name of the default ContentKeyPolicy used by this Streaming
      * Locator.
-     *
+     * 
      * @return the defaultContentKeyPolicyName value.
      */
     public String defaultContentKeyPolicyName() {
@@ -195,7 +245,7 @@ public final class StreamingLocatorInner extends ProxyResource {
     /**
      * Set the defaultContentKeyPolicyName property: Name of the default ContentKeyPolicy used by this Streaming
      * Locator.
-     *
+     * 
      * @param defaultContentKeyPolicyName the defaultContentKeyPolicyName value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -209,7 +259,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the contentKeys property: The ContentKeys used by this Streaming Locator.
-     *
+     * 
      * @return the contentKeys value.
      */
     public List<StreamingLocatorContentKey> contentKeys() {
@@ -218,7 +268,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the contentKeys property: The ContentKeys used by this Streaming Locator.
-     *
+     * 
      * @param contentKeys the contentKeys value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -232,7 +282,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the alternativeMediaId property: Alternative Media ID of this Streaming Locator.
-     *
+     * 
      * @return the alternativeMediaId value.
      */
     public String alternativeMediaId() {
@@ -241,7 +291,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the alternativeMediaId property: Alternative Media ID of this Streaming Locator.
-     *
+     * 
      * @param alternativeMediaId the alternativeMediaId value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -255,7 +305,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Get the filters property: A list of asset or account filters which apply to this streaming locator.
-     *
+     * 
      * @return the filters value.
      */
     public List<String> filters() {
@@ -264,7 +314,7 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Set the filters property: A list of asset or account filters which apply to this streaming locator.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the StreamingLocatorInner object itself.
      */
@@ -278,12 +328,57 @@ public final class StreamingLocatorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingLocatorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingLocatorInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StreamingLocatorInner.
+     */
+    public static StreamingLocatorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingLocatorInner deserializedStreamingLocatorInner = new StreamingLocatorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStreamingLocatorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStreamingLocatorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStreamingLocatorInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStreamingLocatorInner.innerProperties = StreamingLocatorProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStreamingLocatorInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingLocatorInner;
+        });
     }
 }

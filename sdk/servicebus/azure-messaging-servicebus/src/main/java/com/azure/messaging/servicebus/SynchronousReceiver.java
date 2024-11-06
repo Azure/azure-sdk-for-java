@@ -29,7 +29,8 @@ final class SynchronousReceiver {
     static {
         TERMINAL_MESSAGE = "The receiver client is terminated. Re-create the client to continue receive attempt.";
         DISPOSED = Flux.<ServiceBusReceivedMessage>error(new RuntimeException("Disposed."))
-            .subscribeWith(new WindowedSubscriber<>(new HashMap<>(0), TERMINAL_MESSAGE, new WindowedSubscriberOptions<>()));
+            .subscribeWith(
+                new WindowedSubscriber<>(new HashMap<>(0), TERMINAL_MESSAGE, new WindowedSubscriberOptions<>()));
     }
     private static final String ENTITY_PATH_KEY = "entityPath";
     private static final String SYNC_RECEIVE_SPAN_NAME = "ServiceBus.receiveMessages";
@@ -37,7 +38,8 @@ final class SynchronousReceiver {
     private final ClientLogger logger;
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final ServiceBusTracer tracer;
-    private final AtomicReference<WindowedSubscriber<ServiceBusReceivedMessage>> subscriber = new AtomicReference<>(null);
+    private final AtomicReference<WindowedSubscriber<ServiceBusReceivedMessage>> subscriber
+        = new AtomicReference<>(null);
 
     /**
      * Creates a SynchronousReceiver.
@@ -96,7 +98,8 @@ final class SynchronousReceiver {
      */
     private WindowedSubscriber<ServiceBusReceivedMessage> subscribeOnce() {
         if (!asyncClient.isV2()) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("SynchronousReceiver requires v2 mode."));
+            throw logger
+                .logExceptionAsError(new UnsupportedOperationException("SynchronousReceiver requires v2 mode."));
         }
         final WindowedSubscriber<ServiceBusReceivedMessage> s = createSubscriber();
         if (subscriber.compareAndSet(null, s)) {
@@ -132,7 +135,8 @@ final class SynchronousReceiver {
         options.setWindowDecorator(this::traceDecorator);
         options.setNextItemTimeout(TIMEOUT_BETWEEN_MESSAGES);
 
-        return new WindowedSubscriber<>(Collections.singletonMap(ENTITY_PATH_KEY, entityPath), TERMINAL_MESSAGE, options);
+        return new WindowedSubscriber<>(Collections.singletonMap(ENTITY_PATH_KEY, entityPath), TERMINAL_MESSAGE,
+            options);
     }
 
     /**
@@ -141,14 +145,13 @@ final class SynchronousReceiver {
      * @param message the message to release.
      */
     private void messageReleaser(ServiceBusReceivedMessage message) {
-        asyncClient.release(message)
-            .subscribe(__ -> { },
-                error -> logger.atWarning()
-                    .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
-                    .log("couldn't release the message.", error),
-                () -> logger.atVerbose()
-                    .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
-                    .log("message successfully released."));
+        asyncClient.release(message).subscribe(__ -> {
+        }, error -> logger.atWarning()
+            .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
+            .log("couldn't release the message.", error),
+            () -> logger.atVerbose()
+                .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
+                .log("message successfully released."));
     }
 
     /**
@@ -161,7 +164,10 @@ final class SynchronousReceiver {
         final Flux<ServiceBusReceivedMessage> decorated = tracer.traceSyncReceive(SYNC_RECEIVE_SPAN_NAME, toDecorate);
         // TODO (anu) - discuss with Liudmila - do we need decorated.subscribe() here or IterableStream's internal
         //              subscription to the 'decorated' flux will do?
-        decorated.subscribe();
+        decorated.subscribe(i -> {
+        }, e -> {
+        }, () -> {
+        });
         return decorated;
     }
 }

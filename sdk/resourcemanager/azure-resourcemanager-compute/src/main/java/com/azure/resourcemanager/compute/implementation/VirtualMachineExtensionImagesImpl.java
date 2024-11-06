@@ -38,19 +38,13 @@ public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensio
 
     @Override
     public PagedFlux<VirtualMachineExtensionImage> listByRegionAsync(String regionName) {
-        return PagedConverter
-            .flatMapPage(
-                publishers.listByRegionAsync(regionName),
-                virtualMachinePublisher ->
-                    virtualMachinePublisher
-                        .extensionTypes()
-                        .listAsync()
-                        .onErrorResume(
-                            ManagementException.class,
-                            e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
-                        .flatMap(
-                            virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
-                        .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
+        return PagedConverter.flatMapPage(publishers.listByRegionAsync(regionName),
+            virtualMachinePublisher -> virtualMachinePublisher.extensionTypes()
+                .listAsync()
+                .onErrorResume(ManagementException.class,
+                    e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
+                .flatMap(virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
+                .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
     }
 
     @Override

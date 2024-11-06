@@ -15,8 +15,8 @@ public final class PerformanceTierPropertiesImpl implements PerformanceTierPrope
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    PerformanceTierPropertiesImpl(
-        PerformanceTierPropertiesInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner innerObject,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that contains details of encryption used on the workspace. */
+/**
+ * The object that contains details of encryption used on the workspace.
+ */
 @Fluent
-public final class WorkspaceEncryptionParameter {
+public final class WorkspaceEncryptionParameter implements JsonSerializable<WorkspaceEncryptionParameter> {
     /*
      * The type of variable that this is
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private CustomParameterType type;
 
     /*
      * The value which should be used for this field.
      */
-    @JsonProperty(value = "value")
     private Encryption value;
 
-    /** Creates an instance of WorkspaceEncryptionParameter class. */
+    /**
+     * Creates an instance of WorkspaceEncryptionParameter class.
+     */
     public WorkspaceEncryptionParameter() {
     }
 
     /**
      * Get the type property: The type of variable that this is.
-     *
+     * 
      * @return the type value.
      */
     public CustomParameterType type() {
@@ -37,7 +43,7 @@ public final class WorkspaceEncryptionParameter {
 
     /**
      * Get the value property: The value which should be used for this field.
-     *
+     * 
      * @return the value value.
      */
     public Encryption value() {
@@ -46,7 +52,7 @@ public final class WorkspaceEncryptionParameter {
 
     /**
      * Set the value property: The value which should be used for this field.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceEncryptionParameter object itself.
      */
@@ -57,12 +63,50 @@ public final class WorkspaceEncryptionParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceEncryptionParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceEncryptionParameter if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceEncryptionParameter.
+     */
+    public static WorkspaceEncryptionParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceEncryptionParameter deserializedWorkspaceEncryptionParameter = new WorkspaceEncryptionParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkspaceEncryptionParameter.type = CustomParameterType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedWorkspaceEncryptionParameter.value = Encryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceEncryptionParameter;
+        });
     }
 }

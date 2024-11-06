@@ -23,8 +23,8 @@ public interface ApiPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the API level along with {@link Response}.
      */
-    Response<PolicyCollection> listByApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context);
+    Response<PolicyCollection> listByApiWithResponse(String resourceGroupName, String serviceName, String apiId,
+        Context context);
 
     /**
      * Get the policy configuration at the API level.
@@ -54,8 +54,8 @@ public interface ApiPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API policy specified by its identifier.
      */
-    ApiPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, PolicyIdName policyId, Context context);
+    ApiPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API policy specified by its identifier.
@@ -86,13 +86,8 @@ public interface ApiPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the API level.
      */
-    Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the API level.
@@ -125,14 +120,8 @@ public interface ApiPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the API.
@@ -148,11 +137,7 @@ public interface ApiPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        PolicyIdName policyId,
+    PolicyContract createOrUpdate(String resourceGroupName, String serviceName, String apiId, PolicyIdName policyId,
         PolicyContractInner parameters);
 
     /**
@@ -171,13 +156,8 @@ public interface ApiPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, PolicyIdName policyId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Api.

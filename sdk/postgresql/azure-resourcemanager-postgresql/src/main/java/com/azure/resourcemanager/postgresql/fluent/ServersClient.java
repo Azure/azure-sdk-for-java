@@ -30,8 +30,8 @@ public interface ServersClient {
      * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
-        String resourceGroupName, String serverName, ServerForCreate parameters);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+        ServerForCreate parameters);
 
     /**
      * Creates a new server, or will overwrite an existing server.
@@ -46,8 +46,8 @@ public interface ServersClient {
      * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
-        String resourceGroupName, String serverName, ServerForCreate parameters, Context context);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+        ServerForCreate parameters, Context context);
 
     /**
      * Creates a new server, or will overwrite an existing server.
@@ -91,8 +91,8 @@ public interface ServersClient {
      * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
-        String resourceGroupName, String serverName, ServerUpdateParameters parameters);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
+        ServerUpdateParameters parameters);
 
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal
@@ -108,8 +108,8 @@ public interface ServersClient {
      * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
-        String resourceGroupName, String serverName, ServerUpdateParameters parameters, Context context);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
+        ServerUpdateParameters parameters, Context context);
 
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal

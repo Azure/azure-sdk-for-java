@@ -45,8 +45,8 @@ public final class WorkflowsOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowsOperationsImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,168 +58,88 @@ public final class WorkflowsOperationsImpl {
     @ServiceInterface(name = "PurviewWorkflowWorkf")
     public interface WorkflowsService {
         @Get("/workflows/{workflowId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("workflowId") String workflowId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/workflows/{workflowId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint, @PathParam("workflowId") String workflowId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/workflows/{workflowId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrReplace(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData workflowCreateOrUpdateCommand,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrReplace(@HostParam("endpoint") String endpoint,
+            @PathParam("workflowId") String workflowId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData workflowCreateOrUpdateCommand,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/workflows/{workflowId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrReplaceSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData workflowCreateOrUpdateCommand,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> createOrReplaceSync(@HostParam("endpoint") String endpoint,
+            @PathParam("workflowId") String workflowId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData workflowCreateOrUpdateCommand,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/workflows/{workflowId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("workflowId") String workflowId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/workflows/{workflowId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("workflowId") String workflowId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/workflows/{workflowId}/validate")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> validate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData workflowValidateQuery,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> validate(@HostParam("endpoint") String endpoint,
+            @PathParam("workflowId") String workflowId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData workflowValidateQuery, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/workflows/{workflowId}/validate")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> validateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("workflowId") String workflowId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData workflowValidateQuery,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> validateSync(@HostParam("endpoint") String endpoint,
+            @PathParam("workflowId") String workflowId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData workflowValidateQuery, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -260,15 +180,8 @@ public final class WorkflowsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String workflowId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                workflowId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), workflowId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -309,13 +222,8 @@ public final class WorkflowsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String workflowId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(
-                this.client.getEndpoint(),
-                workflowId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getSync(this.client.getEndpoint(), workflowId, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -374,19 +282,12 @@ public final class WorkflowsOperationsImpl {
      * @return the workflow properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceWithResponseAsync(
-            String workflowId, BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrReplaceWithResponseAsync(String workflowId,
+        BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrReplace(
-                                this.client.getEndpoint(),
-                                workflowId,
-                                this.client.getServiceVersion().getVersion(),
-                                workflowCreateOrUpdateCommand,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrReplace(this.client.getEndpoint(), workflowId,
+            this.client.getServiceVersion().getVersion(), workflowCreateOrUpdateCommand, accept, requestOptions,
+            context));
     }
 
     /**
@@ -445,17 +346,12 @@ public final class WorkflowsOperationsImpl {
      * @return the workflow properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceWithResponse(
-            String workflowId, BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrReplaceWithResponse(String workflowId, BinaryData workflowCreateOrUpdateCommand,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createOrReplaceSync(
-                this.client.getEndpoint(),
-                workflowId,
-                this.client.getServiceVersion().getVersion(),
-                workflowCreateOrUpdateCommand,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.createOrReplaceSync(this.client.getEndpoint(), workflowId,
+            this.client.getServiceVersion().getVersion(), workflowCreateOrUpdateCommand, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -472,15 +368,8 @@ public final class WorkflowsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String workflowId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(),
-                                workflowId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), workflowId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -497,13 +386,8 @@ public final class WorkflowsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String workflowId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteSync(
-                this.client.getEndpoint(),
-                workflowId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), workflowId, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -556,19 +440,11 @@ public final class WorkflowsOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> validateWithResponseAsync(
-            String workflowId, BinaryData workflowValidateQuery, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> validateWithResponseAsync(String workflowId, BinaryData workflowValidateQuery,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.validate(
-                                this.client.getEndpoint(),
-                                workflowId,
-                                this.client.getServiceVersion().getVersion(),
-                                workflowValidateQuery,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.validate(this.client.getEndpoint(), workflowId,
+            this.client.getServiceVersion().getVersion(), workflowValidateQuery, accept, requestOptions, context));
     }
 
     /**
@@ -621,16 +497,10 @@ public final class WorkflowsOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateWithResponse(
-            String workflowId, BinaryData workflowValidateQuery, RequestOptions requestOptions) {
+    public Response<BinaryData> validateWithResponse(String workflowId, BinaryData workflowValidateQuery,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.validateSync(
-                this.client.getEndpoint(),
-                workflowId,
-                this.client.getServiceVersion().getVersion(),
-                workflowValidateQuery,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.validateSync(this.client.getEndpoint(), workflowId, this.client.getServiceVersion().getVersion(),
+            workflowValidateQuery, accept, requestOptions, Context.NONE);
     }
 }

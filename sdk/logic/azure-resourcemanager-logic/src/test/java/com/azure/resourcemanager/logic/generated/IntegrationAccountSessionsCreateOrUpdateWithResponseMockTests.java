@@ -6,75 +6,45 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSession;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountSessionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"createdTime\":\"2021-09-05T23:50:41Z\",\"changedTime\":\"2021-10-12T12:55:52Z\",\"content\":\"datamebvxmaacrq\"},\"location\":\"ovboz\",\"tags\":{\"vjxyvx\":\"smrcxuga\"},\"id\":\"buzdphogmrcmgue\",\"name\":\"rasdrrfozzv\",\"type\":\"golzjnjkb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-04-23T22:54:28Z\",\"changedTime\":\"2021-03-24T02:45:16Z\",\"content\":\"datadihdcyyyzlwhb\"},\"location\":\"zjnufzrfg\",\"tags\":{\"edzuub\":\"gnnbzrtf\",\"xmtyj\":\"tvgj\"},\"id\":\"vavdp\",\"name\":\"wobtdphti\",\"type\":\"sffofwanmhksca\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IntegrationAccountSession response = manager.integrationAccountSessions()
+            .define("doilhrxjiwjivyor")
+            .withRegion("ubazyrisci")
+            .withExistingIntegrationAccount("kfvdjgwzakqgab", "bsuxgnwuykulo")
+            .withTags(mapOf("sllfkcroviim", "vftqahj", "w", "dlmag", "endfpdoxtif", "gfx", "tklojlgsbystznwj", "sxxk"))
+            .withContent("datanbql")
+            .create();
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IntegrationAccountSession response =
-            manager
-                .integrationAccountSessions()
-                .define("gzzromv")
-                .withRegion("rf")
-                .withExistingIntegrationAccount("zfkiceevsaaxwsp", "axikhfjqebglcxk")
-                .withTags(mapOf("qtdiswxspvckoj", "inkzpa", "dylytcovq", "zbbgspftesubzpvp"))
-                .withContent("datatme")
-                .create();
-
-        Assertions.assertEquals("zjnufzrfg", response.location());
-        Assertions.assertEquals("gnnbzrtf", response.tags().get("edzuub"));
+        Assertions.assertEquals("ovboz", response.location());
+        Assertions.assertEquals("smrcxuga", response.tags().get("vjxyvx"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

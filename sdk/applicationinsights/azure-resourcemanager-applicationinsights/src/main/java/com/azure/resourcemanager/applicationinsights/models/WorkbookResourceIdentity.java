@@ -23,8 +23,8 @@ public final class WorkbookResourceIdentity extends ManagedServiceIdentity {
 
     /** {@inheritDoc} */
     @Override
-    public WorkbookResourceIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public WorkbookResourceIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         super.withUserAssignedIdentities(userAssignedIdentities);
         return this;
     }

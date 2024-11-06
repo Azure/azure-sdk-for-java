@@ -78,16 +78,12 @@ public final class NetworkStatusContractInner {
      */
     public void validate() {
         if (dnsServers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dnsServers in model NetworkStatusContractInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dnsServers in model NetworkStatusContractInner"));
         }
         if (connectivityStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectivityStatus in model NetworkStatusContractInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectivityStatus in model NetworkStatusContractInner"));
         } else {
             connectivityStatus().forEach(e -> e.validate());
         }

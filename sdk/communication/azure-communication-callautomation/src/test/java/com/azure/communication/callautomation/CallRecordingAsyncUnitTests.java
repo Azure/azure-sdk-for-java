@@ -23,29 +23,23 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     @BeforeEach
     public void setup() {
-        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>());
+        CallAutomationAsyncClient callingServerClient
+            = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>());
         callRecording = callingServerClient.getCallRecordingAsync();
     }
 
     @Test
     public void recordingOperationsTest() {
-        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
-            recordingOperationsResponses
-        );
+        CallAutomationAsyncClient callingServerClient
+            = CallAutomationUnitTestBase.getCallAutomationAsyncClient(recordingOperationsResponses);
         callRecording = callingServerClient.getCallRecordingAsync();
 
-        validateRecordingState(
-            callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                    .setRecordingStateCallbackUrl("https://localhost/")),
-            RecordingState.ACTIVE
-        );
+        validateRecordingState(callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            .setRecordingStateCallbackUrl("https://localhost/")), RecordingState.ACTIVE);
 
-        validateOperationWithRecordingState(callRecording.pause(RECORDING_ID),
-            RecordingState.INACTIVE
-        );
+        validateOperationWithRecordingState(callRecording.pause(RECORDING_ID), RecordingState.INACTIVE);
 
-        validateOperationWithRecordingState(callRecording.resume(RECORDING_ID),
-            RecordingState.ACTIVE);
+        validateOperationWithRecordingState(callRecording.resume(RECORDING_ID), RecordingState.ACTIVE);
 
         validateOperation(callRecording.stop(RECORDING_ID));
         assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID).block());
@@ -59,10 +53,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     private void validateOperationWithRecordingState(Publisher<Void> operation, RecordingState expectedRecordingState) {
         validateOperation(operation);
-        validateRecordingState(
-            callRecording.getState(RECORDING_ID),
-            expectedRecordingState
-        );
+        validateRecordingState(callRecording.getState(RECORDING_ID), expectedRecordingState);
     }
 
     private void validateOperation(Publisher<Void> operation) {

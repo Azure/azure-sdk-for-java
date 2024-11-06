@@ -35,56 +35,36 @@ public final class CustomImagesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"vm\":{\"sourceVmId\":\"owsbedenrexkxbh\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"nhj\",\"sysPrep\":true,\"osType\":\"Windows\"},\"description\":\"nfa\",\"author\":\"vkskmqozzk\",\"creationDate\":\"2021-11-02T23:04:21Z\",\"managedImageId\":\"jrliiz\",\"managedSnapshotId\":\"xlqfh\",\"dataDiskStorageInfo\":[{\"lun\":\"absol\",\"storageType\":\"Standard\"},{\"lun\":\"qlmgnlqxsjxt\",\"storageType\":\"Standard\"},{\"lun\":\"hvuqbo\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"qocarkuzlbc\",\"publisher\":\"dtsnxawqytllhdyz\",\"offer\":\"ckze\"},\"isPlanAuthorized\":false,\"provisioningState\":\"kck\",\"uniqueIdentifier\":\"ymx\"},\"location\":\"aabjkdtfohfao\",\"tags\":{\"y\":\"kiwrsiw\",\"rra\":\"quryk\",\"s\":\"eek\",\"gdda\":\"eh\"},\"id\":\"bcbgydlqidywmhm\",\"name\":\"tyrilkfbnrqqxvz\",\"type\":\"pbnfnqtx\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"vm\":{\"sourceVmId\":\"owsbedenrexkxbh\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"nhj\",\"sysPrep\":true,\"osType\":\"Windows\"},\"description\":\"nfa\",\"author\":\"vkskmqozzk\",\"creationDate\":\"2021-11-02T23:04:21Z\",\"managedImageId\":\"jrliiz\",\"managedSnapshotId\":\"xlqfh\",\"dataDiskStorageInfo\":[{\"lun\":\"absol\",\"storageType\":\"Standard\"},{\"lun\":\"qlmgnlqxsjxt\",\"storageType\":\"Standard\"},{\"lun\":\"hvuqbo\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"qocarkuzlbc\",\"publisher\":\"dtsnxawqytllhdyz\",\"offer\":\"ckze\"},\"isPlanAuthorized\":false,\"provisioningState\":\"kck\",\"uniqueIdentifier\":\"ymx\"},\"location\":\"aabjkdtfohfao\",\"tags\":{\"y\":\"kiwrsiw\",\"rra\":\"quryk\",\"s\":\"eek\",\"gdda\":\"eh\"},\"id\":\"bcbgydlqidywmhm\",\"name\":\"tyrilkfbnrqqxvz\",\"type\":\"pbnfnqtx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CustomImage> response =
-            manager
-                .customImages()
-                .list(
-                    "ybmrzoepnxwd",
-                    "wnjkgvfn",
-                    "xaurs",
-                    "ftibtyibuyvpirfq",
-                    989541715,
-                    "n",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<CustomImage> response = manager.customImages()
+            .list("ybmrzoepnxwd", "wnjkgvfn", "xaurs", "ftibtyibuyvpirfq", 989541715, "n",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("aabjkdtfohfao", response.iterator().next().location());
         Assertions.assertEquals("kiwrsiw", response.iterator().next().tags().get("y"));
         Assertions.assertEquals("owsbedenrexkxbh", response.iterator().next().vm().sourceVmId());
-        Assertions
-            .assertEquals(
-                WindowsOsState.SYSPREP_APPLIED, response.iterator().next().vm().windowsOsInfo().windowsOsState());
-        Assertions
-            .assertEquals(
-                LinuxOsState.DEPROVISION_REQUESTED, response.iterator().next().vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED,
+            response.iterator().next().vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED,
+            response.iterator().next().vm().linuxOsInfo().linuxOsState());
         Assertions.assertEquals("nhj", response.iterator().next().vhd().imageName());
         Assertions.assertEquals(true, response.iterator().next().vhd().sysPrep());
         Assertions.assertEquals(CustomImageOsType.WINDOWS, response.iterator().next().vhd().osType());
@@ -93,8 +73,8 @@ public final class CustomImagesListMockTests {
         Assertions.assertEquals("jrliiz", response.iterator().next().managedImageId());
         Assertions.assertEquals("xlqfh", response.iterator().next().managedSnapshotId());
         Assertions.assertEquals("absol", response.iterator().next().dataDiskStorageInfo().get(0).lun());
-        Assertions
-            .assertEquals(StorageType.STANDARD, response.iterator().next().dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals(StorageType.STANDARD,
+            response.iterator().next().dataDiskStorageInfo().get(0).storageType());
         Assertions.assertEquals("qocarkuzlbc", response.iterator().next().customImagePlan().id());
         Assertions.assertEquals("dtsnxawqytllhdyz", response.iterator().next().customImagePlan().publisher());
         Assertions.assertEquals("ckze", response.iterator().next().customImagePlan().offer());

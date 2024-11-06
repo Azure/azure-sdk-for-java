@@ -5,29 +5,46 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OnvifSystemDateTimeType. */
+/**
+ * An enum value determining whether the date time was configured using NTP or manual.
+ */
 public final class OnvifSystemDateTimeType extends ExpandableStringEnum<OnvifSystemDateTimeType> {
-    /** Static value Ntp for OnvifSystemDateTimeType. */
+    /**
+     * Static value Ntp for OnvifSystemDateTimeType.
+     */
     public static final OnvifSystemDateTimeType NTP = fromString("Ntp");
 
-    /** Static value Manual for OnvifSystemDateTimeType. */
+    /**
+     * Static value Manual for OnvifSystemDateTimeType.
+     */
     public static final OnvifSystemDateTimeType MANUAL = fromString("Manual");
 
     /**
+     * Creates a new instance of OnvifSystemDateTimeType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OnvifSystemDateTimeType() {
+    }
+
+    /**
      * Creates or finds a OnvifSystemDateTimeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OnvifSystemDateTimeType.
      */
-    @JsonCreator
     public static OnvifSystemDateTimeType fromString(String name) {
         return fromString(name, OnvifSystemDateTimeType.class);
     }
 
-    /** @return known OnvifSystemDateTimeType values. */
+    /**
+     * Gets known OnvifSystemDateTimeType values.
+     * 
+     * @return known OnvifSystemDateTimeType values.
+     */
     public static Collection<OnvifSystemDateTimeType> values() {
         return values(OnvifSystemDateTimeType.class);
     }

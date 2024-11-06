@@ -11,21 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureMachineLearningServiceInputColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMachineLearningServiceInputColumn model = BinaryData
-            .fromString("{\"name\":\"zdzucerscdntnevf\",\"dataType\":\"jmygtdsslswtmwer\",\"mapTo\":539976297}")
-            .toObject(AzureMachineLearningServiceInputColumn.class);
-        Assertions.assertEquals("zdzucerscdntnevf", model.name());
-        Assertions.assertEquals("jmygtdsslswtmwer", model.dataType());
-        Assertions.assertEquals(539976297, model.mapTo());
+        AzureMachineLearningServiceInputColumn model
+            = BinaryData.fromString("{\"name\":\"qzeqqkdltfzxm\",\"dataType\":\"v\",\"mapTo\":316909853}")
+                .toObject(AzureMachineLearningServiceInputColumn.class);
+        Assertions.assertEquals("qzeqqkdltfzxm", model.name());
+        Assertions.assertEquals("v", model.dataType());
+        Assertions.assertEquals(316909853, model.mapTo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMachineLearningServiceInputColumn model = new AzureMachineLearningServiceInputColumn()
-            .withName("zdzucerscdntnevf").withDataType("jmygtdsslswtmwer").withMapTo(539976297);
+        AzureMachineLearningServiceInputColumn model
+            = new AzureMachineLearningServiceInputColumn().withName("qzeqqkdltfzxm")
+                .withDataType("v")
+                .withMapTo(316909853);
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningServiceInputColumn.class);
-        Assertions.assertEquals("zdzucerscdntnevf", model.name());
-        Assertions.assertEquals("jmygtdsslswtmwer", model.dataType());
-        Assertions.assertEquals(539976297, model.mapTo());
+        Assertions.assertEquals("qzeqqkdltfzxm", model.name());
+        Assertions.assertEquals("v", model.dataType());
+        Assertions.assertEquals(316909853, model.mapTo());
     }
 }

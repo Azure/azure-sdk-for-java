@@ -10,6 +10,6 @@ public final class FakeCredentialInTest {
     /**
      * Fake Azure Key Credential for mocking.
      */
-    public static final String MOCK_KEY_PLACEHOLDER =
-        "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
+    public static final String MOCK_KEY_PLACEHOLDER
+        = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
 }

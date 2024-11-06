@@ -101,11 +101,8 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     }
 
     private AppServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new WebSiteManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new WebSiteManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
@@ -174,6 +171,7 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         }
         return appServiceDomains;
     }
+
     /** @return the web app management API entry point */
     public FunctionApps functionApps() {
         if (functionApps == null) {

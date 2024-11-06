@@ -14,7 +14,8 @@ import java.util.List;
 /** The List Virtual Machine size operation response. */
 @Fluent
 public final class VirtualMachineSizeListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizeListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineSizeListResultInner.class);
 
     /*
      * The list of virtual machine sizes supported by AmlCompute.

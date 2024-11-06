@@ -48,16 +48,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BuilderHelperTests {
 
-    private static final StorageSharedKeyCredential CREDENTIALS = new StorageSharedKeyCredential("accountName", "accountKey");
+    private static final StorageSharedKeyCredential CREDENTIALS
+        = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.file.core.windows.net/";
-    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
-    private static final RetryOptions CORE_RETRY_OPTIONS = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
+    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS
+        = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
+    private static final RetryOptions CORE_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
 
     private static HttpRequest request(String url) throws MalformedURLException {
-        return new HttpRequest(
-            HttpMethod.HEAD,
-            new URL(url),
-            new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"),
+        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"),
             Flux.empty());
     }
 
@@ -70,10 +70,12 @@ public class BuilderHelperTests {
         HttpLogOptions httpLogOptions = BuilderHelper.getDefaultHttpLogOptions();
         ClientOptions clientOptions = new ClientOptions();
 
-        StepVerifier.create(BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, REQUEST_RETRY_OPTIONS,
-                    null, httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
-                    Configuration.NONE, null, new ClientLogger("foo"))
-            .send(request(ENDPOINT)))
+        StepVerifier
+            .create(BuilderHelper
+                .buildPipeline(CREDENTIALS, null, null, null, null, REQUEST_RETRY_OPTIONS, null, httpLogOptions,
+                    clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE, null,
+                    new ClientLogger("foo"))
+                .send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -83,14 +85,14 @@ public class BuilderHelperTests {
      */
     @Test
     public void serviceClientFreshDateOnRetry() throws MalformedURLException {
-        ShareServiceClient serviceClient = new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareServiceClient serviceClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
             .retryOptions(REQUEST_RETRY_OPTIONS)
             .buildClient();
 
-        serviceClient.getHttpPipeline().send(request(serviceClient.getFileServiceUrl()))
+        serviceClient.getHttpPipeline()
+            .send(request(serviceClient.getFileServiceUrl()))
             .subscribe(response -> assertEquals(200, response.getStatusCode()));
     }
 
@@ -99,15 +101,15 @@ public class BuilderHelperTests {
      */
     @Test
     public void shareClientFreshDateOnRetry() throws MalformedURLException {
-        ShareClient shareClient = new ShareClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT)
             .shareName("share")
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
             .retryOptions(REQUEST_RETRY_OPTIONS)
             .buildClient();
 
-        shareClient.getHttpPipeline().send(request(shareClient.getShareUrl()))
+        shareClient.getHttpPipeline()
+            .send(request(shareClient.getShareUrl()))
             .subscribe(response -> assertEquals(200, response.getStatusCode()));
     }
 
@@ -116,8 +118,7 @@ public class BuilderHelperTests {
      */
     @Test
     void fileClientFreshDateOnRetry() throws MalformedURLException {
-        ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder().endpoint(ENDPOINT)
             .shareName("fileSystem")
             .resourcePath("path")
             .credential(CREDENTIALS)
@@ -125,11 +126,13 @@ public class BuilderHelperTests {
             .httpClient(new FreshDateTestClient());
 
         ShareDirectoryClient directoryClient = fileClientBuilder.buildDirectoryClient();
-        directoryClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl()))
+        directoryClient.getHttpPipeline()
+            .send(request(directoryClient.getDirectoryUrl()))
             .subscribe(response -> assertEquals(200, response.getStatusCode()));
 
         ShareFileClient fileClient = fileClientBuilder.buildFileClient();
-        fileClient.getHttpPipeline().send(request(fileClient.getFileUrl()))
+        fileClient.getHttpPipeline()
+            .send(request(fileClient.getFileUrl()))
             .subscribe(response -> assertEquals(200, response.getStatusCode()));
     }
 
@@ -144,10 +147,12 @@ public class BuilderHelperTests {
         HttpLogOptions httpLogOptions = new HttpLogOptions().setApplicationId(logOptionsUA);
         ClientOptions clientOptions = new ClientOptions().setApplicationId(clientOptionsUA);
 
-        StepVerifier.create(BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, new RequestRetryOptions(),
-                    null, httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
-                    Configuration.NONE, null, new ClientLogger("foo"))
-            .send(request(ENDPOINT)))
+        StepVerifier
+            .create(BuilderHelper
+                .buildPipeline(CREDENTIALS, null, null, null, null, new RequestRetryOptions(), null, httpLogOptions,
+                    clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE, null,
+                    new ClientLogger("foo"))
+                .send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -160,8 +165,7 @@ public class BuilderHelperTests {
     @MethodSource("customApplicationIdInUAStringSupplier")
     void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
         throws MalformedURLException {
-        ShareServiceClient serviceClient = new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareServiceClient serviceClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
             .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
@@ -181,8 +185,7 @@ public class BuilderHelperTests {
     @MethodSource("customApplicationIdInUAStringSupplier")
     void shareClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
         throws MalformedURLException {
-        ShareClient shareClient = new ShareClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT)
             .shareName("share")
             .credential(CREDENTIALS)
             .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
@@ -203,8 +206,7 @@ public class BuilderHelperTests {
     @MethodSource("customApplicationIdInUAStringSupplier")
     void fileClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
         throws MalformedURLException {
-        ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder().endpoint(ENDPOINT)
             .shareName("fileSystem")
             .resourcePath("path")
             .credential(CREDENTIALS)
@@ -224,8 +226,7 @@ public class BuilderHelperTests {
     }
 
     private static Stream<Arguments> customApplicationIdInUAStringSupplier() {
-        return Stream.of(
-            Arguments.of("log-options-id", null, "log-options-id"),
+        return Stream.of(Arguments.of("log-options-id", null, "log-options-id"),
             Arguments.of(null, "client-options-id", "client-options-id"),
             Arguments.of("log-options-id", "client-options-id", "client-options-id"));
     }
@@ -240,8 +241,8 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null,
-            null, null, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
             new ArrayList<>(), Configuration.NONE, null, new ClientLogger("foo"));
 
@@ -260,8 +261,7 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        ShareServiceClient serviceClient = new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareServiceClient serviceClient = new ShareServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .clientOptions(new ClientOptions().setHeaders(headers))
             .httpClient(new ClientOptionsHeadersTestClient(headers))
@@ -282,8 +282,7 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        ShareClient shareClient = new ShareClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT)
             .shareName("share")
             .credential(CREDENTIALS)
             .clientOptions(new ClientOptions().setHeaders(headers))
@@ -305,8 +304,7 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
+        ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder().endpoint(ENDPOINT)
             .shareName("share")
             .resourcePath("blob")
             .credential(CREDENTIALS)
@@ -328,23 +326,20 @@ public class BuilderHelperTests {
 
     @Test
     void doesNotThrowOnAmbiguousCREDENTIALSWithoutAzureSasCredential() {
-        assertDoesNotThrow(() -> new ShareClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new ShareClientBuilder().endpoint(ENDPOINT)
             .shareName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .sasToken("foo")
             .buildClient());
 
-        assertDoesNotThrow(() -> new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new ShareFileClientBuilder().endpoint(ENDPOINT)
             .shareName("foo")
             .resourcePath("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .sasToken("foo")
             .buildDirectoryClient());
 
-        assertDoesNotThrow(() -> new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new ShareServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
             .sasToken("foo")
             .buildClient());
@@ -352,101 +347,101 @@ public class BuilderHelperTests {
 
     @Test
     void throwsOnAmbiguousCREDENTIALSWithAzureSasCredential() {
-        assertThrows(IllegalStateException.class, () -> new ShareClientBuilder()
-            .endpoint(ENDPOINT)
-            .shareName("foo")
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareClientBuilder().endpoint(ENDPOINT)
+                .shareName("foo")
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareClientBuilder()
-            .endpoint(ENDPOINT)
-            .shareName("foo")
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareClientBuilder().endpoint(ENDPOINT)
+                .shareName("foo")
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .shareName("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .shareName("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
-            .shareName("foo")
-            .resourcePath("foo")
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareFileClientBuilder().endpoint(ENDPOINT)
+                .shareName("foo")
+                .resourcePath("foo")
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
-            .shareName("foo")
-            .resourcePath("foo")
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareFileClientBuilder().endpoint(ENDPOINT)
+                .shareName("foo")
+                .resourcePath("foo")
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareFileClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .shareName("foo")
-            .resourcePath("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareFileClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .shareName("foo")
+                .resourcePath("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildDirectoryClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareServiceClientBuilder().endpoint(ENDPOINT)
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareServiceClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
     }
 
     @Test
     void onlyOneRetryOptionsCanBeApplied() {
-        assertThrows(IllegalStateException.class, () -> new ShareServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .shareName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .shareName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .shareName("foo")
-            .resourcePath("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildFileClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareFileClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .shareName("foo")
+                .resourcePath("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildFileClient());
 
-        assertThrows(IllegalStateException.class, () -> new ShareFileClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .shareName("foo")
-            .resourcePath("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildDirectoryClient());
+        assertThrows(IllegalStateException.class,
+            () -> new ShareFileClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .shareName("foo")
+                .resourcePath("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildDirectoryClient());
     }
 
     private static final class FreshDateTestClient implements HttpClient {

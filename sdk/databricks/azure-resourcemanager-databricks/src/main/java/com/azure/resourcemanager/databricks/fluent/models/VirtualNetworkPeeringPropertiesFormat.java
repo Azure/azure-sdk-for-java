@@ -6,34 +6,38 @@ package com.azure.resourcemanager.databricks.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databricks.models.AddressSpace;
 import com.azure.resourcemanager.databricks.models.PeeringProvisioningState;
 import com.azure.resourcemanager.databricks.models.PeeringState;
 import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork;
 import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the virtual network peering. */
+/**
+ * Properties of the virtual network peering.
+ */
 @Fluent
-public final class VirtualNetworkPeeringPropertiesFormat {
+public final class VirtualNetworkPeeringPropertiesFormat
+    implements JsonSerializable<VirtualNetworkPeeringPropertiesFormat> {
     /*
      * Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network
      * space.
      */
-    @JsonProperty(value = "allowVirtualNetworkAccess")
     private Boolean allowVirtualNetworkAccess;
 
     /*
      * Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote
      * virtual network.
      */
-    @JsonProperty(value = "allowForwardedTraffic")
     private Boolean allowForwardedTraffic;
 
     /*
      * If gateway links can be used in remote virtual networking to link to this virtual network.
      */
-    @JsonProperty(value = "allowGatewayTransit")
     private Boolean allowGatewayTransit;
 
     /*
@@ -41,55 +45,50 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one
      * peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
      */
-    @JsonProperty(value = "useRemoteGateways")
     private Boolean useRemoteGateways;
 
     /*
      * The remote virtual network should be in the same region. See here to learn more
      * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
      */
-    @JsonProperty(value = "databricksVirtualNetwork")
     private VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork;
 
     /*
      * The reference to the databricks virtual network address space.
      */
-    @JsonProperty(value = "databricksAddressSpace")
     private AddressSpace databricksAddressSpace;
 
     /*
      * The remote virtual network should be in the same region. See here to learn more
      * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
      */
-    @JsonProperty(value = "remoteVirtualNetwork", required = true)
     private VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork;
 
     /*
      * The reference to the remote virtual network address space.
      */
-    @JsonProperty(value = "remoteAddressSpace")
     private AddressSpace remoteAddressSpace;
 
     /*
      * The status of the virtual network peering.
      */
-    @JsonProperty(value = "peeringState", access = JsonProperty.Access.WRITE_ONLY)
     private PeeringState peeringState;
 
     /*
      * The provisioning state of the virtual network peering resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PeeringProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualNetworkPeeringPropertiesFormat class. */
+    /**
+     * Creates an instance of VirtualNetworkPeeringPropertiesFormat class.
+     */
     public VirtualNetworkPeeringPropertiesFormat() {
     }
 
     /**
      * Get the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.
-     *
+     * 
      * @return the allowVirtualNetworkAccess value.
      */
     public Boolean allowVirtualNetworkAccess() {
@@ -99,7 +98,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     /**
      * Set the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.
-     *
+     * 
      * @param allowVirtualNetworkAccess the allowVirtualNetworkAccess value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -111,7 +110,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     /**
      * Get the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the local virtual network
      * will be allowed/disallowed in remote virtual network.
-     *
+     * 
      * @return the allowForwardedTraffic value.
      */
     public Boolean allowForwardedTraffic() {
@@ -121,7 +120,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     /**
      * Set the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the local virtual network
      * will be allowed/disallowed in remote virtual network.
-     *
+     * 
      * @param allowForwardedTraffic the allowForwardedTraffic value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -133,7 +132,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     /**
      * Get the allowGatewayTransit property: If gateway links can be used in remote virtual networking to link to this
      * virtual network.
-     *
+     * 
      * @return the allowGatewayTransit value.
      */
     public Boolean allowGatewayTransit() {
@@ -143,7 +142,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     /**
      * Set the allowGatewayTransit property: If gateway links can be used in remote virtual networking to link to this
      * virtual network.
-     *
+     * 
      * @param allowGatewayTransit the allowGatewayTransit value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -157,7 +156,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
      * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
      * already has a gateway.
-     *
+     * 
      * @return the useRemoteGateways value.
      */
     public Boolean useRemoteGateways() {
@@ -169,7 +168,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
      * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
      * already has a gateway.
-     *
+     * 
      * @param useRemoteGateways the useRemoteGateways value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -182,7 +181,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * Get the databricksVirtualNetwork property: The remote virtual network should be in the same region. See here to
      * learn more
      * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-     *
+     * 
      * @return the databricksVirtualNetwork value.
      */
     public VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork() {
@@ -193,7 +192,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * Set the databricksVirtualNetwork property: The remote virtual network should be in the same region. See here to
      * learn more
      * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-     *
+     * 
      * @param databricksVirtualNetwork the databricksVirtualNetwork value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -205,7 +204,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Get the databricksAddressSpace property: The reference to the databricks virtual network address space.
-     *
+     * 
      * @return the databricksAddressSpace value.
      */
     public AddressSpace databricksAddressSpace() {
@@ -214,7 +213,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Set the databricksAddressSpace property: The reference to the databricks virtual network address space.
-     *
+     * 
      * @param databricksAddressSpace the databricksAddressSpace value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -227,7 +226,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * Get the remoteVirtualNetwork property: The remote virtual network should be in the same region. See here to learn
      * more
      * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-     *
+     * 
      * @return the remoteVirtualNetwork value.
      */
     public VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork() {
@@ -238,19 +237,19 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      * Set the remoteVirtualNetwork property: The remote virtual network should be in the same region. See here to learn
      * more
      * (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-     *
+     * 
      * @param remoteVirtualNetwork the remoteVirtualNetwork value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
-    public VirtualNetworkPeeringPropertiesFormat withRemoteVirtualNetwork(
-        VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
+    public VirtualNetworkPeeringPropertiesFormat
+        withRemoteVirtualNetwork(VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
         this.remoteVirtualNetwork = remoteVirtualNetwork;
         return this;
     }
 
     /**
      * Get the remoteAddressSpace property: The reference to the remote virtual network address space.
-     *
+     * 
      * @return the remoteAddressSpace value.
      */
     public AddressSpace remoteAddressSpace() {
@@ -259,7 +258,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Set the remoteAddressSpace property: The reference to the remote virtual network address space.
-     *
+     * 
      * @param remoteAddressSpace the remoteAddressSpace value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -270,7 +269,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Get the peeringState property: The status of the virtual network peering.
-     *
+     * 
      * @return the peeringState value.
      */
     public PeeringState peeringState() {
@@ -279,7 +278,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network peering resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PeeringProvisioningState provisioningState() {
@@ -288,7 +287,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -299,11 +298,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
             databricksAddressSpace().validate();
         }
         if (remoteVirtualNetwork() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remoteVirtualNetwork in model"
-                            + " VirtualNetworkPeeringPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remoteVirtualNetwork in model VirtualNetworkPeeringPropertiesFormat"));
         } else {
             remoteVirtualNetwork().validate();
         }
@@ -313,4 +310,77 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("remoteVirtualNetwork", this.remoteVirtualNetwork);
+        jsonWriter.writeBooleanField("allowVirtualNetworkAccess", this.allowVirtualNetworkAccess);
+        jsonWriter.writeBooleanField("allowForwardedTraffic", this.allowForwardedTraffic);
+        jsonWriter.writeBooleanField("allowGatewayTransit", this.allowGatewayTransit);
+        jsonWriter.writeBooleanField("useRemoteGateways", this.useRemoteGateways);
+        jsonWriter.writeJsonField("databricksVirtualNetwork", this.databricksVirtualNetwork);
+        jsonWriter.writeJsonField("databricksAddressSpace", this.databricksAddressSpace);
+        jsonWriter.writeJsonField("remoteAddressSpace", this.remoteAddressSpace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPeeringPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPeeringPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPeeringPropertiesFormat.
+     */
+    public static VirtualNetworkPeeringPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPeeringPropertiesFormat deserializedVirtualNetworkPeeringPropertiesFormat
+                = new VirtualNetworkPeeringPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("remoteVirtualNetwork".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteVirtualNetwork
+                        = VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork.fromJson(reader);
+                } else if ("allowVirtualNetworkAccess".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.allowVirtualNetworkAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowForwardedTraffic".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.allowForwardedTraffic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowGatewayTransit".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.allowGatewayTransit
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useRemoteGateways".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.useRemoteGateways
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("databricksVirtualNetwork".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.databricksVirtualNetwork
+                        = VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork.fromJson(reader);
+                } else if ("databricksAddressSpace".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.databricksAddressSpace
+                        = AddressSpace.fromJson(reader);
+                } else if ("remoteAddressSpace".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.remoteAddressSpace
+                        = AddressSpace.fromJson(reader);
+                } else if ("peeringState".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.peeringState
+                        = PeeringState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkPeeringPropertiesFormat.provisioningState
+                        = PeeringProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPeeringPropertiesFormat;
+        });
+    }
 }

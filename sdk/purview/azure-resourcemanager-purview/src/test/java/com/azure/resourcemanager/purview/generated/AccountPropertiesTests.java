@@ -13,24 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountProperties model =
-            BinaryData
-                .fromString(
-                    "{\"cloudConnectors\":{\"awsExternalId\":\"ukjfkgiawxklr\"},\"createdAt\":\"2021-02-17T21:17:55Z\",\"createdBy\":\"ckbasyypndd\",\"createdByObjectId\":\"gcbacphejkot\",\"endpoints\":{\"catalog\":\"gou\",\"guardian\":\"ndlik\",\"scan\":\"qkgfgibma\"},\"friendlyName\":\"akeqs\",\"managedResourceGroupName\":\"yb\",\"managedResources\":{\"eventHubNamespace\":\"e\",\"resourceGroup\":\"ytb\",\"storageAccount\":\"qfou\"},\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"smodmgloug\"},\"id\":\"b\",\"name\":\"wtmutduq\",\"type\":\"ta\"},{\"properties\":{\"provisioningState\":\"cuertu\"},\"id\":\"kdosvqw\",\"name\":\"bmdg\",\"type\":\"bjf\"},{\"properties\":{\"provisioningState\":\"mbe\"},\"id\":\"ppbhtqqrolfp\",\"name\":\"psalgbqux\",\"type\":\"gjyjgzjaoyfhrtxi\"}],\"provisioningState\":\"Failed\",\"publicNetworkAccess\":\"Enabled\"}")
-                .toObject(AccountProperties.class);
-        Assertions.assertEquals("yb", model.managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        AccountProperties model = BinaryData.fromString(
+            "{\"cloudConnectors\":{\"awsExternalId\":\"zxibqeoj\"},\"createdAt\":\"2021-11-06T03:25:01Z\",\"createdBy\":\"zvddntwndeicbtwn\",\"createdByObjectId\":\"aoqvuh\",\"endpoints\":{\"catalog\":\"f\",\"guardian\":\"yd\",\"scan\":\"lmjthjq\"},\"friendlyName\":\"pyeicxm\",\"managedResourceGroupName\":\"iwqvhkh\",\"managedResources\":{\"eventHubNamespace\":\"igdtopbob\",\"resourceGroup\":\"ghmewuam\",\"storageAccount\":\"hrzayvvtpgvdf\"},\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"tutqxlngxlefgug\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"rxdq\",\"description\":\"dt\",\"status\":\"Approved\"},\"provisioningState\":\"vqdra\"},\"id\":\"hjybigehoqfbo\",\"name\":\"skanyk\",\"type\":\"zlcuiywgqywgndrv\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"gpphrcgyn\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"pec\",\"description\":\"m\",\"status\":\"Pending\"},\"provisioningState\":\"fsxlzevgbmqjqa\"},\"id\":\"c\",\"name\":\"pmivkwlzu\",\"type\":\"ccfwnfnbacfion\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"etqgtzxdpnq\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"wxrjfeallnwsub\",\"description\":\"njampm\",\"status\":\"Disconnected\"},\"provisioningState\":\"scxaq\"},\"id\":\"ooch\",\"name\":\"bonqvpkvlrxnjeas\",\"type\":\"ipheoflokeyyien\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"wtgrhpdjpj\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"sxazjpq\",\"description\":\"gual\",\"status\":\"Approved\"},\"provisioningState\":\"hejjz\"},\"id\":\"v\",\"name\":\"udgwdslfho\",\"type\":\"wmc\"}],\"provisioningState\":\"Creating\",\"publicNetworkAccess\":\"NotSpecified\"}")
+            .toObject(AccountProperties.class);
+        Assertions.assertEquals("iwqvhkh", model.managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountProperties model =
-            new AccountProperties()
-                .withCloudConnectors(new CloudConnectors())
-                .withManagedResourceGroupName("yb")
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        AccountProperties model = new AccountProperties().withCloudConnectors(new CloudConnectors())
+            .withManagedResourceGroupName("iwqvhkh")
+            .withPublicNetworkAccess(PublicNetworkAccess.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(AccountProperties.class);
-        Assertions.assertEquals("yb", model.managedResourceGroupName());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("iwqvhkh", model.managedResourceGroupName());
+        Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, model.publicNetworkAccess());
     }
 }

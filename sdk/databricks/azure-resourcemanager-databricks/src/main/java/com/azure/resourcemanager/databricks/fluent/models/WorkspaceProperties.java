@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.databricks.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databricks.models.CreatedBy;
 import com.azure.resourcemanager.databricks.models.ManagedIdentityConfiguration;
 import com.azure.resourcemanager.databricks.models.ProvisioningState;
@@ -14,108 +19,93 @@ import com.azure.resourcemanager.databricks.models.RequiredNsgRules;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomParameters;
 import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption;
 import com.azure.resourcemanager.databricks.models.WorkspaceProviderAuthorization;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The workspace properties. */
+/**
+ * The workspace properties.
+ */
 @Fluent
-public final class WorkspaceProperties {
+public final class WorkspaceProperties implements JsonSerializable<WorkspaceProperties> {
     /*
      * The managed resource group Id.
      */
-    @JsonProperty(value = "managedResourceGroupId", required = true)
     private String managedResourceGroupId;
 
     /*
      * The workspace's custom parameters.
      */
-    @JsonProperty(value = "parameters")
     private WorkspaceCustomParameters parameters;
 
     /*
      * The workspace provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The blob URI where the UI definition file is located.
      */
-    @JsonProperty(value = "uiDefinitionUri")
     private String uiDefinitionUri;
 
     /*
      * The workspace provider authorizations.
      */
-    @JsonProperty(value = "authorizations")
     private List<WorkspaceProviderAuthorization> authorizations;
 
     /*
      * Indicates the Object ID, PUID and Application ID of entity that created the workspace.
      */
-    @JsonProperty(value = "createdBy")
     private CreatedBy createdBy;
 
     /*
      * Indicates the Object ID, PUID and Application ID of entity that last updated the workspace.
      */
-    @JsonProperty(value = "updatedBy")
     private CreatedBy updatedBy;
 
     /*
      * Specifies the date and time when the workspace is created.
      */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
      * The unique identifier of the databricks workspace in databricks control plane.
      */
-    @JsonProperty(value = "workspaceId", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceId;
 
     /*
      * The workspace URL which is of the format 'adb-{workspaceId}.{random}.azuredatabricks.net'
      */
-    @JsonProperty(value = "workspaceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceUrl;
 
     /*
      * The details of Managed Identity of Storage Account
      */
-    @JsonProperty(value = "storageAccountIdentity")
     private ManagedIdentityConfiguration storageAccountIdentity;
 
     /*
      * The details of Managed Identity of Disk Encryption Set used for Managed Disk Encryption
      */
-    @JsonProperty(value = "managedDiskIdentity")
     private ManagedIdentityConfiguration managedDiskIdentity;
 
     /*
      * The resource Id of the managed disk encryption set.
      */
-    @JsonProperty(value = "diskEncryptionSetId", access = JsonProperty.Access.WRITE_ONLY)
     private String diskEncryptionSetId;
 
     /*
      * Encryption properties for databricks workspace
      */
-    @JsonProperty(value = "encryption")
     private WorkspacePropertiesEncryption encryption;
 
     /*
      * Private endpoint connections created on the workspace
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * The network access type for accessing workspace. Set value to disabled to access workspace only via private
-     * link.
+     * The network access type for accessing workspace. Set value to disabled to access workspace only via private link.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
@@ -123,16 +113,17 @@ public final class WorkspaceProperties {
      * endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is for
      * internal use only.
      */
-    @JsonProperty(value = "requiredNsgRules")
     private RequiredNsgRules requiredNsgRules;
 
-    /** Creates an instance of WorkspaceProperties class. */
+    /**
+     * Creates an instance of WorkspaceProperties class.
+     */
     public WorkspaceProperties() {
     }
 
     /**
      * Get the managedResourceGroupId property: The managed resource group Id.
-     *
+     * 
      * @return the managedResourceGroupId value.
      */
     public String managedResourceGroupId() {
@@ -141,7 +132,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the managedResourceGroupId property: The managed resource group Id.
-     *
+     * 
      * @param managedResourceGroupId the managedResourceGroupId value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -152,7 +143,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the parameters property: The workspace's custom parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public WorkspaceCustomParameters parameters() {
@@ -161,7 +152,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the parameters property: The workspace's custom parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -172,7 +163,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the provisioningState property: The workspace provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -181,7 +172,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the uiDefinitionUri property: The blob URI where the UI definition file is located.
-     *
+     * 
      * @return the uiDefinitionUri value.
      */
     public String uiDefinitionUri() {
@@ -190,7 +181,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the uiDefinitionUri property: The blob URI where the UI definition file is located.
-     *
+     * 
      * @param uiDefinitionUri the uiDefinitionUri value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -201,7 +192,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the authorizations property: The workspace provider authorizations.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<WorkspaceProviderAuthorization> authorizations() {
@@ -210,7 +201,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the authorizations property: The workspace provider authorizations.
-     *
+     * 
      * @param authorizations the authorizations value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -222,7 +213,7 @@ public final class WorkspaceProperties {
     /**
      * Get the createdBy property: Indicates the Object ID, PUID and Application ID of entity that created the
      * workspace.
-     *
+     * 
      * @return the createdBy value.
      */
     public CreatedBy createdBy() {
@@ -232,7 +223,7 @@ public final class WorkspaceProperties {
     /**
      * Set the createdBy property: Indicates the Object ID, PUID and Application ID of entity that created the
      * workspace.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -244,7 +235,7 @@ public final class WorkspaceProperties {
     /**
      * Get the updatedBy property: Indicates the Object ID, PUID and Application ID of entity that last updated the
      * workspace.
-     *
+     * 
      * @return the updatedBy value.
      */
     public CreatedBy updatedBy() {
@@ -254,7 +245,7 @@ public final class WorkspaceProperties {
     /**
      * Set the updatedBy property: Indicates the Object ID, PUID and Application ID of entity that last updated the
      * workspace.
-     *
+     * 
      * @param updatedBy the updatedBy value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -265,7 +256,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the createdDateTime property: Specifies the date and time when the workspace is created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -274,7 +265,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the workspaceId property: The unique identifier of the databricks workspace in databricks control plane.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -284,7 +275,7 @@ public final class WorkspaceProperties {
     /**
      * Get the workspaceUrl property: The workspace URL which is of the format
      * 'adb-{workspaceId}.{random}.azuredatabricks.net'.
-     *
+     * 
      * @return the workspaceUrl value.
      */
     public String workspaceUrl() {
@@ -293,7 +284,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the storageAccountIdentity property: The details of Managed Identity of Storage Account.
-     *
+     * 
      * @return the storageAccountIdentity value.
      */
     public ManagedIdentityConfiguration storageAccountIdentity() {
@@ -302,7 +293,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the storageAccountIdentity property: The details of Managed Identity of Storage Account.
-     *
+     * 
      * @param storageAccountIdentity the storageAccountIdentity value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -314,7 +305,7 @@ public final class WorkspaceProperties {
     /**
      * Get the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
      * Disk Encryption.
-     *
+     * 
      * @return the managedDiskIdentity value.
      */
     public ManagedIdentityConfiguration managedDiskIdentity() {
@@ -324,7 +315,7 @@ public final class WorkspaceProperties {
     /**
      * Set the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
      * Disk Encryption.
-     *
+     * 
      * @param managedDiskIdentity the managedDiskIdentity value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -335,7 +326,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the diskEncryptionSetId property: The resource Id of the managed disk encryption set.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -344,7 +335,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the encryption property: Encryption properties for databricks workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public WorkspacePropertiesEncryption encryption() {
@@ -353,7 +344,7 @@ public final class WorkspaceProperties {
 
     /**
      * Set the encryption property: Encryption properties for databricks workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -364,7 +355,7 @@ public final class WorkspaceProperties {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections created on the workspace.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -374,7 +365,7 @@ public final class WorkspaceProperties {
     /**
      * Get the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
      * access workspace only via private link.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -384,7 +375,7 @@ public final class WorkspaceProperties {
     /**
      * Set the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
      * access workspace only via private link.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -397,7 +388,7 @@ public final class WorkspaceProperties {
      * Get the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
      * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
      * 'NoAzureServiceRules' value is for internal use only.
-     *
+     * 
      * @return the requiredNsgRules value.
      */
     public RequiredNsgRules requiredNsgRules() {
@@ -408,7 +399,7 @@ public final class WorkspaceProperties {
      * Set the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
      * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
      * 'NoAzureServiceRules' value is for internal use only.
-     *
+     * 
      * @param requiredNsgRules the requiredNsgRules value to set.
      * @return the WorkspaceProperties object itself.
      */
@@ -419,15 +410,14 @@ public final class WorkspaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (managedResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedResourceGroupId in model WorkspaceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managedResourceGroupId in model WorkspaceProperties"));
         }
         if (parameters() != null) {
             parameters().validate();
@@ -456,4 +446,94 @@ public final class WorkspaceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkspaceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceGroupId", this.managedResourceGroupId);
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        jsonWriter.writeStringField("uiDefinitionUri", this.uiDefinitionUri);
+        jsonWriter.writeArrayField("authorizations", this.authorizations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("createdBy", this.createdBy);
+        jsonWriter.writeJsonField("updatedBy", this.updatedBy);
+        jsonWriter.writeJsonField("storageAccountIdentity", this.storageAccountIdentity);
+        jsonWriter.writeJsonField("managedDiskIdentity", this.managedDiskIdentity);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("requiredNsgRules",
+            this.requiredNsgRules == null ? null : this.requiredNsgRules.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceProperties.
+     */
+    public static WorkspaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceProperties deserializedWorkspaceProperties = new WorkspaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceGroupId".equals(fieldName)) {
+                    deserializedWorkspaceProperties.managedResourceGroupId = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedWorkspaceProperties.parameters = WorkspaceCustomParameters.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkspaceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("uiDefinitionUri".equals(fieldName)) {
+                    deserializedWorkspaceProperties.uiDefinitionUri = reader.getString();
+                } else if ("authorizations".equals(fieldName)) {
+                    List<WorkspaceProviderAuthorization> authorizations
+                        = reader.readArray(reader1 -> WorkspaceProviderAuthorization.fromJson(reader1));
+                    deserializedWorkspaceProperties.authorizations = authorizations;
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedWorkspaceProperties.createdBy = CreatedBy.fromJson(reader);
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedWorkspaceProperties.updatedBy = CreatedBy.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedWorkspaceProperties.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedWorkspaceProperties.workspaceId = reader.getString();
+                } else if ("workspaceUrl".equals(fieldName)) {
+                    deserializedWorkspaceProperties.workspaceUrl = reader.getString();
+                } else if ("storageAccountIdentity".equals(fieldName)) {
+                    deserializedWorkspaceProperties.storageAccountIdentity
+                        = ManagedIdentityConfiguration.fromJson(reader);
+                } else if ("managedDiskIdentity".equals(fieldName)) {
+                    deserializedWorkspaceProperties.managedDiskIdentity = ManagedIdentityConfiguration.fromJson(reader);
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedWorkspaceProperties.diskEncryptionSetId = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedWorkspaceProperties.encryption = WorkspacePropertiesEncryption.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedWorkspaceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedWorkspaceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("requiredNsgRules".equals(fieldName)) {
+                    deserializedWorkspaceProperties.requiredNsgRules = RequiredNsgRules.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceProperties;
+        });
+    }
 }

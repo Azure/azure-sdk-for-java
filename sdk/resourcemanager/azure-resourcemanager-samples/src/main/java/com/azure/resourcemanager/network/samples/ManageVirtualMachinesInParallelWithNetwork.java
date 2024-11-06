@@ -20,7 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,9 +54,8 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
         final Region region = Region.US_SOUTH_CENTRAL;
         try {
             // Create a resource group [Where all resources gets created]
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(region)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
             //============================================================
             // Define a network security group for the front end of a subnet
@@ -64,29 +63,30 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
             // - ALLOW-SSH - allows SSH traffic into the front end subnet
             // - ALLOW-WEB- allows HTTP traffic into the front end subnet
 
-            Creatable<NetworkSecurityGroup> frontEndNSGCreatable = azureResourceManager.networkSecurityGroups().define(frontEndNsgName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .defineRule("ALLOW-SSH")
-                        .allowInbound()
-                        .fromAnyAddress()
-                        .fromAnyPort()
-                        .toAnyAddress()
-                        .toPort(22)
-                        .withProtocol(SecurityRuleProtocol.TCP)
-                        .withPriority(100)
-                        .withDescription("Allow SSH")
-                        .attach()
-                    .defineRule("ALLOW-HTTP")
-                        .allowInbound()
-                        .fromAnyAddress()
-                        .fromAnyPort()
-                        .toAnyAddress()
-                        .toPort(80)
-                        .withProtocol(SecurityRuleProtocol.TCP)
-                        .withPriority(101)
-                        .withDescription("Allow HTTP")
-                        .attach();
+            Creatable<NetworkSecurityGroup> frontEndNSGCreatable = azureResourceManager.networkSecurityGroups()
+                .define(frontEndNsgName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .defineRule("ALLOW-SSH")
+                .allowInbound()
+                .fromAnyAddress()
+                .fromAnyPort()
+                .toAnyAddress()
+                .toPort(22)
+                .withProtocol(SecurityRuleProtocol.TCP)
+                .withPriority(100)
+                .withDescription("Allow SSH")
+                .attach()
+                .defineRule("ALLOW-HTTP")
+                .allowInbound()
+                .fromAnyAddress()
+                .fromAnyPort()
+                .toAnyAddress()
+                .toPort(80)
+                .withProtocol(SecurityRuleProtocol.TCP)
+                .withPriority(101)
+                .withDescription("Allow HTTP")
+                .attach();
 
             //============================================================
             // Define a network security group for the back end of a subnet
@@ -94,36 +94,39 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
             // - ALLOW-SQL - allows SQL traffic only from the front end subnet
             // - DENY-WEB - denies all outbound internet traffic from the back end subnet
 
-            Creatable<NetworkSecurityGroup> backEndNSGCreatable = azureResourceManager.networkSecurityGroups().define(backEndNsgName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .defineRule("ALLOW-SQL")
-                        .allowInbound()
-                        .fromAddress("172.16.1.0/24")
-                        .fromAnyPort()
-                        .toAnyAddress()
-                        .toPort(1433)
-                        .withProtocol(SecurityRuleProtocol.TCP)
-                        .withPriority(100)
-                        .withDescription("Allow SQL")
-                        .attach()
-                    .defineRule("DENY-WEB")
-                        .denyOutbound()
-                        .fromAnyAddress()
-                        .fromAnyPort()
-                        .toAnyAddress()
-                        .toAnyPort()
-                        .withAnyProtocol()
-                        .withDescription("Deny Web")
-                        .withPriority(200)
-                        .attach();
+            Creatable<NetworkSecurityGroup> backEndNSGCreatable = azureResourceManager.networkSecurityGroups()
+                .define(backEndNsgName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .defineRule("ALLOW-SQL")
+                .allowInbound()
+                .fromAddress("172.16.1.0/24")
+                .fromAnyPort()
+                .toAnyAddress()
+                .toPort(1433)
+                .withProtocol(SecurityRuleProtocol.TCP)
+                .withPriority(100)
+                .withDescription("Allow SQL")
+                .attach()
+                .defineRule("DENY-WEB")
+                .denyOutbound()
+                .fromAnyAddress()
+                .fromAnyPort()
+                .toAnyAddress()
+                .toAnyPort()
+                .withAnyProtocol()
+                .withDescription("Deny Web")
+                .withPriority(200)
+                .attach();
 
             System.out.println("Creating security group for the front ends - allows SSH and HTTP");
-            System.out.println("Creating security group for the back ends - allows SSH and denies all outbound internet traffic");
+            System.out.println(
+                "Creating security group for the back ends - allows SSH and denies all outbound internet traffic");
 
             @SuppressWarnings("unchecked")
             Collection<NetworkSecurityGroup> networkSecurityGroups = azureResourceManager.networkSecurityGroups()
-                    .create(frontEndNSGCreatable, backEndNSGCreatable).values();
+                .create(frontEndNSGCreatable, backEndNSGCreatable)
+                .values();
 
             NetworkSecurityGroup frontendNSG = null;
             NetworkSecurityGroup backendNSG = null;
@@ -144,58 +147,62 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
             Utils.print(backendNSG);
 
             // Create Network [Where all the virtual machines get added to]
-            Network network = azureResourceManager.networks().define(networkName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withAddressSpace("172.16.0.0/16")
-                    .defineSubnet("Front-end")
-                        .withAddressPrefix("172.16.1.0/24")
-                        .withExistingNetworkSecurityGroup(frontendNSG)
-                        .attach()
-                    .defineSubnet("Back-end")
-                        .withAddressPrefix("172.16.2.0/24")
-                        .withExistingNetworkSecurityGroup(backendNSG)
-                        .attach()
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(networkName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("172.16.0.0/16")
+                .defineSubnet("Front-end")
+                .withAddressPrefix("172.16.1.0/24")
+                .withExistingNetworkSecurityGroup(frontendNSG)
+                .attach()
+                .defineSubnet("Back-end")
+                .withAddressPrefix("172.16.2.0/24")
+                .withExistingNetworkSecurityGroup(backendNSG)
+                .attach()
+                .create();
 
             // Prepare Creatable Storage account definition [For storing VMs disk]
-            Creatable<StorageAccount> creatableStorageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup);
+            Creatable<StorageAccount> creatableStorageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup);
 
             // Prepare a batch of Creatable Virtual Machines definitions
             List<Creatable<VirtualMachine>> frontendCreatableVirtualMachines = new ArrayList<>();
             for (int i = 0; i < frontendVMCount; i++) {
-                Creatable<VirtualMachine> creatableVirtualMachine = azureResourceManager.virtualMachines().define("VM-FE-" + i)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("Front-end")
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .withNewStorageAccount(creatableStorageAccount);
+                Creatable<VirtualMachine> creatableVirtualMachine = azureResourceManager.virtualMachines()
+                    .define("VM-FE-" + i)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withExistingPrimaryNetwork(network)
+                    .withSubnet("Front-end")
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(userName)
+                    .withRootPassword(password)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withNewStorageAccount(creatableStorageAccount);
                 frontendCreatableVirtualMachines.add(creatableVirtualMachine);
             }
 
             List<Creatable<VirtualMachine>> backendCreatableVirtualMachines = new ArrayList<>();
 
             for (int i = 0; i < backendVMCount; i++) {
-                Creatable<VirtualMachine> creatableVirtualMachine = azureResourceManager.virtualMachines().define("VM-BE-" + i)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("Back-end")
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withRootPassword(password)
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .withNewStorageAccount(creatableStorageAccount);
+                Creatable<VirtualMachine> creatableVirtualMachine = azureResourceManager.virtualMachines()
+                    .define("VM-BE-" + i)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withExistingPrimaryNetwork(network)
+                    .withSubnet("Back-end")
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(userName)
+                    .withRootPassword(password)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withNewStorageAccount(creatableStorageAccount);
                 backendCreatableVirtualMachines.add(creatableVirtualMachine);
             }
 
@@ -207,7 +214,8 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
             StopWatch stopwatch = new StopWatch();
             stopwatch.start();
 
-            Collection<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(allCreatableVirtualMachines).values();
+            Collection<VirtualMachine> virtualMachines
+                = azureResourceManager.virtualMachines().create(allCreatableVirtualMachines).values();
 
             stopwatch.stop();
             System.out.println("Created virtual machines");
@@ -248,8 +256,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

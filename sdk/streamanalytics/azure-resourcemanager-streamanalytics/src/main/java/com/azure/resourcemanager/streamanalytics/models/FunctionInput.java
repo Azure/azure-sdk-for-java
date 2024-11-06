@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes one input parameter of a function.
  */
 @Fluent
-public final class FunctionInput {
+public final class FunctionInput implements JsonSerializable<FunctionInput> {
     /*
      * The (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream
      * Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
-     * A flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be
-     * a constant. Default is false.
+     * A flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be a
+     * constant. Default is false.
      */
-    @JsonProperty(value = "isConfigurationParameter")
     private Boolean isConfigurationParameter;
 
     /**
@@ -84,5 +86,44 @@ public final class FunctionInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeBooleanField("isConfigurationParameter", this.isConfigurationParameter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionInput.
+     */
+    public static FunctionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionInput deserializedFunctionInput = new FunctionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataType".equals(fieldName)) {
+                    deserializedFunctionInput.dataType = reader.getString();
+                } else if ("isConfigurationParameter".equals(fieldName)) {
+                    deserializedFunctionInput.isConfigurationParameter = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionInput;
+        });
     }
 }

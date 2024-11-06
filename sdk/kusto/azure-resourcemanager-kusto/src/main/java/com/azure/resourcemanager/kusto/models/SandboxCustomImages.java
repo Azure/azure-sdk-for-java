@@ -47,8 +47,8 @@ public interface SandboxCustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto sandbox custom image along with {@link Response}.
      */
-    Response<SandboxCustomImage> getWithResponse(
-        String resourceGroupName, String clusterName, String sandboxCustomImageName, Context context);
+    Response<SandboxCustomImage> getWithResponse(String resourceGroupName, String clusterName,
+        String sandboxCustomImageName, Context context);
 
     /**
      * Returns a sandbox custom image.
@@ -100,11 +100,8 @@ public interface SandboxCustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        SandboxCustomImagesCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
@@ -117,8 +114,8 @@ public interface SandboxCustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, SandboxCustomImagesCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        SandboxCustomImagesCheckNameRequest resourceName);
 
     /**
      * Returns a sandbox custom image.

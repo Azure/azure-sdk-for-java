@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Stack Versions that this version can upgrade to. */
+/**
+ * Stack Versions that this version can upgrade to.
+ */
 @Fluent
-public final class UpgradableVersionsListInner {
+public final class UpgradableVersionsListInner implements JsonSerializable<UpgradableVersionsListInner> {
     /*
      * Current version of the elastic monitor
      */
-    @JsonProperty(value = "currentVersion")
     private String currentVersion;
 
     /*
      * Stack Versions that this version can upgrade to
      */
-    @JsonProperty(value = "upgradableVersions")
     private List<String> upgradableVersions;
 
-    /** Creates an instance of UpgradableVersionsListInner class. */
+    /**
+     * Creates an instance of UpgradableVersionsListInner class.
+     */
     public UpgradableVersionsListInner() {
     }
 
     /**
      * Get the currentVersion property: Current version of the elastic monitor.
-     *
+     * 
      * @return the currentVersion value.
      */
     public String currentVersion() {
@@ -38,7 +44,7 @@ public final class UpgradableVersionsListInner {
 
     /**
      * Set the currentVersion property: Current version of the elastic monitor.
-     *
+     * 
      * @param currentVersion the currentVersion value to set.
      * @return the UpgradableVersionsListInner object itself.
      */
@@ -49,7 +55,7 @@ public final class UpgradableVersionsListInner {
 
     /**
      * Get the upgradableVersions property: Stack Versions that this version can upgrade to.
-     *
+     * 
      * @return the upgradableVersions value.
      */
     public List<String> upgradableVersions() {
@@ -58,7 +64,7 @@ public final class UpgradableVersionsListInner {
 
     /**
      * Set the upgradableVersions property: Stack Versions that this version can upgrade to.
-     *
+     * 
      * @param upgradableVersions the upgradableVersions value to set.
      * @return the UpgradableVersionsListInner object itself.
      */
@@ -69,9 +75,50 @@ public final class UpgradableVersionsListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("currentVersion", this.currentVersion);
+        jsonWriter.writeArrayField("upgradableVersions", this.upgradableVersions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradableVersionsListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradableVersionsListInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradableVersionsListInner.
+     */
+    public static UpgradableVersionsListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradableVersionsListInner deserializedUpgradableVersionsListInner = new UpgradableVersionsListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentVersion".equals(fieldName)) {
+                    deserializedUpgradableVersionsListInner.currentVersion = reader.getString();
+                } else if ("upgradableVersions".equals(fieldName)) {
+                    List<String> upgradableVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpgradableVersionsListInner.upgradableVersions = upgradableVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradableVersionsListInner;
+        });
     }
 }

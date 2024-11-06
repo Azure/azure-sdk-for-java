@@ -151,8 +151,8 @@ public class OkHttpHttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client.send(
-            new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client
+            .send(new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
 
             assertEquals(200, response.getStatusCode());
 
@@ -177,10 +177,10 @@ public class OkHttpHttpClientTests {
         X509TrustManager[] trustManagers = new X509TrustManager[] { new InsecureTrustManager() };
         sslContext.init(null, trustManagers, null);
 
-        HttpClient httpClient = new OkHttpHttpClientBuilder()
-            .sslSocketFactory(sslContext.getSocketFactory(), trustManagers[0])
-            .hostnameVerifier((hostname, session) -> true)
-            .build();
+        HttpClient httpClient
+            = new OkHttpHttpClientBuilder().sslSocketFactory(sslContext.getSocketFactory(), trustManagers[0])
+                .hostnameVerifier((hostname, session) -> true)
+                .build();
 
         try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());

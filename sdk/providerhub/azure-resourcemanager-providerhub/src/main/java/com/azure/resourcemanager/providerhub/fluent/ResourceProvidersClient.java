@@ -51,8 +51,8 @@ public interface ResourceProvidersClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckinManifestInfoInner> checkinManifestWithResponse(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context);
+    Response<CheckinManifestInfoInner> checkinManifestWithResponse(String providerNamespace,
+        CheckinManifestParams checkinManifestParams, Context context);
 
     /**
      * Checkin the manifest.

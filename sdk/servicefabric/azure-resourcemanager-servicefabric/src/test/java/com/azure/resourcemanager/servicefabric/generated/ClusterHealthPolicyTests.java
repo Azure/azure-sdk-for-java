@@ -20,10 +20,17 @@ public final class ClusterHealthPolicyTests {
             .toObject(ClusterHealthPolicy.class);
         Assertions.assertEquals(180815183, model.maxPercentUnhealthyNodes());
         Assertions.assertEquals(1181425969, model.maxPercentUnhealthyApplications());
-        Assertions.assertEquals(1824195045, model.applicationHealthPolicies().get("eotusivyevc")
-            .defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(864037829, model.applicationHealthPolicies().get("eotusivyevc")
-            .serviceTypeHealthPolicies().get("pdvhpfxxypin").maxPercentUnhealthyServices());
+        Assertions.assertEquals(1824195045,
+            model.applicationHealthPolicies()
+                .get("eotusivyevc")
+                .defaultServiceTypeHealthPolicy()
+                .maxPercentUnhealthyServices());
+        Assertions.assertEquals(864037829,
+            model.applicationHealthPolicies()
+                .get("eotusivyevc")
+                .serviceTypeHealthPolicies()
+                .get("pdvhpfxxypin")
+                .maxPercentUnhealthyServices());
     }
 
     @org.junit.jupiter.api.Test
@@ -55,10 +62,17 @@ public final class ClusterHealthPolicyTests {
         model = BinaryData.fromObject(model).toObject(ClusterHealthPolicy.class);
         Assertions.assertEquals(180815183, model.maxPercentUnhealthyNodes());
         Assertions.assertEquals(1181425969, model.maxPercentUnhealthyApplications());
-        Assertions.assertEquals(1824195045, model.applicationHealthPolicies().get("eotusivyevc")
-            .defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(864037829, model.applicationHealthPolicies().get("eotusivyevc")
-            .serviceTypeHealthPolicies().get("pdvhpfxxypin").maxPercentUnhealthyServices());
+        Assertions.assertEquals(1824195045,
+            model.applicationHealthPolicies()
+                .get("eotusivyevc")
+                .defaultServiceTypeHealthPolicy()
+                .maxPercentUnhealthyServices());
+        Assertions.assertEquals(864037829,
+            model.applicationHealthPolicies()
+                .get("eotusivyevc")
+                .serviceTypeHealthPolicies()
+                .get("pdvhpfxxypin")
+                .maxPercentUnhealthyServices());
     }
 
     // Use "Map.of" if available

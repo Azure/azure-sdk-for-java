@@ -9,26 +9,28 @@ import com.azure.resourcemanager.synapse.models.SqlPool;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlPools Update. */
+/**
+ * Samples for SqlPools Update.
+ */
 public final class SqlPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateSqlPool.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateSqlPool.json
      */
     /**
      * Sample code: Update a SQL Analytics pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void updateASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        SqlPool resource =
-            manager
-                .sqlPools()
-                .getWithResponse(
-                    "ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool", com.azure.core.util.Context.NONE)
-                .getValue();
+        SqlPool resource = manager.sqlPools()
+            .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf()).withSku(new Sku().withTier("").withName("")).withMaxSizeBytes(0L).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

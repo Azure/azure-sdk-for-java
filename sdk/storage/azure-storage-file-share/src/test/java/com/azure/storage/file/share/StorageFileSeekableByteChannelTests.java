@@ -55,8 +55,8 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
 
         //when: "Channel initialized"
         SeekableByteChannel channel = primaryFileClient.getFileSeekableByteChannelWrite(
-            new ShareFileSeekableByteChannelWriteOptions(true)
-                .setFileSize((long) data.length).setChunkSizeInBytes((long) streamBufferSize));
+            new ShareFileSeekableByteChannelWriteOptions(true).setFileSize((long) data.length)
+                .setChunkSizeInBytes((long) streamBufferSize));
 
         //then: "Channel initialized to position zero"
         assertEquals(channel.position(), 0);
@@ -106,28 +106,24 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> e2EChannelReadSupplier() {
-        return Stream.of(
-            Arguments.of(50, 40, Constants.KB),
-            Arguments.of(2 * Constants.KB, 40, Constants.KB) // initial fetch larger than resource size
+        return Stream.of(Arguments.of(50, 40, Constants.KB), Arguments.of(2 * Constants.KB, 40, Constants.KB) // initial fetch larger than resource size
         );
     }
-
 
     @ParameterizedTest
     @MethodSource("clientCreatesAppropriateChannelWriteModeSupplier")
     public void clientCreatesAppropriateChannelWriteMode(ShareRequestConditions conditions,
         FileLastWrittenMode lastWrittenMode) {
         //when: "make channel in write mode"
-        StorageSeekableByteChannel channel =
-            (StorageSeekableByteChannel) primaryFileClient.getFileSeekableByteChannelWrite(
-                new ShareFileSeekableByteChannelWriteOptions(true)
-                .setRequestConditions(conditions)
-                .setFileLastWrittenMode(lastWrittenMode)
-                .setFileSize((long) Constants.KB));
+        StorageSeekableByteChannel channel
+            = (StorageSeekableByteChannel) primaryFileClient.getFileSeekableByteChannelWrite(
+                new ShareFileSeekableByteChannelWriteOptions(true).setRequestConditions(conditions)
+                    .setFileLastWrittenMode(lastWrittenMode)
+                    .setFileSize((long) Constants.KB));
 
         //then: "channel WriteBehavior has appropriate values"
-        StorageSeekableByteChannelShareFileWriteBehavior writeBehavior =
-            (StorageSeekableByteChannelShareFileWriteBehavior) channel.getWriteBehavior();
+        StorageSeekableByteChannelShareFileWriteBehavior writeBehavior
+            = (StorageSeekableByteChannelShareFileWriteBehavior) channel.getWriteBehavior();
         assertEquals(writeBehavior.getClient(), primaryFileClient);
         assertEquals(writeBehavior.getRequestConditions(), conditions);
         assertEquals(writeBehavior.getLastWrittenMode(), lastWrittenMode);
@@ -137,11 +133,8 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> clientCreatesAppropriateChannelWriteModeSupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new ShareRequestConditions(), null),
-            Arguments.of(null, FileLastWrittenMode.PRESERVE)
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(new ShareRequestConditions(), null),
+            Arguments.of(null, FileLastWrittenMode.PRESERVE));
     }
 
     @Test
@@ -149,16 +142,16 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
         List<ShareRequestConditions> conditions = Arrays.asList(null, new ShareRequestConditions());
         for (ShareRequestConditions condition : conditions) {
             //when: "make channel in read mode"
-            StorageSeekableByteChannel channel =
-                (StorageSeekableByteChannel) primaryFileClient.getFileSeekableByteChannelRead(
+            StorageSeekableByteChannel channel
+                = (StorageSeekableByteChannel) primaryFileClient.getFileSeekableByteChannelRead(
                     new ShareFileSeekableByteChannelReadOptions().setRequestConditions(condition));
 
             //then: "channel WriteBehavior is null"
             assertNull(channel.getWriteBehavior());
 
             //and: "channel ReadBehavior has appropriate values"
-            StorageSeekableByteChannelShareFileReadBehavior readBehavior =
-                (StorageSeekableByteChannelShareFileReadBehavior) channel.getReadBehavior();
+            StorageSeekableByteChannelShareFileReadBehavior readBehavior
+                = (StorageSeekableByteChannelShareFileReadBehavior) channel.getReadBehavior();
             assertEquals(readBehavior.getClient(), primaryFileClient);
             assertEquals(readBehavior.getRequestConditions(), condition);
 

@@ -23,8 +23,10 @@ public final class InMageRcmDiskInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmDiskInput model = new InMageRcmDiskInput().withDiskId("ahr").withLogStorageAccountId("gpx")
-            .withDiskType(DiskAccountType.STANDARD_LRS).withDiskEncryptionSetId("plnupoyryef");
+        InMageRcmDiskInput model = new InMageRcmDiskInput().withDiskId("ahr")
+            .withLogStorageAccountId("gpx")
+            .withDiskType(DiskAccountType.STANDARD_LRS)
+            .withDiskEncryptionSetId("plnupoyryef");
         model = BinaryData.fromObject(model).toObject(InMageRcmDiskInput.class);
         Assertions.assertEquals("ahr", model.diskId());
         Assertions.assertEquals("gpx", model.logStorageAccountId());

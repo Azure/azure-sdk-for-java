@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"dtvm\",\"connectionString\":\"lyymffhmjpddny\",\"useFromLocation\":\"fzuvrzmz\",\"resourceId\":\"zjqr\"}")
-                .toObject(CacheContractProperties.class);
+        CacheContractProperties model = BinaryData.fromString(
+            "{\"description\":\"dtvm\",\"connectionString\":\"lyymffhmjpddny\",\"useFromLocation\":\"fzuvrzmz\",\"resourceId\":\"zjqr\"}")
+            .toObject(CacheContractProperties.class);
         Assertions.assertEquals("dtvm", model.description());
         Assertions.assertEquals("lyymffhmjpddny", model.connectionString());
         Assertions.assertEquals("fzuvrzmz", model.useFromLocation());
@@ -24,12 +22,10 @@ public final class CacheContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheContractProperties model =
-            new CacheContractProperties()
-                .withDescription("dtvm")
-                .withConnectionString("lyymffhmjpddny")
-                .withUseFromLocation("fzuvrzmz")
-                .withResourceId("zjqr");
+        CacheContractProperties model = new CacheContractProperties().withDescription("dtvm")
+            .withConnectionString("lyymffhmjpddny")
+            .withUseFromLocation("fzuvrzmz")
+            .withResourceId("zjqr");
         model = BinaryData.fromObject(model).toObject(CacheContractProperties.class);
         Assertions.assertEquals("dtvm", model.description());
         Assertions.assertEquals("lyymffhmjpddny", model.connectionString());

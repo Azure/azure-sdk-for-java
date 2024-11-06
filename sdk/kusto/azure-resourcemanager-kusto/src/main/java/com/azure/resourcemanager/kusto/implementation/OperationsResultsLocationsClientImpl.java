@@ -37,10 +37,8 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
      * @param client the instance of the service client containing this operation class.
      */
     OperationsResultsLocationsClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    OperationsResultsLocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(OperationsResultsLocationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,17 +49,13 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
     public interface OperationsResultsLocationsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<OperationsResultsLocationsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<OperationsResultsLocationsGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
             Context context);
     }
 
@@ -78,16 +72,12 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationsResultsLocationsGetResponse> getWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -96,16 +86,8 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            operationId,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+                operationId, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -121,19 +103,15 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationsResultsLocationsGetResponse> getWithResponseAsync(
-        String location, String operationId, Context context) {
+    private Mono<OperationsResultsLocationsGetResponse> getWithResponseAsync(String location, String operationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -142,14 +120,8 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                operationId,
-                this.client.getApiVersion(),
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, operationId,
+            this.client.getApiVersion(), context);
     }
 
     /**

@@ -14,24 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"m\",\"principalId\":\"yvshxmz\",\"tenantId\":\"bzoggigrx\",\"userAssignedIdentities\":{\"udwtiukbl\":{\"principalId\":\"vjxxjnsp\",\"clientId\":\"ptkoenkoukn\"}}}")
-                .toObject(ResourceIdentity.class);
-        Assertions.assertEquals("m", model.type());
+        ResourceIdentity model = BinaryData.fromString(
+            "{\"type\":\"mjmvxieduugidyjr\",\"principalId\":\"byao\",\"tenantId\":\"e\",\"userAssignedIdentities\":{\"zfbuhf\":{\"principalId\":\"npc\",\"clientId\":\"ocohslkevleg\"},\"ggi\":{\"principalId\":\"faxkffeii\",\"clientId\":\"lvmezyvshxmzsbbz\"},\"vudwtiukbldng\":{\"principalId\":\"xwburvjxxjns\",\"clientId\":\"dptkoenkouk\"}}}")
+            .toObject(ResourceIdentity.class);
+        Assertions.assertEquals("mjmvxieduugidyjr", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model =
-            new ResourceIdentity()
-                .withType("m")
-                .withUserAssignedIdentities(mapOf("udwtiukbl", new UserAssignedIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType("mjmvxieduugidyjr")
+            .withUserAssignedIdentities(mapOf("zfbuhf", new UserAssignedIdentity(), "ggi", new UserAssignedIdentity(),
+                "vudwtiukbldng", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals("m", model.type());
+        Assertions.assertEquals("mjmvxieduugidyjr", model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

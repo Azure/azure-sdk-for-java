@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisObjectMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisObjectMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SsisObjectMetadata\",\"id\":1092833770450672714,\"name\":\"rusnk\",\"description\":\"hsyrqunj\"}")
-                .toObject(SsisObjectMetadata.class);
-        Assertions.assertEquals(1092833770450672714L, model.id());
-        Assertions.assertEquals("rusnk", model.name());
-        Assertions.assertEquals("hsyrqunj", model.description());
+        SsisObjectMetadata model = BinaryData.fromString(
+            "{\"type\":\"SsisObjectMetadata\",\"id\":3254840130763842184,\"name\":\"xaxmq\",\"description\":\"alhhjnhgwydyynfs\"}")
+            .toObject(SsisObjectMetadata.class);
+        Assertions.assertEquals(3254840130763842184L, model.id());
+        Assertions.assertEquals("xaxmq", model.name());
+        Assertions.assertEquals("alhhjnhgwydyynfs", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisObjectMetadata model =
-            new SsisObjectMetadata().withId(1092833770450672714L).withName("rusnk").withDescription("hsyrqunj");
+        SsisObjectMetadata model = new SsisObjectMetadata().withId(3254840130763842184L)
+            .withName("xaxmq")
+            .withDescription("alhhjnhgwydyynfs");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadata.class);
-        Assertions.assertEquals(1092833770450672714L, model.id());
-        Assertions.assertEquals("rusnk", model.name());
-        Assertions.assertEquals("hsyrqunj", model.description());
+        Assertions.assertEquals(3254840130763842184L, model.id());
+        Assertions.assertEquals("xaxmq", model.name());
+        Assertions.assertEquals("alhhjnhgwydyynfs", model.description());
     }
 }
