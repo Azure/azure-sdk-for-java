@@ -94,6 +94,7 @@ Alternatively, use the [Azure CLI][azure_cli] snippet below to get the API key f
 
 ```PowerShell
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
+```
 
 Please refer to these samples for creating [DocumentTranslationClientWithAPIKey][sample_document_translation_client_with_apiKey] and [SingleDocumentTranslationClientWithAPIKey][sample_single_document_translation_client_with_apiKey].
 
