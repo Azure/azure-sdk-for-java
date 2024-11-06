@@ -16,8 +16,7 @@ import scala.util.Random
 class ChangeFeedPartitionReaderITest
  extends IntegrationSpec
   with Spark
-  with CosmosClient
-  with CosmosContainer {
+  with CosmosClient {
 
 
  "change feed partition reader" should "honor endLSN during split with lower endLSN than changes" in {
@@ -33,11 +32,13 @@ class ChangeFeedPartitionReaderITest
   val cosmosEndpoint = TestConfigurations.HOST
   val cosmosMasterKey = TestConfigurations.MASTER_KEY
   val testId = UUID.randomUUID().toString
-  val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+  val cosmosDatabaseId = UUID.randomUUID().toString
+  cosmosClient.createDatabase(cosmosDatabaseId).block()
+  val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabaseId).createContainer(
    "source_" + testId,
    "/sequenceNumber",
    ThroughputProperties.createManualThroughput(11000)).block()
-  val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(sourceContainerResponse.getProperties.getId)
+  val sourceContainer = cosmosClient.getDatabase(cosmosDatabaseId).getContainer(sourceContainerResponse.getProperties.getId)
   val rid = sourceContainerResponse.getProperties.getResourceId
   val continuationState = s"""{
   "V": 1,
@@ -71,7 +72,7 @@ class ChangeFeedPartitionReaderITest
   val changeFeedCfg = Map(
    "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
    "spark.cosmos.accountKey" -> cosmosMasterKey,
-   "spark.cosmos.database" -> cosmosDatabase,
+   "spark.cosmos.database" -> cosmosDatabaseId,
    "spark.cosmos.container" -> sourceContainer.getId(),
    "spark.cosmos.read.inferSchema.enabled" -> "false",
   )
