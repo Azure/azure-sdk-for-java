@@ -83,11 +83,11 @@ public final class CallAutomationAsyncClient {
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
     private final CommunicationUserIdentifierModel sourceIdentity;
-    private final MicrosoftTeamsAppIdentifierModel oPSSourceIdentity;
+    private final MicrosoftTeamsAppIdentifierModel opsSourceIdentity;
     private final CallAutomationEventProcessor eventProcessor;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient,
-        CommunicationUserIdentifier sourceIdentity, MicrosoftTeamsAppIdentifier oPSSourceIdentity,
+        CommunicationUserIdentifier sourceIdentity, MicrosoftTeamsAppIdentifier opsSourceIdentity,
         CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
@@ -102,8 +102,8 @@ public final class CallAutomationAsyncClient {
         this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity
             = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
-        this.oPSSourceIdentity
-            = oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
+        this.opsSourceIdentity
+            = opsSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(opsSourceIdentity);
     }
 
     /**
@@ -127,7 +127,7 @@ public final class CallAutomationAsyncClient {
      * @return {@link CommunicationUserIdentifier} represent source
      */
     public MicrosoftTeamsAppIdentifier getOPSSourceIdentity() {
-        return oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
+        return opsSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(opsSourceIdentity);
     }
 
     //region Pre-call Actions
@@ -239,7 +239,7 @@ public final class CallAutomationAsyncClient {
                 PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
-            .setOpsSource(oPSSourceIdentity)
+            .setOpsSource(opsSourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
@@ -288,7 +288,7 @@ public final class CallAutomationAsyncClient {
                 PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
-            .setOpsSource(oPSSourceIdentity)
+            .setOpsSource(opsSourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)

@@ -82,7 +82,7 @@ public final class CallAutomationClientBuilder
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private CommunicationUserIdentifier sourceIdentity;
-    private MicrosoftTeamsAppIdentifier oPSSourceIdentity;
+    private MicrosoftTeamsAppIdentifier opsSourceIdentity;
 
     /**
      * Public default constructor
@@ -189,11 +189,11 @@ public final class CallAutomationClientBuilder
 
     /**
      * Set One Phone System Source Identity used to create call
-     * @param oPSSourceIdentity {@link MicrosoftTeamsAppIdentifier} to used to create call.
+     * @param opsSourceIdentity {@link MicrosoftTeamsAppIdentifier} to used to create call.
      * @return {@link CallAutomationClientBuilder} object.
      */
-    public CallAutomationClientBuilder oPSSourceIdentity(MicrosoftTeamsAppIdentifier oPSSourceIdentity) {
-        this.oPSSourceIdentity = oPSSourceIdentity;
+    public CallAutomationClientBuilder opsSourceIdentity(MicrosoftTeamsAppIdentifier opsSourceIdentity) {
+        this.opsSourceIdentity = opsSourceIdentity;
         return this;
     }
 
@@ -331,7 +331,7 @@ public final class CallAutomationClientBuilder
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, oPSSourceIdentity,
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, opsSourceIdentity,
             new CallAutomationEventProcessor());
     }
 
