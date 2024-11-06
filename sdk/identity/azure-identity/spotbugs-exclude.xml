@@ -168,10 +168,6 @@
     </Or>
   </Match>
   <Match>
-    <Bug pattern="URF_UNREAD_FIELD" />
-    <Class name="com.azure.identity.implementation.MSIToken" />
-  </Match>
-  <Match>
     <Bug pattern="UUF_UNUSED_FIELD" />
     <Class name="com.azure.identity.implementation.IdentityClientOptions" />
   </Match>
