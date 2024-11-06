@@ -35,11 +35,10 @@ public class SuggestTest extends ServiceTest<SearchPerfStressOptions> {
     @Override
     public void run() {
         AtomicInteger count = new AtomicInteger();
-        searchClient.suggest("historic", SUGGESTER_NAME).iterator()
-            .forEachRemaining(result -> {
-                result.getDocument(Hotel.class);
-                count.incrementAndGet();
-            });
+        searchClient.suggest("historic", SUGGESTER_NAME).iterator().forEachRemaining(result -> {
+            result.getDocument(Hotel.class);
+            count.incrementAndGet();
+        });
 
         assert count.get() > 0;
     }
@@ -49,8 +48,7 @@ public class SuggestTest extends ServiceTest<SearchPerfStressOptions> {
         return searchAsyncClient.suggest("historic", SUGGESTER_NAME)
             .map(result -> result.getDocument(Hotel.class))
             .count()
-            .flatMap(count -> count > 0
-                ? Mono.empty()
-                : Mono.error(new RuntimeException("Expected autocomplete results.")));
+            .flatMap(
+                count -> count > 0 ? Mono.empty() : Mono.error(new RuntimeException("Expected autocomplete results.")));
     }
 }

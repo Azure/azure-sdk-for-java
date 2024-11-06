@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RolloutRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RolloutRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"buildVersion\":\"bvmgxsabkyqduuji\",\"artifactSourceId\":\"jczdzevndh\",\"targetServiceTopologyId\":\"rwpdappdsbdkvwrw\",\"stepGroups\":[{\"name\":\"eusnhutj\",\"dependsOnStepGroups\":[\"mrldhu\",\"jzzd\",\"tqxhocdgeab\",\"gphuticndvka\"],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"yiftyhxhuro\",\"postDeploymentSteps\":[]},{\"name\":\"yxolniwp\",\"dependsOnStepGroups\":[\"kjfkg\",\"awxklr\",\"plwckbas\",\"ypnddhsgcb\"],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"hejkotynqgou\",\"postDeploymentSteps\":[]}]}")
-                .toObject(RolloutRequestProperties.class);
+        RolloutRequestProperties model = BinaryData.fromString(
+            "{\"buildVersion\":\"bvmgxsabkyqduuji\",\"artifactSourceId\":\"jczdzevndh\",\"targetServiceTopologyId\":\"rwpdappdsbdkvwrw\",\"stepGroups\":[{\"name\":\"eusnhutj\",\"dependsOnStepGroups\":[\"mrldhu\",\"jzzd\",\"tqxhocdgeab\",\"gphuticndvka\"],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"yiftyhxhuro\",\"postDeploymentSteps\":[]},{\"name\":\"yxolniwp\",\"dependsOnStepGroups\":[\"kjfkg\",\"awxklr\",\"plwckbas\",\"ypnddhsgcb\"],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"hejkotynqgou\",\"postDeploymentSteps\":[]}]}")
+            .toObject(RolloutRequestProperties.class);
         Assertions.assertEquals("bvmgxsabkyqduuji", model.buildVersion());
         Assertions.assertEquals("jczdzevndh", model.artifactSourceId());
         Assertions.assertEquals("rwpdappdsbdkvwrw", model.targetServiceTopologyId());
@@ -28,26 +26,20 @@ public final class RolloutRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RolloutRequestProperties model =
-            new RolloutRequestProperties()
-                .withBuildVersion("bvmgxsabkyqduuji")
-                .withArtifactSourceId("jczdzevndh")
-                .withTargetServiceTopologyId("rwpdappdsbdkvwrw")
-                .withStepGroups(
-                    Arrays
-                        .asList(
-                            new StepGroup()
-                                .withName("eusnhutj")
-                                .withDependsOnStepGroups(Arrays.asList("mrldhu", "jzzd", "tqxhocdgeab", "gphuticndvka"))
-                                .withPreDeploymentSteps(Arrays.asList())
-                                .withDeploymentTargetId("yiftyhxhuro")
-                                .withPostDeploymentSteps(Arrays.asList()),
-                            new StepGroup()
-                                .withName("yxolniwp")
-                                .withDependsOnStepGroups(Arrays.asList("kjfkg", "awxklr", "plwckbas", "ypnddhsgcb"))
-                                .withPreDeploymentSteps(Arrays.asList())
-                                .withDeploymentTargetId("hejkotynqgou")
-                                .withPostDeploymentSteps(Arrays.asList())));
+        RolloutRequestProperties model = new RolloutRequestProperties().withBuildVersion("bvmgxsabkyqduuji")
+            .withArtifactSourceId("jczdzevndh")
+            .withTargetServiceTopologyId("rwpdappdsbdkvwrw")
+            .withStepGroups(Arrays.asList(
+                new StepGroup().withName("eusnhutj")
+                    .withDependsOnStepGroups(Arrays.asList("mrldhu", "jzzd", "tqxhocdgeab", "gphuticndvka"))
+                    .withPreDeploymentSteps(Arrays.asList())
+                    .withDeploymentTargetId("yiftyhxhuro")
+                    .withPostDeploymentSteps(Arrays.asList()),
+                new StepGroup().withName("yxolniwp")
+                    .withDependsOnStepGroups(Arrays.asList("kjfkg", "awxklr", "plwckbas", "ypnddhsgcb"))
+                    .withPreDeploymentSteps(Arrays.asList())
+                    .withDeploymentTargetId("hejkotynqgou")
+                    .withPostDeploymentSteps(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(RolloutRequestProperties.class);
         Assertions.assertEquals("bvmgxsabkyqduuji", model.buildVersion());
         Assertions.assertEquals("jczdzevndh", model.artifactSourceId());

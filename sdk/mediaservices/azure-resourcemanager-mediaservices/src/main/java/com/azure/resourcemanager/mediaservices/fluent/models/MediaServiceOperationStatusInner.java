@@ -6,56 +6,60 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Status of media service operation. */
+/**
+ * Status of media service operation.
+ */
 @Fluent
-public final class MediaServiceOperationStatusInner {
+public final class MediaServiceOperationStatusInner implements JsonSerializable<MediaServiceOperationStatusInner> {
     /*
      * Operation identifier.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Operation resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Operation start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Operation end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Operation status.
      */
-    @JsonProperty(value = "status", required = true)
     private String status;
 
     /*
      * The error detail.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of MediaServiceOperationStatusInner class. */
+    /**
+     * Creates an instance of MediaServiceOperationStatusInner class.
+     */
     public MediaServiceOperationStatusInner() {
     }
 
     /**
      * Get the name property: Operation identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Set the name property: Operation identifier.
-     *
+     * 
      * @param name the name value to set.
      * @return the MediaServiceOperationStatusInner object itself.
      */
@@ -75,7 +79,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Get the id property: Operation resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -84,7 +88,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Set the id property: Operation resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the MediaServiceOperationStatusInner object itself.
      */
@@ -95,7 +99,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Get the startTime property: Operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -104,7 +108,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Set the startTime property: Operation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the MediaServiceOperationStatusInner object itself.
      */
@@ -115,7 +119,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Get the endTime property: Operation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -124,7 +128,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Set the endTime property: Operation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the MediaServiceOperationStatusInner object itself.
      */
@@ -135,7 +139,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -144,7 +148,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Set the status property: Operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the MediaServiceOperationStatusInner object itself.
      */
@@ -155,7 +159,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Get the error property: The error detail.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -164,7 +168,7 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Set the error property: The error detail.
-     *
+     * 
      * @param error the error value to set.
      * @return the MediaServiceOperationStatusInner object itself.
      */
@@ -175,23 +179,78 @@ public final class MediaServiceOperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model MediaServiceOperationStatusInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model MediaServiceOperationStatusInner"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model MediaServiceOperationStatusInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model MediaServiceOperationStatusInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MediaServiceOperationStatusInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaServiceOperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaServiceOperationStatusInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MediaServiceOperationStatusInner.
+     */
+    public static MediaServiceOperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaServiceOperationStatusInner deserializedMediaServiceOperationStatusInner
+                = new MediaServiceOperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMediaServiceOperationStatusInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMediaServiceOperationStatusInner.status = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMediaServiceOperationStatusInner.id = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMediaServiceOperationStatusInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMediaServiceOperationStatusInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedMediaServiceOperationStatusInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaServiceOperationStatusInner;
+        });
+    }
 }

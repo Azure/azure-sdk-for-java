@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The SavingsPlanModelListResult model. */
+/**
+ * The SavingsPlanModelListResult model.
+ */
 @Immutable
-public final class SavingsPlanModelListResult {
+public final class SavingsPlanModelListResult implements JsonSerializable<SavingsPlanModelListResult> {
     /*
      * The list of savings plans.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SavingsPlanModelInner> value;
 
     /*
      * Url to get the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The roll out count summary of the savings plans
      */
-    @JsonProperty(value = "additionalProperties", access = JsonProperty.Access.WRITE_ONLY)
     private List<SavingsPlanSummary> additionalProperties;
 
-    /** Creates an instance of SavingsPlanModelListResult class. */
+    /**
+     * Creates an instance of SavingsPlanModelListResult class.
+     */
     public SavingsPlanModelListResult() {
     }
 
     /**
      * Get the value property: The list of savings plans.
-     *
+     * 
      * @return the value value.
      */
     public List<SavingsPlanModelInner> value() {
@@ -45,7 +50,7 @@ public final class SavingsPlanModelListResult {
 
     /**
      * Get the nextLink property: Url to get the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -54,7 +59,7 @@ public final class SavingsPlanModelListResult {
 
     /**
      * Get the additionalProperties property: The roll out count summary of the savings plans.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public List<SavingsPlanSummary> additionalProperties() {
@@ -63,7 +68,7 @@ public final class SavingsPlanModelListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -73,5 +78,48 @@ public final class SavingsPlanModelListResult {
         if (additionalProperties() != null) {
             additionalProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanModelListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanModelListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanModelListResult.
+     */
+    public static SavingsPlanModelListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanModelListResult deserializedSavingsPlanModelListResult = new SavingsPlanModelListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SavingsPlanModelInner> value
+                        = reader.readArray(reader1 -> SavingsPlanModelInner.fromJson(reader1));
+                    deserializedSavingsPlanModelListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSavingsPlanModelListResult.nextLink = reader.getString();
+                } else if ("additionalProperties".equals(fieldName)) {
+                    List<SavingsPlanSummary> additionalProperties
+                        = reader.readArray(reader1 -> SavingsPlanSummary.fromJson(reader1));
+                    deserializedSavingsPlanModelListResult.additionalProperties = additionalProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanModelListResult;
+        });
     }
 }

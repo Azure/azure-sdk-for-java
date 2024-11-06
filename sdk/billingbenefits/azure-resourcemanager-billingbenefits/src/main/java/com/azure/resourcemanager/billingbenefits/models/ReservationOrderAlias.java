@@ -7,11 +7,13 @@ package com.azure.resourcemanager.billingbenefits.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReservationOrderAlias. */
+/**
+ * Resource collection API of ReservationOrderAlias.
+ */
 public interface ReservationOrderAlias {
     /**
      * Create a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param body Request body for creating a reservation order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface ReservationOrderAlias {
 
     /**
      * Create a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param body Request body for creating a reservation order alias.
      * @param context The context to associate with this operation.
@@ -32,12 +34,12 @@ public interface ReservationOrderAlias {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return reservation order alias.
      */
-    ReservationOrderAliasResponse create(
-        String reservationOrderAliasName, ReservationOrderAliasRequest body, Context context);
+    ReservationOrderAliasResponse create(String reservationOrderAliasName, ReservationOrderAliasRequest body,
+        Context context);
 
     /**
      * Get a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface ReservationOrderAlias {
 
     /**
      * Get a reservation order alias.
-     *
+     * 
      * @param reservationOrderAliasName Name of the reservation order alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

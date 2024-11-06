@@ -89,8 +89,8 @@ public final class SqlPoolBlobAuditingPolicyImpl
 
     private String sqlPoolName;
 
-    public SqlPoolBlobAuditingPolicyImpl withExistingSqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SqlPoolBlobAuditingPolicyImpl withExistingSqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
         this.sqlPoolName = sqlPoolName;
@@ -98,23 +98,18 @@ public final class SqlPoolBlobAuditingPolicyImpl
     }
 
     public SqlPoolBlobAuditingPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPoolBlobAuditingPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -128,52 +123,43 @@ public final class SqlPoolBlobAuditingPolicyImpl
     }
 
     public SqlPoolBlobAuditingPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPoolBlobAuditingPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolBlobAuditingPolicies()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolBlobAuditingPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    SqlPoolBlobAuditingPolicyImpl(
-        SqlPoolBlobAuditingPolicyInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SqlPoolBlobAuditingPolicyImpl(SqlPoolBlobAuditingPolicyInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
     }
 
     public SqlPoolBlobAuditingPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolBlobAuditingPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolBlobAuditingPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPoolBlobAuditingPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolBlobAuditingPolicies()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolBlobAuditingPolicies()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context)
+            .getValue();
         return this;
     }
 

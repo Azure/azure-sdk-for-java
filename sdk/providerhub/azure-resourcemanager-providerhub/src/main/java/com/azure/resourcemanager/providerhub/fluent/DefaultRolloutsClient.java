@@ -80,8 +80,8 @@ public interface DefaultRolloutsClient {
      * @return the {@link SyncPoller} for polling of default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties);
+    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(String providerNamespace,
+        String rolloutName, DefaultRolloutInner properties);
 
     /**
      * Creates or updates the rollout details.
@@ -96,8 +96,8 @@ public interface DefaultRolloutsClient {
      * @return the {@link SyncPoller} for polling of default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context);
+    SyncPoller<PollResult<DefaultRolloutInner>, DefaultRolloutInner> beginCreateOrUpdate(String providerNamespace,
+        String rolloutName, DefaultRolloutInner properties, Context context);
 
     /**
      * Creates or updates the rollout details.
@@ -126,8 +126,8 @@ public interface DefaultRolloutsClient {
      * @return default rollout definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DefaultRolloutInner createOrUpdate(
-        String providerNamespace, String rolloutName, DefaultRolloutInner properties, Context context);
+    DefaultRolloutInner createOrUpdate(String providerNamespace, String rolloutName, DefaultRolloutInner properties,
+        Context context);
 
     /**
      * Gets the list of the rollouts for the given provider.

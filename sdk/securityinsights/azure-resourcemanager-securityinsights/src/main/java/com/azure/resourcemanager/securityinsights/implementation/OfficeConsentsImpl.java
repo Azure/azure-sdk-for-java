@@ -21,8 +21,7 @@ public final class OfficeConsentsImpl implements OfficeConsents {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public OfficeConsentsImpl(
-        OfficeConsentsClient innerClient,
+    public OfficeConsentsImpl(OfficeConsentsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,12 +29,24 @@ public final class OfficeConsentsImpl implements OfficeConsents {
 
     public PagedIterable<OfficeConsent> list(String resourceGroupName, String workspaceName) {
         PagedIterable<OfficeConsentInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new OfficeConsentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OfficeConsentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OfficeConsent> list(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<OfficeConsentInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new OfficeConsentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OfficeConsentImpl(inner1, this.manager()));
+    }
+
+    public Response<OfficeConsent> getWithResponse(String resourceGroupName, String workspaceName, String consentId,
+        Context context) {
+        Response<OfficeConsentInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, consentId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OfficeConsentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OfficeConsent get(String resourceGroupName, String workspaceName, String consentId) {
@@ -47,28 +58,13 @@ public final class OfficeConsentsImpl implements OfficeConsents {
         }
     }
 
-    public Response<OfficeConsent> getWithResponse(
-        String resourceGroupName, String workspaceName, String consentId, Context context) {
-        Response<OfficeConsentInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, consentId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OfficeConsentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String consentId,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, consentId, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String consentId) {
         this.serviceClient().delete(resourceGroupName, workspaceName, consentId);
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String consentId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, consentId, context);
     }
 
     private OfficeConsentsClient serviceClient() {

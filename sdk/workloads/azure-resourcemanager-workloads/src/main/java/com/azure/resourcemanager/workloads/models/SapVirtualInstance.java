@@ -155,20 +155,17 @@ public interface SapVirtualInstance {
     SapVirtualInstanceInner innerModel();
 
     /** The entirety of the SapVirtualInstance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithEnvironment,
-            DefinitionStages.WithSapProduct,
-            DefinitionStages.WithConfiguration,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithEnvironment, DefinitionStages.WithSapProduct,
+        DefinitionStages.WithConfiguration, DefinitionStages.WithCreate {
     }
+
     /** The SapVirtualInstance definition stages. */
     interface DefinitionStages {
         /** The first stage of the SapVirtualInstance definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -187,6 +184,7 @@ public interface SapVirtualInstance {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -197,6 +195,7 @@ public interface SapVirtualInstance {
              */
             WithEnvironment withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify environment. */
         interface WithEnvironment {
             /**
@@ -207,6 +206,7 @@ public interface SapVirtualInstance {
              */
             WithSapProduct withEnvironment(SapEnvironmentType environment);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify sapProduct. */
         interface WithSapProduct {
             /**
@@ -217,6 +217,7 @@ public interface SapVirtualInstance {
              */
             WithConfiguration withSapProduct(SapProductType sapProduct);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -229,14 +230,13 @@ public interface SapVirtualInstance {
              */
             WithCreate withConfiguration(SapConfiguration configuration);
         }
+
         /**
          * The stage of the SapVirtualInstance definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithManagedResourceGroupConfiguration {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithManagedResourceGroupConfiguration {
             /**
              * Executes the create request.
              *
@@ -252,6 +252,7 @@ public interface SapVirtualInstance {
              */
             SapVirtualInstance create(Context context);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -262,6 +263,7 @@ public interface SapVirtualInstance {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -274,6 +276,7 @@ public interface SapVirtualInstance {
              */
             WithCreate withIdentity(UserAssignedServiceIdentity identity);
         }
+
         /** The stage of the SapVirtualInstance definition allowing to specify managedResourceGroupConfiguration. */
         interface WithManagedResourceGroupConfiguration {
             /**
@@ -285,6 +288,7 @@ public interface SapVirtualInstance {
             WithCreate withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration);
         }
     }
+
     /**
      * Begins update for the SapVirtualInstance resource.
      *
@@ -309,6 +313,7 @@ public interface SapVirtualInstance {
          */
         SapVirtualInstance apply(Context context);
     }
+
     /** The SapVirtualInstance update stages. */
     interface UpdateStages {
         /** The stage of the SapVirtualInstance update allowing to specify tags. */
@@ -321,6 +326,7 @@ public interface SapVirtualInstance {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the SapVirtualInstance update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -334,6 +340,7 @@ public interface SapVirtualInstance {
             Update withIdentity(UserAssignedServiceIdentity identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

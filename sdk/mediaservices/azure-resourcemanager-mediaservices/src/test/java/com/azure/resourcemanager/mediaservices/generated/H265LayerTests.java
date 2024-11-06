@@ -13,59 +13,55 @@ import org.junit.jupiter.api.Assertions;
 public final class H265LayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        H265Layer model =
-            BinaryData
-                .fromString(
-                    "{\"profile\":\"Auto\",\"level\":\"m\",\"bufferWindow\":\"PT125H53M2S\",\"crf\":40.36637,\"referenceFrames\":64895608,\"bitrate\":910650574,\"maxBitrate\":1947593422,\"bFrames\":1976070840,\"frameRate\":\"ywdxsmic\",\"slices\":1866560405,\"adaptiveBFrame\":true,\"width\":\"cj\",\"height\":\"ynszquji\",\"label\":\"voqyt\"}")
-                .toObject(H265Layer.class);
-        Assertions.assertEquals("cj", model.width());
-        Assertions.assertEquals("ynszquji", model.height());
-        Assertions.assertEquals("voqyt", model.label());
-        Assertions.assertEquals(910650574, model.bitrate());
-        Assertions.assertEquals(1947593422, model.maxBitrate());
-        Assertions.assertEquals(1976070840, model.bFrames());
-        Assertions.assertEquals("ywdxsmic", model.frameRate());
-        Assertions.assertEquals(1866560405, model.slices());
-        Assertions.assertEquals(true, model.adaptiveBFrame());
+        H265Layer model = BinaryData.fromString(
+            "{\"profile\":\"Auto\",\"level\":\"grttikteusqczk\",\"bufferWindow\":\"PT228H57M56S\",\"crf\":93.77124,\"referenceFrames\":148819128,\"bitrate\":655933358,\"maxBitrate\":609812419,\"bFrames\":472498299,\"frameRate\":\"mfblcqcuubg\",\"slices\":827453136,\"adaptiveBFrame\":false,\"width\":\"lmetttwgdslqxi\",\"height\":\"rmooizqse\",\"label\":\"xiutcx\"}")
+            .toObject(H265Layer.class);
+        Assertions.assertEquals("lmetttwgdslqxi", model.width());
+        Assertions.assertEquals("rmooizqse", model.height());
+        Assertions.assertEquals("xiutcx", model.label());
+        Assertions.assertEquals(655933358, model.bitrate());
+        Assertions.assertEquals(609812419, model.maxBitrate());
+        Assertions.assertEquals(472498299, model.bFrames());
+        Assertions.assertEquals("mfblcqcuubg", model.frameRate());
+        Assertions.assertEquals(827453136, model.slices());
+        Assertions.assertEquals(false, model.adaptiveBFrame());
         Assertions.assertEquals(H265VideoProfile.AUTO, model.profile());
-        Assertions.assertEquals("m", model.level());
-        Assertions.assertEquals(Duration.parse("PT125H53M2S"), model.bufferWindow());
-        Assertions.assertEquals(40.36637F, model.crf());
-        Assertions.assertEquals(64895608, model.referenceFrames());
+        Assertions.assertEquals("grttikteusqczk", model.level());
+        Assertions.assertEquals(Duration.parse("PT228H57M56S"), model.bufferWindow());
+        Assertions.assertEquals(93.77124F, model.crf());
+        Assertions.assertEquals(148819128, model.referenceFrames());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        H265Layer model =
-            new H265Layer()
-                .withWidth("cj")
-                .withHeight("ynszquji")
-                .withLabel("voqyt")
-                .withBitrate(910650574)
-                .withMaxBitrate(1947593422)
-                .withBFrames(1976070840)
-                .withFrameRate("ywdxsmic")
-                .withSlices(1866560405)
-                .withAdaptiveBFrame(true)
-                .withProfile(H265VideoProfile.AUTO)
-                .withLevel("m")
-                .withBufferWindow(Duration.parse("PT125H53M2S"))
-                .withCrf(40.36637F)
-                .withReferenceFrames(64895608);
+        H265Layer model = new H265Layer().withWidth("lmetttwgdslqxi")
+            .withHeight("rmooizqse")
+            .withLabel("xiutcx")
+            .withBitrate(655933358)
+            .withMaxBitrate(609812419)
+            .withBFrames(472498299)
+            .withFrameRate("mfblcqcuubg")
+            .withSlices(827453136)
+            .withAdaptiveBFrame(false)
+            .withProfile(H265VideoProfile.AUTO)
+            .withLevel("grttikteusqczk")
+            .withBufferWindow(Duration.parse("PT228H57M56S"))
+            .withCrf(93.77124F)
+            .withReferenceFrames(148819128);
         model = BinaryData.fromObject(model).toObject(H265Layer.class);
-        Assertions.assertEquals("cj", model.width());
-        Assertions.assertEquals("ynszquji", model.height());
-        Assertions.assertEquals("voqyt", model.label());
-        Assertions.assertEquals(910650574, model.bitrate());
-        Assertions.assertEquals(1947593422, model.maxBitrate());
-        Assertions.assertEquals(1976070840, model.bFrames());
-        Assertions.assertEquals("ywdxsmic", model.frameRate());
-        Assertions.assertEquals(1866560405, model.slices());
-        Assertions.assertEquals(true, model.adaptiveBFrame());
+        Assertions.assertEquals("lmetttwgdslqxi", model.width());
+        Assertions.assertEquals("rmooizqse", model.height());
+        Assertions.assertEquals("xiutcx", model.label());
+        Assertions.assertEquals(655933358, model.bitrate());
+        Assertions.assertEquals(609812419, model.maxBitrate());
+        Assertions.assertEquals(472498299, model.bFrames());
+        Assertions.assertEquals("mfblcqcuubg", model.frameRate());
+        Assertions.assertEquals(827453136, model.slices());
+        Assertions.assertEquals(false, model.adaptiveBFrame());
         Assertions.assertEquals(H265VideoProfile.AUTO, model.profile());
-        Assertions.assertEquals("m", model.level());
-        Assertions.assertEquals(Duration.parse("PT125H53M2S"), model.bufferWindow());
-        Assertions.assertEquals(40.36637F, model.crf());
-        Assertions.assertEquals(64895608, model.referenceFrames());
+        Assertions.assertEquals("grttikteusqczk", model.level());
+        Assertions.assertEquals(Duration.parse("PT228H57M56S"), model.bufferWindow());
+        Assertions.assertEquals(93.77124F, model.crf());
+        Assertions.assertEquals(148819128, model.referenceFrames());
     }
 }

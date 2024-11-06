@@ -29,23 +29,15 @@ import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachineScaleSets. */
-public class VirtualMachineScaleSetsImpl
-    extends TopLevelModifiableResourcesImpl<
-        VirtualMachineScaleSet,
-        VirtualMachineScaleSetImpl,
-        VirtualMachineScaleSetInner,
-        VirtualMachineScaleSetsClient,
-        ComputeManager>
+public class VirtualMachineScaleSetsImpl extends
+    TopLevelModifiableResourcesImpl<VirtualMachineScaleSet, VirtualMachineScaleSetImpl, VirtualMachineScaleSetInner, VirtualMachineScaleSetsClient, ComputeManager>
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final AuthorizationManager authorizationManager;
 
-    public VirtualMachineScaleSetsImpl(
-        ComputeManager computeManager,
-        StorageManager storageManager,
-        NetworkManager networkManager,
-        AuthorizationManager authorizationManager) {
+    public VirtualMachineScaleSetsImpl(ComputeManager computeManager, StorageManager storageManager,
+        NetworkManager networkManager, AuthorizationManager authorizationManager) {
         super(computeManager.serviceClient().getVirtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -103,24 +95,15 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public RunCommandResult runPowerShellScriptInVMInstance(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters) {
-        return this
-            .runPowerShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters)
+    public RunCommandResult runPowerShellScriptInVMInstance(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        return this.runPowerShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters)
             .block();
     }
 
     @Override
-    public Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(String groupName, String scaleSetName,
+        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunPowerShellScript");
         inputCommand.withScript(scriptLines);
@@ -129,24 +112,15 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public RunCommandResult runShellScriptInVMInstance(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters) {
-        return this
-            .runShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters)
+    public RunCommandResult runShellScriptInVMInstance(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        return this.runShellScriptInVMInstanceAsync(groupName, scaleSetName, vmId, scriptLines, scriptParameters)
             .block();
     }
 
     @Override
-    public Mono<RunCommandResult> runShellScriptInVMInstanceAsync(
-        String groupName,
-        String scaleSetName,
-        String vmId,
-        List<String> scriptLines,
-        List<RunCommandInputParameter> scriptParameters) {
+    public Mono<RunCommandResult> runShellScriptInVMInstanceAsync(String groupName, String scaleSetName, String vmId,
+        List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
         RunCommandInput inputCommand = new RunCommandInput();
         inputCommand.withCommandId("RunShellScript");
         inputCommand.withScript(scriptLines);
@@ -155,16 +129,15 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public RunCommandResult runCommandInVMInstance(
-        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
+    public RunCommandResult runCommandInVMInstance(String groupName, String scaleSetName, String vmId,
+        RunCommandInput inputCommand) {
         return this.runCommandVMInstanceAsync(groupName, scaleSetName, vmId, inputCommand).block();
     }
 
     @Override
-    public Mono<RunCommandResult> runCommandVMInstanceAsync(
-        String groupName, String scaleSetName, String vmId, RunCommandInput inputCommand) {
-        return this
-            .manager()
+    public Mono<RunCommandResult> runCommandVMInstanceAsync(String groupName, String scaleSetName, String vmId,
+        RunCommandInput inputCommand) {
+        return this.manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
             .runCommandAsync(groupName, scaleSetName, vmId, inputCommand)
@@ -172,18 +145,23 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public void deleteInstances(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion) {
+    public void deleteInstances(String groupName, String scaleSetName, Collection<String> instanceIds,
+        boolean forceDeletion) {
         this.deleteInstancesAsync(groupName, scaleSetName, instanceIds, forceDeletion).block();
     }
 
     @Override
-    public Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion) {
+    public Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName, Collection<String> instanceIds,
+        boolean forceDeletion) {
         if (instanceIds == null || instanceIds.isEmpty()) {
             return Mono.empty();
         }
-        return this.manager().serviceClient().getVirtualMachineScaleSets().deleteInstancesAsync(groupName, scaleSetName,
-            new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(new ArrayList<>(instanceIds)),
-            forceDeletion);
+        return this.manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deleteInstancesAsync(groupName, scaleSetName,
+                new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(new ArrayList<>(instanceIds)),
+                forceDeletion);
     }
 
     @Override
@@ -196,37 +174,31 @@ public class VirtualMachineScaleSetsImpl
         VirtualMachineScaleSetInner inner = new VirtualMachineScaleSetInner();
 
         inner.withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile());
-        inner
-            .virtualMachineProfile()
-            .withStorageProfile(
-                new VirtualMachineScaleSetStorageProfile()
-                    .withOsDisk(new VirtualMachineScaleSetOSDisk().withVhdContainers(new ArrayList<String>())));
+        inner.virtualMachineProfile()
+            .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                .withOsDisk(new VirtualMachineScaleSetOSDisk().withVhdContainers(new ArrayList<String>())));
         inner.virtualMachineProfile().withOsProfile(new VirtualMachineScaleSetOSProfile());
 
         inner.virtualMachineProfile().withNetworkProfile(new VirtualMachineScaleSetNetworkProfile());
 
-        inner
-            .virtualMachineProfile()
+        inner.virtualMachineProfile()
             .networkProfile()
             .withNetworkInterfaceConfigurations(new ArrayList<VirtualMachineScaleSetNetworkConfiguration>());
 
-        VirtualMachineScaleSetNetworkConfiguration primaryNetworkInterfaceConfiguration =
-            new VirtualMachineScaleSetNetworkConfiguration()
-                .withPrimary(true)
+        VirtualMachineScaleSetNetworkConfiguration primaryNetworkInterfaceConfiguration
+            = new VirtualMachineScaleSetNetworkConfiguration().withPrimary(true)
                 .withName("primary-nic-cfg")
                 .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIpConfiguration>());
-        primaryNetworkInterfaceConfiguration
-            .ipConfigurations()
+        primaryNetworkInterfaceConfiguration.ipConfigurations()
             .add(new VirtualMachineScaleSetIpConfiguration().withName("primary-nic-ip-cfg"));
 
-        inner
-            .virtualMachineProfile()
+        inner.virtualMachineProfile()
             .networkProfile()
             .networkInterfaceConfigurations()
             .add(primaryNetworkInterfaceConfiguration);
 
-        return new VirtualMachineScaleSetImpl(
-            name, inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
+        return new VirtualMachineScaleSetImpl(name, inner, this.manager(), this.storageManager, this.networkManager,
+            this.authorizationManager);
     }
 
     @Override
@@ -234,8 +206,8 @@ public class VirtualMachineScaleSetsImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachineScaleSetImpl(
-            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
+        return new VirtualMachineScaleSetImpl(inner.name(), inner, this.manager(), this.storageManager,
+            this.networkManager, this.authorizationManager);
     }
 
     @Override
@@ -245,8 +217,8 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id, boolean forceDeletion) {
-        return deleteByResourceGroupAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+        return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            forceDeletion);
     }
 
     @Override

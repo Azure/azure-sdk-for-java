@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IngressStartAtPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IngressStartAtProperties model =
-            BinaryData
-                .fromString("{\"type\":\"CustomEnqueuedTime\",\"time\":\"pkdwzbai\"}")
-                .toObject(IngressStartAtProperties.class);
+        IngressStartAtProperties model = BinaryData.fromString("{\"type\":\"CustomEnqueuedTime\",\"time\":\"oayqc\"}")
+            .toObject(IngressStartAtProperties.class);
         Assertions.assertEquals(IngressStartAtType.CUSTOM_ENQUEUED_TIME, model.type());
-        Assertions.assertEquals("pkdwzbai", model.time());
+        Assertions.assertEquals("oayqc", model.time());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IngressStartAtProperties model =
-            new IngressStartAtProperties().withType(IngressStartAtType.CUSTOM_ENQUEUED_TIME).withTime("pkdwzbai");
+        IngressStartAtProperties model
+            = new IngressStartAtProperties().withType(IngressStartAtType.CUSTOM_ENQUEUED_TIME).withTime("oayqc");
         model = BinaryData.fromObject(model).toObject(IngressStartAtProperties.class);
         Assertions.assertEquals(IngressStartAtType.CUSTOM_ENQUEUED_TIME, model.type());
-        Assertions.assertEquals("pkdwzbai", model.time());
+        Assertions.assertEquals("oayqc", model.time());
     }
 }

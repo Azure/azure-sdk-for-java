@@ -43,13 +43,16 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-
 public class FileShareTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
 
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    protected static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS
+        = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
+    protected static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
+        = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
 
     protected String prefix;
 
@@ -64,7 +67,6 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     URL testFolder = getClass().getClassLoader().getResource("testfiles");
 
-
     // Clients for API tests
     protected ShareServiceClient primaryFileServiceClient;
     protected ShareServiceAsyncClient primaryFileServiceAsyncClient;
@@ -77,25 +79,27 @@ public class FileShareTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-file-rename-source", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source-authorization", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-file-rename-source-authorization", ".*", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-file-rename-source", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-copy-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-copy-source-authorization", ".*", "REDACTED",
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-file-rename-source-authorization", ".*", "REDACTED",
+                        TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
-        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-            .setComparingBodies(false)
-            .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
-                "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since", "x-ms-copy-source",
-                "x-ms-file-rename-source", "x-ms-source-if-unmodified-since", "x-ms-source-lease-id",
-                "x-ms-encryption-key-sha256"))
-            .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))
-            .setExcludedHeaders(Collections.singletonList("x-ms-meta-testmetadata"))));
+        interceptorManager
+            .addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
+                    "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since", "x-ms-copy-source",
+                    "x-ms-file-rename-source", "x-ms-source-if-unmodified-since", "x-ms-source-lease-id",
+                    "x-ms-encryption-key-sha256"))
+                .setQueryOrderingIgnored(true)
+                .setIgnoredQueryParameters(Arrays.asList("sv"))
+                .setExcludedHeaders(Collections.singletonList("x-ms-meta-testmetadata"))));
 
         ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
         primaryFileServiceClient = builder.buildClient();
@@ -116,8 +120,7 @@ public class FileShareTestBase extends TestProxyTestBase {
             return;
         }
 
-        ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
-            .httpClient(getHttpClient())
+        ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder().httpClient(getHttpClient())
             .connectionString(getPrimaryConnectionString())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
@@ -125,11 +128,11 @@ public class FileShareTestBase extends TestProxyTestBase {
             Context.NONE)) {
             ShareClient shareClient = cleanupFileServiceClient.getShareClient(share.getName());
             if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions()
-                    .setBreakPeriod(Duration.ofSeconds(0)), null, null);
+                createLeaseClient(shareClient).breakLeaseWithResponse(
+                    new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
             }
-            shareClient.deleteWithResponse(new ShareDeleteOptions()
-                .setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
+            shareClient.deleteWithResponse(
+                new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
         }
     }
 
@@ -155,8 +158,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected ShareServiceClientBuilder fileServiceBuilderHelper() {
         ShareServiceClientBuilder shareServiceClientBuilder = instrument(new ShareServiceClientBuilder());
-        return shareServiceClientBuilder
-            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        return shareServiceClientBuilder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
     }
 
     protected ShareServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -187,7 +189,8 @@ public class FileShareTestBase extends TestProxyTestBase {
         return shareBuilderHelper(shareName, null);
     }
 
-    protected ShareClient getShareClient(final String shareName, Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
+    protected ShareClient getShareClient(final String shareName, Boolean allowTrailingDot,
+        Boolean allowSourceTrailingDot) {
         ShareClientBuilder builder = shareBuilderHelper(shareName, null);
         if (allowTrailingDot != null) {
             builder.allowTrailingDot(allowTrailingDot);
@@ -219,15 +222,15 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.buildDirectoryClient();
     }
 
-    protected ShareDirectoryClient getDirectoryClient(String sasToken, String endpoint, HttpPipelinePolicy... policies) {
+    protected ShareDirectoryClient getDirectoryClient(String sasToken, String endpoint,
+        HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies).sasToken(sasToken);
         return builder.buildDirectoryClient();
     }
 
     protected ShareFileClientBuilder fileBuilderHelper(final String shareName, final String filePath) {
         ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder());
-        return builder
-            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+        return builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
             .shareName(shareName)
             .resourcePath(filePath);
     }
@@ -275,10 +278,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     protected static ShareLeaseClient createLeaseClient(ShareFileClient fileClient, String leaseId) {
-        return new ShareLeaseClientBuilder()
-            .fileClient(fileClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new ShareLeaseClientBuilder().fileClient(fileClient).leaseId(leaseId).buildClient();
     }
 
     protected static ShareLeaseAsyncClient createLeaseClient(ShareFileAsyncClient fileClient) {
@@ -286,10 +286,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     protected static ShareLeaseAsyncClient createLeaseClient(ShareFileAsyncClient fileClient, String leaseId) {
-        return new ShareLeaseClientBuilder()
-            .fileAsyncClient(fileClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
+        return new ShareLeaseClientBuilder().fileAsyncClient(fileClient).leaseId(leaseId).buildAsyncClient();
     }
 
     protected static ShareLeaseClient createLeaseClient(ShareClient shareClient) {
@@ -297,10 +294,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     protected static ShareLeaseClient createLeaseClient(ShareClient shareClient, String leaseId) {
-        return new ShareLeaseClientBuilder()
-            .shareClient(shareClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new ShareLeaseClientBuilder().shareClient(shareClient).leaseId(leaseId).buildClient();
     }
 
     protected ShareServiceClient getOAuthServiceClient(ShareServiceClientBuilder builder) {
@@ -419,7 +413,8 @@ public class FileShareTestBase extends TestProxyTestBase {
     protected String setupShareLeaseCondition(ShareClient sc, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseClient(sc)
-                .acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null, null).getValue();
+                .acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null, null)
+                .getValue();
         } else {
             return leaseID;
         }
@@ -448,8 +443,10 @@ public class FileShareTestBase extends TestProxyTestBase {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        return StorageCommonTestUtils.getTokenCredential(interceptorManager).getTokenSync(new TokenRequestContext()
-                .setScopes(Collections.singletonList("https://storage.azure.com/.default"))).getToken();
+        return StorageCommonTestUtils.getTokenCredential(interceptorManager)
+            .getTokenSync(
+                new TokenRequestContext().setScopes(Collections.singletonList("https://storage.azure.com/.default")))
+            .getToken();
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {

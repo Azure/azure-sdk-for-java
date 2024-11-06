@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataEntityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataEntityInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"rbu\",\"dependsOn\":[\"vpnazzm\",\"jrunmpxtt\",\"bh\",\"bnlankxmyskpb\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"ny\",\"displayName\":\"rsyn\",\"resourceTypes\":[\"dybyxczfclhaa\",\"dbabp\",\"lwrq\"]}]},\"id\":\"ktsthsucocmny\",\"name\":\"azt\",\"type\":\"bt\"}")
-                .toObject(MetadataEntityInner.class);
+        MetadataEntityInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"rbu\",\"dependsOn\":[\"vpnazzm\",\"jrunmpxtt\",\"bh\",\"bnlankxmyskpb\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"ny\",\"displayName\":\"rsyn\",\"resourceTypes\":[\"dybyxczfclhaa\",\"dbabp\",\"lwrq\"]}]},\"id\":\"ktsthsucocmny\",\"name\":\"azt\",\"type\":\"bt\"}")
+            .toObject(MetadataEntityInner.class);
         Assertions.assertEquals("rbu", model.displayName());
         Assertions.assertEquals("vpnazzm", model.dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, model.applicableScenarios().get(0));
@@ -29,19 +27,12 @@ public final class MetadataEntityInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataEntityInner model =
-            new MetadataEntityInner()
-                .withDisplayName("rbu")
-                .withDependsOn(Arrays.asList("vpnazzm", "jrunmpxtt", "bh", "bnlankxmyskpb"))
-                .withApplicableScenarios(
-                    Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
-                .withSupportedValues(
-                    Arrays
-                        .asList(
-                            new MetadataSupportedValueDetail()
-                                .withId("ny")
-                                .withDisplayName("rsyn")
-                                .withResourceTypes(Arrays.asList("dybyxczfclhaa", "dbabp", "lwrq"))));
+        MetadataEntityInner model = new MetadataEntityInner().withDisplayName("rbu")
+            .withDependsOn(Arrays.asList("vpnazzm", "jrunmpxtt", "bh", "bnlankxmyskpb"))
+            .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
+            .withSupportedValues(Arrays.asList(new MetadataSupportedValueDetail().withId("ny")
+                .withDisplayName("rsyn")
+                .withResourceTypes(Arrays.asList("dybyxczfclhaa", "dbabp", "lwrq"))));
         model = BinaryData.fromObject(model).toObject(MetadataEntityInner.class);
         Assertions.assertEquals("rbu", model.displayName());
         Assertions.assertEquals("vpnazzm", model.dependsOn().get(0));

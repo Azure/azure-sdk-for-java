@@ -6,34 +6,62 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeNodeInner;
 import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeStatusTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Self-hosted integration runtime status. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SelfHosted")
+/**
+ * Self-hosted integration runtime status.
+ */
 @Fluent
 public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
     /*
+     * Type of integration runtime.
+     */
+    private IntegrationRuntimeType type = IntegrationRuntimeType.SELF_HOSTED;
+
+    /*
      * Self-hosted integration runtime status type properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
-    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
-        new SelfHostedIntegrationRuntimeStatusTypeProperties();
+    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties
+        = new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
-    /** Creates an instance of SelfHostedIntegrationRuntimeStatus class. */
+    /*
+     * The state of integration runtime.
+     */
+    private IntegrationRuntimeState state;
+
+    /*
+     * The workspace name which the integration runtime belong to.
+     */
+    private String dataFactoryName;
+
+    /**
+     * Creates an instance of SelfHostedIntegrationRuntimeStatus class.
+     */
     public SelfHostedIntegrationRuntimeStatus() {
     }
 
     /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public IntegrationRuntimeType type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Self-hosted integration runtime status type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
@@ -41,8 +69,28 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     }
 
     /**
+     * Get the state property: The state of integration runtime.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public IntegrationRuntimeState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the dataFactoryName property: The workspace name which the integration runtime belong to.
+     * 
+     * @return the dataFactoryName value.
+     */
+    @Override
+    public String dataFactoryName() {
+        return this.dataFactoryName;
+    }
+
+    /**
      * Get the createTime property: The time at which the integration runtime was created, in ISO8601 format.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -51,7 +99,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the taskQueueId property: The task queue id of the integration runtime.
-     *
+     * 
      * @return the taskQueueId value.
      */
     public String taskQueueId() {
@@ -60,7 +108,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the nodeCommunicationChannelEncryptionMode property: The node communication Channel encryption mode.
-     *
+     * 
      * @return the nodeCommunicationChannelEncryptionMode value.
      */
     public String nodeCommunicationChannelEncryptionMode() {
@@ -72,7 +120,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     /**
      * Get the internalChannelEncryption property: It is used to set the encryption mode for node-node communication
      * channel (when more than 2 self-hosted integration runtime nodes exist).
-     *
+     * 
      * @return the internalChannelEncryption value.
      */
     public IntegrationRuntimeInternalChannelEncryptionMode internalChannelEncryption() {
@@ -81,7 +129,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the version property: Version of the integration runtime.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -90,7 +138,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the nodes property: The list of nodes for this integration runtime.
-     *
+     * 
      * @return the nodes value.
      */
     public List<SelfHostedIntegrationRuntimeNodeInner> nodes() {
@@ -99,7 +147,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Set the nodes property: The list of nodes for this integration runtime.
-     *
+     * 
      * @param nodes the nodes value to set.
      * @return the SelfHostedIntegrationRuntimeStatus object itself.
      */
@@ -114,7 +162,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     /**
      * Get the scheduledUpdateDate property: The date at which the integration runtime will be scheduled to update, in
      * ISO8601 format.
-     *
+     * 
      * @return the scheduledUpdateDate value.
      */
     public OffsetDateTime scheduledUpdateDate() {
@@ -124,7 +172,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     /**
      * Get the updateDelayOffset property: The time in the date scheduled by service to update the integration runtime,
      * e.g., PT03H is 3 hours.
-     *
+     * 
      * @return the updateDelayOffset value.
      */
     public String updateDelayOffset() {
@@ -133,7 +181,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the localTimeZoneOffset property: The local time zone offset in hours.
-     *
+     * 
      * @return the localTimeZoneOffset value.
      */
     public String localTimeZoneOffset() {
@@ -142,7 +190,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the capabilities property: Object with additional information about integration runtime capabilities.
-     *
+     * 
      * @return the capabilities value.
      */
     public Map<String, String> capabilities() {
@@ -151,7 +199,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the serviceUrls property: The URLs for the services used in integration runtime backend service.
-     *
+     * 
      * @return the serviceUrls value.
      */
     public List<String> serviceUrls() {
@@ -160,7 +208,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the autoUpdate property: Whether Self-hosted integration runtime auto update has been turned on.
-     *
+     * 
      * @return the autoUpdate value.
      */
     public IntegrationRuntimeAutoUpdate autoUpdate() {
@@ -169,7 +217,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the versionStatus property: Status of the integration runtime version.
-     *
+     * 
      * @return the versionStatus value.
      */
     public String versionStatus() {
@@ -179,7 +227,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     /**
      * Get the links property: The list of linked integration runtimes that are created to share with this integration
      * runtime.
-     *
+     * 
      * @return the links value.
      */
     public List<LinkedIntegrationRuntime> links() {
@@ -189,7 +237,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     /**
      * Set the links property: The list of linked integration runtimes that are created to share with this integration
      * runtime.
-     *
+     * 
      * @param links the links value to set.
      * @return the SelfHostedIntegrationRuntimeStatus object itself.
      */
@@ -203,7 +251,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the pushedVersion property: The version that the integration runtime is going to update to.
-     *
+     * 
      * @return the pushedVersion value.
      */
     public String pushedVersion() {
@@ -212,7 +260,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the latestVersion property: The latest version on download center.
-     *
+     * 
      * @return the latestVersion value.
      */
     public String latestVersion() {
@@ -221,7 +269,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the autoUpdateEta property: The estimated time when the self-hosted integration runtime will be updated.
-     *
+     * 
      * @return the autoUpdateEta value.
      */
     public OffsetDateTime autoUpdateEta() {
@@ -230,7 +278,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the serviceRegion property: The service region of the integration runtime.
-     *
+     * 
      * @return the serviceRegion value.
      */
     public String serviceRegion() {
@@ -239,7 +287,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Set the serviceRegion property: The service region of the integration runtime.
-     *
+     * 
      * @param serviceRegion the serviceRegion value to set.
      * @return the SelfHostedIntegrationRuntimeStatus object itself.
      */
@@ -253,7 +301,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the newerVersions property: The newer versions on download center.
-     *
+     * 
      * @return the newerVersions value.
      */
     public List<String> newerVersions() {
@@ -262,7 +310,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Set the newerVersions property: The newer versions on download center.
-     *
+     * 
      * @param newerVersions the newerVersions value to set.
      * @return the SelfHostedIntegrationRuntimeStatus object itself.
      */
@@ -276,7 +324,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the osType property: The osType property.
-     *
+     * 
      * @return the osType value.
      */
     public Integer osType() {
@@ -285,7 +333,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Get the targetFramework property: The targetFramework property.
-     *
+     * 
      * @return the targetFramework value.
      */
     public Integer targetFramework() {
@@ -294,21 +342,78 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
         } else {
             innerTypeProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SelfHostedIntegrationRuntimeStatus.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelfHostedIntegrationRuntimeStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelfHostedIntegrationRuntimeStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SelfHostedIntegrationRuntimeStatus.
+     */
+    public static SelfHostedIntegrationRuntimeStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelfHostedIntegrationRuntimeStatus deserializedSelfHostedIntegrationRuntimeStatus
+                = new SelfHostedIntegrationRuntimeStatus();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFactoryName".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.dataFactoryName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.state
+                        = IntegrationRuntimeState.fromString(reader.getString());
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.innerTypeProperties
+                        = SelfHostedIntegrationRuntimeStatusTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSelfHostedIntegrationRuntimeStatus.type
+                        = IntegrationRuntimeType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSelfHostedIntegrationRuntimeStatus.withAdditionalProperties(additionalProperties);
+
+            return deserializedSelfHostedIntegrationRuntimeStatus;
+        });
+    }
 }

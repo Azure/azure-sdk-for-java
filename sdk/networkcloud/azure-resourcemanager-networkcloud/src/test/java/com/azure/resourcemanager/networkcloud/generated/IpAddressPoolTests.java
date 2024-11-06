@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpAddressPoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpAddressPool model =
-            BinaryData
-                .fromString(
-                    "{\"addresses\":[\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"autoAssign\":\"True\",\"name\":\"iplbpodxunkbebxm\",\"onlyUseHostIps\":\"True\"}")
-                .toObject(IpAddressPool.class);
+        IpAddressPool model = BinaryData.fromString(
+            "{\"addresses\":[\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"autoAssign\":\"True\",\"name\":\"iplbpodxunkbebxm\",\"onlyUseHostIps\":\"True\"}")
+            .toObject(IpAddressPool.class);
         Assertions.assertEquals("odkwobd", model.addresses().get(0));
         Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
         Assertions.assertEquals("iplbpodxunkbebxm", model.name());
@@ -26,9 +24,8 @@ public final class IpAddressPoolTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAddressPool model =
-            new IpAddressPool()
-                .withAddresses(Arrays.asList("odkwobd", "gxtibqdxbxw", "kbogqxndlkzgx"))
+        IpAddressPool model
+            = new IpAddressPool().withAddresses(Arrays.asList("odkwobd", "gxtibqdxbxw", "kbogqxndlkzgx"))
                 .withAutoAssign(BfdEnabled.TRUE)
                 .withName("iplbpodxunkbebxm")
                 .withOnlyUseHostIps(BfdEnabled.TRUE);

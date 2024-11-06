@@ -33,46 +33,29 @@ public final class PoliciesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"icxdwyjfo\",\"status\":\"Enabled\",\"factName\":\"LabVmSize\",\"factData\":\"c\",\"threshold\":\"sgbipcukdveksbuh\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-10-16T22:01:22Z\",\"provisioningState\":\"lscrdpibfdyjduss\",\"uniqueIdentifier\":\"szekbh\"},\"location\":\"lkaaggkr\",\"tags\":{\"mreoagsqtaad\":\"frnuybffljfi\",\"wudohzilfm\":\"srexxfavs\",\"kpsimsfeypofqp\":\"l\",\"qgsdr\":\"bh\"},\"id\":\"mttjxophgerh\",\"name\":\"mvgohtwz\",\"type\":\"qilrixysfn\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"icxdwyjfo\",\"status\":\"Enabled\",\"factName\":\"LabVmSize\",\"factData\":\"c\",\"threshold\":\"sgbipcukdveksbuh\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-10-16T22:01:22Z\",\"provisioningState\":\"lscrdpibfdyjduss\",\"uniqueIdentifier\":\"szekbh\"},\"location\":\"lkaaggkr\",\"tags\":{\"mreoagsqtaad\":\"frnuybffljfi\",\"wudohzilfm\":\"srexxfavs\",\"kpsimsfeypofqp\":\"l\",\"qgsdr\":\"bh\"},\"id\":\"mttjxophgerh\",\"name\":\"mvgohtwz\",\"type\":\"qilrixysfn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Policy response =
-            manager
-                .policies()
-                .getWithResponse(
-                    "btmkekxpkzwaq",
-                    "ofqovchiqbplv",
-                    "idu",
-                    "ztekxbyjgmsfep",
-                    "yihpqadagrh",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Policy response = manager.policies()
+            .getWithResponse("btmkekxpkzwaq", "ofqovchiqbplv", "idu", "ztekxbyjgmsfep", "yihpqadagrh",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("lkaaggkr", response.location());
         Assertions.assertEquals("frnuybffljfi", response.tags().get("mreoagsqtaad"));

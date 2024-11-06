@@ -13,41 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisObjectMetadataListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisObjectMetadataListResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":4290491258630313761,\"name\":\"qalarvlagunbtg\",\"description\":\"bwln\"},{\"type\":\"SsisObjectMetadata\",\"id\":6785534445230421786,\"name\":\"e\",\"description\":\"dzqavbpdqmjxlyyz\"},{\"type\":\"SsisObjectMetadata\",\"id\":8314033620834020740,\"name\":\"wtlmjjyuo\",\"description\":\"tob\"}],\"nextLink\":\"kjeytunl\"}")
-                .toObject(SsisObjectMetadataListResponseInner.class);
-        Assertions.assertEquals(4290491258630313761L, model.value().get(0).id());
-        Assertions.assertEquals("qalarvlagunbtg", model.value().get(0).name());
-        Assertions.assertEquals("bwln", model.value().get(0).description());
-        Assertions.assertEquals("kjeytunl", model.nextLink());
+        SsisObjectMetadataListResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":4789820977941465731,\"name\":\"tn\",\"description\":\"bf\"},{\"type\":\"SsisObjectMetadata\",\"id\":7299515932151450621,\"name\":\"g\",\"description\":\"nlgmtrwahzjmu\"},{\"type\":\"SsisObjectMetadata\",\"id\":1604192815314271002,\"name\":\"r\",\"description\":\"rohkpigqfusu\"}],\"nextLink\":\"zmkw\"}")
+            .toObject(SsisObjectMetadataListResponseInner.class);
+        Assertions.assertEquals(4789820977941465731L, model.value().get(0).id());
+        Assertions.assertEquals("tn", model.value().get(0).name());
+        Assertions.assertEquals("bf", model.value().get(0).description());
+        Assertions.assertEquals("zmkw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisObjectMetadataListResponseInner model =
-            new SsisObjectMetadataListResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SsisObjectMetadata()
-                                .withId(4290491258630313761L)
-                                .withName("qalarvlagunbtg")
-                                .withDescription("bwln"),
-                            new SsisObjectMetadata()
-                                .withId(6785534445230421786L)
-                                .withName("e")
-                                .withDescription("dzqavbpdqmjxlyyz"),
-                            new SsisObjectMetadata()
-                                .withId(8314033620834020740L)
-                                .withName("wtlmjjyuo")
-                                .withDescription("tob")))
-                .withNextLink("kjeytunl");
+        SsisObjectMetadataListResponseInner model = new SsisObjectMetadataListResponseInner()
+            .withValue(Arrays.asList(
+                new SsisObjectMetadata().withId(4789820977941465731L).withName("tn").withDescription("bf"),
+                new SsisObjectMetadata().withId(7299515932151450621L).withName("g").withDescription("nlgmtrwahzjmu"),
+                new SsisObjectMetadata().withId(1604192815314271002L).withName("r").withDescription("rohkpigqfusu")))
+            .withNextLink("zmkw");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadataListResponseInner.class);
-        Assertions.assertEquals(4290491258630313761L, model.value().get(0).id());
-        Assertions.assertEquals("qalarvlagunbtg", model.value().get(0).name());
-        Assertions.assertEquals("bwln", model.value().get(0).description());
-        Assertions.assertEquals("kjeytunl", model.nextLink());
+        Assertions.assertEquals(4789820977941465731L, model.value().get(0).id());
+        Assertions.assertEquals("tn", model.value().get(0).name());
+        Assertions.assertEquals("bf", model.value().get(0).description());
+        Assertions.assertEquals("zmkw", model.nextLink());
     }
 }

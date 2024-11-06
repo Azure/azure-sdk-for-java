@@ -60,7 +60,8 @@ public class ResourceNamer implements IdentifierProvider {
             str.append(UUID.randomUUID()
                 .toString()
                 .replace("-", "")
-                .substring(0, Math.min(32, length)).toLowerCase(Locale.ROOT));
+                .substring(0, Math.min(32, length))
+                .toLowerCase(Locale.ROOT));
         }
         return str.toString();
     }

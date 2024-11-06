@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolColumnInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolColumnInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"columnType\":\"uniqueidentifier\",\"isComputed\":true},\"id\":\"hftqsxhqxujxukn\",\"name\":\"xdigrjg\",\"type\":\"ufzdmsyq\"}")
-                .toObject(SqlPoolColumnInner.class);
-        Assertions.assertEquals(ColumnDataType.UNIQUEIDENTIFIER, model.columnType());
+        SqlPoolColumnInner model = BinaryData.fromString(
+            "{\"properties\":{\"columnType\":\"tinyint\",\"isComputed\":false},\"id\":\"ubxcbihw\",\"name\":\"knfd\",\"type\":\"twjchrdg\"}")
+            .toObject(SqlPoolColumnInner.class);
+        Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolColumnInner model = new SqlPoolColumnInner().withColumnType(ColumnDataType.UNIQUEIDENTIFIER);
+        SqlPoolColumnInner model = new SqlPoolColumnInner().withColumnType(ColumnDataType.TINYINT);
         model = BinaryData.fromObject(model).toObject(SqlPoolColumnInner.class);
-        Assertions.assertEquals(ColumnDataType.UNIQUEIDENTIFIER, model.columnType());
+        Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
     }
 }

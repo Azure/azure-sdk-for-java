@@ -80,10 +80,8 @@ public final class BareMetalMachineCommandSpecification {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property command in model BareMetalMachineCommandSpecification"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property command in model BareMetalMachineCommandSpecification"));
         }
     }
 

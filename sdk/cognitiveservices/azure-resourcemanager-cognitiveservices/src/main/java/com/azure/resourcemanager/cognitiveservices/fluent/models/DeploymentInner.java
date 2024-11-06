@@ -7,44 +7,62 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Cognitive Services account deployment. */
+/**
+ * Cognitive Services account deployment.
+ */
 @Fluent
 public final class DeploymentInner extends ProxyResource {
     /*
      * The resource model definition representing SKU
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Resource Etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Properties of Cognitive Services account deployment.
      */
-    @JsonProperty(value = "properties")
     private DeploymentProperties properties;
 
-    /** Creates an instance of DeploymentInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DeploymentInner class.
+     */
     public DeploymentInner() {
     }
 
     /**
      * Get the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +71,7 @@ public final class DeploymentInner extends ProxyResource {
 
     /**
      * Set the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DeploymentInner object itself.
      */
@@ -64,7 +82,7 @@ public final class DeploymentInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -73,7 +91,7 @@ public final class DeploymentInner extends ProxyResource {
 
     /**
      * Get the etag property: Resource Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,7 +100,7 @@ public final class DeploymentInner extends ProxyResource {
 
     /**
      * Get the properties property: Properties of Cognitive Services account deployment.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentProperties properties() {
@@ -91,7 +109,7 @@ public final class DeploymentInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of Cognitive Services account deployment.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentInner object itself.
      */
@@ -101,8 +119,38 @@ public final class DeploymentInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -112,5 +160,55 @@ public final class DeploymentInner extends ProxyResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeploymentInner.
+     */
+    public static DeploymentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentInner deserializedDeploymentInner = new DeploymentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDeploymentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeploymentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeploymentInner.type = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDeploymentInner.sku = Sku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDeploymentInner.systemData = SystemData.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDeploymentInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeploymentInner.properties = DeploymentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentInner;
+        });
     }
 }

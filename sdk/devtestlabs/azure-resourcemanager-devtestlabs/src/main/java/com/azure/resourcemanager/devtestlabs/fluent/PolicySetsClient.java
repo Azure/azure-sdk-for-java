@@ -27,12 +27,8 @@ public interface PolicySetsClient {
      * @return response body for evaluating a policy set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context);
+    Response<EvaluatePoliciesResponseInner> evaluatePoliciesWithResponse(String resourceGroupName, String labName,
+        String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context);
 
     /**
      * Evaluates lab policy.
@@ -47,6 +43,6 @@ public interface PolicySetsClient {
      * @return response body for evaluating a policy set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EvaluatePoliciesResponseInner evaluatePolicies(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest);
+    EvaluatePoliciesResponseInner evaluatePolicies(String resourceGroupName, String labName, String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest);
 }

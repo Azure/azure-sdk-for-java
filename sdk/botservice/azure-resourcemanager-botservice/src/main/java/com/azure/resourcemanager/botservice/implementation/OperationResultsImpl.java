@@ -18,8 +18,8 @@ public final class OperationResultsImpl implements OperationResults {
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    public OperationResultsImpl(
-        OperationResultsClient innerClient, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
+    public OperationResultsImpl(OperationResultsClient innerClient,
+        com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

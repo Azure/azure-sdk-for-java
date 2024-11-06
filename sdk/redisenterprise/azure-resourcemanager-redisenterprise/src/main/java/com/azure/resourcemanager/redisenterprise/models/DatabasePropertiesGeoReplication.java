@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Optional set of properties to configure geo replication for this database.
  */
 @Fluent
-public final class DatabasePropertiesGeoReplication {
+public final class DatabasePropertiesGeoReplication implements JsonSerializable<DatabasePropertiesGeoReplication> {
     /*
      * Name for the group of linked database resources
      */
-    @JsonProperty(value = "groupNickname")
     private String groupNickname;
 
     /*
      * List of database resources to link with this database
      */
-    @JsonProperty(value = "linkedDatabases")
     private List<LinkedDatabase> linkedDatabases;
 
     /**
@@ -80,5 +82,48 @@ public final class DatabasePropertiesGeoReplication {
         if (linkedDatabases() != null) {
             linkedDatabases().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupNickname", this.groupNickname);
+        jsonWriter.writeArrayField("linkedDatabases", this.linkedDatabases,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabasePropertiesGeoReplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabasePropertiesGeoReplication if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabasePropertiesGeoReplication.
+     */
+    public static DatabasePropertiesGeoReplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabasePropertiesGeoReplication deserializedDatabasePropertiesGeoReplication
+                = new DatabasePropertiesGeoReplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupNickname".equals(fieldName)) {
+                    deserializedDatabasePropertiesGeoReplication.groupNickname = reader.getString();
+                } else if ("linkedDatabases".equals(fieldName)) {
+                    List<LinkedDatabase> linkedDatabases
+                        = reader.readArray(reader1 -> LinkedDatabase.fromJson(reader1));
+                    deserializedDatabasePropertiesGeoReplication.linkedDatabases = linkedDatabases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabasePropertiesGeoReplication;
+        });
     }
 }

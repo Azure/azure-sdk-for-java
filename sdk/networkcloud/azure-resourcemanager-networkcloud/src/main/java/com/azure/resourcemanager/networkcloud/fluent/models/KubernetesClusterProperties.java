@@ -195,8 +195,8 @@ public final class KubernetesClusterProperties {
      * @param administratorConfiguration the administratorConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
-    public KubernetesClusterProperties withAdministratorConfiguration(
-        AdministratorConfiguration administratorConfiguration) {
+    public KubernetesClusterProperties
+        withAdministratorConfiguration(AdministratorConfiguration administratorConfiguration) {
         this.administratorConfiguration = administratorConfiguration;
         return this;
     }
@@ -269,8 +269,8 @@ public final class KubernetesClusterProperties {
      * @param controlPlaneNodeConfiguration the controlPlaneNodeConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
-    public KubernetesClusterProperties withControlPlaneNodeConfiguration(
-        ControlPlaneNodeConfiguration controlPlaneNodeConfiguration) {
+    public KubernetesClusterProperties
+        withControlPlaneNodeConfiguration(ControlPlaneNodeConfiguration controlPlaneNodeConfiguration) {
         this.controlPlaneNodeConfiguration = controlPlaneNodeConfiguration;
         return this;
     }
@@ -323,8 +323,8 @@ public final class KubernetesClusterProperties {
      * @param initialAgentPoolConfigurations the initialAgentPoolConfigurations value to set.
      * @return the KubernetesClusterProperties object itself.
      */
-    public KubernetesClusterProperties withInitialAgentPoolConfigurations(
-        List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations) {
+    public KubernetesClusterProperties
+        withInitialAgentPoolConfigurations(List<InitialAgentPoolConfiguration> initialAgentPoolConfigurations) {
         this.initialAgentPoolConfigurations = initialAgentPoolConfigurations;
         return this;
     }
@@ -372,8 +372,8 @@ public final class KubernetesClusterProperties {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the KubernetesClusterProperties object itself.
      */
-    public KubernetesClusterProperties withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public KubernetesClusterProperties
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }
@@ -440,11 +440,8 @@ public final class KubernetesClusterProperties {
             availableUpgrades().forEach(e -> e.validate());
         }
         if (controlPlaneNodeConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property controlPlaneNodeConfiguration in model"
-                            + " KubernetesClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property controlPlaneNodeConfiguration in model" + " KubernetesClusterProperties"));
         } else {
             controlPlaneNodeConfiguration().validate();
         }
@@ -452,28 +449,21 @@ public final class KubernetesClusterProperties {
             featureStatuses().forEach(e -> e.validate());
         }
         if (initialAgentPoolConfigurations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property initialAgentPoolConfigurations in model"
-                            + " KubernetesClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property initialAgentPoolConfigurations in model" + " KubernetesClusterProperties"));
         } else {
             initialAgentPoolConfigurations().forEach(e -> e.validate());
         }
         if (kubernetesVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property kubernetesVersion in model KubernetesClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property kubernetesVersion in model KubernetesClusterProperties"));
         }
         if (managedResourceGroupConfiguration() != null) {
             managedResourceGroupConfiguration().validate();
         }
         if (networkConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkConfiguration in model KubernetesClusterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkConfiguration in model KubernetesClusterProperties"));
         } else {
             networkConfiguration().validate();
         }

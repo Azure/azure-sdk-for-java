@@ -5,74 +5,74 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Git integration settings. */
+/**
+ * Git integration settings.
+ */
 @Fluent
-public final class WorkspaceRepositoryConfiguration {
+public final class WorkspaceRepositoryConfiguration implements JsonSerializable<WorkspaceRepositoryConfiguration> {
     /*
      * Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
-     * GitHub Enterprise host name. For example: https://github.mydomain.com
+     * GitHub Enterprise host name. For example: `https://github.mydomain.com`
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Account name
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * VSTS project name
      */
-    @JsonProperty(value = "projectName")
     private String projectName;
 
     /*
      * Repository name
      */
-    @JsonProperty(value = "repositoryName")
     private String repositoryName;
 
     /*
      * Collaboration branch
      */
-    @JsonProperty(value = "collaborationBranch")
     private String collaborationBranch;
 
     /*
      * Root folder to use in the repository
      */
-    @JsonProperty(value = "rootFolder")
     private String rootFolder;
 
     /*
      * The last commit ID
      */
-    @JsonProperty(value = "lastCommitId")
     private String lastCommitId;
 
     /*
      * The VSTS tenant ID
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
-    /** Creates an instance of WorkspaceRepositoryConfiguration class. */
+    /**
+     * Creates an instance of WorkspaceRepositoryConfiguration class.
+     */
     public WorkspaceRepositoryConfiguration() {
     }
 
     /**
      * Get the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
      * WorkspaceGitHubConfiguration.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -82,7 +82,7 @@ public final class WorkspaceRepositoryConfiguration {
     /**
      * Set the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
      * WorkspaceGitHubConfiguration.
-     *
+     * 
      * @param type the type value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -92,8 +92,8 @@ public final class WorkspaceRepositoryConfiguration {
     }
 
     /**
-     * Get the hostname property: GitHub Enterprise host name. For example: https://github.mydomain.com.
-     *
+     * Get the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -101,8 +101,8 @@ public final class WorkspaceRepositoryConfiguration {
     }
 
     /**
-     * Set the hostname property: GitHub Enterprise host name. For example: https://github.mydomain.com.
-     *
+     * Set the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
+     * 
      * @param hostname the hostname value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -113,7 +113,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the accountName property: Account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -122,7 +122,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the accountName property: Account name.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -133,7 +133,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the projectName property: VSTS project name.
-     *
+     * 
      * @return the projectName value.
      */
     public String projectName() {
@@ -142,7 +142,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the projectName property: VSTS project name.
-     *
+     * 
      * @param projectName the projectName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -153,7 +153,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the repositoryName property: Repository name.
-     *
+     * 
      * @return the repositoryName value.
      */
     public String repositoryName() {
@@ -162,7 +162,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the repositoryName property: Repository name.
-     *
+     * 
      * @param repositoryName the repositoryName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -173,7 +173,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the collaborationBranch property: Collaboration branch.
-     *
+     * 
      * @return the collaborationBranch value.
      */
     public String collaborationBranch() {
@@ -182,7 +182,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the collaborationBranch property: Collaboration branch.
-     *
+     * 
      * @param collaborationBranch the collaborationBranch value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -193,7 +193,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the rootFolder property: Root folder to use in the repository.
-     *
+     * 
      * @return the rootFolder value.
      */
     public String rootFolder() {
@@ -202,7 +202,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the rootFolder property: Root folder to use in the repository.
-     *
+     * 
      * @param rootFolder the rootFolder value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -213,7 +213,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the lastCommitId property: The last commit ID.
-     *
+     * 
      * @return the lastCommitId value.
      */
     public String lastCommitId() {
@@ -222,7 +222,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the lastCommitId property: The last commit ID.
-     *
+     * 
      * @param lastCommitId the lastCommitId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -233,7 +233,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Get the tenantId property: The VSTS tenant ID.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -242,7 +242,7 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Set the tenantId property: The VSTS tenant ID.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
@@ -253,9 +253,71 @@ public final class WorkspaceRepositoryConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("projectName", this.projectName);
+        jsonWriter.writeStringField("repositoryName", this.repositoryName);
+        jsonWriter.writeStringField("collaborationBranch", this.collaborationBranch);
+        jsonWriter.writeStringField("rootFolder", this.rootFolder);
+        jsonWriter.writeStringField("lastCommitId", this.lastCommitId);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceRepositoryConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceRepositoryConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceRepositoryConfiguration.
+     */
+    public static WorkspaceRepositoryConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceRepositoryConfiguration deserializedWorkspaceRepositoryConfiguration
+                = new WorkspaceRepositoryConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.type = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.hostname = reader.getString();
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.accountName = reader.getString();
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.projectName = reader.getString();
+                } else if ("repositoryName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.repositoryName = reader.getString();
+                } else if ("collaborationBranch".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.collaborationBranch = reader.getString();
+                } else if ("rootFolder".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.rootFolder = reader.getString();
+                } else if ("lastCommitId".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.lastCommitId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceRepositoryConfiguration;
+        });
     }
 }

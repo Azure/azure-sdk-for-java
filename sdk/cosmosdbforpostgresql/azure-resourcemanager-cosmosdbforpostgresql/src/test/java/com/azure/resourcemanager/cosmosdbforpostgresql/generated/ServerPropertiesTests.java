@@ -22,8 +22,10 @@ public final class ServerPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerProperties model = new ServerProperties().withServerEdition("bciqfouflm").withStorageQuotaInMb(1828393347)
-            .withVCores(492225371).withEnableHa(false);
+        ServerProperties model = new ServerProperties().withServerEdition("bciqfouflm")
+            .withStorageQuotaInMb(1828393347)
+            .withVCores(492225371)
+            .withEnableHa(false);
         model = BinaryData.fromObject(model).toObject(ServerProperties.class);
         Assertions.assertEquals("bciqfouflm", model.serverEdition());
         Assertions.assertEquals(1828393347, model.storageQuotaInMb());

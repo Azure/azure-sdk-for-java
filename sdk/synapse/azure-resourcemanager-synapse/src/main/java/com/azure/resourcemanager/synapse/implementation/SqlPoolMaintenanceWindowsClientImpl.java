@@ -27,24 +27,28 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowsClient;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowsClient.
+ */
 public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMaintenanceWindowsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolMaintenanceWindowsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolMaintenanceWindowsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolMaintenanceWindowsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlPoolMaintenanceWindowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolMaintenanceWindowsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,44 +59,32 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolMaintenanceWindowsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceWindowsInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<MaintenanceWindowsInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
-            @QueryParam("maintenanceWindowName") String maintenanceWindowName,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("maintenanceWindowName") String maintenanceWindowName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/maintenancewindows/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Void>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @QueryParam("maintenanceWindowName") String maintenanceWindowName,
-            @BodyParam("application/json") MaintenanceWindowsInner parameters,
-            Context context);
+            @BodyParam("application/json") MaintenanceWindowsInner parameters, Context context);
     }
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -103,19 +95,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return a SQL pool's Maintenance Windows along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
+    private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -134,25 +122,14 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            maintenanceWindowName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -164,23 +141,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return a SQL pool's Maintenance Windows along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        Context context) {
+    private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -199,22 +168,13 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                maintenanceWindowName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, maintenanceWindowName, accept, context);
     }
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -225,15 +185,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return a SQL pool's Maintenance Windows on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MaintenanceWindowsInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
+    private Mono<MaintenanceWindowsInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -245,19 +205,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return a SQL pool's Maintenance Windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceWindowsInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        Context context) {
+    public Response<MaintenanceWindowsInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, context)
             .block();
     }
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -268,15 +224,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return a SQL pool's Maintenance Windows.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceWindowsInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
+    public MaintenanceWindowsInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName) {
         return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -288,23 +244,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
+    private Mono<Response<Void>> createOrUpdateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName, MaintenanceWindowsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -327,25 +275,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         }
         final String apiVersion = "2021-06-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            maintenanceWindowName,
-                            parameters,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
+                parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -358,24 +296,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters,
-        Context context) {
+    private Mono<Response<Void>> createOrUpdateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -398,22 +327,13 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         }
         final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                maintenanceWindowName,
-                parameters,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context);
     }
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -425,20 +345,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
+            parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -451,21 +366,15 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context)
-            .block();
+    public Response<Void> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
+            parameters, context).block();
     }
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -476,13 +385,9 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
-        createOrUpdateWithResponse(
-            resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, Context.NONE);
+    public void createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters) {
+        createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters,
+            Context.NONE);
     }
 }

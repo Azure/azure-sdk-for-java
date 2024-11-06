@@ -7,36 +7,47 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.fluent.models.SensitivityLabelInner;
 import com.azure.resourcemanager.synapse.fluent.models.SensitivityLabelUpdateInner;
+import com.azure.resourcemanager.synapse.models.SensitivityLabelRank;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelUpdateKind;
 import org.junit.jupiter.api.Assertions;
 
 public final class SensitivityLabelUpdateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelUpdateInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"op\":\"remove\",\"schema\":\"qouicybxarzgsz\",\"table\":\"foxciq\",\"column\":\"p\",\"sensitivityLabel\":{\"managedBy\":\"mciodhkhazxkhn\",\"id\":\"bon\",\"name\":\"wntoegokdwbwh\",\"type\":\"szzcmrvexztv\"}},\"id\":\"t\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"}")
-                .toObject(SensitivityLabelUpdateInner.class);
+        SensitivityLabelUpdateInner model = BinaryData.fromString(
+            "{\"properties\":{\"op\":\"remove\",\"schema\":\"hftqsxhqxujxukn\",\"table\":\"xdigrjg\",\"column\":\"ufzdmsyq\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"whbotzingamv\",\"tableName\":\"ho\",\"columnName\":\"qzudphq\",\"labelName\":\"vdkfwynwcvtbvk\",\"labelId\":\"hmtnvy\",\"informationType\":\"atkzwpcnpw\",\"informationTypeId\":\"jaesgvvsccya\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"wygzlvdnkfxusem\",\"id\":\"wzrmuh\",\"name\":\"pfcqdp\",\"type\":\"qxqvpsvuoymgc\"}},\"id\":\"elvezrypq\",\"name\":\"mfe\",\"type\":\"kerqwkyh\"}")
+            .toObject(SensitivityLabelUpdateInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.REMOVE, model.op());
-        Assertions.assertEquals("qouicybxarzgsz", model.schema());
-        Assertions.assertEquals("foxciq", model.table());
-        Assertions.assertEquals("p", model.column());
+        Assertions.assertEquals("hftqsxhqxujxukn", model.schema());
+        Assertions.assertEquals("xdigrjg", model.table());
+        Assertions.assertEquals("ufzdmsyq", model.column());
+        Assertions.assertEquals("vdkfwynwcvtbvk", model.sensitivityLabel().labelName());
+        Assertions.assertEquals("hmtnvy", model.sensitivityLabel().labelId());
+        Assertions.assertEquals("atkzwpcnpw", model.sensitivityLabel().informationType());
+        Assertions.assertEquals("jaesgvvsccya", model.sensitivityLabel().informationTypeId());
+        Assertions.assertEquals(SensitivityLabelRank.HIGH, model.sensitivityLabel().rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelUpdateInner model =
-            new SensitivityLabelUpdateInner()
-                .withOp(SensitivityLabelUpdateKind.REMOVE)
-                .withSchema("qouicybxarzgsz")
-                .withTable("foxciq")
-                .withColumn("p")
-                .withSensitivityLabel(new SensitivityLabelInner());
+        SensitivityLabelUpdateInner model = new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.REMOVE)
+            .withSchema("hftqsxhqxujxukn")
+            .withTable("xdigrjg")
+            .withColumn("ufzdmsyq")
+            .withSensitivityLabel(new SensitivityLabelInner().withLabelName("vdkfwynwcvtbvk")
+                .withLabelId("hmtnvy")
+                .withInformationType("atkzwpcnpw")
+                .withInformationTypeId("jaesgvvsccya")
+                .withRank(SensitivityLabelRank.HIGH));
         model = BinaryData.fromObject(model).toObject(SensitivityLabelUpdateInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.REMOVE, model.op());
-        Assertions.assertEquals("qouicybxarzgsz", model.schema());
-        Assertions.assertEquals("foxciq", model.table());
-        Assertions.assertEquals("p", model.column());
+        Assertions.assertEquals("hftqsxhqxujxukn", model.schema());
+        Assertions.assertEquals("xdigrjg", model.table());
+        Assertions.assertEquals("ufzdmsyq", model.column());
+        Assertions.assertEquals("vdkfwynwcvtbvk", model.sensitivityLabel().labelName());
+        Assertions.assertEquals("hmtnvy", model.sensitivityLabel().labelId());
+        Assertions.assertEquals("atkzwpcnpw", model.sensitivityLabel().informationType());
+        Assertions.assertEquals("jaesgvvsccya", model.sensitivityLabel().informationTypeId());
+        Assertions.assertEquals(SensitivityLabelRank.HIGH, model.sensitivityLabel().rank());
     }
 }

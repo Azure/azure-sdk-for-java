@@ -25,8 +25,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.NumberInput;
  *    </li>
  * </ul>
  */
-public final class TextBuffer
-{
+public final class TextBuffer {
     final static char[] NO_CHARS = new char[0];
 
     /**
@@ -159,8 +158,7 @@ public final class TextBuffer
      * aggregated contents (that is, {@code _currentSegment}, to retain
      * current token text if (but only if!) already aggregated.
      */
-    public void releaseBuffers()
-    {
+    public void releaseBuffers() {
         // inlined `resetWithEmpty()` (except leaving `_resultString` as-is
         {
             _inputStart = -1;
@@ -191,8 +189,7 @@ public final class TextBuffer
      * Method called to clear out any content text buffer may have, and
      * initializes buffer to use non-shared data.
      */
-    public void resetWithEmpty()
-    {
+    public void resetWithEmpty() {
         _inputStart = -1; // indicates shared buffer not used
         _currentSize = 0;
         _inputLen = 0;
@@ -215,8 +212,7 @@ public final class TextBuffer
      *
      * @since 2.9
      */
-    public void resetWith(char ch)
-    {
+    public void resetWith(char ch) {
         _inputStart = -1;
         _inputLen = 0;
 
@@ -242,8 +238,7 @@ public final class TextBuffer
      * @param offset Offset of the first content character in {@code buf}
      * @param len Length of content in {@code buf}
      */
-    public void resetWithShared(char[] buf, int offset, int len)
-    {
+    public void resetWithShared(char[] buf, int offset, int len) {
         // First, let's clear intermediate values, if any:
         _resultString = null;
         _resultArray = null;
@@ -259,8 +254,7 @@ public final class TextBuffer
         }
     }
 
-    public void resetWithCopy(char[] buf, int offset, int len)
-    {
+    public void resetWithCopy(char[] buf, int offset, int len) {
         _inputBuffer = null;
         _inputStart = -1; // indicates shared buffer not used
         _inputLen = 0;
@@ -279,8 +273,7 @@ public final class TextBuffer
     }
 
     // @since 2.9
-    public void resetWithCopy(String text, int start, int len)
-    {
+    public void resetWithCopy(String text, int start, int len) {
         _inputBuffer = null;
         _inputStart = -1;
         _inputLen = 0;
@@ -297,8 +290,7 @@ public final class TextBuffer
         append(text, start, len);
     }
 
-    public void resetWithString(String value)
-    {
+    public void resetWithString(String value) {
         _inputBuffer = null;
         _inputStart = -1;
         _inputLen = 0;
@@ -327,16 +319,14 @@ public final class TextBuffer
 
     // Helper method used to find a buffer to use, ideally one
     // recycled earlier.
-    private char[] buf(int needed)
-    {
+    private char[] buf(int needed) {
         if (_allocator != null) {
             return _allocator.allocCharBuffer(BufferRecycler.CHAR_TEXT_BUFFER, needed);
         }
         return new char[Math.max(needed, MIN_SEGMENT_LEN)];
     }
 
-    private void clearSegments()
-    {
+    private void clearSegments() {
         _hasSegments = false;
         /* Let's start using _last_ segment from list; for one, it's
          * the biggest one, and it's also most likely to be cached
@@ -387,12 +377,13 @@ public final class TextBuffer
      * @return {@code True} if access via {@link #getTextBuffer()} would be efficient
      *   (that is, content already available as aggregated {@code char[]})
      */
-    public boolean hasTextAsCharacters()
-    {
+    public boolean hasTextAsCharacters() {
         // if we have array in some form, sure
-        if (_inputStart >= 0 || _resultArray != null)  return true;
+        if (_inputStart >= 0 || _resultArray != null)
+            return true;
         // not if we have String as value
-        if (_resultString != null) return false;
+        if (_resultString != null)
+            return false;
         return true;
     }
 
@@ -403,11 +394,12 @@ public final class TextBuffer
      *
      * @return Aggregated {@code char[]} that contains all buffered content
      */
-    public char[] getTextBuffer()
-    {
+    public char[] getTextBuffer() {
         // Are we just using shared input buffer?
-        if (_inputStart >= 0) return _inputBuffer;
-        if (_resultArray != null)  return _resultArray;
+        if (_inputStart >= 0)
+            return _inputBuffer;
+        if (_resultArray != null)
+            return _resultArray;
         if (_resultString != null) {
             return (_resultArray = _resultString.toCharArray());
         }
@@ -432,8 +424,7 @@ public final class TextBuffer
      *
      * @return Aggregated buffered contents as a {@link java.lang.String}
      */
-    public String contentsAsString()
-    {
+    public String contentsAsString() {
         if (_resultString == null) {
             // Has array been requested? Can make a shortcut, if so:
             if (_resultArray != null) {
@@ -488,8 +479,7 @@ public final class TextBuffer
      *
      * @throws NumberFormatException if contents are not a valid Java number
      */
-    public BigDecimal contentsAsDecimal() throws NumberFormatException
-    {
+    public BigDecimal contentsAsDecimal() throws NumberFormatException {
         // Already got a pre-cut array?
         if (_resultArray != null) {
             return NumberInput.parseBigDecimal(_resultArray);
@@ -536,12 +526,12 @@ public final class TextBuffer
     public int contentsAsInt(boolean neg) {
         if ((_inputStart >= 0) && (_inputBuffer != null)) {
             if (neg) {
-                return -NumberInput.parseInt(_inputBuffer, _inputStart+1, _inputLen-1);
+                return -NumberInput.parseInt(_inputBuffer, _inputStart + 1, _inputLen - 1);
             }
             return NumberInput.parseInt(_inputBuffer, _inputStart, _inputLen);
         }
         if (neg) {
-            return -NumberInput.parseInt(_currentSegment, 1, _currentSize-1);
+            return -NumberInput.parseInt(_currentSegment, 1, _currentSize - 1);
         }
         return NumberInput.parseInt(_currentSegment, 0, _currentSize);
     }
@@ -564,12 +554,12 @@ public final class TextBuffer
     public long contentsAsLong(boolean neg) {
         if ((_inputStart >= 0) && (_inputBuffer != null)) {
             if (neg) {
-                return -NumberInput.parseLong(_inputBuffer, _inputStart+1, _inputLen-1);
+                return -NumberInput.parseLong(_inputBuffer, _inputStart + 1, _inputLen - 1);
             }
             return NumberInput.parseLong(_inputBuffer, _inputStart, _inputLen);
         }
         if (neg) {
-            return -NumberInput.parseLong(_currentSegment, 1, _currentSize-1);
+            return -NumberInput.parseLong(_currentSegment, 1, _currentSize - 1);
         }
         return NumberInput.parseLong(_currentSegment, 0, _currentSize);
     }
@@ -585,8 +575,7 @@ public final class TextBuffer
      *
      * @since 2.8
      */
-    public int contentsToWriter(Writer w) throws IOException
-    {
+    public int contentsToWriter(Writer w) throws IOException {
         if (_resultArray != null) {
             w.write(_resultArray);
             return _resultArray.length;
@@ -653,8 +642,7 @@ public final class TextBuffer
         curr[_currentSize++] = c;
     }
 
-    public void append(char[] c, int start, int len)
-    {
+    public void append(char[] c, int start, int len) {
         // Can't append to shared buf (sanity check)
         if (_inputStart >= 0) {
             unshare(len);
@@ -689,8 +677,7 @@ public final class TextBuffer
         } while (len > 0);
     }
 
-    public void append(String str, int offset, int len)
-    {
+    public void append(String str, int offset, int len) {
         // Can't append to shared buf (sanity check)
         if (_inputStart >= 0) {
             unshare(len);
@@ -702,13 +689,13 @@ public final class TextBuffer
         char[] curr = _currentSegment;
         int max = curr.length - _currentSize;
         if (max >= len) {
-            str.getChars(offset, offset+len, curr, _currentSize);
+            str.getChars(offset, offset + len, curr, _currentSize);
             _currentSize += len;
             return;
         }
         // No room for all, need to copy part(s):
         if (max > 0) {
-            str.getChars(offset, offset+max, curr, _currentSize);
+            str.getChars(offset, offset + max, curr, _currentSize);
             len -= max;
             offset += max;
         }
@@ -717,7 +704,7 @@ public final class TextBuffer
         do {
             expand(len);
             int amount = Math.min(_currentSegment.length, len);
-            str.getChars(offset, offset+amount, _currentSegment, 0);
+            str.getChars(offset, offset + amount, _currentSegment, 0);
             _currentSize += amount;
             offset += amount;
             len -= amount;
@@ -730,8 +717,7 @@ public final class TextBuffer
     /**********************************************************
      */
 
-    public char[] getCurrentSegment()
-    {
+    public char[] getCurrentSegment() {
         /* Since the intention of the caller is to directly add stuff into
          * buffers, we should NOT have anything in shared buffer... ie. may
          * need to unshare contents.
@@ -750,8 +736,7 @@ public final class TextBuffer
         return _currentSegment;
     }
 
-    public char[] emptyAndGetCurrentSegment()
-    {
+    public char[] emptyAndGetCurrentSegment() {
         // inlined 'resetWithEmpty()'
         _inputStart = -1; // indicates shared buffer not used
         _currentSize = 0;
@@ -772,8 +757,13 @@ public final class TextBuffer
         return curr;
     }
 
-    public int getCurrentSegmentSize() { return _currentSize; }
-    public void setCurrentLength(int len) { _currentSize = len; }
+    public int getCurrentSegmentSize() {
+        return _currentSize;
+    }
+
+    public void setCurrentLength(int len) {
+        _currentSize = len;
+    }
 
     /**
      * Convenience method that finishes the current active content segment
@@ -830,8 +820,7 @@ public final class TextBuffer
      *
      * @return Expanded current segment
      */
-    public char[] expandCurrentSegment()
-    {
+    public char[] expandCurrentSegment() {
         final char[] curr = _currentSegment;
         // Let's grow by 50% by default
         final int len = curr.length;
@@ -856,7 +845,8 @@ public final class TextBuffer
      */
     public char[] expandCurrentSegment(int minSize) {
         char[] curr = _currentSegment;
-        if (curr.length >= minSize) return curr;
+        if (curr.length >= minSize)
+            return curr;
         _currentSegment = curr = Arrays.copyOf(curr, minSize);
         return curr;
     }
@@ -872,7 +862,10 @@ public final class TextBuffer
      * {@link #contentsAsString}, since it's not guaranteed that resulting
      * String is cached.
      */
-    @Override public String toString() { return contentsAsString(); }
+    @Override
+    public String toString() {
+        return contentsAsString();
+    }
 
     /*
     /**********************************************************
@@ -884,8 +877,7 @@ public final class TextBuffer
      * Method called if/when we need to append content when we have been
      * initialized to use shared buffer.
      */
-    private void unshare(int needExtra)
-    {
+    private void unshare(int needExtra) {
         int sharedLen = _inputLen;
         _inputLen = 0;
         char[] inputBuf = _inputBuffer;
@@ -894,7 +886,7 @@ public final class TextBuffer
         _inputStart = -1;
 
         // Is buffer big enough, or do we need to reallocate?
-        int needed = sharedLen+needExtra;
+        int needed = sharedLen + needExtra;
         if (_currentSegment == null || needed > _currentSegment.length) {
             _currentSegment = buf(needed);
         }
@@ -906,8 +898,7 @@ public final class TextBuffer
     }
 
     // Method called when current segment is full, to allocate new segment.
-    private void expand(int minNewSegmentSize)
-    {
+    private void expand(int minNewSegmentSize) {
         // First, let's move current segment to segment list:
         if (_segments == null) {
             _segments = new ArrayList<char[]>();
@@ -929,8 +920,7 @@ public final class TextBuffer
         _currentSegment = carr(newLen);
     }
 
-    private char[] resultArray()
-    {
+    private char[] resultArray() {
         if (_resultString != null) { // Can take a shortcut...
             return _resultString.toCharArray();
         }
@@ -944,7 +934,7 @@ public final class TextBuffer
             if (start == 0) {
                 return Arrays.copyOf(_inputBuffer, len);
             }
-            return Arrays.copyOfRange(_inputBuffer, start, start+len);
+            return Arrays.copyOfRange(_inputBuffer, start, start + len);
         }
         // nope, not shared
         int size = size();
@@ -965,5 +955,7 @@ public final class TextBuffer
         return result;
     }
 
-    private char[] carr(int len) { return new char[len]; }
+    private char[] carr(int len) {
+        return new char[len];
+    }
 }

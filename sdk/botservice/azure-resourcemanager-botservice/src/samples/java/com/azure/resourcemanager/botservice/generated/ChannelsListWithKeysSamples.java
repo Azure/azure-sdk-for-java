@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.botservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.botservice.models.ChannelName;
 
-/** Samples for Channels ListWithKeys. */
+/**
+ * Samples for Channels ListWithKeys.
+ */
 public final class ChannelsListWithKeysSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/ListChannel.
+     * json
      */
     /**
      * Sample code: List Channel.
-     *
+     * 
      * @param manager Entry point to BotServiceManager.
      */
     public static void listChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .listWithKeysWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL, Context.NONE);
+        manager.channels()
+            .listWithKeysWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
+                com.azure.core.util.Context.NONE);
     }
 }

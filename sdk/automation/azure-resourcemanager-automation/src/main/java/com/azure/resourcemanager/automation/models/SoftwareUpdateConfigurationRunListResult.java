@@ -7,18 +7,20 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationRunListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SoftwareUpdateConfigurationRunListResult. */
+/**
+ * An immutable client-side representation of SoftwareUpdateConfigurationRunListResult.
+ */
 public interface SoftwareUpdateConfigurationRunListResult {
     /**
      * Gets the value property: outer object returned when listing all software update configuration runs.
-     *
+     * 
      * @return the value value.
      */
     List<SoftwareUpdateConfigurationRun> value();
 
     /**
      * Gets the nextLink property: link to next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
@@ -26,7 +28,7 @@ public interface SoftwareUpdateConfigurationRunListResult {
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationRunListResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     SoftwareUpdateConfigurationRunListResultInner innerModel();

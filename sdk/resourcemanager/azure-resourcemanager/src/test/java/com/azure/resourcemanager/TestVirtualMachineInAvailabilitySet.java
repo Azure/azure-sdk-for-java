@@ -14,25 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
-        final String newRgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rgVmInAvail", 10);
-        final String newAvailSetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("avai", 10);
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String newRgName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rgVmInAvail", 10);
+        final String newAvailSetName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("avai", 10);
 
-        VirtualMachine vm =
-            virtualMachines
-                .define(vmName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(newRgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("testuser")
-                .withRootPassword(ResourceManagerTestProxyTestBase.password())
-                .withComputerName("myvm123")
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withNewAvailabilitySet(newAvailSetName)
-                .create();
+        VirtualMachine vm = virtualMachines.define(vmName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(newRgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("testuser")
+            .withRootPassword(ResourceManagerTestProxyTestBase.password())
+            .withComputerName("myvm123")
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withNewAvailabilitySet(newAvailSetName)
+            .create();
 
         Assertions.assertNotNull(vm.availabilitySetId());
         Assertions.assertNotNull(vm.computerName());

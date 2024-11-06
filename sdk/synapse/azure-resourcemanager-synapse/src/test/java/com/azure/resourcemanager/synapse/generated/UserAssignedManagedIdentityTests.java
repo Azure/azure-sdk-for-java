@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.UserAssignedManagedIdentity;
 public final class UserAssignedManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"clientId\":\"b48130cf-4590-48e3-9818-43aa682948d9\",\"principalId\":\"fd70b50b-b90c-4dcd-9c53-d06fda045691\"}")
-                .toObject(UserAssignedManagedIdentity.class);
+        UserAssignedManagedIdentity model = BinaryData.fromString(
+            "{\"clientId\":\"f05980dc-2221-4842-a2c9-a95751cdf162\",\"principalId\":\"70efa340-ce84-48ca-b546-27b939b7b8b9\"}")
+            .toObject(UserAssignedManagedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

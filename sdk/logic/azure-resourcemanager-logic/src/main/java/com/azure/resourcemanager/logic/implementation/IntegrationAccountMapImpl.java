@@ -107,32 +107,27 @@ public final class IntegrationAccountMapImpl
 
     private String mapName;
 
-    public IntegrationAccountMapImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public IntegrationAccountMapImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public IntegrationAccountMap create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountMaps()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, mapName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountMaps()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, mapName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountMap create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountMaps()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, mapName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountMaps()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, mapName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -147,67 +142,57 @@ public final class IntegrationAccountMapImpl
     }
 
     public IntegrationAccountMap apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountMaps()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, mapName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountMaps()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, mapName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountMap apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountMaps()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, mapName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountMaps()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, mapName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    IntegrationAccountMapImpl(
-        IntegrationAccountMapInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationAccountMapImpl(IntegrationAccountMapInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.mapName = Utils.getValueFromIdByName(innerObject.id(), "maps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.mapName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "maps");
     }
 
     public IntegrationAccountMap refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountMaps()
-                .getWithResponse(resourceGroupName, integrationAccountName, mapName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountMaps()
+            .getWithResponse(resourceGroupName, integrationAccountName, mapName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountMap refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountMaps()
-                .getWithResponse(resourceGroupName, integrationAccountName, mapName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountMaps()
+            .getWithResponse(resourceGroupName, integrationAccountName, mapName, context)
+            .getValue();
         return this;
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listContentCallbackUrlWithResponse(
-        GetCallbackUrlParameters listContentCallbackUrl, Context context) {
-        return serviceManager
-            .integrationAccountMaps()
-            .listContentCallbackUrlWithResponse(
-                resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl, context);
+    public Response<WorkflowTriggerCallbackUrl>
+        listContentCallbackUrlWithResponse(GetCallbackUrlParameters listContentCallbackUrl, Context context) {
+        return serviceManager.integrationAccountMaps()
+            .listContentCallbackUrlWithResponse(resourceGroupName, integrationAccountName, mapName,
+                listContentCallbackUrl, context);
     }
 
     public WorkflowTriggerCallbackUrl listContentCallbackUrl(GetCallbackUrlParameters listContentCallbackUrl) {
-        return serviceManager
-            .integrationAccountMaps()
+        return serviceManager.integrationAccountMaps()
             .listContentCallbackUrl(resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl);
     }
 
@@ -231,8 +216,8 @@ public final class IntegrationAccountMapImpl
         return this;
     }
 
-    public IntegrationAccountMapImpl withParametersSchema(
-        IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
+    public IntegrationAccountMapImpl
+        withParametersSchema(IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
         this.innerModel().withParametersSchema(parametersSchema);
         return this;
     }

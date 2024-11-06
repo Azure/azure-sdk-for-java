@@ -6,26 +6,47 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ApiOperationPropertiesDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The api operation. */
+/**
+ * The api operation.
+ */
 @Fluent
 public final class ApiOperationInner extends Resource {
     /*
      * The api operations properties
      */
-    @JsonProperty(value = "properties")
     private ApiOperationPropertiesDefinition properties;
 
-    /** Creates an instance of ApiOperationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApiOperationInner class.
+     */
     public ApiOperationInner() {
     }
 
     /**
      * Get the properties property: The api operations properties.
-     *
+     * 
      * @return the properties value.
      */
     public ApiOperationPropertiesDefinition properties() {
@@ -34,7 +55,7 @@ public final class ApiOperationInner extends Resource {
 
     /**
      * Set the properties property: The api operations properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ApiOperationInner object itself.
      */
@@ -43,14 +64,48 @@ public final class ApiOperationInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiOperationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiOperationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -59,12 +114,62 @@ public final class ApiOperationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiOperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiOperationInner.
+     */
+    public static ApiOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiOperationInner deserializedApiOperationInner = new ApiOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiOperationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiOperationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiOperationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApiOperationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApiOperationInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApiOperationInner.properties = ApiOperationPropertiesDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiOperationInner;
+        });
     }
 }

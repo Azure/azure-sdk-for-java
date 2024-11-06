@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolZoneInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List Disk Pool skus operation response. */
+/**
+ * List Disk Pool skus operation response.
+ */
 @Immutable
-public final class DiskPoolZoneListResult {
+public final class DiskPoolZoneListResult implements JsonSerializable<DiskPoolZoneListResult> {
     /*
      * The list of Disk Pool Skus.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DiskPoolZoneInfoInner> value;
 
     /*
      * URI to fetch the next section of the paginated response.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DiskPoolZoneListResult class. */
+    /**
+     * Creates an instance of DiskPoolZoneListResult class.
+     */
     public DiskPoolZoneListResult() {
     }
 
     /**
      * Get the value property: The list of Disk Pool Skus.
-     *
+     * 
      * @return the value value.
      */
     public List<DiskPoolZoneInfoInner> value() {
@@ -39,7 +45,7 @@ public final class DiskPoolZoneListResult {
 
     /**
      * Get the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class DiskPoolZoneListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskPoolZoneListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskPoolZoneListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskPoolZoneListResult.
+     */
+    public static DiskPoolZoneListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskPoolZoneListResult deserializedDiskPoolZoneListResult = new DiskPoolZoneListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DiskPoolZoneInfoInner> value
+                        = reader.readArray(reader1 -> DiskPoolZoneInfoInner.fromJson(reader1));
+                    deserializedDiskPoolZoneListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDiskPoolZoneListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskPoolZoneListResult;
+        });
     }
 }

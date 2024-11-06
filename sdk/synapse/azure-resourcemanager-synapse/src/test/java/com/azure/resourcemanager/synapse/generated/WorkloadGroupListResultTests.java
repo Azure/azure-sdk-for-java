@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.WorkloadGroupListResult;
 public final class WorkloadGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadGroupListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"minResourcePercent\":629393280,\"maxResourcePercent\":384824052,\"minResourcePercentPerRequest\":16.797453313308843,\"maxResourcePercentPerRequest\":54.3681983767773,\"importance\":\"oxoismsksbpim\",\"queryExecutionTimeout\":2072188488},\"id\":\"ljxkcgxxlx\",\"name\":\"ffgcvizqz\",\"type\":\"wlvwlyoupf\"},{\"properties\":{\"minResourcePercent\":1825475274,\"maxResourcePercent\":11112663,\"minResourcePercentPerRequest\":15.658754728553815,\"maxResourcePercentPerRequest\":65.38612430460616,\"importance\":\"gkfmins\",\"queryExecutionTimeout\":760014296},\"id\":\"zfttsttktlahb\",\"name\":\"actxtgzukxitm\",\"type\":\"qtgqqqxhrnxr\"}],\"nextLink\":\"pjui\"}")
-                .toObject(WorkloadGroupListResult.class);
+        WorkloadGroupListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"minResourcePercent\":146318685,\"maxResourcePercent\":595342906,\"minResourcePercentPerRequest\":13.140682023988093,\"maxResourcePercentPerRequest\":93.55016256081733,\"importance\":\"rkjpvdwxfzwii\",\"queryExecutionTimeout\":615358685},\"id\":\"jbhyzsxjrkambtr\",\"name\":\"egv\",\"type\":\"nvuqeqvldspa\"}],\"nextLink\":\"jbkkdmflvestmjl\"}")
+            .toObject(WorkloadGroupListResult.class);
     }
 
     @org.junit.jupiter.api.Test

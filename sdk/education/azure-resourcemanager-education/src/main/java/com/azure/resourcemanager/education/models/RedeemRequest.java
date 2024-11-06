@@ -6,36 +6,41 @@ package com.azure.resourcemanager.education.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** redeem request. */
+/**
+ * redeem request.
+ */
 @Fluent
-public final class RedeemRequest {
+public final class RedeemRequest implements JsonSerializable<RedeemRequest> {
     /*
      * redeem code
      */
-    @JsonProperty(value = "redeemCode", required = true)
     private String redeemCode;
 
     /*
      * first name of requester
      */
-    @JsonProperty(value = "firstName", required = true)
     private String firstName;
 
     /*
      * last name of requester
      */
-    @JsonProperty(value = "lastName", required = true)
     private String lastName;
 
-    /** Creates an instance of RedeemRequest class. */
+    /**
+     * Creates an instance of RedeemRequest class.
+     */
     public RedeemRequest() {
     }
 
     /**
      * Get the redeemCode property: redeem code.
-     *
+     * 
      * @return the redeemCode value.
      */
     public String redeemCode() {
@@ -44,7 +49,7 @@ public final class RedeemRequest {
 
     /**
      * Set the redeemCode property: redeem code.
-     *
+     * 
      * @param redeemCode the redeemCode value to set.
      * @return the RedeemRequest object itself.
      */
@@ -55,7 +60,7 @@ public final class RedeemRequest {
 
     /**
      * Get the firstName property: first name of requester.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -64,7 +69,7 @@ public final class RedeemRequest {
 
     /**
      * Set the firstName property: first name of requester.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the RedeemRequest object itself.
      */
@@ -75,7 +80,7 @@ public final class RedeemRequest {
 
     /**
      * Get the lastName property: last name of requester.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -84,7 +89,7 @@ public final class RedeemRequest {
 
     /**
      * Set the lastName property: last name of requester.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the RedeemRequest object itself.
      */
@@ -95,26 +100,66 @@ public final class RedeemRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (redeemCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property redeemCode in model RedeemRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property redeemCode in model RedeemRequest"));
         }
         if (firstName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property firstName in model RedeemRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property firstName in model RedeemRequest"));
         }
         if (lastName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lastName in model RedeemRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lastName in model RedeemRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedeemRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("redeemCode", this.redeemCode);
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedeemRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedeemRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedeemRequest.
+     */
+    public static RedeemRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedeemRequest deserializedRedeemRequest = new RedeemRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("redeemCode".equals(fieldName)) {
+                    deserializedRedeemRequest.redeemCode = reader.getString();
+                } else if ("firstName".equals(fieldName)) {
+                    deserializedRedeemRequest.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedRedeemRequest.lastName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedeemRequest;
+        });
+    }
 }

@@ -15,8 +15,8 @@ public final class SingleLabelClassifyActionResult extends TextAnalyticsActionRe
     private ClassifyDocumentResultCollection documentsResults;
 
     static {
-        SingleLabelClassifyActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        SingleLabelClassifyActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class TrackingInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrackingInfo model =
-            BinaryData
-                .fromString(
-                    "{\"serialNumber\":\"qgitxmed\",\"carrierName\":\"c\",\"trackingId\":\"ynqwwncwzzhxgk\",\"trackingUrl\":\"mgucna\"}")
-                .toObject(TrackingInfo.class);
-        Assertions.assertEquals("qgitxmed", model.serialNumber());
-        Assertions.assertEquals("c", model.carrierName());
-        Assertions.assertEquals("ynqwwncwzzhxgk", model.trackingId());
-        Assertions.assertEquals("mgucna", model.trackingUrl());
+        TrackingInfo model = BinaryData.fromString(
+            "{\"serialNumber\":\"shhszhedplvwiw\",\"carrierName\":\"mwmbes\",\"trackingId\":\"nkww\",\"trackingUrl\":\"pjflcxogao\"}")
+            .toObject(TrackingInfo.class);
+        Assertions.assertEquals("shhszhedplvwiw", model.serialNumber());
+        Assertions.assertEquals("mwmbes", model.carrierName());
+        Assertions.assertEquals("nkww", model.trackingId());
+        Assertions.assertEquals("pjflcxogao", model.trackingUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackingInfo model =
-            new TrackingInfo()
-                .withSerialNumber("qgitxmed")
-                .withCarrierName("c")
-                .withTrackingId("ynqwwncwzzhxgk")
-                .withTrackingUrl("mgucna");
+        TrackingInfo model = new TrackingInfo().withSerialNumber("shhszhedplvwiw")
+            .withCarrierName("mwmbes")
+            .withTrackingId("nkww")
+            .withTrackingUrl("pjflcxogao");
         model = BinaryData.fromObject(model).toObject(TrackingInfo.class);
-        Assertions.assertEquals("qgitxmed", model.serialNumber());
-        Assertions.assertEquals("c", model.carrierName());
-        Assertions.assertEquals("ynqwwncwzzhxgk", model.trackingId());
-        Assertions.assertEquals("mgucna", model.trackingUrl());
+        Assertions.assertEquals("shhszhedplvwiw", model.serialNumber());
+        Assertions.assertEquals("mwmbes", model.carrierName());
+        Assertions.assertEquals("nkww", model.trackingId());
+        Assertions.assertEquals("pjflcxogao", model.trackingUrl());
     }
 }

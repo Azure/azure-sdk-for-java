@@ -103,10 +103,8 @@ public final class NetworkRuleSetProperties {
      */
     public void validate() {
         if (ipRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipRules in model NetworkRuleSetProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipRules in model NetworkRuleSetProperties"));
         } else {
             ipRules().forEach(e -> e.validate());
         }

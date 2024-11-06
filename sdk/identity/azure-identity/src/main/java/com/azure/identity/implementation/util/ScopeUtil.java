@@ -55,7 +55,7 @@ public final class ScopeUtil {
 
         if (!isScopeMatch) {
             throw new IllegalArgumentException("The specified scope is not in expected format."
-                                               + " Only alphanumeric characters, '.', '-', ':', and '/' are allowed");
+                + " Only alphanumeric characters, '.', '-', ':', and '/' are allowed");
         }
     }
 

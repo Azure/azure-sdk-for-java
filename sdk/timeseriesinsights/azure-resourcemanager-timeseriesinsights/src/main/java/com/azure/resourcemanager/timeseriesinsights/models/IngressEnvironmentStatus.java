@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object that represents the status of ingress on an environment. */
+/**
+ * An object that represents the status of ingress on an environment.
+ */
 @Fluent
-public final class IngressEnvironmentStatus {
+public final class IngressEnvironmentStatus implements JsonSerializable<IngressEnvironmentStatus> {
     /*
      * This string represents the state of ingress operations on an environment. It can be "Disabled", "Ready",
      * "Running", "Paused" or "Unknown"
      */
-    @JsonProperty(value = "state")
     private IngressState state;
 
     /*
      * An object that contains the details about an environment's state.
      */
-    @JsonProperty(value = "stateDetails", access = JsonProperty.Access.WRITE_ONLY)
     private EnvironmentStateDetails stateDetails;
 
-    /** Creates an instance of IngressEnvironmentStatus class. */
+    /**
+     * Creates an instance of IngressEnvironmentStatus class.
+     */
     public IngressEnvironmentStatus() {
     }
 
     /**
      * Get the state property: This string represents the state of ingress operations on an environment. It can be
      * "Disabled", "Ready", "Running", "Paused" or "Unknown".
-     *
+     * 
      * @return the state value.
      */
     public IngressState state() {
@@ -40,7 +46,7 @@ public final class IngressEnvironmentStatus {
     /**
      * Set the state property: This string represents the state of ingress operations on an environment. It can be
      * "Disabled", "Ready", "Running", "Paused" or "Unknown".
-     *
+     * 
      * @param state the state value to set.
      * @return the IngressEnvironmentStatus object itself.
      */
@@ -51,7 +57,7 @@ public final class IngressEnvironmentStatus {
 
     /**
      * Get the stateDetails property: An object that contains the details about an environment's state.
-     *
+     * 
      * @return the stateDetails value.
      */
     public EnvironmentStateDetails stateDetails() {
@@ -60,12 +66,50 @@ public final class IngressEnvironmentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (stateDetails() != null) {
             stateDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngressEnvironmentStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngressEnvironmentStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngressEnvironmentStatus.
+     */
+    public static IngressEnvironmentStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngressEnvironmentStatus deserializedIngressEnvironmentStatus = new IngressEnvironmentStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedIngressEnvironmentStatus.state = IngressState.fromString(reader.getString());
+                } else if ("stateDetails".equals(fieldName)) {
+                    deserializedIngressEnvironmentStatus.stateDetails = EnvironmentStateDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngressEnvironmentStatus;
+        });
     }
 }

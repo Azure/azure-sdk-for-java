@@ -37,7 +37,8 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
 
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void createAnomalyAlertConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    public abstract void createAnomalyAlertConfiguration(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
@@ -45,15 +46,18 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
 
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void updateAnomalyAlertRemoveHooks(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    public abstract void updateAnomalyAlertRemoveHooks(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void updateAnomalyAlertHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    public abstract void updateAnomalyAlertHappyPath(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void deleteAnomalyAlertWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+    public abstract void deleteAnomalyAlertWithResponse(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion);
 
     void listAnomalyAlertRunner(Consumer<List<AnomalyAlertConfiguration>> testRunner) {
         // create anomaly alert
@@ -84,8 +88,7 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
             actualAnomalyAlertConfiguration.getMetricAlertConfigurations());
     }
 
-    private void validateMetricAnomalyDetectionConfiguration(
-        List<MetricAlertConfiguration> expectedConfiguration,
+    private void validateMetricAnomalyDetectionConfiguration(List<MetricAlertConfiguration> expectedConfiguration,
         List<MetricAlertConfiguration> actualAlertConfiguration) {
         assertEquals(expectedConfiguration.size(), actualAlertConfiguration.size());
         for (int i = 0; i < expectedConfiguration.size(); i++) {

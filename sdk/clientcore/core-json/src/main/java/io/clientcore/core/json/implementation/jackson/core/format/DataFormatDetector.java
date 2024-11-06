@@ -11,8 +11,7 @@ import io.clientcore.core.json.implementation.jackson.core.*;
  * given an ordered set of {@link JsonFactory} instances to use for actual low-level
  * detection.
  */
-public class DataFormatDetector
-{
+public class DataFormatDetector {
     /**
      * By default we will look ahead at most 64 bytes; in most cases,
      * much less (4 bytes or so) is needed, but we will allow bit more
@@ -56,16 +55,15 @@ public class DataFormatDetector
      */
 
     public DataFormatDetector(JsonFactory... detectors) {
-        this(detectors, MatchStrength.SOLID_MATCH, MatchStrength.WEAK_MATCH,
-            DEFAULT_MAX_INPUT_LOOKAHEAD);
+        this(detectors, MatchStrength.SOLID_MATCH, MatchStrength.WEAK_MATCH, DEFAULT_MAX_INPUT_LOOKAHEAD);
     }
 
     public DataFormatDetector(Collection<JsonFactory> detectors) {
         this(detectors.toArray(new JsonFactory[0]));
     }
 
-    private DataFormatDetector(JsonFactory[] detectors,
-            MatchStrength optMatch, MatchStrength minMatch, int maxInputLookahead) {
+    private DataFormatDetector(JsonFactory[] detectors, MatchStrength optMatch, MatchStrength minMatch,
+        int maxInputLookahead) {
         _detectors = detectors;
         _optimalMatch = optMatch;
         _minimalMatch = minMatch;
@@ -87,6 +85,7 @@ public class DataFormatDetector
         }
         return new DataFormatDetector(_detectors, optMatch, _minimalMatch, _maxInputLookahead);
     }
+
     /**
      * Method that will return a detector instance that uses given
      * minimal match level; match that may be returned unless a stronger match
@@ -180,7 +179,8 @@ public class DataFormatDetector
     /**********************************************************
      */
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         final int len = _detectors.length;

@@ -6,68 +6,37 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.LibraryResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LibrariesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"name\":\"kchkapit\",\"path\":\"shfyf\",\"containerName\":\"ibjepzwhj\",\"uploadedTimestamp\":\"2021-08-24T15:34:55Z\",\"type\":\"gbggcjx\",\"provisioningStatus\":\"blivw\",\"creatorId\":\"sudy\"},\"etag\":\"mbhdo\",\"id\":\"m\",\"name\":\"ngkqlgxzduvxd\",\"type\":\"xexatmdmnrs\"}";
 
-        String responseStr =
-            "{\"properties\":{\"name\":\"ocpajt\",\"path\":\"yvkbdgddk\",\"containerName\":\"dccxbeuuqu\",\"uploadedTimestamp\":\"2021-06-25T15:50:46Z\",\"type\":\"tjwwg\",\"provisioningStatus\":\"ytijcxfnond\",\"creatorId\":\"jdydhq\"},\"etag\":\"kbjuckcatuqbhp\",\"id\":\"wcnxtpzdlyseid\",\"name\":\"oa\",\"type\":\"atprytgrhzbq\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        LibraryResource response = manager.libraries()
+            .getWithResponse("pnbn", "gyweo", "bepgcmahiwfry", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        LibraryResource response =
-            manager
-                .libraries()
-                .getWithResponse("kwx", "auwxsuykznhrfgsl", "lhpryjfzihuio", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("ocpajt", response.namePropertiesName());
-        Assertions.assertEquals("yvkbdgddk", response.path());
-        Assertions.assertEquals("dccxbeuuqu", response.containerName());
-        Assertions.assertEquals("tjwwg", response.typePropertiesType());
+        Assertions.assertEquals("kchkapit", response.namePropertiesName());
+        Assertions.assertEquals("shfyf", response.path());
+        Assertions.assertEquals("ibjepzwhj", response.containerName());
+        Assertions.assertEquals("gbggcjx", response.typePropertiesType());
     }
 }

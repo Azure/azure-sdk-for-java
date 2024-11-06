@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Credential Delete. */
+/**
+ * Samples for Credential Delete.
+ */
 public final class CredentialDeleteSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/deleteCredentialExisting.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * deleteCredentialExisting.json
      */
     /**
      * Sample code: Delete a credential.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void deleteACredential(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.credentials().deleteWithResponse("rg", "myAutomationAccount20", "myCredential", Context.NONE);
+        manager.credentials()
+            .deleteWithResponse("rg", "myAutomationAccount20", "myCredential", com.azure.core.util.Context.NONE);
     }
 }

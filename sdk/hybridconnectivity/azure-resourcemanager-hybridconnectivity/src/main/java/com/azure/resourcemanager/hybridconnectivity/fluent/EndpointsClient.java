@@ -84,8 +84,8 @@ public interface EndpointsClient {
      * @return the endpoint for the target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointResourceInner> createOrUpdateWithResponse(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource, Context context);
+    Response<EndpointResourceInner> createOrUpdateWithResponse(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource, Context context);
 
     /**
      * Create or update the endpoint to the target resource.
@@ -99,8 +99,8 @@ public interface EndpointsClient {
      * @return the endpoint for the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointResourceInner createOrUpdate(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource);
+    EndpointResourceInner createOrUpdate(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource);
 
     /**
      * Update the endpoint to the target resource.
@@ -115,8 +115,8 @@ public interface EndpointsClient {
      * @return the endpoint for the target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointResourceInner> updateWithResponse(
-        String resourceUri, String endpointName, EndpointResourceInner endpointResource, Context context);
+    Response<EndpointResourceInner> updateWithResponse(String resourceUri, String endpointName,
+        EndpointResourceInner endpointResource, Context context);
 
     /**
      * Update the endpoint to the target resource.
@@ -172,12 +172,8 @@ public interface EndpointsClient {
      * @return the endpoint access credentials to the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointAccessResourceInner> listCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListCredentialsRequest listCredentialsRequest,
-        Context context);
+    Response<EndpointAccessResourceInner> listCredentialsWithResponse(String resourceUri, String endpointName,
+        Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context);
 
     /**
      * Gets the endpoint access credentials to the resource.
@@ -206,11 +202,8 @@ public interface EndpointsClient {
      * @return the ingress gateway endpoint credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IngressGatewayResourceInner> listIngressGatewayCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
+    Response<IngressGatewayResourceInner> listIngressGatewayCredentialsWithResponse(String resourceUri,
+        String endpointName, Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
         Context context);
 
     /**
@@ -239,8 +232,8 @@ public interface EndpointsClient {
      * @return managed Proxy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedProxyResourceInner> listManagedProxyDetailsWithResponse(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest, Context context);
+    Response<ManagedProxyResourceInner> listManagedProxyDetailsWithResponse(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest, Context context);
 
     /**
      * Fetches the managed proxy details.
@@ -254,6 +247,6 @@ public interface EndpointsClient {
      * @return managed Proxy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedProxyResourceInner listManagedProxyDetails(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest);
+    ManagedProxyResourceInner listManagedProxyDetails(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest);
 }

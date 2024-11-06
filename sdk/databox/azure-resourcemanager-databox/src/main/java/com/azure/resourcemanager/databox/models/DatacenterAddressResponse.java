@@ -5,44 +5,51 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Datacenter address for given storage location. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "datacenterAddressType",
-    defaultImpl = DatacenterAddressResponse.class)
-@JsonTypeName("DatacenterAddressResponse")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DatacenterAddressInstruction", value = DatacenterAddressInstructionResponse.class),
-    @JsonSubTypes.Type(name = "DatacenterAddressLocation", value = DatacenterAddressLocationResponse.class)
-})
+/**
+ * Datacenter address for given storage location.
+ */
 @Immutable
-public class DatacenterAddressResponse {
+public class DatacenterAddressResponse implements JsonSerializable<DatacenterAddressResponse> {
+    /*
+     * Data center address type
+     */
+    private DatacenterAddressType datacenterAddressType = DatacenterAddressType.fromString("DatacenterAddressResponse");
+
     /*
      * List of supported carriers for return shipment.
      */
-    @JsonProperty(value = "supportedCarriersForReturnShipment", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedCarriersForReturnShipment;
 
     /*
      * Azure Location where the Data Center serves primarily.
      */
-    @JsonProperty(value = "dataCenterAzureLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String dataCenterAzureLocation;
 
-    /** Creates an instance of DatacenterAddressResponse class. */
+    /**
+     * Creates an instance of DatacenterAddressResponse class.
+     */
     public DatacenterAddressResponse() {
     }
 
     /**
+     * Get the datacenterAddressType property: Data center address type.
+     * 
+     * @return the datacenterAddressType value.
+     */
+    public DatacenterAddressType datacenterAddressType() {
+        return this.datacenterAddressType;
+    }
+
+    /**
      * Get the supportedCarriersForReturnShipment property: List of supported carriers for return shipment.
-     *
+     * 
      * @return the supportedCarriersForReturnShipment value.
      */
     public List<String> supportedCarriersForReturnShipment() {
@@ -50,8 +57,19 @@ public class DatacenterAddressResponse {
     }
 
     /**
+     * Set the supportedCarriersForReturnShipment property: List of supported carriers for return shipment.
+     * 
+     * @param supportedCarriersForReturnShipment the supportedCarriersForReturnShipment value to set.
+     * @return the DatacenterAddressResponse object itself.
+     */
+    DatacenterAddressResponse withSupportedCarriersForReturnShipment(List<String> supportedCarriersForReturnShipment) {
+        this.supportedCarriersForReturnShipment = supportedCarriersForReturnShipment;
+        return this;
+    }
+
+    /**
      * Get the dataCenterAzureLocation property: Azure Location where the Data Center serves primarily.
-     *
+     * 
      * @return the dataCenterAzureLocation value.
      */
     public String dataCenterAzureLocation() {
@@ -59,10 +77,92 @@ public class DatacenterAddressResponse {
     }
 
     /**
+     * Set the dataCenterAzureLocation property: Azure Location where the Data Center serves primarily.
+     * 
+     * @param dataCenterAzureLocation the dataCenterAzureLocation value to set.
+     * @return the DatacenterAddressResponse object itself.
+     */
+    DatacenterAddressResponse withDataCenterAzureLocation(String dataCenterAzureLocation) {
+        this.dataCenterAzureLocation = dataCenterAzureLocation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("datacenterAddressType",
+            this.datacenterAddressType == null ? null : this.datacenterAddressType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatacenterAddressResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatacenterAddressResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatacenterAddressResponse.
+     */
+    public static DatacenterAddressResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("datacenterAddressType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DatacenterAddressInstruction".equals(discriminatorValue)) {
+                    return DatacenterAddressInstructionResponse.fromJson(readerToUse.reset());
+                } else if ("DatacenterAddressLocation".equals(discriminatorValue)) {
+                    return DatacenterAddressLocationResponse.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DatacenterAddressResponse fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatacenterAddressResponse deserializedDatacenterAddressResponse = new DatacenterAddressResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datacenterAddressType".equals(fieldName)) {
+                    deserializedDatacenterAddressResponse.datacenterAddressType
+                        = DatacenterAddressType.fromString(reader.getString());
+                } else if ("supportedCarriersForReturnShipment".equals(fieldName)) {
+                    List<String> supportedCarriersForReturnShipment = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDatacenterAddressResponse.supportedCarriersForReturnShipment
+                        = supportedCarriersForReturnShipment;
+                } else if ("dataCenterAzureLocation".equals(fieldName)) {
+                    deserializedDatacenterAddressResponse.dataCenterAzureLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatacenterAddressResponse;
+        });
     }
 }

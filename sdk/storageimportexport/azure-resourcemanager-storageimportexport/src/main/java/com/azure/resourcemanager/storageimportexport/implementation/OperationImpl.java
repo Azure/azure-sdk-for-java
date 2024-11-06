@@ -12,8 +12,7 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject,
+    OperationImpl(OperationInner innerObject,
         com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

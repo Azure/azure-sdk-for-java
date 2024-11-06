@@ -95,11 +95,8 @@ public interface IssueCommentContract {
          * The stage of the IssueCommentContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithText,
-                DefinitionStages.WithCreatedDate,
-                DefinitionStages.WithUserId,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithText, DefinitionStages.WithCreatedDate,
+            DefinitionStages.WithUserId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FormulaPropertiesFromVmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormulaPropertiesFromVm model =
-            BinaryData.fromString("{\"labVmId\":\"ijnkrxfrdd\"}").toObject(FormulaPropertiesFromVm.class);
+        FormulaPropertiesFromVm model
+            = BinaryData.fromString("{\"labVmId\":\"ijnkrxfrdd\"}").toObject(FormulaPropertiesFromVm.class);
         Assertions.assertEquals("ijnkrxfrdd", model.labVmId());
     }
 

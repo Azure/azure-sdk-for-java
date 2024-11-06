@@ -70,8 +70,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a resource name along with {@link Response}.
      */
-    Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context);
+    Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context);
 
     /**
      * Checks whether the configuration store name is available for use.
@@ -83,6 +83,6 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to check the availability of a resource name.
      */
-    NameAvailabilityStatus regionalCheckNameAvailability(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters);
+    NameAvailabilityStatus regionalCheckNameAvailability(String location,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters);
 }

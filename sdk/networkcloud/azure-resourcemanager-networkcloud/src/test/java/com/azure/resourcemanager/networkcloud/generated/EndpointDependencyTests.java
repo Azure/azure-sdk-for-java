@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDependency model =
-            BinaryData
-                .fromString("{\"domainName\":\"ndnvo\",\"port\":4292877192766299113}")
-                .toObject(EndpointDependency.class);
+        EndpointDependency model = BinaryData.fromString("{\"domainName\":\"ndnvo\",\"port\":4292877192766299113}")
+            .toObject(EndpointDependency.class);
         Assertions.assertEquals("ndnvo", model.domainName());
         Assertions.assertEquals(4292877192766299113L, model.port());
     }

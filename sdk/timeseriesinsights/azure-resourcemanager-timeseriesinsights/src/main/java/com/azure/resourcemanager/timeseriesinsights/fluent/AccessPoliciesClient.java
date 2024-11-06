@@ -13,37 +13,35 @@ import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyRe
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyCreateOrUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in AccessPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessPoliciesClient.
+ */
 public interface AccessPoliciesClient {
     /**
      * Create or update an access policy in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName Name of the access policy.
      * @param parameters Parameters for creating an access policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment along with {@link
-     *     Response}.
+     * @return an access policy is used to grant users and applications access to the environment along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters,
-        Context context);
+    Response<AccessPolicyResourceInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update an access policy in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName Name of the access policy.
      * @param parameters Parameters for creating an access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,20 +50,17 @@ public interface AccessPoliciesClient {
      * @return an access policy is used to grant users and applications access to the environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessPolicyResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
+    AccessPolicyResourceInner createOrUpdate(String resourceGroupName, String environmentName, String accessPolicyName,
         AccessPolicyCreateOrUpdateParameters parameters);
 
     /**
      * Gets the access policy with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -73,17 +68,17 @@ public interface AccessPoliciesClient {
      * @return the access policy with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<AccessPolicyResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, Context context);
 
     /**
      * Gets the access policy with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,36 +89,32 @@ public interface AccessPoliciesClient {
 
     /**
      * Updates the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @param accessPolicyUpdateParameters Request object that contains the updated information for the access policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access policy is used to grant users and applications access to the environment along with {@link
-     *     Response}.
+     * @return an access policy is used to grant users and applications access to the environment along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters,
-        Context context);
+    Response<AccessPolicyResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyUpdateParameters accessPolicyUpdateParameters, Context context);
 
     /**
      * Updates the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @param accessPolicyUpdateParameters Request object that contains the updated information for the access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,20 +122,17 @@ public interface AccessPoliciesClient {
      * @return an access policy is used to grant users and applications access to the environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessPolicyResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
+    AccessPolicyResourceInner update(String resourceGroupName, String environmentName, String accessPolicyName,
         AccessPolicyUpdateParameters accessPolicyUpdateParameters);
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -152,17 +140,17 @@ public interface AccessPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String accessPolicyName,
+        Context context);
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param accessPolicyName The name of the Time Series Insights access policy associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,10 +160,10 @@ public interface AccessPoliciesClient {
 
     /**
      * Lists all the available access policies associated with the environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -183,15 +171,15 @@ public interface AccessPoliciesClient {
      * @return the response of the List access policies operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available access policies associated with the environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** the list of ManagementAssociation response. */
+/**
+ * the list of ManagementAssociation response.
+ */
 @Fluent
-public final class ManagementAssociationPropertiesListInner {
+public final class ManagementAssociationPropertiesListInner
+    implements JsonSerializable<ManagementAssociationPropertiesListInner> {
     /*
      * List of Management Association properties within the subscription.
      */
-    @JsonProperty(value = "value")
     private List<ManagementAssociationInner> value;
 
-    /** Creates an instance of ManagementAssociationPropertiesListInner class. */
+    /**
+     * Creates an instance of ManagementAssociationPropertiesListInner class.
+     */
     public ManagementAssociationPropertiesListInner() {
     }
 
     /**
      * Get the value property: List of Management Association properties within the subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagementAssociationInner> value() {
@@ -32,7 +40,7 @@ public final class ManagementAssociationPropertiesListInner {
 
     /**
      * Set the value property: List of Management Association properties within the subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagementAssociationPropertiesListInner object itself.
      */
@@ -43,12 +51,51 @@ public final class ManagementAssociationPropertiesListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementAssociationPropertiesListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementAssociationPropertiesListInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementAssociationPropertiesListInner.
+     */
+    public static ManagementAssociationPropertiesListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementAssociationPropertiesListInner deserializedManagementAssociationPropertiesListInner
+                = new ManagementAssociationPropertiesListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagementAssociationInner> value
+                        = reader.readArray(reader1 -> ManagementAssociationInner.fromJson(reader1));
+                    deserializedManagementAssociationPropertiesListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementAssociationPropertiesListInner;
+        });
     }
 }

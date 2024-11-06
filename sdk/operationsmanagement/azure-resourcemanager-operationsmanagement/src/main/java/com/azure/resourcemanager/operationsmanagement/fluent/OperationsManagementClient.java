@@ -7,68 +7,70 @@ package com.azure.resourcemanager.operationsmanagement.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for OperationsManagementClient class. */
+/**
+ * The interface for OperationsManagementClient class.
+ */
 public interface OperationsManagementClient {
     /**
      * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the SolutionsClient object to access its operations.
-     *
+     * 
      * @return the SolutionsClient object.
      */
     SolutionsClient getSolutions();
 
     /**
      * Gets the ManagementAssociationsClient object to access its operations.
-     *
+     * 
      * @return the ManagementAssociationsClient object.
      */
     ManagementAssociationsClient getManagementAssociations();
 
     /**
      * Gets the ManagementConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ManagementConfigurationsClient object.
      */
     ManagementConfigurationsClient getManagementConfigurations();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();

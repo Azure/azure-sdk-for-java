@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleCreationParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleCreationParameter model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"azpxdtnkdmkqjjl\",\"weeklyRecurrence\":{\"weekdays\":[\"vrkpyouaibreb\"],\"time\":\"aysjkixqtnqttez\"},\"dailyRecurrence\":{\"time\":\"ffiakp\"},\"hourlyRecurrence\":{\"minute\":658417740},\"timeZoneId\":\"tedltmmj\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":968506113,\"webhookUrl\":\"hvwauyqncy\",\"emailRecipient\":\"p\",\"notificationLocale\":\"ipmdscwx\"},\"targetResourceId\":\"pevzhfst\"},\"name\":\"xhojuj\",\"location\":\"pelmcuvhixbjxyf\",\"tags\":{\"kkbnu\":\"lrcoolsttpki\"}}")
-                .toObject(ScheduleCreationParameter.class);
+        ScheduleCreationParameter model = BinaryData.fromString(
+            "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"azpxdtnkdmkqjjl\",\"weeklyRecurrence\":{\"weekdays\":[\"vrkpyouaibreb\"],\"time\":\"aysjkixqtnqttez\"},\"dailyRecurrence\":{\"time\":\"ffiakp\"},\"hourlyRecurrence\":{\"minute\":658417740},\"timeZoneId\":\"tedltmmj\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":968506113,\"webhookUrl\":\"hvwauyqncy\",\"emailRecipient\":\"p\",\"notificationLocale\":\"ipmdscwx\"},\"targetResourceId\":\"pevzhfst\"},\"name\":\"xhojuj\",\"location\":\"pelmcuvhixbjxyf\",\"tags\":{\"kkbnu\":\"lrcoolsttpki\"}}")
+            .toObject(ScheduleCreationParameter.class);
         Assertions.assertEquals("xhojuj", model.name());
         Assertions.assertEquals("lrcoolsttpki", model.tags().get("kkbnu"));
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
@@ -43,25 +41,21 @@ public final class ScheduleCreationParameterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleCreationParameter model =
-            new ScheduleCreationParameter()
-                .withName("xhojuj")
-                .withTags(mapOf("kkbnu", "lrcoolsttpki"))
-                .withStatus(EnableStatus.DISABLED)
-                .withTaskType("azpxdtnkdmkqjjl")
-                .withWeeklyRecurrence(
-                    new WeekDetails().withWeekdays(Arrays.asList("vrkpyouaibreb")).withTime("aysjkixqtnqttez"))
-                .withDailyRecurrence(new DayDetails().withTime("ffiakp"))
-                .withHourlyRecurrence(new HourDetails().withMinute(658417740))
-                .withTimeZoneId("tedltmmj")
-                .withNotificationSettings(
-                    new NotificationSettings()
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTimeInMinutes(968506113)
-                        .withWebhookUrl("hvwauyqncy")
-                        .withEmailRecipient("p")
-                        .withNotificationLocale("ipmdscwx"))
-                .withTargetResourceId("pevzhfst");
+        ScheduleCreationParameter model = new ScheduleCreationParameter().withName("xhojuj")
+            .withTags(mapOf("kkbnu", "lrcoolsttpki"))
+            .withStatus(EnableStatus.DISABLED)
+            .withTaskType("azpxdtnkdmkqjjl")
+            .withWeeklyRecurrence(
+                new WeekDetails().withWeekdays(Arrays.asList("vrkpyouaibreb")).withTime("aysjkixqtnqttez"))
+            .withDailyRecurrence(new DayDetails().withTime("ffiakp"))
+            .withHourlyRecurrence(new HourDetails().withMinute(658417740))
+            .withTimeZoneId("tedltmmj")
+            .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.ENABLED)
+                .withTimeInMinutes(968506113)
+                .withWebhookUrl("hvwauyqncy")
+                .withEmailRecipient("p")
+                .withNotificationLocale("ipmdscwx"))
+            .withTargetResourceId("pevzhfst");
         model = BinaryData.fromObject(model).toObject(ScheduleCreationParameter.class);
         Assertions.assertEquals("xhojuj", model.name());
         Assertions.assertEquals("lrcoolsttpki", model.tags().get("kkbnu"));

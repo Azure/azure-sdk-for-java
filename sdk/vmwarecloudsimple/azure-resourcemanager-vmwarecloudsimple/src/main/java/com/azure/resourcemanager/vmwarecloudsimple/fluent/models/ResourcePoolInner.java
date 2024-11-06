@@ -6,54 +6,56 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resource pool model. */
+/**
+ * Resource pool model.
+ */
 @Fluent
-public final class ResourcePoolInner {
+public final class ResourcePoolInner implements JsonSerializable<ResourcePoolInner> {
     /*
      * resource pool id (privateCloudId:vsphereId)
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Azure region
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * {ResourcePoolName}
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The Private Cloud Id
      */
-    @JsonProperty(value = "privateCloudId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateCloudId;
 
     /*
      * Resource pool properties
      */
-    @JsonProperty(value = "properties")
     private ResourcePoolProperties innerProperties;
 
     /*
      * {resourceProviderNamespace}/{resourceType}
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ResourcePoolInner class. */
+    /**
+     * Creates an instance of ResourcePoolInner class.
+     */
     public ResourcePoolInner() {
     }
 
     /**
      * Get the id property: resource pool id (privateCloudId:vsphereId).
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +64,7 @@ public final class ResourcePoolInner {
 
     /**
      * Set the id property: resource pool id (privateCloudId:vsphereId).
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourcePoolInner object itself.
      */
@@ -73,7 +75,7 @@ public final class ResourcePoolInner {
 
     /**
      * Get the location property: Azure region.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -82,7 +84,7 @@ public final class ResourcePoolInner {
 
     /**
      * Get the name property: {ResourcePoolName}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -91,7 +93,7 @@ public final class ResourcePoolInner {
 
     /**
      * Get the privateCloudId property: The Private Cloud Id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -100,7 +102,7 @@ public final class ResourcePoolInner {
 
     /**
      * Get the innerProperties property: Resource pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ResourcePoolProperties innerProperties() {
@@ -109,7 +111,7 @@ public final class ResourcePoolInner {
 
     /**
      * Get the type property: {resourceProviderNamespace}/{resourceType}.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -118,7 +120,7 @@ public final class ResourcePoolInner {
 
     /**
      * Get the fullName property: Hierarchical resource pool name.
-     *
+     * 
      * @return the fullName value.
      */
     public String fullName() {
@@ -127,14 +129,13 @@ public final class ResourcePoolInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ResourcePoolInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ResourcePoolInner"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -142,4 +143,52 @@ public final class ResourcePoolInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourcePoolInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourcePoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourcePoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourcePoolInner.
+     */
+    public static ResourcePoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourcePoolInner deserializedResourcePoolInner = new ResourcePoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourcePoolInner.id = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedResourcePoolInner.location = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourcePoolInner.name = reader.getString();
+                } else if ("privateCloudId".equals(fieldName)) {
+                    deserializedResourcePoolInner.privateCloudId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedResourcePoolInner.innerProperties = ResourcePoolProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourcePoolInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourcePoolInner;
+        });
+    }
 }

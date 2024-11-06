@@ -44,12 +44,14 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResource response = manager.privateLinkResources()
-            .getWithResponse("fkts", "hsucoc", "nyyazttbtwwrqpue", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("fkts", "hsucoc", "nyyazttbtwwrqpue", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("rhdwbavxbniw", response.requiredZoneNames().get(0));
     }

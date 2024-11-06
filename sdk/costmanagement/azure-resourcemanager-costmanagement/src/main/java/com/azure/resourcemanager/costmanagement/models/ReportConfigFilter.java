@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The filter expression to be used in the report. */
+/**
+ * The filter expression to be used in the report.
+ */
 @Fluent
-public final class ReportConfigFilter {
+public final class ReportConfigFilter implements JsonSerializable<ReportConfigFilter> {
     /*
      * The logical "AND" expression. Must have at least 2 items.
      */
-    @JsonProperty(value = "and")
     private List<ReportConfigFilter> and;
 
     /*
      * The logical "OR" expression. Must have at least 2 items.
      */
-    @JsonProperty(value = "or")
     private List<ReportConfigFilter> or;
 
     /*
      * Has comparison expression for a dimension
      */
-    @JsonProperty(value = "dimensions")
     private ReportConfigComparisonExpression dimensions;
 
     /*
      * Has comparison expression for a tag
      */
-    @JsonProperty(value = "tags")
     private ReportConfigComparisonExpression tags;
 
-    /** Creates an instance of ReportConfigFilter class. */
+    /**
+     * Creates an instance of ReportConfigFilter class.
+     */
     public ReportConfigFilter() {
     }
 
     /**
      * Get the and property: The logical "AND" expression. Must have at least 2 items.
-     *
+     * 
      * @return the and value.
      */
     public List<ReportConfigFilter> and() {
@@ -50,7 +54,7 @@ public final class ReportConfigFilter {
 
     /**
      * Set the and property: The logical "AND" expression. Must have at least 2 items.
-     *
+     * 
      * @param and the and value to set.
      * @return the ReportConfigFilter object itself.
      */
@@ -61,7 +65,7 @@ public final class ReportConfigFilter {
 
     /**
      * Get the or property: The logical "OR" expression. Must have at least 2 items.
-     *
+     * 
      * @return the or value.
      */
     public List<ReportConfigFilter> or() {
@@ -70,7 +74,7 @@ public final class ReportConfigFilter {
 
     /**
      * Set the or property: The logical "OR" expression. Must have at least 2 items.
-     *
+     * 
      * @param or the or value to set.
      * @return the ReportConfigFilter object itself.
      */
@@ -81,7 +85,7 @@ public final class ReportConfigFilter {
 
     /**
      * Get the dimensions property: Has comparison expression for a dimension.
-     *
+     * 
      * @return the dimensions value.
      */
     public ReportConfigComparisonExpression dimensions() {
@@ -90,7 +94,7 @@ public final class ReportConfigFilter {
 
     /**
      * Set the dimensions property: Has comparison expression for a dimension.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the ReportConfigFilter object itself.
      */
@@ -101,7 +105,7 @@ public final class ReportConfigFilter {
 
     /**
      * Get the tags property: Has comparison expression for a tag.
-     *
+     * 
      * @return the tags value.
      */
     public ReportConfigComparisonExpression tags() {
@@ -110,7 +114,7 @@ public final class ReportConfigFilter {
 
     /**
      * Set the tags property: Has comparison expression for a tag.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ReportConfigFilter object itself.
      */
@@ -121,7 +125,7 @@ public final class ReportConfigFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -137,5 +141,52 @@ public final class ReportConfigFilter {
         if (tags() != null) {
             tags().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("and", this.and, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("or", this.or, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dimensions", this.dimensions);
+        jsonWriter.writeJsonField("tags", this.tags);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportConfigFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportConfigFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportConfigFilter.
+     */
+    public static ReportConfigFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportConfigFilter deserializedReportConfigFilter = new ReportConfigFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("and".equals(fieldName)) {
+                    List<ReportConfigFilter> and = reader.readArray(reader1 -> ReportConfigFilter.fromJson(reader1));
+                    deserializedReportConfigFilter.and = and;
+                } else if ("or".equals(fieldName)) {
+                    List<ReportConfigFilter> or = reader.readArray(reader1 -> ReportConfigFilter.fromJson(reader1));
+                    deserializedReportConfigFilter.or = or;
+                } else if ("dimensions".equals(fieldName)) {
+                    deserializedReportConfigFilter.dimensions = ReportConfigComparisonExpression.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    deserializedReportConfigFilter.tags = ReportConfigComparisonExpression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportConfigFilter;
+        });
     }
 }

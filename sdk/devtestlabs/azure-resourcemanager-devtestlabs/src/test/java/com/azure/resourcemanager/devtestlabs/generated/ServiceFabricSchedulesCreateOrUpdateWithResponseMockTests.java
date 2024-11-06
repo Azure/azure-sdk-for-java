@@ -39,66 +39,45 @@ public final class ServiceFabricSchedulesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"x\",\"weeklyRecurrence\":{\"weekdays\":[\"zvoikvntwczf\",\"wushlcxpbl\"],\"time\":\"hhezpfkissaidq\"},\"dailyRecurrence\":{\"time\":\"aoq\"},\"hourlyRecurrence\":{\"minute\":1755690497},\"timeZoneId\":\"otxjqfiafcnlrtbf\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1825571960,\"webhookUrl\":\"ijolbuauktwieope\",\"emailRecipient\":\"lxqdwr\",\"notificationLocale\":\"yil\"},\"createdDate\":\"2021-08-05T08:51:23Z\",\"targetResourceId\":\"kgxyxyauxre\",\"provisioningState\":\"obmc\",\"uniqueIdentifier\":\"tmwytkujsqycm\"},\"location\":\"oxfab\",\"tags\":{\"iwrycgnwplrrb\":\"pwbmwhria\"},\"id\":\"hctsbbibti\",\"name\":\"uhqvums\",\"type\":\"bfs\"}";
+        String responseStr
+            = "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"x\",\"weeklyRecurrence\":{\"weekdays\":[\"zvoikvntwczf\",\"wushlcxpbl\"],\"time\":\"hhezpfkissaidq\"},\"dailyRecurrence\":{\"time\":\"aoq\"},\"hourlyRecurrence\":{\"minute\":1755690497},\"timeZoneId\":\"otxjqfiafcnlrtbf\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1825571960,\"webhookUrl\":\"ijolbuauktwieope\",\"emailRecipient\":\"lxqdwr\",\"notificationLocale\":\"yil\"},\"createdDate\":\"2021-08-05T08:51:23Z\",\"targetResourceId\":\"kgxyxyauxre\",\"provisioningState\":\"obmc\",\"uniqueIdentifier\":\"tmwytkujsqycm\"},\"location\":\"oxfab\",\"tags\":{\"iwrycgnwplrrb\":\"pwbmwhria\"},\"id\":\"hctsbbibti\",\"name\":\"uhqvums\",\"type\":\"bfs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Schedule response =
-            manager
-                .serviceFabricSchedules()
-                .createOrUpdateWithResponse(
-                    "bjop",
-                    "ouhbq",
-                    "zkqxsalu",
-                    "yigfcvcew",
-                    "wqhdgsjsa",
-                    new ScheduleInner()
-                        .withLocation("v")
-                        .withTags(mapOf("cmyc", "gzphetxd"))
-                        .withStatus(EnableStatus.DISABLED)
-                        .withTaskType("c")
-                        .withWeeklyRecurrence(
-                            new WeekDetails()
-                                .withWeekdays(Arrays.asList("fsq", "hyqmrejparnpv", "rsz", "bwtdr"))
-                                .withTime("gz"))
-                        .withDailyRecurrence(new DayDetails().withTime("xzlh"))
-                        .withHourlyRecurrence(new HourDetails().withMinute(1211463960))
-                        .withTimeZoneId("cfculzj")
-                        .withNotificationSettings(
-                            new NotificationSettings()
-                                .withStatus(EnableStatus.ENABLED)
-                                .withTimeInMinutes(1821326298)
-                                .withWebhookUrl("vyldqpzfzxsoxin")
-                                .withEmailRecipient("jlzkdrocqsxy")
-                                .withNotificationLocale("qtcmiwdwisv"))
-                        .withTargetResourceId("lajamca"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Schedule response = manager.serviceFabricSchedules()
+            .createOrUpdateWithResponse("bjop", "ouhbq", "zkqxsalu", "yigfcvcew", "wqhdgsjsa",
+                new ScheduleInner().withLocation("v")
+                    .withTags(mapOf("cmyc", "gzphetxd"))
+                    .withStatus(EnableStatus.DISABLED)
+                    .withTaskType("c")
+                    .withWeeklyRecurrence(
+                        new WeekDetails().withWeekdays(Arrays.asList("fsq", "hyqmrejparnpv", "rsz", "bwtdr"))
+                            .withTime("gz"))
+                    .withDailyRecurrence(new DayDetails().withTime("xzlh"))
+                    .withHourlyRecurrence(new HourDetails().withMinute(1211463960))
+                    .withTimeZoneId("cfculzj")
+                    .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.ENABLED)
+                        .withTimeInMinutes(1821326298)
+                        .withWebhookUrl("vyldqpzfzxsoxin")
+                        .withEmailRecipient("jlzkdrocqsxy")
+                        .withNotificationLocale("qtcmiwdwisv"))
+                    .withTargetResourceId("lajamca"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("oxfab", response.location());
         Assertions.assertEquals("pwbmwhria", response.tags().get("iwrycgnwplrrb"));

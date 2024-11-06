@@ -15,7 +15,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class WorkspaceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceUpdateParameters.class);
 
     /*
      * The resource tags for the machine learning workspace.
@@ -201,8 +202,8 @@ public class WorkspaceUpdateParameters {
      * @param serviceManagedResourcesSettings the serviceManagedResourcesSettings value to set.
      * @return the WorkspaceUpdateParameters object itself.
      */
-    public WorkspaceUpdateParameters withServiceManagedResourcesSettings(
-        ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
+    public WorkspaceUpdateParameters
+        withServiceManagedResourcesSettings(ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
         this.serviceManagedResourcesSettings = serviceManagedResourcesSettings;
         return this;
     }

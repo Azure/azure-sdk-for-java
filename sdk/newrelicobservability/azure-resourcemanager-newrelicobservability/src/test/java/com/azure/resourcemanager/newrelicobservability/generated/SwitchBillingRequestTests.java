@@ -29,11 +29,13 @@ public final class SwitchBillingRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwitchBillingRequest model
-            = new SwitchBillingRequest().withAzureResourceId("jqkwpyeicx").withOrganizationId("ciwqvhk")
-                .withPlanData(new PlanData().withUsageType(UsageType.COMMITTED).withBillingCycle(BillingCycle.WEEKLY)
-                    .withPlanDetails("topbobjogh").withEffectiveDate(OffsetDateTime.parse("2021-04-17T11:58:30Z")))
-                .withUserEmail("u");
+        SwitchBillingRequest model = new SwitchBillingRequest().withAzureResourceId("jqkwpyeicx")
+            .withOrganizationId("ciwqvhk")
+            .withPlanData(new PlanData().withUsageType(UsageType.COMMITTED)
+                .withBillingCycle(BillingCycle.WEEKLY)
+                .withPlanDetails("topbobjogh")
+                .withEffectiveDate(OffsetDateTime.parse("2021-04-17T11:58:30Z")))
+            .withUserEmail("u");
         model = BinaryData.fromObject(model).toObject(SwitchBillingRequest.class);
         Assertions.assertEquals("jqkwpyeicx", model.azureResourceId());
         Assertions.assertEquals("ciwqvhk", model.organizationId());

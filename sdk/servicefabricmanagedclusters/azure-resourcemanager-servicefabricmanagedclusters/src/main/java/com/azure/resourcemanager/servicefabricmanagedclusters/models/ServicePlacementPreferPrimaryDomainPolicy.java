@@ -77,7 +77,6 @@ public final class ServicePlacementPreferPrimaryDomainPolicy extends ServicePlac
      */
     @Override
     public void validate() {
-        super.validate();
         if (domainName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

@@ -134,14 +134,12 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
     public void validate() {
         super.validate();
         if (topicEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property topicEndpoint in model EventGrid"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property topicEndpoint in model EventGrid"));
         }
         if (accessKey1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property accessKey1 in model EventGrid"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property accessKey1 in model EventGrid"));
         }
     }
 

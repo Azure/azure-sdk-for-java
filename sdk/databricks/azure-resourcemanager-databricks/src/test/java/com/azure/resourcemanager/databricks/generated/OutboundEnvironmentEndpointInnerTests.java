@@ -7,35 +7,62 @@ package com.azure.resourcemanager.databricks.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databricks.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.databricks.models.EndpointDependency;
+import com.azure.resourcemanager.databricks.models.EndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"vdcsitynn\",\"endpoints\":[{\"domainName\":\"ectehf\",\"endpointDetails\":[]},{\"domainName\":\"jeyp\",\"endpointDetails\":[]},{\"domainName\":\"rkgqhcjrefo\",\"endpointDetails\":[]},{\"domainName\":\"qsl\",\"endpointDetails\":[]}]}")
-                .toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("vdcsitynn", model.category());
-        Assertions.assertEquals("ectehf", model.endpoints().get(0).domainName());
+        OutboundEnvironmentEndpointInner model = BinaryData.fromString(
+            "{\"category\":\"fgugnxkrxdqmid\",\"endpoints\":[{\"domainName\":\"rvqdra\",\"endpointDetails\":[{\"ipAddress\":\"big\",\"port\":823373191,\"latency\":58.94817902536062,\"isAccessible\":false},{\"ipAddress\":\"kanyktzlcuiywg\",\"port\":1328534140,\"latency\":50.55224788485616,\"isAccessible\":true}]},{\"domainName\":\"nhzgpphrcgyn\",\"endpointDetails\":[{\"ipAddress\":\"ecfvmm\",\"port\":946201596,\"latency\":67.10017753544727,\"isAccessible\":false},{\"ipAddress\":\"v\",\"port\":11463195,\"latency\":96.68564264290794,\"isAccessible\":false},{\"ipAddress\":\"y\",\"port\":1896643633,\"latency\":79.70230134472271,\"isAccessible\":true},{\"ipAddress\":\"vccfw\",\"port\":1351999022,\"latency\":23.64338541823554,\"isAccessible\":false}]}]}")
+            .toObject(OutboundEnvironmentEndpointInner.class);
+        Assertions.assertEquals("fgugnxkrxdqmid", model.category());
+        Assertions.assertEquals("rvqdra", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("big", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(823373191, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals(58.94817902536062D, model.endpoints().get(0).endpointDetails().get(0).latency());
+        Assertions.assertEquals(false, model.endpoints().get(0).endpointDetails().get(0).isAccessible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundEnvironmentEndpointInner model =
-            new OutboundEnvironmentEndpointInner()
-                .withCategory("vdcsitynn")
-                .withEndpoints(
-                    Arrays
-                        .asList(
-                            new EndpointDependency().withDomainName("ectehf").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("jeyp").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("rkgqhcjrefo").withEndpointDetails(Arrays.asList()),
-                            new EndpointDependency().withDomainName("qsl").withEndpointDetails(Arrays.asList())));
+        OutboundEnvironmentEndpointInner model = new OutboundEnvironmentEndpointInner().withCategory("fgugnxkrxdqmid")
+            .withEndpoints(Arrays.asList(
+                new EndpointDependency().withDomainName("rvqdra")
+                    .withEndpointDetails(Arrays.asList(
+                        new EndpointDetail().withIpAddress("big")
+                            .withPort(823373191)
+                            .withLatency(58.94817902536062D)
+                            .withIsAccessible(false),
+                        new EndpointDetail().withIpAddress("kanyktzlcuiywg")
+                            .withPort(1328534140)
+                            .withLatency(50.55224788485616D)
+                            .withIsAccessible(true))),
+                new EndpointDependency().withDomainName("nhzgpphrcgyn")
+                    .withEndpointDetails(Arrays.asList(
+                        new EndpointDetail().withIpAddress("ecfvmm")
+                            .withPort(946201596)
+                            .withLatency(67.10017753544727D)
+                            .withIsAccessible(false),
+                        new EndpointDetail().withIpAddress("v")
+                            .withPort(11463195)
+                            .withLatency(96.68564264290794D)
+                            .withIsAccessible(false),
+                        new EndpointDetail().withIpAddress("y")
+                            .withPort(1896643633)
+                            .withLatency(79.70230134472271D)
+                            .withIsAccessible(true),
+                        new EndpointDetail().withIpAddress("vccfw")
+                            .withPort(1351999022)
+                            .withLatency(23.64338541823554D)
+                            .withIsAccessible(false)))));
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("vdcsitynn", model.category());
-        Assertions.assertEquals("ectehf", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.category());
+        Assertions.assertEquals("rvqdra", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("big", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(823373191, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals(58.94817902536062D, model.endpoints().get(0).endpointDetails().get(0).latency());
+        Assertions.assertEquals(false, model.endpoints().get(0).endpointDetails().get(0).isAccessible());
     }
 }

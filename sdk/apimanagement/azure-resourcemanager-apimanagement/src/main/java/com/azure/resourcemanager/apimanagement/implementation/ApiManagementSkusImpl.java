@@ -19,8 +19,7 @@ public final class ApiManagementSkusImpl implements ApiManagementSkus {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiManagementSkusImpl(
-        ApiManagementSkusClient innerClient,
+    public ApiManagementSkusImpl(ApiManagementSkusClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

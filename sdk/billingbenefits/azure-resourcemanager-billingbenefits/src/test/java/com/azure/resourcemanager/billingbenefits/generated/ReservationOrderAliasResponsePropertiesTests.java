@@ -19,66 +19,60 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationOrderAliasResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationOrderAliasResponseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"t\",\"reservationOrderId\":\"nermcl\",\"provisioningState\":\"ConfirmedBilling\",\"billingScopeId\":\"hoxus\",\"term\":\"P3Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Shared\",\"appliedScopeProperties\":{\"tenantId\":\"sbj\",\"managementGroupId\":\"zq\",\"subscriptionId\":\"xywpmueefjzwfqkq\",\"resourceGroupId\":\"ids\",\"displayName\":\"onobglaocqx\"},\"quantity\":1581079817,\"renew\":false,\"reservedResourceType\":\"SqlEdge\",\"reviewDateTime\":\"2021-01-17T15:02:45Z\",\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"}}")
-                .toObject(ReservationOrderAliasResponseProperties.class);
-        Assertions.assertEquals("t", model.displayName());
-        Assertions.assertEquals("hoxus", model.billingScopeId());
+        ReservationOrderAliasResponseProperties model = BinaryData.fromString(
+            "{\"displayName\":\"senhwlrs\",\"reservationOrderId\":\"rzpwvlqdqgbiq\",\"provisioningState\":\"Cancelled\",\"billingScopeId\":\"kaet\",\"term\":\"P3Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Shared\",\"appliedScopeProperties\":{\"tenantId\":\"snkymuctq\",\"managementGroupId\":\"fbebrjcxer\",\"subscriptionId\":\"wutttxfvjrbi\",\"resourceGroupId\":\"hxepcyvahfnlj\",\"displayName\":\"qxj\"},\"quantity\":1975532924,\"renew\":true,\"reservedResourceType\":\"VMwareCloudSimple\",\"reviewDateTime\":\"2021-07-19T09:21:05Z\",\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"}}")
+            .toObject(ReservationOrderAliasResponseProperties.class);
+        Assertions.assertEquals("senhwlrs", model.displayName());
+        Assertions.assertEquals("kaet", model.billingScopeId());
         Assertions.assertEquals(Term.P3Y, model.term());
         Assertions.assertEquals(BillingPlan.P1M, model.billingPlan());
         Assertions.assertEquals(AppliedScopeType.SHARED, model.appliedScopeType());
-        Assertions.assertEquals("sbj", model.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("zq", model.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("xywpmueefjzwfqkq", model.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("ids", model.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("onobglaocqx", model.appliedScopeProperties().displayName());
-        Assertions.assertEquals(1581079817, model.quantity());
-        Assertions.assertEquals(false, model.renew());
-        Assertions.assertEquals(ReservedResourceType.SQL_EDGE, model.reservedResourceType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T15:02:45Z"), model.reviewDateTime());
+        Assertions.assertEquals("snkymuctq", model.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("fbebrjcxer", model.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("wutttxfvjrbi", model.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("hxepcyvahfnlj", model.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("qxj", model.appliedScopeProperties().displayName());
+        Assertions.assertEquals(1975532924, model.quantity());
+        Assertions.assertEquals(true, model.renew());
+        Assertions.assertEquals(ReservedResourceType.VMWARE_CLOUD_SIMPLE, model.reservedResourceType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T09:21:05Z"), model.reviewDateTime());
         Assertions.assertEquals(InstanceFlexibility.ON, model.reservedResourceProperties().instanceFlexibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationOrderAliasResponseProperties model =
-            new ReservationOrderAliasResponseProperties()
-                .withDisplayName("t")
-                .withBillingScopeId("hoxus")
+        ReservationOrderAliasResponseProperties model
+            = new ReservationOrderAliasResponseProperties().withDisplayName("senhwlrs")
+                .withBillingScopeId("kaet")
                 .withTerm(Term.P3Y)
                 .withBillingPlan(BillingPlan.P1M)
                 .withAppliedScopeType(AppliedScopeType.SHARED)
-                .withAppliedScopeProperties(
-                    new AppliedScopeProperties()
-                        .withTenantId("sbj")
-                        .withManagementGroupId("zq")
-                        .withSubscriptionId("xywpmueefjzwfqkq")
-                        .withResourceGroupId("ids")
-                        .withDisplayName("onobglaocqx"))
-                .withQuantity(1581079817)
-                .withRenew(false)
-                .withReservedResourceType(ReservedResourceType.SQL_EDGE)
-                .withReviewDateTime(OffsetDateTime.parse("2021-01-17T15:02:45Z"))
-                .withReservedResourceProperties(
-                    new ReservationOrderAliasResponsePropertiesReservedResourceProperties()
-                        .withInstanceFlexibility(InstanceFlexibility.ON));
+                .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("snkymuctq")
+                    .withManagementGroupId("fbebrjcxer")
+                    .withSubscriptionId("wutttxfvjrbi")
+                    .withResourceGroupId("hxepcyvahfnlj")
+                    .withDisplayName("qxj"))
+                .withQuantity(1975532924)
+                .withRenew(true)
+                .withReservedResourceType(ReservedResourceType.VMWARE_CLOUD_SIMPLE)
+                .withReviewDateTime(OffsetDateTime.parse("2021-07-19T09:21:05Z"))
+                .withReservedResourceProperties(new ReservationOrderAliasResponsePropertiesReservedResourceProperties()
+                    .withInstanceFlexibility(InstanceFlexibility.ON));
         model = BinaryData.fromObject(model).toObject(ReservationOrderAliasResponseProperties.class);
-        Assertions.assertEquals("t", model.displayName());
-        Assertions.assertEquals("hoxus", model.billingScopeId());
+        Assertions.assertEquals("senhwlrs", model.displayName());
+        Assertions.assertEquals("kaet", model.billingScopeId());
         Assertions.assertEquals(Term.P3Y, model.term());
         Assertions.assertEquals(BillingPlan.P1M, model.billingPlan());
         Assertions.assertEquals(AppliedScopeType.SHARED, model.appliedScopeType());
-        Assertions.assertEquals("sbj", model.appliedScopeProperties().tenantId());
-        Assertions.assertEquals("zq", model.appliedScopeProperties().managementGroupId());
-        Assertions.assertEquals("xywpmueefjzwfqkq", model.appliedScopeProperties().subscriptionId());
-        Assertions.assertEquals("ids", model.appliedScopeProperties().resourceGroupId());
-        Assertions.assertEquals("onobglaocqx", model.appliedScopeProperties().displayName());
-        Assertions.assertEquals(1581079817, model.quantity());
-        Assertions.assertEquals(false, model.renew());
-        Assertions.assertEquals(ReservedResourceType.SQL_EDGE, model.reservedResourceType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T15:02:45Z"), model.reviewDateTime());
+        Assertions.assertEquals("snkymuctq", model.appliedScopeProperties().tenantId());
+        Assertions.assertEquals("fbebrjcxer", model.appliedScopeProperties().managementGroupId());
+        Assertions.assertEquals("wutttxfvjrbi", model.appliedScopeProperties().subscriptionId());
+        Assertions.assertEquals("hxepcyvahfnlj", model.appliedScopeProperties().resourceGroupId());
+        Assertions.assertEquals("qxj", model.appliedScopeProperties().displayName());
+        Assertions.assertEquals(1975532924, model.quantity());
+        Assertions.assertEquals(true, model.renew());
+        Assertions.assertEquals(ReservedResourceType.VMWARE_CLOUD_SIMPLE, model.reservedResourceType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T09:21:05Z"), model.reviewDateTime());
         Assertions.assertEquals(InstanceFlexibility.ON, model.reservedResourceProperties().instanceFlexibility());
     }
 }

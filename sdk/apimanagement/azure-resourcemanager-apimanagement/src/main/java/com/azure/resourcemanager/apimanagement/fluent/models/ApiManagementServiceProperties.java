@@ -88,8 +88,8 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
 
     /** {@inheritDoc} */
     @Override
-    public ApiManagementServiceProperties withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceProperties
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         super.withHostnameConfigurations(hostnameConfigurations);
         return this;
     }
@@ -110,8 +110,8 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
 
     /** {@inheritDoc} */
     @Override
-    public ApiManagementServiceProperties withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceProperties
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         super.withVirtualNetworkConfiguration(virtualNetworkConfiguration);
         return this;
     }
@@ -181,8 +181,8 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
 
     /** {@inheritDoc} */
     @Override
-    public ApiManagementServiceProperties withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceProperties
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         super.withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }
@@ -196,16 +196,12 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
     public void validate() {
         super.validate();
         if (publisherEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisherEmail in model ApiManagementServiceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publisherEmail in model ApiManagementServiceProperties"));
         }
         if (publisherName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisherName in model ApiManagementServiceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publisherName in model ApiManagementServiceProperties"));
         }
     }
 

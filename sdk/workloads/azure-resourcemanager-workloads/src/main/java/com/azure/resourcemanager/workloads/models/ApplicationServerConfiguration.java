@@ -68,8 +68,8 @@ public final class ApplicationServerConfiguration {
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the ApplicationServerConfiguration object itself.
      */
-    public ApplicationServerConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public ApplicationServerConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
@@ -101,17 +101,12 @@ public final class ApplicationServerConfiguration {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model ApplicationServerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subnetId in model ApplicationServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model"
-                            + " ApplicationServerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualMachineConfiguration in model" + " ApplicationServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }

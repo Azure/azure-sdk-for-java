@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** billing information. */
+/**
+ * billing information.
+ */
 @Fluent
-public final class BillingInformation {
+public final class BillingInformation implements JsonSerializable<BillingInformation> {
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyTotalPaidAmount")
     private Price billingCurrencyTotalPaidAmount;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyProratedAmount")
     private Price billingCurrencyProratedAmount;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyRemainingCommitmentAmount")
     private Price billingCurrencyRemainingCommitmentAmount;
 
-    /** Creates an instance of BillingInformation class. */
+    /**
+     * Creates an instance of BillingInformation class.
+     */
     public BillingInformation() {
     }
 
     /**
      * Get the billingCurrencyTotalPaidAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingCurrencyTotalPaidAmount value.
      */
     public Price billingCurrencyTotalPaidAmount() {
@@ -43,7 +48,7 @@ public final class BillingInformation {
 
     /**
      * Set the billingCurrencyTotalPaidAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingCurrencyTotalPaidAmount the billingCurrencyTotalPaidAmount value to set.
      * @return the BillingInformation object itself.
      */
@@ -54,7 +59,7 @@ public final class BillingInformation {
 
     /**
      * Get the billingCurrencyProratedAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingCurrencyProratedAmount value.
      */
     public Price billingCurrencyProratedAmount() {
@@ -63,7 +68,7 @@ public final class BillingInformation {
 
     /**
      * Set the billingCurrencyProratedAmount property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingCurrencyProratedAmount the billingCurrencyProratedAmount value to set.
      * @return the BillingInformation object itself.
      */
@@ -75,7 +80,7 @@ public final class BillingInformation {
     /**
      * Get the billingCurrencyRemainingCommitmentAmount property: Pricing information containing the amount and the
      * currency code.
-     *
+     * 
      * @return the billingCurrencyRemainingCommitmentAmount value.
      */
     public Price billingCurrencyRemainingCommitmentAmount() {
@@ -85,19 +90,19 @@ public final class BillingInformation {
     /**
      * Set the billingCurrencyRemainingCommitmentAmount property: Pricing information containing the amount and the
      * currency code.
-     *
+     * 
      * @param billingCurrencyRemainingCommitmentAmount the billingCurrencyRemainingCommitmentAmount value to set.
      * @return the BillingInformation object itself.
      */
-    public BillingInformation withBillingCurrencyRemainingCommitmentAmount(
-        Price billingCurrencyRemainingCommitmentAmount) {
+    public BillingInformation
+        withBillingCurrencyRemainingCommitmentAmount(Price billingCurrencyRemainingCommitmentAmount) {
         this.billingCurrencyRemainingCommitmentAmount = billingCurrencyRemainingCommitmentAmount;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -110,5 +115,48 @@ public final class BillingInformation {
         if (billingCurrencyRemainingCommitmentAmount() != null) {
             billingCurrencyRemainingCommitmentAmount().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("billingCurrencyTotalPaidAmount", this.billingCurrencyTotalPaidAmount);
+        jsonWriter.writeJsonField("billingCurrencyProratedAmount", this.billingCurrencyProratedAmount);
+        jsonWriter.writeJsonField("billingCurrencyRemainingCommitmentAmount",
+            this.billingCurrencyRemainingCommitmentAmount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingInformation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingInformation.
+     */
+    public static BillingInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingInformation deserializedBillingInformation = new BillingInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingCurrencyTotalPaidAmount".equals(fieldName)) {
+                    deserializedBillingInformation.billingCurrencyTotalPaidAmount = Price.fromJson(reader);
+                } else if ("billingCurrencyProratedAmount".equals(fieldName)) {
+                    deserializedBillingInformation.billingCurrencyProratedAmount = Price.fromJson(reader);
+                } else if ("billingCurrencyRemainingCommitmentAmount".equals(fieldName)) {
+                    deserializedBillingInformation.billingCurrencyRemainingCommitmentAmount = Price.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingInformation;
+        });
     }
 }

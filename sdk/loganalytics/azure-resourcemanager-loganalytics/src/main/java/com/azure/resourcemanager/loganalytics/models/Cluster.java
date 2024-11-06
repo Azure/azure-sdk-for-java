@@ -163,11 +163,8 @@ public interface Cluster {
     ClusterInner innerModel();
 
     /** The entirety of the Cluster definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Cluster definition stages. */
@@ -210,16 +207,10 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithIsDoubleEncryptionEnabled,
-                DefinitionStages.WithIsAvailabilityZonesEnabled,
-                DefinitionStages.WithBillingType,
-                DefinitionStages.WithKeyVaultProperties,
-                DefinitionStages.WithAssociatedWorkspaces,
-                DefinitionStages.WithCapacityReservationProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku,
+            DefinitionStages.WithIsDoubleEncryptionEnabled, DefinitionStages.WithIsAvailabilityZonesEnabled,
+            DefinitionStages.WithBillingType, DefinitionStages.WithKeyVaultProperties,
+            DefinitionStages.WithAssociatedWorkspaces, DefinitionStages.WithCapacityReservationProperties {
             /**
              * Executes the create request.
              *
@@ -353,12 +344,8 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithKeyVaultProperties,
-            UpdateStages.WithBillingType {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
+        UpdateStages.WithKeyVaultProperties, UpdateStages.WithBillingType {
         /**
          * Executes the update request.
          *

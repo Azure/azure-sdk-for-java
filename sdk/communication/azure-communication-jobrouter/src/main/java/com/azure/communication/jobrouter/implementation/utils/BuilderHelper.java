@@ -32,8 +32,8 @@ import java.util.Map;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderHelper {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-communication-jobrouter.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-communication-jobrouter.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
@@ -53,9 +53,7 @@ public final class BuilderHelper {
      * @param logger             {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(
-        HttpPipelinePolicy credentialPolicy,
-        RetryOptions retryOptions,
+    public static HttpPipeline buildPipeline(HttpPipelinePolicy credentialPolicy, RetryOptions retryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
@@ -92,8 +90,7 @@ public final class BuilderHelper {
 
         policies.add(new HttpLoggingPolicy(logOptions));
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
@@ -107,9 +104,10 @@ public final class BuilderHelper {
      * @return The default {@link UserAgentPolicy} for the module.
      */
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
-                                                      ClientOptions clientOptions) {
+        ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
-        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
+        String applicationId = clientOptions.getApplicationId() != null
+            ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
         return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }

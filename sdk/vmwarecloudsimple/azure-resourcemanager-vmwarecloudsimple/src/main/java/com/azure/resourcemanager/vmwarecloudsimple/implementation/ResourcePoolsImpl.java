@@ -21,8 +21,7 @@ public final class ResourcePoolsImpl implements ResourcePools {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public ResourcePoolsImpl(
-        ResourcePoolsClient innerClient,
+    public ResourcePoolsImpl(ResourcePoolsClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,20 @@ public final class ResourcePoolsImpl implements ResourcePools {
 
     public PagedIterable<ResourcePool> list(String regionId, String pcName) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().list(regionId, pcName);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourcePool> list(String regionId, String pcName, Context context) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().list(regionId, pcName, context);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
-    public Response<ResourcePool> getWithResponse(
-        String regionId, String pcName, String resourcePoolName, Context context) {
-        Response<ResourcePoolInner> inner =
-            this.serviceClient().getWithResponse(regionId, pcName, resourcePoolName, context);
+    public Response<ResourcePool> getWithResponse(String regionId, String pcName, String resourcePoolName,
+        Context context) {
+        Response<ResourcePoolInner> inner
+            = this.serviceClient().getWithResponse(regionId, pcName, resourcePoolName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourcePoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;

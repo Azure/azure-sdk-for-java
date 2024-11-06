@@ -100,14 +100,12 @@ public class ConnectionState {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property status in model ConnectionState"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model ConnectionState"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property description in model ConnectionState"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property description in model ConnectionState"));
         }
     }
 

@@ -54,9 +54,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @param client the instance of the service client containing this operation class.
      */
     MetricsConfigurationsClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy
-                .create(MetricsConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(MetricsConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,92 +66,64 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudMetricsC")
     public interface MetricsConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterMetricsConfigurationList>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ClusterMetricsConfigurationList>> listByCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterMetricsConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<ClusterMetricsConfigurationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("metricsConfigurationName") String metricsConfigurationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("metricsConfigurationName") String metricsConfigurationName,
             @BodyParam("application/json") ClusterMetricsConfigurationInner metricsConfigurationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("metricsConfigurationName") String metricsConfigurationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("metricsConfigurationName") String metricsConfigurationName,
-            @BodyParam("application/json")
-                ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterMetricsConfigurationList>> listByClusterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -169,19 +140,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -192,26 +159,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            accept,
-                            context))
-            .<PagedResponse<ClusterMetricsConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .<PagedResponse<ClusterMetricsConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -230,19 +181,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,23 +201,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -286,10 +220,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return a list of metrics configurations for the provided cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ClusterMetricsConfigurationInner> listByClusterAsync(
-        String resourceGroupName, String clusterName) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
+    private PagedFlux<ClusterMetricsConfigurationInner> listByClusterAsync(String resourceGroupName,
+        String clusterName) {
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
@@ -307,10 +240,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return a list of metrics configurations for the provided cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ClusterMetricsConfigurationInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Context context) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
+    private PagedFlux<ClusterMetricsConfigurationInner> listByClusterAsync(String resourceGroupName, String clusterName,
+        Context context) {
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
             nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
     }
 
@@ -347,8 +279,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
     }
 
@@ -367,19 +299,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterMetricsConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    private Mono<Response<ClusterMetricsConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String metricsConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -389,24 +317,12 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            metricsConfigurationName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -426,19 +342,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClusterMetricsConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
+    private Mono<Response<ClusterMetricsConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String metricsConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -448,22 +360,13 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                metricsConfigurationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, metricsConfigurationName, accept, context);
     }
 
     /**
@@ -480,8 +383,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return metrics configuration of the provided cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterMetricsConfigurationInner> getAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    private Mono<ClusterMetricsConfigurationInner> getAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         return getWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -501,8 +404,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return metrics configuration of the provided cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClusterMetricsConfigurationInner> getWithResponse(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
+    public Response<ClusterMetricsConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName, context).block();
     }
 
@@ -520,8 +423,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return metrics configuration of the provided cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterMetricsConfigurationInner get(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    public ClusterMetricsConfigurationInner get(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         return getWithResponse(resourceGroupName, clusterName, metricsConfigurationName, Context.NONE).getValue();
     }
 
@@ -541,22 +444,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String metricsConfigurationName,
         ClusterMetricsConfigurationInner metricsConfigurationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -566,33 +463,20 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         if (metricsConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter metricsConfigurationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter metricsConfigurationParameters is required and cannot be null."));
         } else {
             metricsConfigurationParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            metricsConfigurationName,
-                            metricsConfigurationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName,
+                metricsConfigurationParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -613,23 +497,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String metricsConfigurationName,
+        ClusterMetricsConfigurationInner metricsConfigurationParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -639,31 +516,20 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         if (metricsConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter metricsConfigurationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter metricsConfigurationParameters is required and cannot be null."));
         } else {
             metricsConfigurationParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                metricsConfigurationName,
-                metricsConfigurationParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters, accept, context);
     }
 
     /**
@@ -683,22 +549,13 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String metricsConfigurationName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String clusterName, String metricsConfigurationName,
             ClusterMetricsConfigurationInner metricsConfigurationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters);
-        return this
-            .client
-            .<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterMetricsConfigurationInner.class,
-                ClusterMetricsConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            metricsConfigurationName, metricsConfigurationParameters);
+        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterMetricsConfigurationInner.class,
+            ClusterMetricsConfigurationInner.class, this.client.getContext());
     }
 
     /**
@@ -719,24 +576,14 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String metricsConfigurationName,
-            ClusterMetricsConfigurationInner metricsConfigurationParameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String clusterName, String metricsConfigurationName,
+            ClusterMetricsConfigurationInner metricsConfigurationParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters, context);
-        return this
-            .client
-            .<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterMetricsConfigurationInner.class,
-                ClusterMetricsConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            metricsConfigurationName, metricsConfigurationParameters, context);
+        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterMetricsConfigurationInner.class,
+            ClusterMetricsConfigurationInner.class, context);
     }
 
     /**
@@ -756,14 +603,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String metricsConfigurationName,
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName,
             ClusterMetricsConfigurationInner metricsConfigurationParameters) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+                metricsConfigurationParameters)
             .getSyncPoller();
     }
 
@@ -785,15 +629,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String metricsConfigurationName,
-            ClusterMetricsConfigurationInner metricsConfigurationParameters,
-            Context context) {
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName,
+            ClusterMetricsConfigurationInner metricsConfigurationParameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+                metricsConfigurationParameters, context)
             .getSyncPoller();
     }
 
@@ -813,15 +653,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterMetricsConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ClusterMetricsConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -841,16 +676,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterMetricsConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters,
+    private Mono<ClusterMetricsConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -868,14 +698,10 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterMetricsConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters)
-            .block();
+    public ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters) {
+        return createOrUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters).block();
     }
 
     /**
@@ -894,15 +720,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterMetricsConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters,
+    public ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters, context).block();
     }
 
     /**
@@ -919,19 +741,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -941,24 +759,12 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            metricsConfigurationName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -977,19 +783,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -999,22 +801,13 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                metricsConfigurationName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, metricsConfigurationName, accept, context);
     }
 
     /**
@@ -1031,14 +824,12 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1056,14 +847,13 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, metricsConfigurationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1080,8 +870,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName).getSyncPoller();
     }
 
@@ -1100,8 +890,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context).getSyncPoller();
     }
 
@@ -1120,8 +910,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String metricsConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1140,10 +929,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String metricsConfigurationName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, metricsConfigurationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1199,22 +987,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String metricsConfigurationName,
         ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1224,28 +1006,17 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         if (metricsConfigurationUpdateParameters != null) {
             metricsConfigurationUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            metricsConfigurationName,
-                            metricsConfigurationUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName,
+                metricsConfigurationUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1267,23 +1038,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context) {
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1293,26 +1057,17 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (metricsConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metricsConfigurationName is required and cannot be null."));
         }
         if (metricsConfigurationUpdateParameters != null) {
             metricsConfigurationUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                metricsConfigurationName,
-                metricsConfigurationUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, accept,
+            context);
     }
 
     /**
@@ -1333,21 +1088,13 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
+        String resourceGroupName, String clusterName, String metricsConfigurationName,
         ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters);
-        return this
-            .client
-            .<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterMetricsConfigurationInner.class,
-                ClusterMetricsConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName,
+            metricsConfigurationName, metricsConfigurationUpdateParameters);
+        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterMetricsConfigurationInner.class,
+            ClusterMetricsConfigurationInner.class, this.client.getContext());
     }
 
     /**
@@ -1366,20 +1113,14 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
+        beginUpdateAsync(String resourceGroupName, String clusterName, String metricsConfigurationName) {
         final ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters);
-        return this
-            .client
-            .<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterMetricsConfigurationInner.class,
-                ClusterMetricsConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName,
+            metricsConfigurationName, metricsConfigurationUpdateParameters);
+        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterMetricsConfigurationInner.class,
+            ClusterMetricsConfigurationInner.class, this.client.getContext());
     }
 
     /**
@@ -1401,27 +1142,14 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context) {
+        String resourceGroupName, String clusterName, String metricsConfigurationName,
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName,
-                clusterName,
-                metricsConfigurationName,
-                metricsConfigurationUpdateParameters,
-                context);
-        return this
-            .client
-            .<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterMetricsConfigurationInner.class,
-                ClusterMetricsConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName,
+            metricsConfigurationName, metricsConfigurationUpdateParameters, context);
+        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ClusterMetricsConfigurationInner.class,
+            ClusterMetricsConfigurationInner.class, context);
     }
 
     /**
@@ -1440,12 +1168,12 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
+        beginUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName) {
         final ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters = null;
         return this
-            .beginUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters)
+            .beginUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+                metricsConfigurationUpdateParameters)
             .getSyncPoller();
     }
 
@@ -1468,14 +1196,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context) {
+        String resourceGroupName, String clusterName, String metricsConfigurationName,
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context) {
         return this
-            .beginUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, context)
+            .beginUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+                metricsConfigurationUpdateParameters, context)
             .getSyncPoller();
     }
 
@@ -1496,15 +1221,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterMetricsConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
+    private Mono<ClusterMetricsConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
         String metricsConfigurationName,
         ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters) {
-        return beginUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1523,13 +1244,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterMetricsConfigurationInner> updateAsync(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    private Mono<ClusterMetricsConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         final ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters = null;
-        return beginUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1550,16 +1269,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterMetricsConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
+    private Mono<ClusterMetricsConfigurationInner> updateAsync(String resourceGroupName, String clusterName,
         String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationUpdateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1577,12 +1291,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterMetricsConfigurationInner update(
-        String resourceGroupName, String clusterName, String metricsConfigurationName) {
+    public ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
+        String metricsConfigurationName) {
         final ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters = null;
-        return updateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters)
-            .block();
+        return updateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationUpdateParameters).block();
     }
 
     /**
@@ -1602,15 +1315,11 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterMetricsConfigurationInner update(
-        String resourceGroupName,
-        String clusterName,
+    public ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
         String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context) {
-        return updateAsync(
-                resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, context)
-            .block();
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context) {
+        return updateAsync(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationUpdateParameters, context).block();
     }
 
     /**
@@ -1630,23 +1339,14 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ClusterMetricsConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ClusterMetricsConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1663,29 +1363,19 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

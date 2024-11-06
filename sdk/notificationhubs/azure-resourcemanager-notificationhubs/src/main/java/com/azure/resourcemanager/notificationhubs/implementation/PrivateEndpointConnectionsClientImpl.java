@@ -368,7 +368,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<PrivateEndpointConnectionResourceInner> updateAsync(String resourceGroupName, String namespaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, namespaceName, privateEndpointConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

@@ -30,22 +30,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsResultsClient.
+ */
 public final class OperationsResultsClientImpl implements OperationsResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureOrbitalImpl client;
 
     /**
      * Initializes an instance of OperationsResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsResultsClientImpl(AzureOrbitalImpl client) {
-        this.service =
-            RestProxy.create(OperationsResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationsResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,24 +62,19 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureOrbitalOperatio")
     public interface OperationsResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/locations/{location}/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/locations/{location}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("location") String location,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("location") String location, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,16 +85,12 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -103,23 +100,14 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            location,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), location, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -129,19 +117,15 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      * @return operation Result Entity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(
-        String location, String operationId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(String location, String operationId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -151,20 +135,13 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                location,
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            location, operationId, accept, context);
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,22 +150,16 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      * @return the {@link PollerFlux} for polling of operation Result Entity.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationResultInner>, OperationResultInner> beginGetAsync(
-        String location, String operationId) {
+    private PollerFlux<PollResult<OperationResultInner>, OperationResultInner> beginGetAsync(String location,
+        String operationId) {
         Mono<Response<Flux<ByteBuffer>>> mono = getWithResponseAsync(location, operationId);
-        return this
-            .client
-            .<OperationResultInner, OperationResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationResultInner.class,
-                OperationResultInner.class,
-                this.client.getContext());
+        return this.client.<OperationResultInner, OperationResultInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationResultInner.class, OperationResultInner.class, this.client.getContext());
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -198,19 +169,17 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      * @return the {@link PollerFlux} for polling of operation Result Entity.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationResultInner>, OperationResultInner> beginGetAsync(
-        String location, String operationId, Context context) {
+    private PollerFlux<PollResult<OperationResultInner>, OperationResultInner> beginGetAsync(String location,
+        String operationId, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = getWithResponseAsync(location, operationId, context);
-        return this
-            .client
-            .<OperationResultInner, OperationResultInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OperationResultInner.class, OperationResultInner.class, context);
+        return this.client.<OperationResultInner, OperationResultInner>getLroResult(mono, this.client.getHttpPipeline(),
+            OperationResultInner.class, OperationResultInner.class, context);
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,14 +188,14 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      * @return the {@link SyncPoller} for polling of operation Result Entity.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(
-        String location, String operationId) {
+    public SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(String location,
+        String operationId) {
         return this.beginGetAsync(location, operationId).getSyncPoller();
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -236,14 +205,14 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      * @return the {@link SyncPoller} for polling of operation Result Entity.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(
-        String location, String operationId, Context context) {
+    public SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(String location,
+        String operationId, Context context) {
         return this.beginGetAsync(location, operationId, context).getSyncPoller();
     }
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +227,7 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -274,7 +243,7 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +258,7 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.

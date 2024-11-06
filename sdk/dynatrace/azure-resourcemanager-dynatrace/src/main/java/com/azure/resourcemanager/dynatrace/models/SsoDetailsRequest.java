@@ -6,24 +6,31 @@ package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request for getting sso details for a user. */
+/**
+ * Request for getting sso details for a user.
+ */
 @Fluent
-public final class SsoDetailsRequest {
+public final class SsoDetailsRequest implements JsonSerializable<SsoDetailsRequest> {
     /*
      * user principal id of the user
      */
-    @JsonProperty(value = "userPrincipal", required = true)
     private String userPrincipal;
 
-    /** Creates an instance of SsoDetailsRequest class. */
+    /**
+     * Creates an instance of SsoDetailsRequest class.
+     */
     public SsoDetailsRequest() {
     }
 
     /**
      * Get the userPrincipal property: user principal id of the user.
-     *
+     * 
      * @return the userPrincipal value.
      */
     public String userPrincipal() {
@@ -32,7 +39,7 @@ public final class SsoDetailsRequest {
 
     /**
      * Set the userPrincipal property: user principal id of the user.
-     *
+     * 
      * @param userPrincipal the userPrincipal value to set.
      * @return the SsoDetailsRequest object itself.
      */
@@ -43,16 +50,53 @@ public final class SsoDetailsRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userPrincipal() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property userPrincipal in model SsoDetailsRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SsoDetailsRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userPrincipal", this.userPrincipal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsoDetailsRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsoDetailsRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SsoDetailsRequest.
+     */
+    public static SsoDetailsRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsoDetailsRequest deserializedSsoDetailsRequest = new SsoDetailsRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userPrincipal".equals(fieldName)) {
+                    deserializedSsoDetailsRequest.userPrincipal = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsoDetailsRequest;
+        });
+    }
 }

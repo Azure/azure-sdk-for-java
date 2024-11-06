@@ -35,18 +35,10 @@ import java.util.Objects;
  * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
  * @param <ParentT> parent interface
  */
-public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
-        InnerModelT,
-        ParentImplT extends ParentT,
-        ParentT>
-        extends
-        ChildResourceImpl<InnerModelT, ParentImplT, ParentT>
-        implements
-        Appliable<FluentModelT>,
-        Creatable<FluentModelT>,
-        TaskGroup.HasTaskGroup,
-        ExternalChildResource<FluentModelT, ParentT>,
-        Refreshable<FluentModelT> {
+public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable, InnerModelT, ParentImplT extends ParentT, ParentT>
+    extends ChildResourceImpl<InnerModelT, ParentImplT, ParentT>
+    implements Appliable<FluentModelT>, Creatable<FluentModelT>, TaskGroup.HasTaskGroup,
+    ExternalChildResource<FluentModelT, ParentT>, Refreshable<FluentModelT> {
     /**
      * State representing any pending action that needs to be performed on this child resource.
      */
@@ -67,9 +59,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
      * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      */
-    protected ExternalChildResourceImpl(String name,
-                                        ParentImplT parent,
-                                        InnerModelT innerObject) {
+    protected ExternalChildResourceImpl(String name, ParentImplT parent, InnerModelT innerObject) {
         super(innerObject, parent);
         this.childAction = new ExternalChildActionTaskItem(this);
         this.name = name;
@@ -83,10 +73,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
      * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      */
-    protected ExternalChildResourceImpl(String key,
-                                        String name,
-                                        ParentImplT parent,
-                                        InnerModelT innerObject) {
+    protected ExternalChildResourceImpl(String key, String name, ParentImplT parent, InnerModelT innerObject) {
         super(innerObject, parent);
         this.childAction = new ExternalChildActionTaskItem(key, this);
         this.name = name;
@@ -415,7 +402,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
          * @param externalChild an external child this TaskItem composes.
          */
         ExternalChildActionTaskItem(
-                final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
+            final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
             this.externalChild = externalChild;
         }
 
@@ -426,7 +413,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
          * @param externalChild an external child this TaskItem composes.
          */
         ExternalChildActionTaskItem(final String key,
-                final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
+            final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> externalChild) {
             super(key);
             this.externalChild = externalChild;
         }
@@ -441,22 +428,25 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
             switch (this.externalChild.pendingOperation()) {
                 case ToBeCreated:
                     return this.externalChild.createResourceAsync()
-                            .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
-                            .map(createdExternalChild -> createdExternalChild);
+                        .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
+                        .map(createdExternalChild -> createdExternalChild);
+
                 case ToBeUpdated:
                     return this.externalChild.updateResourceAsync()
-                            .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
-                            .map(updatedExternalChild -> updatedExternalChild);
+                        .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
+                        .map(updatedExternalChild -> updatedExternalChild);
+
                 case ToBeRemoved:
                     return this.externalChild.deleteResourceAsync()
-                            .doOnSuccess(aVoid -> externalChild.setPendingOperation(PendingOperation.None))
-                            .map(aVoid -> voidIndexable());
+                        .doOnSuccess(aVoid -> externalChild.setPendingOperation(PendingOperation.None))
+                        .map(aVoid -> voidIndexable());
+
                 default:
                     // PendingOperation.None
                     //
                     return Mono.error(new IllegalStateException(
                         String.format("No action pending on child resource: %s, invokeAsync should not be called ",
-                                      externalChild.name)));
+                            externalChild.name)));
             }
         }
 

@@ -90,20 +90,16 @@ public final class DataControllerResourceImpl
     }
 
     public DataControllerResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataControllers()
-                .putDataController(resourceGroupName, dataControllerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataControllers()
+            .putDataController(resourceGroupName, dataControllerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataControllerResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataControllers()
-                .putDataController(resourceGroupName, dataControllerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataControllers()
+            .putDataController(resourceGroupName, dataControllerName, this.innerModel(), context);
         return this;
     }
 
@@ -119,53 +115,44 @@ public final class DataControllerResourceImpl
     }
 
     public DataControllerResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataControllers()
-                .patchDataControllerWithResponse(
-                    resourceGroupName, dataControllerName, updateDataControllerResource, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataControllers()
+            .patchDataControllerWithResponse(resourceGroupName, dataControllerName, updateDataControllerResource,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataControllerResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataControllers()
-                .patchDataControllerWithResponse(
-                    resourceGroupName, dataControllerName, updateDataControllerResource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataControllers()
+            .patchDataControllerWithResponse(resourceGroupName, dataControllerName, updateDataControllerResource,
+                context)
+            .getValue();
         return this;
     }
 
-    DataControllerResourceImpl(
-        DataControllerResourceInner innerObject,
+    DataControllerResourceImpl(DataControllerResourceInner innerObject,
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dataControllerName = Utils.getValueFromIdByName(innerObject.id(), "dataControllers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dataControllerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataControllers");
     }
 
     public DataControllerResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, dataControllerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, dataControllerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataControllerResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataControllers()
-                .getByResourceGroupWithResponse(resourceGroupName, dataControllerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataControllers()
+            .getByResourceGroupWithResponse(resourceGroupName, dataControllerName, context)
+            .getValue();
         return this;
     }
 

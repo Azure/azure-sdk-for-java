@@ -12,8 +12,7 @@ public final class CustomLocationOperationImpl implements CustomLocationOperatio
 
     private final com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager;
 
-    CustomLocationOperationImpl(
-        CustomLocationOperationInner innerObject,
+    CustomLocationOperationImpl(CustomLocationOperationInner innerObject,
         com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

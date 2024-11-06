@@ -11,8 +11,8 @@ import java.util.Collection;
 /** Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value. */
 public final class FileUploadOptions extends ExpandableStringEnum<FileUploadOptions> {
     /** Static value UploadFilesAndGenerateSasTokens for FileUploadOptions. */
-    public static final FileUploadOptions UPLOAD_FILES_AND_GENERATE_SAS_TOKENS =
-        fromString("UploadFilesAndGenerateSasTokens");
+    public static final FileUploadOptions UPLOAD_FILES_AND_GENERATE_SAS_TOKENS
+        = fromString("UploadFilesAndGenerateSasTokens");
 
     /** Static value None for FileUploadOptions. */
     public static final FileUploadOptions NONE = fromString("None");

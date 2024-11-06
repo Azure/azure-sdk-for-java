@@ -6,26 +6,34 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The AccessPolicyCreateOrUpdateParameters model. */
+/**
+ * The AccessPolicyCreateOrUpdateParameters model.
+ */
 @Fluent
-public final class AccessPolicyCreateOrUpdateParameters {
+public final class AccessPolicyCreateOrUpdateParameters
+    implements JsonSerializable<AccessPolicyCreateOrUpdateParameters> {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties", required = true)
     private AccessPolicyResourceProperties innerProperties = new AccessPolicyResourceProperties();
 
-    /** Creates an instance of AccessPolicyCreateOrUpdateParameters class. */
+    /**
+     * Creates an instance of AccessPolicyCreateOrUpdateParameters class.
+     */
     public AccessPolicyCreateOrUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccessPolicyResourceProperties innerProperties() {
@@ -34,7 +42,7 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
-     *
+     * 
      * @return the principalObjectId value.
      */
     public String principalObjectId() {
@@ -43,7 +51,7 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Set the principalObjectId property: The objectId of the principal in Azure Active Directory.
-     *
+     * 
      * @param principalObjectId the principalObjectId value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
@@ -57,7 +65,7 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Get the description property: An description of the access policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +74,7 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Set the description property: An description of the access policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
@@ -80,7 +88,7 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Get the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
@@ -89,7 +97,7 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Set the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
@@ -103,19 +111,57 @@ public final class AccessPolicyCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AccessPolicyCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AccessPolicyCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AccessPolicyCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicyCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicyCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccessPolicyCreateOrUpdateParameters.
+     */
+    public static AccessPolicyCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicyCreateOrUpdateParameters deserializedAccessPolicyCreateOrUpdateParameters
+                = new AccessPolicyCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAccessPolicyCreateOrUpdateParameters.innerProperties
+                        = AccessPolicyResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicyCreateOrUpdateParameters;
+        });
+    }
 }

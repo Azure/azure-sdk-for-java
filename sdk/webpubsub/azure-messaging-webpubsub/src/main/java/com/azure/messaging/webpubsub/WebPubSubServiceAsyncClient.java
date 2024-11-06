@@ -60,11 +60,11 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientProtocol();
-        final String path = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT)
-            ? "clients/mqtt/hubs/" : "client/hubs/";
+        final String path
+            = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT) ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
-            return this.serviceClient.generateClientTokenWithResponseAsync(hub,
-                    configureClientAccessTokenRequestOptions(options))
+            return this.serviceClient
+                .generateClientTokenWithResponseAsync(hub, configureClientAccessTokenRequestOptions(options))
                 .map(response -> {
                     String token = WebPubSubUtil.getToken(response.getValue());
                     return WebPubSubUtil.createToken(token, endpoint, hub, path);
@@ -180,7 +180,7 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Void> sendToAll(String message, WebPubSubContentType contentType) {
         return sendToAllWithResponse(BinaryData.fromString(message),
             new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, contentType.toString()))
-            .flatMap(FluxUtil::toMono);
+                .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -267,8 +267,9 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToConnection(String connectionId, String message, WebPubSubContentType contentType) {
-        return this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
-            new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, contentType.toString()))
+        return this
+            .sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
+                new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, contentType.toString()))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -343,7 +344,7 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Void> sendToGroup(String group, String message, WebPubSubContentType contentType) {
         return sendToGroupWithResponse(group, BinaryData.fromString(message),
             new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, contentType.toString()))
-            .flatMap(FluxUtil::toMono);
+                .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -364,7 +365,7 @@ public final class WebPubSubServiceAsyncClient {
     }
 
     private Mono<Response<Void>> addConnectionsToGroupsWithResponse(BinaryData groupsToAdd,
-                                                                    RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         return this.serviceClient.addConnectionsToGroupsWithResponseAsync(hub, groupsToAdd, requestOptions);
     }
 
@@ -502,7 +503,7 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Void> sendToUser(String userId, String message, WebPubSubContentType contentType) {
         return sendToUserWithResponse(userId, BinaryData.fromString(message),
             new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, contentType.toString()))
-            .flatMap(FluxUtil::toMono);
+                .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -566,7 +567,7 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> grantPermissionWithResponse(WebPubSubPermission permission, String connectionId,
-                                                            RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         return this.serviceClient.grantPermissionWithResponseAsync(hub, permission.toString(), connectionId,
             requestOptions);
     }

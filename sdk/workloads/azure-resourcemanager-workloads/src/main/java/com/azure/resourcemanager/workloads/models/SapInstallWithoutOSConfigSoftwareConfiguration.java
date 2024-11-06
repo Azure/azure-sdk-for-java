@@ -133,24 +133,18 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
     public void validate() {
         super.validate();
         if (bomUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bomUrl in model SapInstallWithoutOSConfigSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bomUrl in model SapInstallWithoutOSConfigSoftwareConfiguration"));
         }
         if (sapBitsStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapBitsStorageAccountId in model"
-                            + " SapInstallWithoutOSConfigSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sapBitsStorageAccountId in model"
+                    + " SapInstallWithoutOSConfigSoftwareConfiguration"));
         }
         if (softwareVersion() == null) {
             throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property softwareVersion in model"
-                            + " SapInstallWithoutOSConfigSoftwareConfiguration"));
+                .logExceptionAsError(new IllegalArgumentException("Missing required property softwareVersion in model"
+                    + " SapInstallWithoutOSConfigSoftwareConfiguration"));
         }
         if (highAvailabilitySoftwareConfiguration() != null) {
             highAvailabilitySoftwareConfiguration().validate();

@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
-/** Samples for Applications RefreshPermissions. */
+/**
+ * Samples for Applications RefreshPermissions.
+ */
 public final class ApplicationsRefreshPermissionsSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/refreshApplicationPermissions.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/
+     * refreshApplicationPermissions.json
      */
     /**
      * Sample code: Refresh managed application permissions.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
-    public static void refreshManagedApplicationPermissions(
-        com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
+    public static void
+        refreshManagedApplicationPermissions(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
         manager.applications().refreshPermissions("rg", "myManagedApplication", com.azure.core.util.Context.NONE);
     }
 }

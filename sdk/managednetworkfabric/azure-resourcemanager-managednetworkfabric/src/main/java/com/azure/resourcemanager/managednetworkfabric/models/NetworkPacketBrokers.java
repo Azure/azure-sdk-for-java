@@ -23,8 +23,8 @@ public interface NetworkPacketBrokers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NetworkPacketBroker resource definition along with {@link Response}.
      */
-    Response<NetworkPacketBroker> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkPacketBrokerName, Context context);
+    Response<NetworkPacketBroker> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkPacketBrokerName, Context context);
 
     /**
      * Gets a Network Packet Broker.

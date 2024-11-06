@@ -111,8 +111,8 @@ public final class ApiManagementServiceIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ApiManagementServiceIdentity object itself.
      */
-    public ApiManagementServiceIdentity withUserAssignedIdentities(
-        Map<String, UserIdentityProperties> userAssignedIdentities) {
+    public ApiManagementServiceIdentity
+        withUserAssignedIdentities(Map<String, UserIdentityProperties> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -124,20 +124,15 @@ public final class ApiManagementServiceIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model ApiManagementServiceIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ApiManagementServiceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

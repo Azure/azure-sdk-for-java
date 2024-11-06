@@ -50,12 +50,13 @@ public final class TagRulesListByNewRelicMonitorResourceMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<TagRule> response = manager.tagRules().listByNewRelicMonitorResource("iuqgbdbutauv", "btkuwhh",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<TagRule> response = manager.tagRules()
+            .listByNewRelicMonitorResource("iuqgbdbutauv", "btkuwhh", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.iterator().next().logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED,

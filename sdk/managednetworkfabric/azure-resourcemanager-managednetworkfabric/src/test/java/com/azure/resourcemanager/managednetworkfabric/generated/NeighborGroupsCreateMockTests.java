@@ -34,48 +34,35 @@ public final class NeighborGroupsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"networkTapIds\":[\"llitpqvpivr\",\"gqbmolxeomeb\",\"vtvxxfsfo\"],\"networkTapRuleIds\":[\"gihnalpc\",\"edybkbgdwbmi\"],\"provisioningState\":\"Succeeded\",\"destination\":{\"ipv4Addresses\":[\"ywedbpirbzpauzbb\"],\"ipv6Addresses\":[\"cszdwpaveuxgmi\",\"soebdltni\",\"iimerffhgvcymdd\",\"eilhggajfeudb\"]},\"annotation\":\"moljirchhwlzihv\"},\"location\":\"quajpo\",\"tags\":{\"szk\":\"jxyotgvraxhntoiw\",\"sjwrretsluqfgksd\":\"lk\",\"whdq\":\"imioixviobuwbnge\",\"zaffzqodokst\":\"gqamhbmggnqxnex\"},\"id\":\"vomdqxnoyzqipapi\",\"name\":\"ccydbjghunqnttrw\",\"type\":\"cbzvvxd\"}";
+        String responseStr
+            = "{\"properties\":{\"networkTapIds\":[\"llitpqvpivr\",\"gqbmolxeomeb\",\"vtvxxfsfo\"],\"networkTapRuleIds\":[\"gihnalpc\",\"edybkbgdwbmi\"],\"provisioningState\":\"Succeeded\",\"destination\":{\"ipv4Addresses\":[\"ywedbpirbzpauzbb\"],\"ipv6Addresses\":[\"cszdwpaveuxgmi\",\"soebdltni\",\"iimerffhgvcymdd\",\"eilhggajfeudb\"]},\"annotation\":\"moljirchhwlzihv\"},\"location\":\"quajpo\",\"tags\":{\"szk\":\"jxyotgvraxhntoiw\",\"sjwrretsluqfgksd\":\"lk\",\"whdq\":\"imioixviobuwbnge\",\"zaffzqodokst\":\"gqamhbmggnqxnex\"},\"id\":\"vomdqxnoyzqipapi\",\"name\":\"ccydbjghunqnttrw\",\"type\":\"cbzvvxd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NeighborGroup response =
-            manager
-                .neighborGroups()
-                .define("pcroxp")
-                .withRegion("qneaqkgttbarg")
-                .withExistingResourceGroup("pfivypmwdza")
-                .withTags(mapOf("gjjpfyxhsppvj", "nqlsnrgaxoy", "eqeapaseqcppyp", "duouoqtenqsomuo"))
-                .withDestination(
-                    new NeighborGroupDestination()
-                        .withIpv4Addresses(Arrays.asList("znymwzl", "pkihqhnfubevwa", "xcezxevltfebqo"))
-                        .withIpv6Addresses(Arrays.asList("klqakpstifmftw")))
-                .withAnnotation("hmriipzgfofuad")
-                .create();
+        NeighborGroup response = manager.neighborGroups()
+            .define("pcroxp")
+            .withRegion("qneaqkgttbarg")
+            .withExistingResourceGroup("pfivypmwdza")
+            .withTags(mapOf("gjjpfyxhsppvj", "nqlsnrgaxoy", "eqeapaseqcppyp", "duouoqtenqsomuo"))
+            .withDestination(new NeighborGroupDestination()
+                .withIpv4Addresses(Arrays.asList("znymwzl", "pkihqhnfubevwa", "xcezxevltfebqo"))
+                .withIpv6Addresses(Arrays.asList("klqakpstifmftw")))
+            .withAnnotation("hmriipzgfofuad")
+            .create();
 
         Assertions.assertEquals("quajpo", response.location());
         Assertions.assertEquals("jxyotgvraxhntoiw", response.tags().get("szk"));

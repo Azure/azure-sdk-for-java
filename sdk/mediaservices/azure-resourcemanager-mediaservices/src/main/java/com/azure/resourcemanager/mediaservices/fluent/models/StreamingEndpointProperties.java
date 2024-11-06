@@ -5,119 +5,112 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.CrossSiteAccessPolicies;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointAccessControl;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The streaming endpoint properties. */
+/**
+ * The streaming endpoint properties.
+ */
 @Fluent
-public final class StreamingEndpointProperties {
+public final class StreamingEndpointProperties implements JsonSerializable<StreamingEndpointProperties> {
     /*
      * The streaming endpoint description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The number of scale units. Use the Scale operation to adjust this value.
      */
-    @JsonProperty(value = "scaleUnits", required = true)
     private int scaleUnits;
 
     /*
      * This feature is deprecated, do not set a value for this property.
      */
-    @JsonProperty(value = "availabilitySetName")
     private String availabilitySetName;
 
     /*
      * The access control definition of the streaming endpoint.
      */
-    @JsonProperty(value = "accessControl")
     private StreamingEndpointAccessControl accessControl;
 
     /*
      * Max cache age
      */
-    @JsonProperty(value = "maxCacheAge")
     private Long maxCacheAge;
 
     /*
      * The custom host names of the streaming endpoint
      */
-    @JsonProperty(value = "customHostNames")
     private List<String> customHostNames;
 
     /*
      * The streaming endpoint host name.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * The CDN enabled flag.
      */
-    @JsonProperty(value = "cdnEnabled")
     private Boolean cdnEnabled;
 
     /*
      * The CDN provider name.
      */
-    @JsonProperty(value = "cdnProvider")
     private String cdnProvider;
 
     /*
      * The CDN profile name.
      */
-    @JsonProperty(value = "cdnProfile")
     private String cdnProfile;
 
     /*
      * The provisioning state of the streaming endpoint.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The resource state of the streaming endpoint.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private StreamingEndpointResourceState resourceState;
 
     /*
      * The streaming endpoint access policies.
      */
-    @JsonProperty(value = "crossSiteAccessPolicies")
     private CrossSiteAccessPolicies crossSiteAccessPolicies;
 
     /*
      * The free trial expiration time.
      */
-    @JsonProperty(value = "freeTrialEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime freeTrialEndTime;
 
     /*
      * The exact time the streaming endpoint was created.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * The exact time the streaming endpoint was last modified.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
-    /** Creates an instance of StreamingEndpointProperties class. */
+    /**
+     * Creates an instance of StreamingEndpointProperties class.
+     */
     public StreamingEndpointProperties() {
     }
 
     /**
      * Get the description property: The streaming endpoint description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -126,7 +119,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the description property: The streaming endpoint description.
-     *
+     * 
      * @param description the description value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -137,7 +130,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the scaleUnits property: The number of scale units. Use the Scale operation to adjust this value.
-     *
+     * 
      * @return the scaleUnits value.
      */
     public int scaleUnits() {
@@ -146,7 +139,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the scaleUnits property: The number of scale units. Use the Scale operation to adjust this value.
-     *
+     * 
      * @param scaleUnits the scaleUnits value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -157,7 +150,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the availabilitySetName property: This feature is deprecated, do not set a value for this property.
-     *
+     * 
      * @return the availabilitySetName value.
      */
     public String availabilitySetName() {
@@ -166,7 +159,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the availabilitySetName property: This feature is deprecated, do not set a value for this property.
-     *
+     * 
      * @param availabilitySetName the availabilitySetName value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -177,7 +170,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the accessControl property: The access control definition of the streaming endpoint.
-     *
+     * 
      * @return the accessControl value.
      */
     public StreamingEndpointAccessControl accessControl() {
@@ -186,7 +179,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the accessControl property: The access control definition of the streaming endpoint.
-     *
+     * 
      * @param accessControl the accessControl value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -197,7 +190,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the maxCacheAge property: Max cache age.
-     *
+     * 
      * @return the maxCacheAge value.
      */
     public Long maxCacheAge() {
@@ -206,7 +199,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the maxCacheAge property: Max cache age.
-     *
+     * 
      * @param maxCacheAge the maxCacheAge value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -217,7 +210,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the customHostNames property: The custom host names of the streaming endpoint.
-     *
+     * 
      * @return the customHostNames value.
      */
     public List<String> customHostNames() {
@@ -226,7 +219,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the customHostNames property: The custom host names of the streaming endpoint.
-     *
+     * 
      * @param customHostNames the customHostNames value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -237,7 +230,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the hostname property: The streaming endpoint host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -246,7 +239,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the cdnEnabled property: The CDN enabled flag.
-     *
+     * 
      * @return the cdnEnabled value.
      */
     public Boolean cdnEnabled() {
@@ -255,7 +248,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the cdnEnabled property: The CDN enabled flag.
-     *
+     * 
      * @param cdnEnabled the cdnEnabled value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -266,7 +259,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the cdnProvider property: The CDN provider name.
-     *
+     * 
      * @return the cdnProvider value.
      */
     public String cdnProvider() {
@@ -275,7 +268,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the cdnProvider property: The CDN provider name.
-     *
+     * 
      * @param cdnProvider the cdnProvider value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -286,7 +279,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the cdnProfile property: The CDN profile name.
-     *
+     * 
      * @return the cdnProfile value.
      */
     public String cdnProfile() {
@@ -295,7 +288,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the cdnProfile property: The CDN profile name.
-     *
+     * 
      * @param cdnProfile the cdnProfile value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -306,7 +299,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the streaming endpoint.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -315,7 +308,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the resourceState property: The resource state of the streaming endpoint.
-     *
+     * 
      * @return the resourceState value.
      */
     public StreamingEndpointResourceState resourceState() {
@@ -324,7 +317,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the crossSiteAccessPolicies property: The streaming endpoint access policies.
-     *
+     * 
      * @return the crossSiteAccessPolicies value.
      */
     public CrossSiteAccessPolicies crossSiteAccessPolicies() {
@@ -333,7 +326,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Set the crossSiteAccessPolicies property: The streaming endpoint access policies.
-     *
+     * 
      * @param crossSiteAccessPolicies the crossSiteAccessPolicies value to set.
      * @return the StreamingEndpointProperties object itself.
      */
@@ -344,7 +337,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the freeTrialEndTime property: The free trial expiration time.
-     *
+     * 
      * @return the freeTrialEndTime value.
      */
     public OffsetDateTime freeTrialEndTime() {
@@ -353,7 +346,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the created property: The exact time the streaming endpoint was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -362,7 +355,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Get the lastModified property: The exact time the streaming endpoint was last modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -371,7 +364,7 @@ public final class StreamingEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -381,5 +374,89 @@ public final class StreamingEndpointProperties {
         if (crossSiteAccessPolicies() != null) {
             crossSiteAccessPolicies().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("scaleUnits", this.scaleUnits);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("availabilitySetName", this.availabilitySetName);
+        jsonWriter.writeJsonField("accessControl", this.accessControl);
+        jsonWriter.writeNumberField("maxCacheAge", this.maxCacheAge);
+        jsonWriter.writeArrayField("customHostNames", this.customHostNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("cdnEnabled", this.cdnEnabled);
+        jsonWriter.writeStringField("cdnProvider", this.cdnProvider);
+        jsonWriter.writeStringField("cdnProfile", this.cdnProfile);
+        jsonWriter.writeJsonField("crossSiteAccessPolicies", this.crossSiteAccessPolicies);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingEndpointProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StreamingEndpointProperties.
+     */
+    public static StreamingEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingEndpointProperties deserializedStreamingEndpointProperties = new StreamingEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scaleUnits".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.scaleUnits = reader.getInt();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.description = reader.getString();
+                } else if ("availabilitySetName".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.availabilitySetName = reader.getString();
+                } else if ("accessControl".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.accessControl
+                        = StreamingEndpointAccessControl.fromJson(reader);
+                } else if ("maxCacheAge".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.maxCacheAge = reader.getNullable(JsonReader::getLong);
+                } else if ("customHostNames".equals(fieldName)) {
+                    List<String> customHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStreamingEndpointProperties.customHostNames = customHostNames;
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.hostname = reader.getString();
+                } else if ("cdnEnabled".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.cdnEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cdnProvider".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.cdnProvider = reader.getString();
+                } else if ("cdnProfile".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.cdnProfile = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.provisioningState = reader.getString();
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.resourceState
+                        = StreamingEndpointResourceState.fromString(reader.getString());
+                } else if ("crossSiteAccessPolicies".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.crossSiteAccessPolicies
+                        = CrossSiteAccessPolicies.fromJson(reader);
+                } else if ("freeTrialEndTime".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.freeTrialEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("created".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedStreamingEndpointProperties.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingEndpointProperties;
+        });
     }
 }

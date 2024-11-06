@@ -19,20 +19,20 @@ public final class PeeringServiceProvidersImpl implements PeeringServiceProvider
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringServiceProvidersImpl(
-        PeeringServiceProvidersClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringServiceProvidersImpl(PeeringServiceProvidersClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringServiceProvider> list() {
         PagedIterable<PeeringServiceProviderInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceProviderImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceProviderImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringServiceProvider> list(Context context) {
         PagedIterable<PeeringServiceProviderInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceProviderImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceProviderImpl(inner1, this.manager()));
     }
 
     private PeeringServiceProvidersClient serviceClient() {

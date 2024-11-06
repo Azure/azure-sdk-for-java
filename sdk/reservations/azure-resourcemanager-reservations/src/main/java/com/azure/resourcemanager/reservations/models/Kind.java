@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.reservations.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Resource Provider type to be reserved. */
+/**
+ * Resource Provider type to be reserved.
+ */
 public enum Kind {
-    /** Enum value Microsoft.Compute. */
+    /**
+     * Enum value Microsoft.Compute.
+     */
     MICROSOFT_COMPUTE("Microsoft.Compute");
 
-    /** The actual serialized value for a Kind instance. */
+    /**
+     * The actual serialized value for a Kind instance.
+     */
     private final String value;
 
     Kind(String value) {
@@ -21,11 +24,10 @@ public enum Kind {
 
     /**
      * Parses a serialized value to a Kind instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Kind object, or null if unable to parse.
      */
-    @JsonCreator
     public static Kind fromString(String value) {
         if (value == null) {
             return null;
@@ -39,8 +41,9 @@ public enum Kind {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

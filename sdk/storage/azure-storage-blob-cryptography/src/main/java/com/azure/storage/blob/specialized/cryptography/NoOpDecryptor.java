@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 class NoOpDecryptor extends Decryptor {
 
-    protected NoOpDecryptor(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper, EncryptionData encryptionData) {
+    protected NoOpDecryptor(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper,
+        EncryptionData encryptionData) {
         super(keyResolver, keyWrapper, encryptionData);
     }
 

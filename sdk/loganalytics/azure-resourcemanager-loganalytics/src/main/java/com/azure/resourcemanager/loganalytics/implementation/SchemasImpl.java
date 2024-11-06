@@ -20,21 +20,18 @@ public final class SchemasImpl implements Schemas {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public SchemasImpl(
-        SchemasClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    public SchemasImpl(SchemasClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SearchGetSchemaResponse> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<SearchGetSchemaResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, context);
+    public Response<SearchGetSchemaResponse> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<SearchGetSchemaResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SearchGetSchemaResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.workloads {
     exports com.azure.resourcemanager.workloads.fluent.models;
     exports com.azure.resourcemanager.workloads.models;
 
-    opens com.azure.resourcemanager.workloads.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.workloads.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.workloads.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.workloads.models to com.azure.core, com.fasterxml.jackson.databind;
 }

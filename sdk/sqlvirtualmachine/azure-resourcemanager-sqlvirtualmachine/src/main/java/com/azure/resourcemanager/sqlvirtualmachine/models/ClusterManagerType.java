@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,12 +12,14 @@ import java.util.Collection;
  * type.
  */
 public final class ClusterManagerType extends ExpandableStringEnum<ClusterManagerType> {
-    /** Static value WSFC for ClusterManagerType. */
+    /**
+     * Static value WSFC for ClusterManagerType.
+     */
     public static final ClusterManagerType WSFC = fromString("WSFC");
 
     /**
      * Creates a new instance of ClusterManagerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +28,17 @@ public final class ClusterManagerType extends ExpandableStringEnum<ClusterManage
 
     /**
      * Creates or finds a ClusterManagerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterManagerType.
      */
-    @JsonCreator
     public static ClusterManagerType fromString(String name) {
         return fromString(name, ClusterManagerType.class);
     }
 
     /**
      * Gets known ClusterManagerType values.
-     *
+     * 
      * @return known ClusterManagerType values.
      */
     public static Collection<ClusterManagerType> values() {

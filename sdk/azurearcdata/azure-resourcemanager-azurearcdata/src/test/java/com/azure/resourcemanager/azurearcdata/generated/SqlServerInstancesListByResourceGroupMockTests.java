@@ -6,12 +6,10 @@ package com.azure.resourcemanager.azurearcdata.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.azurearcdata.AzureArcDataManager;
 import com.azure.resourcemanager.azurearcdata.models.ArcSqlServerLicenseType;
 import com.azure.resourcemanager.azurearcdata.models.ConnectionStatus;
@@ -19,77 +17,46 @@ import com.azure.resourcemanager.azurearcdata.models.DefenderStatus;
 import com.azure.resourcemanager.azurearcdata.models.EditionType;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstance;
 import com.azure.resourcemanager.azurearcdata.models.SqlVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SqlServerInstancesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"version\":\"SQL Server 2019\",\"edition\":\"Web\",\"containerResourceId\":\"lxprglyatddckcbc\",\"createTime\":\"jrjxgciqibrhosx\",\"vCore\":\"qrhzoymibmrqyib\",\"status\":\"Unknown\",\"patchLevel\":\"fluszdtm\",\"collation\":\"kwofyyvoq\",\"currentVersion\":\"piexpbtgiw\",\"instanceName\":\"oenwashr\",\"tcpDynamicPorts\":\"tkcnqxwb\",\"tcpStaticPorts\":\"kulpiujwaasi\",\"productId\":\"i\",\"licenseType\":\"HADR\",\"azureDefenderStatusLastUpdated\":\"2021-06-07T23:06:40Z\",\"azureDefenderStatus\":\"Unprotected\",\"provisioningState\":\"pqlpq\"},\"location\":\"ciuqgbdb\",\"tags\":{\"mhykojoxafnndl\":\"uvfbtkuwh\",\"kkpwdreqnovvq\":\"ichkoymkcdyhb\",\"syrsndsytgadgvra\":\"ovljxywsu\",\"uu\":\"aeneqnzarrwl\"},\"id\":\"jfqka\",\"name\":\"e\",\"type\":\"iipfpubj\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"version\":\"SQL Server"
-                + " 2017\",\"edition\":\"Enterprise\",\"containerResourceId\":\"podxunkb\",\"createTime\":\"xmubyyntwlrbq\",\"vCore\":\"oievseotgqrlltm\",\"status\":\"Unknown\",\"patchLevel\":\"auwzizxbmpgc\",\"collation\":\"fuzmuvpbtt\",\"currentVersion\":\"morppxebmnzbtbh\",\"instanceName\":\"glkfg\",\"tcpDynamicPorts\":\"dneu\",\"tcpStaticPorts\":\"fphsdyhtozfikdow\",\"productId\":\"uuvxz\",\"licenseType\":\"Undefined\",\"azureDefenderStatusLastUpdated\":\"2021-05-15T02:55:17Z\",\"azureDefenderStatus\":\"Unprotected\",\"provisioningState\":\"qzonosggbhcohf\"},\"location\":\"sjnkal\",\"tags\":{\"kfvhqcrailvpn\":\"iiswacffgdkzze\",\"mh\":\"pfuflrw\",\"sag\":\"lxyjr\"},\"id\":\"fcnihgwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureArcDataManager manager = AzureArcDataManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<SqlServerInstance> response
+            = manager.sqlServerInstances().listByResourceGroup("ysmocmbqfqvmkcxo", com.azure.core.util.Context.NONE);
 
-        AzureArcDataManager manager =
-            AzureArcDataManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SqlServerInstance> response =
-            manager.sqlServerInstances().listByResourceGroup("akbogqxndlkzgxh", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("sjnkal", response.iterator().next().location());
-        Assertions.assertEquals("iiswacffgdkzze", response.iterator().next().tags().get("kfvhqcrailvpn"));
-        Assertions.assertEquals(SqlVersion.SQL_SERVER_2017, response.iterator().next().properties().version());
-        Assertions.assertEquals(EditionType.ENTERPRISE, response.iterator().next().properties().edition());
-        Assertions.assertEquals("podxunkb", response.iterator().next().properties().containerResourceId());
-        Assertions.assertEquals("oievseotgqrlltm", response.iterator().next().properties().vCore());
+        Assertions.assertEquals("ciuqgbdb", response.iterator().next().location());
+        Assertions.assertEquals("uvfbtkuwh", response.iterator().next().tags().get("mhykojoxafnndl"));
+        Assertions.assertEquals(SqlVersion.SQL_SERVER_2019, response.iterator().next().properties().version());
+        Assertions.assertEquals(EditionType.WEB, response.iterator().next().properties().edition());
+        Assertions.assertEquals("lxprglyatddckcbc", response.iterator().next().properties().containerResourceId());
+        Assertions.assertEquals("qrhzoymibmrqyib", response.iterator().next().properties().vCore());
         Assertions.assertEquals(ConnectionStatus.UNKNOWN, response.iterator().next().properties().status());
-        Assertions.assertEquals("auwzizxbmpgc", response.iterator().next().properties().patchLevel());
-        Assertions.assertEquals("fuzmuvpbtt", response.iterator().next().properties().collation());
-        Assertions.assertEquals("morppxebmnzbtbh", response.iterator().next().properties().currentVersion());
-        Assertions.assertEquals("glkfg", response.iterator().next().properties().instanceName());
-        Assertions.assertEquals("dneu", response.iterator().next().properties().tcpDynamicPorts());
-        Assertions.assertEquals("fphsdyhtozfikdow", response.iterator().next().properties().tcpStaticPorts());
-        Assertions.assertEquals("uuvxz", response.iterator().next().properties().productId());
-        Assertions
-            .assertEquals(ArcSqlServerLicenseType.UNDEFINED, response.iterator().next().properties().licenseType());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-15T02:55:17Z"),
-                response.iterator().next().properties().azureDefenderStatusLastUpdated());
-        Assertions
-            .assertEquals(DefenderStatus.UNPROTECTED, response.iterator().next().properties().azureDefenderStatus());
+        Assertions.assertEquals("fluszdtm", response.iterator().next().properties().patchLevel());
+        Assertions.assertEquals("kwofyyvoq", response.iterator().next().properties().collation());
+        Assertions.assertEquals("piexpbtgiw", response.iterator().next().properties().currentVersion());
+        Assertions.assertEquals("oenwashr", response.iterator().next().properties().instanceName());
+        Assertions.assertEquals("tkcnqxwb", response.iterator().next().properties().tcpDynamicPorts());
+        Assertions.assertEquals("kulpiujwaasi", response.iterator().next().properties().tcpStaticPorts());
+        Assertions.assertEquals("i", response.iterator().next().properties().productId());
+        Assertions.assertEquals(ArcSqlServerLicenseType.HADR, response.iterator().next().properties().licenseType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T23:06:40Z"),
+            response.iterator().next().properties().azureDefenderStatusLastUpdated());
+        Assertions.assertEquals(DefenderStatus.UNPROTECTED,
+            response.iterator().next().properties().azureDefenderStatus());
     }
 }

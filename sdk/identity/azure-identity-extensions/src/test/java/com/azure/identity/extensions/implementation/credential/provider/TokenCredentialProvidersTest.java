@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 
 class TokenCredentialProvidersTest {
 
-    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProviderTest.class.getName();
+    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME
+        = SpringTokenCredentialProviderTest.class.getName();
 
     @Test
     void testOptionsIsNull() {

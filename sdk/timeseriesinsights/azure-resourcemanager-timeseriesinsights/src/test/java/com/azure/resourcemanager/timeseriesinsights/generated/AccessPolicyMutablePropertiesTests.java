@@ -13,22 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyMutablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyMutableProperties model =
-            BinaryData
-                .fromString("{\"description\":\"ywqsmbsurexim\",\"roles\":[\"Reader\"]}")
+        AccessPolicyMutableProperties model
+            = BinaryData.fromString("{\"description\":\"pzxbz\",\"roles\":[\"Reader\",\"Reader\",\"Contributor\"]}")
                 .toObject(AccessPolicyMutableProperties.class);
-        Assertions.assertEquals("ywqsmbsurexim", model.description());
+        Assertions.assertEquals("pzxbz", model.description());
         Assertions.assertEquals(AccessPolicyRole.READER, model.roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyMutableProperties model =
-            new AccessPolicyMutableProperties()
-                .withDescription("ywqsmbsurexim")
-                .withRoles(Arrays.asList(AccessPolicyRole.READER));
+        AccessPolicyMutableProperties model = new AccessPolicyMutableProperties().withDescription("pzxbz")
+            .withRoles(Arrays.asList(AccessPolicyRole.READER, AccessPolicyRole.READER, AccessPolicyRole.CONTRIBUTOR));
         model = BinaryData.fromObject(model).toObject(AccessPolicyMutableProperties.class);
-        Assertions.assertEquals("ywqsmbsurexim", model.description());
+        Assertions.assertEquals("pzxbz", model.description());
         Assertions.assertEquals(AccessPolicyRole.READER, model.roles().get(0));
     }
 }

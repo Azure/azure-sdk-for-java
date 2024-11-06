@@ -35,22 +35,28 @@ import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleListResult;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRulePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ForwardingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ForwardingRulesClient.
+ */
 public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ForwardingRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DnsResolverManagementClientImpl client;
 
     /**
      * Initializes an instance of ForwardingRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ForwardingRulesClientImpl(DnsResolverManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ForwardingRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ForwardingRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,149 +66,110 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DnsResolverManagemen")
-    private interface ForwardingRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
-        @ExpectedResponses({200, 201})
+    public interface ForwardingRulesService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ForwardingRuleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ForwardingRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
-            @PathParam("forwardingRuleName") String forwardingRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @BodyParam("application/json") ForwardingRuleInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("forwardingRuleName") String forwardingRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") ForwardingRuleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ForwardingRuleInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ForwardingRuleInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
-            @PathParam("forwardingRuleName") String forwardingRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") ForwardingRulePatch parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("forwardingRuleName") String forwardingRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") ForwardingRulePatch parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
-            @PathParam("forwardingRuleName") String forwardingRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("forwardingRuleName") String forwardingRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules/{forwardingRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ForwardingRuleInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ForwardingRuleInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
-            @PathParam("forwardingRuleName") String forwardingRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("forwardingRuleName") String forwardingRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsForwardingRulesets/{dnsForwardingRulesetName}/forwardingRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ForwardingRuleListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ForwardingRuleListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsForwardingRulesetName") String dnsForwardingRulesetName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ForwardingRuleListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForwardingRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRuleInner parameters,
-        String ifMatch,
+    private Mono<Response<ForwardingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName, ForwardingRuleInner parameters, String ifMatch,
         String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -215,71 +182,49 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            forwardingRuleName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            ifNoneMatch,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), ifMatch,
+                ifNoneMatch, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForwardingRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRuleInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<Response<ForwardingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName, ForwardingRuleInner parameters, String ifMatch,
+        String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -292,78 +237,60 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                forwardingRuleName,
-                this.client.getApiVersion(),
-                ifMatch,
-                ifNoneMatch,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), ifMatch, ifNoneMatch, parameters,
+            accept, context);
     }
 
     /**
      * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param forwardingRuleName The name of the forwarding rule.
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a forwarding rule within a DNS forwarding ruleset on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ForwardingRuleInner> createOrUpdateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, ForwardingRuleInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return createOrUpdateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName,
+            parameters, ifMatch, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a forwarding rule in a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset on successful completion of {@link Mono}.
+     * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ForwardingRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRuleInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Response<ForwardingRuleInner> createOrUpdateWithResponse(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName, ForwardingRuleInner parameters, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName,
+            parameters, ifMatch, ifNoneMatch, context).block();
     }
 
     /**
      * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ForwardingRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRuleInner parameters) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -374,97 +301,47 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @return describes a forwarding rule within a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ForwardingRuleInner createOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRuleInner parameters) {
+    public ForwardingRuleInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, ForwardingRuleInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrUpdateAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch, ifNoneMatch)
-            .block();
-    }
-
-    /**
-     * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ForwardingRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRuleInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                forwardingRuleName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                context)
-            .block();
+        return createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters,
+            ifMatch, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
      * Updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForwardingRuleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRulePatch parameters,
-        String ifMatch) {
+    private Mono<Response<ForwardingRuleInner>> updateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName, ForwardingRulePatch parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -477,67 +354,47 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            forwardingRuleName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), ifMatch,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForwardingRuleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRulePatch parameters,
-        String ifMatch,
+    private Mono<Response<ForwardingRuleInner>> updateWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName, ForwardingRulePatch parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -550,73 +407,56 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                forwardingRuleName,
-                this.client.getApiVersion(),
-                ifMatch,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), ifMatch, parameters, accept,
+            context);
     }
 
     /**
      * Updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param forwardingRuleName The name of the forwarding rule.
+     * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a forwarding rule within a DNS forwarding ruleset on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ForwardingRuleInner> updateAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, ForwardingRulePatch parameters) {
+        final String ifMatch = null;
+        return updateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates a forwarding rule in a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset on successful completion of {@link Mono}.
+     * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ForwardingRuleInner> updateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRulePatch parameters,
-        String ifMatch) {
-        return updateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Response<ForwardingRuleInner> updateWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, ForwardingRulePatch parameters, String ifMatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters,
+            ifMatch, context).block();
     }
 
     /**
      * Updates a forwarding rule in a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ForwardingRuleInner> updateAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRulePatch parameters) {
-        final String ifMatch = null;
-        return updateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -627,80 +467,44 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @return describes a forwarding rule within a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ForwardingRuleInner update(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRulePatch parameters) {
+    public ForwardingRuleInner update(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, ForwardingRulePatch parameters) {
         final String ifMatch = null;
-        return updateAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch)
-            .block();
-    }
-
-    /**
-     * Updates a forwarding rule in a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ForwardingRuleInner> updateWithResponse(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        ForwardingRulePatch parameters,
-        String ifMatch,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch, context)
-            .block();
+        return updateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, parameters, ifMatch,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -708,30 +512,20 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            forwardingRuleName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), ifMatch,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -739,32 +533,23 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -772,42 +557,13 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                forwardingRuleName,
-                this.client.getApiVersion(),
-                ifMatch,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), ifMatch, accept, context);
     }
 
     /**
      * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName, String ifMatch) {
-        return deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -817,8 +573,8 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName) {
         final String ifMatch = null;
         return deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch)
             .flatMap(ignored -> Mono.empty());
@@ -826,7 +582,28 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
 
     /**
      * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param forwardingRuleName The name of the forwarding rule.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, String ifMatch, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch,
+            context).block();
+    }
+
+    /**
+     * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -837,38 +614,12 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
         final String ifMatch = null;
-        deleteAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch).block();
-    }
-
-    /**
-     * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        String forwardingRuleName,
-        String ifMatch,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch, context)
-            .block();
+        deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, ifMatch, Context.NONE);
     }
 
     /**
      * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -876,31 +627,26 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a forwarding rule in a DNS forwarding ruleset along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForwardingRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
+    private Mono<Response<ForwardingRuleInner>> getWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -909,23 +655,14 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            forwardingRuleName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -934,31 +671,26 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a forwarding rule in a DNS forwarding ruleset along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ForwardingRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName, Context context) {
+    private Mono<Response<ForwardingRuleInner>> getWithResponseAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, String forwardingRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         if (forwardingRuleName == null) {
             return Mono
@@ -966,21 +698,13 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                forwardingRuleName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsForwardingRulesetName, forwardingRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -990,32 +714,15 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @return properties of a forwarding rule in a DNS forwarding ruleset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ForwardingRuleInner> getAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
+    private Mono<ForwardingRuleInner> getAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName) {
         return getWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a forwarding rule in a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ForwardingRuleInner get(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
-        return getAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName).block();
-    }
-
-    /**
-     * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param forwardingRuleName The name of the forwarding rule.
@@ -1026,14 +733,32 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @return properties of a forwarding rule in a DNS forwarding ruleset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ForwardingRuleInner> getWithResponse(
-        String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName, Context context) {
+    public Response<ForwardingRuleInner> getWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, context).block();
     }
 
     /**
+     * Gets properties of a forwarding rule in a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param forwardingRuleName The name of the forwarding rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a forwarding rule in a DNS forwarding ruleset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ForwardingRuleInner get(String resourceGroupName, String dnsForwardingRulesetName,
+        String forwardingRuleName) {
+        return getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1041,61 +766,39 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ForwardingRuleInner>> listSinglePageAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top) {
+    private Mono<PagedResponse<ForwardingRuleInner>> listSinglePageAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            dnsForwardingRulesetName,
-                            this.client.getApiVersion(),
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<ForwardingRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, dnsForwardingRulesetName, this.client.getApiVersion(), top, accept, context))
+            .<PagedResponse<ForwardingRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1104,58 +807,39 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ForwardingRuleInner>> listSinglePageAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
+    private Mono<PagedResponse<ForwardingRuleInner>> listSinglePageAsync(String resourceGroupName,
+        String dnsForwardingRulesetName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsForwardingRulesetName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dnsForwardingRulesetName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                dnsForwardingRulesetName,
-                this.client.getApiVersion(),
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                dnsForwardingRulesetName, this.client.getApiVersion(), top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1163,38 +847,36 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ForwardingRuleInner> listAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
+    private PagedFlux<ForwardingRuleInner> listAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ForwardingRuleInner> listAsync(String resourceGroupName, String dnsForwardingRulesetName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1203,26 +885,25 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ForwardingRuleInner> listAsync(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top, context),
+    private PagedFlux<ForwardingRuleInner> listAsync(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, dnsForwardingRulesetName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ForwardingRuleInner> list(String resourceGroupName, String dnsForwardingRulesetName) {
@@ -1232,7 +913,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
 
     /**
      * Lists forwarding rules in a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -1241,24 +922,23 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ForwardingRuleInner> list(
-        String resourceGroupName, String dnsForwardingRulesetName, Integer top, Context context) {
+    public PagedIterable<ForwardingRuleInner> list(String resourceGroupName, String dnsForwardingRulesetName,
+        Integer top, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, dnsForwardingRulesetName, top, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ForwardingRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -1266,37 +946,26 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ForwardingRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ForwardingRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on forwarding rules within a DNS forwarding ruleset along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ForwardingRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1304,23 +973,13 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

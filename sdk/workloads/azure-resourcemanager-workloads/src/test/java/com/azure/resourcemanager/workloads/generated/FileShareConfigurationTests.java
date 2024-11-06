@@ -10,10 +10,8 @@ import com.azure.resourcemanager.workloads.models.FileShareConfiguration;
 public final class FileShareConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileShareConfiguration model =
-            BinaryData
-                .fromString("{\"configurationType\":\"FileShareConfiguration\"}")
-                .toObject(FileShareConfiguration.class);
+        FileShareConfiguration model = BinaryData.fromString("{\"configurationType\":\"FileShareConfiguration\"}")
+            .toObject(FileShareConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

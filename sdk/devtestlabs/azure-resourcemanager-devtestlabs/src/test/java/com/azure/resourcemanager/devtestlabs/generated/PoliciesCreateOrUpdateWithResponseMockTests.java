@@ -35,49 +35,37 @@ public final class PoliciesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"rswgkpjhboyikeb\",\"status\":\"Disabled\",\"factName\":\"LabVmSize\",\"factData\":\"gwl\",\"threshold\":\"hueoijyzcqyp\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-10-11T17:07:04Z\",\"provisioningState\":\"s\",\"uniqueIdentifier\":\"ej\"},\"location\":\"vdwtfxptpqayamk\",\"tags\":{\"snxoc\":\"gybm\",\"oy\":\"ullojk\"},\"id\":\"g\",\"name\":\"wdjuxdbdljzgdy\",\"type\":\"cvuq\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"rswgkpjhboyikeb\",\"status\":\"Disabled\",\"factName\":\"LabVmSize\",\"factData\":\"gwl\",\"threshold\":\"hueoijyzcqyp\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-10-11T17:07:04Z\",\"provisioningState\":\"s\",\"uniqueIdentifier\":\"ej\"},\"location\":\"vdwtfxptpqayamk\",\"tags\":{\"snxoc\":\"gybm\",\"oy\":\"ullojk\"},\"id\":\"g\",\"name\":\"wdjuxdbdljzgdy\",\"type\":\"cvuq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Policy response =
-            manager
-                .policies()
-                .define("ipbwxgooo")
-                .withRegion("sr")
-                .withExistingPolicyset("njdiqfliejhpcl", "iedfsbwcei", "bv")
-                .withTags(mapOf("cetjdvq", "jglzrsubklrxhjnl", "kw", "dieq", "bibanbau", "ruwdxvqzxoebwgj"))
-                .withDescription("pradmskxknpdgzi")
-                .withStatus(PolicyStatus.DISABLED)
-                .withFactName(PolicyFactName.ENVIRONMENT_TEMPLATE)
-                .withFactData("whgsaodkww")
-                .withThreshold("afoctohz")
-                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY)
-                .create();
+        Policy response = manager.policies()
+            .define("ipbwxgooo")
+            .withRegion("sr")
+            .withExistingPolicyset("njdiqfliejhpcl", "iedfsbwcei", "bv")
+            .withTags(mapOf("cetjdvq", "jglzrsubklrxhjnl", "kw", "dieq", "bibanbau", "ruwdxvqzxoebwgj"))
+            .withDescription("pradmskxknpdgzi")
+            .withStatus(PolicyStatus.DISABLED)
+            .withFactName(PolicyFactName.ENVIRONMENT_TEMPLATE)
+            .withFactData("whgsaodkww")
+            .withThreshold("afoctohz")
+            .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY)
+            .create();
 
         Assertions.assertEquals("vdwtfxptpqayamk", response.location());
         Assertions.assertEquals("gybm", response.tags().get("snxoc"));

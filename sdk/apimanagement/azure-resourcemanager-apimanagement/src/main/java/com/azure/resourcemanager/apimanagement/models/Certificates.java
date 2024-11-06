@@ -43,14 +43,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Certificates list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CertificateContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean isKeyVaultRefreshFailed,
-        Context context);
+    PagedIterable<CertificateContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean isKeyVaultRefreshFailed, Context context);
 
     /**
      * Gets the entity state (Etag) version of the certificate specified by its identifier.
@@ -65,8 +59,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the certificate specified by its identifier.
      */
-    CertificatesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, Context context);
+    CertificatesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String certificateId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the certificate specified by its identifier.
@@ -94,8 +88,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the certificate specified by its identifier.
      */
-    Response<CertificateContract> getWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, Context context);
+    Response<CertificateContract> getWithResponse(String resourceGroupName, String serviceName, String certificateId,
+        Context context);
 
     /**
      * Gets the details of the certificate specified by its identifier.
@@ -126,8 +120,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String certificateId,
+        String ifMatch, Context context);
 
     /**
      * Deletes specific certificate.
@@ -157,8 +151,8 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate details.
      */
-    Response<CertificateContract> refreshSecretWithResponse(
-        String resourceGroupName, String serviceName, String certificateId, Context context);
+    Response<CertificateContract> refreshSecretWithResponse(String resourceGroupName, String serviceName,
+        String certificateId, Context context);
 
     /**
      * From KeyVault, Refresh the certificate being used for authentication with the backend.

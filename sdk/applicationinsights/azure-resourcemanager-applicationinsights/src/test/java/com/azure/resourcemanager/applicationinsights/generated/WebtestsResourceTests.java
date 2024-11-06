@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class WebtestsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebtestsResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"ddystkiiuxhqy\",\"tags\":{\"rq\":\"o\",\"oczvy\":\"b\"},\"id\":\"fqrvkdvjsllrmvvd\",\"name\":\"watkpnpulexxb\",\"type\":\"zwtruwiqzbqjvsov\"}")
-                .toObject(WebtestsResource.class);
+        WebtestsResource model = BinaryData.fromString(
+            "{\"location\":\"ddystkiiuxhqy\",\"tags\":{\"rq\":\"o\",\"oczvy\":\"b\"},\"id\":\"fqrvkdvjsllrmvvd\",\"name\":\"watkpnpulexxb\",\"type\":\"zwtruwiqzbqjvsov\"}")
+            .toObject(WebtestsResource.class);
         Assertions.assertEquals("ddystkiiuxhqy", model.location());
         Assertions.assertEquals("o", model.tags().get("rq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebtestsResource model =
-            new WebtestsResource().withLocation("ddystkiiuxhqy").withTags(mapOf("rq", "o", "oczvy", "b"));
+        WebtestsResource model
+            = new WebtestsResource().withLocation("ddystkiiuxhqy").withTags(mapOf("rq", "o", "oczvy", "b"));
         model = BinaryData.fromObject(model).toObject(WebtestsResource.class);
         Assertions.assertEquals("ddystkiiuxhqy", model.location());
         Assertions.assertEquals("o", model.tags().get("rq"));

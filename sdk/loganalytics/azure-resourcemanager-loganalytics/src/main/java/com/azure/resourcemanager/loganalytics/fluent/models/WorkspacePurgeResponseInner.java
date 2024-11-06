@@ -48,10 +48,8 @@ public final class WorkspacePurgeResponseInner {
      */
     public void validate() {
         if (operationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operationId in model WorkspacePurgeResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operationId in model WorkspacePurgeResponseInner"));
         }
     }
 

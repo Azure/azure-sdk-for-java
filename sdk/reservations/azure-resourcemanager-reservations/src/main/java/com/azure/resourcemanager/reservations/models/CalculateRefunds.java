@@ -7,30 +7,32 @@ package com.azure.resourcemanager.reservations.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CalculateRefunds. */
+/**
+ * Resource collection API of CalculateRefunds.
+ */
 public interface CalculateRefunds {
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of calculate refund containing refund information of reservation along with {@link
-     *     Response}.
+     * @return the response of calculate refund containing refund information of reservation along with
+     * {@link Response}.
      */
-    Response<CalculateRefundResponse> postWithResponse(
-        String reservationOrderId, CalculateRefundRequest body, Context context);
+    Response<CalculateRefundResponse> postWithResponse(String reservationOrderId, CalculateRefundRequest body,
+        Context context);
 
     /**
      * Calculate the refund amount of a reservation order.
-     *
-     * <p>Calculate price for returning `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculate price for returning `Reservations` if there are no policy errors.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculating refund of a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

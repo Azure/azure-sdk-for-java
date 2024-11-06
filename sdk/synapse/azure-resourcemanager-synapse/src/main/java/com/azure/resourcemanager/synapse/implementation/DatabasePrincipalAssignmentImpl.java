@@ -88,8 +88,8 @@ public final class DatabasePrincipalAssignmentImpl
 
     private String resourceGroupName;
 
-    public DatabasePrincipalAssignmentImpl withExistingDatabase(
-        String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName) {
+    public DatabasePrincipalAssignmentImpl withExistingDatabase(String workspaceName, String kustoPoolName,
+        String databaseName, String resourceGroupName) {
         this.workspaceName = workspaceName;
         this.kustoPoolName = kustoPoolName;
         this.databaseName = databaseName;
@@ -98,34 +98,18 @@ public final class DatabasePrincipalAssignmentImpl
     }
 
     public DatabasePrincipalAssignment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolDatabasePrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolDatabasePrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public DatabasePrincipalAssignment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolDatabasePrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolDatabasePrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName,
+                this.innerModel(), context);
         return this;
     }
 
@@ -140,72 +124,48 @@ public final class DatabasePrincipalAssignmentImpl
     }
 
     public DatabasePrincipalAssignment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolDatabasePrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolDatabasePrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public DatabasePrincipalAssignment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolDatabasePrincipalAssignments()
-                .createOrUpdate(
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolDatabasePrincipalAssignments()
+            .createOrUpdate(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName,
+                this.innerModel(), context);
         return this;
     }
 
-    DatabasePrincipalAssignmentImpl(
-        DatabasePrincipalAssignmentInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    DatabasePrincipalAssignmentImpl(DatabasePrincipalAssignmentInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.kustoPoolName = Utils.getValueFromIdByName(innerObject.id(), "kustoPools");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
-        this.principalAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "principalAssignments");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.kustoPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kustoPools");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.principalAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "principalAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public DatabasePrincipalAssignment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolDatabasePrincipalAssignments()
-                .getWithResponse(
-                    workspaceName,
-                    kustoPoolName,
-                    databaseName,
-                    principalAssignmentName,
-                    resourceGroupName,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolDatabasePrincipalAssignments()
+            .getWithResponse(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatabasePrincipalAssignment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKustoPoolDatabasePrincipalAssignments()
-                .getWithResponse(
-                    workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKustoPoolDatabasePrincipalAssignments()
+            .getWithResponse(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName,
+                context)
+            .getValue();
         return this;
     }
 

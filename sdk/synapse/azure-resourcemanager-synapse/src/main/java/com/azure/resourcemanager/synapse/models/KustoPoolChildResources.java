@@ -7,11 +7,13 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of KustoPoolChildResources. */
+/**
+ * Resource collection API of KustoPoolChildResources.
+ */
 public interface KustoPoolChildResources {
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -22,16 +24,12 @@ public interface KustoPoolChildResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        DatabaseCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, DatabaseCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -41,6 +39,6 @@ public interface KustoPoolChildResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String workspaceName, String kustoPoolName, String resourceGroupName,
+        DatabaseCheckNameRequest resourceName);
 }

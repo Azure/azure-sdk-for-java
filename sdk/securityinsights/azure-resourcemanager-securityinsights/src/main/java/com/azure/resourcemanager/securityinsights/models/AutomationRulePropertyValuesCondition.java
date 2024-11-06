@@ -5,33 +5,43 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The AutomationRulePropertyValuesCondition model. */
+/**
+ * The AutomationRulePropertyValuesCondition model.
+ */
 @Fluent
-public final class AutomationRulePropertyValuesCondition {
+public final class AutomationRulePropertyValuesCondition
+    implements JsonSerializable<AutomationRulePropertyValuesCondition> {
     /*
      * The property to evaluate in an automation rule property condition.
      */
-    @JsonProperty(value = "propertyName")
     private AutomationRulePropertyConditionSupportedProperty propertyName;
 
     /*
      * The operator property.
      */
-    @JsonProperty(value = "operator")
     private AutomationRulePropertyConditionSupportedOperator operator;
 
     /*
      * The propertyValues property.
      */
-    @JsonProperty(value = "propertyValues")
     private List<String> propertyValues;
 
     /**
+     * Creates an instance of AutomationRulePropertyValuesCondition class.
+     */
+    public AutomationRulePropertyValuesCondition() {
+    }
+
+    /**
      * Get the propertyName property: The property to evaluate in an automation rule property condition.
-     *
+     * 
      * @return the propertyName value.
      */
     public AutomationRulePropertyConditionSupportedProperty propertyName() {
@@ -40,19 +50,19 @@ public final class AutomationRulePropertyValuesCondition {
 
     /**
      * Set the propertyName property: The property to evaluate in an automation rule property condition.
-     *
+     * 
      * @param propertyName the propertyName value to set.
      * @return the AutomationRulePropertyValuesCondition object itself.
      */
-    public AutomationRulePropertyValuesCondition withPropertyName(
-        AutomationRulePropertyConditionSupportedProperty propertyName) {
+    public AutomationRulePropertyValuesCondition
+        withPropertyName(AutomationRulePropertyConditionSupportedProperty propertyName) {
         this.propertyName = propertyName;
         return this;
     }
 
     /**
      * Get the operator property: The operator property.
-     *
+     * 
      * @return the operator value.
      */
     public AutomationRulePropertyConditionSupportedOperator operator() {
@@ -61,19 +71,19 @@ public final class AutomationRulePropertyValuesCondition {
 
     /**
      * Set the operator property: The operator property.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the AutomationRulePropertyValuesCondition object itself.
      */
-    public AutomationRulePropertyValuesCondition withOperator(
-        AutomationRulePropertyConditionSupportedOperator operator) {
+    public AutomationRulePropertyValuesCondition
+        withOperator(AutomationRulePropertyConditionSupportedOperator operator) {
         this.operator = operator;
         return this;
     }
 
     /**
      * Get the propertyValues property: The propertyValues property.
-     *
+     * 
      * @return the propertyValues value.
      */
     public List<String> propertyValues() {
@@ -82,7 +92,7 @@ public final class AutomationRulePropertyValuesCondition {
 
     /**
      * Set the propertyValues property: The propertyValues property.
-     *
+     * 
      * @param propertyValues the propertyValues value to set.
      * @return the AutomationRulePropertyValuesCondition object itself.
      */
@@ -93,9 +103,56 @@ public final class AutomationRulePropertyValuesCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("propertyName", this.propertyName == null ? null : this.propertyName.toString());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("propertyValues", this.propertyValues,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRulePropertyValuesCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRulePropertyValuesCondition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationRulePropertyValuesCondition.
+     */
+    public static AutomationRulePropertyValuesCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRulePropertyValuesCondition deserializedAutomationRulePropertyValuesCondition
+                = new AutomationRulePropertyValuesCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyName".equals(fieldName)) {
+                    deserializedAutomationRulePropertyValuesCondition.propertyName
+                        = AutomationRulePropertyConditionSupportedProperty.fromString(reader.getString());
+                } else if ("operator".equals(fieldName)) {
+                    deserializedAutomationRulePropertyValuesCondition.operator
+                        = AutomationRulePropertyConditionSupportedOperator.fromString(reader.getString());
+                } else if ("propertyValues".equals(fieldName)) {
+                    List<String> propertyValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutomationRulePropertyValuesCondition.propertyValues = propertyValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRulePropertyValuesCondition;
+        });
     }
 }

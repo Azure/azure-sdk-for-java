@@ -19,8 +19,8 @@ public final class GatewaysGetEntityTagResponse extends ResponseBase<GatewaysGet
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GatewaysGetEntityTagResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, GatewaysGetEntityTagHeaders headers) {
+    public GatewaysGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        GatewaysGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

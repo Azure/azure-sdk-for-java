@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AppliedScopePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppliedScopeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"paojakhmsbzjh\",\"managementGroupId\":\"zevdphlx\",\"subscriptionId\":\"lthqtrgqjbp\",\"resourceGroupId\":\"fsinzgvfcjrwzoxx\",\"displayName\":\"felluwfzitonpe\"}")
-                .toObject(AppliedScopeProperties.class);
+        AppliedScopeProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"paojakhmsbzjh\",\"managementGroupId\":\"zevdphlx\",\"subscriptionId\":\"lthqtrgqjbp\",\"resourceGroupId\":\"fsinzgvfcjrwzoxx\",\"displayName\":\"felluwfzitonpe\"}")
+            .toObject(AppliedScopeProperties.class);
         Assertions.assertEquals("paojakhmsbzjh", model.tenantId());
         Assertions.assertEquals("zevdphlx", model.managementGroupId());
         Assertions.assertEquals("lthqtrgqjbp", model.subscriptionId());
@@ -25,13 +23,11 @@ public final class AppliedScopePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliedScopeProperties model =
-            new AppliedScopeProperties()
-                .withTenantId("paojakhmsbzjh")
-                .withManagementGroupId("zevdphlx")
-                .withSubscriptionId("lthqtrgqjbp")
-                .withResourceGroupId("fsinzgvfcjrwzoxx")
-                .withDisplayName("felluwfzitonpe");
+        AppliedScopeProperties model = new AppliedScopeProperties().withTenantId("paojakhmsbzjh")
+            .withManagementGroupId("zevdphlx")
+            .withSubscriptionId("lthqtrgqjbp")
+            .withResourceGroupId("fsinzgvfcjrwzoxx")
+            .withDisplayName("felluwfzitonpe");
         model = BinaryData.fromObject(model).toObject(AppliedScopeProperties.class);
         Assertions.assertEquals("paojakhmsbzjh", model.tenantId());
         Assertions.assertEquals("zevdphlx", model.managementGroupId());

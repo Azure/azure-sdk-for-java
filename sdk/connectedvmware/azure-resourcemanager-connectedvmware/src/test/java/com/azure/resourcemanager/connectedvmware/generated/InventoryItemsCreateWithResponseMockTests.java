@@ -31,47 +31,33 @@ public final class InventoryItemsCreateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"bewreswmowegmmut\",\"moRefId\":\"xeyg\",\"moName\":\"igijiitnspxlz\",\"provisioningState\":\"Provisioning\"},\"kind\":\"grijwaiufanrayb\",\"id\":\"eqfrojs\",\"name\":\"dgrhydkygywezs\",\"type\":\"iecafygzmxi\"}";
+        String responseStr
+            = "{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"bewreswmowegmmut\",\"moRefId\":\"xeyg\",\"moName\":\"igijiitnspxlz\",\"provisioningState\":\"Provisioning\"},\"kind\":\"grijwaiufanrayb\",\"id\":\"eqfrojs\",\"name\":\"dgrhydkygywezs\",\"type\":\"iecafygzmxi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        InventoryItem response =
-            manager
-                .inventoryItems()
-                .define("hpzfngqj")
-                .withExistingVcenter("zulo", "saeuzanhsfnhsenw")
-                .withProperties(
-                    new InventoryItemProperties()
-                        .withManagedResourceId("idftujwjjufwbe")
-                        .withMoRefId("k")
-                        .withMoName("rhtssr"))
-                .withKind("dvhazcvjy")
-                .create();
+        InventoryItem response = manager.inventoryItems()
+            .define("hpzfngqj")
+            .withExistingVcenter("zulo", "saeuzanhsfnhsenw")
+            .withProperties(new InventoryItemProperties().withManagedResourceId("idftujwjjufwbe")
+                .withMoRefId("k")
+                .withMoName("rhtssr"))
+            .withKind("dvhazcvjy")
+            .create();
 
         Assertions.assertEquals("bewreswmowegmmut", response.properties().managedResourceId());
         Assertions.assertEquals("xeyg", response.properties().moRefId());

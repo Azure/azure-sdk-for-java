@@ -535,7 +535,8 @@ public final class ArtifactManifestsClientImpl implements ArtifactManifestsClien
     private Mono<Void> deleteAsync(String resourceGroupName, String publisherName, String artifactStoreName,
         String artifactManifestName, Context context) {
         return beginDeleteAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -744,8 +745,10 @@ public final class ArtifactManifestsClientImpl implements ArtifactManifestsClien
     public SyncPoller<PollResult<ArtifactManifestInner>, ArtifactManifestInner> beginCreateOrUpdate(
         String resourceGroupName, String publisherName, String artifactStoreName, String artifactManifestName,
         ArtifactManifestInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
-            parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -766,8 +769,10 @@ public final class ArtifactManifestsClientImpl implements ArtifactManifestsClien
     public SyncPoller<PollResult<ArtifactManifestInner>, ArtifactManifestInner> beginCreateOrUpdate(
         String resourceGroupName, String publisherName, String artifactStoreName, String artifactManifestName,
         ArtifactManifestInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1495,8 +1500,10 @@ public final class ArtifactManifestsClientImpl implements ArtifactManifestsClien
     public SyncPoller<PollResult<ArtifactManifestUpdateStateInner>, ArtifactManifestUpdateStateInner> beginUpdateState(
         String resourceGroupName, String publisherName, String artifactStoreName, String artifactManifestName,
         ArtifactManifestUpdateStateInner parameters) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
-            parameters).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1517,8 +1524,10 @@ public final class ArtifactManifestsClientImpl implements ArtifactManifestsClien
     public SyncPoller<PollResult<ArtifactManifestUpdateStateInner>, ArtifactManifestUpdateStateInner> beginUpdateState(
         String resourceGroupName, String publisherName, String artifactStoreName, String artifactManifestName,
         ArtifactManifestUpdateStateInner parameters, Context context) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                parameters, context)
+            .getSyncPoller();
     }
 
     /**

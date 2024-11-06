@@ -25,18 +25,16 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
      */
     public ReceiveEventsFromPartitionBatchTest(EventHubsPerfOptions options) throws IllegalStateException {
         super(options);
-        if(options.getPartitionId() == null) {
+        if (options.getPartitionId() == null) {
             throw new IllegalStateException("Specify target partition id.");
         }
         eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
     }
 
-
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient,
-                String.valueOf(options.getPartitionId()), options.getEvents(), eventDataBytes)));
+        return super.globalSetupAsync().then(Mono.defer(() -> Util.preLoadEvents(eventHubProducerAsyncClient,
+            String.valueOf(options.getPartitionId()), options.getEvents(), eventDataBytes)));
     }
 
     @Override
@@ -44,9 +42,7 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
         return super.setupAsync().then(Mono.fromCallable(() -> {
             // Setup the service client
             eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
-            eventHubClientBuilder
-                .prefetchCount(options.getPrefetch())
-                .consumerGroup(options.getConsumerGroup());
+            eventHubClientBuilder.prefetchCount(options.getPrefetch()).consumerGroup(options.getConsumerGroup());
             eventHubConsumerClient = eventHubClientBuilder.buildConsumerClient();
             eventHubConsumerAsyncClient = eventHubClientBuilder.buildAsyncConsumerClient();
             return 1;
@@ -80,18 +76,15 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
     @Override
     public Mono<Integer> runBatchAsync() {
         int receiveCount = options.getCount();
-        return Mono.using(
-            eventHubClientBuilder::buildAsyncConsumerClient,
-            consumerAsyncClient -> consumerAsyncClient.receiveFromPartition(
-                String.valueOf(options.getPartitionId()), EventPosition.earliest())
+        return Mono.using(eventHubClientBuilder::buildAsyncConsumerClient,
+            consumerAsyncClient -> consumerAsyncClient
+                .receiveFromPartition(String.valueOf(options.getPartitionId()), EventPosition.earliest())
                 .take(receiveCount)
                 .flatMap(message -> {
                     return Mono.empty();
                 }, 1)
                 .then()
                 .thenReturn(receiveCount),
-            EventHubConsumerAsyncClient::close,
-            true
-        );
+            EventHubConsumerAsyncClient::close, true);
     }
 }

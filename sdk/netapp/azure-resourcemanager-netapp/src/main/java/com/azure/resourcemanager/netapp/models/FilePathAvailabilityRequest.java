@@ -27,6 +27,12 @@ public final class FilePathAvailabilityRequest implements JsonSerializable<FileP
      */
     private String subnetId;
 
+    /*
+     * The Azure Resource logical availability zone which is used within zone mapping lookup for the subscription and
+     * region. The lookup will retrieve the physical zone where volume is placed.
+     */
+    private String availabilityZone;
+
     /**
      * Creates an instance of FilePathAvailabilityRequest class.
      */
@@ -76,6 +82,28 @@ public final class FilePathAvailabilityRequest implements JsonSerializable<FileP
     }
 
     /**
+     * Get the availabilityZone property: The Azure Resource logical availability zone which is used within zone mapping
+     * lookup for the subscription and region. The lookup will retrieve the physical zone where volume is placed.
+     * 
+     * @return the availabilityZone value.
+     */
+    public String availabilityZone() {
+        return this.availabilityZone;
+    }
+
+    /**
+     * Set the availabilityZone property: The Azure Resource logical availability zone which is used within zone mapping
+     * lookup for the subscription and region. The lookup will retrieve the physical zone where volume is placed.
+     * 
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the FilePathAvailabilityRequest object itself.
+     */
+    public FilePathAvailabilityRequest withAvailabilityZone(String availabilityZone) {
+        this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -103,6 +131,7 @@ public final class FilePathAvailabilityRequest implements JsonSerializable<FileP
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("availabilityZone", this.availabilityZone);
         return jsonWriter.writeEndObject();
     }
 
@@ -126,6 +155,8 @@ public final class FilePathAvailabilityRequest implements JsonSerializable<FileP
                     deserializedFilePathAvailabilityRequest.name = reader.getString();
                 } else if ("subnetId".equals(fieldName)) {
                     deserializedFilePathAvailabilityRequest.subnetId = reader.getString();
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedFilePathAvailabilityRequest.availabilityZone = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

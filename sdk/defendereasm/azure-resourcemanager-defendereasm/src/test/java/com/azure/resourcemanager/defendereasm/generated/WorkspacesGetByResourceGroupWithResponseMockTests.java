@@ -6,66 +6,35 @@ package com.azure.resourcemanager.defendereasm.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.defendereasm.EasmManager;
 import com.azure.resourcemanager.defendereasm.models.WorkspaceResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkspacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"dataPlaneEndpoint\":\"hzrvqd\",\"provisioningState\":\"NotSpecified\"},\"location\":\"jybige\",\"tags\":{\"zlcuiywgqywgndrv\":\"fbowskanyk\",\"ocpecfvmmco\":\"nhzgpphrcgyn\"},\"id\":\"fsxlzevgbmqjqa\",\"name\":\"c\",\"type\":\"pmivkwlzu\"}";
 
-        String responseStr =
-            "{\"properties\":{\"dataPlaneEndpoint\":\"i\",\"provisioningState\":\"ProvisioningResources\"},\"location\":\"zrvqdr\",\"tags\":{\"oqfbowskanyk\":\"jybige\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EasmManager manager = EasmManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkspaceResource response = manager.workspaces()
+            .getByResourceGroupWithResponse("xlefgugnxkrx", "qmi", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        EasmManager manager =
-            EasmManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkspaceResource response =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse("ln", "xlefgugnxkrx", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("zrvqdr", response.location());
-        Assertions.assertEquals("jybige", response.tags().get("oqfbowskanyk"));
+        Assertions.assertEquals("jybige", response.location());
+        Assertions.assertEquals("fbowskanyk", response.tags().get("zlcuiywgqywgndrv"));
     }
 }

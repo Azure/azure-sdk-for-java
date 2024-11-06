@@ -25,7 +25,8 @@ public final class AlertInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertInner model = new AlertInner().withProperties(new AlertProperties().withSendToOwners("lzydehojwyahux")
-            .withCustomEmailAddresses(Arrays.asList("mqnjaqw", "xj")).withLocale("r")).withLocation("vcputegj");
+            .withCustomEmailAddresses(Arrays.asList("mqnjaqw", "xj"))
+            .withLocale("r")).withLocation("vcputegj");
         model = BinaryData.fromObject(model).toObject(AlertInner.class);
         Assertions.assertEquals("lzydehojwyahux", model.properties().sendToOwners());
         Assertions.assertEquals("mqnjaqw", model.properties().customEmailAddresses().get(0));

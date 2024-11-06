@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
-/** Samples for DedicatedCloudServices CreateOrUpdate. */
+/**
+ * Samples for DedicatedCloudServices CreateOrUpdate.
+ */
 public final class DedicatedCloudServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/CreateDedicatedCloudService.json
+     * x-ms-original-file:
+     * specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/
+     * CreateDedicatedCloudService.json
      */
     /**
      * Sample code: CreateDedicatedCloudService.
-     *
+     * 
      * @param manager Entry point to VMwareCloudSimpleManager.
      */
-    public static void createDedicatedCloudService(
-        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
-        manager
-            .dedicatedCloudServices()
+    public static void
+        createDedicatedCloudService(com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
+        manager.dedicatedCloudServices()
             .define("myService")
             .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")

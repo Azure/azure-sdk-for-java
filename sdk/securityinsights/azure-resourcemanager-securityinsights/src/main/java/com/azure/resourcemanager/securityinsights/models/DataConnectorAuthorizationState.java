@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the state of user's authorization for a connector kind. */
+/**
+ * Describes the state of user's authorization for a connector kind.
+ */
 public final class DataConnectorAuthorizationState extends ExpandableStringEnum<DataConnectorAuthorizationState> {
-    /** Static value Valid for DataConnectorAuthorizationState. */
+    /**
+     * Static value Valid for DataConnectorAuthorizationState.
+     */
     public static final DataConnectorAuthorizationState VALID = fromString("Valid");
 
-    /** Static value Invalid for DataConnectorAuthorizationState. */
+    /**
+     * Static value Invalid for DataConnectorAuthorizationState.
+     */
     public static final DataConnectorAuthorizationState INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of DataConnectorAuthorizationState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataConnectorAuthorizationState() {
+    }
+
+    /**
      * Creates or finds a DataConnectorAuthorizationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataConnectorAuthorizationState.
      */
-    @JsonCreator
     public static DataConnectorAuthorizationState fromString(String name) {
         return fromString(name, DataConnectorAuthorizationState.class);
     }
 
     /**
      * Gets known DataConnectorAuthorizationState values.
-     *
+     * 
      * @return known DataConnectorAuthorizationState values.
      */
     public static Collection<DataConnectorAuthorizationState> values() {

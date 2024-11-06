@@ -13,8 +13,8 @@ public final class CheckNameAvailabilityResultImpl implements CheckNameAvailabil
 
     private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
-    CheckNameAvailabilityResultImpl(
-        CheckNameAvailabilityResultInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
+    CheckNameAvailabilityResultImpl(CheckNameAvailabilityResultInner innerObject,
+        com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

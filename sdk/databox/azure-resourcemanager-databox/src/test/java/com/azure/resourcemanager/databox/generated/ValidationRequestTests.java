@@ -12,24 +12,15 @@ import java.util.Arrays;
 public final class ValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"validationCategory\":\"ValidationRequest\",\"individualRequestDetails\":[{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"}]}")
-                .toObject(ValidationRequest.class);
+        ValidationRequest model = BinaryData.fromString(
+            "{\"validationCategory\":\"ValidationRequest\",\"individualRequestDetails\":[{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"}]}")
+            .toObject(ValidationRequest.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationRequest model =
-            new ValidationRequest()
-                .withIndividualRequestDetails(
-                    Arrays
-                        .asList(
-                            new ValidationInputRequest(),
-                            new ValidationInputRequest(),
-                            new ValidationInputRequest(),
-                            new ValidationInputRequest()));
+        ValidationRequest model = new ValidationRequest().withIndividualRequestDetails(
+            Arrays.asList(new ValidationInputRequest(), new ValidationInputRequest(), new ValidationInputRequest()));
         model = BinaryData.fromObject(model).toObject(ValidationRequest.class);
     }
 }

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.azurestack {
     exports com.azure.resourcemanager.azurestack.fluent.models;
     exports com.azure.resourcemanager.azurestack.models;
 
-    opens com.azure.resourcemanager.azurestack.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.azurestack.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.azurestack.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.azurestack.models to com.azure.core;
 }

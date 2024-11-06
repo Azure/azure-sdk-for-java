@@ -17,10 +17,14 @@ import java.util.Map;
  */
 interface IServiceBusSessionManager extends AutoCloseable {
     String getIdentifier();
+
     String getLinkName(String sessionId);
+
     Flux<ServiceBusMessageContext> receive();
+
     Mono<Boolean> updateDisposition(String lockToken, String sessionId, DispositionStatus dispositionStatus,
         Map<String, Object> propertiesToModify, String deadLetterReason, String deadLetterDescription,
         ServiceBusTransactionContext transactionContext);
+
     void close();
 }

@@ -14,17 +14,17 @@ public final class ManagedProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedProxyResource model = BinaryData.fromString(
-            "{\"tags\":{\"nepttwqmsni\":\"iufxqknpir\",\"rxfrddhc\":\"fcdmqnrojlpijn\"},\"id\":\"tizzronasxif\",\"name\":\"ozqyzh\",\"type\":\"tw\"}")
+            "{\"tags\":{\"rddh\":\"jlpijnkrx\",\"ronasxift\":\"ratiz\",\"zh\":\"zq\"},\"id\":\"wesgogczh\",\"name\":\"nnxk\",\"type\":\"lgnyhmo\"}")
             .toObject(ManagedProxyResource.class);
-        Assertions.assertEquals("iufxqknpir", model.tags().get("nepttwqmsni"));
+        Assertions.assertEquals("jlpijnkrx", model.tags().get("rddh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedProxyResource model
-            = new ManagedProxyResource().withTags(mapOf("nepttwqmsni", "iufxqknpir", "rxfrddhc", "fcdmqnrojlpijn"));
+            = new ManagedProxyResource().withTags(mapOf("rddh", "jlpijnkrx", "ronasxift", "ratiz", "zh", "zq"));
         model = BinaryData.fromObject(model).toObject(ManagedProxyResource.class);
-        Assertions.assertEquals("iufxqknpir", model.tags().get("nepttwqmsni"));
+        Assertions.assertEquals("jlpijnkrx", model.tags().get("rddh"));
     }
 
     // Use "Map.of" if available

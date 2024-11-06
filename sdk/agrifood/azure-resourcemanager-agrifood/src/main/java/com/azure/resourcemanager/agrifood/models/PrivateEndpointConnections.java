@@ -21,8 +21,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection object.
      */
-    PrivateEndpointConnection get(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnection get(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Get Private endpoint connection object.
@@ -36,8 +36,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection object along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Delete Private endpoint connection request.
@@ -62,8 +62,8 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String farmBeatsResourceName, String privateEndpointConnectionName,
+        Context context);
 
     /**
      * Get list of Private endpoint connections.
@@ -88,8 +88,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Private endpoint connections as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnection> listByResource(
-        String resourceGroupName, String farmBeatsResourceName, Context context);
+    PagedIterable<PrivateEndpointConnection> listByResource(String resourceGroupName, String farmBeatsResourceName,
+        Context context);
 
     /**
      * Get Private endpoint connection object.

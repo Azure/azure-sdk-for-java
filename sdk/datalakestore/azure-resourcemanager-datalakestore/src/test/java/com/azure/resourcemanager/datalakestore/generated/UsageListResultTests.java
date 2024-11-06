@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class UsageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"unit\":\"Seconds\",\"id\":\"hrdxwzywqsmbs\",\"currentValue\":854764023,\"limit\":1524544291,\"name\":{\"value\":\"ryocfsfksymdd\",\"localizedValue\":\"tki\"}},{\"unit\":\"Seconds\",\"id\":\"qyud\",\"currentValue\":2120884016,\"limit\":346344422,\"name\":{\"value\":\"poczvyifqrvkdvjs\",\"localizedValue\":\"rm\"}},{\"unit\":\"BytesPerSecond\",\"id\":\"watkpnpulexxb\",\"currentValue\":1890498246,\"limit\":1309614398,\"name\":{\"value\":\"iqzbq\",\"localizedValue\":\"sovmyokacspkwl\"}}]}")
-                .toObject(UsageListResult.class);
+        UsageListResult model = BinaryData.fromString(
+            "{\"value\":[{\"unit\":\"BytesPerSecond\",\"id\":\"giotkftutqxlngx\",\"currentValue\":1542158785,\"limit\":719588208,\"name\":{\"value\":\"xkrxdqmi\",\"localizedValue\":\"thz\"}},{\"unit\":\"Bytes\",\"id\":\"rabhjybigeho\",\"currentValue\":1256732319,\"limit\":845567192,\"name\":{\"value\":\"anyktzlcuiywg\",\"localizedValue\":\"wgndrvynhzgpp\"}},{\"unit\":\"Bytes\",\"id\":\"yncocpecfvmmcoo\",\"currentValue\":1657951268,\"limit\":1165207027,\"name\":{\"value\":\"gbmqjqabcypmiv\",\"localizedValue\":\"lzu\"}},{\"unit\":\"Count\",\"id\":\"wnfnbacf\",\"currentValue\":1088023513,\"limit\":1059289451,\"name\":{\"value\":\"etqgtzxdpnq\",\"localizedValue\":\"qwxrjfeallnw\"}}]}")
+            .toObject(UsageListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageListResult model =
-            new UsageListResult().withValue(Arrays.asList(new UsageInner(), new UsageInner(), new UsageInner()));
+        UsageListResult model = new UsageListResult()
+            .withValue(Arrays.asList(new UsageInner(), new UsageInner(), new UsageInner(), new UsageInner()));
         model = BinaryData.fromObject(model).toObject(UsageListResult.class);
     }
 }

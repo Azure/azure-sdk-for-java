@@ -5,72 +5,71 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The roll up count summary of savings plans in each state. */
+/**
+ * The roll up count summary of savings plans in each state.
+ */
 @Immutable
-public final class SavingsPlanSummaryCount {
+public final class SavingsPlanSummaryCount implements JsonSerializable<SavingsPlanSummaryCount> {
     /*
      * The number of savings plans in Succeeded state
      */
-    @JsonProperty(value = "succeededCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float succeededCount;
 
     /*
      * The number of savings plans in Failed state
      */
-    @JsonProperty(value = "failedCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float failedCount;
 
     /*
      * The number of savings plans in Expiring state
      */
-    @JsonProperty(value = "expiringCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float expiringCount;
 
     /*
      * The number of savings plans in Expired state
      */
-    @JsonProperty(value = "expiredCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float expiredCount;
 
     /*
      * The number of savings plans in Pending state
      */
-    @JsonProperty(value = "pendingCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float pendingCount;
 
     /*
      * The number of savings plans in Cancelled state
      */
-    @JsonProperty(value = "cancelledCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float cancelledCount;
 
     /*
      * The number of savings plans in Processing state
      */
-    @JsonProperty(value = "processingCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float processingCount;
 
     /*
      * The number of savings plans in No Benefit state
      */
-    @JsonProperty(value = "noBenefitCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float noBenefitCount;
 
     /*
      * The number of savings plans in Warning state
      */
-    @JsonProperty(value = "warningCount", access = JsonProperty.Access.WRITE_ONLY)
     private Float warningCount;
 
-    /** Creates an instance of SavingsPlanSummaryCount class. */
+    /**
+     * Creates an instance of SavingsPlanSummaryCount class.
+     */
     public SavingsPlanSummaryCount() {
     }
 
     /**
      * Get the succeededCount property: The number of savings plans in Succeeded state.
-     *
+     * 
      * @return the succeededCount value.
      */
     public Float succeededCount() {
@@ -79,7 +78,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the failedCount property: The number of savings plans in Failed state.
-     *
+     * 
      * @return the failedCount value.
      */
     public Float failedCount() {
@@ -88,7 +87,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the expiringCount property: The number of savings plans in Expiring state.
-     *
+     * 
      * @return the expiringCount value.
      */
     public Float expiringCount() {
@@ -97,7 +96,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the expiredCount property: The number of savings plans in Expired state.
-     *
+     * 
      * @return the expiredCount value.
      */
     public Float expiredCount() {
@@ -106,7 +105,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the pendingCount property: The number of savings plans in Pending state.
-     *
+     * 
      * @return the pendingCount value.
      */
     public Float pendingCount() {
@@ -115,7 +114,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the cancelledCount property: The number of savings plans in Cancelled state.
-     *
+     * 
      * @return the cancelledCount value.
      */
     public Float cancelledCount() {
@@ -124,7 +123,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the processingCount property: The number of savings plans in Processing state.
-     *
+     * 
      * @return the processingCount value.
      */
     public Float processingCount() {
@@ -133,7 +132,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the noBenefitCount property: The number of savings plans in No Benefit state.
-     *
+     * 
      * @return the noBenefitCount value.
      */
     public Float noBenefitCount() {
@@ -142,7 +141,7 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Get the warningCount property: The number of savings plans in Warning state.
-     *
+     * 
      * @return the warningCount value.
      */
     public Float warningCount() {
@@ -151,9 +150,60 @@ public final class SavingsPlanSummaryCount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanSummaryCount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanSummaryCount if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanSummaryCount.
+     */
+    public static SavingsPlanSummaryCount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanSummaryCount deserializedSavingsPlanSummaryCount = new SavingsPlanSummaryCount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("succeededCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.succeededCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("failedCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.failedCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("expiringCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.expiringCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("expiredCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.expiredCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("pendingCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.pendingCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("cancelledCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.cancelledCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("processingCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.processingCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("noBenefitCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.noBenefitCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("warningCount".equals(fieldName)) {
+                    deserializedSavingsPlanSummaryCount.warningCount = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanSummaryCount;
+        });
     }
 }

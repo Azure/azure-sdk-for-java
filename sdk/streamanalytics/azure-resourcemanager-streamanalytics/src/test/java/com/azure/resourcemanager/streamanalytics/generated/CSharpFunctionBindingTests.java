@@ -13,22 +13,24 @@ public final class CSharpFunctionBindingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CSharpFunctionBinding model = BinaryData.fromString(
-            "{\"type\":\"Microsoft.StreamAnalytics/CLRUdf\",\"properties\":{\"dllPath\":\"sqfsubcgjbirxb\",\"class\":\"bsrfbj\",\"method\":\"twss\",\"updateMode\":\"Refreshable\"}}")
+            "{\"type\":\"Microsoft.StreamAnalytics/CLRUdf\",\"properties\":{\"dllPath\":\"wj\",\"class\":\"gdrjervnaenqpe\",\"method\":\"ndoygmifthnzdnd\",\"updateMode\":\"Refreshable\"}}")
             .toObject(CSharpFunctionBinding.class);
-        Assertions.assertEquals("sqfsubcgjbirxb", model.dllPath());
-        Assertions.assertEquals("bsrfbj", model.classProperty());
-        Assertions.assertEquals("twss", model.method());
+        Assertions.assertEquals("wj", model.dllPath());
+        Assertions.assertEquals("gdrjervnaenqpe", model.classProperty());
+        Assertions.assertEquals("ndoygmifthnzdnd", model.method());
         Assertions.assertEquals(UpdateMode.REFRESHABLE, model.updateMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CSharpFunctionBinding model = new CSharpFunctionBinding().withDllPath("sqfsubcgjbirxb")
-            .withClassProperty("bsrfbj").withMethod("twss").withUpdateMode(UpdateMode.REFRESHABLE);
+        CSharpFunctionBinding model = new CSharpFunctionBinding().withDllPath("wj")
+            .withClassProperty("gdrjervnaenqpe")
+            .withMethod("ndoygmifthnzdnd")
+            .withUpdateMode(UpdateMode.REFRESHABLE);
         model = BinaryData.fromObject(model).toObject(CSharpFunctionBinding.class);
-        Assertions.assertEquals("sqfsubcgjbirxb", model.dllPath());
-        Assertions.assertEquals("bsrfbj", model.classProperty());
-        Assertions.assertEquals("twss", model.method());
+        Assertions.assertEquals("wj", model.dllPath());
+        Assertions.assertEquals("gdrjervnaenqpe", model.classProperty());
+        Assertions.assertEquals("ndoygmifthnzdnd", model.method());
         Assertions.assertEquals(UpdateMode.REFRESHABLE, model.updateMode());
     }
 }

@@ -26,12 +26,12 @@ public final class RecoveryPlanA2AInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanA2AInput model
-            = new RecoveryPlanA2AInput().withPrimaryZone("wetkrhlolmc").withRecoveryZone("epfgsvbbvaqdl")
-                .withPrimaryExtendedLocation(
-                    new ExtendedLocation().withName("petlrn").withType(ExtendedLocationType.EDGE_ZONE))
-                .withRecoveryExtendedLocation(
-                    new ExtendedLocation().withName("tawevxehu").withType(ExtendedLocationType.EDGE_ZONE));
+        RecoveryPlanA2AInput model = new RecoveryPlanA2AInput().withPrimaryZone("wetkrhlolmc")
+            .withRecoveryZone("epfgsvbbvaqdl")
+            .withPrimaryExtendedLocation(
+                new ExtendedLocation().withName("petlrn").withType(ExtendedLocationType.EDGE_ZONE))
+            .withRecoveryExtendedLocation(
+                new ExtendedLocation().withName("tawevxehu").withType(ExtendedLocationType.EDGE_ZONE));
         model = BinaryData.fromObject(model).toObject(RecoveryPlanA2AInput.class);
         Assertions.assertEquals("wetkrhlolmc", model.primaryZone());
         Assertions.assertEquals("epfgsvbbvaqdl", model.recoveryZone());

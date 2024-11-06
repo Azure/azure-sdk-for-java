@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyStatesSummaryResourceType. */
+/**
+ * Defines values for PolicyStatesSummaryResourceType.
+ */
 public final class PolicyStatesSummaryResourceType extends ExpandableStringEnum<PolicyStatesSummaryResourceType> {
-    /** Static value latest for PolicyStatesSummaryResourceType. */
+    /**
+     * Static value latest for PolicyStatesSummaryResourceType.
+     */
     public static final PolicyStatesSummaryResourceType LATEST = fromString("latest");
 
     /**
+     * Creates a new instance of PolicyStatesSummaryResourceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyStatesSummaryResourceType() {
+    }
+
+    /**
      * Creates or finds a PolicyStatesSummaryResourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyStatesSummaryResourceType.
      */
-    @JsonCreator
     public static PolicyStatesSummaryResourceType fromString(String name) {
         return fromString(name, PolicyStatesSummaryResourceType.class);
     }
 
     /**
      * Gets known PolicyStatesSummaryResourceType values.
-     *
+     * 
      * @return known PolicyStatesSummaryResourceType values.
      */
     public static Collection<PolicyStatesSummaryResourceType> values() {

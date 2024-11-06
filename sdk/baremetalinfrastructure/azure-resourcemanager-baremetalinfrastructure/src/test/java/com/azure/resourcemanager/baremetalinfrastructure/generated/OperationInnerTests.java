@@ -11,11 +11,9 @@ import com.azure.resourcemanager.baremetalinfrastructure.models.OperationDisplay
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ayhuy\",\"isDataAction\":false,\"display\":{\"provider\":\"depoog\",\"resource\":\"uvamiheognarxzxt\",\"operation\":\"o\",\"description\":\"si\"},\"origin\":\"user\",\"actionType\":\"Internal\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"ayhuy\",\"isDataAction\":false,\"display\":{\"provider\":\"depoog\",\"resource\":\"uvamiheognarxzxt\",\"operation\":\"o\",\"description\":\"si\"},\"origin\":\"user\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

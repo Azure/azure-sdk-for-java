@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The track property type. */
+/**
+ * The track property type.
+ */
 public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTrackPropertyType> {
-    /** Static value Unknown for FilterTrackPropertyType. */
+    /**
+     * Static value Unknown for FilterTrackPropertyType.
+     */
     public static final FilterTrackPropertyType UNKNOWN = fromString("Unknown");
 
-    /** Static value Type for FilterTrackPropertyType. */
+    /**
+     * Static value Type for FilterTrackPropertyType.
+     */
     public static final FilterTrackPropertyType TYPE = fromString("Type");
 
-    /** Static value Name for FilterTrackPropertyType. */
+    /**
+     * Static value Name for FilterTrackPropertyType.
+     */
     public static final FilterTrackPropertyType NAME = fromString("Name");
 
-    /** Static value Language for FilterTrackPropertyType. */
+    /**
+     * Static value Language for FilterTrackPropertyType.
+     */
     public static final FilterTrackPropertyType LANGUAGE = fromString("Language");
 
-    /** Static value FourCC for FilterTrackPropertyType. */
+    /**
+     * Static value FourCC for FilterTrackPropertyType.
+     */
     public static final FilterTrackPropertyType FOUR_CC = fromString("FourCC");
 
-    /** Static value Bitrate for FilterTrackPropertyType. */
+    /**
+     * Static value Bitrate for FilterTrackPropertyType.
+     */
     public static final FilterTrackPropertyType BITRATE = fromString("Bitrate");
 
     /**
      * Creates a new instance of FilterTrackPropertyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTr
 
     /**
      * Creates or finds a FilterTrackPropertyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FilterTrackPropertyType.
      */
-    @JsonCreator
     public static FilterTrackPropertyType fromString(String name) {
         return fromString(name, FilterTrackPropertyType.class);
     }
 
     /**
      * Gets known FilterTrackPropertyType values.
-     *
+     * 
      * @return known FilterTrackPropertyType values.
      */
     public static Collection<FilterTrackPropertyType> values() {

@@ -881,7 +881,6 @@ public final class BlobPropertiesInternal implements XmlSerializable<BlobPropert
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobPropertiesInternal if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobPropertiesInternal.
      */
     public static BlobPropertiesInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -896,7 +895,6 @@ public final class BlobPropertiesInternal implements XmlSerializable<BlobPropert
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobPropertiesInternal if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobPropertiesInternal.
      */
     public static BlobPropertiesInternal fromXml(XmlReader xmlReader, String rootElementName)

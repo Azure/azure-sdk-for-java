@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventEndpoint model =
-            BinaryData
-                .fromString("{\"protocol\":\"edyatrwyhqmibzyh\",\"url\":\"tsmypyynpcdp\"}")
-                .toObject(LiveEventEndpoint.class);
-        Assertions.assertEquals("edyatrwyhqmibzyh", model.protocol());
-        Assertions.assertEquals("tsmypyynpcdp", model.url());
+        LiveEventEndpoint model
+            = BinaryData.fromString("{\"protocol\":\"rwkq\",\"url\":\"hgbijt\"}").toObject(LiveEventEndpoint.class);
+        Assertions.assertEquals("rwkq", model.protocol());
+        Assertions.assertEquals("hgbijt", model.url());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventEndpoint model = new LiveEventEndpoint().withProtocol("edyatrwyhqmibzyh").withUrl("tsmypyynpcdp");
+        LiveEventEndpoint model = new LiveEventEndpoint().withProtocol("rwkq").withUrl("hgbijt");
         model = BinaryData.fromObject(model).toObject(LiveEventEndpoint.class);
-        Assertions.assertEquals("edyatrwyhqmibzyh", model.protocol());
-        Assertions.assertEquals("tsmypyynpcdp", model.url());
+        Assertions.assertEquals("rwkq", model.protocol());
+        Assertions.assertEquals("hgbijt", model.url());
     }
 }

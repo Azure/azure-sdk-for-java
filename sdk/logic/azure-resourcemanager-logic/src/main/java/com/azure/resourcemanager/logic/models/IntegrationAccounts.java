@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationAccounts. */
+/**
+ * Resource collection API of IntegrationAccounts.
+ */
 public interface IntegrationAccounts {
     /**
      * Gets a list of integration accounts by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration accounts by subscription as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface IntegrationAccounts {
 
     /**
      * Gets a list of integration accounts by subscription.
-     *
+     * 
      * @param top The number of items to be included in the result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +35,7 @@ public interface IntegrationAccounts {
 
     /**
      * Gets a list of integration accounts by resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +46,7 @@ public interface IntegrationAccounts {
 
     /**
      * Gets a list of integration accounts by resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param top The number of items to be included in the result.
      * @param context The context to associate with this operation.
@@ -57,7 +59,7 @@ public interface IntegrationAccounts {
 
     /**
      * Gets an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -66,12 +68,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration account along with {@link Response}.
      */
-    Response<IntegrationAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String integrationAccountName, Context context);
+    Response<IntegrationAccount> getByResourceGroupWithResponse(String resourceGroupName, String integrationAccountName,
+        Context context);
 
     /**
      * Gets an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface IntegrationAccounts {
 
     /**
      * Deletes an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -92,12 +94,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String integrationAccountName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String integrationAccountName,
+        Context context);
 
     /**
      * Deletes an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +110,7 @@ public interface IntegrationAccounts {
 
     /**
      * Gets the integration account callback URL.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param parameters The callback URL parameters.
@@ -118,12 +120,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration account callback URL along with {@link Response}.
      */
-    Response<CallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters, Context context);
+    Response<CallbackUrl> listCallbackUrlWithResponse(String resourceGroupName, String integrationAccountName,
+        GetCallbackUrlParameters parameters, Context context);
 
     /**
      * Gets the integration account callback URL.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param parameters The callback URL parameters.
@@ -132,12 +134,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration account callback URL.
      */
-    CallbackUrl listCallbackUrl(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters);
+    CallbackUrl listCallbackUrl(String resourceGroupName, String integrationAccountName,
+        GetCallbackUrlParameters parameters);
 
     /**
      * Gets the integration account's Key Vault keys.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param listKeyVaultKeys The key vault parameters.
@@ -146,12 +148,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<KeyVaultKey> listKeyVaultKeys(
-        String resourceGroupName, String integrationAccountName, ListKeyVaultKeysDefinition listKeyVaultKeys);
+    PagedIterable<KeyVaultKey> listKeyVaultKeys(String resourceGroupName, String integrationAccountName,
+        ListKeyVaultKeysDefinition listKeyVaultKeys);
 
     /**
      * Gets the integration account's Key Vault keys.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param listKeyVaultKeys The key vault parameters.
@@ -161,15 +163,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<KeyVaultKey> listKeyVaultKeys(
-        String resourceGroupName,
-        String integrationAccountName,
-        ListKeyVaultKeysDefinition listKeyVaultKeys,
-        Context context);
+    PagedIterable<KeyVaultKey> listKeyVaultKeys(String resourceGroupName, String integrationAccountName,
+        ListKeyVaultKeysDefinition listKeyVaultKeys, Context context);
 
     /**
      * Logs the integration account's tracking events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param logTrackingEvents The callback URL parameters.
@@ -179,15 +178,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> logTrackingEventsWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        TrackingEventsDefinition logTrackingEvents,
-        Context context);
+    Response<Void> logTrackingEventsWithResponse(String resourceGroupName, String integrationAccountName,
+        TrackingEventsDefinition logTrackingEvents, Context context);
 
     /**
      * Logs the integration account's tracking events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param logTrackingEvents The callback URL parameters.
@@ -195,12 +191,12 @@ public interface IntegrationAccounts {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void logTrackingEvents(
-        String resourceGroupName, String integrationAccountName, TrackingEventsDefinition logTrackingEvents);
+    void logTrackingEvents(String resourceGroupName, String integrationAccountName,
+        TrackingEventsDefinition logTrackingEvents);
 
     /**
      * Regenerates the integration account access key.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param regenerateAccessKey The access key type.
@@ -210,15 +206,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration account along with {@link Response}.
      */
-    Response<IntegrationAccount> regenerateAccessKeyWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        RegenerateActionParameter regenerateAccessKey,
-        Context context);
+    Response<IntegrationAccount> regenerateAccessKeyWithResponse(String resourceGroupName,
+        String integrationAccountName, RegenerateActionParameter regenerateAccessKey, Context context);
 
     /**
      * Regenerates the integration account access key.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param regenerateAccessKey The access key type.
@@ -227,12 +220,12 @@ public interface IntegrationAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration account.
      */
-    IntegrationAccount regenerateAccessKey(
-        String resourceGroupName, String integrationAccountName, RegenerateActionParameter regenerateAccessKey);
+    IntegrationAccount regenerateAccessKey(String resourceGroupName, String integrationAccountName,
+        RegenerateActionParameter regenerateAccessKey);
 
     /**
      * Gets an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,7 +236,7 @@ public interface IntegrationAccounts {
 
     /**
      * Gets an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +248,7 @@ public interface IntegrationAccounts {
 
     /**
      * Deletes an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,7 +258,7 @@ public interface IntegrationAccounts {
 
     /**
      * Deletes an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +270,7 @@ public interface IntegrationAccounts {
 
     /**
      * Begins definition for a new IntegrationAccount resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationAccount definition.
      */

@@ -76,9 +76,8 @@ public final class ResourceSkuResults {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ResourceSkuResults"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ResourceSkuResults"));
         } else {
             value().forEach(e -> e.validate());
         }

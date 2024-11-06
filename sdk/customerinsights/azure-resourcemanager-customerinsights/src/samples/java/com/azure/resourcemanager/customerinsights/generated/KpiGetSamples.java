@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for Kpi Get. */
+/**
+ * Samples for Kpi Get.
+ */
 public final class KpiGetSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/KpiGet.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/KpiGet.
+     * json
      */
     /**
      * Sample code: Kpi_Get.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void kpiGet(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {

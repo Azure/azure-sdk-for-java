@@ -139,8 +139,7 @@ public class AvroReaderSyncTests {
         record.put("$record", "Test");
         record.put("f", 5L);
 
-        return Stream.of(
-            Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
+        return Stream.of(Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
             Arguments.of(1, 60, createConsumer(o -> assertTrue((boolean) o))),
             Arguments.of(2, 59, createConsumer(o -> assertEquals("adsfasdf09809dsf-=adsf", o))),
             Arguments.of(3, 58, createConsumer(o -> bytesEqual(o, "12345abcd".getBytes(StandardCharsets.UTF_8)))),
@@ -154,7 +153,7 @@ public class AvroReaderSyncTests {
             Arguments.of(11, 84, createConsumer(o -> assertEquals(map, o))),
             Arguments.of(12, 77, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
             Arguments.of(13, 129, createConsumer(o -> assertEquals(record, o)))
-            /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
+        /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
         );
     }
 
@@ -208,8 +207,17 @@ public class AvroReaderSyncTests {
     }
 
     @ParameterizedTest
-    @CsvSource({"1953,1000", "67686,881", "133529,762", "199372,643", "265215,524", "331058,405", "396901,286",
-        "462744,167", "528587,48", "555167,0"})
+    @CsvSource({
+        "1953,1000",
+        "67686,881",
+        "133529,762",
+        "199372,643",
+        "265215,524",
+        "331058,405",
+        "396901,286",
+        "462744,167",
+        "528587,48",
+        "555167,0" })
     public void parseCfLargeBlockOffset(int blockOffset, int numObjects) throws IOException, URISyntaxException {
         try (FileChannel fileChannel = openChannel("changefeed_large.avro")) {
             /* Special use case for Changefeed - parse header and block separate. */
@@ -252,9 +260,19 @@ public class AvroReaderSyncTests {
     }
 
     @ParameterizedTest
-    @CsvSource({"1953,1,999", "67686,35,846", "133529,57,705", "199372,0,643", "265215,51,473", "331058,0,405",
-        "396901,11,275", "462744,68,99", "528587,41,7", "555167,0,0"})
-    public void parseCfLargeFilterIndex(int blockOffset, int filterIndex, int numObjects) throws IOException, URISyntaxException {
+    @CsvSource({
+        "1953,1,999",
+        "67686,35,846",
+        "133529,57,705",
+        "199372,0,643",
+        "265215,51,473",
+        "331058,0,405",
+        "396901,11,275",
+        "462744,68,99",
+        "528587,41,7",
+        "555167,0,0" })
+    public void parseCfLargeFilterIndex(int blockOffset, int filterIndex, int numObjects)
+        throws IOException, URISyntaxException {
         try (FileChannel fileChannel = openChannel("changefeed_large.avro")) {
             /* Special use case for Changefeed - parse header and block separate. */
             ByteBuffer fullBuffer = ByteBuffer.allocate((int) fileChannel.size());
@@ -272,7 +290,8 @@ public class AvroReaderSyncTests {
 
             // Set up synchronous Avro parsing
             AvroReaderSyncFactory factory = new AvroReaderSyncFactory();
-            Iterable<AvroObject> results = factory.getAvroReader(headerBuffer, bodyBuffer, blockOffset, filterIndex).read();
+            Iterable<AvroObject> results
+                = factory.getAvroReader(headerBuffer, bodyBuffer, blockOffset, filterIndex).read();
 
             // Process results
             int index = 0;

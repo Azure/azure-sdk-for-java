@@ -10,9 +10,8 @@ import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteTables. */
-public class RouteTablesImpl
-    extends TopLevelModifiableResourcesImpl<
-        RouteTable, RouteTableImpl, RouteTableInner, RouteTablesClient, NetworkManager>
+public class RouteTablesImpl extends
+    TopLevelModifiableResourcesImpl<RouteTable, RouteTableImpl, RouteTableInner, RouteTablesClient, NetworkManager>
     implements RouteTables {
 
     public RouteTablesImpl(final NetworkManager networkManager) {

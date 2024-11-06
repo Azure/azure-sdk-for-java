@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BusinessIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BusinessIdentity model =
-            BinaryData
-                .fromString("{\"qualifier\":\"foimwkslircizjxv\",\"value\":\"dfcea\"}")
-                .toObject(BusinessIdentity.class);
-        Assertions.assertEquals("foimwkslircizjxv", model.qualifier());
-        Assertions.assertEquals("dfcea", model.value());
+        BusinessIdentity model
+            = BinaryData.fromString("{\"qualifier\":\"r\",\"value\":\"aiouaubrjt\"}").toObject(BusinessIdentity.class);
+        Assertions.assertEquals("r", model.qualifier());
+        Assertions.assertEquals("aiouaubrjt", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BusinessIdentity model = new BusinessIdentity().withQualifier("foimwkslircizjxv").withValue("dfcea");
+        BusinessIdentity model = new BusinessIdentity().withQualifier("r").withValue("aiouaubrjt");
         model = BinaryData.fromObject(model).toObject(BusinessIdentity.class);
-        Assertions.assertEquals("foimwkslircizjxv", model.qualifier());
-        Assertions.assertEquals("dfcea", model.value());
+        Assertions.assertEquals("r", model.qualifier());
+        Assertions.assertEquals("aiouaubrjt", model.value());
     }
 }

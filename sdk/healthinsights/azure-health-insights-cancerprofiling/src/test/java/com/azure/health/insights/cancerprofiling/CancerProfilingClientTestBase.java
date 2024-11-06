@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-
 /**
  * Base class for OncoPhenotype clients test.
  */
@@ -27,11 +26,11 @@ public class CancerProfilingClientTestBase extends TestProxyTestBase {
 
     CancerProfilingClientBuilder getClientBuilder() {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080");
+        String endpoint
+            = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080");
 
-        CancerProfilingClientBuilder builder = new CancerProfilingClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey));
+        CancerProfilingClientBuilder builder
+            = new CancerProfilingClientBuilder().endpoint(endpoint).credential(new AzureKeyCredential(apiKey));
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -48,10 +47,10 @@ public class CancerProfilingClientTestBase extends TestProxyTestBase {
     }
 
     private BinaryData getOncoPhenotypeRequest() {
-        File requestFile = new File(CancerProfilingClientTestBase.class.getResource("/CancerProfilingClientTest.request.json").getPath());
+        File requestFile = new File(
+            CancerProfilingClientTestBase.class.getResource("/CancerProfilingClientTest.request.json").getPath());
         try {
-            BinaryData requestBody = BinaryData.fromFile(requestFile.toPath());
-            return requestBody;
+            return BinaryData.fromFile(requestFile.toPath());
         } catch (Exception e) {
             e.printStackTrace();
         }

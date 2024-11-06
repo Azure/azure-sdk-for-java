@@ -10,11 +10,9 @@ import com.azure.resourcemanager.workloads.models.MessageServerProperties;
 public final class MessageServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MessageServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"msPort\":2253353584396123190,\"internalMsPort\":4756233524739772773,\"httpPort\":159667534034002555,\"httpsPort\":8346750306601023663,\"hostname\":\"zrlovmclwhijcoej\",\"ipAddress\":\"bzaqsqsycbkbfk\",\"health\":\"Healthy\"}")
-                .toObject(MessageServerProperties.class);
+        MessageServerProperties model = BinaryData.fromString(
+            "{\"msPort\":2253353584396123190,\"internalMsPort\":4756233524739772773,\"httpPort\":159667534034002555,\"httpsPort\":8346750306601023663,\"hostname\":\"zrlovmclwhijcoej\",\"ipAddress\":\"bzaqsqsycbkbfk\",\"health\":\"Healthy\"}")
+            .toObject(MessageServerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

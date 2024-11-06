@@ -65,7 +65,7 @@ public interface BackupPolicy {
     SystemData systemData();
 
     /**
-     * Gets the backupPolicyId property: Backup Policy Resource ID.
+     * Gets the backupPolicyId property: Backup Policy GUID ID.
      * 
      * @return the backupPolicyId value.
      */

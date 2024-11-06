@@ -41,7 +41,8 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      * @param locale - Locale
      * @param startTranscription - Start Transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransportType transportType, String locale, boolean startTranscription) {
+    public TranscriptionOptions(String transportUrl, TranscriptionTransportType transportType, String locale,
+        boolean startTranscription) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.locale = locale;

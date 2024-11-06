@@ -5,24 +5,50 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents Insight Query. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Insight")
+/**
+ * Represents Insight Query.
+ */
 @Fluent
 public final class InsightQueryItem extends EntityQueryItem {
     /*
+     * The kind of the entity query
+     */
+    private EntityQueryKind kind = EntityQueryKind.INSIGHT;
+
+    /*
      * Properties bag for InsightQueryItem
      */
-    @JsonProperty(value = "properties")
     private InsightQueryItemProperties properties;
+
+    /*
+     * Query Template ARM ID
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InsightQueryItem class.
+     */
+    public InsightQueryItem() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity query.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityQueryKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the properties property: Properties bag for InsightQueryItem.
-     *
+     * 
      * @return the properties value.
      */
     public InsightQueryItemProperties properties() {
@@ -31,7 +57,7 @@ public final class InsightQueryItem extends EntityQueryItem {
 
     /**
      * Set the properties property: Properties bag for InsightQueryItem.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the InsightQueryItem object itself.
      */
@@ -40,14 +66,28 @@ public final class InsightQueryItem extends EntityQueryItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Query Template ARM ID.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InsightQueryItem withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InsightQueryItem withType(String type) {
         super.withType(type);
@@ -56,14 +96,60 @@ public final class InsightQueryItem extends EntityQueryItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", type());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InsightQueryItem.
+     */
+    public static InsightQueryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItem deserializedInsightQueryItem = new InsightQueryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInsightQueryItem.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInsightQueryItem.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedInsightQueryItem.withType(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedInsightQueryItem.kind = EntityQueryKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInsightQueryItem.properties = InsightQueryItemProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItem;
+        });
     }
 }

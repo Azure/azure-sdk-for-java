@@ -12,18 +12,18 @@ public final class AzureMachineLearningStudioOutputColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMachineLearningStudioOutputColumn model
-            = BinaryData.fromString("{\"name\":\"bkrvrnsvshqj\",\"dataType\":\"xc\"}")
+            = BinaryData.fromString("{\"name\":\"sotftpvj\",\"dataType\":\"exilzznfqqnvwpmq\"}")
                 .toObject(AzureMachineLearningStudioOutputColumn.class);
-        Assertions.assertEquals("bkrvrnsvshqj", model.name());
-        Assertions.assertEquals("xc", model.dataType());
+        Assertions.assertEquals("sotftpvj", model.name());
+        Assertions.assertEquals("exilzznfqqnvwpmq", model.dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMachineLearningStudioOutputColumn model
-            = new AzureMachineLearningStudioOutputColumn().withName("bkrvrnsvshqj").withDataType("xc");
+            = new AzureMachineLearningStudioOutputColumn().withName("sotftpvj").withDataType("exilzznfqqnvwpmq");
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningStudioOutputColumn.class);
-        Assertions.assertEquals("bkrvrnsvshqj", model.name());
-        Assertions.assertEquals("xc", model.dataType());
+        Assertions.assertEquals("sotftpvj", model.name());
+        Assertions.assertEquals("exilzznfqqnvwpmq", model.dataType());
     }
 }

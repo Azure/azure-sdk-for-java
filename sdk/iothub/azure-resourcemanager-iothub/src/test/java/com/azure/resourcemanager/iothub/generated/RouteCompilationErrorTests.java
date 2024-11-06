@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RouteCompilationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RouteCompilationError model =
-            BinaryData
-                .fromString(
-                    "{\"message\":\"xvy\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":11863753,\"column\":1364703724},\"end\":{\"line\":664596221,\"column\":107340083}}}")
-                .toObject(RouteCompilationError.class);
+        RouteCompilationError model = BinaryData.fromString(
+            "{\"message\":\"xvy\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":11863753,\"column\":1364703724},\"end\":{\"line\":664596221,\"column\":107340083}}}")
+            .toObject(RouteCompilationError.class);
         Assertions.assertEquals("xvy", model.message());
         Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());
         Assertions.assertEquals(11863753, model.location().start().line());
@@ -29,14 +27,11 @@ public final class RouteCompilationErrorTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteCompilationError model =
-            new RouteCompilationError()
-                .withMessage("xvy")
-                .withSeverity(RouteErrorSeverity.ERROR)
-                .withLocation(
-                    new RouteErrorRange()
-                        .withStart(new RouteErrorPosition().withLine(11863753).withColumn(1364703724))
-                        .withEnd(new RouteErrorPosition().withLine(664596221).withColumn(107340083)));
+        RouteCompilationError model = new RouteCompilationError().withMessage("xvy")
+            .withSeverity(RouteErrorSeverity.ERROR)
+            .withLocation(
+                new RouteErrorRange().withStart(new RouteErrorPosition().withLine(11863753).withColumn(1364703724))
+                    .withEnd(new RouteErrorPosition().withLine(664596221).withColumn(107340083)));
         model = BinaryData.fromObject(model).toObject(RouteCompilationError.class);
         Assertions.assertEquals("xvy", model.message());
         Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());

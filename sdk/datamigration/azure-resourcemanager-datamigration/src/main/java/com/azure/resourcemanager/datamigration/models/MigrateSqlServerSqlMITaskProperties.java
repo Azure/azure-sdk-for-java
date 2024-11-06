@@ -5,35 +5,67 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for task that migrates SQL Server databases to Azure SQL Database Managed Instance. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("Migrate.SqlServer.AzureSqlDbMI")
+/**
+ * Properties for task that migrates SQL Server databases to Azure SQL Database Managed Instance.
+ */
 @Fluent
 public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProperties {
     /*
+     * Task type.
+     */
+    private String taskType = "Migrate.SqlServer.AzureSqlDbMI";
+
+    /*
      * Task input
      */
-    @JsonProperty(value = "input")
     private MigrateSqlServerSqlMITaskInput input;
 
     /*
      * Task output. This is ignored if submitted.
      */
-    @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigrateSqlServerSqlMITaskOutput> output;
 
-    /** Creates an instance of MigrateSqlServerSqlMITaskProperties class. */
+    /*
+     * Array of command properties.
+     */
+    private List<CommandProperties> commands;
+
+    /*
+     * The state of the task. This is ignored if submitted.
+     */
+    private TaskState state;
+
+    /*
+     * Array of errors. This is ignored if submitted.
+     */
+    private List<ManagementError> errors;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlMITaskProperties class.
+     */
     public MigrateSqlServerSqlMITaskProperties() {
     }
 
     /**
+     * Get the taskType property: Task type.
+     * 
+     * @return the taskType value.
+     */
+    @Override
+    public String taskType() {
+        return this.taskType;
+    }
+
+    /**
      * Get the input property: Task input.
-     *
+     * 
      * @return the input value.
      */
     public MigrateSqlServerSqlMITaskInput input() {
@@ -42,7 +74,7 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
 
     /**
      * Set the input property: Task input.
-     *
+     * 
      * @param input the input value to set.
      * @return the MigrateSqlServerSqlMITaskProperties object itself.
      */
@@ -53,7 +85,7 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
 
     /**
      * Get the output property: Task output. This is ignored if submitted.
-     *
+     * 
      * @return the output value.
      */
     public List<MigrateSqlServerSqlMITaskOutput> output() {
@@ -61,18 +93,103 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
     }
 
     /**
+     * Get the commands property: Array of command properties.
+     * 
+     * @return the commands value.
+     */
+    @Override
+    public List<CommandProperties> commands() {
+        return this.commands;
+    }
+
+    /**
+     * Get the state property: The state of the task. This is ignored if submitted.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public TaskState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the errors property: Array of errors. This is ignored if submitted.
+     * 
+     * @return the errors value.
+     */
+    @Override
+    public List<ManagementError> errors() {
+        return this.errors;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (input() != null) {
             input().validate();
         }
         if (output() != null) {
             output().forEach(e -> e.validate());
         }
+        if (commands() != null) {
+            commands().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeJsonField("input", this.input);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMITaskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMITaskProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMITaskProperties.
+     */
+    public static MigrateSqlServerSqlMITaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMITaskProperties deserializedMigrateSqlServerSqlMITaskProperties
+                = new MigrateSqlServerSqlMITaskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errors".equals(fieldName)) {
+                    List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskProperties.errors = errors;
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.state = TaskState.fromString(reader.getString());
+                } else if ("commands".equals(fieldName)) {
+                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskProperties.commands = commands;
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.taskType = reader.getString();
+                } else if ("input".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.input
+                        = MigrateSqlServerSqlMITaskInput.fromJson(reader);
+                } else if ("output".equals(fieldName)) {
+                    List<MigrateSqlServerSqlMITaskOutput> output
+                        = reader.readArray(reader1 -> MigrateSqlServerSqlMITaskOutput.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskProperties.output = output;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMITaskProperties;
+        });
     }
 }

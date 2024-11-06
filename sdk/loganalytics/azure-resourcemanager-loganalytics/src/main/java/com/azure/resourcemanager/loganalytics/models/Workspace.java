@@ -191,11 +191,8 @@ public interface Workspace {
     WorkspaceInner innerModel();
 
     /** The entirety of the Workspace definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Workspace definition stages. */
@@ -238,18 +235,11 @@ public interface Workspace {
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithRetentionInDays,
-                DefinitionStages.WithWorkspaceCapping,
-                DefinitionStages.WithPublicNetworkAccessForIngestion,
-                DefinitionStages.WithPublicNetworkAccessForQuery,
-                DefinitionStages.WithForceCmkForQuery,
-                DefinitionStages.WithFeatures,
-                DefinitionStages.WithDefaultDataCollectionRuleResourceId {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithEtag, DefinitionStages.WithSku, DefinitionStages.WithRetentionInDays,
+            DefinitionStages.WithWorkspaceCapping, DefinitionStages.WithPublicNetworkAccessForIngestion,
+            DefinitionStages.WithPublicNetworkAccessForQuery, DefinitionStages.WithForceCmkForQuery,
+            DefinitionStages.WithFeatures, DefinitionStages.WithDefaultDataCollectionRuleResourceId {
             /**
              * Executes the create request.
              *
@@ -405,17 +395,11 @@ public interface Workspace {
     Workspace.Update update();
 
     /** The template for Workspace update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithRetentionInDays,
-            UpdateStages.WithWorkspaceCapping,
-            UpdateStages.WithPublicNetworkAccessForIngestion,
-            UpdateStages.WithPublicNetworkAccessForQuery,
-            UpdateStages.WithForceCmkForQuery,
-            UpdateStages.WithFeatures,
-            UpdateStages.WithDefaultDataCollectionRuleResourceId {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
+        UpdateStages.WithRetentionInDays, UpdateStages.WithWorkspaceCapping,
+        UpdateStages.WithPublicNetworkAccessForIngestion, UpdateStages.WithPublicNetworkAccessForQuery,
+        UpdateStages.WithForceCmkForQuery, UpdateStages.WithFeatures,
+        UpdateStages.WithDefaultDataCollectionRuleResourceId {
         /**
          * Executes the update request.
          *

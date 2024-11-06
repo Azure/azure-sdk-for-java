@@ -34,7 +34,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
         return overwriteMode;
     }
 
-
     /**
      * This parameter is required when opening the channel to write.
      * @return New size of the target file.

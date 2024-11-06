@@ -172,7 +172,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of DirectoryItem if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
      */
     public static DirectoryItem fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -187,7 +186,6 @@ public final class DirectoryItem implements XmlSerializable<DirectoryItem> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of DirectoryItem if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the DirectoryItem.
      */
     public static DirectoryItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

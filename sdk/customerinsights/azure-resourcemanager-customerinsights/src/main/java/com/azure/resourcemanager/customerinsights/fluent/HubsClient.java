@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.HubInner;
 
-/** An instance of this class provides access to all the operations defined in HubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HubsClient.
+ */
 public interface HubsClient {
     /**
      * Creates a hub, or updates an existing hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the Hub.
      * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
@@ -28,12 +30,12 @@ public interface HubsClient {
      * @return hub resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubInner> createOrUpdateWithResponse(
-        String resourceGroupName, String hubName, HubInner parameters, Context context);
+    Response<HubInner> createOrUpdateWithResponse(String resourceGroupName, String hubName, HubInner parameters,
+        Context context);
 
     /**
      * Creates a hub, or updates an existing hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the Hub.
      * @param parameters Parameters supplied to the CreateOrUpdate Hub operation.
@@ -47,7 +49,7 @@ public interface HubsClient {
 
     /**
      * Updates a Hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the Hub.
      * @param parameters Parameters supplied to the Update Hub operation.
@@ -58,12 +60,12 @@ public interface HubsClient {
      * @return hub resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubInner> updateWithResponse(
-        String resourceGroupName, String hubName, HubInner parameters, Context context);
+    Response<HubInner> updateWithResponse(String resourceGroupName, String hubName, HubInner parameters,
+        Context context);
 
     /**
      * Updates a Hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the Hub.
      * @param parameters Parameters supplied to the Update Hub operation.
@@ -77,7 +79,7 @@ public interface HubsClient {
 
     /**
      * Deletes the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +92,7 @@ public interface HubsClient {
 
     /**
      * Deletes the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -104,7 +106,7 @@ public interface HubsClient {
 
     /**
      * Deletes the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +118,7 @@ public interface HubsClient {
 
     /**
      * Deletes the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -129,7 +131,7 @@ public interface HubsClient {
 
     /**
      * Gets information about the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -143,7 +145,7 @@ public interface HubsClient {
 
     /**
      * Gets information about the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface HubsClient {
 
     /**
      * Gets all the hubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -168,7 +170,7 @@ public interface HubsClient {
 
     /**
      * Gets all the hubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +183,7 @@ public interface HubsClient {
 
     /**
      * Gets all hubs in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all hubs in the specified subscription as paginated response with {@link PagedIterable}.
@@ -191,7 +193,7 @@ public interface HubsClient {
 
     /**
      * Gets all hubs in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

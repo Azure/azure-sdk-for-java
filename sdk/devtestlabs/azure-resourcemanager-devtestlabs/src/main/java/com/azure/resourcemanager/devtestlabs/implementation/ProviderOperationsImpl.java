@@ -19,8 +19,8 @@ public final class ProviderOperationsImpl implements ProviderOperations {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public ProviderOperationsImpl(
-        ProviderOperationsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public ProviderOperationsImpl(ProviderOperationsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateTrustedIdProviderWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateTrustedIdProviderWithAccountParameters model =
-            BinaryData
-                .fromString("{\"name\":\"aeqjhqjbasvms\",\"properties\":{\"idProvider\":\"jqul\"}}")
+        CreateTrustedIdProviderWithAccountParameters model
+            = BinaryData.fromString("{\"name\":\"usivye\",\"properties\":{\"idProvider\":\"cciqihnhungbwjz\"}}")
                 .toObject(CreateTrustedIdProviderWithAccountParameters.class);
-        Assertions.assertEquals("aeqjhqjbasvms", model.name());
-        Assertions.assertEquals("jqul", model.idProvider());
+        Assertions.assertEquals("usivye", model.name());
+        Assertions.assertEquals("cciqihnhungbwjz", model.idProvider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateTrustedIdProviderWithAccountParameters model =
-            new CreateTrustedIdProviderWithAccountParameters().withName("aeqjhqjbasvms").withIdProvider("jqul");
+        CreateTrustedIdProviderWithAccountParameters model
+            = new CreateTrustedIdProviderWithAccountParameters().withName("usivye").withIdProvider("cciqihnhungbwjz");
         model = BinaryData.fromObject(model).toObject(CreateTrustedIdProviderWithAccountParameters.class);
-        Assertions.assertEquals("aeqjhqjbasvms", model.name());
-        Assertions.assertEquals("jqul", model.idProvider());
+        Assertions.assertEquals("usivye", model.name());
+        Assertions.assertEquals("cciqihnhungbwjz", model.idProvider());
     }
 }

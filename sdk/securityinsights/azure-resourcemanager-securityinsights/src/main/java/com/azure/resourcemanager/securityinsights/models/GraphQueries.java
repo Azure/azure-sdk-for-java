@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The graph query to show the current data status. */
+/**
+ * The graph query to show the current data status.
+ */
 @Fluent
-public class GraphQueries {
+public class GraphQueries implements JsonSerializable<GraphQueries> {
     /*
      * the metric that the query is checking
      */
-    @JsonProperty(value = "metricName")
     private String metricName;
 
     /*
      * The legend for the graph
      */
-    @JsonProperty(value = "legend")
     private String legend;
 
     /*
      * The base query for the graph
      */
-    @JsonProperty(value = "baseQuery")
     private String baseQuery;
 
     /**
+     * Creates an instance of GraphQueries class.
+     */
+    public GraphQueries() {
+    }
+
+    /**
      * Get the metricName property: the metric that the query is checking.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -39,7 +48,7 @@ public class GraphQueries {
 
     /**
      * Set the metricName property: the metric that the query is checking.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the GraphQueries object itself.
      */
@@ -50,7 +59,7 @@ public class GraphQueries {
 
     /**
      * Get the legend property: The legend for the graph.
-     *
+     * 
      * @return the legend value.
      */
     public String legend() {
@@ -59,7 +68,7 @@ public class GraphQueries {
 
     /**
      * Set the legend property: The legend for the graph.
-     *
+     * 
      * @param legend the legend value to set.
      * @return the GraphQueries object itself.
      */
@@ -70,7 +79,7 @@ public class GraphQueries {
 
     /**
      * Get the baseQuery property: The base query for the graph.
-     *
+     * 
      * @return the baseQuery value.
      */
     public String baseQuery() {
@@ -79,7 +88,7 @@ public class GraphQueries {
 
     /**
      * Set the baseQuery property: The base query for the graph.
-     *
+     * 
      * @param baseQuery the baseQuery value to set.
      * @return the GraphQueries object itself.
      */
@@ -90,9 +99,51 @@ public class GraphQueries {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricName", this.metricName);
+        jsonWriter.writeStringField("legend", this.legend);
+        jsonWriter.writeStringField("baseQuery", this.baseQuery);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GraphQueries from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GraphQueries if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GraphQueries.
+     */
+    public static GraphQueries fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GraphQueries deserializedGraphQueries = new GraphQueries();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricName".equals(fieldName)) {
+                    deserializedGraphQueries.metricName = reader.getString();
+                } else if ("legend".equals(fieldName)) {
+                    deserializedGraphQueries.legend = reader.getString();
+                } else if ("baseQuery".equals(fieldName)) {
+                    deserializedGraphQueries.baseQuery = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGraphQueries;
+        });
     }
 }

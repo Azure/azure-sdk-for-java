@@ -13,29 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCloudServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCloudServiceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"gatewaySubnet\":\"c\",\"isAccountOnboarded\":\"onBoarding\",\"nodes\":1450066184,\"serviceURL\":\"hbcsgl\"},\"location\":\"mmajtjaodx\",\"tags\":{\"onpimexgstxg\":\"bdxkqpxokaj\",\"gmaajrm\":\"po\"},\"id\":\"djwzrlov\",\"name\":\"clwhijcoejctbz\",\"type\":\"qsqsy\"}")
-                .toObject(DedicatedCloudServiceInner.class);
-        Assertions.assertEquals("mmajtjaodx", model.location());
-        Assertions.assertEquals("bdxkqpxokaj", model.tags().get("onpimexgstxg"));
-        Assertions.assertEquals("c", model.gatewaySubnet());
+        DedicatedCloudServiceInner model = BinaryData.fromString(
+            "{\"properties\":{\"gatewaySubnet\":\"aodsfcpkv\",\"isAccountOnboarded\":\"onBoarded\",\"nodes\":1276916323,\"serviceURL\":\"zmyzydagf\"},\"location\":\"axbezyiuo\",\"tags\":{\"exim\":\"whrdxwzywqsmbsu\",\"stkiiuxhqyud\":\"ryocfsfksymdd\",\"rq\":\"o\",\"oczvy\":\"b\"},\"id\":\"fqrvkdvjsllrmvvd\",\"name\":\"watkpnpulexxb\",\"type\":\"zwtruwiqzbqjvsov\"}")
+            .toObject(DedicatedCloudServiceInner.class);
+        Assertions.assertEquals("axbezyiuo", model.location());
+        Assertions.assertEquals("whrdxwzywqsmbsu", model.tags().get("exim"));
+        Assertions.assertEquals("aodsfcpkv", model.gatewaySubnet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCloudServiceInner model =
-            new DedicatedCloudServiceInner()
-                .withLocation("mmajtjaodx")
-                .withTags(mapOf("onpimexgstxg", "bdxkqpxokaj", "gmaajrm", "po"))
-                .withGatewaySubnet("c");
+        DedicatedCloudServiceInner model = new DedicatedCloudServiceInner().withLocation("axbezyiuo")
+            .withTags(mapOf("exim", "whrdxwzywqsmbsu", "stkiiuxhqyud", "ryocfsfksymdd", "rq", "o", "oczvy", "b"))
+            .withGatewaySubnet("aodsfcpkv");
         model = BinaryData.fromObject(model).toObject(DedicatedCloudServiceInner.class);
-        Assertions.assertEquals("mmajtjaodx", model.location());
-        Assertions.assertEquals("bdxkqpxokaj", model.tags().get("onpimexgstxg"));
-        Assertions.assertEquals("c", model.gatewaySubnet());
+        Assertions.assertEquals("axbezyiuo", model.location());
+        Assertions.assertEquals("whrdxwzywqsmbsu", model.tags().get("exim"));
+        Assertions.assertEquals("aodsfcpkv", model.gatewaySubnet());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

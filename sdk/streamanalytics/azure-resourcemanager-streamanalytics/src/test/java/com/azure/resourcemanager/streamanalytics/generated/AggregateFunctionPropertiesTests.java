@@ -16,24 +16,24 @@ public final class AggregateFunctionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AggregateFunctionProperties model = BinaryData.fromString(
-            "{\"type\":\"Aggregate\",\"etag\":\"hhszh\",\"properties\":{\"inputs\":[{\"dataType\":\"wiwubm\",\"isConfigurationParameter\":true},{\"dataType\":\"sldnkwwtppjflcxo\",\"isConfigurationParameter\":true},{\"dataType\":\"onz\",\"isConfigurationParameter\":true},{\"dataType\":\"kvmkqzeqq\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"zxmhhvhgu\"},\"binding\":{\"type\":\"FunctionBinding\"}}}")
+            "{\"type\":\"Aggregate\",\"etag\":\"ndlkzgxhurip\",\"properties\":{\"inputs\":[{\"dataType\":\"xunkbebxmubyynt\",\"isConfigurationParameter\":false},{\"dataType\":\"qtkoievs\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"rlltmuwlauwzizx\"},\"binding\":{\"type\":\"FunctionBinding\"}}}")
             .toObject(AggregateFunctionProperties.class);
-        Assertions.assertEquals("wiwubm", model.inputs().get(0).dataType());
-        Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("zxmhhvhgu", model.output().dataType());
+        Assertions.assertEquals("xunkbebxmubyynt", model.inputs().get(0).dataType());
+        Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("rlltmuwlauwzizx", model.output().dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AggregateFunctionProperties model = new AggregateFunctionProperties()
-            .withInputs(Arrays.asList(new FunctionInput().withDataType("wiwubm").withIsConfigurationParameter(true),
-                new FunctionInput().withDataType("sldnkwwtppjflcxo").withIsConfigurationParameter(true),
-                new FunctionInput().withDataType("onz").withIsConfigurationParameter(true),
-                new FunctionInput().withDataType("kvmkqzeqq").withIsConfigurationParameter(false)))
-            .withOutput(new FunctionOutput().withDataType("zxmhhvhgu")).withBinding(new FunctionBinding());
+            .withInputs(
+                Arrays.asList(new FunctionInput().withDataType("xunkbebxmubyynt").withIsConfigurationParameter(false),
+                    new FunctionInput().withDataType("qtkoievs").withIsConfigurationParameter(false)))
+            .withOutput(new FunctionOutput().withDataType("rlltmuwlauwzizx"))
+            .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(AggregateFunctionProperties.class);
-        Assertions.assertEquals("wiwubm", model.inputs().get(0).dataType());
-        Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("zxmhhvhgu", model.output().dataType());
+        Assertions.assertEquals("xunkbebxmubyynt", model.inputs().get(0).dataType());
+        Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("rlltmuwlauwzizx", model.output().dataType());
     }
 }

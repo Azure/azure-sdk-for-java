@@ -5,29 +5,38 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.fluent.models.ConnectionSettingInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of bot service connection settings response. */
+/**
+ * The list of bot service connection settings response.
+ */
 @Fluent
-public final class ConnectionSettingResponseList {
+public final class ConnectionSettingResponseList implements JsonSerializable<ConnectionSettingResponseList> {
     /*
-     * The link used to get the next page of bot service connection setting
-     * resources.
+     * The link used to get the next page of bot service connection setting resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets the list of bot service connection settings and their properties.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectionSettingInner> value;
 
     /**
+     * Creates an instance of ConnectionSettingResponseList class.
+     */
+    public ConnectionSettingResponseList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of bot service connection setting resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +45,7 @@ public final class ConnectionSettingResponseList {
 
     /**
      * Set the nextLink property: The link used to get the next page of bot service connection setting resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConnectionSettingResponseList object itself.
      */
@@ -47,7 +56,7 @@ public final class ConnectionSettingResponseList {
 
     /**
      * Get the value property: Gets the list of bot service connection settings and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<ConnectionSettingInner> value() {
@@ -56,12 +65,53 @@ public final class ConnectionSettingResponseList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionSettingResponseList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionSettingResponseList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionSettingResponseList.
+     */
+    public static ConnectionSettingResponseList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionSettingResponseList deserializedConnectionSettingResponseList
+                = new ConnectionSettingResponseList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedConnectionSettingResponseList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ConnectionSettingInner> value
+                        = reader.readArray(reader1 -> ConnectionSettingInner.fromJson(reader1));
+                    deserializedConnectionSettingResponseList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionSettingResponseList;
+        });
     }
 }

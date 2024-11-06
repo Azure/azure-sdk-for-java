@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlWorkloadTypeUpdateSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlWorkloadTypeUpdateSettings model =
-            BinaryData.fromString("{\"sqlWorkloadType\":\"OLTP\"}").toObject(SqlWorkloadTypeUpdateSettings.class);
-        Assertions.assertEquals(SqlWorkloadType.OLTP, model.sqlWorkloadType());
+        SqlWorkloadTypeUpdateSettings model
+            = BinaryData.fromString("{\"sqlWorkloadType\":\"DW\"}").toObject(SqlWorkloadTypeUpdateSettings.class);
+        Assertions.assertEquals(SqlWorkloadType.DW, model.sqlWorkloadType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlWorkloadTypeUpdateSettings model =
-            new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.OLTP);
+        SqlWorkloadTypeUpdateSettings model
+            = new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.DW);
         model = BinaryData.fromObject(model).toObject(SqlWorkloadTypeUpdateSettings.class);
-        Assertions.assertEquals(SqlWorkloadType.OLTP, model.sqlWorkloadType());
+        Assertions.assertEquals(SqlWorkloadType.DW, model.sqlWorkloadType());
     }
 }

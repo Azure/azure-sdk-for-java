@@ -11,21 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DiscoveryConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiscoveryConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"configurationType\":\"Discovery\",\"centralServerVmId\":\"nsvbuswdv\",\"managedRgStorageAccountName\":\"ybycnunvj\",\"appLocation\":\"tkfa\"}")
-                .toObject(DiscoveryConfiguration.class);
+        DiscoveryConfiguration model = BinaryData.fromString(
+            "{\"configurationType\":\"Discovery\",\"centralServerVmId\":\"nsvbuswdv\",\"managedRgStorageAccountName\":\"ybycnunvj\",\"appLocation\":\"tkfa\"}")
+            .toObject(DiscoveryConfiguration.class);
         Assertions.assertEquals("nsvbuswdv", model.centralServerVmId());
         Assertions.assertEquals("ybycnunvj", model.managedRgStorageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveryConfiguration model =
-            new DiscoveryConfiguration()
-                .withCentralServerVmId("nsvbuswdv")
-                .withManagedRgStorageAccountName("ybycnunvj");
+        DiscoveryConfiguration model = new DiscoveryConfiguration().withCentralServerVmId("nsvbuswdv")
+            .withManagedRgStorageAccountName("ybycnunvj");
         model = BinaryData.fromObject(model).toObject(DiscoveryConfiguration.class);
         Assertions.assertEquals("nsvbuswdv", model.centralServerVmId());
         Assertions.assertEquals("ybycnunvj", model.managedRgStorageAccountName());

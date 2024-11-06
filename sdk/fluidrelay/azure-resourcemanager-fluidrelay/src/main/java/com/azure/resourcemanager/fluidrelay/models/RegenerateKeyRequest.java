@@ -6,20 +6,31 @@ package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies which key should be generated. */
+/**
+ * Specifies which key should be generated.
+ */
 @Fluent
-public final class RegenerateKeyRequest {
+public final class RegenerateKeyRequest implements JsonSerializable<RegenerateKeyRequest> {
     /*
      * The key to regenerate.
      */
-    @JsonProperty(value = "keyName", required = true)
     private KeyName keyName;
 
     /**
+     * Creates an instance of RegenerateKeyRequest class.
+     */
+    public RegenerateKeyRequest() {
+    }
+
+    /**
      * Get the keyName property: The key to regenerate.
-     *
+     * 
      * @return the keyName value.
      */
     public KeyName keyName() {
@@ -28,7 +39,7 @@ public final class RegenerateKeyRequest {
 
     /**
      * Set the keyName property: The key to regenerate.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the RegenerateKeyRequest object itself.
      */
@@ -39,16 +50,52 @@ public final class RegenerateKeyRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model RegenerateKeyRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyName in model RegenerateKeyRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RegenerateKeyRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName == null ? null : this.keyName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegenerateKeyRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegenerateKeyRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegenerateKeyRequest.
+     */
+    public static RegenerateKeyRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegenerateKeyRequest deserializedRegenerateKeyRequest = new RegenerateKeyRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedRegenerateKeyRequest.keyName = KeyName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegenerateKeyRequest;
+        });
+    }
 }

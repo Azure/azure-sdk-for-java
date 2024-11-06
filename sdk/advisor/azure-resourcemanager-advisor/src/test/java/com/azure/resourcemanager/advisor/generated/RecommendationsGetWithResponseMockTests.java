@@ -6,83 +6,55 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.advisor.AdvisorManager;
 import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.Impact;
 import com.azure.resourcemanager.advisor.models.ResourceRecommendationBase;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RecommendationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"category\":\"HighAvailability\",\"impact\":\"High\",\"impactedField\":\"vfbtkuwh\",\"impactedValue\":\"hykojoxafnndlpic\",\"lastUpdated\":\"2021-09-25T08:27:56Z\",\"metadata\":{\"pwdreqnovvqf\":\"datakcdyhbpk\",\"syrsndsytgadgvra\":\"datavljxywsu\",\"uu\":\"dataaeneqnzarrwl\",\"e\":\"datajfqka\"},\"recommendationTypeId\":\"ipfpubji\",\"shortDescription\":{\"problem\":\"iftohqkvpu\",\"solution\":\"sgplsakn\"},\"suppressionIds\":[\"f1a42f8d-1b83-49bc-a8c2-1e8a90fc1316\",\"9f255689-d5b1-4bcd-b67b-985b47dea14c\",\"2c2196ba-31ea-480c-9abc-f004c6d96853\"],\"extendedProperties\":{\"jphuopxodlqi\":\"n\"},\"resourceMetadata\":{\"resourceId\":\"orzihle\",\"source\":\"jswsrmslyz\",\"action\":{\"iysui\":\"databchckqqzqio\",\"rwyhqmibzyhwitsm\":\"datazynkedya\",\"pcdpumnz\":\"datapyy\",\"abikns\":\"datamwzn\"},\"singular\":\"gj\",\"plural\":\"bldtlww\"},\"description\":\"kdmtncvokotll\",\"label\":\"yhgsy\",\"learnMoreLink\":\"ogjltdtbnnhad\",\"potentialBenefits\":\"crkvcikhnv\",\"actions\":[{\"wggxkallat\":\"datagxqquezik\",\"cjzkzivgvvcna\":\"dataelwuipi\",\"drd\":\"datarhyrnxxmueed\"}],\"remediation\":{\"tdaaygdvwvg\":\"datakwqqtchealmf\",\"epxgyqagvr\":\"dataiohgwxrtfud\",\"imfnjhfjx\":\"datamnpkukghimdblxg\"},\"exposedMetadataProperties\":{\"foqreyfkzik\":\"datazk\",\"wczelpci\":\"datajawneaiv\",\"abfatkl\":\"dataelsfeaen\"}},\"id\":\"dxbjhwuaanozj\",\"name\":\"sphyoulpjrvxa\",\"type\":\"l\"}";
 
-        String responseStr =
-            "{\"properties\":{\"category\":\"Security\",\"impact\":\"High\",\"impactedField\":\"kfssxqukkf\",\"impactedValue\":\"gmgsxnkjzkde\",\"lastUpdated\":\"2021-08-30T18:12:55Z\",\"metadata\":{\"ighxpk\":\"dataopwi\",\"baumnyqupedeoj\":\"datawzbaiue\"},\"recommendationTypeId\":\"bckhsmtxpsi\",\"shortDescription\":{\"problem\":\"fhvpesaps\",\"solution\":\"dqmh\"},\"suppressionIds\":[\"b1eecfad-1b6f-4eda-bd1b-d71c2a0d518d\",\"b8b70fe5-ab05-4fed-a3d9-903cb3756293\",\"10d00cfa-8b19-45c1-be70-06062e19c80a\"],\"extendedProperties\":{\"ws\":\"ldwkyzxuutkn\",\"vnm\":\"wsvlxotogtwrupqs\",\"eil\":\"cykvceo\"},\"resourceMetadata\":{\"resourceId\":\"oty\",\"source\":\"fcnj\",\"action\":{},\"singular\":\"nxdhbt\",\"plural\":\"phywpnvj\"},\"description\":\"qnermclfplphoxu\",\"label\":\"rpabg\",\"learnMoreLink\":\"psbjta\",\"potentialBenefits\":\"ugxywpmueef\",\"actions\":[{\"onobglaocqx\":\"dataqkqujidsu\",\"yudxytlmoy\":\"dataccm\"},{\"hl\":\"datavwfudwpzntxhd\"}],\"remediation\":{\"kfrlhrxsbky\":\"databh\",\"afkuwb\":\"datapycanuzbpz\",\"ehhseyvjusrts\":\"datarnwb\"},\"exposedMetadataProperties\":{\"elmqk\":\"datapkdeemaofmxagkvt\",\"hcdhmdual\":\"datahahvljuahaq\"}},\"id\":\"exq\",\"name\":\"vfadmws\",\"type\":\"crgvxpvgom\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AdvisorManager manager = AdvisorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ResourceRecommendationBase response = manager.recommendations()
+            .getWithResponse("obyu", "erpqlpqwcciuqg", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AdvisorManager manager =
-            AdvisorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ResourceRecommendationBase response =
-            manager.recommendations().getWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals(Category.SECURITY, response.category());
+        Assertions.assertEquals(Category.HIGH_AVAILABILITY, response.category());
         Assertions.assertEquals(Impact.HIGH, response.impact());
-        Assertions.assertEquals("kfssxqukkf", response.impactedField());
-        Assertions.assertEquals("gmgsxnkjzkde", response.impactedValue());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T18:12:55Z"), response.lastUpdated());
-        Assertions.assertEquals("bckhsmtxpsi", response.recommendationTypeId());
-        Assertions.assertEquals("fhvpesaps", response.shortDescription().problem());
-        Assertions.assertEquals("dqmh", response.shortDescription().solution());
-        Assertions
-            .assertEquals(UUID.fromString("b1eecfad-1b6f-4eda-bd1b-d71c2a0d518d"), response.suppressionIds().get(0));
-        Assertions.assertEquals("ldwkyzxuutkn", response.extendedProperties().get("ws"));
-        Assertions.assertEquals("oty", response.resourceMetadata().resourceId());
-        Assertions.assertEquals("fcnj", response.resourceMetadata().source());
-        Assertions.assertEquals("nxdhbt", response.resourceMetadata().singular());
-        Assertions.assertEquals("phywpnvj", response.resourceMetadata().plural());
-        Assertions.assertEquals("qnermclfplphoxu", response.description());
-        Assertions.assertEquals("rpabg", response.label());
-        Assertions.assertEquals("psbjta", response.learnMoreLink());
-        Assertions.assertEquals("ugxywpmueef", response.potentialBenefits());
+        Assertions.assertEquals("vfbtkuwh", response.impactedField());
+        Assertions.assertEquals("hykojoxafnndlpic", response.impactedValue());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T08:27:56Z"), response.lastUpdated());
+        Assertions.assertEquals("ipfpubji", response.recommendationTypeId());
+        Assertions.assertEquals("iftohqkvpu", response.shortDescription().problem());
+        Assertions.assertEquals("sgplsakn", response.shortDescription().solution());
+        Assertions.assertEquals(UUID.fromString("f1a42f8d-1b83-49bc-a8c2-1e8a90fc1316"),
+            response.suppressionIds().get(0));
+        Assertions.assertEquals("n", response.extendedProperties().get("jphuopxodlqi"));
+        Assertions.assertEquals("orzihle", response.resourceMetadata().resourceId());
+        Assertions.assertEquals("jswsrmslyz", response.resourceMetadata().source());
+        Assertions.assertEquals("gj", response.resourceMetadata().singular());
+        Assertions.assertEquals("bldtlww", response.resourceMetadata().plural());
+        Assertions.assertEquals("kdmtncvokotll", response.description());
+        Assertions.assertEquals("yhgsy", response.label());
+        Assertions.assertEquals("ogjltdtbnnhad", response.learnMoreLink());
+        Assertions.assertEquals("crkvcikhnv", response.potentialBenefits());
     }
 }

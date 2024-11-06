@@ -82,8 +82,8 @@ public interface PolicyContract {
              *     service instance.
              * @return the next definition stage.
              */
-            WithCreate withExistingOperation(
-                String resourceGroupName, String serviceName, String apiId, String operationId);
+            WithCreate withExistingOperation(String resourceGroupName, String serviceName, String apiId,
+                String operationId);
         }
 
         /**

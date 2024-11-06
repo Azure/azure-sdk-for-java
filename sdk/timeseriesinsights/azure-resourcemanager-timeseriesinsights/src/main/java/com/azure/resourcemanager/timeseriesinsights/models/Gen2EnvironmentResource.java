@@ -6,11 +6,12 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EnvironmentResourceInner;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.Gen2EnvironmentResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -20,44 +21,109 @@ import java.util.UUID;
  * An environment is a set of time-series data available for query, and is the top level Azure Time Series Insights
  * resource. Gen2 environments do not have set data retention limits.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Gen2")
 @Fluent
 public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /*
+     * The kind of the environment.
+     */
+    private EnvironmentResourceKind kind = EnvironmentResourceKind.GEN2;
+
+    /*
      * Properties of the Gen2 environment.
      */
-    @JsonProperty(value = "properties", required = true)
     private Gen2EnvironmentResourceProperties innerProperties = new Gen2EnvironmentResourceProperties();
 
-    /** Creates an instance of Gen2EnvironmentResource class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of Gen2EnvironmentResource class.
+     */
     public Gen2EnvironmentResource() {
     }
 
     /**
+     * Get the kind property: The kind of the environment.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EnvironmentResourceKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Properties of the Gen2 environment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private Gen2EnvironmentResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen2EnvironmentResource withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen2EnvironmentResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen2EnvironmentResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +133,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Get the timeSeriesIdProperties property: The list of event properties which will be used to define the
      * environment's time series id.
-     *
+     * 
      * @return the timeSeriesIdProperties value.
      */
     public List<TimeSeriesIdProperty> timeSeriesIdProperties() {
@@ -77,7 +143,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Set the timeSeriesIdProperties property: The list of event properties which will be used to define the
      * environment's time series id.
-     *
+     * 
      * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
      * @return the Gen2EnvironmentResource object itself.
      */
@@ -93,7 +159,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
      * Get the storageConfiguration property: The storage configuration provides the connection details that allows the
      * Time Series Insights service to connect to the customer storage account that is used to store the environment's
      * data.
-     *
+     * 
      * @return the storageConfiguration value.
      */
     public Gen2StorageConfigurationOutput storageConfiguration() {
@@ -104,7 +170,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
      * Set the storageConfiguration property: The storage configuration provides the connection details that allows the
      * Time Series Insights service to connect to the customer storage account that is used to store the environment's
      * data.
-     *
+     * 
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentResource object itself.
      */
@@ -119,7 +185,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Get the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
      * cache that will retain a copy of the environment's data available for faster query.
-     *
+     * 
      * @return the warmStoreConfiguration value.
      */
     public WarmStoreConfigurationProperties warmStoreConfiguration() {
@@ -129,7 +195,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Set the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
      * cache that will retain a copy of the environment's data available for faster query.
-     *
+     * 
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentResource object itself.
      */
@@ -144,7 +210,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Get the dataAccessId property: An id used to access the environment data, e.g. to query the environment's events
      * or upload reference data for the environment.
-     *
+     * 
      * @return the dataAccessId value.
      */
     public UUID dataAccessId() {
@@ -154,7 +220,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Get the dataAccessFqdn property: The fully qualified domain name used to access the environment data, e.g. to
      * query the environment's events or upload reference data for the environment.
-     *
+     * 
      * @return the dataAccessFqdn value.
      */
     public String dataAccessFqdn() {
@@ -164,7 +230,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
     /**
      * Get the status property: An object that represents the status of the environment, and its internal state in the
      * Time Series Insights service.
-     *
+     * 
      * @return the status value.
      */
     public EnvironmentStatus status() {
@@ -173,7 +239,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -182,7 +248,7 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
 
     /**
      * Get the creationTime property: The time the resource was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -191,21 +257,82 @@ public final class Gen2EnvironmentResource extends EnvironmentResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model Gen2EnvironmentResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model Gen2EnvironmentResource"));
         } else {
             innerProperties().validate();
+        }
+        if (sku() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model Gen2EnvironmentResource"));
+        } else {
+            sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Gen2EnvironmentResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Gen2EnvironmentResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Gen2EnvironmentResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Gen2EnvironmentResource.
+     */
+    public static Gen2EnvironmentResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Gen2EnvironmentResource deserializedGen2EnvironmentResource = new Gen2EnvironmentResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.withLocation(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.withSku(Sku.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGen2EnvironmentResource.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.innerProperties
+                        = Gen2EnvironmentResourceProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGen2EnvironmentResource.kind = EnvironmentResourceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGen2EnvironmentResource;
+        });
+    }
 }

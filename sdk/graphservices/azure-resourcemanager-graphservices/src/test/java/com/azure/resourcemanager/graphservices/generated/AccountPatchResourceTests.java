@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountPatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountPatchResource model =
-            BinaryData
-                .fromString("{\"tags\":{\"lthqtrgqjbp\":\"phlxa\",\"jrwzox\":\"zfsinzgvf\",\"felluwfzitonpe\":\"j\"}}")
-                .toObject(AccountPatchResource.class);
+        AccountPatchResource model = BinaryData
+            .fromString("{\"tags\":{\"lthqtrgqjbp\":\"phlxa\",\"jrwzox\":\"zfsinzgvf\",\"felluwfzitonpe\":\"j\"}}")
+            .toObject(AccountPatchResource.class);
         Assertions.assertEquals("phlxa", model.tags().get("lthqtrgqjbp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountPatchResource model =
-            new AccountPatchResource()
-                .withTags(mapOf("lthqtrgqjbp", "phlxa", "jrwzox", "zfsinzgvf", "felluwfzitonpe", "j"));
+        AccountPatchResource model = new AccountPatchResource()
+            .withTags(mapOf("lthqtrgqjbp", "phlxa", "jrwzox", "zfsinzgvf", "felluwfzitonpe", "j"));
         model = BinaryData.fromObject(model).toObject(AccountPatchResource.class);
         Assertions.assertEquals("phlxa", model.tags().get("lthqtrgqjbp"));
     }

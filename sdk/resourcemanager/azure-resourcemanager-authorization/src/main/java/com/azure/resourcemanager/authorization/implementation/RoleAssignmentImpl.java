@@ -60,33 +60,24 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
         if (roleDefinitionId != null) {
             roleDefinitionIdObservable = Mono.just(roleDefinitionId);
         } else if (roleName != null) {
-            roleDefinitionIdObservable =
-                manager()
-                    .roleDefinitions()
-                    .getByScopeAndRoleNameAsync(scope(), roleName)
-                    .map(roleDefinition -> roleDefinition.id());
+            roleDefinitionIdObservable = manager().roleDefinitions()
+                .getByScopeAndRoleNameAsync(scope(), roleName)
+                .map(roleDefinition -> roleDefinition.id());
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Please pass a non-null value for either role name or role definition ID"));
         }
 
         return Mono
-            .zip(
-                objectIdObservable,
-                roleDefinitionIdObservable,
-                (objectId, roleDefinitionId) ->
-                    new RoleAssignmentCreateParameters()
-                            .withPrincipalId(objectId)
-                            .withRoleDefinitionId(roleDefinitionId)
-                            .withDescription(description))
-            .flatMap(
-                roleAssignmentPropertiesInner ->
-                    manager()
-                        .roleServiceClient()
-                        .getRoleAssignments()
-                        .createAsync(scope(), name(), roleAssignmentPropertiesInner)
-                        // if the service principal is newly created (also apply to the case that MSI is new), wait for eventual consistency from AAD
-                        .retryWhen(RetryUtils.backoffRetryFor400PrincipalNotFound()))
+            .zip(objectIdObservable, roleDefinitionIdObservable,
+                (objectId, roleDefinitionId) -> new RoleAssignmentCreateParameters().withPrincipalId(objectId)
+                    .withRoleDefinitionId(roleDefinitionId)
+                    .withDescription(description))
+            .flatMap(roleAssignmentPropertiesInner -> manager().roleServiceClient()
+                .getRoleAssignments()
+                .createAsync(scope(), name(), roleAssignmentPropertiesInner)
+                // if the service principal is newly created (also apply to the case that MSI is new), wait for eventual consistency from AAD
+                .retryWhen(RetryUtils.backoffRetryFor400PrincipalNotFound()))
             .map(innerToFluentMap(this));
     }
 
@@ -194,6 +185,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
         this.description = description;
         return this;
     }
+
     @Override
     public String id() {
         return innerModel().id();

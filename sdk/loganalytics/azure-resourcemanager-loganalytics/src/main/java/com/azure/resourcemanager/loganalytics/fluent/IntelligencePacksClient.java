@@ -26,8 +26,8 @@ public interface IntelligencePacksClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> disableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
+    Response<Void> disableWithResponse(String resourceGroupName, String workspaceName, String intelligencePackName,
+        Context context);
 
     /**
      * Disables an intelligence pack for a given workspace.
@@ -55,8 +55,8 @@ public interface IntelligencePacksClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> enableWithResponse(
-        String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
+    Response<Void> enableWithResponse(String resourceGroupName, String workspaceName, String intelligencePackName,
+        Context context);
 
     /**
      * Enables an intelligence pack for a given workspace.
@@ -83,8 +83,8 @@ public interface IntelligencePacksClient {
      * @return array of IntelligencePack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<IntelligencePackInner>> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<List<IntelligencePackInner>> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.

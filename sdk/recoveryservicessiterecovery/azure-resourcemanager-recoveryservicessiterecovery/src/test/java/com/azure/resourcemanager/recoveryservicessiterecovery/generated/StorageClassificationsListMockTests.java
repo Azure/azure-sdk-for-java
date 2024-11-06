@@ -45,12 +45,13 @@ public final class StorageClassificationsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<StorageClassification> response = manager.storageClassifications().list("zsuspaywvslq",
-            "ronzeafkxfmuwdb", com.azure.core.util.Context.NONE);
+        PagedIterable<StorageClassification> response = manager.storageClassifications()
+            .list("zsuspaywvslq", "ronzeafkxfmuwdb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qavouymkde", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals("xlvzpfdka", response.iterator().next().location());

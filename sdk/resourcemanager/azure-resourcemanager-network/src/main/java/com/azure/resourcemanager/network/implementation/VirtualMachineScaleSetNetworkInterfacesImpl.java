@@ -14,16 +14,15 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation for VirtualMachineScaleSetNetworkInterfaces. */
-class VirtualMachineScaleSetNetworkInterfacesImpl
-    extends ReadableWrappersImpl<
-        VirtualMachineScaleSetNetworkInterface, VirtualMachineScaleSetNetworkInterfaceImpl, NetworkInterfaceInner>
+class VirtualMachineScaleSetNetworkInterfacesImpl extends
+    ReadableWrappersImpl<VirtualMachineScaleSetNetworkInterface, VirtualMachineScaleSetNetworkInterfaceImpl, NetworkInterfaceInner>
     implements VirtualMachineScaleSetNetworkInterfaces {
     private final String resourceGroupName;
     private final String scaleSetName;
     private final NetworkManager networkManager;
 
-    VirtualMachineScaleSetNetworkInterfacesImpl(
-        String resourceGroupName, String scaleSetName, NetworkManager networkManager) {
+    VirtualMachineScaleSetNetworkInterfacesImpl(String resourceGroupName, String scaleSetName,
+        NetworkManager networkManager) {
         this.resourceGroupName = resourceGroupName;
         this.scaleSetName = scaleSetName;
         this.networkManager = networkManager;
@@ -43,16 +42,14 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachineScaleSetNetworkInterfaceImpl(
-            inner.name(), this.scaleSetName, this.resourceGroupName, inner, this.manager());
+        return new VirtualMachineScaleSetNetworkInterfaceImpl(inner.name(), this.scaleSetName, this.resourceGroupName,
+            inner, this.manager());
     }
 
     @Override
     public VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name) {
-        NetworkInterfaceInner networkInterfaceInner =
-            this
-                .inner()
-                .getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName, this.scaleSetName, instanceId, name);
+        NetworkInterfaceInner networkInterfaceInner = this.inner()
+            .getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName, this.scaleSetName, instanceId, name);
         if (networkInterfaceInner == null) {
             return null;
         }
@@ -60,8 +57,8 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
     }
 
     @Override
-    public Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineInstanceIdAsync(
-        String instanceId, String name) {
+    public Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineInstanceIdAsync(String instanceId,
+        String name) {
         return this.inner()
             .getVirtualMachineScaleSetNetworkInterfaceAsync(this.resourceGroupName, this.scaleSetName, instanceId, name)
             .map(this::wrapModel);
@@ -69,9 +66,8 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
 
     @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> list() {
-        return super
-            .wrapList(
-                this.inner().listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName, this.scaleSetName));
+        return super.wrapList(
+            this.inner().listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName, this.scaleSetName));
     }
 
     @Override
@@ -81,21 +77,13 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
 
     @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineInstanceId(String instanceId) {
-        return super
-            .wrapList(
-                this
-                    .inner()
-                    .listVirtualMachineScaleSetVMNetworkInterfaces(
-                        this.resourceGroupName, this.scaleSetName, instanceId));
+        return super.wrapList(this.inner()
+            .listVirtualMachineScaleSetVMNetworkInterfaces(this.resourceGroupName, this.scaleSetName, instanceId));
     }
 
     @Override
     public PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineInstanceIdAsync(String instanceId) {
-        return super
-            .wrapPageAsync(
-                this
-                    .inner()
-                    .listVirtualMachineScaleSetVMNetworkInterfacesAsync(
-                        this.resourceGroupName, this.scaleSetName, instanceId));
+        return super.wrapPageAsync(this.inner()
+            .listVirtualMachineScaleSetVMNetworkInterfacesAsync(this.resourceGroupName, this.scaleSetName, instanceId));
     }
 }

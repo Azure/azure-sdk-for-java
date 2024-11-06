@@ -14,36 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageEncryptedAssetDecryptionDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageEncryptedAssetDecryptionDataInner model =
-            BinaryData
-                .fromString(
-                    "{\"assetFileEncryptionMetadata\":[{\"initializationVector\":\"fclhaaxdbabphlwr\",\"assetFileName\":\"fkts\",\"assetFileId\":\"09bc26ad-fb31-4a9f-b61c-4c5e0272bb68\"}]}")
-                .toObject(StorageEncryptedAssetDecryptionDataInner.class);
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.assetFileEncryptionMetadata().get(0).initializationVector());
-        Assertions.assertEquals("fkts", model.assetFileEncryptionMetadata().get(0).assetFileName());
-        Assertions
-            .assertEquals(
-                UUID.fromString("09bc26ad-fb31-4a9f-b61c-4c5e0272bb68"),
-                model.assetFileEncryptionMetadata().get(0).assetFileId());
+        StorageEncryptedAssetDecryptionDataInner model = BinaryData.fromString(
+            "{\"assetFileEncryptionMetadata\":[{\"initializationVector\":\"tfolhbnx\",\"assetFileName\":\"alaulppggdtpnapn\",\"assetFileId\":\"f554c135-41af-4974-90ac-bb795150157a\"}]}")
+            .toObject(StorageEncryptedAssetDecryptionDataInner.class);
+        Assertions.assertEquals("tfolhbnx", model.assetFileEncryptionMetadata().get(0).initializationVector());
+        Assertions.assertEquals("alaulppggdtpnapn", model.assetFileEncryptionMetadata().get(0).assetFileName());
+        Assertions.assertEquals(UUID.fromString("f554c135-41af-4974-90ac-bb795150157a"),
+            model.assetFileEncryptionMetadata().get(0).assetFileId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageEncryptedAssetDecryptionDataInner model =
-            new StorageEncryptedAssetDecryptionDataInner()
-                .withAssetFileEncryptionMetadata(
-                    Arrays
-                        .asList(
-                            new AssetFileEncryptionMetadata()
-                                .withInitializationVector("fclhaaxdbabphlwr")
-                                .withAssetFileName("fkts")
-                                .withAssetFileId(UUID.fromString("09bc26ad-fb31-4a9f-b61c-4c5e0272bb68"))));
+        StorageEncryptedAssetDecryptionDataInner model
+            = new StorageEncryptedAssetDecryptionDataInner().withAssetFileEncryptionMetadata(
+                Arrays.asList(new AssetFileEncryptionMetadata().withInitializationVector("tfolhbnx")
+                    .withAssetFileName("alaulppggdtpnapn")
+                    .withAssetFileId(UUID.fromString("f554c135-41af-4974-90ac-bb795150157a"))));
         model = BinaryData.fromObject(model).toObject(StorageEncryptedAssetDecryptionDataInner.class);
-        Assertions.assertEquals("fclhaaxdbabphlwr", model.assetFileEncryptionMetadata().get(0).initializationVector());
-        Assertions.assertEquals("fkts", model.assetFileEncryptionMetadata().get(0).assetFileName());
-        Assertions
-            .assertEquals(
-                UUID.fromString("09bc26ad-fb31-4a9f-b61c-4c5e0272bb68"),
-                model.assetFileEncryptionMetadata().get(0).assetFileId());
+        Assertions.assertEquals("tfolhbnx", model.assetFileEncryptionMetadata().get(0).initializationVector());
+        Assertions.assertEquals("alaulppggdtpnapn", model.assetFileEncryptionMetadata().get(0).assetFileName());
+        Assertions.assertEquals(UUID.fromString("f554c135-41af-4974-90ac-bb795150157a"),
+            model.assetFileEncryptionMetadata().get(0).assetFileId());
     }
 }

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"axcfjpgddtocjjx\",\"isDataAction\":true,\"display\":{\"provider\":\"uexhdzx\",\"resource\":\"qeojnxqbzvddntw\",\"operation\":\"eic\",\"description\":\"w\"},\"origin\":\"zao\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[],\"metricSpecifications\":[]}}}")
-                .toObject(OperationDefinitionInner.class);
+        OperationDefinitionInner model = BinaryData.fromString(
+            "{\"name\":\"axcfjpgddtocjjx\",\"isDataAction\":true,\"display\":{\"provider\":\"uexhdzx\",\"resource\":\"qeojnxqbzvddntw\",\"operation\":\"eic\",\"description\":\"w\"},\"origin\":\"zao\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[],\"metricSpecifications\":[]}}}")
+            .toObject(OperationDefinitionInner.class);
         Assertions.assertEquals("axcfjpgddtocjjx", model.name());
         Assertions.assertEquals(true, model.isDataAction());
         Assertions.assertEquals("qeojnxqbzvddntw", model.display().resource());
@@ -30,22 +28,15 @@ public final class OperationDefinitionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDefinitionInner model =
-            new OperationDefinitionInner()
-                .withName("axcfjpgddtocjjx")
-                .withIsDataAction(true)
-                .withDisplay(
-                    new OperationDefinitionDisplay()
-                        .withResource("qeojnxqbzvddntw")
-                        .withOperation("eic")
-                        .withDescription("w"))
-                .withOrigin("zao")
-                .withProperties(
-                    new OperationProperties()
-                        .withServiceSpecification(
-                            new ServiceSpecification()
-                                .withLogSpecifications(Arrays.asList())
-                                .withMetricSpecifications(Arrays.asList())));
+        OperationDefinitionInner model = new OperationDefinitionInner().withName("axcfjpgddtocjjx")
+            .withIsDataAction(true)
+            .withDisplay(new OperationDefinitionDisplay().withResource("qeojnxqbzvddntw")
+                .withOperation("eic")
+                .withDescription("w"))
+            .withOrigin("zao")
+            .withProperties(new OperationProperties()
+                .withServiceSpecification(new ServiceSpecification().withLogSpecifications(Arrays.asList())
+                    .withMetricSpecifications(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OperationDefinitionInner.class);
         Assertions.assertEquals("axcfjpgddtocjjx", model.name());
         Assertions.assertEquals(true, model.isDataAction());

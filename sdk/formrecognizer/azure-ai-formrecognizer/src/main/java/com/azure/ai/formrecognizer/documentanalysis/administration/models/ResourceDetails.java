@@ -65,28 +65,24 @@ public final class ResourceDetails {
         return customNeuralDocumentModelQuota;
     }
 
-    private void setCustomNeuralDocumentModelQuota(
-        QuotaDetails customNeuralDocumentModelQuota) {
+    private void setCustomNeuralDocumentModelQuota(QuotaDetails customNeuralDocumentModelQuota) {
         this.customNeuralDocumentModelQuota = customNeuralDocumentModelQuota;
     }
 
     static {
         ResourceDetailsHelper.setAccessor(new ResourceDetailsHelper.ResourceDetailsAccessor() {
             @Override
-            public void setDocumentModelCount(
-                ResourceDetails resourceDetails, int documentModelCount) {
+            public void setDocumentModelCount(ResourceDetails resourceDetails, int documentModelCount) {
                 resourceDetails.setCustomDocumentModelCount(documentModelCount);
             }
 
             @Override
-            public void setDocumentModelLimit(
-                ResourceDetails resourceDetails, int documentModelLimit) {
+            public void setDocumentModelLimit(ResourceDetails resourceDetails, int documentModelLimit) {
                 resourceDetails.setCustomDocumentModelLimit(documentModelLimit);
             }
 
             @Override
-            public void setCustomNeuralDocumentModelBuilds(
-                ResourceDetails resourceDetails, QuotaDetails quotaDetails) {
+            public void setCustomNeuralDocumentModelBuilds(ResourceDetails resourceDetails, QuotaDetails quotaDetails) {
                 resourceDetails.setCustomNeuralDocumentModelQuota(quotaDetails);
             }
         });

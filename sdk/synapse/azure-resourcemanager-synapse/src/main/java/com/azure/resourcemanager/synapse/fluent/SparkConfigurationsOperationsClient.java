@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SparkConfigurationsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SparkConfigurationsOperationsClient.
+ */
 public interface SparkConfigurationsOperationsClient {
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,9 +31,9 @@ public interface SparkConfigurationsOperationsClient {
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -41,6 +43,6 @@ public interface SparkConfigurationsOperationsClient {
      * @return a list of SparkConfiguration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SparkConfigurationResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<SparkConfigurationResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

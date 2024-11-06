@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +23,11 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
     /*
      * The current deployment or provisioning state, which only appears in the response
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The application type name as defined in the application manifest.
      */
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /**
@@ -145,6 +146,85 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
      */
     @Override
     public void validate() {
-        super.validate();
+        if (upgradePolicy() != null) {
+            upgradePolicy().validate();
+        }
+        if (metrics() != null) {
+            metrics().forEach(e -> e.validate());
+        }
+        if (managedIdentities() != null) {
+            managedIdentities().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeVersion", typeVersion());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("upgradePolicy", upgradePolicy());
+        jsonWriter.writeNumberField("minimumNodes", minimumNodes());
+        jsonWriter.writeNumberField("maximumNodes", maximumNodes());
+        jsonWriter.writeBooleanField("removeApplicationCapacity", removeApplicationCapacity());
+        jsonWriter.writeArrayField("metrics", metrics(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("managedIdentities", managedIdentities(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("typeName", this.typeName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationResourceProperties.
+     */
+    public static ApplicationResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationResourceProperties deserializedApplicationResourceProperties
+                = new ApplicationResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeVersion".equals(fieldName)) {
+                    deserializedApplicationResourceProperties.withTypeVersion(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationResourceProperties.withParameters(parameters);
+                } else if ("upgradePolicy".equals(fieldName)) {
+                    deserializedApplicationResourceProperties
+                        .withUpgradePolicy(ApplicationUpgradePolicy.fromJson(reader));
+                } else if ("minimumNodes".equals(fieldName)) {
+                    deserializedApplicationResourceProperties.withMinimumNodes(reader.getNullable(JsonReader::getLong));
+                } else if ("maximumNodes".equals(fieldName)) {
+                    deserializedApplicationResourceProperties.withMaximumNodes(reader.getNullable(JsonReader::getLong));
+                } else if ("removeApplicationCapacity".equals(fieldName)) {
+                    deserializedApplicationResourceProperties
+                        .withRemoveApplicationCapacity(reader.getNullable(JsonReader::getBoolean));
+                } else if ("metrics".equals(fieldName)) {
+                    List<ApplicationMetricDescription> metrics
+                        = reader.readArray(reader1 -> ApplicationMetricDescription.fromJson(reader1));
+                    deserializedApplicationResourceProperties.withMetrics(metrics);
+                } else if ("managedIdentities".equals(fieldName)) {
+                    List<ApplicationUserAssignedIdentity> managedIdentities
+                        = reader.readArray(reader1 -> ApplicationUserAssignedIdentity.fromJson(reader1));
+                    deserializedApplicationResourceProperties.withManagedIdentities(managedIdentities);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationResourceProperties.provisioningState = reader.getString();
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedApplicationResourceProperties.typeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationResourceProperties;
+        });
     }
 }

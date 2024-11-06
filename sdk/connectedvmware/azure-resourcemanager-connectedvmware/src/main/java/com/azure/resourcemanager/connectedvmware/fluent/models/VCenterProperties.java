@@ -209,9 +209,8 @@ public final class VCenterProperties {
      */
     public void validate() {
         if (fqdn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fqdn in model VCenterProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fqdn in model VCenterProperties"));
         }
         if (credentials() != null) {
             credentials().validate();

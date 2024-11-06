@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsForwardingRulesetInner;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRulesetListResult;
@@ -11,36 +12,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsForwardingRulesetListResultTests {
-    @Test
-    public void testDeserialize() {
-        DnsForwardingRulesetListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"etag\":\"xmqci\",\"properties\":{\"dnsResolverOutboundEndpoints\":[],\"provisioningState\":\"Failed\",\"resourceGuid\":\"khixuigdtopbo\"},\"location\":\"og\",\"tags\":{\"a\":\"w\"},\"id\":\"a\",\"name\":\"hrzayvvtpgvdf\",\"type\":\"iotkftutqxl\"}],\"nextLink\":\"xlefgugnxkrx\"}")
-                .toObject(DnsForwardingRulesetListResult.class);
-        Assertions.assertEquals("og", model.value().get(0).location());
-        Assertions.assertEquals("w", model.value().get(0).tags().get("a"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsForwardingRulesetListResult model = BinaryData.fromString(
+            "{\"value\":[{\"etag\":\"qfbow\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"nyktzlcuiy\"},{\"id\":\"qyw\"},{\"id\":\"drvyn\"},{\"id\":\"gpphrcgyn\"}],\"provisioningState\":\"Failed\",\"resourceGuid\":\"ecfvmm\"},\"location\":\"ofsx\",\"tags\":{\"bmqj\":\"v\",\"lzu\":\"abcypmivk\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"}],\"nextLink\":\"eallnwsubisnj\"}")
+            .toObject(DnsForwardingRulesetListResult.class);
+        Assertions.assertEquals("ofsx", model.value().get(0).location());
+        Assertions.assertEquals("v", model.value().get(0).tags().get("bmqj"));
+        Assertions.assertEquals("nyktzlcuiy", model.value().get(0).dnsResolverOutboundEndpoints().get(0).id());
     }
 
-    @Test
-    public void testSerialize() {
-        DnsForwardingRulesetListResult model =
-            new DnsForwardingRulesetListResult()
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsForwardingRulesetListResult model
+            = new DnsForwardingRulesetListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new DnsForwardingRulesetInner()
-                                .withLocation("og")
-                                .withTags(mapOf("a", "w"))
-                                .withDnsResolverOutboundEndpoints(Arrays.asList())));
+                            new DnsForwardingRulesetInner().withLocation("ofsx")
+                                .withTags(mapOf("bmqj", "v", "lzu", "abcypmivk"))
+                                .withDnsResolverOutboundEndpoints(Arrays.asList(new SubResource().withId("nyktzlcuiy"),
+                                    new SubResource().withId("qyw"), new SubResource().withId("drvyn"),
+                                    new SubResource().withId("gpphrcgyn")))));
         model = BinaryData.fromObject(model).toObject(DnsForwardingRulesetListResult.class);
-        Assertions.assertEquals("og", model.value().get(0).location());
-        Assertions.assertEquals("w", model.value().get(0).tags().get("a"));
+        Assertions.assertEquals("ofsx", model.value().get(0).location());
+        Assertions.assertEquals("v", model.value().get(0).tags().get("bmqj"));
+        Assertions.assertEquals("nyktzlcuiy", model.value().get(0).dnsResolverOutboundEndpoints().get(0).id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

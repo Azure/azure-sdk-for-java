@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of all benefit recommendations with the recommendation details. */
+/**
+ * The list of all benefit recommendations with the recommendation details.
+ */
 @Immutable
-public final class AllSavingsList {
+public final class AllSavingsList implements JsonSerializable<AllSavingsList> {
     /*
      * The list of benefit recommendations with the recommendation details..
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AllSavingsBenefitDetails> value;
 
     /*
      * The link (URL) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AllSavingsList class. */
+    /**
+     * Creates an instance of AllSavingsList class.
+     */
     public AllSavingsList() {
     }
 
     /**
      * Get the value property: The list of benefit recommendations with the recommendation details..
-     *
+     * 
      * @return the value value.
      */
     public List<AllSavingsBenefitDetails> value() {
@@ -38,7 +44,7 @@ public final class AllSavingsList {
 
     /**
      * Get the nextLink property: The link (URL) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,12 +53,51 @@ public final class AllSavingsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AllSavingsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AllSavingsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AllSavingsList.
+     */
+    public static AllSavingsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AllSavingsList deserializedAllSavingsList = new AllSavingsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AllSavingsBenefitDetails> value
+                        = reader.readArray(reader1 -> AllSavingsBenefitDetails.fromJson(reader1));
+                    deserializedAllSavingsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAllSavingsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAllSavingsList;
+        });
     }
 }

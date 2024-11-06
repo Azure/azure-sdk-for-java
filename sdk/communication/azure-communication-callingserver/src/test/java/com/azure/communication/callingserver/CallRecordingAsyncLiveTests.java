@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
+// Package marked to be deprecated
+@LiveOnly()
 public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
@@ -37,9 +40,9 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
             String ngrok = "https://localhost";
             String serverCallId = "serverCallId";
             CallRecordingAsync callRecording = client.getCallRecordingAsync();
-            RecordingStateResult recordingResponse = callRecording.startRecording(
-                new StartRecordingOptions(new ServerCallLocator(serverCallId))
-                    .setRecordingStateCallbackUrl(ngrok))
+            RecordingStateResult recordingResponse = callRecording
+                .startRecording(
+                    new StartRecordingOptions(new ServerCallLocator(serverCallId)).setRecordingStateCallbackUrl(ngrok))
                 .block();
             assertNotNull(recordingResponse);
             String recordingId = recordingResponse.getRecordingId();

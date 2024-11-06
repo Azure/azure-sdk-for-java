@@ -21,8 +21,8 @@ public interface Changes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Change> listByResourceGroup(
-        String resourceGroupName, OffsetDateTime startTime, OffsetDateTime endTime);
+    PagedIterable<Change> listByResourceGroup(String resourceGroupName, OffsetDateTime startTime,
+        OffsetDateTime endTime);
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
@@ -39,8 +39,8 @@ public interface Changes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Change> listByResourceGroup(
-        String resourceGroupName, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context);
+    PagedIterable<Change> listByResourceGroup(String resourceGroupName, OffsetDateTime startTime,
+        OffsetDateTime endTime, String skipToken, Context context);
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.

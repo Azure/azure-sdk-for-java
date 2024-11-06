@@ -7,31 +7,33 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of GenerateDetailedCostReportOperationStatus. */
+/**
+ * Resource collection API of GenerateDetailedCostReportOperationStatus.
+ */
 public interface GenerateDetailedCostReportOperationStatus {
     /**
      * Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation
      * request response header.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the specified operation along with {@link Response}.
      */
-    Response<GenerateDetailedCostReportOperationStatuses> getWithResponse(
-        String operationId, String scope, Context context);
+    Response<GenerateDetailedCostReportOperationStatuses> getWithResponse(String operationId, String scope,
+        Context context);
 
     /**
      * Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation
      * request response header.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

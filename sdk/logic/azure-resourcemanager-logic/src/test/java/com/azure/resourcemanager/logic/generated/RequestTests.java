@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Request model =
-            BinaryData
-                .fromString("{\"headers\":\"dataeuel\",\"uri\":\"hsd\",\"method\":\"t\"}")
+        Request model
+            = BinaryData.fromString("{\"headers\":\"datakkgthr\",\"uri\":\"hxjbdhqxvc\",\"method\":\"frpdsofbshrns\"}")
                 .toObject(Request.class);
-        Assertions.assertEquals("hsd", model.uri());
-        Assertions.assertEquals("t", model.method());
+        Assertions.assertEquals("hxjbdhqxvc", model.uri());
+        Assertions.assertEquals("frpdsofbshrns", model.method());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Request model = new Request().withHeaders("dataeuel").withUri("hsd").withMethod("t");
+        Request model = new Request().withHeaders("datakkgthr").withUri("hxjbdhqxvc").withMethod("frpdsofbshrns");
         model = BinaryData.fromObject(model).toObject(Request.class);
-        Assertions.assertEquals("hsd", model.uri());
-        Assertions.assertEquals("t", model.method());
+        Assertions.assertEquals("hxjbdhqxvc", model.uri());
+        Assertions.assertEquals("frpdsofbshrns", model.method());
     }
 }

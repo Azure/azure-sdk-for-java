@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigComparisonExpressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigComparisonExpression model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"deicbtwnpzao\",\"operator\":\"Contains\",\"values\":[\"hrhcffcyddglmjth\",\"qkwpyeicxmqc\",\"wqvhkhixuigdt\",\"pbobjo\"]}")
-                .toObject(ReportConfigComparisonExpression.class);
-        Assertions.assertEquals("deicbtwnpzao", model.name());
+        ReportConfigComparisonExpression model = BinaryData
+            .fromString("{\"name\":\"lla\",\"operator\":\"Contains\",\"values\":[\"lwuip\",\"ccjzkzivgvv\"]}")
+            .toObject(ReportConfigComparisonExpression.class);
+        Assertions.assertEquals("lla", model.name());
         Assertions.assertEquals(OperatorType.CONTAINS, model.operator());
-        Assertions.assertEquals("hrhcffcyddglmjth", model.values().get(0));
+        Assertions.assertEquals("lwuip", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigComparisonExpression model =
-            new ReportConfigComparisonExpression()
-                .withName("deicbtwnpzao")
-                .withOperator(OperatorType.CONTAINS)
-                .withValues(Arrays.asList("hrhcffcyddglmjth", "qkwpyeicxmqc", "wqvhkhixuigdt", "pbobjo"));
+        ReportConfigComparisonExpression model = new ReportConfigComparisonExpression().withName("lla")
+            .withOperator(OperatorType.CONTAINS)
+            .withValues(Arrays.asList("lwuip", "ccjzkzivgvv"));
         model = BinaryData.fromObject(model).toObject(ReportConfigComparisonExpression.class);
-        Assertions.assertEquals("deicbtwnpzao", model.name());
+        Assertions.assertEquals("lla", model.name());
         Assertions.assertEquals(OperatorType.CONTAINS, model.operator());
-        Assertions.assertEquals("hrhcffcyddglmjth", model.values().get(0));
+        Assertions.assertEquals("lwuip", model.values().get(0));
     }
 }

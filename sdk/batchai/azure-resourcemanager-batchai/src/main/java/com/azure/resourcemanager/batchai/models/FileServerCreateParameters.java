@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFlatten
 @Fluent
 public class FileServerCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerCreateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileServerCreateParameters.class);
 
     /*
      * The size of the virtual machine for the File Server. For information

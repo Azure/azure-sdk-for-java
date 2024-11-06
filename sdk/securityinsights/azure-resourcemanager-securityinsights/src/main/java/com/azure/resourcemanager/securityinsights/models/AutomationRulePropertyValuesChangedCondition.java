@@ -5,39 +5,48 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The AutomationRulePropertyValuesChangedCondition model. */
+/**
+ * The AutomationRulePropertyValuesChangedCondition model.
+ */
 @Fluent
-public final class AutomationRulePropertyValuesChangedCondition {
+public final class AutomationRulePropertyValuesChangedCondition
+    implements JsonSerializable<AutomationRulePropertyValuesChangedCondition> {
     /*
      * The propertyName property.
      */
-    @JsonProperty(value = "propertyName")
     private AutomationRulePropertyChangedConditionSupportedPropertyType propertyName;
 
     /*
      * The changeType property.
      */
-    @JsonProperty(value = "changeType")
     private AutomationRulePropertyChangedConditionSupportedChangedType changeType;
 
     /*
      * The operator property.
      */
-    @JsonProperty(value = "operator")
     private AutomationRulePropertyConditionSupportedOperator operator;
 
     /*
      * The propertyValues property.
      */
-    @JsonProperty(value = "propertyValues")
     private List<String> propertyValues;
 
     /**
+     * Creates an instance of AutomationRulePropertyValuesChangedCondition class.
+     */
+    public AutomationRulePropertyValuesChangedCondition() {
+    }
+
+    /**
      * Get the propertyName property: The propertyName property.
-     *
+     * 
      * @return the propertyName value.
      */
     public AutomationRulePropertyChangedConditionSupportedPropertyType propertyName() {
@@ -46,19 +55,19 @@ public final class AutomationRulePropertyValuesChangedCondition {
 
     /**
      * Set the propertyName property: The propertyName property.
-     *
+     * 
      * @param propertyName the propertyName value to set.
      * @return the AutomationRulePropertyValuesChangedCondition object itself.
      */
-    public AutomationRulePropertyValuesChangedCondition withPropertyName(
-        AutomationRulePropertyChangedConditionSupportedPropertyType propertyName) {
+    public AutomationRulePropertyValuesChangedCondition
+        withPropertyName(AutomationRulePropertyChangedConditionSupportedPropertyType propertyName) {
         this.propertyName = propertyName;
         return this;
     }
 
     /**
      * Get the changeType property: The changeType property.
-     *
+     * 
      * @return the changeType value.
      */
     public AutomationRulePropertyChangedConditionSupportedChangedType changeType() {
@@ -67,19 +76,19 @@ public final class AutomationRulePropertyValuesChangedCondition {
 
     /**
      * Set the changeType property: The changeType property.
-     *
+     * 
      * @param changeType the changeType value to set.
      * @return the AutomationRulePropertyValuesChangedCondition object itself.
      */
-    public AutomationRulePropertyValuesChangedCondition withChangeType(
-        AutomationRulePropertyChangedConditionSupportedChangedType changeType) {
+    public AutomationRulePropertyValuesChangedCondition
+        withChangeType(AutomationRulePropertyChangedConditionSupportedChangedType changeType) {
         this.changeType = changeType;
         return this;
     }
 
     /**
      * Get the operator property: The operator property.
-     *
+     * 
      * @return the operator value.
      */
     public AutomationRulePropertyConditionSupportedOperator operator() {
@@ -88,19 +97,19 @@ public final class AutomationRulePropertyValuesChangedCondition {
 
     /**
      * Set the operator property: The operator property.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the AutomationRulePropertyValuesChangedCondition object itself.
      */
-    public AutomationRulePropertyValuesChangedCondition withOperator(
-        AutomationRulePropertyConditionSupportedOperator operator) {
+    public AutomationRulePropertyValuesChangedCondition
+        withOperator(AutomationRulePropertyConditionSupportedOperator operator) {
         this.operator = operator;
         return this;
     }
 
     /**
      * Get the propertyValues property: The propertyValues property.
-     *
+     * 
      * @return the propertyValues value.
      */
     public List<String> propertyValues() {
@@ -109,7 +118,7 @@ public final class AutomationRulePropertyValuesChangedCondition {
 
     /**
      * Set the propertyValues property: The propertyValues property.
-     *
+     * 
      * @param propertyValues the propertyValues value to set.
      * @return the AutomationRulePropertyValuesChangedCondition object itself.
      */
@@ -120,9 +129,60 @@ public final class AutomationRulePropertyValuesChangedCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("propertyName", this.propertyName == null ? null : this.propertyName.toString());
+        jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("propertyValues", this.propertyValues,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRulePropertyValuesChangedCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRulePropertyValuesChangedCondition if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationRulePropertyValuesChangedCondition.
+     */
+    public static AutomationRulePropertyValuesChangedCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRulePropertyValuesChangedCondition deserializedAutomationRulePropertyValuesChangedCondition
+                = new AutomationRulePropertyValuesChangedCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyName".equals(fieldName)) {
+                    deserializedAutomationRulePropertyValuesChangedCondition.propertyName
+                        = AutomationRulePropertyChangedConditionSupportedPropertyType.fromString(reader.getString());
+                } else if ("changeType".equals(fieldName)) {
+                    deserializedAutomationRulePropertyValuesChangedCondition.changeType
+                        = AutomationRulePropertyChangedConditionSupportedChangedType.fromString(reader.getString());
+                } else if ("operator".equals(fieldName)) {
+                    deserializedAutomationRulePropertyValuesChangedCondition.operator
+                        = AutomationRulePropertyConditionSupportedOperator.fromString(reader.getString());
+                } else if ("propertyValues".equals(fieldName)) {
+                    List<String> propertyValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutomationRulePropertyValuesChangedCondition.propertyValues = propertyValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRulePropertyValuesChangedCondition;
+        });
     }
 }

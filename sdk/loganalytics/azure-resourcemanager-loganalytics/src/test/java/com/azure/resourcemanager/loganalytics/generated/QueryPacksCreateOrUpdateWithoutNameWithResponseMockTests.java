@@ -33,52 +33,32 @@ public final class QueryPacksCreateOrUpdateWithoutNameWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"queryPackId\":\"alhsnvkc\",\"timeCreated\":\"2021-12-10T08:00:24Z\",\"timeModified\":\"2021-04-10T07:39:53Z\",\"provisioningState\":\"oaimlnw\"},\"location\":\"aaomylweazu\",\"tags\":{\"wpchwahf\":\"ethwwnpjhlfz\",\"wlyxgncxyk\":\"ousnfepgfewe\"},\"id\":\"hdjhlimmbcx\",\"name\":\"h\",\"type\":\"cporxvxcjz\"}";
+        String responseStr
+            = "{\"properties\":{\"queryPackId\":\"alhsnvkc\",\"timeCreated\":\"2021-12-10T08:00:24Z\",\"timeModified\":\"2021-04-10T07:39:53Z\",\"provisioningState\":\"oaimlnw\"},\"location\":\"aaomylweazu\",\"tags\":{\"wpchwahf\":\"ethwwnpjhlfz\",\"wlyxgncxyk\":\"ousnfepgfewe\"},\"id\":\"hdjhlimmbcx\",\"name\":\"h\",\"type\":\"cporxvxcjz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LogAnalyticsQueryPack response =
-            manager
-                .queryPacks()
-                .createOrUpdateWithoutNameWithResponse(
-                    "lqxihhrmooiz",
-                    new LogAnalyticsQueryPackInner()
-                        .withLocation("hvnh")
-                        .withTags(
-                            mapOf(
-                                "aehvvibrxjjstoq",
-                                "rqnkkzjcjbtr",
-                                "bklftidgfcwqmpim",
-                                "eitpkxztmo",
-                                "yhohujswtwkozzwc",
-                                "qxzhem")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        LogAnalyticsQueryPack response = manager.queryPacks()
+            .createOrUpdateWithoutNameWithResponse("lqxihhrmooiz",
+                new LogAnalyticsQueryPackInner().withLocation("hvnh")
+                    .withTags(mapOf("aehvvibrxjjstoq", "rqnkkzjcjbtr", "bklftidgfcwqmpim", "eitpkxztmo",
+                        "yhohujswtwkozzwc", "qxzhem")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("aaomylweazu", response.location());
         Assertions.assertEquals("ethwwnpjhlfz", response.tags().get("wpchwahf"));

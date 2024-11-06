@@ -49,15 +49,8 @@ public interface DisksClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DiskInner> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<DiskInner> list(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get disk.
@@ -74,8 +67,8 @@ public interface DisksClient {
      * @return disk along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiskInner> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<DiskInner> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
 
     /**
      * Get disk.
@@ -106,8 +99,8 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of a Disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk);
+    SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String username, String name, DiskInner disk);
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
@@ -124,8 +117,8 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of a Disk.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context);
+    SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String username, String name, DiskInner disk, Context context);
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
@@ -158,8 +151,8 @@ public interface DisksClient {
      * @return a Disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskInner createOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context);
+    DiskInner createOrUpdate(String resourceGroupName, String labName, String username, String name, DiskInner disk,
+        Context context);
 
     /**
      * Delete disk. This operation can take a while to complete.
@@ -174,8 +167,8 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, String name);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        String name);
 
     /**
      * Delete disk. This operation can take a while to complete.
@@ -191,8 +184,8 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        String name, Context context);
 
     /**
      * Delete disk. This operation can take a while to complete.
@@ -238,8 +231,8 @@ public interface DisksClient {
      * @return a Disk along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiskInner> updateWithResponse(
-        String resourceGroupName, String labName, String username, String name, DiskFragment disk, Context context);
+    Response<DiskInner> updateWithResponse(String resourceGroupName, String labName, String username, String name,
+        DiskFragment disk, Context context);
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
@@ -271,11 +264,41 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAttach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    SyncPoller<PollResult<Void>, Void> beginAttach(String resourceGroupName, String labName, String username,
+        String name, AttachDiskProperties attachDiskProperties);
+
+    /**
+     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param name The name of the disk.
+     * @param attachDiskProperties Properties of the disk to attach.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAttach(String resourceGroupName, String labName, String username,
+        String name, AttachDiskProperties attachDiskProperties, Context context);
+
+    /**
+     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param name The name of the disk.
+     * @param attachDiskProperties Properties of the disk to attach.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void attach(String resourceGroupName, String labName, String username, String name,
         AttachDiskProperties attachDiskProperties);
 
     /**
@@ -290,58 +313,10 @@ public interface DisksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAttach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context);
-
-    /**
-     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the disk.
-     * @param attachDiskProperties Properties of the disk to attach.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties);
-
-    /**
-     * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the disk.
-     * @param attachDiskProperties Properties of the disk to attach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context);
+    void attach(String resourceGroupName, String labName, String username, String name,
+        AttachDiskProperties attachDiskProperties, Context context);
 
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
@@ -358,12 +333,8 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDetach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties);
+    SyncPoller<PollResult<Void>, Void> beginDetach(String resourceGroupName, String labName, String username,
+        String name, DetachDiskProperties detachDiskProperties);
 
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
@@ -381,13 +352,8 @@ public interface DisksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDetach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDetach(String resourceGroupName, String labName, String username,
+        String name, DetachDiskProperties detachDiskProperties, Context context);
 
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
@@ -403,11 +369,7 @@ public interface DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    void detach(String resourceGroupName, String labName, String username, String name,
         DetachDiskProperties detachDiskProperties);
 
     /**
@@ -425,11 +387,6 @@ public interface DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context);
+    void detach(String resourceGroupName, String labName, String username, String name,
+        DetachDiskProperties detachDiskProperties, Context context);
 }

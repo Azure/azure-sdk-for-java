@@ -12,8 +12,7 @@ public final class CheckCapacityNameAvailabilityResultImpl implements CheckCapac
 
     private final com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager;
 
-    CheckCapacityNameAvailabilityResultImpl(
-        CheckCapacityNameAvailabilityResultInner innerObject,
+    CheckCapacityNameAvailabilityResultImpl(CheckCapacityNameAvailabilityResultInner innerObject,
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

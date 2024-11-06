@@ -11,9 +11,8 @@ import com.azure.resourcemanager.appplatform.models.SpringServiceCertificate;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
-public class SpringServiceCertificateImpl
-    extends ExternalChildResourceImpl<
-        SpringServiceCertificate, CertificateResourceInner, SpringServiceImpl, SpringService>
+public class SpringServiceCertificateImpl extends
+    ExternalChildResourceImpl<SpringServiceCertificate, CertificateResourceInner, SpringServiceImpl, SpringService>
     implements SpringServiceCertificate {
     SpringServiceCertificateImpl(String name, SpringServiceImpl parent, CertificateResourceInner innerObject) {
         super(name, parent, innerObject);
@@ -21,8 +20,9 @@ public class SpringServiceCertificateImpl
 
     @Override
     public Mono<SpringServiceCertificate> createResourceAsync() {
-        return manager().serviceClient().getCertificates().createOrUpdateAsync(
-            parent().resourceGroupName(), parent().name(), name(), innerModel())
+        return manager().serviceClient()
+            .getCertificates()
+            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -36,13 +36,15 @@ public class SpringServiceCertificateImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getCertificates()
+        return manager().serviceClient()
+            .getCertificates()
             .deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<CertificateResourceInner> getInnerAsync() {
-        return manager().serviceClient().getCertificates()
+        return manager().serviceClient()
+            .getCertificates()
             .getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 

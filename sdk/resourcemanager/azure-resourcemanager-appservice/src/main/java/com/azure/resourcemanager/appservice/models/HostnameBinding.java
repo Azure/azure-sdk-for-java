@@ -37,12 +37,9 @@ public interface HostnameBinding
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithDomain<ParentT>,
-            DefinitionStages.WithSubDomain<ParentT>,
-            DefinitionStages.WithHostNameDnsRecordType<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithDomain<ParentT>,
+        DefinitionStages.WithSubDomain<ParentT>, DefinitionStages.WithHostNameDnsRecordType<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of hostname binding definition stages applicable as part of a web app creation. */
@@ -125,12 +122,9 @@ public interface HostnameBinding
      *
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithDomain<ParentT>,
-            UpdateDefinitionStages.WithSubDomain<ParentT>,
-            UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithDomain<ParentT>, UpdateDefinitionStages.WithSubDomain<ParentT>,
+        UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of host name binding definition stages applicable as part of a web app creation. */

@@ -4,23 +4,26 @@
 
 package com.azure.resourcemanager.iotcentral.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iotcentral.models.OperationInputs;
 
-/** Samples for Apps CheckSubdomainAvailability. */
+/**
+ * Samples for Apps CheckSubdomainAvailability.
+ */
 public final class AppsCheckSubdomainAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CheckSubdomainAvailability.json
+     * x-ms-original-file:
+     * specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/
+     * Apps_CheckSubdomainAvailability.json
      */
     /**
      * Sample code: Apps_SubdomainAvailability.
-     *
+     * 
      * @param manager Entry point to IotCentralManager.
      */
     public static void appsSubdomainAvailability(com.azure.resourcemanager.iotcentral.IotCentralManager manager) {
-        manager
-            .apps()
+        manager.apps()
             .checkSubdomainAvailabilityWithResponse(
-                new OperationInputs().withName("myiotcentralapp").withType("IoTApps"), Context.NONE);
+                new OperationInputs().withName("myiotcentralapp").withType("IoTApps"),
+                com.azure.core.util.Context.NONE);
     }
 }

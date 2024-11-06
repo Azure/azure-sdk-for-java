@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientAccessRightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientAccessRight model =
-            BinaryData
-                .fromString("{\"client\":\"jrybnwjewgdrjer\",\"accessPermission\":\"ReadOnly\"}")
-                .toObject(ClientAccessRight.class);
-        Assertions.assertEquals("jrybnwjewgdrjer", model.client());
-        Assertions.assertEquals(ClientPermissionType.READ_ONLY, model.accessPermission());
+        ClientAccessRight model = BinaryData.fromString("{\"client\":\"q\",\"accessPermission\":\"NoAccess\"}")
+            .toObject(ClientAccessRight.class);
+        Assertions.assertEquals("q", model.client());
+        Assertions.assertEquals(ClientPermissionType.NO_ACCESS, model.accessPermission());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientAccessRight model =
-            new ClientAccessRight().withClient("jrybnwjewgdrjer").withAccessPermission(ClientPermissionType.READ_ONLY);
+        ClientAccessRight model
+            = new ClientAccessRight().withClient("q").withAccessPermission(ClientPermissionType.NO_ACCESS);
         model = BinaryData.fromObject(model).toObject(ClientAccessRight.class);
-        Assertions.assertEquals("jrybnwjewgdrjer", model.client());
-        Assertions.assertEquals(ClientPermissionType.READ_ONLY, model.accessPermission());
+        Assertions.assertEquals("q", model.client());
+        Assertions.assertEquals(ClientPermissionType.NO_ACCESS, model.accessPermission());
     }
 }

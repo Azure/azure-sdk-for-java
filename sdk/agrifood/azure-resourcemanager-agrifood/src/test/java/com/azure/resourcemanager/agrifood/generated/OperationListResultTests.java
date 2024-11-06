@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class OperationListResultTests {
     @Test
     public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"tyfsoppusuesn\",\"isDataAction\":false,\"display\":{\"provider\":\"bavo\",\"resource\":\"zdmohctbqvu\",\"operation\":\"xdn\",\"description\":\"vo\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"gwdkcglhsl\",\"isDataAction\":true,\"display\":{\"provider\":\"ggd\",\"resource\":\"ixhbkuofqweykhm\",\"operation\":\"evfyexfwhybcib\",\"description\":\"vdcsitynn\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"tehfiqscjeypvh\",\"isDataAction\":true,\"display\":{\"provider\":\"q\",\"resource\":\"jrefovgmkqsle\",\"operation\":\"vxyqjpkcattpngjc\",\"description\":\"czsqpjhvm\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"sounqecanoaeu\",\"isDataAction\":false,\"display\":{\"provider\":\"ltrpmopj\",\"resource\":\"matuok\",\"operation\":\"fu\",\"description\":\"aodsfcpkv\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"zmyzydagf\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"tyfsoppusuesn\",\"isDataAction\":false,\"display\":{\"provider\":\"bavo\",\"resource\":\"zdmohctbqvu\",\"operation\":\"xdn\",\"description\":\"vo\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"gwdkcglhsl\",\"isDataAction\":true,\"display\":{\"provider\":\"ggd\",\"resource\":\"ixhbkuofqweykhm\",\"operation\":\"evfyexfwhybcib\",\"description\":\"vdcsitynn\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"tehfiqscjeypvh\",\"isDataAction\":true,\"display\":{\"provider\":\"q\",\"resource\":\"jrefovgmkqsle\",\"operation\":\"vxyqjpkcattpngjc\",\"description\":\"czsqpjhvm\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"sounqecanoaeu\",\"isDataAction\":false,\"display\":{\"provider\":\"ltrpmopj\",\"resource\":\"matuok\",\"operation\":\"fu\",\"description\":\"aodsfcpkv\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"zmyzydagf\"}")
+            .toObject(OperationListResult.class);
     }
 
     @Test

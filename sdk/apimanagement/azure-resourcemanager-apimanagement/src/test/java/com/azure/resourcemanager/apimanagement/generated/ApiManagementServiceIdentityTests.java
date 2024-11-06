@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiManagementServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SystemAssigned\",\"principalId\":\"208f6187-b145-48d7-8864-011b1f19d199\",\"tenantId\":\"87c391a7-17ad-49fb-b6da-847d0523748e\",\"userAssignedIdentities\":{\"uoswkjmdih\":{\"principalId\":\"qseusrfjbdxzfxnx\",\"clientId\":\"b\"},\"gmdq\":{\"principalId\":\"yyyzlwhbw\",\"clientId\":\"nufzr\"},\"jvavdpwwo\":{\"principalId\":\"nbzrtfte\",\"clientId\":\"uubjtvgjsxmty\"},\"ofw\":{\"principalId\":\"d\",\"clientId\":\"titsf\"}}}")
-                .toObject(ApiManagementServiceIdentity.class);
+        ApiManagementServiceIdentity model = BinaryData.fromString(
+            "{\"type\":\"SystemAssigned\",\"principalId\":\"208f6187-b145-48d7-8864-011b1f19d199\",\"tenantId\":\"87c391a7-17ad-49fb-b6da-847d0523748e\",\"userAssignedIdentities\":{\"uoswkjmdih\":{\"principalId\":\"qseusrfjbdxzfxnx\",\"clientId\":\"b\"},\"gmdq\":{\"principalId\":\"yyyzlwhbw\",\"clientId\":\"nufzr\"},\"jvavdpwwo\":{\"principalId\":\"nbzrtfte\",\"clientId\":\"uubjtvgjsxmty\"},\"ofw\":{\"principalId\":\"d\",\"clientId\":\"titsf\"}}}")
+            .toObject(ApiManagementServiceIdentity.class);
         Assertions.assertEquals(ApimIdentityType.SYSTEM_ASSIGNED, model.type());
         Assertions.assertEquals("qseusrfjbdxzfxnx", model.userAssignedIdentities().get("uoswkjmdih").principalId());
         Assertions.assertEquals("b", model.userAssignedIdentities().get("uoswkjmdih").clientId());
@@ -27,19 +25,13 @@ public final class ApiManagementServiceIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiManagementServiceIdentity model =
-            new ApiManagementServiceIdentity()
-                .withType(ApimIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "uoswkjmdih",
-                        new UserIdentityProperties().withPrincipalId("qseusrfjbdxzfxnx").withClientId("b"),
-                        "gmdq",
-                        new UserIdentityProperties().withPrincipalId("yyyzlwhbw").withClientId("nufzr"),
-                        "jvavdpwwo",
-                        new UserIdentityProperties().withPrincipalId("nbzrtfte").withClientId("uubjtvgjsxmty"),
-                        "ofw",
-                        new UserIdentityProperties().withPrincipalId("d").withClientId("titsf")));
+        ApiManagementServiceIdentity model
+            = new ApiManagementServiceIdentity().withType(ApimIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("uoswkjmdih",
+                    new UserIdentityProperties().withPrincipalId("qseusrfjbdxzfxnx").withClientId("b"), "gmdq",
+                    new UserIdentityProperties().withPrincipalId("yyyzlwhbw").withClientId("nufzr"), "jvavdpwwo",
+                    new UserIdentityProperties().withPrincipalId("nbzrtfte").withClientId("uubjtvgjsxmty"), "ofw",
+                    new UserIdentityProperties().withPrincipalId("d").withClientId("titsf")));
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceIdentity.class);
         Assertions.assertEquals(ApimIdentityType.SYSTEM_ASSIGNED, model.type());
         Assertions.assertEquals("qseusrfjbdxzfxnx", model.userAssignedIdentities().get("uoswkjmdih").principalId());

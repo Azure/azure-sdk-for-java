@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a dedicated sql minimal tls settings. */
+/**
+ * Properties of a dedicated sql minimal tls settings.
+ */
 @Fluent
-public final class DedicatedSQLminimalTlsSettingsProperties {
+public final class DedicatedSQLminimalTlsSettingsProperties
+    implements JsonSerializable<DedicatedSQLminimalTlsSettingsProperties> {
     /*
      * The minimal tls version of the sql server.
      */
-    @JsonProperty(value = "minimalTlsVersion")
     private String minimalTlsVersion;
 
-    /** Creates an instance of DedicatedSQLminimalTlsSettingsProperties class. */
+    /**
+     * Creates an instance of DedicatedSQLminimalTlsSettingsProperties class.
+     */
     public DedicatedSQLminimalTlsSettingsProperties() {
     }
 
     /**
      * Get the minimalTlsVersion property: The minimal tls version of the sql server.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
@@ -31,7 +39,7 @@ public final class DedicatedSQLminimalTlsSettingsProperties {
 
     /**
      * Set the minimalTlsVersion property: The minimal tls version of the sql server.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DedicatedSQLminimalTlsSettingsProperties object itself.
      */
@@ -42,9 +50,46 @@ public final class DedicatedSQLminimalTlsSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("minimalTlsVersion", this.minimalTlsVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedSQLminimalTlsSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedSQLminimalTlsSettingsProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedSQLminimalTlsSettingsProperties.
+     */
+    public static DedicatedSQLminimalTlsSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedSQLminimalTlsSettingsProperties deserializedDedicatedSQLminimalTlsSettingsProperties
+                = new DedicatedSQLminimalTlsSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minimalTlsVersion".equals(fieldName)) {
+                    deserializedDedicatedSQLminimalTlsSettingsProperties.minimalTlsVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedSQLminimalTlsSettingsProperties;
+        });
     }
 }

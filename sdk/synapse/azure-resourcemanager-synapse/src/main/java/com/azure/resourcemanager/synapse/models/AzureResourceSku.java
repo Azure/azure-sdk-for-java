@@ -6,32 +6,34 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.AzureResourceSkuInner;
 
-/** An immutable client-side representation of AzureResourceSku. */
+/**
+ * An immutable client-side representation of AzureResourceSku.
+ */
 public interface AzureResourceSku {
     /**
      * Gets the resourceType property: Resource Namespace and Type.
-     *
+     * 
      * @return the resourceType value.
      */
     String resourceType();
 
     /**
      * Gets the sku property: The SKU details.
-     *
+     * 
      * @return the sku value.
      */
     AzureSku sku();
 
     /**
      * Gets the capacity property: The number of instances of the cluster.
-     *
+     * 
      * @return the capacity value.
      */
     AzureCapacity capacity();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.AzureResourceSkuInner object.
-     *
+     * 
      * @return the inner object.
      */
     AzureResourceSkuInner innerModel();

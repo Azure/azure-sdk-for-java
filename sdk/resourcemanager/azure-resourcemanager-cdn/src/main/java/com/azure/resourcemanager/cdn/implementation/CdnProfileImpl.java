@@ -29,16 +29,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for CdnProfile.
  */
-class CdnProfileImpl
-    extends GroupableResourceImpl<
-        CdnProfile,
-        ProfileInner,
-        CdnProfileImpl,
-        CdnManager>
-    implements
-        CdnProfile,
-        CdnProfile.Definition,
-        CdnProfile.Update {
+class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, CdnProfileImpl, CdnManager>
+    implements CdnProfile, CdnProfile.Definition, CdnProfile.Update {
 
     private CdnEndpointsImpl endpoints;
 
@@ -59,7 +51,10 @@ class CdnProfileImpl
 
     @Override
     public Mono<String> generateSsoUriAsync() {
-        return this.manager().serviceClient().getProfiles().generateSsoUriAsync(this.resourceGroupName(), this.name())
+        return this.manager()
+            .serviceClient()
+            .getProfiles()
+            .generateSsoUriAsync(this.resourceGroupName(), this.name())
             .map(SsoUriInner::ssoUriValue);
     }
 
@@ -70,7 +65,9 @@ class CdnProfileImpl
 
     @Override
     public Mono<Void> startEndpointAsync(String endpointName) {
-        return this.manager().serviceClient().getEndpoints()
+        return this.manager()
+            .serviceClient()
+            .getEndpoints()
             .startAsync(this.resourceGroupName(), this.name(), endpointName)
             .then();
     }
@@ -82,14 +79,17 @@ class CdnProfileImpl
 
     @Override
     public Mono<Void> stopEndpointAsync(String endpointName) {
-        return this.manager().serviceClient().getEndpoints()
+        return this.manager()
+            .serviceClient()
+            .getEndpoints()
             .stopAsync(this.resourceGroupName(), this.name(), endpointName)
             .then();
     }
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getProfiles().listResourceUsage(this.resourceGroupName(), this.name()),
+        return PagedConverter.mapPage(
+            this.manager().serviceClient().getProfiles().listResourceUsage(this.resourceGroupName(), this.name()),
             ResourceUsage::new);
     }
 
@@ -101,7 +101,9 @@ class CdnProfileImpl
     @Override
     public Mono<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths) {
         if (contentPaths != null) {
-            return this.manager().serviceClient().getEndpoints()
+            return this.manager()
+                .serviceClient()
+                .getEndpoints()
                 .purgeContentAsync(this.resourceGroupName(), this.name(), endpointName,
                     new PurgeParameters().withContentPaths(new ArrayList<>(contentPaths)));
         }
@@ -116,7 +118,9 @@ class CdnProfileImpl
     @Override
     public Mono<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths) {
         if (contentPaths != null) {
-            return this.manager().serviceClient().getEndpoints()
+            return this.manager()
+                .serviceClient()
+                .getEndpoints()
                 .loadContentAsync(this.resourceGroupName(), this.name(), endpointName,
                     new LoadParameters().withContentPaths(new ArrayList<>(contentPaths)));
         }
@@ -130,8 +134,11 @@ class CdnProfileImpl
 
     @Override
     public Mono<CustomDomainValidationResult> validateEndpointCustomDomainAsync(String endpointName, String hostName) {
-        return this.manager().serviceClient().getEndpoints().validateCustomDomainAsync(
-            this.resourceGroupName(), this.name(), endpointName, new ValidateCustomDomainInput().withHostname(hostName))
+        return this.manager()
+            .serviceClient()
+            .getEndpoints()
+            .validateCustomDomainAsync(this.resourceGroupName(), this.name(), endpointName,
+                new ValidateCustomDomainInput().withHostname(hostName))
             .map(CustomDomainValidationResult::new);
     }
 
@@ -147,9 +154,7 @@ class CdnProfileImpl
 
     @Override
     public boolean isPremiumVerizon() {
-        return this.sku() != null
-            && this.sku().name() != null
-            && this.sku().name().equals(SkuName.PREMIUM_VERIZON);
+        return this.sku() != null && this.sku().name() != null && this.sku().name().equals(SkuName.PREMIUM_VERIZON);
     }
 
     @Override
@@ -169,20 +174,27 @@ class CdnProfileImpl
 
     @Override
     protected Mono<ProfileInner> getInnerAsync() {
-        return this.manager().serviceClient().getProfiles()
+        return this.manager()
+            .serviceClient()
+            .getProfiles()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<CdnProfile> createResourceAsync() {
-        return this.manager().serviceClient().getProfiles().createAsync(resourceGroupName(), name(), innerModel())
-                .map(innerToFluentMap(this));
+        return this.manager()
+            .serviceClient()
+            .getProfiles()
+            .createAsync(resourceGroupName(), name(), innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<CdnProfile> updateResourceAsync() {
         final CdnProfileImpl self = this;
-        return this.manager().serviceClient().getProfiles()
+        return this.manager()
+            .serviceClient()
+            .getProfiles()
             .updateAsync(this.resourceGroupName(), this.name(),
                 new ProfileUpdateParameters().withTags(innerModel().tags()))
             .map(inner -> {
@@ -203,42 +215,33 @@ class CdnProfileImpl
 
     @Override
     public Mono<CdnProfile> refreshAsync() {
-        return super.refreshAsync()
-            .map(cdnProfile -> {
-                endpoints.clear();
-                return cdnProfile;
-            });
+        return super.refreshAsync().map(cdnProfile -> {
+            endpoints.clear();
+            return cdnProfile;
+        });
     }
 
     @Override
     public CdnProfileImpl withStandardAkamaiSku() {
-        this.innerModel()
-                .withSku(new Sku()
-                            .withName(SkuName.STANDARD_AKAMAI));
+        this.innerModel().withSku(new Sku().withName(SkuName.STANDARD_AKAMAI));
         return this;
     }
 
     @Override
     public CdnProfileImpl withStandardVerizonSku() {
-        this.innerModel()
-                .withSku(new Sku()
-                        .withName(SkuName.STANDARD_VERIZON));
+        this.innerModel().withSku(new Sku().withName(SkuName.STANDARD_VERIZON));
         return this;
     }
 
     @Override
     public CdnProfileImpl withPremiumVerizonSku() {
-        this.innerModel()
-                .withSku(new Sku()
-                        .withName(SkuName.PREMIUM_VERIZON));
+        this.innerModel().withSku(new Sku().withName(SkuName.PREMIUM_VERIZON));
         return this;
     }
 
     @Override
     public CdnProfileImpl withStandardMicrosoftSku() {
-        this.innerModel()
-                .withSku(new Sku()
-                        .withName(SkuName.STANDARD_MICROSOFT));
+        this.innerModel().withSku(new Sku().withName(SkuName.STANDARD_MICROSOFT));
         return this;
     }
 

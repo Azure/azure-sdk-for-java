@@ -24,82 +24,50 @@ public final class SourceControlSyncJobStreamsImpl implements SourceControlSyncJ
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public SourceControlSyncJobStreamsImpl(
-        SourceControlSyncJobStreamsClient innerClient,
+    public SourceControlSyncJobStreamsImpl(SourceControlSyncJobStreamsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SourceControlSyncJobStream> listBySyncJob(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
-        PagedIterable<SourceControlSyncJobStreamInner> inner =
-            this
-                .serviceClient()
-                .listBySyncJob(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId);
-        return Utils.mapPage(inner, inner1 -> new SourceControlSyncJobStreamImpl(inner1, this.manager()));
+    public PagedIterable<SourceControlSyncJobStream> listBySyncJob(String resourceGroupName,
+        String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId) {
+        PagedIterable<SourceControlSyncJobStreamInner> inner = this.serviceClient()
+            .listBySyncJob(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SourceControlSyncJobStreamImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SourceControlSyncJobStream> listBySyncJob(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String filter,
+    public PagedIterable<SourceControlSyncJobStream> listBySyncJob(String resourceGroupName,
+        String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId, String filter,
         Context context) {
-        PagedIterable<SourceControlSyncJobStreamInner> inner =
-            this
-                .serviceClient()
-                .listBySyncJob(
-                    resourceGroupName,
-                    automationAccountName,
-                    sourceControlName,
-                    sourceControlSyncJobId,
-                    filter,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new SourceControlSyncJobStreamImpl(inner1, this.manager()));
+        PagedIterable<SourceControlSyncJobStreamInner> inner = this.serviceClient()
+            .listBySyncJob(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, filter,
+                context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SourceControlSyncJobStreamImpl(inner1, this.manager()));
     }
 
-    public SourceControlSyncJobStreamById get(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId) {
-        SourceControlSyncJobStreamByIdInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, streamId);
+    public Response<SourceControlSyncJobStreamById> getWithResponse(String resourceGroupName,
+        String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId, String streamId,
+        Context context) {
+        Response<SourceControlSyncJobStreamByIdInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId,
+                streamId, context);
         if (inner != null) {
-            return new SourceControlSyncJobStreamByIdImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SourceControlSyncJobStreamByIdImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<SourceControlSyncJobStreamById> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        String streamId,
-        Context context) {
-        Response<SourceControlSyncJobStreamByIdInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    sourceControlName,
-                    sourceControlSyncJobId,
-                    streamId,
-                    context);
+    public SourceControlSyncJobStreamById get(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, String streamId) {
+        SourceControlSyncJobStreamByIdInner inner = this.serviceClient()
+            .get(resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobId, streamId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SourceControlSyncJobStreamByIdImpl(inner.getValue(), this.manager()));
+            return new SourceControlSyncJobStreamByIdImpl(inner, this.manager());
         } else {
             return null;
         }

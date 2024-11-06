@@ -16,9 +16,9 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeMonitor
 public interface IntegrationRuntimeMonitoringDatasClient {
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -29,14 +29,14 @@ public interface IntegrationRuntimeMonitoringDatasClient {
      * @return monitoring data for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeMonitoringDataInner> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeMonitoringDataInner> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -46,6 +46,6 @@ public interface IntegrationRuntimeMonitoringDatasClient {
      * @return monitoring data for an integration runtime.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeMonitoringDataInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeMonitoringDataInner list(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

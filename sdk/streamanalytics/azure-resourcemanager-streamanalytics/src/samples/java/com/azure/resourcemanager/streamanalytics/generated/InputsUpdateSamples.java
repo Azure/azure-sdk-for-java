@@ -32,7 +32,8 @@ public final class InputsUpdateSamples {
     public static void
         updateAStreamIoTHubInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Input resource = manager.inputs()
-            .getWithResponse("sjrg3467", "sj9742", "input7970", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg3467", "sj9742", "input7970", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withProperties(new StreamInputProperties()
                 .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
@@ -53,7 +54,8 @@ public final class InputsUpdateSamples {
     public static void
         updateAReferenceBlobInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Input resource = manager.inputs()
-            .getWithResponse("sjrg8440", "sj9597", "input7225", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg8440", "sj9597", "input7225", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withProperties(new ReferenceInputProperties()
                 .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
@@ -74,9 +76,12 @@ public final class InputsUpdateSamples {
     public static void
         updateAStreamEventHubInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Input resource = manager.inputs()
-            .getWithResponse("sjrg3139", "sj197", "input7425", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new StreamInputProperties().withSerialization(new AvroSerialization())
-            .withDatasource(new EventHubStreamInputDataSource().withConsumerGroupName("differentConsumerGroupName")))
+            .getWithResponse("sjrg3139", "sj197", "input7425", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new StreamInputProperties().withSerialization(new AvroSerialization())
+                .withDatasource(
+                    new EventHubStreamInputDataSource().withConsumerGroupName("differentConsumerGroupName")))
             .apply();
     }
 
@@ -93,7 +98,8 @@ public final class InputsUpdateSamples {
     public static void
         updateAStreamBlobInput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Input resource = manager.inputs()
-            .getWithResponse("sjrg8161", "sj6695", "input8899", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg8161", "sj6695", "input8899", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withProperties(new StreamInputProperties()
                 .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))

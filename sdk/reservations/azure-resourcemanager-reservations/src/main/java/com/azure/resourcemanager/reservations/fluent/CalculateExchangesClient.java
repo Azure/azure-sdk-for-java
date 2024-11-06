@@ -12,13 +12,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.reservations.fluent.models.CalculateExchangeOperationResultResponseInner;
 import com.azure.resourcemanager.reservations.models.CalculateExchangeRequest;
 
-/** An instance of this class provides access to all the operations defined in CalculateExchangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CalculateExchangesClient.
+ */
 public interface CalculateExchangesClient {
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,9 +33,9 @@ public interface CalculateExchangesClient {
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,9 +49,9 @@ public interface CalculateExchangesClient {
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,9 +63,9 @@ public interface CalculateExchangesClient {
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = ResourceSetRulesClientBuilder.class, isAsync = true)
 public final class ResourceSetRulesAsyncClient {
-    @Generated private final ResourceSetRulesImpl serviceClient;
+    @Generated
+    private final ResourceSetRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ResourceSetRulesAsyncClient class.
@@ -367,8 +368,8 @@ public final class ResourceSetRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponse(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponse(BinaryData resourceSetRuleConfig,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
     }
 
