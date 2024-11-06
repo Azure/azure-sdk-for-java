@@ -97,6 +97,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
+          logInfo("last continuation token" + lastContinuationToken.get())
           val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
           lastPagedFlux.getAndSet(newPagedFlux) match {
             case Some(oldPagedFlux) => {
@@ -180,8 +181,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   private def hasBufferedNext: Boolean = {
     currentItemIterator match {
       case Some(iterator) => if (iterator.hasNext && validateNextLsn(iterator)) {
+        logInfo("Buffered next from TransientIterator - true")
         true
       } else {
+        logInfo("Buffered next from TransientIterator - false")
         currentItemIterator = None
         false
       }
@@ -248,6 +251,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         // completely drained so all partitions return 304
         true
       case Some(endLsn) =>
+        logInfo(s"Validating next LSN")
         // In streaming mode we only continue until we hit the endOffset's continuation Lsn
         if (itemIterator.isEmpty) {
           return false
@@ -256,6 +260,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         assert(node.lsn != null, "Change feed responses must have _lsn property.")
         assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
         val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
+        logInfo(s"Next LSN: $nextLsn, End LSN: $endLsn")
 
         nextLsn <= endLsn
     }
