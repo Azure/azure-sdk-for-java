@@ -7,6 +7,7 @@ package com.azure.health.deidentification.generated;
 import com.azure.health.deidentification.models.CustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
+import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.PhiCategory;
 import com.azure.health.deidentification.models.PhiEntity;
 import com.azure.health.deidentification.models.PhiTaggerResult;
@@ -22,9 +23,10 @@ public final class DeIdentifyTextTests extends DeidentificationClientTestBase {
     @Disabled
     public void testDeIdentifyTextTests() {
         // method invocation
-        DeidentificationResult response = deidentificationClient
-            .deidentifyText(new DeidentificationContent("Hello my name is John Smith.").setCustomizations(
-                new CustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
+        DeidentificationResult response = deidentificationClient.deidentifyText(
+            new DeidentificationContent("Hello my name is John Smith.").setOperation(OperationType.REDACT)
+                .setCustomizations(
+                    new CustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
 
         // response assertion
         Assertions.assertNotNull(response);

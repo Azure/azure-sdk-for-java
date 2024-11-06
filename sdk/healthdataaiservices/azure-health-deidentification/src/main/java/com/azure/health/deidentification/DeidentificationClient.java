@@ -309,7 +309,7 @@ public final class DeidentificationClient {
     /**
      * List processed documents within a job.
      * 
-     * Resource list operation template.
+     * The most basic operation.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -346,7 +346,7 @@ public final class DeidentificationClient {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -356,8 +356,8 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobDocuments(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listJobDocuments(name, requestOptions);
+    public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
+        return this.serviceClient.listJobDocuments(jobName, requestOptions);
     }
 
     /**
@@ -608,9 +608,9 @@ public final class DeidentificationClient {
     /**
      * List processed documents within a job.
      * 
-     * Resource list operation template.
+     * The most basic operation.
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -622,22 +622,22 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentDetails> listJobDocuments(String name, String continuationToken) {
+    public PagedIterable<DocumentDetails> listJobDocuments(String jobName, String continuationToken) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
         if (continuationToken != null) {
             requestOptions.addQueryParam("continuationToken", continuationToken, false);
         }
-        return serviceClient.listJobDocuments(name, requestOptions)
+        return serviceClient.listJobDocuments(jobName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
     }
 
     /**
      * List processed documents within a job.
      * 
-     * Resource list operation template.
+     * The most basic operation.
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -648,10 +648,10 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentDetails> listJobDocuments(String name) {
+    public PagedIterable<DocumentDetails> listJobDocuments(String jobName) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listJobDocuments(name, requestOptions)
+        return serviceClient.listJobDocuments(jobName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
     }
 
