@@ -793,7 +793,9 @@
 # ServiceOwners:                                     @shahbj79 @mit2nil @aygoya @ganganarayanan
 
 # ServiceLabel:  %Synapse
-# ServiceOwners:                                     @wanyang7
+# PRLabel: %Synapse
+# ServiceLabel: %Synapse
+/sdk/synapse                                         @wanyang7
 
 # PRLabel: %Tables
 /sdk/tables/                                         @jairmyree @vcolin7
