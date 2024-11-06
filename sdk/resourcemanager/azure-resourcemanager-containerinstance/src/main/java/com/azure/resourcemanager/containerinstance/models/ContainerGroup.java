@@ -1182,11 +1182,8 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
              * @param dnsPrefix the DNS prefix to be used to create the FQDN for the container group
              * @return the next stage of the definition
              */
-            WithDnsNameLabelReusePolicy withDnsPrefix(String dnsPrefix);
-        }
+            WithCreate withDnsPrefix(String dnsPrefix);
 
-        /** The stage of the container group definition allowing to specify the DNS name label reuse policy. */
-        interface WithDnsNameLabelReusePolicy {
             /**
              * Specifies the reuse policy of the DNS name label be to the object's domain name label can be reused in specified scope.
              *
@@ -1302,7 +1299,7 @@ public interface ContainerGroup extends GroupableResource<ContainerInstanceManag
          */
         interface WithCreate extends WithRestartPolicy, WithSystemAssignedManagedServiceIdentity,
             WithUserAssignedManagedServiceIdentity, WithDnsPrefix, WithNetworkProfile, WithLogAnalytics,
-            WithDnsNameLabelReusePolicy, Creatable<ContainerGroup>, Resource.DefinitionWithTags<WithCreate> {
+            Creatable<ContainerGroup>, Resource.DefinitionWithTags<WithCreate> {
 
             /**
              * Begins creating the deployment resource.
