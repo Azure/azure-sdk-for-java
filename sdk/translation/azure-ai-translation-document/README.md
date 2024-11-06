@@ -40,49 +40,6 @@ Interaction with the service using the client library begins with creating an in
 Managed identities for Azure resources are service principals that create a Microsoft Entra identity and specific permissions for Azure managed resources. Managed identities are a safer way to grant access to storage data and replace the requirement for you to include shared access signature tokens (SAS) with your source and target URLs.
 Here is more information on [Managed identities for Document Translation] [managed_identities_for_document_translation].
 
-#### Get an API key
-
-You can get the `endpoint`, `API key` and `Region` from the Cognitive Services resource or Document Translator service resource information in the [Azure Portal][azure_portal].
-
-Alternatively, use the [Azure CLI][azure_cli] snippet below to get the API key from the Translator service resource.
-
-```PowerShell
-az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
-```
-
-#### Create a `DocumentTranslationClient` using endpoint and API key credential
-
-Once you have the value for the API key, create an `AzureKeyCredential`. This will allow you to
-update the API key without creating a new client.
-
-With the value of the `endpoint` and `AzureKeyCredential` , you can create the [DocumentTranslationClient][document_translator_client_class]:
-
-```java createDocumentTranslationClient
-String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
-String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
-
-AzureKeyCredential credential = new AzureKeyCredential(apiKey);
-
-DocumentTranslationClient client = new DocumentTranslationClientBuilder()
-    .endpoint(endpoint)
-    .credential(credential)
-    .buildClient();
-```
-#### Create a `SingleDocumentTranslationClient` using endpoint and API key credential
-
-You can similarly create the [SingleDocumentTranslationClient][single_document_translator_client_class]:
-```java createSingleDocumentTranslationClient
-String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
-String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
-
-AzureKeyCredential credential = new AzureKeyCredential(apiKey);
-
-SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
-    .endpoint(endpoint)
-    .credential(credential)
-    .buildClient();
-```
-
 #### Create DocumentTranslationClient and SingleDocumentTranslationClient using Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform.
@@ -129,6 +86,17 @@ SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuil
     .credential(defaultCredential)
     .buildClient();
 ```
+#### Create a `DocumentTranslationClient` or `SingleDocumentTranslationClient` using endpoint and API key credential
+
+You can get the `endpoint`, `API key` and `Region` from the Cognitive Services resource or Document Translator service resource information in the [Azure Portal][azure_portal].
+
+Alternatively, use the [Azure CLI][azure_cli] snippet below to get the API key from the Translator service resource.
+
+```PowerShell
+az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
+
+Please refer to these samples for creating [DocumentTranslationClientWithAPIKey][sample_document_translation_client_with_apiKey] and [SingleDocumentTranslationClientWithAPIKey][sample_single_document_translation_client_with_apiKey].
+
 
 ## Key concepts
 ### `DocumentTranslationClient` and `DocumentTranslationAsyncClient`
@@ -178,8 +146,7 @@ Executes an asynchronous batch translation request. The method requires an Azure
 ```java startDocumentTranslation
 String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
 TranslationSource translationSource = new TranslationSource(sourceUrl);
-translationSource.setPrefix("pre");
-translationSource.setSuffix(".txt");
+translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
 translationSource.setLanguage("en");
 translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
@@ -233,8 +200,7 @@ Cancels a translation job that is currently processing or queued (pending) as in
 ```java CancelDocumentTranslation
 String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
 TranslationSource translationSource = new TranslationSource(sourceUrl);
-translationSource.setPrefix("pre");
-translationSource.setSuffix(".txt");
+translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
 translationSource.setLanguage("en");
 translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
@@ -282,8 +248,7 @@ Gets a list and the status of all translation jobs submitted by the user (associ
 ```java GetTranslationsStatus
 String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
 TranslationSource translationSource = new TranslationSource(sourceUrl);
-translationSource.setPrefix("pre");
-translationSource.setSuffix(".txt");
+translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
 translationSource.setLanguage("en");
 translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
@@ -330,8 +295,7 @@ Request a summary of the status for a specific translation job. The response inc
 ```java GetTranslationStatus
 String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
 TranslationSource translationSource = new TranslationSource(sourceUrl);
-translationSource.setPrefix("pre");
-translationSource.setSuffix(".txt");
+translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
 translationSource.setLanguage("en");
 translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
@@ -379,8 +343,7 @@ Gets the status for all documents in a translation job.
 ```java GetDocumentsStatus
 String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
 TranslationSource translationSource = new TranslationSource(sourceUrl);
-translationSource.setPrefix("pre");
-translationSource.setSuffix(".txt");
+translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
 translationSource.setLanguage("en");
 translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
@@ -440,8 +403,7 @@ Request the status for a specific document in a job.
 ```java GetDocumentStatus
 String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
 TranslationSource translationSource = new TranslationSource(sourceUrl);
-translationSource.setPrefix("pre");
-translationSource.setSuffix(".txt");
+translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
 translationSource.setLanguage("en");
 translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
@@ -535,6 +497,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[sample_document_translation_client_with_apiKey]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/ReadmeSamples.java
+[sample_single_document_translation_client_with_apiKey]: : https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/ReadmeSamples.java
 [documentFormats_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-supported-document-formats
 [glossaryFormats]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-supported-glossary-formats
 [batchTranslation_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/start-batch-translation

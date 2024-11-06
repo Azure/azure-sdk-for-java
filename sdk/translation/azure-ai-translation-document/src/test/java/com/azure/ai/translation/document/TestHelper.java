@@ -3,6 +3,7 @@
 
 package com.azure.ai.translation.document;
 
+import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.TranslationGlossary;
 import com.azure.ai.translation.document.models.TranslationSource;
@@ -15,14 +16,11 @@ import java.util.List;
 
 public class TestHelper {
 
-    public static TranslationSource createSourceInput(String sourceUrl, String prefix, String suffix,
-        String sourceLanguage, TranslationStorageSource storageSource) {
+    public static TranslationSource createSourceInput(String sourceUrl, DocumentFilter filter, String sourceLanguage,
+        TranslationStorageSource storageSource) {
         TranslationSource sourceInput = new TranslationSource(sourceUrl);
-        if (prefix != null) {
-            sourceInput.setPrefix(prefix);
-        }
-        if (suffix != null) {
-            sourceInput.setSuffix(suffix);
+        if (filter != null) {
+            sourceInput.setFilter(filter);
         }
         if (sourceLanguage != null) {
             sourceInput.setLanguage(sourceLanguage);

@@ -4,17 +4,16 @@
 package com.azure.ai.translation.document;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.TranslationGlossary;
 import com.azure.ai.translation.document.models.TranslationSource;
-import com.azure.ai.translation.document.models.TranslationBatch;
 import com.azure.ai.translation.document.models.StorageInputType;
 import com.azure.ai.translation.document.models.TranslationStorageSource;
 import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.azure.core.util.polling.SyncPoller;
@@ -33,8 +32,7 @@ public class CancelDocumentTranslation {
         // BEGIN:CancelDocumentTranslation
         String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
         TranslationSource translationSource = new TranslationSource(sourceUrl);
-        translationSource.setPrefix("pre");
-        translationSource.setSuffix(".txt");
+        translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
         translationSource.setLanguage("en");
         translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 

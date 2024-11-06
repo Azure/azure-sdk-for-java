@@ -4,7 +4,7 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.SingleDocumentTranslationClientImpl;
-import com.azure.ai.translation.document.models.SingleDocumentTranslationAudience;
+import com.azure.ai.translation.document.models.DocumentTranslationAudience;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -71,7 +71,7 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    private SingleDocumentTranslationAudience audience;
+    private DocumentTranslationAudience audience;
 
     /**
      * Create an instance of the SingleDocumentTranslationClientBuilder.
@@ -165,13 +165,14 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     }
 
     /**
-     * Sets the Authentication audience used to authorize requests sent to the service.
+     * Sets the Authentication audience used to authorize requests sent to the
+     * service.
      *
      * @param audience Token Audience.
      * @return The updated {@link SingleDocumentTranslationClientBuilder} object.
      * @throws NullPointerException If {@code audience} is null.
      */
-    public SingleDocumentTranslationClientBuilder audience(SingleDocumentTranslationAudience audience) {
+    public SingleDocumentTranslationClientBuilder audience(DocumentTranslationAudience audience) {
         Objects.requireNonNull(audience, "'audience' cannot be null.");
         this.audience = audience;
         return this;
@@ -337,7 +338,7 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
             policies.add(new KeyCredentialPolicy("Ocp-Apim-Subscription-Key", keyCredential));
         }
         if (tokenCredential != null) {
-            SingleDocumentTranslationAudience authAudience = SingleDocumentTranslationAudience.AZURE_PUBLIC_CLOUD;
+            DocumentTranslationAudience authAudience = DocumentTranslationAudience.AZURE_PUBLIC_CLOUD;
             if (this.audience != null) {
                 authAudience = this.audience;
             }

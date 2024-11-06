@@ -217,7 +217,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         List<TestDocument> testDocs = createDummyTestDocuments(count);
         String sourceUrl = createSourceContainer(testDocs);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";

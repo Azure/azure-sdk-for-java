@@ -21,7 +21,7 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
     public void testCancelTranslation() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";

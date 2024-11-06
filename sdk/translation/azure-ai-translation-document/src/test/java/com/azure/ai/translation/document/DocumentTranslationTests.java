@@ -4,6 +4,7 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
+import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.ai.translation.document.models.TranslationGlossary;
 import com.azure.ai.translation.document.models.TranslationSource;
@@ -54,7 +55,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
 
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
         TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
@@ -83,7 +84,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String targetUrl3 = createTargetContainer(null);
         String targetLanguageCode3 = "ar";
 
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
         TranslationTarget targetInput1
             = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
         TranslationTarget targetInput2
@@ -118,14 +119,14 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String targetUrl2 = createTargetContainer(null);
         String targetLanguageCode2 = "es";
 
-        TranslationSource sourceInput1 = TestHelper.createSourceInput(sourceUrl1, null, null, null, null);
+        TranslationSource sourceInput1 = TestHelper.createSourceInput(sourceUrl1, null, null, null);
         TranslationTarget targetInput1
             = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
         List<TranslationTarget> targetInputs1 = new ArrayList<>();
         targetInputs1.add(targetInput1);
         DocumentTranslationInput batchRequest1 = new DocumentTranslationInput(sourceInput1, targetInputs1);
 
-        TranslationSource sourceInput2 = TestHelper.createSourceInput(sourceUrl2, null, null, null, null);
+        TranslationSource sourceInput2 = TestHelper.createSourceInput(sourceUrl2, null, null, null);
         TranslationTarget targetInput2
             = TestHelper.createTargetInput(targetUrl2, targetLanguageCode2, null, null, null);
         List<TranslationTarget> targetInputs2 = new ArrayList<>();
@@ -148,7 +149,9 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testSingleSourceSingleTargetWithPrefix() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(TWO_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, "File", null, null, null);
+        DocumentFilter filter = new DocumentFilter();
+        filter.setPrefix("File");
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, filter, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -172,7 +175,9 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testSingleSourceSingleTargetWithSuffix() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, "txt", null, null);
+        DocumentFilter filter = new DocumentFilter();
+        filter.setSuffix("txt");
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, filter, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -196,7 +201,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testSingleSourceSingleTargetListDocuments() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -228,7 +233,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testGetDocumentStatus() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -258,7 +263,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testWrongSourceRightTarget() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = "https://idont.ex.ist";
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "es";
@@ -288,7 +293,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testRightSourceWrongTarget() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = "https://idont.ex.ist";
         String targetLanguageCode = "es";
@@ -323,7 +328,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         documents.add(new TestDocument("File2.jpg", "jpg"));
         String sourceUrl = createSourceContainer(documents);
 
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -350,7 +355,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         documents.add(new TestDocument("Document1.txt", ""));
         String sourceUrl = createSourceContainer(documents);
 
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -384,7 +389,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testExistingFileInTargetContainer() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(ONE_TEST_DOCUMENTS);
         String targetLanguageCode = "fr";
@@ -413,7 +418,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
     public void testGetDocumentStatusWithInvalidGuid() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
@@ -447,7 +452,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String documentContent = "First english test document";
         List<TestDocument> documents = Arrays.asList(new TestDocument(documentName, documentContent));
         String sourceUrl = createSourceContainer(documents);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         Map<String, String> containerValues = createTargetContainerWithClient(null);
         String targetUrl = containerValues.get("containerUrl");

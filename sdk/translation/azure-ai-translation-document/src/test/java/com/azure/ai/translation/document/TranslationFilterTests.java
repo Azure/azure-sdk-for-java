@@ -178,7 +178,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
         List<TestDocument> testDocuments = createDummyTestDocuments(docsPerJob);
         String sourceUrl = createSourceContainer(testDocuments);
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         // create a translation job
         List<String> translationIds = new ArrayList<>();

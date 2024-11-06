@@ -3,11 +3,11 @@
 
 package com.azure.ai.translation.document;
 
+import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.ai.translation.document.models.TranslationGlossary;
 import com.azure.ai.translation.document.models.TranslationSource;
-import com.azure.ai.translation.document.models.TranslationBatch;
 import com.azure.ai.translation.document.models.StorageInputType;
 import com.azure.ai.translation.document.models.TranslationStorageSource;
 import com.azure.ai.translation.document.models.TranslationTarget;
@@ -38,8 +38,7 @@ public class GetDocumentStatus {
         // BEGIN:GetDocumentStatus
         String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
         TranslationSource translationSource = new TranslationSource(sourceUrl);
-        translationSource.setPrefix("pre");
-        translationSource.setSuffix(".txt");
+        translationSource.setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"));
         translationSource.setLanguage("en");
         translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
