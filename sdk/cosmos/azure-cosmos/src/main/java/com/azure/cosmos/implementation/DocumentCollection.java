@@ -460,7 +460,7 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
-     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * Sets the Full Test Policy containing paths for full text search and the language specification for each path.
      * It also contains the default language to be used.
      *
      * @param value the FullTextPolicy

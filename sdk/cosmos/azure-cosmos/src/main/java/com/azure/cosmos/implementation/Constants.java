@@ -122,15 +122,10 @@ public final class Constants {
 
         // Full text search
         public static final String FULL_TEXT_SEARCH_PATHS = "fullTextIndexes";
-        public static final String GLOBAL_STATISTICS_QUERY_INFO = "globalStatisticsQueryInfo";
-        public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
-        public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
-        public static final String SKIP = "skip";
-        public static final String TAKE = "take";
         public static final String DEFAULT_LANGUAGE = "defaultLanguage";
         public static final String LANGUAGE = "language";
         public static final String FULL_TEXT_POLICY = "fullTextPolicy";
-        public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
+        public static final String FULL_TEXT_PATHS = "fullTextPaths";
 
 
         // Vector Embedding Policy

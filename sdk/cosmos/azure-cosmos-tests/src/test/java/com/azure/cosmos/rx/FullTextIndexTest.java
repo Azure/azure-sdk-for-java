@@ -72,7 +72,7 @@ public class FullTextIndexTest extends TestSuiteBase{
         safeClose(client);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT*10000)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void shouldCreateFullTextPolicy() throws Exception {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
