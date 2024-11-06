@@ -16,7 +16,6 @@
   <suppress files="com.azure.identity.implementation.VisualStudioCacheAccessor.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.identity.implementation.util.IdentityUtil.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.identity.implementation.util.LoggingUtil.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.identity.implementation.models.AzureCliToken.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.identity.implementation.WindowsCredentialApi.java" checks="MemberNameCheck" />
   <suppress files="com.azure.identity.implementation.WindowsCredentialApi.java" checks="MethodNameCheck" />
   <suppress files="com.azure.identity.implementation.CredentialBuilderBaseHelper.java" checks="MissingJavadocMethodCheck" />
