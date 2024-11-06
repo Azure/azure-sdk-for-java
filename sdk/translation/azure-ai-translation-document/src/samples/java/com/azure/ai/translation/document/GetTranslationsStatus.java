@@ -65,8 +65,7 @@ public class GetTranslationsStatus {
         DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
         batchRequest.setStorageType(StorageInputType.FOLDER);
 
-        SyncPoller<TranslationStatusResult,
-        TranslationStatusResult> response = documentTranslationClient
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
             .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
         PagedIterable < TranslationStatusResult> translationStatuses = documentTranslationClient

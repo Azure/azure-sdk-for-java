@@ -14,7 +14,6 @@ import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.azure.core.util.polling.SyncPoller;
@@ -64,8 +63,7 @@ public class StartDocumentTranslation {
         DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
         batchRequest.setStorageType(StorageInputType.FOLDER);
 
-        SyncPoller<TranslationStatusResult,
-        TranslationStatusResult> response = documentTranslationClient
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
             .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
         // END:startDocumentTranslation
     }

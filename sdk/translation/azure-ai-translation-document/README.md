@@ -175,8 +175,7 @@ translationTargets.add(translationTarget2);
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller<TranslationStatusResult,
-TranslationStatusResult> response = documentTranslationClient
+SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 ```
 Please refer to the service documentation for a conceptual discussion of [batchTranslation][batchTranslation_doc].
@@ -229,8 +228,7 @@ translationTargets.add(translationTarget2);
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller<TranslationStatusResult,
-TranslationStatusResult> response = documentTranslationClient
+SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
@@ -277,8 +275,7 @@ translationTargets.add(translationTarget2);
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller<TranslationStatusResult,
-TranslationStatusResult> response = documentTranslationClient
+SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 PagedIterable < TranslationStatusResult> translationStatuses = documentTranslationClient
@@ -324,8 +321,7 @@ translationTargets.add(translationTarget2);
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller<TranslationStatusResult,
-TranslationStatusResult> response = documentTranslationClient
+SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
@@ -372,8 +368,7 @@ translationTargets.add(translationTarget2);
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller<TranslationStatusResult,
-TranslationStatusResult> response = documentTranslationClient
+SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
@@ -432,8 +427,7 @@ translationTargets.add(translationTarget2);
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller<TranslationStatusResult,
-TranslationStatusResult> response = documentTranslationClient
+SyncPoller<TranslationStatusResult, TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
