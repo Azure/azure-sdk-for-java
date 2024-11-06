@@ -22,9 +22,9 @@ steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
   - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
-      displayName: 'Run SpotBugs and Checkstyle'
+      displayName: 'Build and Run SpotBugs and Checkstyle'
     ${{ else }}:
-      displayName: 'Run SpotBugs, Checkstyle, and RevApi'
+      displayName: 'Build and Run SpotBugs, Checkstyle, and RevApi'
     inputs:
       mavenPomFile: pom.xml
       ${{ if ne(parameters.SDKType, 'client') }}:
