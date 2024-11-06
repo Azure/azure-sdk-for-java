@@ -12,7 +12,7 @@ import java.util.List;
  * Sample for getting supported document formats.
  */
 public class GetSupportedFormats {
-    public static void main(final String[]args) {
+    public static void main(final String[] args) {
         String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
         String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
@@ -23,16 +23,16 @@ public class GetSupportedFormats {
             .buildClient();
 
         // BEGIN: getSupportedFormats
-        List < FileFormat > documentFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
-        for (FileFormat fileFormat: documentFileFormats) {
+        List<FileFormat> documentFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
+        for (FileFormat fileFormat : documentFileFormats) {
             System.out.println("FileFormat:" + fileFormat.getFormat());
             System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
             System.out.println("ContentTypes:" + fileFormat.getContentTypes());
             System.out.println("Type:" + fileFormat.getType());
         }
 
-        List < FileFormat > glossaryFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
-        for (FileFormat fileFormat: glossaryFileFormats) {
+        List<FileFormat> glossaryFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
+        for (FileFormat fileFormat : glossaryFileFormats) {
             System.out.println("FileFormat:" + fileFormat.getFormat());
             System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
             System.out.println("ContentTypes:" + fileFormat.getContentTypes());

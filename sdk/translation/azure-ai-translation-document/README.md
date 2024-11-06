@@ -188,9 +188,9 @@ TranslationTarget translationTarget1 = new TranslationTarget(targetUrl1, "fr");
 translationTarget1.setCategory("general");
 
 TranslationGlossary translationGlossary = new TranslationGlossary(
-        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-        "XLIFF");
-List < TranslationGlossary > translationGlossaries = new ArrayList <  > ();
+    "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+    "XLIFF");
+List<TranslationGlossary> translationGlossaries = new ArrayList<>();
 translationGlossaries.add(translationGlossary);
 translationTarget1.setGlossaries(translationGlossaries);
 translationTarget1.setStorageSource(TranslationStorageSource.AZURE_BLOB);
@@ -200,15 +200,15 @@ TranslationTarget translationTarget2 = new TranslationTarget(targetUrl2, "fr");
 translationTarget2.setCategory("general");
 translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-List < TranslationTarget > translationTargets = new ArrayList <  > ();
+List<TranslationTarget> translationTargets = new ArrayList<>());
 translationTargets.add(translationTarget1);
 translationTargets.add(translationTarget2);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller < TranslationStatusResult,
-TranslationStatusResult > response = documentTranslationClient
+SyncPoller<TranslationStatusResult,
+TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 ```
 Please refer to the service documentation for a conceptual discussion of [batchTranslation][batchTranslation_doc].
@@ -243,9 +243,9 @@ TranslationTarget translationTarget1 = new TranslationTarget(targetUrl1, "fr");
 translationTarget1.setCategory("general");
 
 TranslationGlossary translationGlossary = new TranslationGlossary(
-        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-        "XLIFF");
-List < TranslationGlossary > translationGlossaries = new ArrayList <  > ();
+    "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+    "XLIFF");
+List<TranslationGlossary> translationGlossaries = new ArrayList<>();
 translationGlossaries.add(translationGlossary);
 translationTarget1.setGlossaries(translationGlossaries);
 translationTarget1.setStorageSource(TranslationStorageSource.AZURE_BLOB);
@@ -255,15 +255,15 @@ TranslationTarget translationTarget2 = new TranslationTarget(targetUrl2, "fr");
 translationTarget2.setCategory("general");
 translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-List < TranslationTarget > translationTargets = new ArrayList <  > ();
+List<TranslationTarget> translationTargets = new ArrayList<>();
 translationTargets.add(translationTarget1);
 translationTargets.add(translationTarget2);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller < TranslationStatusResult,
-TranslationStatusResult > response = documentTranslationClient
+SyncPoller<TranslationStatusResult,
+TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
@@ -292,9 +292,9 @@ TranslationTarget translationTarget1 = new TranslationTarget(targetUrl1, "fr");
 translationTarget1.setCategory("general");
 
 TranslationGlossary translationGlossary = new TranslationGlossary(
-        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-        "XLIFF");
-List < TranslationGlossary > translationGlossaries = new ArrayList <  > ();
+    "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+    "XLIFF");
+List<TranslationGlossary> translationGlossaries = new ArrayList<>();
 translationGlossaries.add(translationGlossary);
 translationTarget1.setGlossaries(translationGlossaries);
 translationTarget1.setStorageSource(TranslationStorageSource.AZURE_BLOB);
@@ -304,18 +304,18 @@ TranslationTarget translationTarget2 = new TranslationTarget(targetUrl2, "fr");
 translationTarget2.setCategory("general");
 translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-List < TranslationTarget > translationTargets = new ArrayList <  > ();
+List<TranslationTarget> translationTargets = new ArrayList<>();
 translationTargets.add(translationTarget1);
 translationTargets.add(translationTarget2);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller < TranslationStatusResult,
-TranslationStatusResult > response = documentTranslationClient
+SyncPoller<TranslationStatusResult,
+TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
-PagedIterable < TranslationStatusResult > translationStatuses = documentTranslationClient
+PagedIterable < TranslationStatusResult> translationStatuses = documentTranslationClient
     .listTranslationStatuses();
 for (TranslationStatusResult translationStatus: translationStatuses) {
     System.out.println("Translation ID is: " + translationStatus.getId());
@@ -340,9 +340,9 @@ TranslationTarget translationTarget1 = new TranslationTarget(targetUrl1, "fr");
 translationTarget1.setCategory("general");
 
 TranslationGlossary translationGlossary = new TranslationGlossary(
-        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-        "XLIFF");
-List < TranslationGlossary > translationGlossaries = new ArrayList <  > ();
+    "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+    "XLIFF");
+List<TranslationGlossary> translationGlossaries = new ArrayList<>();
 translationGlossaries.add(translationGlossary);
 translationTarget1.setGlossaries(translationGlossaries);
 translationTarget1.setStorageSource(TranslationStorageSource.AZURE_BLOB);
@@ -352,15 +352,15 @@ TranslationTarget translationTarget2 = new TranslationTarget(targetUrl2, "fr");
 translationTarget2.setCategory("general");
 translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-List < TranslationTarget > translationTargets = new ArrayList <  > ();
+List<TranslationTarget> translationTargets = new ArrayList<>();
 translationTargets.add(translationTarget1);
 translationTargets.add(translationTarget2);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller < TranslationStatusResult,
-TranslationStatusResult > response = documentTranslationClient
+SyncPoller<TranslationStatusResult,
+TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
@@ -389,9 +389,9 @@ TranslationTarget translationTarget1 = new TranslationTarget(targetUrl1, "fr");
 translationTarget1.setCategory("general");
 
 TranslationGlossary translationGlossary = new TranslationGlossary(
-        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-        "XLIFF");
-List < TranslationGlossary > translationGlossaries = new ArrayList <  > ();
+    "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+    "XLIFF");
+List<TranslationGlossary> translationGlossaries = new ArrayList<>();
 translationGlossaries.add(translationGlossary);
 translationTarget1.setGlossaries(translationGlossaries);
 translationTarget1.setStorageSource(TranslationStorageSource.AZURE_BLOB);
@@ -401,23 +401,23 @@ TranslationTarget translationTarget2 = new TranslationTarget(targetUrl2, "fr");
 translationTarget2.setCategory("general");
 translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-List < TranslationTarget > translationTargets = new ArrayList <  > ();
+List<TranslationTarget> translationTargets = new ArrayList<>();
 translationTargets.add(translationTarget1);
 translationTargets.add(translationTarget2);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller < TranslationStatusResult,
-TranslationStatusResult > response = documentTranslationClient
+SyncPoller<TranslationStatusResult,
+TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
 
 // Add Status filter
-List < String > succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
 try {
-    PagedIterable < DocumentStatusResult > documentStatusResponse = documentTranslationClient
+    PagedIterable < DocumentStatusResult> documentStatusResponse = documentTranslationClient
         .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
             null,
             null, null);
@@ -450,9 +450,9 @@ TranslationTarget translationTarget1 = new TranslationTarget(targetUrl1, "fr");
 translationTarget1.setCategory("general");
 
 TranslationGlossary translationGlossary = new TranslationGlossary(
-        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-        "XLIFF");
-List < TranslationGlossary > translationGlossaries = new ArrayList <  > ();
+    "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+    "XLIFF");
+List<TranslationGlossary> translationGlossaries = new ArrayList<>();
 translationGlossaries.add(translationGlossary);
 translationTarget1.setGlossaries(translationGlossaries);
 translationTarget1.setStorageSource(TranslationStorageSource.AZURE_BLOB);
@@ -462,23 +462,23 @@ TranslationTarget translationTarget2 = new TranslationTarget(targetUrl2, "fr");
 translationTarget2.setCategory("general");
 translationTarget2.setStorageSource(TranslationStorageSource.AZURE_BLOB);
 
-List < TranslationTarget > translationTargets = new ArrayList <  > ();
+List<TranslationTarget> translationTargets = new ArrayList<>();
 translationTargets.add(translationTarget1);
 translationTargets.add(translationTarget2);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 batchRequest.setStorageType(StorageInputType.FOLDER);
 
-SyncPoller < TranslationStatusResult,
-TranslationStatusResult > response = documentTranslationClient
+SyncPoller<TranslationStatusResult,
+TranslationStatusResult> response = documentTranslationClient
     .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
 String translationId = response.poll().getValue().getId();
 
 // Add Status filter
-List < String > succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
+List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
 try {
-    PagedIterable < DocumentStatusResult > documentStatusResponse = documentTranslationClient
+    PagedIterable<DocumentStatusResult> documentStatusResponse = documentTranslationClient
         .listDocumentStatuses(translationId, null, null, null, succeededStatusList,
             null,
             null, null);
@@ -490,7 +490,7 @@ try {
         System.out.println("Document ID is: " + documentStatus.getId());
         System.out.println("Document Status is: " + documentStatus.getStatus().toString());
         System.out.println("Characters Charged is: "
-                + documentStatus.getCharacterCharged().toString());
+            + documentStatus.getCharacterCharged().toString());
         System.out.println("Document path is: " + documentStatus.getPath());
         System.out.println("Document source path is: " + documentStatus.getSourcePath());
     }
