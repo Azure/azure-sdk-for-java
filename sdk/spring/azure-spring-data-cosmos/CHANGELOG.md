@@ -12,7 +12,8 @@
 #### Other Changes
 
 ### 5.18.0 (2024-11-05)
-
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 5.18.0 and above.
 #### Other Changes
 * Updated `azure-cosmos` to version `4.64.0`.
 
