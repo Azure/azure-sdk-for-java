@@ -8,22 +8,9 @@ import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
-import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
-import com.azure.ai.openai.realtime.implementation.RealtimesImpl;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -34,7 +21,6 @@ public final class RealtimeClient {
 
     private final RealtimeAsyncClient asyncClient;
     private final EventHandlerCollection eventHandlerCollection = new EventHandlerCollection();
-
 
     RealtimeClient(RealtimeAsyncClient asyncClient) {
         this.asyncClient = asyncClient;

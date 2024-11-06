@@ -138,7 +138,6 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion,
                 configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
-        // TODO jpalvarezl: account for TokenCredential too
         return useNonAzureOpenAIService() ?
             ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent, deploymentOrModelName) :
             ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, this.serviceVersion);

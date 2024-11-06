@@ -4,7 +4,6 @@
 package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.implementation.LoggingUtils;
-import com.azure.ai.openai.realtime.implementation.RealtimesImpl;
 import com.azure.ai.openai.realtime.implementation.websocket.AuthenticationProvider;
 import com.azure.ai.openai.realtime.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.ai.openai.realtime.implementation.websocket.CloseReason;
@@ -16,46 +15,30 @@ import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventError;
 import com.azure.ai.openai.realtime.models.SendMessageFailedException;
-import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.TypeReference;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
-import reactor.util.retry.Retry;
 
-import javax.xml.validation.SchemaFactoryLoader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 public final class RealtimeAsyncClient implements Closeable {
 
     // logging
     private ClientLogger logger;
     private final AtomicReference<ClientLogger> loggerReference = new AtomicReference<>();
-
-    // TODO jpalvarezl: replace authentication abstraction in favour of pipeline usage
+    // authentication
     private final AuthenticationProvider authenticationProvider;
     // client state
     private final ClientState clientState = new ClientState();
@@ -74,10 +57,6 @@ public final class RealtimeAsyncClient implements Closeable {
     private final ClientEndpointConfiguration clientEndpointConfiguration;
     private final String applicationId;
 
-    // retry
-    /// TODO jpalvarezl: find a way to use this
-    private final Retry sendMessageRetrySpec;
-
     private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofMillis(100);
 
     // incoming message handlers:
@@ -95,26 +74,6 @@ public final class RealtimeAsyncClient implements Closeable {
         this.clientEndpointConfiguration = cec;
         this.applicationId = applicationId;
         this.authenticationProvider = authenticationProvider;
-
-        // The realtime service doesn't seem to provide the necessary information for reconnect/retry logic
-        // We would need, from what I've been able to gather:
-        //   - connectionId
-        //   - eventId as a monotonically increasing number
-        this.sendMessageRetrySpec = Retry.from(signals -> {
-            AtomicInteger retryCount = new AtomicInteger(0);
-            return signals.concatMap(s -> {
-                Mono<Retry.RetrySignal> ret = Mono.error(s.failure());
-                if (s.failure() instanceof SendMessageFailedException) {
-                    if (((SendMessageFailedException) s.failure()).isTransient()) {
-                        int retryAttempt = retryCount.incrementAndGet();
-                        if (retryAttempt <= retryStrategy.getMaxRetries()) {
-                            ret = Mono.delay(retryStrategy.calculateRetryDelay(retryAttempt)).then(Mono.just(s));
-                        }
-                    }
-                }
-                return ret;
-            });
-        });
     }
 
     @Override
@@ -129,7 +88,7 @@ public final class RealtimeAsyncClient implements Closeable {
             })).block();
         }
         // TODO jpalvarezl: should this be here?
-        webSocketSession.close();
+//        webSocketSession.close();
     }
 
     public Mono<Void> start() {
@@ -216,15 +175,6 @@ public final class RealtimeAsyncClient implements Closeable {
         });
     }
 
-//    /**
-//     * Gets the connection ID.
-//     *
-//     * @return the connection ID.
-//     */
-//    public String getConnectionId() {
-//        return webPubSubConnection == null ? null : webPubSubConnection.getConnectionId();
-//    }
-
     public Flux<RealtimeServerEvent> getServerEvents() {
         return serverEvents.asFlux();
     }
@@ -239,8 +189,6 @@ public final class RealtimeAsyncClient implements Closeable {
     }
 
     private void handleMessage(Object message) {
-        // TODO jpalvarezl: implement this
-
         serverEvents.tryEmitNext((RealtimeServerEvent) message);
     }
 
@@ -311,19 +259,10 @@ public final class RealtimeAsyncClient implements Closeable {
 
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(RealtimeClientState.STOPPED);
-
         // session
         this.webSocketSession = null;
-        // logic connection
-//        this.webPubSubConnection = null;
 
         tryCompleteOnStoppedByUserSink();
-
-        // stop sequence ack task
-//        Disposable task = sequenceAckTask.getAndSet(null);
-//        if (task != null) {
-//            task.dispose();
-//        }
 
         // TODO jpalvarezl: there is no StoppedEvent in the Realtime client library, AFAICT
         // send StoppedEvent
@@ -464,8 +403,6 @@ public final class RealtimeAsyncClient implements Closeable {
 
     private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
                                                            RealtimeClientEvent message) {
-
-        // TODO jpalvarezl: Figure out what's `ackId` vs `message.getEventId()`
         return logSendMessageFailedException(errorMessage, cause, isTransient, message.getEventId());
     }
 
@@ -477,7 +414,6 @@ public final class RealtimeAsyncClient implements Closeable {
 
     private RuntimeException logSendMessageFailedException(String errorMessage, Throwable cause, boolean isTransient,
                                                            String eventId, RealtimeServerEventError error) {
-
         return logger.logExceptionAsWarning(
                 new SendMessageFailedException(errorMessage, cause, isTransient, eventId, error));
     }
