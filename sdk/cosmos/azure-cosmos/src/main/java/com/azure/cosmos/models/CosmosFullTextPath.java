@@ -16,12 +16,11 @@ public final class CosmosFullTextPath {
     private String path;
     @JsonProperty(Constants.Properties.LANGUAGE)
     private String language;
-    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor
      */
-    public CosmosFullTextPath() { this.jsonSerializable = new JsonSerializable(); }
+    public CosmosFullTextPath() {}
 
     /**
      * Gets the path for the cosmosFullText.

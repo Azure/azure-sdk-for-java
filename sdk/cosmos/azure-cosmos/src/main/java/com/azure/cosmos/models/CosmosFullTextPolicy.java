@@ -23,7 +23,6 @@ public final class CosmosFullTextPolicy {
      * Constructor
      */
     public CosmosFullTextPolicy() {
-//    this.jsonSerializable = new JsonSerializable();
     }
 
     /**
