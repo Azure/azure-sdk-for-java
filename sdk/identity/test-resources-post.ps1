@@ -50,6 +50,12 @@ mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true"
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-xml/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-experimental/pom.xml" | Write-Host
+
+$tokenResponse = az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv
+
+[System.Environment]::SetEnvironmentVariable("AZURE_OIDC_TOKEN", $tokenResponse, [System.EnvironmentVariableTarget]::Machine)
+
+
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-vertx/pom.xml" | Write-Host
@@ -59,6 +65,10 @@ mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true"
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-blob/pom.xml" | Write-Host
+
+$tokenResponse = az account get-access-token --resource "https://management.azure.com/" --query accessToken -o tsv
+
+[System.Environment]::SetEnvironmentVariable("AZURE_OIDC_TOKEN", $tokenResponse, [System.EnvironmentVariableTarget]::Machine)
 
 
 mvn -ntp clean install -DskipTests -f $webappRootPom | Write-Host
