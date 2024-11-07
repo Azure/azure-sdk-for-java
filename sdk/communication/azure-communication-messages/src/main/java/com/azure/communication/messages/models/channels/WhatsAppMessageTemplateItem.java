@@ -62,7 +62,7 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
      */
     @Generated
     public BinaryData getContent() {
-        return BinaryData.fromObject(this.content);
+        return this.content;
     }
 
     /**
