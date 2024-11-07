@@ -141,11 +141,11 @@ For more information on the OpenTelemetry project, please review the [OpenTeleme
 
 ### Enabling Logging
 
-You can leverage [Azure SDK logging](logging).
+You can leverage [Azure SDK logging](logging].
 
 Examples:
-* [Log4j](log4j)
-* [Logback](logback)
+* [Log4j][log4j]
+* [Logback][logback]
 
 Learn more about [OpenTelemetry SDK logging][logging_otel_sdk].
 
