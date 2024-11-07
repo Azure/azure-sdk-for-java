@@ -49,8 +49,7 @@ final class ServiceBusSessionAcquirer {
      * @param entityType the entity type (e.g., queue, topic subscription)
      * @param receiveMode the mode of receiving messages from the acquired session.
      * @param tryTimeout the try timeout, currently callsites uses {@link AmqpRetryOptions#getTryTimeout()}}.
-     * @param timeoutRetryDisabled if session acquire retry should be disabled when broker timeout on no session (the timeout
-     *     error will be propagated for synchronous clients but retried for asynchronous or processor clients).
+     * @param timeoutRetryDisabled if session acquire retry should be disabled when broker timeout on no session.
      * @param connectionCacheWrapper the connection cache.
      */
     ServiceBusSessionAcquirer(ClientLogger logger, String identifier, String entityPath, MessagingEntityType entityType,
@@ -111,15 +110,17 @@ final class ServiceBusSessionAcquirer {
                         ? "Error occurred while getting unnamed session."
                         : "Error occurred while getting session " + sessionId, failure);
 
-                // The 'timeoutRetryDisabled' is true when this session acquirer is used for synchronous ServiceBusSessionReceiverClient.
-                // This allows the synchronous `acceptNextSession()` API to propagate the broker timeout error if no session is available.
-                // The 'acceptNextSession()' (invoking acquire) has a client-side timeout that is set slightly longer than the broker's timeout,
-                // ensuring  the broker's timeout usually triggers first (the client-side timeout still helps in case of unexpected hanging).
-                // For sync case, if the library retries session-acquire on broker timeout, the client-side sync timeout might expire
-                // while waiting. When client-side timeout like this, library cannot cancel the outstanding acquire request to the broker,
-                // which means, the broker can still lock a session for an acquire request that nobody is waiting on, this means that
-                // session is unavailable for any other 'acceptNextSession()' until initial broker lock expires. Hence, library
-                // propagate the broker timeout error in synchronous ServiceBusSessionReceiverClient case.
+                // The 'timeoutRetryDisabled' is 'true' when this session acquirer is used for synchronous ServiceBusSessionReceiverClient.
+                // This allows the synchronous 'acceptNextSession()' API to propagate the broker timeout error if no session is available.
+                // The 'acceptNextSession()' (invoking acquireIntern()) has a client-side timeout that is set slightly longer than
+                // the broker's timeout, ensuring  the broker's timeout usually triggers first (the client-side timeout still helps in
+                // case of unexpected hanging).
+                //
+                // For ServiceBusSessionReceiverClient, if the library retries session-acquire on broker timeout, the client-side sync
+                // timeout might expire while waiting. When client-side timeout expires like this, library cannot cancel the outstanding
+                // acquire request to the broker, which means, the broker may still lock a session for an acquire request that nobody
+                // is waiting on, resulting that session to be unavailable for any other 'acceptNextSession()' until initial broker
+                // lock expires. Hence, library propagate the broker timeout error in ServiceBusSessionReceiverClient case.
                 //
                 if (!timeoutRetryDisabled) {
                     if (failure instanceof TimeoutException) {
